@@ -163,7 +163,11 @@ ElifTag::ElifTag(const ElifTag& toCopy) :FlowTag(toCopy)
 
 }
 
+<<<<<<< HEAD
 LoopTag::LoopTag(const LoopTag & toCopy) :FlowTag(toCopy)
+=======
+LoopTag::LoopTag(const LoopTag& toCopy) :FlowTag(toCopy)
+>>>>>>> d50c4864424c6c6cf256778c2dcce8f341ba3b5f
 {
 
 }
