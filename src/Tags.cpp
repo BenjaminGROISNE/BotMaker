@@ -163,9 +163,11 @@ ElifTag::ElifTag(const ElifTag& toCopy) :FlowTag(toCopy)
 
 }
 
+LoopTag::LoopTag(const LoopTag& toCopy) :FlowTag(toCopy)
 {
 
 }
+
 BreakTag::BreakTag(const BreakTag& toCopy) :FlowTag(toCopy)
 {
 
