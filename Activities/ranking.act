@@ -1,0 +1,16 @@
+main (){
+	loop(false){
+		wait(2,SECOND)
+		store(HG,coord(3,4))
+		zone(4,4)
+	}
+	load(HG)
+	bool(false)
+	store(COND,bool(true))
+	if(COND){
+		string(FG)
+	}
+	and()
+}
+else{j(d)
+}
