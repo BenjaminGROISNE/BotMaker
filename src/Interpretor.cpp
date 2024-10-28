@@ -552,6 +552,9 @@ bool Lexer::empty()
 
 std::string Lexer::showAllTokens()
 {
+
+
+	std::cout << "Console is now available for debugging output!" << std::endl;
 	std::string str;
 	for (auto& s : this->listTokens) {
 		auto h = s->tokenText;
@@ -1105,12 +1108,12 @@ Interpretor::~Interpretor()
 
 void Interpretor::readActivityFile(std::string ActivityName)
 {
- 	createMainTag(copyActivity(ActivityFolder + ActivityName));
+ 	createMainTag(copyActivity(ActivityFolder / ActivityName));
 }
 
-std::string Interpretor::copyActivity(std::string ActivityName)
+std::string Interpretor::copyActivity(std::filesystem::path ActivityName)
 {
-	return getFileContent(ActivityName);
+	return getFileContent(ActivityName.string());
 }
 
 std::shared_ptr<Tag> Interpretor::getActivityTag()

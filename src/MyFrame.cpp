@@ -268,8 +268,9 @@ void MyFrame::closeDetailsPanel() {
 
 std::shared_ptr<MainTag> MyFrame::getMainTag()
 {
-    std::string currentPath = "C:\\Users\\bgroi\\OneDrive - Université De Technologie De Belfort - Montbeliard\\Documents\\Coding\\C++\\Bots\\BotOVMT\\";
-    myInterpretor->ActivityFolder = currentPath +"Activities\\";
+    std::filesystem::path filePath(__FILE__);
+    std::filesystem::path activityFolder = filePath.parent_path().parent_path() / "Activities";
+    myInterpretor->ActivityFolder = activityFolder.string();
     myInterpretor->readActivityFile("short.act");
     mainTag = std::dynamic_pointer_cast<MainTag>(myInterpretor->getActivityTag());
     return mainTag;
