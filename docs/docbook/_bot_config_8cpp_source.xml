@@ -1,0 +1,808 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<section xmlns="http://docbook.org/ns/docbook" version="5.0" xmlns:xlink="http://www.w3.org/1999/xlink" xml:id="__bot_config_8cpp_source" xml:lang="en-US">
+<title>BotConfig.cpp</title>
+<indexterm><primary>src/BotConfig.cpp</primary></indexterm>
+Go to the documentation of this file.<programlisting linenumbering="unnumbered"><anchor xml:id="__bot_config_8cpp_source_1l00001"/>00001 <emphasis role="preprocessor">#include&#32;&quot;<link linkend="__bot_config_8h">BotConfig.h</link>&quot;</emphasis>
+<anchor xml:id="__bot_config_8cpp_source_1l00002"/>00002 
+<anchor xml:id="__bot_config_8cpp_source_1l00003"/><link linkend="_class_bot_config_1a00a2927e0ed7e0a0f3d8bfa96cd323fc">00003</link> <link linkend="_class_bot_config_1a00a2927e0ed7e0a0f3d8bfa96cd323fc">BotConfig::BotConfig</link>()
+<anchor xml:id="__bot_config_8cpp_source_1l00004"/>00004 {
+<anchor xml:id="__bot_config_8cpp_source_1l00005"/>00005 &#32;&#32;&#32;&#32;<link linkend="_class_bot_config_1a72abeb980d886515c3d476e6d524a116">gamePackage</link>.clear();
+<anchor xml:id="__bot_config_8cpp_source_1l00006"/>00006 &#32;&#32;&#32;&#32;<link linkend="_class_bot_config_1ad6aeb089df6502e04cad880c58361755">favoritePreset</link>.clear();
+<anchor xml:id="__bot_config_8cpp_source_1l00007"/>00007 &#32;&#32;&#32;&#32;<link linkend="_class_bot_config_1a04819c65a0bc6f682b906b3d796fafdf">favoriteInstance</link>.clear();
+<anchor xml:id="__bot_config_8cpp_source_1l00008"/>00008 &#32;&#32;&#32;&#32;<link linkend="_class_bot_config_1abe21c3220cdb52cd85ad15e8c3e55982">blueStacksInstalled</link>&#32;=&#32;<emphasis role="keyword">false</emphasis>;
+<anchor xml:id="__bot_config_8cpp_source_1l00009"/>00009 &#32;&#32;&#32;&#32;<link linkend="_class_bot_config_1ae7e47847f68c73a9d31c3437a970389d">ldPlayerInstalled</link>&#32;=&#32;<emphasis role="keyword">false</emphasis>;
+<anchor xml:id="__bot_config_8cpp_source_1l00010"/>00010 &#32;&#32;&#32;&#32;<link linkend="_class_bot_config_1af0e522630e79d295768f36a640dd257a">setParameters</link>();
+<anchor xml:id="__bot_config_8cpp_source_1l00011"/>00011 &#32;&#32;&#32;&#32;<link linkend="_class_bot_config_1a9ebfbe0b69d4f9a09c08770dadba5a36">desiredX</link>&#32;=&#32;<link linkend="_class_bot_config_1a82dc12794d01b4a4209b356c3077a446">desiredY</link>&#32;=&#32;<link linkend="_class_bot_config_1aa5b3992386fdc65aa95e800d0802e71c">desiredDpi</link>=0;
+<anchor xml:id="__bot_config_8cpp_source_1l00012"/>00012 
+<anchor xml:id="__bot_config_8cpp_source_1l00013"/>00013 }
+<anchor xml:id="__bot_config_8cpp_source_1l00014"/><link linkend="_class_bot_config_1a0e505da151078e86753f220064097013">00014</link> <link linkend="_class_bot_config_1a00a2927e0ed7e0a0f3d8bfa96cd323fc">BotConfig::BotConfig</link>(std::string&#32;gamePackage,&#32;std::string&#32;gameActivity,&#32;<emphasis role="keywordtype">int</emphasis>&#32;dimX,<emphasis role="keywordtype">int</emphasis>&#32;dimY,<emphasis role="keywordtype">int</emphasis>&#32;dpi)&#32;:<link linkend="_class_bot_config">BotConfig</link>()
+<anchor xml:id="__bot_config_8cpp_source_1l00015"/>00015 {
+<anchor xml:id="__bot_config_8cpp_source_1l00016"/>00016 &#32;&#32;&#32;&#32;this-&gt;gamePackage&#32;=&#32;<link linkend="_class_bot_config_1a72abeb980d886515c3d476e6d524a116">gamePackage</link>;
+<anchor xml:id="__bot_config_8cpp_source_1l00017"/>00017 &#32;&#32;&#32;&#32;this-&gt;gameActivity&#32;=&#32;<link linkend="_class_bot_config_1afe99fd562cd17fa872729ccca4d9525f">gameActivity</link>;
+<anchor xml:id="__bot_config_8cpp_source_1l00018"/>00018 &#32;&#32;&#32;&#32;this-&gt;<link linkend="_class_bot_config_1a9ebfbe0b69d4f9a09c08770dadba5a36">desiredX</link>&#32;=&#32;dimX;
+<anchor xml:id="__bot_config_8cpp_source_1l00019"/>00019 &#32;&#32;&#32;&#32;this-&gt;<link linkend="_class_bot_config_1a82dc12794d01b4a4209b356c3077a446">desiredY</link>&#32;=&#32;dimY;
+<anchor xml:id="__bot_config_8cpp_source_1l00020"/>00020 &#32;&#32;&#32;&#32;this-&gt;<link linkend="_class_bot_config_1aa5b3992386fdc65aa95e800d0802e71c">desiredDpi</link>&#32;=&#32;dpi;
+<anchor xml:id="__bot_config_8cpp_source_1l00021"/>00021 &#32;&#32;&#32;&#32;<link linkend="_class_bot_config_1a98b58016baad4e504ec1fbcb7eace8b9">allEmu</link>&#32;=&#32;<link linkend="_struct_all_emulators">AllEmulators</link>(<link linkend="_class_bot_config_1a72abeb980d886515c3d476e6d524a116">gamePackage</link>,<link linkend="_class_bot_config_1a9ebfbe0b69d4f9a09c08770dadba5a36">desiredX</link>,<link linkend="_class_bot_config_1a82dc12794d01b4a4209b356c3077a446">desiredY</link>,<link linkend="_class_bot_config_1aa5b3992386fdc65aa95e800d0802e71c">desiredDpi</link>);
+<anchor xml:id="__bot_config_8cpp_source_1l00022"/>00022 }
+<anchor xml:id="__bot_config_8cpp_source_1l00023"/>00023 
+<anchor xml:id="__bot_config_8cpp_source_1l00024"/><link linkend="_struct_all_emulators_1ab3d563bbe0f37080e253c5959f1950d6">00024</link> <link linkend="_struct_all_emulators_1ab3d563bbe0f37080e253c5959f1950d6">AllEmulators::AllEmulators</link>()
+<anchor xml:id="__bot_config_8cpp_source_1l00025"/>00025 {
+<anchor xml:id="__bot_config_8cpp_source_1l00026"/>00026 &#32;&#32;&#32;&#32;<link linkend="_struct_all_emulators_1a8cbae61731971d66a68a201302ab6db8">LdPlayerInstances</link>.clear();
+<anchor xml:id="__bot_config_8cpp_source_1l00027"/>00027 &#32;&#32;&#32;&#32;<link linkend="_struct_all_emulators_1a243fca964426f25cb782f34afa465b8e">BluestackInstances</link>.clear();
+<anchor xml:id="__bot_config_8cpp_source_1l00028"/>00028 &#32;&#32;&#32;&#32;<link linkend="_struct_all_emulators_1acaf72502e2a14835727f0af11c9c2e00">allInstances</link>.clear();
+<anchor xml:id="__bot_config_8cpp_source_1l00029"/>00029 &#32;&#32;&#32;&#32;<link linkend="_struct_all_emulators_1af2818835c22641cdb698ae29d41cb41c">playingInstance</link>=<emphasis role="keyword">nullptr</emphasis>;
+<anchor xml:id="__bot_config_8cpp_source_1l00030"/>00030 &#32;&#32;&#32;&#32;<link linkend="_struct_all_emulators_1a710e93eea46e0922c245799d60d1fb95">playingEmulator</link>&#32;=&#32;<emphasis role="keyword">nullptr</emphasis>;
+<anchor xml:id="__bot_config_8cpp_source_1l00031"/>00031 }
+<anchor xml:id="__bot_config_8cpp_source_1l00032"/>00032 
+<anchor xml:id="__bot_config_8cpp_source_1l00033"/><link linkend="_struct_all_emulators_1a78398d5200f0679f98b8567581a1ecab">00033</link> <link linkend="_struct_all_emulators_1ab3d563bbe0f37080e253c5959f1950d6">AllEmulators::AllEmulators</link>(<emphasis role="keyword">const</emphasis>&#32;std::string&#32;gamePackage,<emphasis role="keywordtype">int</emphasis>&#32;dimX,<emphasis role="keywordtype">int</emphasis>&#32;dimY,<emphasis role="keywordtype">int</emphasis>&#32;dpi)&#32;:<link linkend="_struct_all_emulators">AllEmulators</link>()
+<anchor xml:id="__bot_config_8cpp_source_1l00034"/>00034 {
+<anchor xml:id="__bot_config_8cpp_source_1l00035"/>00035 &#32;&#32;&#32;&#32;<link linkend="_struct_all_emulators_1ad9665110f17cbb850ce02b9dcc2442ea">blue</link>&#32;=&#32;<link linkend="_class_bluestacks">Bluestacks</link>(gamePackage,&#32;dimX,&#32;dimY,dpi);
+<anchor xml:id="__bot_config_8cpp_source_1l00036"/>00036 &#32;&#32;&#32;&#32;<link linkend="_struct_all_emulators_1a8522baa50bd6eb248be7acc3ed4b97c9">ld</link>&#32;=&#32;<link linkend="_class_l_d_player">LDPlayer</link>(gamePackage,&#32;dimX,&#32;dimY,dpi);
+<anchor xml:id="__bot_config_8cpp_source_1l00037"/>00037 }&#32;&#32;&#32;
+<anchor xml:id="__bot_config_8cpp_source_1l00038"/>00038 
+<anchor xml:id="__bot_config_8cpp_source_1l00039"/>00039 
+<anchor xml:id="__bot_config_8cpp_source_1l00040"/>00040 
+<anchor xml:id="__bot_config_8cpp_source_1l00041"/><link linkend="_class_bot_config_1a623d05e4d8e0122d35b1a3e391fc2464">00041</link> std::string&#32;<link linkend="_class_bot_config_1a623d05e4d8e0122d35b1a3e391fc2464">BotConfig::readString</link>(<emphasis role="keyword">const</emphasis>&#32;std::string&amp;&#32;filename,&#32;<emphasis role="keyword">const</emphasis>&#32;std::string&amp;&#32;lineParameter,&#32;<emphasis role="keyword">const</emphasis>&#32;std::string&amp;&#32;first,&#32;<emphasis role="keyword">const</emphasis>&#32;std::string&amp;&#32;last)&#32;{
+<anchor xml:id="__bot_config_8cpp_source_1l00042"/>00042 &#32;&#32;&#32;&#32;std::string&#32;text&#32;=&#32;<link linkend="__text_manager_8cpp_1add36cc54cd9616a393a17b8961491477">getFileContent</link>(filename);
+<anchor xml:id="__bot_config_8cpp_source_1l00043"/>00043 &#32;&#32;&#32;&#32;std::string&#32;line&#32;=&#32;<link linkend="__text_manager_8cpp_1af24bee60aa1d3d5b4ae3bf6ebd267ecd">getLine</link>(text,&#32;lineParameter);
+<anchor xml:id="__bot_config_8cpp_source_1l00044"/>00044 &#32;&#32;&#32;&#32;<emphasis role="keywordflow">return</emphasis>&#32;<link linkend="__text_manager_8cpp_1aa61ad4367d44c1e14541c7c1c46da795">extractContent</link>(line,&#32;first,&#32;last);
+<anchor xml:id="__bot_config_8cpp_source_1l00045"/>00045 }
+<anchor xml:id="__bot_config_8cpp_source_1l00046"/>00046 
+<anchor xml:id="__bot_config_8cpp_source_1l00047"/><link linkend="_class_bot_config_1ab2bc74b90f5fa9c6761c2b5a8f06903e">00047</link> <emphasis role="keywordtype">int</emphasis>&#32;<link linkend="_class_bot_config_1ab2bc74b90f5fa9c6761c2b5a8f06903e">BotConfig::readInt</link>(<emphasis role="keyword">const</emphasis>&#32;std::string&amp;&#32;filename,&#32;<emphasis role="keyword">const</emphasis>&#32;std::string&amp;&#32;lineParameter,&#32;<emphasis role="keyword">const</emphasis>&#32;std::string&amp;&#32;first,&#32;<emphasis role="keyword">const</emphasis>&#32;std::string&amp;&#32;last)&#32;{
+<anchor xml:id="__bot_config_8cpp_source_1l00048"/>00048 
+<anchor xml:id="__bot_config_8cpp_source_1l00049"/>00049 &#32;&#32;&#32;&#32;<emphasis role="keywordflow">return</emphasis>&#32;stoi(<link linkend="_class_bot_config_1a623d05e4d8e0122d35b1a3e391fc2464">readString</link>(filename,&#32;lineParameter,&#32;first,&#32;last));
+<anchor xml:id="__bot_config_8cpp_source_1l00050"/>00050 
+<anchor xml:id="__bot_config_8cpp_source_1l00051"/>00051 }
+<anchor xml:id="__bot_config_8cpp_source_1l00052"/>00052 
+<anchor xml:id="__bot_config_8cpp_source_1l00053"/><link linkend="_class_bot_config_1a459cd36b6c6f36f9bd73ff207e2fe5ec">00053</link> <emphasis role="keywordtype">bool</emphasis>&#32;<link linkend="_class_bot_config_1a459cd36b6c6f36f9bd73ff207e2fe5ec">BotConfig::readBool</link>(<emphasis role="keyword">const</emphasis>&#32;std::string&amp;&#32;filename,&#32;<emphasis role="keyword">const</emphasis>&#32;std::string&amp;&#32;lineParameter,&#32;<emphasis role="keyword">const</emphasis>&#32;std::string&amp;&#32;first,&#32;<emphasis role="keyword">const</emphasis>&#32;std::string&amp;&#32;last)&#32;{
+<anchor xml:id="__bot_config_8cpp_source_1l00054"/>00054 
+<anchor xml:id="__bot_config_8cpp_source_1l00055"/>00055 &#32;&#32;&#32;&#32;std::string&#32;result&#32;=&#32;<link linkend="_class_bot_config_1a623d05e4d8e0122d35b1a3e391fc2464">readString</link>(filename,&#32;lineParameter,&#32;first,&#32;last);
+<anchor xml:id="__bot_config_8cpp_source_1l00056"/>00056 &#32;&#32;&#32;&#32;<emphasis role="keywordflow">return</emphasis>&#32;(result&#32;==&#32;<emphasis role="stringliteral">&quot;1&quot;</emphasis>&#32;||&#32;result&#32;==&#32;<emphasis role="stringliteral">&quot;true&quot;</emphasis>);
+<anchor xml:id="__bot_config_8cpp_source_1l00057"/>00057 }
+<anchor xml:id="__bot_config_8cpp_source_1l00058"/>00058 
+<anchor xml:id="__bot_config_8cpp_source_1l00059"/><link linkend="_class_bot_config_1ab692e666bc268ac76e501e29fe80d7fc">00059</link> <emphasis role="keywordtype">int</emphasis>&#32;<link linkend="_class_bot_config_1ab692e666bc268ac76e501e29fe80d7fc">BotConfig::readIntBotFile</link>(<emphasis role="keyword">const</emphasis>&#32;std::string&amp;&#32;lineParameter)
+<anchor xml:id="__bot_config_8cpp_source_1l00060"/>00060 {
+<anchor xml:id="__bot_config_8cpp_source_1l00061"/>00061 &#32;&#32;&#32;&#32;<emphasis role="keywordflow">return</emphasis>&#32;<link linkend="_class_bot_config_1ab2bc74b90f5fa9c6761c2b5a8f06903e">readInt</link>(<link linkend="_class_bot_config_1ab2bc67e00b87b45a72db8363ce38a198">BotFile</link>,&#32;lineParameter,&#32;<link linkend="_class_bot_config_1aba7e690ba344f65eabc717996981ca0e">quote</link>,&#32;<link linkend="_class_bot_config_1aba7e690ba344f65eabc717996981ca0e">quote</link>);
+<anchor xml:id="__bot_config_8cpp_source_1l00062"/>00062 }
+<anchor xml:id="__bot_config_8cpp_source_1l00063"/>00063 
+<anchor xml:id="__bot_config_8cpp_source_1l00064"/><link linkend="_class_bot_config_1a5aafe893fa75e1b711e3ef3f4e4db9cc">00064</link> <emphasis role="keywordtype">bool</emphasis>&#32;<link linkend="_class_bot_config_1a5aafe893fa75e1b711e3ef3f4e4db9cc">BotConfig::readBoolBotFile</link>(<emphasis role="keyword">const</emphasis>&#32;std::string&amp;&#32;lineParameter)
+<anchor xml:id="__bot_config_8cpp_source_1l00065"/>00065 {
+<anchor xml:id="__bot_config_8cpp_source_1l00066"/>00066 &#32;&#32;&#32;&#32;<emphasis role="keywordflow">return</emphasis>&#32;<link linkend="_class_bot_config_1a459cd36b6c6f36f9bd73ff207e2fe5ec">readBool</link>(<link linkend="_class_bot_config_1ab2bc67e00b87b45a72db8363ce38a198">BotFile</link>,&#32;lineParameter,&#32;<link linkend="_class_bot_config_1aba7e690ba344f65eabc717996981ca0e">quote</link>,&#32;<link linkend="_class_bot_config_1aba7e690ba344f65eabc717996981ca0e">quote</link>);
+<anchor xml:id="__bot_config_8cpp_source_1l00067"/>00067 }
+<anchor xml:id="__bot_config_8cpp_source_1l00068"/>00068 
+<anchor xml:id="__bot_config_8cpp_source_1l00069"/><link linkend="_class_bot_config_1a6347ad0b79f04a755fe1d7151ed87cd2">00069</link> std::string&#32;<link linkend="_class_bot_config_1a6347ad0b79f04a755fe1d7151ed87cd2">BotConfig::readStringBotFile</link>(<emphasis role="keyword">const</emphasis>&#32;std::string&amp;&#32;lineParameter)
+<anchor xml:id="__bot_config_8cpp_source_1l00070"/>00070 {
+<anchor xml:id="__bot_config_8cpp_source_1l00071"/>00071 &#32;&#32;&#32;&#32;<emphasis role="keywordflow">return</emphasis>&#32;<link linkend="_class_bot_config_1a623d05e4d8e0122d35b1a3e391fc2464">readString</link>(<link linkend="_class_bot_config_1ab2bc67e00b87b45a72db8363ce38a198">BotFile</link>,&#32;lineParameter,&#32;<link linkend="_class_bot_config_1aba7e690ba344f65eabc717996981ca0e">quote</link>,&#32;<link linkend="_class_bot_config_1aba7e690ba344f65eabc717996981ca0e">quote</link>);
+<anchor xml:id="__bot_config_8cpp_source_1l00072"/>00072 }
+<anchor xml:id="__bot_config_8cpp_source_1l00073"/>00073 
+<anchor xml:id="__bot_config_8cpp_source_1l00074"/><link linkend="_class_bot_config_1a52e7277feeeb5387104d7b66a44ff519">00074</link> <emphasis role="keywordtype">bool</emphasis>&#32;<link linkend="_class_bot_config_1a52e7277feeeb5387104d7b66a44ff519">BotConfig::anyPlayableInstance</link>()
+<anchor xml:id="__bot_config_8cpp_source_1l00075"/>00075 {
+<anchor xml:id="__bot_config_8cpp_source_1l00076"/>00076 &#32;&#32;&#32;&#32;<emphasis role="keywordflow">if</emphasis>&#32;(<link linkend="_class_bot_config_1a98b58016baad4e504ec1fbcb7eace8b9">allEmu</link>.<link linkend="_struct_all_emulators_1acaf72502e2a14835727f0af11c9c2e00">allInstances</link>.size()&#32;==&#32;0)&#32;{
+<anchor xml:id="__bot_config_8cpp_source_1l00077"/>00077 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;std::cout&#32;&lt;&lt;&#32;<emphasis role="stringliteral">&quot;No&#32;Playable&#32;Instance&#32;detected\n\n&quot;</emphasis>;
+<anchor xml:id="__bot_config_8cpp_source_1l00078"/>00078 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">return</emphasis>&#32;<emphasis role="keyword">false</emphasis>;
+<anchor xml:id="__bot_config_8cpp_source_1l00079"/>00079 &#32;&#32;&#32;&#32;}
+<anchor xml:id="__bot_config_8cpp_source_1l00080"/>00080 &#32;&#32;&#32;&#32;<emphasis role="keywordflow">else</emphasis>&#32;<emphasis role="keywordflow">return</emphasis>&#32;<emphasis role="keyword">true</emphasis>;
+<anchor xml:id="__bot_config_8cpp_source_1l00081"/>00081 }
+<anchor xml:id="__bot_config_8cpp_source_1l00082"/>00082 
+<anchor xml:id="__bot_config_8cpp_source_1l00083"/><link linkend="_class_bot_config_1ab92a15dd3027a7f42b452cdf5eaf9529">00083</link> <emphasis role="keywordtype">void</emphasis>&#32;<link linkend="_class_bot_config_1ab92a15dd3027a7f42b452cdf5eaf9529">BotConfig::updateString</link>(<emphasis role="keyword">const</emphasis>&#32;std::string&amp;&#32;filename,&#32;<emphasis role="keyword">const</emphasis>&#32;std::string&amp;&#32;lineParameter,&#32;<emphasis role="keyword">const</emphasis>&#32;std::string&amp;&#32;content,&#32;<emphasis role="keyword">const</emphasis>&#32;std::string&amp;&#32;first,&#32;<emphasis role="keyword">const</emphasis>&#32;std::string&amp;&#32;last)
+<anchor xml:id="__bot_config_8cpp_source_1l00084"/>00084 {
+<anchor xml:id="__bot_config_8cpp_source_1l00085"/>00085 &#32;&#32;&#32;&#32;std::string&#32;linetochange;
+<anchor xml:id="__bot_config_8cpp_source_1l00086"/>00086 &#32;&#32;&#32;&#32;std::string&#32;text&#32;=&#32;<link linkend="__text_manager_8cpp_1add36cc54cd9616a393a17b8961491477">getFileContent</link>(filename);
+<anchor xml:id="__bot_config_8cpp_source_1l00087"/>00087 &#32;&#32;&#32;&#32;linetochange&#32;=&#32;<link linkend="__text_manager_8cpp_1af24bee60aa1d3d5b4ae3bf6ebd267ecd">getLine</link>(text,&#32;lineParameter);
+<anchor xml:id="__bot_config_8cpp_source_1l00088"/>00088 &#32;&#32;&#32;&#32;std::string&#32;firstpart,&#32;secondpart;
+<anchor xml:id="__bot_config_8cpp_source_1l00089"/>00089 &#32;&#32;&#32;&#32;firstpart&#32;=&#32;<link linkend="__text_manager_8cpp_1a377407ab4c28873a8e1956ea343f9cc2">getContentBefore</link>(text,&#32;linetochange);
+<anchor xml:id="__bot_config_8cpp_source_1l00090"/>00090 &#32;&#32;&#32;&#32;secondpart&#32;=&#32;<link linkend="__text_manager_8cpp_1a6a1f72a80ddaec746c95996b16e3a1dc">getContentAfter</link>(text,&#32;linetochange);
+<anchor xml:id="__bot_config_8cpp_source_1l00091"/>00091 &#32;&#32;&#32;&#32;text&#32;=&#32;firstpart&#32;+&#32;<link linkend="__text_manager_8cpp_1a98e5aae2b6659418890caba4fad17d5e">updateContent</link>(linetochange,&#32;content,&#32;first,&#32;last)&#32;+&#32;secondpart;
+<anchor xml:id="__bot_config_8cpp_source_1l00092"/>00092 &#32;&#32;&#32;&#32;<link linkend="__text_manager_8cpp_1ab55140c566370b105b9bf81756293fa5">writeToFile</link>(filename,&#32;text,&#32;<link linkend="__text_manager_8h_1a61d23b393fdc35f2f0e30a1ed566c76da5d8c28daa563cffcab51f34a0bec098d">OVERWRITE</link>);
+<anchor xml:id="__bot_config_8cpp_source_1l00093"/>00093 
+<anchor xml:id="__bot_config_8cpp_source_1l00094"/>00094 }
+<anchor xml:id="__bot_config_8cpp_source_1l00095"/>00095 
+<anchor xml:id="__bot_config_8cpp_source_1l00096"/><link linkend="_class_bot_config_1a7fe6cbda7ec98c3070e6f9437f6eeb84">00096</link> <emphasis role="keywordtype">void</emphasis>&#32;<link linkend="_class_bot_config_1a7fe6cbda7ec98c3070e6f9437f6eeb84">BotConfig::updateStringBotFile</link>(<emphasis role="keyword">const</emphasis>&#32;std::string&amp;&#32;lineParameter,&#32;<emphasis role="keyword">const</emphasis>&#32;std::string&amp;&#32;content,&#32;<emphasis role="keyword">const</emphasis>&#32;std::string&amp;&#32;first,&#32;<emphasis role="keyword">const</emphasis>&#32;std::string&amp;&#32;last)
+<anchor xml:id="__bot_config_8cpp_source_1l00097"/>00097 {
+<anchor xml:id="__bot_config_8cpp_source_1l00098"/>00098 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<link linkend="_class_bot_config_1ab92a15dd3027a7f42b452cdf5eaf9529">updateString</link>(<link linkend="_class_bot_config_1ab2bc67e00b87b45a72db8363ce38a198">BotFile</link>,&#32;lineParameter,&#32;content,&#32;first,&#32;last);
+<anchor xml:id="__bot_config_8cpp_source_1l00099"/>00099 }
+<anchor xml:id="__bot_config_8cpp_source_1l00100"/>00100 
+<anchor xml:id="__bot_config_8cpp_source_1l00101"/><link linkend="_class_bot_config_1a6156a0424ed044c8309b986c62a61d62">00101</link> <emphasis role="keywordtype">void</emphasis>&#32;<link linkend="_class_bot_config_1a6156a0424ed044c8309b986c62a61d62">BotConfig::updateInt</link>(<emphasis role="keyword">const</emphasis>&#32;std::string&amp;&#32;filename,&#32;<emphasis role="keyword">const</emphasis>&#32;std::string&amp;&#32;lineParameter,&#32;<emphasis role="keyword">const</emphasis>&#32;<emphasis role="keywordtype">int</emphasis>&amp;&#32;content,&#32;<emphasis role="keyword">const</emphasis>&#32;std::string&amp;&#32;first,&#32;<emphasis role="keyword">const</emphasis>&#32;std::string&amp;&#32;last)
+<anchor xml:id="__bot_config_8cpp_source_1l00102"/>00102 {
+<anchor xml:id="__bot_config_8cpp_source_1l00103"/>00103 &#32;&#32;&#32;&#32;<link linkend="_class_bot_config_1ab92a15dd3027a7f42b452cdf5eaf9529">updateString</link>(filename,&#32;lineParameter,&#32;std::to_string(content),&#32;first,&#32;last);
+<anchor xml:id="__bot_config_8cpp_source_1l00104"/>00104 }
+<anchor xml:id="__bot_config_8cpp_source_1l00105"/>00105 
+<anchor xml:id="__bot_config_8cpp_source_1l00106"/><link linkend="_class_bot_config_1a84ab86ab1cdcf8c6c9bac78044bc0f12">00106</link> <emphasis role="keywordtype">void</emphasis>&#32;<link linkend="_class_bot_config_1a84ab86ab1cdcf8c6c9bac78044bc0f12">BotConfig::updateIntBotFile</link>(<emphasis role="keyword">const</emphasis>&#32;std::string&amp;&#32;lineParameter,&#32;<emphasis role="keyword">const</emphasis>&#32;<emphasis role="keywordtype">int</emphasis>&amp;&#32;content,&#32;<emphasis role="keyword">const</emphasis>&#32;std::string&amp;&#32;first,&#32;<emphasis role="keyword">const</emphasis>&#32;std::string&amp;&#32;last)
+<anchor xml:id="__bot_config_8cpp_source_1l00107"/>00107 {
+<anchor xml:id="__bot_config_8cpp_source_1l00108"/>00108 &#32;&#32;&#32;&#32;<link linkend="_class_bot_config_1a6156a0424ed044c8309b986c62a61d62">updateInt</link>(<link linkend="_class_bot_config_1ab2bc67e00b87b45a72db8363ce38a198">BotFile</link>,&#32;lineParameter,&#32;content,&#32;first,&#32;last);
+<anchor xml:id="__bot_config_8cpp_source_1l00109"/>00109 }
+<anchor xml:id="__bot_config_8cpp_source_1l00110"/>00110 
+<anchor xml:id="__bot_config_8cpp_source_1l00111"/><link linkend="_class_bot_config_1a7b0b572a14dd5f0630b335041f83049a">00111</link> <emphasis role="keywordtype">void</emphasis>&#32;<link linkend="_class_bot_config_1a7b0b572a14dd5f0630b335041f83049a">BotConfig::updateBool</link>(<emphasis role="keyword">const</emphasis>&#32;std::string&amp;&#32;filename,&#32;<emphasis role="keyword">const</emphasis>&#32;std::string&amp;&#32;lineParameter,&#32;<emphasis role="keyword">const</emphasis>&#32;<emphasis role="keywordtype">bool</emphasis>&amp;&#32;content,&#32;<emphasis role="keyword">const</emphasis>&#32;std::string&amp;&#32;first,&#32;<emphasis role="keyword">const</emphasis>&#32;std::string&amp;&#32;last)
+<anchor xml:id="__bot_config_8cpp_source_1l00112"/>00112 {
+<anchor xml:id="__bot_config_8cpp_source_1l00113"/>00113 &#32;&#32;&#32;&#32;<link linkend="_class_bot_config_1ab92a15dd3027a7f42b452cdf5eaf9529">updateString</link>(filename,&#32;lineParameter,&#32;std::to_string(content),&#32;first,&#32;last);
+<anchor xml:id="__bot_config_8cpp_source_1l00114"/>00114 }
+<anchor xml:id="__bot_config_8cpp_source_1l00115"/>00115 
+<anchor xml:id="__bot_config_8cpp_source_1l00116"/><link linkend="_class_bot_config_1a70992bec079cbf9412e69b0f0e712ca2">00116</link> <emphasis role="keywordtype">void</emphasis>&#32;<link linkend="_class_bot_config_1a70992bec079cbf9412e69b0f0e712ca2">BotConfig::updateBoolBotFile</link>(<emphasis role="keyword">const</emphasis>&#32;std::string&amp;&#32;lineParameter,&#32;<emphasis role="keyword">const</emphasis>&#32;<emphasis role="keywordtype">bool</emphasis>&amp;&#32;content,&#32;<emphasis role="keyword">const</emphasis>&#32;std::string&amp;&#32;first,&#32;<emphasis role="keyword">const</emphasis>&#32;std::string&amp;&#32;last)
+<anchor xml:id="__bot_config_8cpp_source_1l00117"/>00117 {
+<anchor xml:id="__bot_config_8cpp_source_1l00118"/>00118 &#32;&#32;&#32;&#32;<link linkend="_class_bot_config_1a7b0b572a14dd5f0630b335041f83049a">updateBool</link>(<link linkend="_class_bot_config_1ab2bc67e00b87b45a72db8363ce38a198">BotFile</link>,&#32;lineParameter,&#32;content,&#32;first,&#32;last);
+<anchor xml:id="__bot_config_8cpp_source_1l00119"/>00119 }
+<anchor xml:id="__bot_config_8cpp_source_1l00120"/>00120 
+<anchor xml:id="__bot_config_8cpp_source_1l00121"/><link linkend="_class_bot_config_1a0c63abf2bd51de63c3de85b91fc1e5f1">00121</link> <emphasis role="keywordtype">bool</emphasis>&#32;<link linkend="_class_bot_config_1a0c63abf2bd51de63c3de85b91fc1e5f1">BotConfig::readDataCollected</link>()
+<anchor xml:id="__bot_config_8cpp_source_1l00122"/>00122 {
+<anchor xml:id="__bot_config_8cpp_source_1l00123"/>00123 &#32;&#32;&#32;&#32;<emphasis role="keywordflow">return</emphasis>&#32;<link linkend="_class_bot_config_1a5aafe893fa75e1b711e3ef3f4e4db9cc">readBoolBotFile</link>(<link linkend="_class_bot_config_1a8d3c3820fab2ef322e3929cfaed3a3a1">dataCollected</link>);
+<anchor xml:id="__bot_config_8cpp_source_1l00124"/>00124 }
+<anchor xml:id="__bot_config_8cpp_source_1l00125"/>00125 
+<anchor xml:id="__bot_config_8cpp_source_1l00126"/><link linkend="_class_bot_config_1ad461209f70e41b763999c7453e4529ee">00126</link> <emphasis role="keywordtype">bool</emphasis>&#32;<link linkend="_class_bot_config_1ad461209f70e41b763999c7453e4529ee">BotConfig::readDataBluestacks</link>()
+<anchor xml:id="__bot_config_8cpp_source_1l00127"/>00127 {
+<anchor xml:id="__bot_config_8cpp_source_1l00128"/>00128 &#32;&#32;&#32;&#32;<emphasis role="keywordflow">return</emphasis>&#32;<link linkend="_class_bot_config_1a5aafe893fa75e1b711e3ef3f4e4db9cc">readBoolBotFile</link>(<link linkend="_class_bot_config_1abe2489cbbe63afc83c21a4fe0d25cc1b">dataBluestacks</link>);
+<anchor xml:id="__bot_config_8cpp_source_1l00129"/>00129 }
+<anchor xml:id="__bot_config_8cpp_source_1l00130"/><link linkend="_class_bot_config_1a0c8b3da81dd5f06097ee696f2f466b67">00130</link> <emphasis role="keywordtype">bool</emphasis>&#32;<link linkend="_class_bot_config_1a0c8b3da81dd5f06097ee696f2f466b67">BotConfig::readDataLDPlayer</link>()
+<anchor xml:id="__bot_config_8cpp_source_1l00131"/>00131 {
+<anchor xml:id="__bot_config_8cpp_source_1l00132"/>00132 &#32;&#32;&#32;&#32;<emphasis role="keywordflow">return</emphasis>&#32;<link linkend="_class_bot_config_1a5aafe893fa75e1b711e3ef3f4e4db9cc">readBoolBotFile</link>(<link linkend="_class_bot_config_1a8fe68744500dce25c3c2a700a427ec2a">dataLDPlayer</link>);
+<anchor xml:id="__bot_config_8cpp_source_1l00133"/>00133 }
+<anchor xml:id="__bot_config_8cpp_source_1l00134"/>00134 
+<anchor xml:id="__bot_config_8cpp_source_1l00135"/><link linkend="_class_bot_config_1a78cc040bd6fa993620e33882fe5a9641">00135</link> std::string&#32;<link linkend="_class_bot_config_1a78cc040bd6fa993620e33882fe5a9641">BotConfig::readLineBotFile</link>(<emphasis role="keyword">const</emphasis>&#32;std::string&amp;&#32;lineparameter)
+<anchor xml:id="__bot_config_8cpp_source_1l00136"/>00136 {
+<anchor xml:id="__bot_config_8cpp_source_1l00137"/>00137 &#32;&#32;&#32;&#32;<emphasis role="keywordflow">return</emphasis>&#32;<link linkend="_class_bot_config_1a623d05e4d8e0122d35b1a3e391fc2464">readString</link>(<link linkend="_class_bot_config_1ab2bc67e00b87b45a72db8363ce38a198">BotFile</link>,&#32;lineparameter,&#32;<link linkend="_class_bot_config_1aba7e690ba344f65eabc717996981ca0e">quote</link>,&#32;<link linkend="_class_bot_config_1aba7e690ba344f65eabc717996981ca0e">quote</link>);
+<anchor xml:id="__bot_config_8cpp_source_1l00138"/>00138 }
+<anchor xml:id="__bot_config_8cpp_source_1l00139"/>00139 
+<anchor xml:id="__bot_config_8cpp_source_1l00140"/><link linkend="_class_bot_config_1abf2a58007d9d7ea7d39e4f5a47f70bfc">00140</link> std::string&#32;<link linkend="_class_bot_config_1abf2a58007d9d7ea7d39e4f5a47f70bfc">BotConfig::readFavoriteInstance</link>()
+<anchor xml:id="__bot_config_8cpp_source_1l00141"/>00141 {
+<anchor xml:id="__bot_config_8cpp_source_1l00142"/>00142 &#32;&#32;&#32;&#32;<link linkend="_class_bot_config_1a04819c65a0bc6f682b906b3d796fafdf">favoriteInstance</link>&#32;=&#32;<link linkend="_class_bot_config_1a6347ad0b79f04a755fe1d7151ed87cd2">readStringBotFile</link>(<link linkend="_class_bot_config_1af541e9a5c255ba8de81c38b89b73f63e">favInstanceParam</link>);
+<anchor xml:id="__bot_config_8cpp_source_1l00143"/>00143 &#32;&#32;&#32;&#32;<emphasis role="keywordflow">return</emphasis>&#32;<link linkend="_class_bot_config_1a04819c65a0bc6f682b906b3d796fafdf">favoriteInstance</link>;
+<anchor xml:id="__bot_config_8cpp_source_1l00144"/>00144 }
+<anchor xml:id="__bot_config_8cpp_source_1l00145"/>00145 
+<anchor xml:id="__bot_config_8cpp_source_1l00146"/><link linkend="_class_bot_config_1ad4f685732935069ed53b312cf6a35b58">00146</link> std::string&#32;<link linkend="_class_bot_config_1ad4f685732935069ed53b312cf6a35b58">BotConfig::readFavoritePreset</link>()
+<anchor xml:id="__bot_config_8cpp_source_1l00147"/>00147 {
+<anchor xml:id="__bot_config_8cpp_source_1l00148"/>00148 &#32;&#32;&#32;&#32;<link linkend="_class_bot_config_1ad6aeb089df6502e04cad880c58361755">favoritePreset</link>&#32;=&#32;<link linkend="_class_bot_config_1a6347ad0b79f04a755fe1d7151ed87cd2">readStringBotFile</link>(<link linkend="_class_bot_config_1a97d5d8c5d1f2c7d676eecf517413ab63">favPresetParam</link>);
+<anchor xml:id="__bot_config_8cpp_source_1l00149"/>00149 &#32;&#32;&#32;&#32;<emphasis role="keywordflow">return</emphasis>&#32;<link linkend="_class_bot_config_1ad6aeb089df6502e04cad880c58361755">favoritePreset</link>;
+<anchor xml:id="__bot_config_8cpp_source_1l00150"/>00150 }
+<anchor xml:id="__bot_config_8cpp_source_1l00151"/>00151 
+<anchor xml:id="__bot_config_8cpp_source_1l00152"/>00152 
+<anchor xml:id="__bot_config_8cpp_source_1l00153"/><link linkend="_class_bot_config_1a1652dcc0a496d11e8d7f35d8c88e6014">00153</link> std::string&#32;<link linkend="_class_bot_config_1a1652dcc0a496d11e8d7f35d8c88e6014">BotConfig::getBotFilecontent</link>()
+<anchor xml:id="__bot_config_8cpp_source_1l00154"/>00154 {
+<anchor xml:id="__bot_config_8cpp_source_1l00155"/>00155 &#32;&#32;&#32;&#32;<emphasis role="keywordflow">return</emphasis>&#32;<link linkend="__text_manager_8cpp_1add36cc54cd9616a393a17b8961491477">getFileContent</link>(<link linkend="_class_bot_config_1ab2bc67e00b87b45a72db8363ce38a198">BotFile</link>);
+<anchor xml:id="__bot_config_8cpp_source_1l00156"/>00156 }
+<anchor xml:id="__bot_config_8cpp_source_1l00157"/>00157 
+<anchor xml:id="__bot_config_8cpp_source_1l00158"/>00158 
+<anchor xml:id="__bot_config_8cpp_source_1l00159"/>00159 
+<anchor xml:id="__bot_config_8cpp_source_1l00160"/><link linkend="_class_bot_config_1a5ea5db5fbc78be03cd9450d4b4c0e73c">00160</link> <emphasis role="keywordtype">void</emphasis>&#32;<link linkend="_class_bot_config_1a5ea5db5fbc78be03cd9450d4b4c0e73c">BotConfig::writeInit</link>()
+<anchor xml:id="__bot_config_8cpp_source_1l00161"/>00161 {
+<anchor xml:id="__bot_config_8cpp_source_1l00162"/>00162 &#32;&#32;&#32;&#32;std::string&#32;text;
+<anchor xml:id="__bot_config_8cpp_source_1l00163"/>00163 &#32;&#32;&#32;&#32;text&#32;+=&#32;<link linkend="_class_bot_config_1a8d3c3820fab2ef322e3929cfaed3a3a1">dataCollected</link>+<link linkend="_class_bot_config_1aac5783e0f4d039c2ddb6de6f1d7e8f6a">end</link>;
+<anchor xml:id="__bot_config_8cpp_source_1l00164"/>00164 &#32;&#32;&#32;&#32;text+=<link linkend="_class_bot_config_1aeb7fe97edfbfb8a9d0a30c156e8a5bb9">textInitBluestacks</link>();
+<anchor xml:id="__bot_config_8cpp_source_1l00165"/>00165 &#32;&#32;&#32;&#32;text+=<link linkend="_class_bot_config_1a734ee0b264983e8da4ee33926e076602">textInitLdPlayer</link>();
+<anchor xml:id="__bot_config_8cpp_source_1l00166"/>00166 &#32;&#32;&#32;&#32;text&#32;+=&#32;<link linkend="_class_bot_config_1af541e9a5c255ba8de81c38b89b73f63e">favInstanceParam</link>+<link linkend="_class_bot_config_1aac5783e0f4d039c2ddb6de6f1d7e8f6a">end</link>&#32;+&#32;<link linkend="_class_bot_config_1a97d5d8c5d1f2c7d676eecf517413ab63">favPresetParam</link>+<link linkend="_class_bot_config_1aac5783e0f4d039c2ddb6de6f1d7e8f6a">end</link>;
+<anchor xml:id="__bot_config_8cpp_source_1l00167"/>00167 &#32;&#32;&#32;&#32;<link linkend="__text_manager_8cpp_1ab55140c566370b105b9bf81756293fa5">writeToFile</link>(<link linkend="_class_bot_config_1ab2bc67e00b87b45a72db8363ce38a198">BotFile</link>,&#32;text,&#32;<link linkend="__text_manager_8h_1a61d23b393fdc35f2f0e30a1ed566c76da5d8c28daa563cffcab51f34a0bec098d">OVERWRITE</link>);
+<anchor xml:id="__bot_config_8cpp_source_1l00168"/>00168 }
+<anchor xml:id="__bot_config_8cpp_source_1l00169"/>00169 
+<anchor xml:id="__bot_config_8cpp_source_1l00170"/><link linkend="_class_bot_config_1a6c307da0b2712317dcb70daa3bfae0dc">00170</link> std::string&#32;<link linkend="_class_bot_config_1a6c307da0b2712317dcb70daa3bfae0dc">BotConfig::writeInitBluestacks</link>()
+<anchor xml:id="__bot_config_8cpp_source_1l00171"/>00171 {
+<anchor xml:id="__bot_config_8cpp_source_1l00172"/>00172 &#32;&#32;&#32;&#32;<emphasis role="keywordflow">return</emphasis>&#32;<emphasis role="stringliteral">&quot;&quot;</emphasis>;
+<anchor xml:id="__bot_config_8cpp_source_1l00173"/>00173 }
+<anchor xml:id="__bot_config_8cpp_source_1l00174"/><link linkend="_class_bot_config_1a8133a513c928f79a35b8b69a5ad69e68">00174</link> std::string&#32;<link linkend="_class_bot_config_1a8133a513c928f79a35b8b69a5ad69e68">BotConfig::writeInitLdPlayer</link>()
+<anchor xml:id="__bot_config_8cpp_source_1l00175"/>00175 {
+<anchor xml:id="__bot_config_8cpp_source_1l00176"/>00176 &#32;&#32;&#32;&#32;<emphasis role="keywordflow">return</emphasis>&#32;<emphasis role="stringliteral">&quot;&quot;</emphasis>;
+<anchor xml:id="__bot_config_8cpp_source_1l00177"/>00177 }
+<anchor xml:id="__bot_config_8cpp_source_1l00178"/>00178 
+<anchor xml:id="__bot_config_8cpp_source_1l00179"/><link linkend="_class_bot_config_1aeb7fe97edfbfb8a9d0a30c156e8a5bb9">00179</link> std::string&#32;<link linkend="_class_bot_config_1aeb7fe97edfbfb8a9d0a30c156e8a5bb9">BotConfig::textInitBluestacks</link>()
+<anchor xml:id="__bot_config_8cpp_source_1l00180"/>00180 {
+<anchor xml:id="__bot_config_8cpp_source_1l00181"/>00181 &#32;&#32;&#32;&#32;<emphasis role="keywordflow">return</emphasis>&#32;<link linkend="_class_bot_config_1abe2489cbbe63afc83c21a4fe0d25cc1b">dataBluestacks</link>&#32;+&#32;<link linkend="_class_bot_config_1aac5783e0f4d039c2ddb6de6f1d7e8f6a">end</link>&#32;+&#32;<link linkend="_class_bot_config_1ac433b4b457db719af5e56b786827fcb9">bluestacksFolder</link>&#32;+&#32;<link linkend="_class_bot_config_1aac5783e0f4d039c2ddb6de6f1d7e8f6a">end</link>&#32;+&#32;<link linkend="_class_bot_config_1a6c736e999146a7d05ae25d26583c734f">bluestacksConfigFolder</link>&#32;+&#32;<link linkend="_class_bot_config_1aac5783e0f4d039c2ddb6de6f1d7e8f6a">end</link>;
+<anchor xml:id="__bot_config_8cpp_source_1l00182"/>00182 }
+<anchor xml:id="__bot_config_8cpp_source_1l00183"/>00183 
+<anchor xml:id="__bot_config_8cpp_source_1l00184"/><link linkend="_class_bot_config_1a734ee0b264983e8da4ee33926e076602">00184</link> std::string&#32;<link linkend="_class_bot_config_1a734ee0b264983e8da4ee33926e076602">BotConfig::textInitLdPlayer</link>()
+<anchor xml:id="__bot_config_8cpp_source_1l00185"/>00185 {
+<anchor xml:id="__bot_config_8cpp_source_1l00186"/>00186 &#32;&#32;&#32;&#32;<emphasis role="keywordflow">return</emphasis>&#32;<link linkend="_class_bot_config_1a8fe68744500dce25c3c2a700a427ec2a">dataLDPlayer</link>&#32;+&#32;<link linkend="_class_bot_config_1aac5783e0f4d039c2ddb6de6f1d7e8f6a">end</link>&#32;+&#32;<link linkend="_class_bot_config_1a9f801cc5f2ff528b9bcf05b8f748b71b">ldPlayerFolder</link>&#32;+&#32;<link linkend="_class_bot_config_1aac5783e0f4d039c2ddb6de6f1d7e8f6a">end</link>;
+<anchor xml:id="__bot_config_8cpp_source_1l00187"/>00187 }
+<anchor xml:id="__bot_config_8cpp_source_1l00188"/>00188 
+<anchor xml:id="__bot_config_8cpp_source_1l00189"/>00189 
+<anchor xml:id="__bot_config_8cpp_source_1l00190"/><link linkend="_class_bot_config_1af0e522630e79d295768f36a640dd257a">00190</link> <emphasis role="keywordtype">void</emphasis>&#32;<link linkend="_class_bot_config_1af0e522630e79d295768f36a640dd257a">BotConfig::setParameters</link>()
+<anchor xml:id="__bot_config_8cpp_source_1l00191"/>00191 {&#32;&#32;&#32;<emphasis role="comment">//basic</emphasis>
+<anchor xml:id="__bot_config_8cpp_source_1l00192"/>00192 &#32;&#32;&#32;&#32;<link linkend="_class_bot_config_1af4340d8753f4ad3d3717c6d5b69368e1">searchAll</link>&#32;=&#32;<emphasis role="keyword">false</emphasis>;
+<anchor xml:id="__bot_config_8cpp_source_1l00193"/>00193 &#32;&#32;&#32;&#32;<link linkend="_class_bot_config_1a0d607d1afacc3568084d163bf89565a5">searchBluestacks</link>&#32;=&#32;<emphasis role="keyword">false</emphasis>;
+<anchor xml:id="__bot_config_8cpp_source_1l00194"/>00194 &#32;&#32;&#32;&#32;<link linkend="_class_bot_config_1a7e670ede2140b300b37e9fd07b8a6eff">searchLdPlayer</link>&#32;=&#32;<emphasis role="keyword">false</emphasis>;
+<anchor xml:id="__bot_config_8cpp_source_1l00195"/>00195 &#32;&#32;&#32;&#32;<link linkend="_class_bot_config_1a9c113f5440c9f1637724ad7c1c422f2b">TOSEARCH</link>=<emphasis role="stringliteral">&quot;TOSEARCH&quot;</emphasis>;
+<anchor xml:id="__bot_config_8cpp_source_1l00196"/>00196 &#32;&#32;&#32;&#32;<link linkend="_class_bot_config_1adbb6cd71fca55ebb943869a88a808875">NOTINSTALLED</link>=<emphasis role="stringliteral">&quot;NOTINSTALLED&quot;</emphasis>;
+<anchor xml:id="__bot_config_8cpp_source_1l00197"/>00197 &#32;&#32;&#32;&#32;<link linkend="_class_bot_config_1aac5783e0f4d039c2ddb6de6f1d7e8f6a">end</link>&#32;=&#32;<emphasis role="stringliteral">&quot;=\&quot;\&quot;\n&quot;</emphasis>;
+<anchor xml:id="__bot_config_8cpp_source_1l00198"/>00198 &#32;&#32;&#32;&#32;<link linkend="_class_bot_config_1aba7e690ba344f65eabc717996981ca0e">quote</link>=<emphasis role="stringliteral">&quot;\&quot;&quot;</emphasis>;
+<anchor xml:id="__bot_config_8cpp_source_1l00199"/>00199 &#32;&#32;&#32;&#32;<link linkend="_class_bot_config_1aa4504f810fa5d45d507234ae76565ffe">emulatorFolder</link>&#32;=&#32;<emphasis role="stringliteral">&quot;folderEmulator&quot;</emphasis>;
+<anchor xml:id="__bot_config_8cpp_source_1l00200"/>00200 &#32;&#32;&#32;&#32;<link linkend="_class_bot_config_1a9cc1461a2436554f99212532097d5fe5">data</link>&#32;=&#32;<emphasis role="stringliteral">&quot;data&quot;</emphasis>;
+<anchor xml:id="__bot_config_8cpp_source_1l00201"/>00201 &#32;&#32;&#32;&#32;<link linkend="_class_bot_config_1ab2bc67e00b87b45a72db8363ce38a198">BotFile</link>&#32;=&#32;<emphasis role="stringliteral">&quot;BotConfig.txt&quot;</emphasis>;
+<anchor xml:id="__bot_config_8cpp_source_1l00202"/>00202 
+<anchor xml:id="__bot_config_8cpp_source_1l00203"/>00203 &#32;&#32;&#32;&#32;<emphasis role="comment">//real&#32;parameters</emphasis>
+<anchor xml:id="__bot_config_8cpp_source_1l00204"/>00204 &#32;&#32;&#32;&#32;<link linkend="_class_bot_config_1a8d3c3820fab2ef322e3929cfaed3a3a1">dataCollected</link>&#32;=&#32;<link linkend="_class_bot_config_1a9cc1461a2436554f99212532097d5fe5">data</link>+<emphasis role="stringliteral">&quot;All&quot;</emphasis>;
+<anchor xml:id="__bot_config_8cpp_source_1l00205"/>00205 &#32;&#32;&#32;&#32;<link linkend="_class_bot_config_1a97d5d8c5d1f2c7d676eecf517413ab63">favPresetParam</link>&#32;=&#32;<emphasis role="stringliteral">&quot;favoritePreset&quot;</emphasis>;
+<anchor xml:id="__bot_config_8cpp_source_1l00206"/>00206 &#32;&#32;&#32;&#32;<link linkend="_class_bot_config_1af541e9a5c255ba8de81c38b89b73f63e">favInstanceParam</link>&#32;=&#32;<emphasis role="stringliteral">&quot;favoriteId&quot;</emphasis>;
+<anchor xml:id="__bot_config_8cpp_source_1l00207"/>00207 &#32;&#32;&#32;&#32;<link linkend="_class_bot_config_1a9f801cc5f2ff528b9bcf05b8f748b71b">ldPlayerFolder</link>&#32;=&#32;<link linkend="_class_bot_config_1aa4504f810fa5d45d507234ae76565ffe">emulatorFolder</link>+<emphasis role="stringliteral">&quot;Ldplayer&quot;</emphasis>;
+<anchor xml:id="__bot_config_8cpp_source_1l00208"/>00208 &#32;&#32;&#32;&#32;<link linkend="_class_bot_config_1ac433b4b457db719af5e56b786827fcb9">bluestacksFolder</link>=<link linkend="_class_bot_config_1aa4504f810fa5d45d507234ae76565ffe">emulatorFolder</link>+<emphasis role="stringliteral">&quot;Bluestacks&quot;</emphasis>;
+<anchor xml:id="__bot_config_8cpp_source_1l00209"/>00209 &#32;&#32;&#32;&#32;<link linkend="_class_bot_config_1a6c736e999146a7d05ae25d26583c734f">bluestacksConfigFolder</link>=&#32;<link linkend="_class_bot_config_1aa4504f810fa5d45d507234ae76565ffe">emulatorFolder</link>&#32;+<emphasis role="stringliteral">&quot;BluestacksConfig&quot;</emphasis>;
+<anchor xml:id="__bot_config_8cpp_source_1l00210"/>00210 &#32;&#32;&#32;&#32;<link linkend="_class_bot_config_1a8fe68744500dce25c3c2a700a427ec2a">dataLDPlayer</link>=<link linkend="_class_bot_config_1a9cc1461a2436554f99212532097d5fe5">data</link>+<emphasis role="stringliteral">&quot;Ldplayer&quot;</emphasis>;
+<anchor xml:id="__bot_config_8cpp_source_1l00211"/>00211 &#32;&#32;&#32;&#32;<link linkend="_class_bot_config_1abe2489cbbe63afc83c21a4fe0d25cc1b">dataBluestacks</link>=<link linkend="_class_bot_config_1a9cc1461a2436554f99212532097d5fe5">data</link>+<emphasis role="stringliteral">&quot;Bluestacks&quot;</emphasis>;
+<anchor xml:id="__bot_config_8cpp_source_1l00212"/>00212 }
+<anchor xml:id="__bot_config_8cpp_source_1l00213"/>00213 
+<anchor xml:id="__bot_config_8cpp_source_1l00214"/><link linkend="_class_bot_config_1ac67855a292a9b00c0d1bdb3e09cafb50">00214</link> <emphasis role="keywordtype">void</emphasis>&#32;<link linkend="_class_bot_config_1ac67855a292a9b00c0d1bdb3e09cafb50">BotConfig::getAllPlayableInstances</link>()
+<anchor xml:id="__bot_config_8cpp_source_1l00215"/>00215 {
+<anchor xml:id="__bot_config_8cpp_source_1l00216"/>00216 &#32;&#32;&#32;&#32;<link linkend="_class_bot_config_1a98b58016baad4e504ec1fbcb7eace8b9">allEmu</link>.<link linkend="_struct_all_emulators_1a91313dd1ec133a3fd327014dc4c039a1">setAllInstances</link>();
+<anchor xml:id="__bot_config_8cpp_source_1l00217"/>00217 &#32;&#32;&#32;&#32;<link linkend="_class_bot_config_1a98b58016baad4e504ec1fbcb7eace8b9">allEmu</link>.<link linkend="_struct_all_emulators_1ade387932188cdd7032e6c83eb3432a41">fillAllInstances</link>();
+<anchor xml:id="__bot_config_8cpp_source_1l00218"/>00218 }
+<anchor xml:id="__bot_config_8cpp_source_1l00219"/>00219 
+<anchor xml:id="__bot_config_8cpp_source_1l00220"/><link linkend="_class_bot_config_1acad99a7dc9cbe220677bfdb90b04f48f">00220</link> <emphasis role="keywordtype">void</emphasis>&#32;<link linkend="_class_bot_config_1acad99a7dc9cbe220677bfdb90b04f48f">BotConfig::setSearchEmulators</link>(<emphasis role="keywordtype">bool</emphasis>&#32;reset)
+<anchor xml:id="__bot_config_8cpp_source_1l00221"/>00221 {
+<anchor xml:id="__bot_config_8cpp_source_1l00222"/>00222 &#32;&#32;&#32;&#32;<emphasis role="keywordflow">if</emphasis>&#32;(!reset)&#32;{
+<anchor xml:id="__bot_config_8cpp_source_1l00223"/>00223 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">if</emphasis>&#32;(<link linkend="_class_bot_config_1ae75cf338c4da36cf1996494dae4273ca">readSearchAll</link>())&#32;{
+<anchor xml:id="__bot_config_8cpp_source_1l00224"/>00224 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<link linkend="_class_bot_config_1a0d607d1afacc3568084d163bf89565a5">searchBluestacks</link>&#32;=&#32;<emphasis role="keyword">true</emphasis>;
+<anchor xml:id="__bot_config_8cpp_source_1l00225"/>00225 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<link linkend="_class_bot_config_1a7e670ede2140b300b37e9fd07b8a6eff">searchLdPlayer</link>&#32;=&#32;<emphasis role="keyword">true</emphasis>;
+<anchor xml:id="__bot_config_8cpp_source_1l00226"/>00226 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;}
+<anchor xml:id="__bot_config_8cpp_source_1l00227"/>00227 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">else</emphasis>
+<anchor xml:id="__bot_config_8cpp_source_1l00228"/>00228 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;{
+<anchor xml:id="__bot_config_8cpp_source_1l00229"/>00229 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<link linkend="_class_bot_config_1a0d607d1afacc3568084d163bf89565a5">searchBluestacks</link>&#32;=&#32;<link linkend="_class_bot_config_1abe575477e07b1c120141f019fc7101af">readSearchBluestacks</link>();
+<anchor xml:id="__bot_config_8cpp_source_1l00230"/>00230 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<link linkend="_class_bot_config_1a7e670ede2140b300b37e9fd07b8a6eff">searchLdPlayer</link>&#32;=&#32;<link linkend="_class_bot_config_1ab89c77f603cb134bb5a1859dcd1bd850">readSearchLdPlayer</link>();
+<anchor xml:id="__bot_config_8cpp_source_1l00231"/>00231 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;}
+<anchor xml:id="__bot_config_8cpp_source_1l00232"/>00232 &#32;&#32;&#32;&#32;}
+<anchor xml:id="__bot_config_8cpp_source_1l00233"/>00233 &#32;&#32;&#32;&#32;<emphasis role="keywordflow">else</emphasis>&#32;{
+<anchor xml:id="__bot_config_8cpp_source_1l00234"/>00234 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<link linkend="_class_bot_config_1af4340d8753f4ad3d3717c6d5b69368e1">searchAll</link>&#32;=&#32;<emphasis role="keyword">true</emphasis>;
+<anchor xml:id="__bot_config_8cpp_source_1l00235"/>00235 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<link linkend="_class_bot_config_1a0d607d1afacc3568084d163bf89565a5">searchBluestacks</link>&#32;=&#32;<emphasis role="keyword">true</emphasis>;
+<anchor xml:id="__bot_config_8cpp_source_1l00236"/>00236 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<link linkend="_class_bot_config_1a7e670ede2140b300b37e9fd07b8a6eff">searchLdPlayer</link>&#32;=&#32;<emphasis role="keyword">true</emphasis>;
+<anchor xml:id="__bot_config_8cpp_source_1l00237"/>00237 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<link linkend="_class_bot_config_1abe21c3220cdb52cd85ad15e8c3e55982">blueStacksInstalled</link>&#32;=&#32;<emphasis role="keyword">false</emphasis>;
+<anchor xml:id="__bot_config_8cpp_source_1l00238"/>00238 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<link linkend="_class_bot_config_1ae7e47847f68c73a9d31c3437a970389d">ldPlayerInstalled</link>&#32;=&#32;<emphasis role="keyword">false</emphasis>;
+<anchor xml:id="__bot_config_8cpp_source_1l00239"/>00239 &#32;&#32;&#32;&#32;}
+<anchor xml:id="__bot_config_8cpp_source_1l00240"/>00240 
+<anchor xml:id="__bot_config_8cpp_source_1l00241"/>00241 }
+<anchor xml:id="__bot_config_8cpp_source_1l00242"/>00242 
+<anchor xml:id="__bot_config_8cpp_source_1l00243"/><link linkend="_class_bot_config_1a939c57f64624e4160f921b093ca827d0">00243</link> <emphasis role="keywordtype">void</emphasis>&#32;<link linkend="_class_bot_config_1a939c57f64624e4160f921b093ca827d0">BotConfig::initBotFile</link>()
+<anchor xml:id="__bot_config_8cpp_source_1l00244"/>00244 {
+<anchor xml:id="__bot_config_8cpp_source_1l00245"/>00245 &#32;&#32;&#32;&#32;<emphasis role="keywordflow">if</emphasis>(<link linkend="_class_bot_config_1aaa9ade6d9deb18e7457ab5d1d925e9e6">doWriteInit</link>())<link linkend="_class_bot_config_1add6ae08a184d93e02b4ad2a03aa95e90">updateInit</link>();
+<anchor xml:id="__bot_config_8cpp_source_1l00246"/>00246 }
+<anchor xml:id="__bot_config_8cpp_source_1l00247"/>00247 
+<anchor xml:id="__bot_config_8cpp_source_1l00248"/><link linkend="_class_bot_config_1ad8b1cd4e0943a64f9e3a91d9a09fe21e">00248</link> <emphasis role="keywordtype">void</emphasis>&#32;<link linkend="_class_bot_config_1ad8b1cd4e0943a64f9e3a91d9a09fe21e">BotConfig::checkPlayingInstanceParameters</link>()
+<anchor xml:id="__bot_config_8cpp_source_1l00249"/>00249 {
+<anchor xml:id="__bot_config_8cpp_source_1l00250"/>00250 &#32;&#32;&#32;&#32;<link linkend="_class_bot_config_1a98b58016baad4e504ec1fbcb7eace8b9">allEmu</link>.<link linkend="_struct_all_emulators_1a710e93eea46e0922c245799d60d1fb95">playingEmulator</link>-&gt;<link linkend="_class_emulator_1a4df4c858eb6bbe991db334523f9ea27c">checkDimensions</link>(<link linkend="_class_bot_config_1a98b58016baad4e504ec1fbcb7eace8b9">allEmu</link>.<link linkend="_struct_all_emulators_1af2818835c22641cdb698ae29d41cb41c">playingInstance</link>);
+<anchor xml:id="__bot_config_8cpp_source_1l00251"/>00251 &#32;&#32;&#32;&#32;<link linkend="_class_bot_config_1a98b58016baad4e504ec1fbcb7eace8b9">allEmu</link>.<link linkend="_struct_all_emulators_1a710e93eea46e0922c245799d60d1fb95">playingEmulator</link>-&gt;<link linkend="_class_emulator_1ae6872001b82eb1c25e119eb3b17f1547">checkAdb</link>(<link linkend="_class_bot_config_1a98b58016baad4e504ec1fbcb7eace8b9">allEmu</link>.<link linkend="_struct_all_emulators_1af2818835c22641cdb698ae29d41cb41c">playingInstance</link>);
+<anchor xml:id="__bot_config_8cpp_source_1l00252"/>00252 }
+<anchor xml:id="__bot_config_8cpp_source_1l00253"/>00253 
+<anchor xml:id="__bot_config_8cpp_source_1l00254"/>00254 
+<anchor xml:id="__bot_config_8cpp_source_1l00255"/>00255 
+<anchor xml:id="__bot_config_8cpp_source_1l00256"/><link linkend="_class_bot_config_1a9c0206c0081858886963267f855a9ec8">00256</link> <emphasis role="keywordtype">void</emphasis>&#32;<link linkend="_class_bot_config_1a9c0206c0081858886963267f855a9ec8">BotConfig::updateFavoriteInstance</link>(<link linkend="_class_instance">Instance</link>*&#32;inst)
+<anchor xml:id="__bot_config_8cpp_source_1l00257"/>00257 {
+<anchor xml:id="__bot_config_8cpp_source_1l00258"/>00258 &#32;&#32;&#32;&#32;<link linkend="_class_bot_config_1ab92a15dd3027a7f42b452cdf5eaf9529">updateString</link>(<link linkend="_class_bot_config_1ab2bc67e00b87b45a72db8363ce38a198">BotFile</link>,&#32;<link linkend="_class_bot_config_1af541e9a5c255ba8de81c38b89b73f63e">favInstanceParam</link>,&#32;inst-&gt;<link linkend="_class_instance_1a951c978f2d8b94264ada22b2f881469b">getGlobalId</link>(),&#32;<link linkend="_class_bot_config_1aba7e690ba344f65eabc717996981ca0e">quote</link>,&#32;<link linkend="_class_bot_config_1aba7e690ba344f65eabc717996981ca0e">quote</link>);
+<anchor xml:id="__bot_config_8cpp_source_1l00259"/>00259 }
+<anchor xml:id="__bot_config_8cpp_source_1l00260"/>00260 
+<anchor xml:id="__bot_config_8cpp_source_1l00261"/><link linkend="_class_bot_config_1ac766bf2645c392ae3057a93c7628aa85">00261</link> <emphasis role="keywordtype">void</emphasis>&#32;<link linkend="_class_bot_config_1ac766bf2645c392ae3057a93c7628aa85">BotConfig::updateFavoritePreset</link>(<emphasis role="keyword">const</emphasis>&#32;std::string&amp;&#32;preset)
+<anchor xml:id="__bot_config_8cpp_source_1l00262"/>00262 {
+<anchor xml:id="__bot_config_8cpp_source_1l00263"/>00263 &#32;&#32;&#32;&#32;<link linkend="_class_bot_config_1ab92a15dd3027a7f42b452cdf5eaf9529">updateString</link>(<link linkend="_class_bot_config_1ab2bc67e00b87b45a72db8363ce38a198">BotFile</link>,&#32;<link linkend="_class_bot_config_1a97d5d8c5d1f2c7d676eecf517413ab63">favPresetParam</link>,&#32;preset,&#32;<link linkend="_class_bot_config_1aba7e690ba344f65eabc717996981ca0e">quote</link>,&#32;<link linkend="_class_bot_config_1aba7e690ba344f65eabc717996981ca0e">quote</link>);
+<anchor xml:id="__bot_config_8cpp_source_1l00264"/>00264 }
+<anchor xml:id="__bot_config_8cpp_source_1l00265"/>00265 
+<anchor xml:id="__bot_config_8cpp_source_1l00266"/><link linkend="_class_bot_config_1a72e8877046483a6c3c8f03a21ea9c6b2">00266</link> <emphasis role="keywordtype">void</emphasis>&#32;<link linkend="_class_bot_config_1a72e8877046483a6c3c8f03a21ea9c6b2">BotConfig::choosePlayingInstance</link>()
+<anchor xml:id="__bot_config_8cpp_source_1l00267"/>00267 {
+<anchor xml:id="__bot_config_8cpp_source_1l00268"/>00268 &#32;&#32;&#32;&#32;<emphasis role="keywordtype">bool</emphasis>&#32;choseInstance&#32;=&#32;<emphasis role="keyword">false</emphasis>;
+<anchor xml:id="__bot_config_8cpp_source_1l00269"/>00269 &#32;&#32;&#32;&#32;<emphasis role="keywordtype">int</emphasis>&#32;duration&#32;=&#32;30;
+<anchor xml:id="__bot_config_8cpp_source_1l00270"/>00270 &#32;&#32;&#32;&#32;<emphasis role="keywordtype">int</emphasis>&#32;totalInstances&#32;=&#32;(int)<link linkend="_class_bot_config_1a98b58016baad4e504ec1fbcb7eace8b9">allEmu</link>.<link linkend="_struct_all_emulators_1acaf72502e2a14835727f0af11c9c2e00">allInstances</link>.size();
+<anchor xml:id="__bot_config_8cpp_source_1l00271"/>00271 &#32;&#32;&#32;&#32;<emphasis role="keywordtype">int</emphasis>&#32;nbRunningInstance=0;
+<anchor xml:id="__bot_config_8cpp_source_1l00272"/>00272 &#32;&#32;&#32;&#32;<emphasis role="keywordflow">if</emphasis>&#32;(totalInstances&#32;==&#32;1)&#32;{
+<anchor xml:id="__bot_config_8cpp_source_1l00273"/>00273 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;std::cout&#32;&lt;&lt;&#32;<emphasis role="stringliteral">&quot;Only&#32;one&#32;Playable&#32;Instance&#32;detected&#32;selecting&#32;automatically\n\n&quot;</emphasis>;
+<anchor xml:id="__bot_config_8cpp_source_1l00274"/>00274 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;choseInstance&#32;=&#32;<emphasis role="keyword">true</emphasis>;
+<anchor xml:id="__bot_config_8cpp_source_1l00275"/>00275 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;nbRunningInstance&#32;=&#32;0;
+<anchor xml:id="__bot_config_8cpp_source_1l00276"/>00276 &#32;&#32;&#32;&#32;}
+<anchor xml:id="__bot_config_8cpp_source_1l00277"/>00277 &#32;&#32;&#32;&#32;<link linkend="_class_bot_config_1a98b58016baad4e504ec1fbcb7eace8b9">allEmu</link>.<link linkend="_struct_all_emulators_1a6ae821ac9da5f8ff39251f2b6e9b74d2">showAllInstances</link>();
+<anchor xml:id="__bot_config_8cpp_source_1l00278"/>00278 &#32;&#32;&#32;&#32;<emphasis role="keyword">auto</emphasis>&#32;<link linkend="_paths_8cpp_1a423ec00aa9b17614cb8a0c52de937623">start</link>&#32;=&#32;std::chrono::steady_clock::now();
+<anchor xml:id="__bot_config_8cpp_source_1l00279"/>00279 &#32;&#32;&#32;&#32;<emphasis role="keywordtype">int</emphasis>&#32;lastelapsed&#32;=&#32;-1;
+<anchor xml:id="__bot_config_8cpp_source_1l00280"/>00280 &#32;&#32;&#32;&#32;<link linkend="_class_bot_config_1ad0f786d110e0eb647fbc444963a1d8e7">explainInstanceChoice</link>();
+<anchor xml:id="__bot_config_8cpp_source_1l00281"/>00281 
+<anchor xml:id="__bot_config_8cpp_source_1l00282"/>00282 &#32;&#32;&#32;&#32;<emphasis role="keywordflow">do</emphasis>&#32;{
+<anchor xml:id="__bot_config_8cpp_source_1l00283"/>00283 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">if</emphasis>(<link linkend="_class_bot_config_1a2de6914c1428da89266ac78057e0ebe0">chronoInstanceMenu</link>(<link linkend="_paths_8cpp_1a423ec00aa9b17614cb8a0c52de937623">start</link>,duration,lastelapsed))<emphasis role="keywordflow">break</emphasis>;
+<anchor xml:id="__bot_config_8cpp_source_1l00284"/>00284 &#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="comment">/*&#32;if&#32;(fsfml::isKeyPressed(sf::Keyboard::C))&#32;{</emphasis>
+<anchor xml:id="__bot_config_8cpp_source_1l00285"/>00285 <emphasis role="comment">&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;if&#32;(interactUserInstance(totalInstances,&#32;nbRunningInstance))&#32;{</emphasis>
+<anchor xml:id="__bot_config_8cpp_source_1l00286"/>00286 <emphasis role="comment">&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;choseInstance&#32;=&#32;true;</emphasis>
+<anchor xml:id="__bot_config_8cpp_source_1l00287"/>00287 <emphasis role="comment">&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;break;</emphasis>
+<anchor xml:id="__bot_config_8cpp_source_1l00288"/>00288 <emphasis role="comment">&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;}</emphasis>
+<anchor xml:id="__bot_config_8cpp_source_1l00289"/>00289 <emphasis role="comment">&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;}</emphasis>
+<anchor xml:id="__bot_config_8cpp_source_1l00290"/>00290 <emphasis role="comment">&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;if&#32;(fsfml::isKeyPressed(sf::Keyboard::R))&#32;{</emphasis>
+<anchor xml:id="__bot_config_8cpp_source_1l00291"/>00291 <emphasis role="comment">&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;initBotConfig(true);</emphasis>
+<anchor xml:id="__bot_config_8cpp_source_1l00292"/>00292 <emphasis role="comment">&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;}</emphasis>
+<anchor xml:id="__bot_config_8cpp_source_1l00293"/>00293 <emphasis role="comment">&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;if&#32;(fsfml::isKeyPressed(sf::Keyboard::F))&#32;{</emphasis>
+<anchor xml:id="__bot_config_8cpp_source_1l00294"/>00294 <emphasis role="comment">&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;interactUserFavoriteInstance(totalInstances);</emphasis>
+<anchor xml:id="__bot_config_8cpp_source_1l00295"/>00295 <emphasis role="comment">&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;}</emphasis>
+<anchor xml:id="__bot_config_8cpp_source_1l00296"/>00296 <emphasis role="comment">&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;if&#32;(fsfml::isKeyPressed(sf::Keyboard::S))break;*/</emphasis>
+<anchor xml:id="__bot_config_8cpp_source_1l00297"/>00297 
+<anchor xml:id="__bot_config_8cpp_source_1l00298"/>00298 &#32;&#32;&#32;&#32;}&#32;<emphasis role="keywordflow">while</emphasis>&#32;(<emphasis role="keyword">true</emphasis>);
+<anchor xml:id="__bot_config_8cpp_source_1l00299"/>00299 &#32;&#32;&#32;&#32;<emphasis role="keywordflow">if</emphasis>&#32;(!choseInstance)&#32;{
+<anchor xml:id="__bot_config_8cpp_source_1l00300"/>00300 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;nbRunningInstance=&#32;<link linkend="_class_bot_config_1ac00a1d2728bca4fe8ad17e8dc8b792e2">handleFavoriteInstance</link>();
+<anchor xml:id="__bot_config_8cpp_source_1l00301"/>00301 &#32;&#32;&#32;&#32;}
+<anchor xml:id="__bot_config_8cpp_source_1l00302"/>00302 &#32;&#32;&#32;&#32;<link linkend="_class_bot_config_1a98b58016baad4e504ec1fbcb7eace8b9">allEmu</link>.<link linkend="_struct_all_emulators_1af2818835c22641cdb698ae29d41cb41c">playingInstance</link>&#32;=&#32;<link linkend="_class_bot_config_1a98b58016baad4e504ec1fbcb7eace8b9">allEmu</link>.<link linkend="_struct_all_emulators_1a4866e51109e46a475c389e658350c07d">getInstance</link>(nbRunningInstance);
+<anchor xml:id="__bot_config_8cpp_source_1l00303"/>00303 &#32;&#32;&#32;&#32;std::cout&#32;&lt;&lt;&#32;<emphasis role="stringliteral">&quot;\n\nCHOSEN&#32;INSTANCE:&#32;\n\n&quot;</emphasis>;
+<anchor xml:id="__bot_config_8cpp_source_1l00304"/>00304 &#32;&#32;&#32;&#32;<link linkend="_class_bot_config_1a98b58016baad4e504ec1fbcb7eace8b9">allEmu</link>.<link linkend="_struct_all_emulators_1af2818835c22641cdb698ae29d41cb41c">playingInstance</link>-&gt;<link linkend="_class_instance_1a789f80bb6165405145c9b61da092b1d3">showInstance</link>();
+<anchor xml:id="__bot_config_8cpp_source_1l00305"/>00305 &#32;&#32;&#32;&#32;<link linkend="_class_bot_config_1a98b58016baad4e504ec1fbcb7eace8b9">allEmu</link>.<link linkend="_struct_all_emulators_1ab9091f00d35a6266cf70072a5a2ccab7">setPlayingEmulator</link>(<link linkend="_class_bot_config_1a7b9529e08b815f71595c6b5953654057">getPlayingInstance</link>());
+<anchor xml:id="__bot_config_8cpp_source_1l00306"/>00306 }
+<anchor xml:id="__bot_config_8cpp_source_1l00307"/>00307 
+<anchor xml:id="__bot_config_8cpp_source_1l00308"/>00308 
+<anchor xml:id="__bot_config_8cpp_source_1l00309"/><link linkend="_class_bot_config_1ad0f786d110e0eb647fbc444963a1d8e7">00309</link> <emphasis role="keywordtype">void</emphasis>&#32;<link linkend="_class_bot_config_1ad0f786d110e0eb647fbc444963a1d8e7">BotConfig::explainInstanceChoice</link>()&#32;{
+<anchor xml:id="__bot_config_8cpp_source_1l00310"/>00310 &#32;&#32;&#32;&#32;std::cout&#32;&lt;&lt;&#32;<emphasis role="stringliteral">&quot;Type&#32;C&#32;to&#32;enable&#32;Instance&#32;choice&#32;else&#32;favorite&#32;Instance&#32;will&#32;be&#32;chosen\n&quot;</emphasis>;
+<anchor xml:id="__bot_config_8cpp_source_1l00311"/>00311 &#32;&#32;&#32;&#32;std::cout&#32;&lt;&lt;&#32;<emphasis role="stringliteral">&quot;Type&#32;F&#32;to&#32;select&#32;Favorite&#32;Instance\n&quot;</emphasis>;
+<anchor xml:id="__bot_config_8cpp_source_1l00312"/>00312 &#32;&#32;&#32;&#32;std::cout&#32;&lt;&lt;&#32;<emphasis role="stringliteral">&quot;Type&#32;R&#32;to&#32;reset&#32;Configuration\n&quot;</emphasis>;
+<anchor xml:id="__bot_config_8cpp_source_1l00313"/>00313 &#32;&#32;&#32;&#32;std::cout&#32;&lt;&lt;&#32;<emphasis role="stringliteral">&quot;Type&#32;S&#32;to&#32;Skip\n&quot;</emphasis>;
+<anchor xml:id="__bot_config_8cpp_source_1l00314"/>00314 &#32;&#32;&#32;&#32;std::cout&#32;&lt;&lt;&#32;<emphasis role="stringliteral">&quot;Validate&#32;your&#32;input&#32;with&#32;Enter\n\n&quot;</emphasis>;
+<anchor xml:id="__bot_config_8cpp_source_1l00315"/>00315 &#32;&#32;&#32;&#32;std::cout&#32;&lt;&lt;&#32;<emphasis role="stringliteral">&quot;Seconds&#32;left:&#32;&quot;</emphasis>;
+<anchor xml:id="__bot_config_8cpp_source_1l00316"/>00316 }
+<anchor xml:id="__bot_config_8cpp_source_1l00317"/>00317 
+<anchor xml:id="__bot_config_8cpp_source_1l00318"/><link linkend="_class_bot_config_1a2de6914c1428da89266ac78057e0ebe0">00318</link> <emphasis role="keywordtype">bool</emphasis>&#32;<link linkend="_class_bot_config_1a2de6914c1428da89266ac78057e0ebe0">BotConfig::chronoInstanceMenu</link>(std::chrono::time_point&lt;std::chrono::steady_clock&gt;&#32;<link linkend="_paths_8cpp_1a423ec00aa9b17614cb8a0c52de937623">start</link>,&#32;<emphasis role="keywordtype">int</emphasis>&#32;duration,<emphasis role="keywordtype">int</emphasis>&amp;&#32;lastelapsed)&#32;{
+<anchor xml:id="__bot_config_8cpp_source_1l00319"/>00319 &#32;&#32;&#32;&#32;std::string&#32;textseconds&#32;=&#32;<emphasis role="stringliteral">&quot;Seconds&#32;left:&#32;&quot;</emphasis>;
+<anchor xml:id="__bot_config_8cpp_source_1l00320"/>00320 &#32;&#32;&#32;&#32;<emphasis role="keywordtype">int</emphasis>&#32;maxchar&#32;=&#32;0;
+<anchor xml:id="__bot_config_8cpp_source_1l00321"/>00321 &#32;&#32;&#32;&#32;<emphasis role="keyword">auto</emphasis>&#32;now&#32;=&#32;std::chrono::steady_clock::now();
+<anchor xml:id="__bot_config_8cpp_source_1l00322"/>00322 &#32;&#32;&#32;&#32;<emphasis role="keywordtype">long</emphasis>&#32;<emphasis role="keywordtype">long</emphasis>&#32;<emphasis role="keywordtype">int</emphasis>&#32;elapsed&#32;=&#32;std::chrono::duration_cast&lt;std::chrono::seconds&gt;(now&#32;-&#32;<link linkend="_paths_8cpp_1a423ec00aa9b17614cb8a0c52de937623">start</link>).count();
+<anchor xml:id="__bot_config_8cpp_source_1l00323"/>00323 &#32;&#32;&#32;&#32;<emphasis role="keywordtype">int</emphasis>&#32;timeleft&#32;=(int)&#32;duration&#32;-&#32;elapsed;
+<anchor xml:id="__bot_config_8cpp_source_1l00324"/>00324 &#32;&#32;&#32;&#32;<emphasis role="keywordflow">if</emphasis>&#32;(lastelapsed&#32;!=&#32;elapsed)&#32;{
+<anchor xml:id="__bot_config_8cpp_source_1l00325"/>00325 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;std::string&#32;time&#32;=&#32;std::to_string(timeleft);
+<anchor xml:id="__bot_config_8cpp_source_1l00326"/>00326 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordtype">int</emphasis>&#32;nbchar&#32;=(int)&#32;time.size();
+<anchor xml:id="__bot_config_8cpp_source_1l00327"/>00327 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">for</emphasis>&#32;(<emphasis role="keywordtype">int</emphasis>&#32;j&#32;=&#32;0;&#32;j&#32;&lt;&#32;nbchar&#32;+&#32;textseconds.length();&#32;++j)&#32;{
+<anchor xml:id="__bot_config_8cpp_source_1l00328"/>00328 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;std::cout&#32;&lt;&lt;&#32;<emphasis role="stringliteral">&quot;\b&quot;</emphasis>;
+<anchor xml:id="__bot_config_8cpp_source_1l00329"/>00329 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;}
+<anchor xml:id="__bot_config_8cpp_source_1l00330"/>00330 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;std::cout&#32;&lt;&lt;&#32;textseconds;
+<anchor xml:id="__bot_config_8cpp_source_1l00331"/>00331 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;std::cout&#32;&lt;&lt;&#32;time;
+<anchor xml:id="__bot_config_8cpp_source_1l00332"/>00332 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;lastelapsed&#32;=&#32;elapsed;
+<anchor xml:id="__bot_config_8cpp_source_1l00333"/>00333 &#32;&#32;&#32;&#32;}
+<anchor xml:id="__bot_config_8cpp_source_1l00334"/>00334 &#32;&#32;&#32;&#32;<emphasis role="keywordflow">return</emphasis>&#32;timeleft&#32;&lt;&#32;0;
+<anchor xml:id="__bot_config_8cpp_source_1l00335"/>00335 }
+<anchor xml:id="__bot_config_8cpp_source_1l00336"/>00336 
+<anchor xml:id="__bot_config_8cpp_source_1l00337"/><link linkend="_class_bot_config_1a6a480c4db4e8b69df4ed425503dd4ab4">00337</link> <emphasis role="keywordtype">bool</emphasis>&#32;<link linkend="_class_bot_config_1a6a480c4db4e8b69df4ed425503dd4ab4">BotConfig::interactUserInstance</link>(<emphasis role="keywordtype">int</emphasis>&#32;totalInstances,<emphasis role="keywordtype">int</emphasis>&amp;nbRunningInstance)
+<anchor xml:id="__bot_config_8cpp_source_1l00338"/>00338 {
+<anchor xml:id="__bot_config_8cpp_source_1l00339"/>00339 &#32;&#32;&#32;&#32;<emphasis role="keywordtype">bool</emphasis>&#32;hasChosen&#32;=&#32;<emphasis role="keyword">false</emphasis>;
+<anchor xml:id="__bot_config_8cpp_source_1l00340"/>00340 &#32;&#32;&#32;&#32;std::string&#32;strnb;
+<anchor xml:id="__bot_config_8cpp_source_1l00341"/>00341 &#32;&#32;&#32;&#32;std::cout&#32;&lt;&lt;&#32;<emphasis role="stringliteral">&quot;\n\nType&#32;the&#32;number&#32;of&#32;the&#32;Instance\n&quot;</emphasis>;
+<anchor xml:id="__bot_config_8cpp_source_1l00342"/>00342 &#32;&#32;&#32;&#32;<emphasis role="keywordflow">while</emphasis>&#32;(!hasChosen)&#32;{
+<anchor xml:id="__bot_config_8cpp_source_1l00343"/>00343 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;std::cout&#32;&lt;&lt;&#32;<emphasis role="stringliteral">&quot;Nb&#32;between&#32;0&#32;and&#32;&quot;</emphasis>&#32;&lt;&lt;&#32;totalInstances&#32;-&#32;1&#32;&lt;&lt;&#32;<emphasis role="stringliteral">&quot;:&#32;&quot;</emphasis>;
+<anchor xml:id="__bot_config_8cpp_source_1l00344"/>00344 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;std::cin&#32;&gt;&gt;&#32;strnb;
+<anchor xml:id="__bot_config_8cpp_source_1l00345"/>00345 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">for</emphasis>&#32;(<emphasis role="keywordtype">int</emphasis>&#32;i&#32;=&#32;0;&#32;i&#32;&lt;&#32;strnb.size();&#32;++i)&#32;{
+<anchor xml:id="__bot_config_8cpp_source_1l00346"/>00346 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">if</emphasis>&#32;(isdigit(strnb.at(i)))&#32;{
+<anchor xml:id="__bot_config_8cpp_source_1l00347"/>00347 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;nbRunningInstance&#32;=&#32;strnb.at(i)&#32;-&#32;<emphasis role="charliteral">&apos;0&apos;</emphasis>;
+<anchor xml:id="__bot_config_8cpp_source_1l00348"/>00348 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">if</emphasis>&#32;((nbRunningInstance)&#32;&gt;=&#32;0&#32;&amp;&amp;&#32;nbRunningInstance&#32;&lt;&#32;totalInstances)&#32;{
+<anchor xml:id="__bot_config_8cpp_source_1l00349"/>00349 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;hasChosen&#32;=&#32;<emphasis role="keyword">true</emphasis>;
+<anchor xml:id="__bot_config_8cpp_source_1l00350"/>00350 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">break</emphasis>;
+<anchor xml:id="__bot_config_8cpp_source_1l00351"/>00351 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;}
+<anchor xml:id="__bot_config_8cpp_source_1l00352"/>00352 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;}
+<anchor xml:id="__bot_config_8cpp_source_1l00353"/>00353 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;}
+<anchor xml:id="__bot_config_8cpp_source_1l00354"/>00354 &#32;&#32;&#32;&#32;}
+<anchor xml:id="__bot_config_8cpp_source_1l00355"/>00355 &#32;&#32;&#32;&#32;<emphasis role="keywordflow">return</emphasis>&#32;<emphasis role="keyword">true</emphasis>;
+<anchor xml:id="__bot_config_8cpp_source_1l00356"/>00356 }
+<anchor xml:id="__bot_config_8cpp_source_1l00357"/>00357 
+<anchor xml:id="__bot_config_8cpp_source_1l00358"/>00358 
+<anchor xml:id="__bot_config_8cpp_source_1l00359"/><link linkend="_class_bot_config_1af5d808aed675a21368cb8669ed12b756">00359</link> <emphasis role="keywordtype">void</emphasis>&#32;<link linkend="_class_bot_config_1af5d808aed675a21368cb8669ed12b756">BotConfig::interactUserFavoriteInstance</link>(<emphasis role="keywordtype">int</emphasis>&#32;totalInstances)
+<anchor xml:id="__bot_config_8cpp_source_1l00360"/>00360 {
+<anchor xml:id="__bot_config_8cpp_source_1l00361"/>00361 &#32;&#32;&#32;&#32;<emphasis role="keywordtype">bool</emphasis>&#32;hasChosen&#32;=&#32;<emphasis role="keyword">false</emphasis>;
+<anchor xml:id="__bot_config_8cpp_source_1l00362"/>00362 &#32;&#32;&#32;&#32;<emphasis role="keywordtype">int</emphasis>&#32;nbFavInstance;
+<anchor xml:id="__bot_config_8cpp_source_1l00363"/>00363 &#32;&#32;&#32;&#32;std::string&#32;strnb;
+<anchor xml:id="__bot_config_8cpp_source_1l00364"/>00364 &#32;&#32;&#32;&#32;std::cout&#32;&lt;&lt;&#32;<emphasis role="stringliteral">&quot;\n\nType&#32;the&#32;number&#32;of&#32;the&#32;Instance\n&quot;</emphasis>;
+<anchor xml:id="__bot_config_8cpp_source_1l00365"/>00365 &#32;&#32;&#32;&#32;<emphasis role="keywordflow">while</emphasis>&#32;(!hasChosen)&#32;{
+<anchor xml:id="__bot_config_8cpp_source_1l00366"/>00366 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;std::cout&#32;&lt;&lt;&#32;<emphasis role="stringliteral">&quot;Nb&#32;between&#32;0&#32;and&#32;&quot;</emphasis>&#32;&lt;&lt;&#32;totalInstances&#32;-&#32;1&#32;&lt;&lt;&#32;<emphasis role="stringliteral">&quot;:&#32;&quot;</emphasis>;
+<anchor xml:id="__bot_config_8cpp_source_1l00367"/>00367 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;std::cin&#32;&gt;&gt;&#32;strnb;
+<anchor xml:id="__bot_config_8cpp_source_1l00368"/>00368 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">for</emphasis>&#32;(<emphasis role="keywordtype">int</emphasis>&#32;i&#32;=&#32;0;&#32;i&#32;&lt;&#32;strnb.size();&#32;++i)&#32;{
+<anchor xml:id="__bot_config_8cpp_source_1l00369"/>00369 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">if</emphasis>&#32;(isdigit(strnb.at(i)))&#32;{
+<anchor xml:id="__bot_config_8cpp_source_1l00370"/>00370 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;nbFavInstance&#32;=&#32;strnb.at(i)&#32;-&#32;<emphasis role="charliteral">&apos;0&apos;</emphasis>;
+<anchor xml:id="__bot_config_8cpp_source_1l00371"/>00371 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">if</emphasis>&#32;((nbFavInstance)&#32;&gt;=&#32;0&#32;&amp;&amp;&#32;nbFavInstance&#32;&lt;&#32;totalInstances)&#32;{
+<anchor xml:id="__bot_config_8cpp_source_1l00372"/>00372 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;hasChosen&#32;=&#32;<emphasis role="keyword">true</emphasis>;
+<anchor xml:id="__bot_config_8cpp_source_1l00373"/>00373 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">break</emphasis>;
+<anchor xml:id="__bot_config_8cpp_source_1l00374"/>00374 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;}
+<anchor xml:id="__bot_config_8cpp_source_1l00375"/>00375 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;}
+<anchor xml:id="__bot_config_8cpp_source_1l00376"/>00376 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;}
+<anchor xml:id="__bot_config_8cpp_source_1l00377"/>00377 &#32;&#32;&#32;&#32;}
+<anchor xml:id="__bot_config_8cpp_source_1l00378"/>00378 &#32;&#32;&#32;&#32;<link linkend="_class_bot_config_1a9c0206c0081858886963267f855a9ec8">updateFavoriteInstance</link>(<link linkend="_class_bot_config_1a98b58016baad4e504ec1fbcb7eace8b9">allEmu</link>.<link linkend="_struct_all_emulators_1a4866e51109e46a475c389e658350c07d">getInstance</link>(nbFavInstance));
+<anchor xml:id="__bot_config_8cpp_source_1l00379"/>00379 }
+<anchor xml:id="__bot_config_8cpp_source_1l00380"/>00380 
+<anchor xml:id="__bot_config_8cpp_source_1l00381"/><link linkend="_class_bot_config_1ae575c3fd3b6384b68c87ffca7e269132">00381</link> <emphasis role="keywordtype">void</emphasis>&#32;<link linkend="_class_bot_config_1ae575c3fd3b6384b68c87ffca7e269132">BotConfig::setDim</link>(<emphasis role="keywordtype">int</emphasis>&#32;dimx,&#32;<emphasis role="keywordtype">int</emphasis>&#32;dimy)
+<anchor xml:id="__bot_config_8cpp_source_1l00382"/>00382 {
+<anchor xml:id="__bot_config_8cpp_source_1l00383"/>00383 &#32;&#32;&#32;&#32;<link linkend="_class_bot_config_1a9ebfbe0b69d4f9a09c08770dadba5a36">desiredX</link>&#32;=&#32;dimx;
+<anchor xml:id="__bot_config_8cpp_source_1l00384"/>00384 &#32;&#32;&#32;&#32;<link linkend="_class_bot_config_1a82dc12794d01b4a4209b356c3077a446">desiredY</link>&#32;=&#32;dimy;
+<anchor xml:id="__bot_config_8cpp_source_1l00385"/>00385 }
+<anchor xml:id="__bot_config_8cpp_source_1l00386"/>00386 
+<anchor xml:id="__bot_config_8cpp_source_1l00387"/><link linkend="_class_bot_config_1a100e179305b4c6eb54ff8a680616ec03">00387</link> <emphasis role="keywordtype">bool</emphasis>&#32;<link linkend="_class_bot_config_1a100e179305b4c6eb54ff8a680616ec03">BotConfig::verifyParameters</link>()
+<anchor xml:id="__bot_config_8cpp_source_1l00388"/>00388 {
+<anchor xml:id="__bot_config_8cpp_source_1l00389"/>00389 &#32;&#32;&#32;&#32;std::string&#32;text&#32;=&#32;<link linkend="_class_bot_config_1a1652dcc0a496d11e8d7f35d8c88e6014">getBotFilecontent</link>();
+<anchor xml:id="__bot_config_8cpp_source_1l00390"/>00390 &#32;&#32;&#32;&#32;<emphasis role="keywordflow">return</emphasis>&#32;<link linkend="_class_bot_config_1a87ca6a00d5b852b1c96966bcd1cbb417">verifyBluestacksParameters</link>(text)&amp;&amp;<link linkend="_class_bot_config_1a6ed63ab2d1ba5fcb75a28e8068296585">verifyLdPlayerParameters</link>(text)&amp;&amp;<link linkend="_class_bot_config_1a065587486500e26019a183c4727ac9ef">verifyfavoriteParameters</link>(text);
+<anchor xml:id="__bot_config_8cpp_source_1l00391"/>00391 }
+<anchor xml:id="__bot_config_8cpp_source_1l00392"/>00392 
+<anchor xml:id="__bot_config_8cpp_source_1l00393"/><link linkend="_class_bot_config_1a87ca6a00d5b852b1c96966bcd1cbb417">00393</link> <emphasis role="keywordtype">bool</emphasis>&#32;<link linkend="_class_bot_config_1a87ca6a00d5b852b1c96966bcd1cbb417">BotConfig::verifyBluestacksParameters</link>(<emphasis role="keyword">const</emphasis>&#32;std::string&amp;&#32;botFile)
+<anchor xml:id="__bot_config_8cpp_source_1l00394"/>00394 {
+<anchor xml:id="__bot_config_8cpp_source_1l00395"/>00395 &#32;&#32;&#32;&#32;<emphasis role="keywordflow">return</emphasis>&#32;<link linkend="__text_manager_8cpp_1acd5e438b43d1ea1b3fc41a8badfe635b">findContent</link>(botFile,&#32;<link linkend="_class_bot_config_1abe2489cbbe63afc83c21a4fe0d25cc1b">dataBluestacks</link>)&#32;&amp;&amp;&#32;<link linkend="__text_manager_8cpp_1acd5e438b43d1ea1b3fc41a8badfe635b">findContent</link>(botFile,&#32;<link linkend="_class_bot_config_1ac433b4b457db719af5e56b786827fcb9">bluestacksFolder</link>)&amp;&amp;&#32;<link linkend="__text_manager_8cpp_1acd5e438b43d1ea1b3fc41a8badfe635b">findContent</link>(botFile,&#32;<link linkend="_class_bot_config_1a6c736e999146a7d05ae25d26583c734f">bluestacksConfigFolder</link>);
+<anchor xml:id="__bot_config_8cpp_source_1l00396"/>00396 }
+<anchor xml:id="__bot_config_8cpp_source_1l00397"/>00397 
+<anchor xml:id="__bot_config_8cpp_source_1l00398"/><link linkend="_class_bot_config_1a6ed63ab2d1ba5fcb75a28e8068296585">00398</link> <emphasis role="keywordtype">bool</emphasis>&#32;<link linkend="_class_bot_config_1a6ed63ab2d1ba5fcb75a28e8068296585">BotConfig::verifyLdPlayerParameters</link>(<emphasis role="keyword">const</emphasis>&#32;std::string&amp;&#32;botFile)
+<anchor xml:id="__bot_config_8cpp_source_1l00399"/>00399 {
+<anchor xml:id="__bot_config_8cpp_source_1l00400"/>00400 &#32;&#32;&#32;&#32;<emphasis role="keywordflow">return</emphasis>&#32;<link linkend="__text_manager_8cpp_1acd5e438b43d1ea1b3fc41a8badfe635b">findContent</link>(botFile,&#32;<link linkend="_class_bot_config_1a8fe68744500dce25c3c2a700a427ec2a">dataLDPlayer</link>)&amp;&amp;<link linkend="__text_manager_8cpp_1acd5e438b43d1ea1b3fc41a8badfe635b">findContent</link>(botFile,<link linkend="_class_bot_config_1a9f801cc5f2ff528b9bcf05b8f748b71b">ldPlayerFolder</link>);
+<anchor xml:id="__bot_config_8cpp_source_1l00401"/>00401 }
+<anchor xml:id="__bot_config_8cpp_source_1l00402"/>00402 
+<anchor xml:id="__bot_config_8cpp_source_1l00403"/><link linkend="_class_bot_config_1a065587486500e26019a183c4727ac9ef">00403</link> <emphasis role="keywordtype">bool</emphasis>&#32;<link linkend="_class_bot_config_1a065587486500e26019a183c4727ac9ef">BotConfig::verifyfavoriteParameters</link>(<emphasis role="keyword">const</emphasis>&#32;std::string&amp;&#32;botFile)
+<anchor xml:id="__bot_config_8cpp_source_1l00404"/>00404 {
+<anchor xml:id="__bot_config_8cpp_source_1l00405"/>00405 &#32;&#32;&#32;&#32;<emphasis role="keywordflow">return</emphasis>&#32;<link linkend="__text_manager_8cpp_1acd5e438b43d1ea1b3fc41a8badfe635b">findContent</link>(botFile,&#32;<link linkend="_class_bot_config_1af541e9a5c255ba8de81c38b89b73f63e">favInstanceParam</link>)&#32;&amp;&amp;&#32;<link linkend="__text_manager_8cpp_1acd5e438b43d1ea1b3fc41a8badfe635b">findContent</link>(botFile,&#32;<link linkend="_class_bot_config_1a97d5d8c5d1f2c7d676eecf517413ab63">favPresetParam</link>);
+<anchor xml:id="__bot_config_8cpp_source_1l00406"/>00406 }
+<anchor xml:id="__bot_config_8cpp_source_1l00407"/>00407 
+<anchor xml:id="__bot_config_8cpp_source_1l00408"/><link linkend="_class_bot_config_1ac00a1d2728bca4fe8ad17e8dc8b792e2">00408</link> <emphasis role="keywordtype">int</emphasis>&#32;<link linkend="_class_bot_config_1ac00a1d2728bca4fe8ad17e8dc8b792e2">BotConfig::handleFavoriteInstance</link>()
+<anchor xml:id="__bot_config_8cpp_source_1l00409"/>00409 {
+<anchor xml:id="__bot_config_8cpp_source_1l00410"/>00410 &#32;&#32;&#32;&#32;<emphasis role="keywordflow">if</emphasis>&#32;(!<link linkend="_class_bot_config_1abf2a58007d9d7ea7d39e4f5a47f70bfc">readFavoriteInstance</link>().empty())&#32;{
+<anchor xml:id="__bot_config_8cpp_source_1l00411"/>00411 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<link linkend="_class_instance">Instance</link>*&#32;favInstance&#32;=&#32;<link linkend="_class_bot_config_1a98b58016baad4e504ec1fbcb7eace8b9">allEmu</link>.<link linkend="_struct_all_emulators_1a4866e51109e46a475c389e658350c07d">getInstance</link>(<link linkend="_class_bot_config_1a04819c65a0bc6f682b906b3d796fafdf">favoriteInstance</link>);
+<anchor xml:id="__bot_config_8cpp_source_1l00412"/>00412 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">if</emphasis>&#32;(favInstance&#32;!=&#32;<emphasis role="keyword">nullptr</emphasis>)&#32;{
+<anchor xml:id="__bot_config_8cpp_source_1l00413"/>00413 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">if</emphasis>&#32;(favInstance-&gt;<link linkend="_class_instance_1a163202c6c66861f51cb2b0bffff2993d">hasGame</link>)&#32;{
+<anchor xml:id="__bot_config_8cpp_source_1l00414"/>00414 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">return</emphasis>&#32;<link linkend="_class_bot_config_1a98b58016baad4e504ec1fbcb7eace8b9">allEmu</link>.<link linkend="_struct_all_emulators_1aa1df5ba4e1c2d0b4427f5d1bd3f3339c">getFavoriteInstanceIndex</link>(<link linkend="_class_bot_config_1a04819c65a0bc6f682b906b3d796fafdf">favoriteInstance</link>);
+<anchor xml:id="__bot_config_8cpp_source_1l00415"/>00415 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;}
+<anchor xml:id="__bot_config_8cpp_source_1l00416"/>00416 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;}
+<anchor xml:id="__bot_config_8cpp_source_1l00417"/>00417 &#32;&#32;&#32;&#32;}
+<anchor xml:id="__bot_config_8cpp_source_1l00418"/>00418 &#32;&#32;&#32;&#32;<emphasis role="keywordflow">return</emphasis>&#32;0;
+<anchor xml:id="__bot_config_8cpp_source_1l00419"/>00419 }
+<anchor xml:id="__bot_config_8cpp_source_1l00420"/>00420 
+<anchor xml:id="__bot_config_8cpp_source_1l00421"/><link linkend="_class_bot_config_1a1fa99db24f032484c9170eae8345ab06">00421</link> <emphasis role="keywordtype">void</emphasis>&#32;<link linkend="_class_bot_config_1a1fa99db24f032484c9170eae8345ab06">BotConfig::read</link>()
+<anchor xml:id="__bot_config_8cpp_source_1l00422"/>00422 {
+<anchor xml:id="__bot_config_8cpp_source_1l00423"/>00423 
+<anchor xml:id="__bot_config_8cpp_source_1l00424"/>00424 }
+<anchor xml:id="__bot_config_8cpp_source_1l00425"/>00425 
+<anchor xml:id="__bot_config_8cpp_source_1l00426"/>00426 
+<anchor xml:id="__bot_config_8cpp_source_1l00427"/>00427 
+<anchor xml:id="__bot_config_8cpp_source_1l00428"/><link linkend="_class_bot_config_1adbc147eff876980c05cd0f08104b69ec">00428</link> <emphasis role="keywordtype">void</emphasis>&#32;<link linkend="_class_bot_config_1adbc147eff876980c05cd0f08104b69ec">BotConfig::readBluestacks</link>()
+<anchor xml:id="__bot_config_8cpp_source_1l00429"/>00429 {
+<anchor xml:id="__bot_config_8cpp_source_1l00430"/>00430 
+<anchor xml:id="__bot_config_8cpp_source_1l00431"/>00431 }
+<anchor xml:id="__bot_config_8cpp_source_1l00432"/>00432 
+<anchor xml:id="__bot_config_8cpp_source_1l00433"/><link linkend="_class_bot_config_1a47a08f20862705d00d5647b7ba975664">00433</link> std::string&#32;<link linkend="_class_bot_config_1a47a08f20862705d00d5647b7ba975664">BotConfig::readBluestacksFolder</link>()
+<anchor xml:id="__bot_config_8cpp_source_1l00434"/>00434 {
+<anchor xml:id="__bot_config_8cpp_source_1l00435"/>00435 &#32;&#32;&#32;&#32;<emphasis role="keywordflow">return</emphasis>&#32;<link linkend="_class_bot_config_1a6347ad0b79f04a755fe1d7151ed87cd2">readStringBotFile</link>(<link linkend="_class_bot_config_1ac433b4b457db719af5e56b786827fcb9">bluestacksFolder</link>);
+<anchor xml:id="__bot_config_8cpp_source_1l00436"/>00436 }
+<anchor xml:id="__bot_config_8cpp_source_1l00437"/>00437 
+<anchor xml:id="__bot_config_8cpp_source_1l00438"/><link linkend="_class_bot_config_1a0e6d03f4aaf4a056c97882717f03870f">00438</link> std::string&#32;<link linkend="_class_bot_config_1a0e6d03f4aaf4a056c97882717f03870f">BotConfig::readBluestacksConfig</link>()
+<anchor xml:id="__bot_config_8cpp_source_1l00439"/>00439 {
+<anchor xml:id="__bot_config_8cpp_source_1l00440"/>00440 &#32;&#32;&#32;&#32;<emphasis role="keywordflow">return</emphasis>&#32;<link linkend="_class_bot_config_1a6347ad0b79f04a755fe1d7151ed87cd2">readStringBotFile</link>(<link linkend="_class_bot_config_1a6c736e999146a7d05ae25d26583c734f">bluestacksConfigFolder</link>);
+<anchor xml:id="__bot_config_8cpp_source_1l00441"/>00441 }
+<anchor xml:id="__bot_config_8cpp_source_1l00442"/>00442 
+<anchor xml:id="__bot_config_8cpp_source_1l00443"/><link linkend="_class_bot_config_1a0be029b74be2d6925d33d6d3a7cf08b3">00443</link> std::string&#32;<link linkend="_class_bot_config_1a0be029b74be2d6925d33d6d3a7cf08b3">BotConfig::readLdPlayerFolder</link>()
+<anchor xml:id="__bot_config_8cpp_source_1l00444"/>00444 {
+<anchor xml:id="__bot_config_8cpp_source_1l00445"/>00445 &#32;&#32;&#32;&#32;<emphasis role="keywordflow">return</emphasis>&#32;<link linkend="_class_bot_config_1a6347ad0b79f04a755fe1d7151ed87cd2">readStringBotFile</link>(<link linkend="_class_bot_config_1a9f801cc5f2ff528b9bcf05b8f748b71b">ldPlayerFolder</link>);
+<anchor xml:id="__bot_config_8cpp_source_1l00446"/>00446 }
+<anchor xml:id="__bot_config_8cpp_source_1l00447"/>00447 
+<anchor xml:id="__bot_config_8cpp_source_1l00448"/><link linkend="_class_bot_config_1aeec6d982e69269df217894edc9f4ff3e">00448</link> <emphasis role="keywordtype">void</emphasis>&#32;<link linkend="_class_bot_config_1aeec6d982e69269df217894edc9f4ff3e">BotConfig::readLdPlayer</link>()
+<anchor xml:id="__bot_config_8cpp_source_1l00449"/>00449 {
+<anchor xml:id="__bot_config_8cpp_source_1l00450"/>00450 }
+<anchor xml:id="__bot_config_8cpp_source_1l00451"/>00451 
+<anchor xml:id="__bot_config_8cpp_source_1l00452"/><link linkend="_class_bot_config_1add6ae08a184d93e02b4ad2a03aa95e90">00452</link> <emphasis role="keywordtype">void</emphasis>&#32;<link linkend="_class_bot_config_1add6ae08a184d93e02b4ad2a03aa95e90">BotConfig::updateInit</link>()
+<anchor xml:id="__bot_config_8cpp_source_1l00453"/>00453 {
+<anchor xml:id="__bot_config_8cpp_source_1l00454"/>00454 &#32;&#32;&#32;&#32;<link linkend="_class_bot_config_1a53485f20f89c00397495b545b91044da">updateDataAll</link>(<emphasis role="keyword">false</emphasis>);
+<anchor xml:id="__bot_config_8cpp_source_1l00455"/>00455 &#32;&#32;&#32;&#32;<link linkend="_class_bot_config_1a994d7a4b890c4ab02c1da5778cc36f9c">updateInitBluestacks</link>();
+<anchor xml:id="__bot_config_8cpp_source_1l00456"/>00456 &#32;&#32;&#32;&#32;<link linkend="_class_bot_config_1a4630e1c0cfc4366a1e97df9452cad69d">updateInitLdPlayer</link>();
+<anchor xml:id="__bot_config_8cpp_source_1l00457"/>00457 }
+<anchor xml:id="__bot_config_8cpp_source_1l00458"/>00458 
+<anchor xml:id="__bot_config_8cpp_source_1l00459"/><link linkend="_class_bot_config_1a994d7a4b890c4ab02c1da5778cc36f9c">00459</link> <emphasis role="keywordtype">void</emphasis>&#32;<link linkend="_class_bot_config_1a994d7a4b890c4ab02c1da5778cc36f9c">BotConfig::updateInitBluestacks</link>()
+<anchor xml:id="__bot_config_8cpp_source_1l00460"/>00460 {
+<anchor xml:id="__bot_config_8cpp_source_1l00461"/>00461 &#32;&#32;&#32;&#32;<link linkend="_class_bot_config_1ab4929dd1c99a9e725800349a9cfc3b0e">updateDataBluestacks</link>(<emphasis role="keyword">false</emphasis>);
+<anchor xml:id="__bot_config_8cpp_source_1l00462"/>00462 }
+<anchor xml:id="__bot_config_8cpp_source_1l00463"/>00463 
+<anchor xml:id="__bot_config_8cpp_source_1l00464"/><link linkend="_class_bot_config_1a4630e1c0cfc4366a1e97df9452cad69d">00464</link> <emphasis role="keywordtype">void</emphasis>&#32;<link linkend="_class_bot_config_1a4630e1c0cfc4366a1e97df9452cad69d">BotConfig::updateInitLdPlayer</link>()
+<anchor xml:id="__bot_config_8cpp_source_1l00465"/>00465 {
+<anchor xml:id="__bot_config_8cpp_source_1l00466"/>00466 &#32;&#32;&#32;&#32;<link linkend="_class_bot_config_1ae1e96b6b256aa8894b603259674f6a6f">updateDataLdPlayer</link>(<emphasis role="keyword">false</emphasis>);
+<anchor xml:id="__bot_config_8cpp_source_1l00467"/>00467 }
+<anchor xml:id="__bot_config_8cpp_source_1l00468"/>00468 
+<anchor xml:id="__bot_config_8cpp_source_1l00469"/><link linkend="_class_bot_config_1a53485f20f89c00397495b545b91044da">00469</link> <emphasis role="keywordtype">void</emphasis>&#32;<link linkend="_class_bot_config_1a53485f20f89c00397495b545b91044da">BotConfig::updateDataAll</link>(<emphasis role="keywordtype">bool</emphasis>&#32;search)
+<anchor xml:id="__bot_config_8cpp_source_1l00470"/>00470 {
+<anchor xml:id="__bot_config_8cpp_source_1l00471"/>00471 &#32;&#32;&#32;&#32;<link linkend="_class_bot_config_1a70992bec079cbf9412e69b0f0e712ca2">updateBoolBotFile</link>(<link linkend="_class_bot_config_1a8d3c3820fab2ef322e3929cfaed3a3a1">dataCollected</link>,&#32;search,&#32;<link linkend="_class_bot_config_1aba7e690ba344f65eabc717996981ca0e">quote</link>,&#32;<link linkend="_class_bot_config_1aba7e690ba344f65eabc717996981ca0e">quote</link>);
+<anchor xml:id="__bot_config_8cpp_source_1l00472"/>00472 }
+<anchor xml:id="__bot_config_8cpp_source_1l00473"/>00473 
+<anchor xml:id="__bot_config_8cpp_source_1l00474"/><link linkend="_class_bot_config_1ab4929dd1c99a9e725800349a9cfc3b0e">00474</link> <emphasis role="keywordtype">void</emphasis>&#32;<link linkend="_class_bot_config_1ab4929dd1c99a9e725800349a9cfc3b0e">BotConfig::updateDataBluestacks</link>(<emphasis role="keywordtype">bool</emphasis>&#32;search)
+<anchor xml:id="__bot_config_8cpp_source_1l00475"/>00475 {
+<anchor xml:id="__bot_config_8cpp_source_1l00476"/>00476 &#32;&#32;&#32;&#32;<link linkend="_class_bot_config_1a70992bec079cbf9412e69b0f0e712ca2">updateBoolBotFile</link>(<link linkend="_class_bot_config_1abe2489cbbe63afc83c21a4fe0d25cc1b">dataBluestacks</link>,&#32;search,&#32;<link linkend="_class_bot_config_1aba7e690ba344f65eabc717996981ca0e">quote</link>,&#32;<link linkend="_class_bot_config_1aba7e690ba344f65eabc717996981ca0e">quote</link>);
+<anchor xml:id="__bot_config_8cpp_source_1l00477"/>00477 }
+<anchor xml:id="__bot_config_8cpp_source_1l00478"/>00478 
+<anchor xml:id="__bot_config_8cpp_source_1l00479"/><link linkend="_class_bot_config_1ae1e96b6b256aa8894b603259674f6a6f">00479</link> <emphasis role="keywordtype">void</emphasis>&#32;<link linkend="_class_bot_config_1ae1e96b6b256aa8894b603259674f6a6f">BotConfig::updateDataLdPlayer</link>(<emphasis role="keywordtype">bool</emphasis>&#32;search)
+<anchor xml:id="__bot_config_8cpp_source_1l00480"/>00480 {
+<anchor xml:id="__bot_config_8cpp_source_1l00481"/>00481 &#32;&#32;&#32;&#32;<link linkend="_class_bot_config_1a70992bec079cbf9412e69b0f0e712ca2">updateBoolBotFile</link>(<link linkend="_class_bot_config_1a8fe68744500dce25c3c2a700a427ec2a">dataLDPlayer</link>,&#32;search,&#32;<link linkend="_class_bot_config_1aba7e690ba344f65eabc717996981ca0e">quote</link>,&#32;<link linkend="_class_bot_config_1aba7e690ba344f65eabc717996981ca0e">quote</link>);
+<anchor xml:id="__bot_config_8cpp_source_1l00482"/>00482 }
+<anchor xml:id="__bot_config_8cpp_source_1l00483"/>00483 
+<anchor xml:id="__bot_config_8cpp_source_1l00484"/><link linkend="_class_bot_config_1ae21ba22e6f1b9dfcacf38dd78f904d82">00484</link> <emphasis role="keywordtype">void</emphasis>&#32;<link linkend="_class_bot_config_1ae21ba22e6f1b9dfcacf38dd78f904d82">BotConfig::updateBluestacksFolder</link>(<emphasis role="keyword">const</emphasis>&#32;std::string&amp;&#32;folder)
+<anchor xml:id="__bot_config_8cpp_source_1l00485"/>00485 {
+<anchor xml:id="__bot_config_8cpp_source_1l00486"/>00486 &#32;&#32;&#32;&#32;<link linkend="_class_bot_config_1a7fe6cbda7ec98c3070e6f9437f6eeb84">updateStringBotFile</link>(<link linkend="_class_bot_config_1ac433b4b457db719af5e56b786827fcb9">bluestacksFolder</link>,&#32;folder,&#32;<link linkend="_class_bot_config_1aba7e690ba344f65eabc717996981ca0e">quote</link>,&#32;<link linkend="_class_bot_config_1aba7e690ba344f65eabc717996981ca0e">quote</link>);
+<anchor xml:id="__bot_config_8cpp_source_1l00487"/>00487 }
+<anchor xml:id="__bot_config_8cpp_source_1l00488"/><link linkend="_class_bot_config_1ab9fe07595e423fcdfc22322dd1ede393">00488</link> <emphasis role="keywordtype">void</emphasis>&#32;<link linkend="_class_bot_config_1ab9fe07595e423fcdfc22322dd1ede393">BotConfig::updateBluestacksConfig</link>(<emphasis role="keyword">const</emphasis>&#32;std::string&amp;&#32;folder)
+<anchor xml:id="__bot_config_8cpp_source_1l00489"/>00489 {
+<anchor xml:id="__bot_config_8cpp_source_1l00490"/>00490 &#32;&#32;&#32;&#32;<link linkend="_class_bot_config_1a7fe6cbda7ec98c3070e6f9437f6eeb84">updateStringBotFile</link>(<link linkend="_class_bot_config_1a6c736e999146a7d05ae25d26583c734f">bluestacksConfigFolder</link>,&#32;folder,&#32;<link linkend="_class_bot_config_1aba7e690ba344f65eabc717996981ca0e">quote</link>,&#32;<link linkend="_class_bot_config_1aba7e690ba344f65eabc717996981ca0e">quote</link>);
+<anchor xml:id="__bot_config_8cpp_source_1l00491"/>00491 }
+<anchor xml:id="__bot_config_8cpp_source_1l00492"/>00492 
+<anchor xml:id="__bot_config_8cpp_source_1l00493"/><link linkend="_class_bot_config_1a095c01a9b9e6ff1db9c683716337f45f">00493</link> <emphasis role="keywordtype">void</emphasis>&#32;<link linkend="_class_bot_config_1a095c01a9b9e6ff1db9c683716337f45f">BotConfig::updateLdPlayerFolder</link>(<emphasis role="keyword">const</emphasis>&#32;std::string&amp;&#32;folder)
+<anchor xml:id="__bot_config_8cpp_source_1l00494"/>00494 {
+<anchor xml:id="__bot_config_8cpp_source_1l00495"/>00495 &#32;&#32;&#32;&#32;<link linkend="_class_bot_config_1a7fe6cbda7ec98c3070e6f9437f6eeb84">updateStringBotFile</link>(<link linkend="_class_bot_config_1a9f801cc5f2ff528b9bcf05b8f748b71b">ldPlayerFolder</link>,&#32;folder,&#32;<link linkend="_class_bot_config_1aba7e690ba344f65eabc717996981ca0e">quote</link>,&#32;<link linkend="_class_bot_config_1aba7e690ba344f65eabc717996981ca0e">quote</link>);
+<anchor xml:id="__bot_config_8cpp_source_1l00496"/>00496 }
+<anchor xml:id="__bot_config_8cpp_source_1l00497"/>00497 
+<anchor xml:id="__bot_config_8cpp_source_1l00498"/><link linkend="_class_bot_config_1a2a28f19b68e5d8a4b8fa52f9d4f2fbbe">00498</link> <emphasis role="keywordtype">void</emphasis>&#32;<link linkend="_class_bot_config_1a2a28f19b68e5d8a4b8fa52f9d4f2fbbe">BotConfig::waitBootDevice</link>()
+<anchor xml:id="__bot_config_8cpp_source_1l00499"/>00499 {
+<anchor xml:id="__bot_config_8cpp_source_1l00500"/>00500 &#32;&#32;&#32;&#32;<link linkend="_class_bot_config_1a98b58016baad4e504ec1fbcb7eace8b9">allEmu</link>.<link linkend="_struct_all_emulators_1a710e93eea46e0922c245799d60d1fb95">playingEmulator</link>-&gt;<link linkend="_class_emulator_1a3c1982951385d705d049f4f050885f06">waitForInstance</link>(<link linkend="_class_bot_config_1a98b58016baad4e504ec1fbcb7eace8b9">allEmu</link>.<link linkend="_struct_all_emulators_1af2818835c22641cdb698ae29d41cb41c">playingInstance</link>);
+<anchor xml:id="__bot_config_8cpp_source_1l00501"/>00501 }
+<anchor xml:id="__bot_config_8cpp_source_1l00502"/>00502 
+<anchor xml:id="__bot_config_8cpp_source_1l00503"/>00503 
+<anchor xml:id="__bot_config_8cpp_source_1l00504"/><link linkend="_class_bot_config_1ae75cf338c4da36cf1996494dae4273ca">00504</link> <emphasis role="keywordtype">bool</emphasis>&#32;<link linkend="_class_bot_config_1ae75cf338c4da36cf1996494dae4273ca">BotConfig::readSearchAll</link>()
+<anchor xml:id="__bot_config_8cpp_source_1l00505"/>00505 {
+<anchor xml:id="__bot_config_8cpp_source_1l00506"/>00506 &#32;&#32;&#32;&#32;<emphasis role="keywordflow">if</emphasis>(!<link linkend="_class_bot_config_1a0c63abf2bd51de63c3de85b91fc1e5f1">readDataCollected</link>())<emphasis role="keywordflow">return</emphasis>&#32;<emphasis role="keyword">true</emphasis>;
+<anchor xml:id="__bot_config_8cpp_source_1l00507"/>00507 &#32;&#32;&#32;&#32;<emphasis role="keywordflow">else</emphasis>&#32;<emphasis role="keywordflow">if</emphasis>(<link linkend="_class_bot_config_1ab89c77f603cb134bb5a1859dcd1bd850">readSearchLdPlayer</link>()&amp;&amp;<link linkend="_class_bot_config_1ab89c77f603cb134bb5a1859dcd1bd850">readSearchLdPlayer</link>())<emphasis role="keywordflow">return</emphasis>&#32;<emphasis role="keyword">true</emphasis>;
+<anchor xml:id="__bot_config_8cpp_source_1l00508"/>00508 &#32;&#32;&#32;&#32;<emphasis role="keywordflow">return</emphasis>&#32;<emphasis role="keyword">false</emphasis>;
+<anchor xml:id="__bot_config_8cpp_source_1l00509"/>00509 }
+<anchor xml:id="__bot_config_8cpp_source_1l00510"/>00510 
+<anchor xml:id="__bot_config_8cpp_source_1l00511"/><link linkend="_class_bot_config_1abe575477e07b1c120141f019fc7101af">00511</link> <emphasis role="keywordtype">bool</emphasis>&#32;<link linkend="_class_bot_config_1abe575477e07b1c120141f019fc7101af">BotConfig::readSearchBluestacks</link>()
+<anchor xml:id="__bot_config_8cpp_source_1l00512"/>00512 {
+<anchor xml:id="__bot_config_8cpp_source_1l00513"/>00513 &#32;&#32;&#32;&#32;<emphasis role="keywordflow">if</emphasis>(!<link linkend="_class_bot_config_1ad461209f70e41b763999c7453e4529ee">readDataBluestacks</link>())<emphasis role="keywordflow">return</emphasis>&#32;<emphasis role="keyword">true</emphasis>;
+<anchor xml:id="__bot_config_8cpp_source_1l00514"/>00514 &#32;&#32;&#32;&#32;<emphasis role="keywordflow">else</emphasis>&#32;<emphasis role="keywordflow">if</emphasis>&#32;(<link linkend="_class_bot_config_1a1ede9834fcb1b8dcedf47a367241d030">verifyEmulatorFolder</link>(<link linkend="_class_bot_config_1ac433b4b457db719af5e56b786827fcb9">bluestacksFolder</link>,<link linkend="_class_bot_config_1abe21c3220cdb52cd85ad15e8c3e55982">blueStacksInstalled</link>,<link linkend="_class_bot_config_1a0d607d1afacc3568084d163bf89565a5">searchBluestacks</link>)&amp;&amp;<link linkend="_class_bot_config_1a1ede9834fcb1b8dcedf47a367241d030">verifyEmulatorFolder</link>(<link linkend="_class_bot_config_1a6c736e999146a7d05ae25d26583c734f">bluestacksConfigFolder</link>,&#32;<link linkend="_class_bot_config_1abe21c3220cdb52cd85ad15e8c3e55982">blueStacksInstalled</link>,&#32;<link linkend="_class_bot_config_1a0d607d1afacc3568084d163bf89565a5">searchBluestacks</link>))<emphasis role="keywordflow">return</emphasis>&#32;<emphasis role="keyword">true</emphasis>;
+<anchor xml:id="__bot_config_8cpp_source_1l00515"/>00515 &#32;&#32;&#32;&#32;<emphasis role="keywordflow">return</emphasis>&#32;<emphasis role="keyword">false</emphasis>;
+<anchor xml:id="__bot_config_8cpp_source_1l00516"/>00516 }
+<anchor xml:id="__bot_config_8cpp_source_1l00517"/>00517 
+<anchor xml:id="__bot_config_8cpp_source_1l00518"/><link linkend="_class_bot_config_1ab89c77f603cb134bb5a1859dcd1bd850">00518</link> <emphasis role="keywordtype">bool</emphasis>&#32;<link linkend="_class_bot_config_1ab89c77f603cb134bb5a1859dcd1bd850">BotConfig::readSearchLdPlayer</link>()
+<anchor xml:id="__bot_config_8cpp_source_1l00519"/>00519 {
+<anchor xml:id="__bot_config_8cpp_source_1l00520"/>00520 &#32;&#32;&#32;&#32;<emphasis role="keywordflow">if</emphasis>&#32;(!<link linkend="_class_bot_config_1a0c8b3da81dd5f06097ee696f2f466b67">readDataLDPlayer</link>())<emphasis role="keywordflow">return</emphasis>&#32;<emphasis role="keyword">true</emphasis>;
+<anchor xml:id="__bot_config_8cpp_source_1l00521"/>00521 &#32;&#32;&#32;&#32;<emphasis role="keywordflow">else</emphasis>&#32;<emphasis role="keywordflow">if</emphasis>&#32;(<link linkend="_class_bot_config_1a1ede9834fcb1b8dcedf47a367241d030">verifyEmulatorFolder</link>(<link linkend="_class_bot_config_1a9f801cc5f2ff528b9bcf05b8f748b71b">ldPlayerFolder</link>,<link linkend="_class_bot_config_1ae7e47847f68c73a9d31c3437a970389d">ldPlayerInstalled</link>,<link linkend="_class_bot_config_1a7e670ede2140b300b37e9fd07b8a6eff">searchLdPlayer</link>))<emphasis role="keywordflow">return</emphasis>&#32;<emphasis role="keyword">true</emphasis>;
+<anchor xml:id="__bot_config_8cpp_source_1l00522"/>00522 &#32;&#32;&#32;&#32;<emphasis role="keywordflow">return</emphasis>&#32;<emphasis role="keyword">false</emphasis>;
+<anchor xml:id="__bot_config_8cpp_source_1l00523"/>00523 }
+<anchor xml:id="__bot_config_8cpp_source_1l00524"/>00524 
+<anchor xml:id="__bot_config_8cpp_source_1l00525"/><link linkend="_class_bot_config_1a7b9529e08b815f71595c6b5953654057">00525</link> <link linkend="_class_instance">Instance</link>*&#32;<link linkend="_class_bot_config_1a7b9529e08b815f71595c6b5953654057">BotConfig::getPlayingInstance</link>()
+<anchor xml:id="__bot_config_8cpp_source_1l00526"/>00526 {
+<anchor xml:id="__bot_config_8cpp_source_1l00527"/>00527 &#32;&#32;&#32;&#32;<emphasis role="keywordflow">return</emphasis>&#32;<link linkend="_class_bot_config_1a98b58016baad4e504ec1fbcb7eace8b9">allEmu</link>.<link linkend="_struct_all_emulators_1af2818835c22641cdb698ae29d41cb41c">playingInstance</link>;
+<anchor xml:id="__bot_config_8cpp_source_1l00528"/>00528 }
+<anchor xml:id="__bot_config_8cpp_source_1l00529"/>00529 
+<anchor xml:id="__bot_config_8cpp_source_1l00530"/><link linkend="_class_bot_config_1aaa9ade6d9deb18e7457ab5d1d925e9e6">00530</link> <emphasis role="keywordtype">bool</emphasis>&#32;<link linkend="_class_bot_config_1aaa9ade6d9deb18e7457ab5d1d925e9e6">BotConfig::doWriteInit</link>()
+<anchor xml:id="__bot_config_8cpp_source_1l00531"/>00531 {
+<anchor xml:id="__bot_config_8cpp_source_1l00532"/>00532 &#32;&#32;&#32;&#32;<emphasis role="keywordtype">bool</emphasis>&#32;write&#32;=&#32;<emphasis role="keyword">false</emphasis>;&#32;
+<anchor xml:id="__bot_config_8cpp_source_1l00533"/>00533 &#32;&#32;&#32;&#32;<emphasis role="keywordflow">if</emphasis>&#32;(<link linkend="_class_bot_config_1af4340d8753f4ad3d3717c6d5b69368e1">searchAll</link>&#32;||&#32;<link linkend="_class_bot_config_1a0d607d1afacc3568084d163bf89565a5">searchBluestacks</link>&#32;||&#32;<link linkend="_class_bot_config_1a7e670ede2140b300b37e9fd07b8a6eff">searchLdPlayer</link>)write&#32;=&#32;<emphasis role="keyword">true</emphasis>;
+<anchor xml:id="__bot_config_8cpp_source_1l00534"/>00534 &#32;&#32;&#32;&#32;<emphasis role="keywordflow">else</emphasis>&#32;<emphasis role="keywordflow">if</emphasis>(!<link linkend="_class_bot_config_1a100e179305b4c6eb54ff8a680616ec03">verifyParameters</link>())write=<emphasis role="keyword">true</emphasis>;
+<anchor xml:id="__bot_config_8cpp_source_1l00535"/>00535 &#32;&#32;&#32;&#32;<emphasis role="keywordflow">if</emphasis>&#32;(write)&#32;{
+<anchor xml:id="__bot_config_8cpp_source_1l00536"/>00536 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<link linkend="_class_bot_config_1a5ea5db5fbc78be03cd9450d4b4c0e73c">writeInit</link>();
+<anchor xml:id="__bot_config_8cpp_source_1l00537"/>00537 &#32;&#32;&#32;&#32;}
+<anchor xml:id="__bot_config_8cpp_source_1l00538"/>00538 &#32;&#32;&#32;&#32;<emphasis role="keywordflow">return</emphasis>&#32;write;
+<anchor xml:id="__bot_config_8cpp_source_1l00539"/>00539 }
+<anchor xml:id="__bot_config_8cpp_source_1l00540"/>00540 
+<anchor xml:id="__bot_config_8cpp_source_1l00541"/><link linkend="_class_bot_config_1a1ede9834fcb1b8dcedf47a367241d030">00541</link> <emphasis role="keywordtype">bool</emphasis>&#32;<link linkend="_class_bot_config_1a1ede9834fcb1b8dcedf47a367241d030">BotConfig::verifyEmulatorFolder</link>(<emphasis role="keyword">const</emphasis>&#32;std::string&amp;&#32;emulatorFolder,<emphasis role="keywordtype">bool</emphasis>&amp;&#32;emulatorinstalled,<emphasis role="keywordtype">bool</emphasis>&amp;search)
+<anchor xml:id="__bot_config_8cpp_source_1l00542"/>00542 {
+<anchor xml:id="__bot_config_8cpp_source_1l00543"/>00543 &#32;&#32;&#32;&#32;search&#32;=&#32;<emphasis role="keyword">false</emphasis>;
+<anchor xml:id="__bot_config_8cpp_source_1l00544"/>00544 &#32;&#32;&#32;&#32;emulatorinstalled&#32;=&#32;<emphasis role="keyword">false</emphasis>;
+<anchor xml:id="__bot_config_8cpp_source_1l00545"/>00545 &#32;&#32;&#32;&#32;std::string&#32;folder=&#32;<link linkend="_class_bot_config_1a6347ad0b79f04a755fe1d7151ed87cd2">readStringBotFile</link>(<link linkend="_class_bot_config_1aa4504f810fa5d45d507234ae76565ffe">emulatorFolder</link>);
+<anchor xml:id="__bot_config_8cpp_source_1l00546"/>00546 &#32;&#32;&#32;&#32;<emphasis role="keywordflow">if</emphasis>&#32;(folder&#32;==&#32;<link linkend="_class_bot_config_1adbb6cd71fca55ebb943869a88a808875">NOTINSTALLED</link>)&#32;{
+<anchor xml:id="__bot_config_8cpp_source_1l00547"/>00547 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;search&#32;=&#32;<emphasis role="keyword">false</emphasis>;
+<anchor xml:id="__bot_config_8cpp_source_1l00548"/>00548 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;emulatorinstalled&#32;=&#32;<emphasis role="keyword">false</emphasis>;
+<anchor xml:id="__bot_config_8cpp_source_1l00549"/>00549 &#32;&#32;&#32;&#32;}
+<anchor xml:id="__bot_config_8cpp_source_1l00550"/>00550 &#32;&#32;&#32;&#32;<emphasis role="keywordflow">else</emphasis>&#32;<emphasis role="keywordflow">if</emphasis>&#32;(<link linkend="_sys_commands_8cpp_1a662dd4893690567ba825a473508f47e2">pathExists</link>(folder))&#32;{
+<anchor xml:id="__bot_config_8cpp_source_1l00551"/>00551 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;search&#32;=&#32;<emphasis role="keyword">false</emphasis>;
+<anchor xml:id="__bot_config_8cpp_source_1l00552"/>00552 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;emulatorinstalled&#32;=&#32;<emphasis role="keyword">true</emphasis>;
+<anchor xml:id="__bot_config_8cpp_source_1l00553"/>00553 &#32;&#32;&#32;&#32;}
+<anchor xml:id="__bot_config_8cpp_source_1l00554"/>00554 &#32;&#32;&#32;&#32;<emphasis role="keywordflow">else</emphasis>&#32;{
+<anchor xml:id="__bot_config_8cpp_source_1l00555"/>00555 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;emulatorinstalled&#32;=&#32;<emphasis role="keyword">false</emphasis>;
+<anchor xml:id="__bot_config_8cpp_source_1l00556"/>00556 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;search&#32;=&#32;<emphasis role="keyword">true</emphasis>;
+<anchor xml:id="__bot_config_8cpp_source_1l00557"/>00557 &#32;&#32;&#32;&#32;}
+<anchor xml:id="__bot_config_8cpp_source_1l00558"/>00558 &#32;&#32;&#32;&#32;<emphasis role="keywordflow">return</emphasis>&#32;search;
+<anchor xml:id="__bot_config_8cpp_source_1l00559"/>00559 }
+<anchor xml:id="__bot_config_8cpp_source_1l00560"/>00560 
+<anchor xml:id="__bot_config_8cpp_source_1l00561"/>00561 
+<anchor xml:id="__bot_config_8cpp_source_1l00562"/><link linkend="_class_bot_config_1a8925ef3403b945f27b9ee2719ef257b9">00562</link> <emphasis role="keywordtype">bool</emphasis>&#32;<link linkend="_class_bot_config_1a8925ef3403b945f27b9ee2719ef257b9">BotConfig::initBotConfig</link>(<emphasis role="keywordtype">bool</emphasis>&#32;reset)
+<anchor xml:id="__bot_config_8cpp_source_1l00563"/>00563 {
+<anchor xml:id="__bot_config_8cpp_source_1l00564"/>00564 &#32;&#32;&#32;&#32;<link linkend="_class_bot_config_1a98b58016baad4e504ec1fbcb7eace8b9">allEmu</link>.<link linkend="_struct_all_emulators_1a0311062fb8608a2e3fb224812fc84992">clearAllInstances</link>();
+<anchor xml:id="__bot_config_8cpp_source_1l00565"/>00565 &#32;&#32;&#32;&#32;<link linkend="_class_bot_config_1acad99a7dc9cbe220677bfdb90b04f48f">setSearchEmulators</link>(reset);
+<anchor xml:id="__bot_config_8cpp_source_1l00566"/>00566 &#32;&#32;&#32;&#32;<link linkend="_class_bot_config_1a939c57f64624e4160f921b093ca827d0">initBotFile</link>();
+<anchor xml:id="__bot_config_8cpp_source_1l00567"/>00567 &#32;&#32;&#32;&#32;<link linkend="_class_bot_config_1af8c906f3cd22726a96e758886c756068">initEmulators</link>();
+<anchor xml:id="__bot_config_8cpp_source_1l00568"/>00568 &#32;&#32;&#32;&#32;<link linkend="_class_bot_config_1ac67855a292a9b00c0d1bdb3e09cafb50">getAllPlayableInstances</link>();
+<anchor xml:id="__bot_config_8cpp_source_1l00569"/>00569 &#32;&#32;&#32;&#32;<emphasis role="keywordflow">if</emphasis>(!<link linkend="_class_bot_config_1a52e7277feeeb5387104d7b66a44ff519">anyPlayableInstance</link>())<emphasis role="keywordflow">return</emphasis>&#32;<emphasis role="keyword">false</emphasis>;
+<anchor xml:id="__bot_config_8cpp_source_1l00570"/>00570 &#32;&#32;&#32;&#32;<link linkend="_class_bot_config_1a72e8877046483a6c3c8f03a21ea9c6b2">choosePlayingInstance</link>();
+<anchor xml:id="__bot_config_8cpp_source_1l00571"/>00571 &#32;&#32;&#32;&#32;<link linkend="_class_bot_config_1ad8b1cd4e0943a64f9e3a91d9a09fe21e">checkPlayingInstanceParameters</link>();
+<anchor xml:id="__bot_config_8cpp_source_1l00572"/>00572 &#32;&#32;&#32;&#32;<emphasis role="keywordflow">return</emphasis>&#32;<emphasis role="keyword">true</emphasis>;
+<anchor xml:id="__bot_config_8cpp_source_1l00573"/>00573 }
+<anchor xml:id="__bot_config_8cpp_source_1l00574"/>00574 
+<anchor xml:id="__bot_config_8cpp_source_1l00575"/>00575 
+<anchor xml:id="__bot_config_8cpp_source_1l00576"/>00576 
+<anchor xml:id="__bot_config_8cpp_source_1l00577"/><link linkend="_class_bot_config_1af8c906f3cd22726a96e758886c756068">00577</link> <emphasis role="keywordtype">void</emphasis>&#32;<link linkend="_class_bot_config_1af8c906f3cd22726a96e758886c756068">BotConfig::initEmulators</link>()
+<anchor xml:id="__bot_config_8cpp_source_1l00578"/>00578 {
+<anchor xml:id="__bot_config_8cpp_source_1l00579"/>00579 &#32;&#32;&#32;&#32;<link linkend="_class_bot_config_1a24360fdf5b92d7fb02ca39004ceb06cf">initBluestacks</link>();
+<anchor xml:id="__bot_config_8cpp_source_1l00580"/>00580 &#32;&#32;&#32;&#32;<link linkend="_class_bot_config_1ac91f46c5dca7953454d5a2340dfd7f5c">initLdPlayer</link>();
+<anchor xml:id="__bot_config_8cpp_source_1l00581"/>00581 &#32;&#32;&#32;&#32;<link linkend="_class_bot_config_1a53485f20f89c00397495b545b91044da">updateDataAll</link>(<emphasis role="keyword">true</emphasis>);
+<anchor xml:id="__bot_config_8cpp_source_1l00582"/>00582 }
+<anchor xml:id="__bot_config_8cpp_source_1l00583"/>00583 
+<anchor xml:id="__bot_config_8cpp_source_1l00584"/><link linkend="_class_bot_config_1a24360fdf5b92d7fb02ca39004ceb06cf">00584</link> <emphasis role="keywordtype">void</emphasis>&#32;<link linkend="_class_bot_config_1a24360fdf5b92d7fb02ca39004ceb06cf">BotConfig::initBluestacks</link>()
+<anchor xml:id="__bot_config_8cpp_source_1l00585"/>00585 {
+<anchor xml:id="__bot_config_8cpp_source_1l00586"/>00586 &#32;&#32;&#32;&#32;<emphasis role="keywordflow">if</emphasis>&#32;(<link linkend="_class_bot_config_1abe21c3220cdb52cd85ad15e8c3e55982">blueStacksInstalled</link>)&#32;{
+<anchor xml:id="__bot_config_8cpp_source_1l00587"/>00587 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<link linkend="_class_bot_config_1a98b58016baad4e504ec1fbcb7eace8b9">allEmu</link>.<link linkend="_struct_all_emulators_1ad9665110f17cbb850ce02b9dcc2442ea">blue</link>.<link linkend="_class_bluestacks_1a96b195f415dc60c4329f508bf54331f5">receiveFolders</link>(<link linkend="_class_bot_config_1a47a08f20862705d00d5647b7ba975664">readBluestacksFolder</link>(),<link linkend="_class_bot_config_1a0e6d03f4aaf4a056c97882717f03870f">readBluestacksConfig</link>());
+<anchor xml:id="__bot_config_8cpp_source_1l00588"/>00588 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<link linkend="_class_bot_config_1a98b58016baad4e504ec1fbcb7eace8b9">allEmu</link>.<link linkend="_struct_all_emulators_1ad9665110f17cbb850ce02b9dcc2442ea">blue</link>.<link linkend="_class_bluestacks_1ab4f3076d8154c72a40f33f0cdfcff07d">init</link>(<emphasis role="keyword">false</emphasis>);
+<anchor xml:id="__bot_config_8cpp_source_1l00589"/>00589 &#32;&#32;&#32;&#32;}
+<anchor xml:id="__bot_config_8cpp_source_1l00590"/>00590 &#32;&#32;&#32;&#32;<emphasis role="keywordflow">else</emphasis>&#32;<emphasis role="keywordflow">if</emphasis>&#32;(<link linkend="_class_bot_config_1a98b58016baad4e504ec1fbcb7eace8b9">allEmu</link>.<link linkend="_struct_all_emulators_1ad9665110f17cbb850ce02b9dcc2442ea">blue</link>.<link linkend="_class_bluestacks_1ab4f3076d8154c72a40f33f0cdfcff07d">init</link>(<link linkend="_class_bot_config_1a0d607d1afacc3568084d163bf89565a5">searchBluestacks</link>))&#32;{
+<anchor xml:id="__bot_config_8cpp_source_1l00591"/>00591 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<link linkend="_class_bot_config_1ab9fe07595e423fcdfc22322dd1ede393">updateBluestacksConfig</link>(<link linkend="_class_bot_config_1a98b58016baad4e504ec1fbcb7eace8b9">allEmu</link>.<link linkend="_struct_all_emulators_1ad9665110f17cbb850ce02b9dcc2442ea">blue</link>.<link linkend="_class_bluestacks_1afb053ca9aefed7324c712b7b567e3bd0">configFolder</link>);
+<anchor xml:id="__bot_config_8cpp_source_1l00592"/>00592 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<link linkend="_class_bot_config_1ae21ba22e6f1b9dfcacf38dd78f904d82">updateBluestacksFolder</link>(<link linkend="_class_bot_config_1a98b58016baad4e504ec1fbcb7eace8b9">allEmu</link>.<link linkend="_struct_all_emulators_1ad9665110f17cbb850ce02b9dcc2442ea">blue</link>.<link linkend="_class_bluestacks_1af8ff24fe55ea696c944c0819ad53690a">hdPlayerFolder</link>);
+<anchor xml:id="__bot_config_8cpp_source_1l00593"/>00593 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<link linkend="_class_bot_config_1abe21c3220cdb52cd85ad15e8c3e55982">blueStacksInstalled</link>&#32;=&#32;<emphasis role="keyword">true</emphasis>;
+<anchor xml:id="__bot_config_8cpp_source_1l00594"/>00594 &#32;&#32;&#32;&#32;}
+<anchor xml:id="__bot_config_8cpp_source_1l00595"/>00595 &#32;&#32;&#32;&#32;<emphasis role="keywordflow">else</emphasis>&#32;{
+<anchor xml:id="__bot_config_8cpp_source_1l00596"/>00596 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<link linkend="_class_bot_config_1ab9fe07595e423fcdfc22322dd1ede393">updateBluestacksConfig</link>(<link linkend="_class_bot_config_1adbb6cd71fca55ebb943869a88a808875">NOTINSTALLED</link>);
+<anchor xml:id="__bot_config_8cpp_source_1l00597"/>00597 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<link linkend="_class_bot_config_1ae21ba22e6f1b9dfcacf38dd78f904d82">updateBluestacksFolder</link>(<link linkend="_class_bot_config_1adbb6cd71fca55ebb943869a88a808875">NOTINSTALLED</link>);
+<anchor xml:id="__bot_config_8cpp_source_1l00598"/>00598 &#32;&#32;&#32;&#32;}
+<anchor xml:id="__bot_config_8cpp_source_1l00599"/>00599 &#32;&#32;&#32;&#32;<link linkend="_class_bot_config_1ab4929dd1c99a9e725800349a9cfc3b0e">updateDataBluestacks</link>(<emphasis role="keyword">true</emphasis>);
+<anchor xml:id="__bot_config_8cpp_source_1l00600"/>00600 }
+<anchor xml:id="__bot_config_8cpp_source_1l00601"/>00601 
+<anchor xml:id="__bot_config_8cpp_source_1l00602"/><link linkend="_class_bot_config_1ac91f46c5dca7953454d5a2340dfd7f5c">00602</link> <emphasis role="keywordtype">void</emphasis>&#32;<link linkend="_class_bot_config_1ac91f46c5dca7953454d5a2340dfd7f5c">BotConfig::initLdPlayer</link>()
+<anchor xml:id="__bot_config_8cpp_source_1l00603"/>00603 {
+<anchor xml:id="__bot_config_8cpp_source_1l00604"/>00604 &#32;&#32;&#32;&#32;<emphasis role="keywordflow">if</emphasis>&#32;(<link linkend="_class_bot_config_1ae7e47847f68c73a9d31c3437a970389d">ldPlayerInstalled</link>)&#32;{
+<anchor xml:id="__bot_config_8cpp_source_1l00605"/>00605 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<link linkend="_class_bot_config_1a98b58016baad4e504ec1fbcb7eace8b9">allEmu</link>.<link linkend="_struct_all_emulators_1a8522baa50bd6eb248be7acc3ed4b97c9">ld</link>.<link linkend="_class_l_d_player_1aed9eaafd453b9fcdea05322cf052e743">receiveFolders</link>(<link linkend="_class_bot_config_1a0be029b74be2d6925d33d6d3a7cf08b3">readLdPlayerFolder</link>());
+<anchor xml:id="__bot_config_8cpp_source_1l00606"/>00606 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<link linkend="_class_bot_config_1a98b58016baad4e504ec1fbcb7eace8b9">allEmu</link>.<link linkend="_struct_all_emulators_1a8522baa50bd6eb248be7acc3ed4b97c9">ld</link>.<link linkend="_class_l_d_player_1aa4d08272c0957b3f9ccd69bee91d39ac">init</link>(<emphasis role="keyword">false</emphasis>);
+<anchor xml:id="__bot_config_8cpp_source_1l00607"/>00607 &#32;&#32;&#32;&#32;}
+<anchor xml:id="__bot_config_8cpp_source_1l00608"/>00608 &#32;&#32;&#32;&#32;<emphasis role="keywordflow">else</emphasis>&#32;<emphasis role="keywordflow">if</emphasis>&#32;(<link linkend="_class_bot_config_1a98b58016baad4e504ec1fbcb7eace8b9">allEmu</link>.<link linkend="_struct_all_emulators_1a8522baa50bd6eb248be7acc3ed4b97c9">ld</link>.<link linkend="_class_l_d_player_1aa4d08272c0957b3f9ccd69bee91d39ac">init</link>(<link linkend="_class_bot_config_1a7e670ede2140b300b37e9fd07b8a6eff">searchLdPlayer</link>))&#32;{
+<anchor xml:id="__bot_config_8cpp_source_1l00609"/>00609 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<link linkend="_class_bot_config_1ae7e47847f68c73a9d31c3437a970389d">ldPlayerInstalled</link>&#32;=&#32;<emphasis role="keyword">true</emphasis>;
+<anchor xml:id="__bot_config_8cpp_source_1l00610"/>00610 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<link linkend="_class_bot_config_1a095c01a9b9e6ff1db9c683716337f45f">updateLdPlayerFolder</link>(<link linkend="_class_bot_config_1a98b58016baad4e504ec1fbcb7eace8b9">allEmu</link>.<link linkend="_struct_all_emulators_1a8522baa50bd6eb248be7acc3ed4b97c9">ld</link>.<link linkend="_class_l_d_player_1aac7170bb4b860334bca99388d3f2a3f4">ldPlayerFolder</link>);
+<anchor xml:id="__bot_config_8cpp_source_1l00611"/>00611 &#32;&#32;&#32;&#32;}
+<anchor xml:id="__bot_config_8cpp_source_1l00612"/>00612 &#32;&#32;&#32;&#32;<emphasis role="keywordflow">else</emphasis>&#32;{
+<anchor xml:id="__bot_config_8cpp_source_1l00613"/>00613 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<link linkend="_class_bot_config_1a095c01a9b9e6ff1db9c683716337f45f">updateLdPlayerFolder</link>(<link linkend="_class_bot_config_1adbb6cd71fca55ebb943869a88a808875">NOTINSTALLED</link>);
+<anchor xml:id="__bot_config_8cpp_source_1l00614"/>00614 &#32;&#32;&#32;&#32;}
+<anchor xml:id="__bot_config_8cpp_source_1l00615"/>00615 &#32;&#32;&#32;&#32;<link linkend="_class_bot_config_1ae1e96b6b256aa8894b603259674f6a6f">updateDataLdPlayer</link>(<emphasis role="keyword">true</emphasis>);
+<anchor xml:id="__bot_config_8cpp_source_1l00616"/>00616 }
+<anchor xml:id="__bot_config_8cpp_source_1l00617"/>00617 
+<anchor xml:id="__bot_config_8cpp_source_1l00618"/><link linkend="_class_bot_config_1a721c788702f464bb4406b919d018c5f9">00618</link> <emphasis role="keywordtype">void</emphasis>&#32;<link linkend="_class_bot_config_1a721c788702f464bb4406b919d018c5f9">BotConfig::startPlayingInstance</link>()
+<anchor xml:id="__bot_config_8cpp_source_1l00619"/>00619 {
+<anchor xml:id="__bot_config_8cpp_source_1l00620"/>00620 &#32;&#32;&#32;&#32;<link linkend="_class_bot_config_1a98b58016baad4e504ec1fbcb7eace8b9">allEmu</link>.<link linkend="_struct_all_emulators_1a710e93eea46e0922c245799d60d1fb95">playingEmulator</link>-&gt;<link linkend="_class_emulator_1a7223775167bb8d576f8211800af52ba0">startInstance</link>(<link linkend="_class_bot_config_1a7b9529e08b815f71595c6b5953654057">getPlayingInstance</link>());
+<anchor xml:id="__bot_config_8cpp_source_1l00621"/>00621 }
+<anchor xml:id="__bot_config_8cpp_source_1l00622"/>00622 
+<anchor xml:id="__bot_config_8cpp_source_1l00623"/><link linkend="_class_bot_config_1a6b10b258e97759cf77f5c35f57698bc7">00623</link> std::string&#32;<link linkend="_class_bot_config_1a6b10b258e97759cf77f5c35f57698bc7">BotConfig::getAdbKey</link>()
+<anchor xml:id="__bot_config_8cpp_source_1l00624"/>00624 {
+<anchor xml:id="__bot_config_8cpp_source_1l00625"/>00625 &#32;&#32;&#32;&#32;<emphasis role="keywordflow">if</emphasis>&#32;(<link linkend="_class_bot_config_1a98b58016baad4e504ec1fbcb7eace8b9">allEmu</link>.<link linkend="_struct_all_emulators_1af2818835c22641cdb698ae29d41cb41c">playingInstance</link>&#32;!=&#32;<emphasis role="keyword">nullptr</emphasis>)&#32;{
+<anchor xml:id="__bot_config_8cpp_source_1l00626"/>00626 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">return</emphasis>&#32;<link linkend="_class_bot_config_1a98b58016baad4e504ec1fbcb7eace8b9">allEmu</link>.<link linkend="_struct_all_emulators_1af2818835c22641cdb698ae29d41cb41c">playingInstance</link>-&gt;<link linkend="_class_instance_1abb8d03ac04893774e93ea06e85338d39">getAdbKey</link>();
+<anchor xml:id="__bot_config_8cpp_source_1l00627"/>00627 &#32;&#32;&#32;&#32;}
+<anchor xml:id="__bot_config_8cpp_source_1l00628"/>00628 &#32;&#32;&#32;&#32;<emphasis role="keywordflow">return</emphasis>&#32;<emphasis role="stringliteral">&quot;&quot;</emphasis>;
+<anchor xml:id="__bot_config_8cpp_source_1l00629"/>00629 }
+<anchor xml:id="__bot_config_8cpp_source_1l00630"/>00630 
+<anchor xml:id="__bot_config_8cpp_source_1l00631"/>00631 
+<anchor xml:id="__bot_config_8cpp_source_1l00632"/><link linkend="_struct_all_emulators_1a91313dd1ec133a3fd327014dc4c039a1">00632</link> <emphasis role="keywordtype">void</emphasis>&#32;<link linkend="_struct_all_emulators_1a91313dd1ec133a3fd327014dc4c039a1">AllEmulators::setAllInstances</link>()
+<anchor xml:id="__bot_config_8cpp_source_1l00633"/>00633 {
+<anchor xml:id="__bot_config_8cpp_source_1l00634"/>00634 &#32;&#32;&#32;this-&gt;<link linkend="_struct_all_emulators_1a8cbae61731971d66a68a201302ab6db8">LdPlayerInstances</link>&#32;=&#32;<link linkend="_struct_all_emulators_1a8522baa50bd6eb248be7acc3ed4b97c9">ld</link>.<link linkend="_class_emulator_1a4c0372049844947502d84334e7c0c7c1">getListPlayableInstances</link>();
+<anchor xml:id="__bot_config_8cpp_source_1l00635"/>00635 &#32;&#32;&#32;this-&gt;<link linkend="_struct_all_emulators_1a243fca964426f25cb782f34afa465b8e">BluestackInstances</link>&#32;=&#32;<link linkend="_struct_all_emulators_1ad9665110f17cbb850ce02b9dcc2442ea">blue</link>.<link linkend="_class_emulator_1a4c0372049844947502d84334e7c0c7c1">getListPlayableInstances</link>();
+<anchor xml:id="__bot_config_8cpp_source_1l00636"/>00636 }
+<anchor xml:id="__bot_config_8cpp_source_1l00637"/>00637 
+<anchor xml:id="__bot_config_8cpp_source_1l00638"/><link linkend="_struct_all_emulators_1a51b5d1493cdbc09be59b062ddb428963">00638</link> <emphasis role="keywordtype">void</emphasis>&#32;<link linkend="_struct_all_emulators_1a51b5d1493cdbc09be59b062ddb428963">AllEmulators::fillBluestacksInstances</link>()
+<anchor xml:id="__bot_config_8cpp_source_1l00639"/>00639 {
+<anchor xml:id="__bot_config_8cpp_source_1l00640"/>00640 &#32;&#32;&#32;&#32;<emphasis role="keywordflow">for</emphasis>&#32;(<link linkend="_class_instance">Instance</link>*&#32;ldInstance&#32;:&#32;<link linkend="_struct_all_emulators_1a8cbae61731971d66a68a201302ab6db8">LdPlayerInstances</link>)&#32;{
+<anchor xml:id="__bot_config_8cpp_source_1l00641"/>00641 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<link linkend="_struct_all_emulators_1acaf72502e2a14835727f0af11c9c2e00">allInstances</link>.push_back(std::make_pair(<link linkend="_struct_all_emulators_1acaf72502e2a14835727f0af11c9c2e00">allInstances</link>.size(),&#32;ldInstance));
+<anchor xml:id="__bot_config_8cpp_source_1l00642"/>00642 &#32;&#32;&#32;&#32;}
+<anchor xml:id="__bot_config_8cpp_source_1l00643"/>00643 }
+<anchor xml:id="__bot_config_8cpp_source_1l00644"/><link linkend="_struct_all_emulators_1aeeb2b6e332b62d79119134f47a0382bc">00644</link> <emphasis role="keywordtype">void</emphasis>&#32;<link linkend="_struct_all_emulators_1aeeb2b6e332b62d79119134f47a0382bc">AllEmulators::fillLdPlayerInstances</link>()
+<anchor xml:id="__bot_config_8cpp_source_1l00645"/>00645 {
+<anchor xml:id="__bot_config_8cpp_source_1l00646"/>00646 &#32;&#32;&#32;&#32;<emphasis role="keywordflow">for</emphasis>&#32;(<link linkend="_class_instance">Instance</link>*&#32;blInstance&#32;:&#32;<link linkend="_struct_all_emulators_1a243fca964426f25cb782f34afa465b8e">BluestackInstances</link>)&#32;{
+<anchor xml:id="__bot_config_8cpp_source_1l00647"/>00647 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<link linkend="_struct_all_emulators_1acaf72502e2a14835727f0af11c9c2e00">allInstances</link>.push_back(std::make_pair(<link linkend="_struct_all_emulators_1acaf72502e2a14835727f0af11c9c2e00">allInstances</link>.size(),&#32;blInstance));
+<anchor xml:id="__bot_config_8cpp_source_1l00648"/>00648 &#32;&#32;&#32;&#32;}
+<anchor xml:id="__bot_config_8cpp_source_1l00649"/>00649 }
+<anchor xml:id="__bot_config_8cpp_source_1l00650"/>00650 
+<anchor xml:id="__bot_config_8cpp_source_1l00651"/><link linkend="_struct_all_emulators_1ade387932188cdd7032e6c83eb3432a41">00651</link> <emphasis role="keywordtype">void</emphasis>&#32;<link linkend="_struct_all_emulators_1ade387932188cdd7032e6c83eb3432a41">AllEmulators::fillAllInstances</link>()
+<anchor xml:id="__bot_config_8cpp_source_1l00652"/>00652 {
+<anchor xml:id="__bot_config_8cpp_source_1l00653"/>00653 &#32;&#32;&#32;&#32;<link linkend="_struct_all_emulators_1aeeb2b6e332b62d79119134f47a0382bc">fillLdPlayerInstances</link>();
+<anchor xml:id="__bot_config_8cpp_source_1l00654"/>00654 &#32;&#32;&#32;&#32;<link linkend="_struct_all_emulators_1a51b5d1493cdbc09be59b062ddb428963">fillBluestacksInstances</link>();
+<anchor xml:id="__bot_config_8cpp_source_1l00655"/>00655 }
+<anchor xml:id="__bot_config_8cpp_source_1l00656"/>00656 
+<anchor xml:id="__bot_config_8cpp_source_1l00657"/><link linkend="_struct_all_emulators_1a6ae821ac9da5f8ff39251f2b6e9b74d2">00657</link> <emphasis role="keywordtype">void</emphasis>&#32;<link linkend="_struct_all_emulators_1a6ae821ac9da5f8ff39251f2b6e9b74d2">AllEmulators::showAllInstances</link>()
+<anchor xml:id="__bot_config_8cpp_source_1l00658"/>00658 {
+<anchor xml:id="__bot_config_8cpp_source_1l00659"/>00659 &#32;&#32;&#32;&#32;<emphasis role="keywordflow">for</emphasis>&#32;(std::pair&lt;int,&#32;Instance*&gt;&#32;inst&#32;:&#32;<link linkend="_struct_all_emulators_1acaf72502e2a14835727f0af11c9c2e00">allInstances</link>)&#32;{
+<anchor xml:id="__bot_config_8cpp_source_1l00660"/>00660 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;std::cout&#32;&lt;&lt;<emphasis role="stringliteral">&quot;ID&#32;CHOICE:&#32;&quot;</emphasis>&#32;&lt;&lt;&#32;inst.first&#32;&lt;&lt;&#32;<emphasis role="stringliteral">&quot;\n&quot;</emphasis>;
+<anchor xml:id="__bot_config_8cpp_source_1l00661"/>00661 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;inst.second-&gt;showInstance();
+<anchor xml:id="__bot_config_8cpp_source_1l00662"/>00662 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;std::cout&lt;&lt;&#32;<emphasis role="stringliteral">&quot;\n\n&quot;</emphasis>;
+<anchor xml:id="__bot_config_8cpp_source_1l00663"/>00663 &#32;&#32;&#32;&#32;}
+<anchor xml:id="__bot_config_8cpp_source_1l00664"/>00664 }
+<anchor xml:id="__bot_config_8cpp_source_1l00665"/>00665 
+<anchor xml:id="__bot_config_8cpp_source_1l00666"/><link linkend="_struct_all_emulators_1a86a17ae3ac810b92544baa8cdcb01309">00666</link> <emphasis role="keywordtype">void</emphasis>&#32;<link linkend="_struct_all_emulators_1a86a17ae3ac810b92544baa8cdcb01309">AllEmulators::showInstance</link>(<emphasis role="keywordtype">int</emphasis>&#32;index)
+<anchor xml:id="__bot_config_8cpp_source_1l00667"/>00667 {
+<anchor xml:id="__bot_config_8cpp_source_1l00668"/>00668 &#32;&#32;&#32;&#32;index&#32;=&#32;abs(index);
+<anchor xml:id="__bot_config_8cpp_source_1l00669"/>00669 &#32;&#32;&#32;&#32;<emphasis role="keywordflow">if</emphasis>&#32;(index&#32;&lt;&#32;<link linkend="_struct_all_emulators_1acaf72502e2a14835727f0af11c9c2e00">allInstances</link>.size())&#32;{
+<anchor xml:id="__bot_config_8cpp_source_1l00670"/>00670 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">if</emphasis>(<link linkend="_struct_all_emulators_1ac38be2840e4ae476295c7f08b62caa1f">isBluestacksInstance</link>(index))
+<anchor xml:id="__bot_config_8cpp_source_1l00671"/>00671 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<link linkend="_struct_all_emulators_1ad9665110f17cbb850ce02b9dcc2442ea">blue</link>.<link linkend="_class_bluestacks_1a52ecfe65919c8f12ecc32167fe4ba811">showInstance</link>(<link linkend="_struct_all_emulators_1acca32e960d79c1dc40a7e10666e8970d">getBluestacksInstance</link>(index));
+<anchor xml:id="__bot_config_8cpp_source_1l00672"/>00672 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">else</emphasis>&#32;<emphasis role="keywordflow">if</emphasis>&#32;(<link linkend="_struct_all_emulators_1afdb51d890e849116f1ef02b6da56e8b3">isLdPlayerInstance</link>(index))&#32;{
+<anchor xml:id="__bot_config_8cpp_source_1l00673"/>00673 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<link linkend="_struct_all_emulators_1a8522baa50bd6eb248be7acc3ed4b97c9">ld</link>.<link linkend="_class_l_d_player_1a89852c8289be577bffcedfa52270dd50">showInstance</link>(<link linkend="_struct_all_emulators_1a72a9288eb9cfe2b4b45684f2581e4a95">getLDPlayerInstance</link>(index));
+<anchor xml:id="__bot_config_8cpp_source_1l00674"/>00674 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;}
+<anchor xml:id="__bot_config_8cpp_source_1l00675"/>00675 &#32;&#32;&#32;&#32;}
+<anchor xml:id="__bot_config_8cpp_source_1l00676"/>00676 }
+<anchor xml:id="__bot_config_8cpp_source_1l00677"/>00677 
+<anchor xml:id="__bot_config_8cpp_source_1l00678"/><link linkend="_struct_all_emulators_1abc4961f4cb82ebbf66e464be8d9285b8">00678</link> <emphasis role="keywordtype">void</emphasis>&#32;<link linkend="_struct_all_emulators_1a86a17ae3ac810b92544baa8cdcb01309">AllEmulators::showInstance</link>(<link linkend="_class_instance">Instance</link>*&#32;inst)
+<anchor xml:id="__bot_config_8cpp_source_1l00679"/>00679 {
+<anchor xml:id="__bot_config_8cpp_source_1l00680"/>00680 &#32;&#32;&#32;&#32;<emphasis role="keywordflow">if</emphasis>&#32;(<link linkend="_struct_all_emulators_1ac38be2840e4ae476295c7f08b62caa1f">isBluestacksInstance</link>(inst))&#32;{
+<anchor xml:id="__bot_config_8cpp_source_1l00681"/>00681 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<link linkend="_struct_all_emulators_1ad9665110f17cbb850ce02b9dcc2442ea">blue</link>.<link linkend="_class_bluestacks_1a52ecfe65919c8f12ecc32167fe4ba811">showInstance</link>(inst);
+<anchor xml:id="__bot_config_8cpp_source_1l00682"/>00682 &#32;&#32;&#32;&#32;}
+<anchor xml:id="__bot_config_8cpp_source_1l00683"/>00683 &#32;&#32;&#32;&#32;<emphasis role="keywordflow">else</emphasis>&#32;<emphasis role="keywordflow">if</emphasis>&#32;(<link linkend="_struct_all_emulators_1afdb51d890e849116f1ef02b6da56e8b3">isLdPlayerInstance</link>(inst))&#32;{
+<anchor xml:id="__bot_config_8cpp_source_1l00684"/>00684 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<link linkend="_struct_all_emulators_1a8522baa50bd6eb248be7acc3ed4b97c9">ld</link>.<link linkend="_class_l_d_player_1a89852c8289be577bffcedfa52270dd50">showInstance</link>(inst);
+<anchor xml:id="__bot_config_8cpp_source_1l00685"/>00685 &#32;&#32;&#32;&#32;}
+<anchor xml:id="__bot_config_8cpp_source_1l00686"/>00686 }
+<anchor xml:id="__bot_config_8cpp_source_1l00687"/>00687 
+<anchor xml:id="__bot_config_8cpp_source_1l00688"/><link linkend="_struct_all_emulators_1a4866e51109e46a475c389e658350c07d">00688</link> <link linkend="_class_instance">Instance</link>*&#32;<link linkend="_struct_all_emulators_1a4866e51109e46a475c389e658350c07d">AllEmulators::getInstance</link>(<emphasis role="keywordtype">int</emphasis>&#32;index)
+<anchor xml:id="__bot_config_8cpp_source_1l00689"/>00689 {
+<anchor xml:id="__bot_config_8cpp_source_1l00690"/>00690 &#32;&#32;&#32;&#32;index&#32;=&#32;abs(index);
+<anchor xml:id="__bot_config_8cpp_source_1l00691"/>00691 &#32;&#32;&#32;&#32;<emphasis role="keywordflow">if</emphasis>&#32;(index&#32;&lt;&#32;<link linkend="_struct_all_emulators_1acaf72502e2a14835727f0af11c9c2e00">allInstances</link>.size())&#32;{
+<anchor xml:id="__bot_config_8cpp_source_1l00692"/>00692 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">return</emphasis>&#32;<link linkend="_struct_all_emulators_1acaf72502e2a14835727f0af11c9c2e00">allInstances</link>.at(index).second;
+<anchor xml:id="__bot_config_8cpp_source_1l00693"/>00693 &#32;&#32;&#32;&#32;}
+<anchor xml:id="__bot_config_8cpp_source_1l00694"/>00694 &#32;&#32;&#32;&#32;<emphasis role="keywordflow">else</emphasis>&#32;<emphasis role="keywordflow">return</emphasis>&#32;<emphasis role="keyword">nullptr</emphasis>;
+<anchor xml:id="__bot_config_8cpp_source_1l00695"/>00695 }
+<anchor xml:id="__bot_config_8cpp_source_1l00696"/>00696 
+<anchor xml:id="__bot_config_8cpp_source_1l00697"/><link linkend="_struct_all_emulators_1afdb51d890e849116f1ef02b6da56e8b3">00697</link> <emphasis role="keywordtype">bool</emphasis>&#32;<link linkend="_struct_all_emulators_1afdb51d890e849116f1ef02b6da56e8b3">AllEmulators::isLdPlayerInstance</link>(<emphasis role="keywordtype">int</emphasis>&#32;index)
+<anchor xml:id="__bot_config_8cpp_source_1l00698"/>00698 {
+<anchor xml:id="__bot_config_8cpp_source_1l00699"/>00699 &#32;&#32;&#32;&#32;<emphasis role="keywordflow">return</emphasis>&#32;<emphasis role="keyword">dynamic_cast&lt;</emphasis><link linkend="_class_l_d_player_instance">LDPlayerInstance</link>*<emphasis role="keyword">&gt;</emphasis>(<link linkend="_struct_all_emulators_1a4866e51109e46a475c389e658350c07d">getInstance</link>(index))!=<emphasis role="keyword">nullptr</emphasis>;
+<anchor xml:id="__bot_config_8cpp_source_1l00700"/>00700 }
+<anchor xml:id="__bot_config_8cpp_source_1l00701"/>00701 
+<anchor xml:id="__bot_config_8cpp_source_1l00702"/>00702 
+<anchor xml:id="__bot_config_8cpp_source_1l00703"/><link linkend="_struct_all_emulators_1ac38be2840e4ae476295c7f08b62caa1f">00703</link> <emphasis role="keywordtype">bool</emphasis>&#32;<link linkend="_struct_all_emulators_1ac38be2840e4ae476295c7f08b62caa1f">AllEmulators::isBluestacksInstance</link>(<emphasis role="keywordtype">int</emphasis>&#32;index)
+<anchor xml:id="__bot_config_8cpp_source_1l00704"/>00704 {
+<anchor xml:id="__bot_config_8cpp_source_1l00705"/>00705 &#32;&#32;&#32;&#32;<emphasis role="keywordflow">return</emphasis>&#32;<emphasis role="keyword">dynamic_cast&lt;</emphasis><link linkend="_class_bluestacks_instance">BluestacksInstance</link>*<emphasis role="keyword">&gt;</emphasis>(<link linkend="_struct_all_emulators_1a4866e51109e46a475c389e658350c07d">getInstance</link>(index))&#32;!=&#32;<emphasis role="keyword">nullptr</emphasis>;
+<anchor xml:id="__bot_config_8cpp_source_1l00706"/>00706 }
+<anchor xml:id="__bot_config_8cpp_source_1l00707"/>00707 
+<anchor xml:id="__bot_config_8cpp_source_1l00708"/><link linkend="_struct_all_emulators_1af9b4a61ff1d1a8f659b2edf234f66c70">00708</link> <emphasis role="keywordtype">bool</emphasis>&#32;<link linkend="_struct_all_emulators_1afdb51d890e849116f1ef02b6da56e8b3">AllEmulators::isLdPlayerInstance</link>(<link linkend="_class_instance">Instance</link>*&#32;inst)
+<anchor xml:id="__bot_config_8cpp_source_1l00709"/>00709 {
+<anchor xml:id="__bot_config_8cpp_source_1l00710"/>00710 &#32;&#32;&#32;&#32;<emphasis role="keywordflow">return</emphasis>&#32;<emphasis role="keyword">dynamic_cast&lt;</emphasis><link linkend="_class_l_d_player_instance">LDPlayerInstance</link>*<emphasis role="keyword">&gt;</emphasis>(inst)&#32;!=&#32;<emphasis role="keyword">nullptr</emphasis>;
+<anchor xml:id="__bot_config_8cpp_source_1l00711"/>00711 }
+<anchor xml:id="__bot_config_8cpp_source_1l00712"/>00712 
+<anchor xml:id="__bot_config_8cpp_source_1l00713"/><link linkend="_struct_all_emulators_1a4f1845a1b78a6e45c4d71b50c875ec76">00713</link> <emphasis role="keywordtype">bool</emphasis>&#32;<link linkend="_struct_all_emulators_1a4f1845a1b78a6e45c4d71b50c875ec76">AllEmulators::isBluestacks</link>(<link linkend="_class_emulator">Emulator</link>*&#32;emu)
+<anchor xml:id="__bot_config_8cpp_source_1l00714"/>00714 {
+<anchor xml:id="__bot_config_8cpp_source_1l00715"/>00715 &#32;&#32;&#32;&#32;<emphasis role="keywordflow">return</emphasis>&#32;<emphasis role="keyword">dynamic_cast&lt;</emphasis><link linkend="_class_bluestacks">Bluestacks</link>*<emphasis role="keyword">&gt;</emphasis>(emu)&#32;!=&#32;<emphasis role="keyword">nullptr</emphasis>;
+<anchor xml:id="__bot_config_8cpp_source_1l00716"/>00716 }
+<anchor xml:id="__bot_config_8cpp_source_1l00717"/>00717 
+<anchor xml:id="__bot_config_8cpp_source_1l00718"/><link linkend="_struct_all_emulators_1a9064c95026dfdf98367927093d905ee0">00718</link> <emphasis role="keywordtype">bool</emphasis>&#32;<link linkend="_struct_all_emulators_1a9064c95026dfdf98367927093d905ee0">AllEmulators::isLdPlayer</link>(<link linkend="_class_emulator">Emulator</link>*&#32;emu)
+<anchor xml:id="__bot_config_8cpp_source_1l00719"/>00719 {
+<anchor xml:id="__bot_config_8cpp_source_1l00720"/>00720 &#32;&#32;&#32;&#32;<emphasis role="keywordflow">return</emphasis>&#32;<emphasis role="keyword">dynamic_cast&lt;</emphasis><link linkend="_class_l_d_player">LDPlayer</link>*<emphasis role="keyword">&gt;</emphasis>(emu)&#32;!=&#32;<emphasis role="keyword">nullptr</emphasis>;
+<anchor xml:id="__bot_config_8cpp_source_1l00721"/>00721 }
+<anchor xml:id="__bot_config_8cpp_source_1l00722"/>00722 
+<anchor xml:id="__bot_config_8cpp_source_1l00723"/><link linkend="_struct_all_emulators_1a28b64babcabb20883e56e61ffb067b9b">00723</link> <link linkend="_class_bluestacks">Bluestacks</link>*&#32;<link linkend="_struct_all_emulators_1a28b64babcabb20883e56e61ffb067b9b">AllEmulators::transformBluestacks</link>(<link linkend="_class_emulator">Emulator</link>*&#32;emu)
+<anchor xml:id="__bot_config_8cpp_source_1l00724"/>00724 {
+<anchor xml:id="__bot_config_8cpp_source_1l00725"/>00725 &#32;&#32;&#32;&#32;<emphasis role="keywordflow">return</emphasis>&#32;<emphasis role="keyword">dynamic_cast&lt;</emphasis><link linkend="_class_bluestacks">Bluestacks</link>*<emphasis role="keyword">&gt;</emphasis>(emu);
+<anchor xml:id="__bot_config_8cpp_source_1l00726"/>00726 }
+<anchor xml:id="__bot_config_8cpp_source_1l00727"/>00727 
+<anchor xml:id="__bot_config_8cpp_source_1l00728"/><link linkend="_struct_all_emulators_1a5fc25f131d0c72ca6eb2e938e2e8df38">00728</link> <link linkend="_class_l_d_player">LDPlayer</link>*&#32;<link linkend="_struct_all_emulators_1a5fc25f131d0c72ca6eb2e938e2e8df38">AllEmulators::transformLdPlayer</link>(<link linkend="_class_emulator">Emulator</link>*&#32;emu)
+<anchor xml:id="__bot_config_8cpp_source_1l00729"/>00729 {
+<anchor xml:id="__bot_config_8cpp_source_1l00730"/>00730 &#32;&#32;&#32;&#32;<emphasis role="keywordflow">return</emphasis>&#32;<emphasis role="keyword">dynamic_cast&lt;</emphasis><link linkend="_class_l_d_player">LDPlayer</link>*<emphasis role="keyword">&gt;</emphasis>(emu);
+<anchor xml:id="__bot_config_8cpp_source_1l00731"/>00731 }
+<anchor xml:id="__bot_config_8cpp_source_1l00732"/>00732 
+<anchor xml:id="__bot_config_8cpp_source_1l00733"/>00733 
+<anchor xml:id="__bot_config_8cpp_source_1l00734"/><link linkend="_struct_all_emulators_1a6ffd909ec5cb08d91a6dc09a59db58e1">00734</link> <link linkend="_class_instance">Instance</link>*&#32;<link linkend="_struct_all_emulators_1a4866e51109e46a475c389e658350c07d">AllEmulators::getInstance</link>(std::string&#32;globalId)
+<anchor xml:id="__bot_config_8cpp_source_1l00735"/>00735 {
+<anchor xml:id="__bot_config_8cpp_source_1l00736"/>00736 &#32;&#32;&#32;&#32;<emphasis role="keywordflow">for</emphasis>&#32;(<emphasis role="keywordtype">int</emphasis>&#32;i&#32;=&#32;0;i&lt;<link linkend="_struct_all_emulators_1acaf72502e2a14835727f0af11c9c2e00">allInstances</link>.size();++i)&#32;{
+<anchor xml:id="__bot_config_8cpp_source_1l00737"/>00737 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<link linkend="_class_instance">Instance</link>*temp=&#32;<link linkend="_struct_all_emulators_1a4866e51109e46a475c389e658350c07d">getInstance</link>(i);
+<anchor xml:id="__bot_config_8cpp_source_1l00738"/>00738 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">if</emphasis>&#32;(temp-&gt;<link linkend="_class_instance_1a951c978f2d8b94264ada22b2f881469b">getGlobalId</link>()&#32;==&#32;globalId)&#32;{
+<anchor xml:id="__bot_config_8cpp_source_1l00739"/>00739 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">return</emphasis>&#32;temp;
+<anchor xml:id="__bot_config_8cpp_source_1l00740"/>00740 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;}
+<anchor xml:id="__bot_config_8cpp_source_1l00741"/>00741 &#32;&#32;&#32;&#32;}
+<anchor xml:id="__bot_config_8cpp_source_1l00742"/>00742 &#32;&#32;&#32;&#32;<emphasis role="keywordflow">return</emphasis>&#32;<emphasis role="keyword">nullptr</emphasis>;
+<anchor xml:id="__bot_config_8cpp_source_1l00743"/>00743 }
+<anchor xml:id="__bot_config_8cpp_source_1l00744"/>00744 
+<anchor xml:id="__bot_config_8cpp_source_1l00745"/><link linkend="_struct_all_emulators_1aa1df5ba4e1c2d0b4427f5d1bd3f3339c">00745</link> <emphasis role="keywordtype">int</emphasis>&#32;<link linkend="_struct_all_emulators_1aa1df5ba4e1c2d0b4427f5d1bd3f3339c">AllEmulators::getFavoriteInstanceIndex</link>(std::string&#32;globalId)
+<anchor xml:id="__bot_config_8cpp_source_1l00746"/>00746 {
+<anchor xml:id="__bot_config_8cpp_source_1l00747"/>00747 &#32;&#32;&#32;&#32;<emphasis role="keywordflow">for</emphasis>&#32;(<emphasis role="keywordtype">int</emphasis>&#32;i&#32;=&#32;0;&#32;i&#32;&lt;&#32;<link linkend="_struct_all_emulators_1acaf72502e2a14835727f0af11c9c2e00">allInstances</link>.size();&#32;++i)&#32;{
+<anchor xml:id="__bot_config_8cpp_source_1l00748"/>00748 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<link linkend="_class_instance">Instance</link>*temp&#32;=&#32;<link linkend="_struct_all_emulators_1a4866e51109e46a475c389e658350c07d">getInstance</link>(i);
+<anchor xml:id="__bot_config_8cpp_source_1l00749"/>00749 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">if</emphasis>&#32;(temp-&gt;<link linkend="_class_instance_1a951c978f2d8b94264ada22b2f881469b">getGlobalId</link>()&#32;==&#32;globalId)&#32;{
+<anchor xml:id="__bot_config_8cpp_source_1l00750"/>00750 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">return</emphasis>&#32;i;
+<anchor xml:id="__bot_config_8cpp_source_1l00751"/>00751 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;}
+<anchor xml:id="__bot_config_8cpp_source_1l00752"/>00752 &#32;&#32;&#32;&#32;}
+<anchor xml:id="__bot_config_8cpp_source_1l00753"/>00753 &#32;&#32;&#32;&#32;<emphasis role="keywordflow">return</emphasis>&#32;-1;
+<anchor xml:id="__bot_config_8cpp_source_1l00754"/>00754 }
+<anchor xml:id="__bot_config_8cpp_source_1l00755"/>00755 
+<anchor xml:id="__bot_config_8cpp_source_1l00756"/><link linkend="_struct_all_emulators_1ae768f71fb35c8fe9d2af993700a74dae">00756</link> <emphasis role="keywordtype">bool</emphasis>&#32;<link linkend="_struct_all_emulators_1ac38be2840e4ae476295c7f08b62caa1f">AllEmulators::isBluestacksInstance</link>(<link linkend="_class_instance">Instance</link>*&#32;inst)
+<anchor xml:id="__bot_config_8cpp_source_1l00757"/>00757 {
+<anchor xml:id="__bot_config_8cpp_source_1l00758"/>00758 &#32;&#32;&#32;&#32;<emphasis role="keywordflow">return</emphasis>&#32;<emphasis role="keyword">dynamic_cast&lt;</emphasis><link linkend="_class_bluestacks_instance">BluestacksInstance</link>*<emphasis role="keyword">&gt;</emphasis>(inst)&#32;!=&#32;<emphasis role="keyword">nullptr</emphasis>;
+<anchor xml:id="__bot_config_8cpp_source_1l00759"/>00759 }
+<anchor xml:id="__bot_config_8cpp_source_1l00760"/>00760 
+<anchor xml:id="__bot_config_8cpp_source_1l00761"/>00761 
+<anchor xml:id="__bot_config_8cpp_source_1l00762"/><link linkend="_struct_all_emulators_1acca32e960d79c1dc40a7e10666e8970d">00762</link> <link linkend="_class_bluestacks_instance">BluestacksInstance</link>*&#32;<link linkend="_struct_all_emulators_1acca32e960d79c1dc40a7e10666e8970d">AllEmulators::getBluestacksInstance</link>(<emphasis role="keywordtype">int</emphasis>&#32;index)
+<anchor xml:id="__bot_config_8cpp_source_1l00763"/>00763 {
+<anchor xml:id="__bot_config_8cpp_source_1l00764"/>00764 &#32;&#32;&#32;&#32;<emphasis role="keywordflow">return</emphasis>&#32;<emphasis role="keyword">dynamic_cast&lt;</emphasis><link linkend="_class_bluestacks_instance">BluestacksInstance</link>*<emphasis role="keyword">&gt;</emphasis>(<link linkend="_struct_all_emulators_1a4866e51109e46a475c389e658350c07d">getInstance</link>(index));
+<anchor xml:id="__bot_config_8cpp_source_1l00765"/>00765 }
+<anchor xml:id="__bot_config_8cpp_source_1l00766"/>00766 
+<anchor xml:id="__bot_config_8cpp_source_1l00767"/><link linkend="_struct_all_emulators_1a72a9288eb9cfe2b4b45684f2581e4a95">00767</link> <link linkend="_class_l_d_player_instance">LDPlayerInstance</link>*&#32;<link linkend="_struct_all_emulators_1a72a9288eb9cfe2b4b45684f2581e4a95">AllEmulators::getLDPlayerInstance</link>(<emphasis role="keywordtype">int</emphasis>&#32;index)
+<anchor xml:id="__bot_config_8cpp_source_1l00768"/>00768 {
+<anchor xml:id="__bot_config_8cpp_source_1l00769"/>00769 &#32;&#32;&#32;&#32;<emphasis role="keywordflow">return</emphasis>&#32;<emphasis role="keyword">dynamic_cast&lt;</emphasis><link linkend="_class_l_d_player_instance">LDPlayerInstance</link>*<emphasis role="keyword">&gt;</emphasis>(<link linkend="_struct_all_emulators_1a4866e51109e46a475c389e658350c07d">getInstance</link>(index));
+<anchor xml:id="__bot_config_8cpp_source_1l00770"/>00770 }
+<anchor xml:id="__bot_config_8cpp_source_1l00771"/>00771 
+<anchor xml:id="__bot_config_8cpp_source_1l00772"/><link linkend="_struct_all_emulators_1ab9091f00d35a6266cf70072a5a2ccab7">00772</link> <emphasis role="keywordtype">void</emphasis>&#32;<link linkend="_struct_all_emulators_1ab9091f00d35a6266cf70072a5a2ccab7">AllEmulators::setPlayingEmulator</link>(<link linkend="_class_instance">Instance</link>*inst)
+<anchor xml:id="__bot_config_8cpp_source_1l00773"/>00773 {
+<anchor xml:id="__bot_config_8cpp_source_1l00774"/>00774 &#32;&#32;&#32;&#32;<emphasis role="keywordflow">if</emphasis>&#32;(<link linkend="_struct_all_emulators_1ac38be2840e4ae476295c7f08b62caa1f">isBluestacksInstance</link>(inst))&#32;{
+<anchor xml:id="__bot_config_8cpp_source_1l00775"/>00775 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<link linkend="_struct_all_emulators_1a710e93eea46e0922c245799d60d1fb95">playingEmulator</link>&#32;=&#32;&amp;<link linkend="_struct_all_emulators_1ad9665110f17cbb850ce02b9dcc2442ea">blue</link>;&#32;&#32;&#32;
+<anchor xml:id="__bot_config_8cpp_source_1l00776"/>00776 &#32;&#32;&#32;&#32;}
+<anchor xml:id="__bot_config_8cpp_source_1l00777"/>00777 &#32;&#32;&#32;&#32;<emphasis role="keywordflow">else</emphasis>&#32;<emphasis role="keywordflow">if</emphasis>&#32;(<link linkend="_struct_all_emulators_1afdb51d890e849116f1ef02b6da56e8b3">isLdPlayerInstance</link>(inst))&#32;{
+<anchor xml:id="__bot_config_8cpp_source_1l00778"/>00778 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<link linkend="_struct_all_emulators_1a710e93eea46e0922c245799d60d1fb95">playingEmulator</link>&#32;=&#32;&amp;<link linkend="_struct_all_emulators_1a8522baa50bd6eb248be7acc3ed4b97c9">ld</link>;
+<anchor xml:id="__bot_config_8cpp_source_1l00779"/>00779 &#32;&#32;&#32;&#32;}
+<anchor xml:id="__bot_config_8cpp_source_1l00780"/>00780 }
+<anchor xml:id="__bot_config_8cpp_source_1l00781"/>00781 
+<anchor xml:id="__bot_config_8cpp_source_1l00782"/><link linkend="_struct_all_emulators_1a0311062fb8608a2e3fb224812fc84992">00782</link> <emphasis role="keywordtype">void</emphasis>&#32;<link linkend="_struct_all_emulators_1a0311062fb8608a2e3fb224812fc84992">AllEmulators::clearAllInstances</link>()
+<anchor xml:id="__bot_config_8cpp_source_1l00783"/>00783 {
+<anchor xml:id="__bot_config_8cpp_source_1l00784"/>00784 &#32;&#32;&#32;&#32;<link linkend="_struct_all_emulators_1a8868b738a0cb0f65120e0f202e87b4ed">clearBluestacksInstances</link>();
+<anchor xml:id="__bot_config_8cpp_source_1l00785"/>00785 &#32;&#32;&#32;&#32;<link linkend="_struct_all_emulators_1a7eef7eaad4c371a922112e40da08e268">clearLdPlayerInstances</link>();
+<anchor xml:id="__bot_config_8cpp_source_1l00786"/>00786 &#32;&#32;&#32;&#32;<link linkend="_struct_all_emulators_1acaf72502e2a14835727f0af11c9c2e00">allInstances</link>.clear();
+<anchor xml:id="__bot_config_8cpp_source_1l00787"/>00787 }
+<anchor xml:id="__bot_config_8cpp_source_1l00788"/>00788 
+<anchor xml:id="__bot_config_8cpp_source_1l00789"/><link linkend="_struct_all_emulators_1a8868b738a0cb0f65120e0f202e87b4ed">00789</link> <emphasis role="keywordtype">void</emphasis>&#32;<link linkend="_struct_all_emulators_1a8868b738a0cb0f65120e0f202e87b4ed">AllEmulators::clearBluestacksInstances</link>()
+<anchor xml:id="__bot_config_8cpp_source_1l00790"/>00790 {
+<anchor xml:id="__bot_config_8cpp_source_1l00791"/>00791 &#32;&#32;&#32;&#32;<link linkend="_struct_all_emulators_1ad9665110f17cbb850ce02b9dcc2442ea">blue</link>.<link linkend="_class_bluestacks_1a6a33894616017361693d8f0dcc7f40c6">clearAllInstances</link>();
+<anchor xml:id="__bot_config_8cpp_source_1l00792"/>00792 &#32;&#32;&#32;&#32;<link linkend="_struct_all_emulators_1a243fca964426f25cb782f34afa465b8e">BluestackInstances</link>.clear();
+<anchor xml:id="__bot_config_8cpp_source_1l00793"/>00793 }
+<anchor xml:id="__bot_config_8cpp_source_1l00794"/>00794 
+<anchor xml:id="__bot_config_8cpp_source_1l00795"/><link linkend="_struct_all_emulators_1a7eef7eaad4c371a922112e40da08e268">00795</link> <emphasis role="keywordtype">void</emphasis>&#32;<link linkend="_struct_all_emulators_1a7eef7eaad4c371a922112e40da08e268">AllEmulators::clearLdPlayerInstances</link>()
+<anchor xml:id="__bot_config_8cpp_source_1l00796"/>00796 {
+<anchor xml:id="__bot_config_8cpp_source_1l00797"/>00797 &#32;&#32;&#32;&#32;<link linkend="_struct_all_emulators_1a8522baa50bd6eb248be7acc3ed4b97c9">ld</link>.<link linkend="_class_l_d_player_1aa5b8b4522bae77a46c194f161dc7d7bd">clearAllInstances</link>();
+<anchor xml:id="__bot_config_8cpp_source_1l00798"/>00798 &#32;&#32;&#32;&#32;<link linkend="_struct_all_emulators_1a8cbae61731971d66a68a201302ab6db8">LdPlayerInstances</link>.clear();
+<anchor xml:id="__bot_config_8cpp_source_1l00799"/>00799 }
+<anchor xml:id="__bot_config_8cpp_source_1l00800"/>00800 
+<anchor xml:id="__bot_config_8cpp_source_1l00801"/>00801 
+<anchor xml:id="__bot_config_8cpp_source_1l00802"/>00802 
+<anchor xml:id="__bot_config_8cpp_source_1l00803"/>00803 
+</programlisting></section>

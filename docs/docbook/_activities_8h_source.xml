@@ -1,0 +1,145 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<section xmlns="http://docbook.org/ns/docbook" version="5.0" xmlns:xlink="http://www.w3.org/1999/xlink" xml:id="__activities_8h_source" xml:lang="en-US">
+<title>Activities.h</title>
+<indexterm><primary>src/Activities.h</primary></indexterm>
+Go to the documentation of this file.<programlisting linenumbering="unnumbered"><anchor xml:id="__activities_8h_source_1l00001"/>00001 <emphasis role="preprocessor">#pragma&#32;once</emphasis>
+<anchor xml:id="__activities_8h_source_1l00002"/>00002 
+<anchor xml:id="__activities_8h_source_1l00003"/>00003 <emphasis role="preprocessor">#include&#32;&quot;<link linkend="__activity_8h">Activity.h</link>&quot;</emphasis>
+<anchor xml:id="__activities_8h_source_1l00004"/>00004 
+<anchor xml:id="__activities_8h_source_1l00005"/><link linkend="_class_activities">00005</link> <emphasis role="keyword">class&#32;</emphasis><link linkend="_class_activities">Activities</link>:&#32;<emphasis role="keyword">public</emphasis>&#32;<link linkend="_class_activity">Activity</link>
+<anchor xml:id="__activities_8h_source_1l00006"/>00006 {
+<anchor xml:id="__activities_8h_source_1l00007"/>00007 <emphasis role="keyword">public</emphasis>:
+<anchor xml:id="__activities_8h_source_1l00008"/>00008 
+<anchor xml:id="__activities_8h_source_1l00009"/><link linkend="_class_activities_1ab7e97671a57608531aeefec046ab9f86">00009</link> <link linkend="_class_interactions">Interactions</link>&#32;<link linkend="_class_activities_1ab7e97671a57608531aeefec046ab9f86">inte</link>;
+<anchor xml:id="__activities_8h_source_1l00010"/><link linkend="_class_activities_1a7deff2ecd9f032475066476104f39050">00010</link> std::vector&lt;Activity*&gt;<link linkend="_class_activities_1a7deff2ecd9f032475066476104f39050">allActivities</link>;
+<anchor xml:id="__activities_8h_source_1l00011"/><link linkend="_class_activities_1a7382b66cb618d8d88bd5a242eea3d184">00011</link> std::vector&lt;ShortCut&gt;<link linkend="_class_activities_1a7382b66cb618d8d88bd5a242eea3d184">allShortCuts</link>;
+<anchor xml:id="__activities_8h_source_1l00012"/>00012 };
+<anchor xml:id="__activities_8h_source_1l00013"/>00013 
+<anchor xml:id="__activities_8h_source_1l00014"/><link linkend="_class_alchemy">00014</link> <emphasis role="keyword">class&#32;</emphasis><link linkend="_class_alchemy">Alchemy</link>&#32;:&#32;<emphasis role="keyword">public</emphasis>&#32;<link linkend="_class_activity">Activity</link>&#32;
+<anchor xml:id="__activities_8h_source_1l00015"/>00015 {
+<anchor xml:id="__activities_8h_source_1l00016"/>00016 <emphasis role="keyword">public</emphasis>:
+<anchor xml:id="__activities_8h_source_1l00017"/>00017 &#32;&#32;&#32;&#32;<link linkend="_class_alchemy_1a7240bd34bd138df4eac469be592ff224">Alchemy</link>();
+<anchor xml:id="__activities_8h_source_1l00018"/>00018 &#32;&#32;&#32;&#32;<emphasis role="keywordtype">bool</emphasis>&#32;<link linkend="_class_alchemy_1aad0ec6faf7a5f72d0392ee1a7fbe94f9">doActivity</link>()<emphasis role="keyword">override</emphasis>;
+<anchor xml:id="__activities_8h_source_1l00019"/>00019 &#32;&#32;&#32;&#32;<emphasis role="keywordtype">bool</emphasis>&#32;<link linkend="_class_alchemy_1a3f9c7cdb0d2b8df78c40bb3e4374d3c1">craftNormalPill</link>(std::vector&lt;std::string&gt;craftsdigits,&#32;std::vector&lt;std::string&gt;coremat,&#32;std::vector&lt;std::string&gt;outcomecraft,&#32;std::vector&lt;std::string&gt;goodoutcome,&#32;<link linkend="_struct_zone">Zone</link>&#32;craft,&#32;<link linkend="_struct_zone">Zone</link>&#32;matquality,&#32;<emphasis role="keywordtype">int</emphasis>&#32;pillbeforeepic,&#32;<emphasis role="keywordtype">bool</emphasis>&amp;&#32;cancraftmat,&#32;<link linkend="_struct_coord">Coord</link>&#32;cmaterial,&#32;std::string&#32;corequality,&#32;<emphasis role="keywordtype">bool</emphasis>&amp;&#32;cancraftanymat);
+<anchor xml:id="__activities_8h_source_1l00020"/>00020 &#32;&#32;&#32;&#32;<emphasis role="keywordtype">bool</emphasis>&#32;<link linkend="_class_alchemy_1ae1ada9705b99bbeb5a4c5cfa1003424a">craftBetterPill</link>(std::vector&lt;std::string&gt;craftsdigits,&#32;std::vector&lt;std::string&gt;coremat,&#32;std::vector&lt;std::string&gt;outcomecraft,&#32;std::vector&lt;std::string&gt;goodoutcome,&#32;<link linkend="_struct_zone">Zone</link>&#32;craft,&#32;<link linkend="_struct_zone">Zone</link>&#32;matquality,&#32;<emphasis role="keywordtype">bool</emphasis>&amp;&#32;cancraftmat,&#32;<link linkend="_struct_coord">Coord</link>&#32;cmaterial,&#32;std::string&#32;corequality,&#32;<emphasis role="keywordtype">bool</emphasis>&amp;&#32;cancraftbetterpill,&#32;<emphasis role="keywordtype">bool</emphasis>&amp;&#32;cancraftanymat);
+<anchor xml:id="__activities_8h_source_1l00021"/>00021 };
+<anchor xml:id="__activities_8h_source_1l00022"/>00022 
+<anchor xml:id="__activities_8h_source_1l00023"/><link linkend="_class_garden">00023</link> <emphasis role="keyword">class&#32;</emphasis><link linkend="_class_garden">Garden</link>&#32;:&#32;<emphasis role="keyword">public</emphasis>&#32;<link linkend="_class_activity">Activity</link>
+<anchor xml:id="__activities_8h_source_1l00024"/>00024 {
+<anchor xml:id="__activities_8h_source_1l00025"/>00025 <emphasis role="keyword">public</emphasis>:
+<anchor xml:id="__activities_8h_source_1l00026"/>00026 &#32;&#32;&#32;&#32;<link linkend="_class_garden_1a151f8f6571518ad812fb66307cae270d">Garden</link>();
+<anchor xml:id="__activities_8h_source_1l00027"/>00027 &#32;&#32;&#32;&#32;<emphasis role="keywordtype">bool</emphasis>&#32;<link linkend="_class_garden_1aa57f4ad267096e9c448782c6f8ee82ff">doActivity</link>()<emphasis role="keyword">override</emphasis>;
+<anchor xml:id="__activities_8h_source_1l00028"/>00028 
+<anchor xml:id="__activities_8h_source_1l00029"/>00029 };
+<anchor xml:id="__activities_8h_source_1l00030"/>00030 
+<anchor xml:id="__activities_8h_source_1l00031"/><link linkend="_class_worldrift">00031</link> <emphasis role="keyword">class&#32;</emphasis><link linkend="_class_worldrift">Worldrift</link>&#32;:&#32;<emphasis role="keyword">public</emphasis>&#32;<link linkend="_class_activity">Activity</link>
+<anchor xml:id="__activities_8h_source_1l00032"/>00032 {
+<anchor xml:id="__activities_8h_source_1l00033"/>00033 <emphasis role="keyword">public</emphasis>:
+<anchor xml:id="__activities_8h_source_1l00034"/>00034 &#32;&#32;&#32;&#32;<link linkend="_class_worldrift_1a2186e95e415b9213e6b2e8597cec914f">Worldrift</link>();
+<anchor xml:id="__activities_8h_source_1l00035"/>00035 &#32;&#32;&#32;&#32;<emphasis role="keywordtype">bool</emphasis>&#32;<link linkend="_class_worldrift_1a338b2b6c6c28ed33457b4fa9179c4733">doActivity</link>()<emphasis role="keyword">override</emphasis>;
+<anchor xml:id="__activities_8h_source_1l00036"/>00036 
+<anchor xml:id="__activities_8h_source_1l00037"/>00037 };
+<anchor xml:id="__activities_8h_source_1l00038"/>00038 
+<anchor xml:id="__activities_8h_source_1l00039"/><link linkend="_class_arena">00039</link> <emphasis role="keyword">class&#32;</emphasis><link linkend="_class_arena">Arena</link>&#32;:&#32;<emphasis role="keyword">public</emphasis>&#32;<link linkend="_class_activity">Activity</link>
+<anchor xml:id="__activities_8h_source_1l00040"/>00040 {
+<anchor xml:id="__activities_8h_source_1l00041"/>00041 <emphasis role="keyword">public</emphasis>:
+<anchor xml:id="__activities_8h_source_1l00042"/>00042 &#32;&#32;&#32;&#32;<link linkend="_class_arena_1a74f105bc709d4728fb07f1984abfd345">Arena</link>();
+<anchor xml:id="__activities_8h_source_1l00043"/>00043 &#32;&#32;&#32;&#32;<emphasis role="keywordtype">bool</emphasis>&#32;<link linkend="_class_arena_1a1de3cf9bc5b3afd9ce88edd8ec9a4563">doActivity</link>()<emphasis role="keyword">override</emphasis>;
+<anchor xml:id="__activities_8h_source_1l00044"/>00044 
+<anchor xml:id="__activities_8h_source_1l00045"/>00045 };
+<anchor xml:id="__activities_8h_source_1l00046"/>00046 
+<anchor xml:id="__activities_8h_source_1l00047"/><link linkend="_class_assistant">00047</link> <emphasis role="keyword">class&#32;</emphasis><link linkend="_class_assistant">Assistant</link>&#32;:&#32;<emphasis role="keyword">public</emphasis>&#32;<link linkend="_class_activity">Activity</link>
+<anchor xml:id="__activities_8h_source_1l00048"/>00048 {
+<anchor xml:id="__activities_8h_source_1l00049"/>00049 <emphasis role="keyword">public</emphasis>:
+<anchor xml:id="__activities_8h_source_1l00050"/>00050 &#32;&#32;&#32;&#32;<link linkend="_class_assistant_1a521f28bcd7072318caaa49973976c3b2">Assistant</link>();
+<anchor xml:id="__activities_8h_source_1l00051"/>00051 &#32;&#32;&#32;&#32;<emphasis role="keywordtype">bool</emphasis>&#32;<link linkend="_class_assistant_1a9067c0d026f68d11714d79ac302f7bf5">doActivity</link>()<emphasis role="keyword">override</emphasis>;
+<anchor xml:id="__activities_8h_source_1l00052"/>00052 
+<anchor xml:id="__activities_8h_source_1l00053"/>00053 };
+<anchor xml:id="__activities_8h_source_1l00054"/>00054 
+<anchor xml:id="__activities_8h_source_1l00055"/><link linkend="_class_divinities">00055</link> <emphasis role="keyword">class&#32;</emphasis><link linkend="_class_divinities">Divinities</link>&#32;:&#32;<emphasis role="keyword">public</emphasis>&#32;<link linkend="_class_activity">Activity</link>
+<anchor xml:id="__activities_8h_source_1l00056"/>00056 {
+<anchor xml:id="__activities_8h_source_1l00057"/>00057 <emphasis role="keyword">public</emphasis>:
+<anchor xml:id="__activities_8h_source_1l00058"/>00058 &#32;&#32;&#32;&#32;<link linkend="_class_divinities_1a45e08c48933949f209253d9a7fb50c64">Divinities</link>();
+<anchor xml:id="__activities_8h_source_1l00059"/>00059 &#32;&#32;&#32;&#32;<emphasis role="keywordtype">bool</emphasis>&#32;<link linkend="_class_divinities_1ac9b5e74421a2888bf4f84065115210eb">doActivity</link>()<emphasis role="keyword">override</emphasis>;
+<anchor xml:id="__activities_8h_source_1l00060"/>00060 
+<anchor xml:id="__activities_8h_source_1l00061"/>00061 };
+<anchor xml:id="__activities_8h_source_1l00062"/>00062 
+<anchor xml:id="__activities_8h_source_1l00063"/><link linkend="_class_heirloom">00063</link> <emphasis role="keyword">class&#32;</emphasis><link linkend="_class_heirloom">Heirloom</link>&#32;:&#32;<emphasis role="keyword">public</emphasis>&#32;<link linkend="_class_activity">Activity</link>
+<anchor xml:id="__activities_8h_source_1l00064"/>00064 {
+<anchor xml:id="__activities_8h_source_1l00065"/>00065 <emphasis role="keyword">public</emphasis>:
+<anchor xml:id="__activities_8h_source_1l00066"/>00066 &#32;&#32;&#32;&#32;<link linkend="_class_heirloom_1aeaeeb551e32d10e5fab8dc08db0444bf">Heirloom</link>();
+<anchor xml:id="__activities_8h_source_1l00067"/>00067 &#32;&#32;&#32;&#32;<emphasis role="keywordtype">bool</emphasis>&#32;<link linkend="_class_heirloom_1a52cbb91e89e42dd674d100effa2d07cd">doActivity</link>()<emphasis role="keyword">override</emphasis>;
+<anchor xml:id="__activities_8h_source_1l00068"/>00068 
+<anchor xml:id="__activities_8h_source_1l00069"/>00069 };
+<anchor xml:id="__activities_8h_source_1l00070"/>00070 
+<anchor xml:id="__activities_8h_source_1l00071"/><link linkend="_class_mail">00071</link> <emphasis role="keyword">class&#32;</emphasis><link linkend="_class_mail">Mail</link>&#32;:&#32;<emphasis role="keyword">public</emphasis>&#32;<link linkend="_class_activity">Activity</link>
+<anchor xml:id="__activities_8h_source_1l00072"/>00072 {
+<anchor xml:id="__activities_8h_source_1l00073"/>00073 <emphasis role="keyword">public</emphasis>:
+<anchor xml:id="__activities_8h_source_1l00074"/>00074 &#32;&#32;&#32;&#32;<link linkend="_class_mail_1acd3d916cd6a769cdaf6e91dbc2c85699">Mail</link>();
+<anchor xml:id="__activities_8h_source_1l00075"/>00075 &#32;&#32;&#32;&#32;<emphasis role="keywordtype">bool</emphasis>&#32;<link linkend="_class_mail_1a1c771a812fa2eba0f0d257f9bdeaef31">doActivity</link>()<emphasis role="keyword">override</emphasis>;
+<anchor xml:id="__activities_8h_source_1l00076"/>00076 
+<anchor xml:id="__activities_8h_source_1l00077"/>00077 };
+<anchor xml:id="__activities_8h_source_1l00078"/>00078 
+<anchor xml:id="__activities_8h_source_1l00079"/><link linkend="_class_otherworld">00079</link> <emphasis role="keyword">class&#32;</emphasis><link linkend="_class_otherworld">Otherworld</link>&#32;:&#32;<emphasis role="keyword">public</emphasis>&#32;<link linkend="_class_activity">Activity</link>
+<anchor xml:id="__activities_8h_source_1l00080"/>00080 {
+<anchor xml:id="__activities_8h_source_1l00081"/>00081 <emphasis role="keyword">public</emphasis>:
+<anchor xml:id="__activities_8h_source_1l00082"/>00082 &#32;&#32;&#32;&#32;<link linkend="_class_otherworld_1ad7c4b60e8317aa8ce71f40a4079c5285">Otherworld</link>();
+<anchor xml:id="__activities_8h_source_1l00083"/>00083 &#32;&#32;&#32;&#32;<emphasis role="keywordtype">bool</emphasis>&#32;<link linkend="_class_otherworld_1a98c0d70a80579783f415323ccbb0e0a3">doActivity</link>()<emphasis role="keyword">override</emphasis>;
+<anchor xml:id="__activities_8h_source_1l00084"/>00084 
+<anchor xml:id="__activities_8h_source_1l00085"/>00085 };
+<anchor xml:id="__activities_8h_source_1l00086"/>00086 
+<anchor xml:id="__activities_8h_source_1l00087"/><link linkend="_class_pack">00087</link> <emphasis role="keyword">class&#32;</emphasis><link linkend="_class_pack">Pack</link>&#32;:&#32;<emphasis role="keyword">public</emphasis>&#32;<link linkend="_class_activity">Activity</link>
+<anchor xml:id="__activities_8h_source_1l00088"/>00088 {
+<anchor xml:id="__activities_8h_source_1l00089"/>00089 <emphasis role="keyword">public</emphasis>:
+<anchor xml:id="__activities_8h_source_1l00090"/>00090 &#32;&#32;&#32;&#32;<link linkend="_class_pack_1a871da4ed3f2c72cd64f9fed9a9e11a55">Pack</link>();
+<anchor xml:id="__activities_8h_source_1l00091"/>00091 &#32;&#32;&#32;&#32;<emphasis role="keywordtype">bool</emphasis>&#32;<link linkend="_class_pack_1a0e1c06807939ef6198c19cc39559a081">doActivity</link>()<emphasis role="keyword">override</emphasis>;
+<anchor xml:id="__activities_8h_source_1l00092"/>00092 
+<anchor xml:id="__activities_8h_source_1l00093"/>00093 };
+<anchor xml:id="__activities_8h_source_1l00094"/>00094 
+<anchor xml:id="__activities_8h_source_1l00095"/><link linkend="_class_perks">00095</link> <emphasis role="keyword">class&#32;</emphasis><link linkend="_class_perks">Perks</link>&#32;:&#32;<emphasis role="keyword">public</emphasis>&#32;<link linkend="_class_activity">Activity</link>
+<anchor xml:id="__activities_8h_source_1l00096"/>00096 {
+<anchor xml:id="__activities_8h_source_1l00097"/>00097 <emphasis role="keyword">public</emphasis>:
+<anchor xml:id="__activities_8h_source_1l00098"/>00098 &#32;&#32;&#32;&#32;<link linkend="_class_perks_1af61cd637822d291377d5a6adcee1b8b1">Perks</link>();
+<anchor xml:id="__activities_8h_source_1l00099"/>00099 &#32;&#32;&#32;&#32;<emphasis role="keywordtype">bool</emphasis>&#32;<link linkend="_class_perks_1a244c4e301fb219b7a1c80c1a0fbd9a77">doActivity</link>()<emphasis role="keyword">override</emphasis>;
+<anchor xml:id="__activities_8h_source_1l00100"/>00100 
+<anchor xml:id="__activities_8h_source_1l00101"/>00101 };
+<anchor xml:id="__activities_8h_source_1l00102"/>00102 
+<anchor xml:id="__activities_8h_source_1l00103"/><link linkend="_class_ranking">00103</link> <emphasis role="keyword">class&#32;</emphasis><link linkend="_class_ranking">Ranking</link>&#32;:&#32;<emphasis role="keyword">public</emphasis>&#32;<link linkend="_class_activity">Activity</link>
+<anchor xml:id="__activities_8h_source_1l00104"/>00104 {
+<anchor xml:id="__activities_8h_source_1l00105"/>00105 <emphasis role="keyword">public</emphasis>:
+<anchor xml:id="__activities_8h_source_1l00106"/>00106 &#32;&#32;&#32;&#32;<link linkend="_class_ranking_1a7b1142b455d06f3d455d796ed329118f">Ranking</link>();
+<anchor xml:id="__activities_8h_source_1l00107"/>00107 &#32;&#32;&#32;&#32;<emphasis role="keywordtype">bool</emphasis>&#32;<link linkend="_class_ranking_1a3c16793fcd16b703a3afc7a0e443236b">doActivity</link>()<emphasis role="keyword">override</emphasis>;
+<anchor xml:id="__activities_8h_source_1l00108"/>00108 
+<anchor xml:id="__activities_8h_source_1l00109"/>00109 };
+<anchor xml:id="__activities_8h_source_1l00110"/>00110 
+<anchor xml:id="__activities_8h_source_1l00111"/><link linkend="_class_ressources">00111</link> <emphasis role="keyword">class&#32;</emphasis><link linkend="_class_ressources">Ressources</link>&#32;:&#32;<emphasis role="keyword">public</emphasis>&#32;<link linkend="_class_activity">Activity</link>
+<anchor xml:id="__activities_8h_source_1l00112"/>00112 {
+<anchor xml:id="__activities_8h_source_1l00113"/>00113 <emphasis role="keyword">public</emphasis>:
+<anchor xml:id="__activities_8h_source_1l00114"/>00114 &#32;&#32;&#32;&#32;<link linkend="_class_ressources_1acf1308ba47d95aae85f49699ee4cf2f3">Ressources</link>();
+<anchor xml:id="__activities_8h_source_1l00115"/>00115 &#32;&#32;&#32;&#32;<emphasis role="keywordtype">bool</emphasis>&#32;<link linkend="_class_ressources_1a764df491939650be1e446b0293c020a1">doActivity</link>()<emphasis role="keyword">override</emphasis>;
+<anchor xml:id="__activities_8h_source_1l00116"/>00116 
+<anchor xml:id="__activities_8h_source_1l00117"/>00117 };
+<anchor xml:id="__activities_8h_source_1l00118"/>00118 
+<anchor xml:id="__activities_8h_source_1l00119"/><link linkend="_classgo_home_first_boot">00119</link> <emphasis role="keyword">class&#32;</emphasis><link linkend="_classgo_home_first_boot">goHomeFirstBoot</link>&#32;:&#32;<emphasis role="keyword">public</emphasis>&#32;<link linkend="_class_activity">Activity</link>
+<anchor xml:id="__activities_8h_source_1l00120"/>00120 {
+<anchor xml:id="__activities_8h_source_1l00121"/>00121 <emphasis role="keyword">public</emphasis>:
+<anchor xml:id="__activities_8h_source_1l00122"/>00122 &#32;&#32;&#32;&#32;<link linkend="_classgo_home_first_boot_1acba822dd25edf2aa88bc4af3f3e66472">goHomeFirstBoot</link>();
+<anchor xml:id="__activities_8h_source_1l00123"/>00123 &#32;&#32;&#32;&#32;<emphasis role="keywordtype">bool</emphasis>&#32;<link linkend="_classgo_home_first_boot_1ab24a529de59d9e823c6b013e7e61c9cf">doActivity</link>()<emphasis role="keyword">override</emphasis>;
+<anchor xml:id="__activities_8h_source_1l00124"/>00124 };
+<anchor xml:id="__activities_8h_source_1l00125"/>00125 
+<anchor xml:id="__activities_8h_source_1l00126"/><link linkend="_classgo_home">00126</link> <emphasis role="keyword">class&#32;</emphasis><link linkend="_classgo_home">goHome</link>&#32;:&#32;<emphasis role="keyword">public</emphasis>&#32;<link linkend="_class_activity">Activity</link>
+<anchor xml:id="__activities_8h_source_1l00127"/>00127 {
+<anchor xml:id="__activities_8h_source_1l00128"/>00128 <emphasis role="keyword">public</emphasis>:
+<anchor xml:id="__activities_8h_source_1l00129"/>00129 &#32;&#32;&#32;&#32;<link linkend="_classgo_home_1a59effe8ece245fb1255708f59778c1fc">goHome</link>();
+<anchor xml:id="__activities_8h_source_1l00130"/>00130 &#32;&#32;&#32;&#32;<emphasis role="keywordtype">bool</emphasis>&#32;<link linkend="_classgo_home_1a8154f6930363501306aebfbe0212c0ca">doActivity</link>()<emphasis role="keyword">override</emphasis>;
+<anchor xml:id="__activities_8h_source_1l00131"/>00131 
+<anchor xml:id="__activities_8h_source_1l00132"/>00132 };
+<anchor xml:id="__activities_8h_source_1l00133"/>00133 
+<anchor xml:id="__activities_8h_source_1l00134"/><link linkend="_classlaunch_game">00134</link> <emphasis role="keyword">class&#32;</emphasis><link linkend="_classlaunch_game">launchGame</link>&#32;:&#32;<emphasis role="keyword">public</emphasis>&#32;<link linkend="_class_activity">Activity</link>
+<anchor xml:id="__activities_8h_source_1l00135"/>00135 {
+<anchor xml:id="__activities_8h_source_1l00136"/>00136 <emphasis role="keyword">public</emphasis>:
+<anchor xml:id="__activities_8h_source_1l00137"/><link linkend="_classlaunch_game_1a3b72cd63d6edcd915d97e88aa5c71566">00137</link> &#32;&#32;&#32;&#32;<link linkend="_classlaunch_game_1a3b72cd63d6edcd915d97e88aa5c71566">launchGame</link>();
+<anchor xml:id="__activities_8h_source_1l00138"/>00138 &#32;&#32;&#32;&#32;<emphasis role="keywordtype">bool</emphasis>&#32;<link linkend="_classlaunch_game_1aa2da9327089825dced28fa74cfecc283">doActivity</link>()<emphasis role="keyword">override</emphasis>;
+<anchor xml:id="__activities_8h_source_1l00139"/>00139 
+<anchor xml:id="__activities_8h_source_1l00140"/>00140 };
+</programlisting></section>

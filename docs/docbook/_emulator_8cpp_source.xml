@@ -1,0 +1,105 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<section xmlns="http://docbook.org/ns/docbook" version="5.0" xmlns:xlink="http://www.w3.org/1999/xlink" xml:id="__emulator_8cpp_source" xml:lang="en-US">
+<title>Emulator.cpp</title>
+<indexterm><primary>src/Emulator.cpp</primary></indexterm>
+Go to the documentation of this file.<programlisting linenumbering="unnumbered"><anchor xml:id="__emulator_8cpp_source_1l00001"/>00001 <emphasis role="preprocessor">#include&#32;&quot;<link linkend="__emulator_8h">Emulator.h</link>&quot;</emphasis>
+<anchor xml:id="__emulator_8cpp_source_1l00002"/>00002 
+<anchor xml:id="__emulator_8cpp_source_1l00003"/><link linkend="_class_emulator_1ad0ddfc7c60f5cfbbe377154e25cb6cfc">00003</link> <link linkend="_class_emulator_1ad0ddfc7c60f5cfbbe377154e25cb6cfc">Emulator::Emulator</link>()
+<anchor xml:id="__emulator_8cpp_source_1l00004"/>00004 {
+<anchor xml:id="__emulator_8cpp_source_1l00005"/>00005 &#32;&#32;&#32;&#32;<link linkend="_class_emulator_1aaf64827b34747c72854e2ffa0507f37c">emulatorName</link>&#32;=&#32;<emphasis role="stringliteral">&quot;BasicEmulator&quot;</emphasis>;
+<anchor xml:id="__emulator_8cpp_source_1l00006"/>00006 &#32;&#32;&#32;&#32;<link linkend="_class_emulator_1ae0bf469fc768b1aa831911f0f3bba8dd">executableName</link>.clear();
+<anchor xml:id="__emulator_8cpp_source_1l00007"/>00007 &#32;&#32;&#32;&#32;<link linkend="_class_emulator_1a9a0bbebd40eee57823b313153b1c8cb5">gamePackage</link>.clear();
+<anchor xml:id="__emulator_8cpp_source_1l00008"/>00008 &#32;&#32;&#32;&#32;<link linkend="_class_emulator_1ac9479705b6bbc1003055bc1e7786989f">isInstalled</link>&#32;=&#32;<emphasis role="keyword">false</emphasis>;
+<anchor xml:id="__emulator_8cpp_source_1l00009"/>00009 &#32;&#32;&#32;&#32;<link linkend="_class_emulator_1a5f038d5e47930bf433ab365fbbaa7ae2">nbInstances</link>&#32;=&#32;0;
+<anchor xml:id="__emulator_8cpp_source_1l00010"/>00010 &#32;&#32;&#32;&#32;<link linkend="_class_emulator_1a76ffe6e8b9a6f9336ac33d3fe4a34083">myType</link>&#32;=&#32;<link linkend="__instance_8h_1a5b026f4903e92a7e60dda754b5028227adbf1dee1b8cd7ea3c82661943c7b74f4">OTHER</link>;
+<anchor xml:id="__emulator_8cpp_source_1l00011"/>00011 &#32;&#32;&#32;&#32;<link linkend="_class_emulator_1a6433f757edc9bf813dedef6f68f73b9f">playingInstance</link>&#32;=&#32;<emphasis role="keyword">nullptr</emphasis>;
+<anchor xml:id="__emulator_8cpp_source_1l00012"/>00012 &#32;&#32;&#32;&#32;<link linkend="_class_emulator_1a3c7b1df3adc7ba81a9fa76ce1662fa06">reqDimX</link>&#32;=&#32;0;
+<anchor xml:id="__emulator_8cpp_source_1l00013"/>00013 &#32;&#32;&#32;&#32;<link linkend="_class_emulator_1a4db78de463890def4e2296b9da9c0bfb">reqDimY</link>&#32;=&#32;0;
+<anchor xml:id="__emulator_8cpp_source_1l00014"/>00014 &#32;&#32;&#32;&#32;<link linkend="_class_emulator_1a99712a1a614fdbca45b8be35747e5f88">reqDpi</link>&#32;=&#32;0;
+<anchor xml:id="__emulator_8cpp_source_1l00015"/>00015 }
+<anchor xml:id="__emulator_8cpp_source_1l00016"/>00016 
+<anchor xml:id="__emulator_8cpp_source_1l00017"/><link linkend="_class_emulator_1a57bf3e602724d4ac35ca45e9ddc0c9aa">00017</link> <link linkend="_class_emulator_1a57bf3e602724d4ac35ca45e9ddc0c9aa">Emulator::~Emulator</link>()
+<anchor xml:id="__emulator_8cpp_source_1l00018"/>00018 {
+<anchor xml:id="__emulator_8cpp_source_1l00019"/>00019 &#32;&#32;&#32;&#32;<emphasis role="keywordflow">for</emphasis>&#32;(<link linkend="_class_instance">Instance</link>*&#32;inst&#32;:&#32;<link linkend="_class_emulator_1a85395eef4151d56d9af3e8e1d3db3cf4">listInstances</link>)&#32;{
+<anchor xml:id="__emulator_8cpp_source_1l00020"/>00020 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keyword">delete</emphasis>&#32;inst;
+<anchor xml:id="__emulator_8cpp_source_1l00021"/>00021 &#32;&#32;&#32;&#32;}
+<anchor xml:id="__emulator_8cpp_source_1l00022"/>00022 }
+<anchor xml:id="__emulator_8cpp_source_1l00023"/>00023 
+<anchor xml:id="__emulator_8cpp_source_1l00024"/><link linkend="_class_emulator_1a9e0d57ef011e166cb389060f814abfa1">00024</link> <emphasis role="keywordtype">void</emphasis>&#32;<link linkend="_class_emulator_1a9e0d57ef011e166cb389060f814abfa1">Emulator::addInstance</link>(<link linkend="_class_instance">Instance</link>*&#32;inst)
+<anchor xml:id="__emulator_8cpp_source_1l00025"/>00025 {
+<anchor xml:id="__emulator_8cpp_source_1l00026"/>00026 &#32;&#32;&#32;&#32;<link linkend="_class_emulator_1a85395eef4151d56d9af3e8e1d3db3cf4">listInstances</link>.push_back(inst);
+<anchor xml:id="__emulator_8cpp_source_1l00027"/>00027 }
+<anchor xml:id="__emulator_8cpp_source_1l00028"/>00028 
+<anchor xml:id="__emulator_8cpp_source_1l00029"/><link linkend="_class_emulator_1a767c9d69943a0cd76a5c63f2cc25b234">00029</link> <emphasis role="keywordtype">void</emphasis>&#32;<link linkend="_class_emulator_1a767c9d69943a0cd76a5c63f2cc25b234">Emulator::clearAllInstances</link>()
+<anchor xml:id="__emulator_8cpp_source_1l00030"/>00030 {
+<anchor xml:id="__emulator_8cpp_source_1l00031"/>00031 &#32;&#32;&#32;&#32;<emphasis role="keywordflow">for</emphasis>&#32;(<link linkend="_class_instance">Instance</link>*&#32;inst&#32;:&#32;<link linkend="_class_emulator_1a85395eef4151d56d9af3e8e1d3db3cf4">listInstances</link>)&#32;{
+<anchor xml:id="__emulator_8cpp_source_1l00032"/>00032 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keyword">delete</emphasis>&#32;inst;
+<anchor xml:id="__emulator_8cpp_source_1l00033"/>00033 &#32;&#32;&#32;&#32;}
+<anchor xml:id="__emulator_8cpp_source_1l00034"/>00034 &#32;&#32;&#32;&#32;<link linkend="_class_emulator_1a85395eef4151d56d9af3e8e1d3db3cf4">listInstances</link>.clear();
+<anchor xml:id="__emulator_8cpp_source_1l00035"/>00035 &#32;&#32;&#32;&#32;<link linkend="_class_emulator_1ab78ff181d01d2cfc53203b71a9904506">listPlayableInstances</link>.clear();
+<anchor xml:id="__emulator_8cpp_source_1l00036"/>00036 &#32;&#32;&#32;&#32;<link linkend="_class_emulator_1a6433f757edc9bf813dedef6f68f73b9f">playingInstance</link>&#32;=&#32;<emphasis role="keyword">nullptr</emphasis>;
+<anchor xml:id="__emulator_8cpp_source_1l00037"/>00037 &#32;&#32;&#32;&#32;<link linkend="_class_emulator_1a5f038d5e47930bf433ab365fbbaa7ae2">nbInstances</link>&#32;=&#32;0;
+<anchor xml:id="__emulator_8cpp_source_1l00038"/>00038 }
+<anchor xml:id="__emulator_8cpp_source_1l00039"/>00039 
+<anchor xml:id="__emulator_8cpp_source_1l00040"/>00040 
+<anchor xml:id="__emulator_8cpp_source_1l00041"/><link linkend="_class_emulator_1ae6872001b82eb1c25e119eb3b17f1547">00041</link> <emphasis role="keywordtype">void</emphasis>&#32;<link linkend="_class_emulator_1ae6872001b82eb1c25e119eb3b17f1547">Emulator::checkAdb</link>(<link linkend="_class_instance">Instance</link>*&#32;inst)
+<anchor xml:id="__emulator_8cpp_source_1l00042"/>00042 {
+<anchor xml:id="__emulator_8cpp_source_1l00043"/>00043 &#32;&#32;&#32;&#32;<emphasis role="keywordflow">if</emphasis>&#32;(!<link linkend="_class_emulator_1ab509a885814d9a58e20854dc61f282e1">adbActivated</link>(inst))&#32;{
+<anchor xml:id="__emulator_8cpp_source_1l00044"/>00044 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<link linkend="_class_emulator_1ab8fac1aac86cb33884049cd55f65099a">activateAdb</link>(inst);
+<anchor xml:id="__emulator_8cpp_source_1l00045"/>00045 &#32;&#32;&#32;&#32;}
+<anchor xml:id="__emulator_8cpp_source_1l00046"/>00046 }
+<anchor xml:id="__emulator_8cpp_source_1l00047"/>00047 
+<anchor xml:id="__emulator_8cpp_source_1l00048"/><link linkend="_class_emulator_1a4df4c858eb6bbe991db334523f9ea27c">00048</link> <emphasis role="keywordtype">void</emphasis>&#32;<link linkend="_class_emulator_1a4df4c858eb6bbe991db334523f9ea27c">Emulator::checkDimensions</link>(<link linkend="_class_instance">Instance</link>*&#32;inst)
+<anchor xml:id="__emulator_8cpp_source_1l00049"/>00049 {
+<anchor xml:id="__emulator_8cpp_source_1l00050"/>00050 &#32;&#32;&#32;&#32;<emphasis role="keywordflow">if</emphasis>&#32;(!<link linkend="_class_emulator_1a7875b76738a69f20048883b847fc2802">hasRequiredDimensions</link>(inst))&#32;{
+<anchor xml:id="__emulator_8cpp_source_1l00051"/>00051 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;std::cout&#32;&lt;&lt;&#32;<emphasis role="stringliteral">&quot;Dimensions&#32;of&#32;instance&#32;&quot;</emphasis>&#32;&lt;&lt;&#32;inst-&gt;<link linkend="_class_instance_1a71e6b641e231bdfcfb4f255c6b9e58af">instanceName</link>&#32;&lt;&lt;&#32;<emphasis role="stringliteral">&quot;&#32;are&#32;not&#32;the&#32;required&#32;ones\n&quot;</emphasis>;
+<anchor xml:id="__emulator_8cpp_source_1l00052"/>00052 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<link linkend="_class_emulator_1a1441a057869b23871baa8d42c94f2af6">setRequiredDimensions</link>(inst);
+<anchor xml:id="__emulator_8cpp_source_1l00053"/>00053 &#32;&#32;&#32;&#32;}
+<anchor xml:id="__emulator_8cpp_source_1l00054"/>00054 }
+<anchor xml:id="__emulator_8cpp_source_1l00055"/>00055 
+<anchor xml:id="__emulator_8cpp_source_1l00056"/><link linkend="_class_emulator_1a7875b76738a69f20048883b847fc2802">00056</link> <emphasis role="keywordtype">bool</emphasis>&#32;<link linkend="_class_emulator_1a7875b76738a69f20048883b847fc2802">Emulator::hasRequiredDimensions</link>(<link linkend="_class_instance">Instance</link>*&#32;inst)
+<anchor xml:id="__emulator_8cpp_source_1l00057"/>00057 {
+<anchor xml:id="__emulator_8cpp_source_1l00058"/>00058 &#32;&#32;&#32;&#32;<emphasis role="keywordflow">return</emphasis>&#32;inst-&gt;<link linkend="_class_instance_1ae9cb37b80e1b2586ea1136552f5471c7">width</link>==<link linkend="_class_emulator_1a3c7b1df3adc7ba81a9fa76ce1662fa06">reqDimX</link>&amp;&amp;inst-&gt;<link linkend="_class_instance_1a5780eba6a75b91039e627799f07637ee">height</link>==<link linkend="_class_emulator_1a4db78de463890def4e2296b9da9c0bfb">reqDimY</link>&amp;&amp;inst-&gt;<link linkend="_class_instance_1afac2cbff1e241735f914ee0b95a04ea5">dpi</link>==<link linkend="_class_emulator_1a99712a1a614fdbca45b8be35747e5f88">reqDpi</link>;
+<anchor xml:id="__emulator_8cpp_source_1l00059"/>00059 }
+<anchor xml:id="__emulator_8cpp_source_1l00060"/>00060 
+<anchor xml:id="__emulator_8cpp_source_1l00061"/><link linkend="_class_emulator_1a150b7fe4395310484621e1f9709be76d">00061</link> <link linkend="__instance_8h_1a5b026f4903e92a7e60dda754b5028227">EmulatorType</link>&#32;<link linkend="_class_emulator_1a150b7fe4395310484621e1f9709be76d">Emulator::getEmulatorType</link>()
+<anchor xml:id="__emulator_8cpp_source_1l00062"/>00062 {
+<anchor xml:id="__emulator_8cpp_source_1l00063"/>00063 &#32;&#32;&#32;&#32;<emphasis role="keywordflow">return</emphasis>&#32;<link linkend="_class_emulator_1a76ffe6e8b9a6f9336ac33d3fe4a34083">myType</link>;
+<anchor xml:id="__emulator_8cpp_source_1l00064"/>00064 }
+<anchor xml:id="__emulator_8cpp_source_1l00065"/>00065 
+<anchor xml:id="__emulator_8cpp_source_1l00066"/><link linkend="_class_emulator_1aa5e02fc1e2e75c8be47324043410f17c">00066</link> <emphasis role="keywordtype">bool</emphasis>&#32;<link linkend="_class_emulator_1aa5e02fc1e2e75c8be47324043410f17c">Emulator::searchEmulatorDrive</link>(std::string&amp;&#32;emulatorFolder,&#32;<emphasis role="keyword">const</emphasis>&#32;std::string&amp;&#32;diskLetter)
+<anchor xml:id="__emulator_8cpp_source_1l00067"/>00067 {
+<anchor xml:id="__emulator_8cpp_source_1l00068"/>00068 &#32;&#32;&#32;&#32;std::string&#32;fold&#32;=&#32;diskLetter&#32;+&#32;<emphasis role="stringliteral">&quot;:\\&quot;</emphasis>;
+<anchor xml:id="__emulator_8cpp_source_1l00069"/>00069 &#32;&#32;&#32;&#32;emulatorFolder&#32;=&#32;<link linkend="_sys_commands_8cpp_1a5e44365ba3f0d833e74130bb152e64a7">findPathFolder</link>(fold,&#32;<link linkend="_class_emulator_1ae0bf469fc768b1aa831911f0f3bba8dd">executableName</link>);
+<anchor xml:id="__emulator_8cpp_source_1l00070"/>00070 &#32;&#32;&#32;&#32;<emphasis role="keywordflow">return</emphasis>&#32;!emulatorFolder.empty();
+<anchor xml:id="__emulator_8cpp_source_1l00071"/>00071 }
+<anchor xml:id="__emulator_8cpp_source_1l00072"/><link linkend="_class_emulator_1ace0e4b2197a81fe90b00c4bb4986ce4c">00072</link> <emphasis role="keywordtype">bool</emphasis>&#32;<link linkend="_class_emulator_1ace0e4b2197a81fe90b00c4bb4986ce4c">Emulator::searchEmulatorAllDrives</link>(std::string&amp;&#32;emulatorFolder,&#32;<emphasis role="keyword">const</emphasis>&#32;std::vector&lt;std::string&gt;&amp;&#32;allDiskLetter)
+<anchor xml:id="__emulator_8cpp_source_1l00073"/>00073 {
+<anchor xml:id="__emulator_8cpp_source_1l00074"/>00074 &#32;&#32;&#32;&#32;<emphasis role="keywordflow">for</emphasis>&#32;(<emphasis role="keyword">const</emphasis>&#32;std::string&amp;&#32;diskLetter&#32;:&#32;allDiskLetter)&#32;{
+<anchor xml:id="__emulator_8cpp_source_1l00075"/>00075 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">if</emphasis>&#32;(<link linkend="_class_emulator_1aa5e02fc1e2e75c8be47324043410f17c">searchEmulatorDrive</link>(emulatorFolder,&#32;diskLetter))<emphasis role="keywordflow">return</emphasis>&#32;<emphasis role="keyword">true</emphasis>;
+<anchor xml:id="__emulator_8cpp_source_1l00076"/>00076 &#32;&#32;&#32;&#32;}
+<anchor xml:id="__emulator_8cpp_source_1l00077"/>00077 &#32;&#32;&#32;&#32;<emphasis role="keywordflow">return</emphasis>&#32;<emphasis role="keyword">false</emphasis>;
+<anchor xml:id="__emulator_8cpp_source_1l00078"/>00078 }
+<anchor xml:id="__emulator_8cpp_source_1l00079"/>00079 
+<anchor xml:id="__emulator_8cpp_source_1l00080"/><link linkend="_class_emulator_1a619a936779444867c815d5c443d663e6">00080</link> std::vector&lt;Instance*&gt;&amp;&#32;<link linkend="_class_emulator_1a619a936779444867c815d5c443d663e6">Emulator::getListInstances</link>()
+<anchor xml:id="__emulator_8cpp_source_1l00081"/>00081 {
+<anchor xml:id="__emulator_8cpp_source_1l00082"/>00082 &#32;&#32;&#32;&#32;<emphasis role="keywordflow">return</emphasis>&#32;<link linkend="_class_emulator_1a85395eef4151d56d9af3e8e1d3db3cf4">listInstances</link>;
+<anchor xml:id="__emulator_8cpp_source_1l00083"/>00083 }
+<anchor xml:id="__emulator_8cpp_source_1l00084"/><link linkend="_class_emulator_1a4c0372049844947502d84334e7c0c7c1">00084</link> std::vector&lt;Instance*&gt;&amp;&#32;<link linkend="_class_emulator_1a4c0372049844947502d84334e7c0c7c1">Emulator::getListPlayableInstances</link>()
+<anchor xml:id="__emulator_8cpp_source_1l00085"/>00085 {
+<anchor xml:id="__emulator_8cpp_source_1l00086"/>00086 &#32;&#32;&#32;&#32;<emphasis role="keywordflow">return</emphasis>&#32;<link linkend="_class_emulator_1ab78ff181d01d2cfc53203b71a9904506">listPlayableInstances</link>;
+<anchor xml:id="__emulator_8cpp_source_1l00087"/>00087 }
+<anchor xml:id="__emulator_8cpp_source_1l00088"/>00088 
+<anchor xml:id="__emulator_8cpp_source_1l00089"/><link linkend="_class_emulator_1a89579d9f83f96e3dcc5d13be7e837724">00089</link> <emphasis role="keywordtype">bool</emphasis>&#32;<link linkend="_class_emulator_1a89579d9f83f96e3dcc5d13be7e837724">Emulator::selectedPlayingInstance</link>()
+<anchor xml:id="__emulator_8cpp_source_1l00090"/>00090 {
+<anchor xml:id="__emulator_8cpp_source_1l00091"/>00091 &#32;&#32;&#32;&#32;<emphasis role="keywordflow">return</emphasis>&#32;<link linkend="_class_emulator_1a6433f757edc9bf813dedef6f68f73b9f">playingInstance</link>&#32;!=&#32;<emphasis role="keyword">nullptr</emphasis>;
+<anchor xml:id="__emulator_8cpp_source_1l00092"/>00092 }
+<anchor xml:id="__emulator_8cpp_source_1l00093"/>00093 
+<anchor xml:id="__emulator_8cpp_source_1l00094"/><link linkend="_class_emulator_1ad943f2be93bf007f291bdd3762af86b4">00094</link> std::string&#32;<link linkend="_class_emulator_1ad943f2be93bf007f291bdd3762af86b4">Emulator::getPlayingInstanceAdbKey</link>()
+<anchor xml:id="__emulator_8cpp_source_1l00095"/>00095 {
+<anchor xml:id="__emulator_8cpp_source_1l00096"/>00096 &#32;&#32;&#32;&#32;<emphasis role="keywordflow">if</emphasis>&#32;(<link linkend="_class_emulator_1a89579d9f83f96e3dcc5d13be7e837724">selectedPlayingInstance</link>())&#32;{
+<anchor xml:id="__emulator_8cpp_source_1l00097"/>00097 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">return</emphasis>&#32;<link linkend="_class_emulator_1a6433f757edc9bf813dedef6f68f73b9f">playingInstance</link>-&gt;<link linkend="_class_instance_1abb8d03ac04893774e93ea06e85338d39">getAdbKey</link>();
+<anchor xml:id="__emulator_8cpp_source_1l00098"/>00098 &#32;&#32;&#32;&#32;}
+<anchor xml:id="__emulator_8cpp_source_1l00099"/>00099 &#32;&#32;&#32;&#32;<emphasis role="keywordflow">return</emphasis>&#32;std::string();
+<anchor xml:id="__emulator_8cpp_source_1l00100"/>00100 }
+</programlisting></section>

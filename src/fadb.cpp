@@ -97,7 +97,8 @@ std::string devices() {
 bool isDeviceConnected(const std::string adbId)
 {
     std::string text = devices();
-    return findContent(extractContent(text, adbId, "\n"), "device");
+    std::string name = extractBetween(text, adbId, "\n");
+    return name.find("device");
 }
 
 void reconnect()

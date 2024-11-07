@@ -1,0 +1,188 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<section xmlns="http://docbook.org/ns/docbook" version="5.0" xmlns:xlink="http://www.w3.org/1999/xlink" xml:id="__my_frame_8h_source" xml:lang="en-US">
+<title>MyFrame.h</title>
+<indexterm><primary>src/MyFrame.h</primary></indexterm>
+Go to the documentation of this file.<programlisting linenumbering="unnumbered"><anchor xml:id="__my_frame_8h_source_1l00001"/>00001 <emphasis role="preprocessor">#pragma&#32;once</emphasis>
+<anchor xml:id="__my_frame_8h_source_1l00002"/>00002 <emphasis role="comment">//&#32;For&#32;compilers&#32;that&#32;support&#32;precompilation,&#32;includes&#32;&quot;wx/wx.h&quot;.</emphasis>
+<anchor xml:id="__my_frame_8h_source_1l00003"/>00003 <emphasis role="preprocessor">#include&#32;&lt;wx/wxprec.h&gt;</emphasis>
+<anchor xml:id="__my_frame_8h_source_1l00004"/>00004 <emphasis role="preprocessor">#include&#32;&lt;wx/artprov.h&gt;</emphasis>
+<anchor xml:id="__my_frame_8h_source_1l00005"/>00005 <emphasis role="preprocessor">#include&#32;&lt;wx/splitter.h&gt;</emphasis>
+<anchor xml:id="__my_frame_8h_source_1l00006"/>00006 <emphasis role="preprocessor">#include&#32;&lt;math.h&gt;</emphasis>
+<anchor xml:id="__my_frame_8h_source_1l00007"/>00007 
+<anchor xml:id="__my_frame_8h_source_1l00008"/>00008 <emphasis role="comment">//&#32;for&#32;all&#32;others,&#32;include&#32;the&#32;necessary&#32;headers&#32;(this&#32;file&#32;is&#32;usually&#32;all&#32;you</emphasis>
+<anchor xml:id="__my_frame_8h_source_1l00009"/>00009 <emphasis role="comment">//&#32;need&#32;because&#32;it&#32;includes&#32;almost&#32;all&#32;&quot;standard&quot;&#32;wxWidgets&#32;headers)</emphasis>
+<anchor xml:id="__my_frame_8h_source_1l00010"/>00010 <emphasis role="preprocessor">#ifndef&#32;WX_PRECOMP</emphasis>
+<anchor xml:id="__my_frame_8h_source_1l00011"/>00011 <emphasis role="preprocessor">#include&#32;&lt;wx/wx.h&gt;</emphasis>
+<anchor xml:id="__my_frame_8h_source_1l00012"/>00012 <emphasis role="preprocessor">#endif</emphasis>
+<anchor xml:id="__my_frame_8h_source_1l00013"/>00013 <emphasis role="preprocessor">#include&#32;&quot;<link linkend="__tag_panel_8h">TagPanel.h</link>&quot;</emphasis>
+<anchor xml:id="__my_frame_8h_source_1l00014"/>00014 <emphasis role="preprocessor">#include&#32;&quot;<link linkend="__interpretor_8h">Interpretor.h</link>&quot;</emphasis>
+<anchor xml:id="__my_frame_8h_source_1l00015"/>00015 
+<anchor xml:id="__my_frame_8h_source_1l00016"/>00016 
+<anchor xml:id="__my_frame_8h_source_1l00017"/>00017 
+<anchor xml:id="__my_frame_8h_source_1l00018"/><link linkend="_class_my_frame">00018</link> <emphasis role="keyword">class&#32;</emphasis><link linkend="_class_my_frame">MyFrame</link>&#32;:&#32;<emphasis role="keyword">public</emphasis>&#32;wxFrame
+<anchor xml:id="__my_frame_8h_source_1l00019"/>00019 {
+<anchor xml:id="__my_frame_8h_source_1l00020"/>00020 <emphasis role="keyword">public</emphasis>:
+<anchor xml:id="__my_frame_8h_source_1l00021"/>00021 &#32;&#32;&#32;&#32;<link linkend="_class_my_frame_1af13d7bffe3d6844c2331085f423764a4">MyFrame</link>(<emphasis role="keyword">const</emphasis>&#32;wxString&amp;&#32;title);
+<anchor xml:id="__my_frame_8h_source_1l00022"/>00022 &#32;&#32;&#32;&#32;<link linkend="_class_my_frame_1a711b2bda77494841f2e582982b80c356">~MyFrame</link>();
+<anchor xml:id="__my_frame_8h_source_1l00023"/>00023 &#32;&#32;&#32;&#32;<emphasis role="keywordtype">void</emphasis>&#32;<link linkend="_class_my_frame_1a774684146b2b14e42891f6d8b8a73912">setMainPanel</link>();
+<anchor xml:id="__my_frame_8h_source_1l00024"/>00024 &#32;&#32;&#32;&#32;<emphasis role="keywordtype">void</emphasis>&#32;<link linkend="_class_my_frame_1ae268aae5c15908fe722358a19acdfd23">setMenu</link>();
+<anchor xml:id="__my_frame_8h_source_1l00025"/>00025 &#32;&#32;&#32;&#32;<emphasis role="keywordtype">void</emphasis>&#32;<link linkend="_class_my_frame_1a9021090d0039a901c587e8054952046a">setTopPanel</link>();
+<anchor xml:id="__my_frame_8h_source_1l00026"/>00026 &#32;&#32;&#32;&#32;<emphasis role="keywordtype">void</emphasis>&#32;<link linkend="_class_my_frame_1a0281cb45b6735fcbd2c885d98c874d18">setBottomPanel</link>();
+<anchor xml:id="__my_frame_8h_source_1l00027"/>00027 &#32;&#32;&#32;&#32;<emphasis role="keywordtype">void</emphasis>&#32;<link linkend="_class_my_frame_1a72b4f4c02d1a12561c4cc1f5f7685db8">setProgramPanel</link>();
+<anchor xml:id="__my_frame_8h_source_1l00028"/>00028 &#32;&#32;&#32;&#32;<emphasis role="keywordtype">void</emphasis>&#32;<link linkend="_class_my_frame_1a0dbb5d4453fefd4e027e2a7cb9a02706">setTagChoicePanel</link>();
+<anchor xml:id="__my_frame_8h_source_1l00029"/>00029 &#32;&#32;&#32;&#32;<emphasis role="keywordtype">void</emphasis>&#32;<link linkend="_class_my_frame_1a7795237fe8d78e10023b2e078f9728e3">setProgramWindow</link>();
+<anchor xml:id="__my_frame_8h_source_1l00030"/>00030 &#32;&#32;&#32;&#32;<emphasis role="keywordtype">void</emphasis>&#32;<link linkend="_class_my_frame_1ab7c6287940dde30412ad83ee933bc351">setTagDetailsPanel</link>();
+<anchor xml:id="__my_frame_8h_source_1l00031"/>00031 &#32;&#32;&#32;&#32;<emphasis role="keywordtype">void</emphasis>&#32;<link linkend="_class_my_frame_1a94347f33c5b653b114a76551dfb77d33">initDetailsTitle</link>();
+<anchor xml:id="__my_frame_8h_source_1l00032"/>00032 &#32;&#32;&#32;&#32;std::shared_ptr&lt;MainTag&gt;&#32;<link linkend="_class_my_frame_1a6e0ebad55b1d785b586997826c512f7d">getMainTag</link>();
+<anchor xml:id="__my_frame_8h_source_1l00033"/>00033 &#32;&#32;&#32;&#32;<emphasis role="keywordtype">void</emphasis>&#32;<link linkend="_class_my_frame_1a925c0f3521d20358ed4838fc95f8826f">closeDetailsPanel</link>();
+<anchor xml:id="__my_frame_8h_source_1l00034"/>00034 &#32;&#32;&#32;&#32;<emphasis role="keywordtype">void</emphasis>&#32;<link linkend="_class_my_frame_1a4c12737bfb50074cf73aa048290f22d3">setNeighboursPanel</link>(<link linkend="_class_tag_panel">TagPanel</link>*&#32;panel,<link linkend="__tag_panel_8h_1a369abf422adc1247d0d7bc295bf34014">HoverPosition</link>&#32;currentHover);
+<anchor xml:id="__my_frame_8h_source_1l00035"/>00035 &#32;&#32;&#32;&#32;<link linkend="_class_flow_tag_panel">FlowTagPanel</link>*&#32;<link linkend="_class_my_frame_1abb986879321b4dceaffb43eae82e37f1">createPanelTags</link>();
+<anchor xml:id="__my_frame_8h_source_1l00036"/>00036 &#32;&#32;&#32;&#32;<emphasis role="keywordtype">void</emphasis>&#32;<link linkend="_class_my_frame_1ab408ce89472a26337fbfb7fc30a09a22">resetTagChoicePanel</link>();
+<anchor xml:id="__my_frame_8h_source_1l00037"/>00037 &#32;&#32;&#32;&#32;<emphasis role="keywordtype">void</emphasis>&#32;<link linkend="_class_my_frame_1a4339439d5fed3d897184942e7220d93f">createLogicTagChoice</link>();
+<anchor xml:id="__my_frame_8h_source_1l00038"/>00038 &#32;&#32;&#32;&#32;<emphasis role="keywordtype">void</emphasis>&#32;<link linkend="_class_my_frame_1aaf74dd53f41987d231b8fb82a5e53916">createMathsTagChoice</link>();
+<anchor xml:id="__my_frame_8h_source_1l00039"/>00039 &#32;&#32;&#32;&#32;<emphasis role="keywordtype">void</emphasis>&#32;<link linkend="_class_my_frame_1af731182041ef8c25a0da07f4324fb6f3">createFindTagChoice</link>();
+<anchor xml:id="__my_frame_8h_source_1l00040"/>00040 &#32;&#32;&#32;&#32;<emphasis role="keywordtype">void</emphasis>&#32;<link linkend="_class_my_frame_1ad58638c9da6c63a300da14e5a46901a9">createControlTagChoice</link>();
+<anchor xml:id="__my_frame_8h_source_1l00041"/>00041 &#32;&#32;&#32;&#32;<emphasis role="keywordtype">void</emphasis>&#32;<link linkend="_class_my_frame_1aa9b1a6e75f7ee9f3c6afd860f370a495">BindChoiceButtons</link>();
+<anchor xml:id="__my_frame_8h_source_1l00042"/>00042 &#32;&#32;&#32;&#32;<emphasis role="keywordtype">void</emphasis>&#32;<link linkend="_class_my_frame_1a2db86527ceff17603c5e3c636330cd45">BindControlButtons</link>();
+<anchor xml:id="__my_frame_8h_source_1l00043"/>00043 &#32;&#32;&#32;&#32;<emphasis role="keywordtype">void</emphasis>&#32;<link linkend="_class_my_frame_1a01f2e54de1670750b396d4256eeff398">BindEventsRec</link>(<link linkend="_class_tag_panel">TagPanel</link>*&#32;panel);
+<anchor xml:id="__my_frame_8h_source_1l00044"/><link linkend="_class_my_frame_1abd836be1b8e86b5c0f7b6389b9d20efe">00044</link> &#32;&#32;&#32;&#32;<emphasis role="keywordtype">void</emphasis>&#32;<link linkend="_class_my_frame_1abd836be1b8e86b5c0f7b6389b9d20efe">BindMainTagPanelEvents</link>();
+<anchor xml:id="__my_frame_8h_source_1l00045"/>00045 &#32;&#32;&#32;&#32;<emphasis role="keywordtype">void</emphasis>&#32;<link linkend="_class_my_frame_1a4fa368851e6e293456a865a4e6f70aa9">BindFlowTagPanelEvents</link>(<link linkend="_class_tag_panel">TagPanel</link>*&#32;newFlowPanel);
+<anchor xml:id="__my_frame_8h_source_1l00046"/>00046 &#32;&#32;&#32;&#32;<emphasis role="keywordtype">void</emphasis>&#32;<link linkend="_class_my_frame_1acd9a16551875b5044f741e6cbd164423">BindTagPanelEvents</link>(<link linkend="_class_tag_panel">TagPanel</link>*&#32;newPanel);
+<anchor xml:id="__my_frame_8h_source_1l00047"/>00047 &#32;&#32;&#32;&#32;<emphasis role="keywordtype">void</emphasis>&#32;<link linkend="_class_my_frame_1a829e18afe3f16416ab4bd7a10205fce5">BindEmptyPanelEvents</link>(<link linkend="_class_tag_panel">TagPanel</link>*&#32;newPanel);
+<anchor xml:id="__my_frame_8h_source_1l00048"/>00048 &#32;&#32;&#32;&#32;<emphasis role="keywordtype">void</emphasis>&#32;<link linkend="_class_my_frame_1aecc593f08da4fb3be3cc03c50cf5fc6f">resetInsertHover</link>();
+<anchor xml:id="__my_frame_8h_source_1l00049"/><link linkend="_class_my_frame_1a589a4f949ba9328b3e6d61d134f692c0">00049</link> &#32;&#32;&#32;&#32;<link linkend="_class_main_tag_panel">MainTagPanel</link>*&#32;<link linkend="_class_my_frame_1a589a4f949ba9328b3e6d61d134f692c0">mainTagPanel</link>;
+<anchor xml:id="__my_frame_8h_source_1l00050"/><link linkend="_class_my_frame_1a309bef2ecd819969f0bb6b70f0529abc">00050</link> &#32;&#32;&#32;&#32;<emphasis role="keywordtype">bool</emphasis>&#32;<link linkend="_class_my_frame_1a309bef2ecd819969f0bb6b70f0529abc">HoverSwitch</link>;
+<anchor xml:id="__my_frame_8h_source_1l00051"/>00051 <emphasis role="keyword">private</emphasis>:
+<anchor xml:id="__my_frame_8h_source_1l00052"/>00052 &#32;&#32;&#32;&#32;<link linkend="_class_tag_panel">TagPanel</link>*&#32;hoverNeighbour;
+<anchor xml:id="__my_frame_8h_source_1l00053"/>00053 &#32;&#32;&#32;&#32;<link linkend="_class_tag_panel">TagPanel</link>*&#32;previousNeighbour;
+<anchor xml:id="__my_frame_8h_source_1l00054"/>00054 
+<anchor xml:id="__my_frame_8h_source_1l00055"/>00055 &#32;&#32;&#32;&#32;wxFont&#32;mainChoiceFont;
+<anchor xml:id="__my_frame_8h_source_1l00056"/>00056 &#32;&#32;&#32;&#32;wxFont&#32;subChoiceFont;
+<anchor xml:id="__my_frame_8h_source_1l00057"/>00057 &#32;&#32;&#32;&#32;std::shared_ptr&lt;MainTag&gt;&#32;mainTag;
+<anchor xml:id="__my_frame_8h_source_1l00058"/>00058 &#32;&#32;&#32;&#32;<link linkend="_class_interpretor">Interpretor</link>*&#32;myInterpretor;
+<anchor xml:id="__my_frame_8h_source_1l00059"/>00059 
+<anchor xml:id="__my_frame_8h_source_1l00060"/>00060 &#32;&#32;&#32;&#32;wxPanel*&#32;mainPanel;
+<anchor xml:id="__my_frame_8h_source_1l00061"/>00061 &#32;&#32;&#32;&#32;wxBoxSizer*&#32;mainSizer;
+<anchor xml:id="__my_frame_8h_source_1l00062"/>00062 
+<anchor xml:id="__my_frame_8h_source_1l00063"/>00063 &#32;&#32;&#32;&#32;wxPanel*&#32;topPanel;
+<anchor xml:id="__my_frame_8h_source_1l00064"/>00064 &#32;&#32;&#32;&#32;wxGridSizer*&#32;topGrid;
+<anchor xml:id="__my_frame_8h_source_1l00065"/>00065 
+<anchor xml:id="__my_frame_8h_source_1l00066"/>00066 &#32;&#32;&#32;&#32;wxPanel*&#32;tagDetailsPanel;
+<anchor xml:id="__my_frame_8h_source_1l00067"/>00067 &#32;&#32;&#32;&#32;wxBoxSizer*&#32;tagDetailsSizer;
+<anchor xml:id="__my_frame_8h_source_1l00068"/>00068 
+<anchor xml:id="__my_frame_8h_source_1l00069"/>00069 &#32;&#32;&#32;&#32;wxPanel*&#32;tagChoicePanel;
+<anchor xml:id="__my_frame_8h_source_1l00070"/>00070 &#32;&#32;&#32;&#32;wxBoxSizer*&#32;tagChoiceSizer;
+<anchor xml:id="__my_frame_8h_source_1l00071"/>00071 
+<anchor xml:id="__my_frame_8h_source_1l00072"/>00072 
+<anchor xml:id="__my_frame_8h_source_1l00073"/>00073 
+<anchor xml:id="__my_frame_8h_source_1l00074"/>00074 &#32;&#32;&#32;&#32;wxPanel*&#32;programPanel;
+<anchor xml:id="__my_frame_8h_source_1l00075"/>00075 &#32;&#32;&#32;&#32;wxBoxSizer*&#32;programSizer;
+<anchor xml:id="__my_frame_8h_source_1l00076"/>00076 
+<anchor xml:id="__my_frame_8h_source_1l00077"/>00077 &#32;&#32;&#32;&#32;wxScrolledWindow*&#32;programWindow;
+<anchor xml:id="__my_frame_8h_source_1l00078"/>00078 &#32;&#32;&#32;&#32;wxBoxSizer*&#32;programGrid;
+<anchor xml:id="__my_frame_8h_source_1l00079"/>00079 
+<anchor xml:id="__my_frame_8h_source_1l00080"/>00080 
+<anchor xml:id="__my_frame_8h_source_1l00081"/>00081 &#32;&#32;&#32;&#32;<link linkend="_class_tag_panel">TagPanel</link>*&#32;activeDetailsPanel;
+<anchor xml:id="__my_frame_8h_source_1l00082"/>00082 &#32;&#32;&#32;&#32;wxButton*&#32;leaveDetailsButton;
+<anchor xml:id="__my_frame_8h_source_1l00083"/>00083 
+<anchor xml:id="__my_frame_8h_source_1l00084"/>00084 &#32;&#32;&#32;&#32;<link linkend="_class_tag_panel">TagPanel</link>*&#32;pointedPanel;
+<anchor xml:id="__my_frame_8h_source_1l00085"/>00085 &#32;&#32;&#32;&#32;<link linkend="_class_tag_panel">TagPanel</link>*&#32;previousPointed;
+<anchor xml:id="__my_frame_8h_source_1l00086"/>00086 
+<anchor xml:id="__my_frame_8h_source_1l00087"/>00087 &#32;&#32;&#32;&#32;wxPoint&#32;drawPoint;
+<anchor xml:id="__my_frame_8h_source_1l00088"/>00088 &#32;&#32;&#32;&#32;wxSize&#32;drawRect;
+<anchor xml:id="__my_frame_8h_source_1l00089"/>00089 &#32;&#32;&#32;&#32;<link linkend="_class_tag_panel">TagPanel</link>*&#32;drawPanel;
+<anchor xml:id="__my_frame_8h_source_1l00090"/>00090 
+<anchor xml:id="__my_frame_8h_source_1l00091"/>00091 &#32;&#32;&#32;&#32;wxPanel*&#32;bottomPanel;
+<anchor xml:id="__my_frame_8h_source_1l00092"/>00092 &#32;&#32;&#32;&#32;wxBoxSizer*&#32;bottomSizer;
+<anchor xml:id="__my_frame_8h_source_1l00093"/>00093 
+<anchor xml:id="__my_frame_8h_source_1l00094"/>00094 &#32;&#32;&#32;&#32;std::shared_ptr&lt;Tag&gt;&#32;tagToAdd;
+<anchor xml:id="__my_frame_8h_source_1l00095"/>00095 
+<anchor xml:id="__my_frame_8h_source_1l00096"/>00096 &#32;&#32;&#32;&#32;<emphasis role="comment">//Top&#32;buttons</emphasis>
+<anchor xml:id="__my_frame_8h_source_1l00097"/>00097 &#32;&#32;&#32;&#32;wxButton*&#32;LogicButton;
+<anchor xml:id="__my_frame_8h_source_1l00098"/>00098 &#32;&#32;&#32;&#32;wxButton*&#32;MathsButton;
+<anchor xml:id="__my_frame_8h_source_1l00099"/>00099 &#32;&#32;&#32;&#32;wxButton*&#32;FindButton;
+<anchor xml:id="__my_frame_8h_source_1l00100"/>00100 &#32;&#32;&#32;&#32;wxButton*&#32;VariableButton;
+<anchor xml:id="__my_frame_8h_source_1l00101"/>00101 &#32;&#32;&#32;&#32;wxButton*&#32;ControlButton;
+<anchor xml:id="__my_frame_8h_source_1l00102"/>00102 &#32;&#32;&#32;&#32;wxButton*&#32;previousMainChoice;
+<anchor xml:id="__my_frame_8h_source_1l00103"/>00103 &#32;&#32;&#32;&#32;<emphasis role="comment">//Sub&#32;buttonS</emphasis>
+<anchor xml:id="__my_frame_8h_source_1l00104"/>00104 &#32;&#32;&#32;&#32;<emphasis role="comment">//&#32;Sub&#32;Logic</emphasis>
+<anchor xml:id="__my_frame_8h_source_1l00105"/>00105 &#32;&#32;&#32;&#32;wxButton*&#32;previousSubChoice;
+<anchor xml:id="__my_frame_8h_source_1l00106"/>00106 
+<anchor xml:id="__my_frame_8h_source_1l00107"/>00107 &#32;&#32;&#32;&#32;wxButton*&#32;boolButton;
+<anchor xml:id="__my_frame_8h_source_1l00108"/>00108 &#32;&#32;&#32;&#32;wxButton*&#32;orButton;
+<anchor xml:id="__my_frame_8h_source_1l00109"/>00109 &#32;&#32;&#32;&#32;wxButton*&#32;andButton;
+<anchor xml:id="__my_frame_8h_source_1l00110"/>00110 &#32;&#32;&#32;&#32;wxButton*&#32;notButton;
+<anchor xml:id="__my_frame_8h_source_1l00111"/>00111 &#32;&#32;&#32;&#32;wxButton*&#32;compareButton;
+<anchor xml:id="__my_frame_8h_source_1l00112"/>00112 
+<anchor xml:id="__my_frame_8h_source_1l00113"/>00113 &#32;&#32;&#32;&#32;<emphasis role="comment">//Sub&#32;Maths</emphasis>
+<anchor xml:id="__my_frame_8h_source_1l00114"/>00114 &#32;&#32;&#32;&#32;wxButton*&#32;addButton;
+<anchor xml:id="__my_frame_8h_source_1l00115"/>00115 &#32;&#32;&#32;&#32;wxButton&#32;*&#32;substractButton;
+<anchor xml:id="__my_frame_8h_source_1l00116"/>00116 &#32;&#32;&#32;&#32;wxButton*&#32;multiplyButton;
+<anchor xml:id="__my_frame_8h_source_1l00117"/>00117 &#32;&#32;&#32;&#32;wxButton*&#32;divideButton;
+<anchor xml:id="__my_frame_8h_source_1l00118"/>00118 
+<anchor xml:id="__my_frame_8h_source_1l00119"/>00119 &#32;&#32;&#32;&#32;<emphasis role="comment">//Sub&#32;Find</emphasis>
+<anchor xml:id="__my_frame_8h_source_1l00120"/>00120 &#32;&#32;&#32;&#32;wxButton*&#32;findButton;
+<anchor xml:id="__my_frame_8h_source_1l00121"/>00121 &#32;&#32;&#32;&#32;wxButton*&#32;findclickButton;
+<anchor xml:id="__my_frame_8h_source_1l00122"/>00122 &#32;&#32;&#32;&#32;wxButton*&#32;findOneMultipleButton;
+<anchor xml:id="__my_frame_8h_source_1l00123"/>00123 &#32;&#32;&#32;&#32;wxButton*&#32;findSwipeButton;
+<anchor xml:id="__my_frame_8h_source_1l00124"/>00124 
+<anchor xml:id="__my_frame_8h_source_1l00125"/>00125 &#32;&#32;&#32;&#32;<emphasis role="comment">//Sub&#32;Control</emphasis>
+<anchor xml:id="__my_frame_8h_source_1l00126"/>00126 &#32;&#32;&#32;&#32;wxButton*&#32;loopButton;
+<anchor xml:id="__my_frame_8h_source_1l00127"/>00127 &#32;&#32;&#32;&#32;wxButton*&#32;ifButton;
+<anchor xml:id="__my_frame_8h_source_1l00128"/>00128 &#32;&#32;&#32;&#32;wxButton*&#32;doLoopButton;
+<anchor xml:id="__my_frame_8h_source_1l00129"/>00129 &#32;&#32;&#32;&#32;wxButton*&#32;elseButton;
+<anchor xml:id="__my_frame_8h_source_1l00130"/>00130 &#32;&#32;&#32;&#32;wxButton*&#32;elseIfButton;
+<anchor xml:id="__my_frame_8h_source_1l00131"/>00131 
+<anchor xml:id="__my_frame_8h_source_1l00132"/>00132 
+<anchor xml:id="__my_frame_8h_source_1l00133"/>00133 &#32;&#32;&#32;&#32;<emphasis role="keywordtype">void</emphasis>&#32;CreateInsertPanel(std::shared_ptr&lt;Tag&gt;tagAdd,<link linkend="_class_tag_panel">TagPanel</link>*&#32;flowPanel,<link linkend="__tag_panel_8h_1a443e25f6957db75e312dbd0fb43d5a6e">AddPosition</link>&#32;pos);
+<anchor xml:id="__my_frame_8h_source_1l00134"/>00134 &#32;&#32;&#32;&#32;<link linkend="_class_main_tag_panel">MainTagPanel</link>*&#32;CreateMainPanel();
+<anchor xml:id="__my_frame_8h_source_1l00135"/>00135 &#32;&#32;&#32;&#32;<link linkend="_class_tag_panel">TagPanel</link>*&#32;CreatePanelFromTag(wxWindow*&#32;parentTag,<emphasis role="keyword">const</emphasis>&#32;std::shared_ptr&lt;Tag&gt;&amp;&#32;tag);
+<anchor xml:id="__my_frame_8h_source_1l00136"/>00136 &#32;&#32;&#32;&#32;<link linkend="_class_tag_panel">TagPanel</link>*&#32;CreatePanelFromTagRec(wxWindow*&#32;parentTag,&#32;<emphasis role="keyword">const</emphasis>&#32;std::shared_ptr&lt;Tag&gt;&amp;&#32;tag);
+<anchor xml:id="__my_frame_8h_source_1l00137"/>00137 &#32;&#32;&#32;&#32;<emphasis role="keywordtype">void</emphasis>&#32;CreatePanelFromTagRec(wxWindow*&#32;parentTag,&#32;<emphasis role="keyword">const</emphasis>&#32;std::vector&lt;std::shared_ptr&lt;Tag&gt;&gt;&amp;&#32;listTag);
+<anchor xml:id="__my_frame_8h_source_1l00138"/>00138 &#32;&#32;&#32;&#32;<emphasis role="keywordtype">void</emphasis>&#32;openDetailsPanel(<link linkend="_class_tag_panel">TagPanel</link>*&#32;tag);
+<anchor xml:id="__my_frame_8h_source_1l00139"/>00139 &#32;&#32;&#32;&#32;<emphasis role="comment">//Tags</emphasis>
+<anchor xml:id="__my_frame_8h_source_1l00140"/>00140 &#32;&#32;&#32;&#32;std::vector&lt;wxButton*&gt;listChoices;
+<anchor xml:id="__my_frame_8h_source_1l00141"/>00141 &#32;&#32;&#32;&#32;<emphasis role="keywordtype">bool</emphasis>&#32;placingTag;
+<anchor xml:id="__my_frame_8h_source_1l00142"/>00142 &#32;&#32;&#32;&#32;<emphasis role="comment">//Buttons</emphasis>
+<anchor xml:id="__my_frame_8h_source_1l00143"/>00143 &#32;&#32;&#32;&#32;wxBitmap&#32;getBitmap(<emphasis role="keyword">const</emphasis>&#32;wxString&amp;&#32;name,&#32;<emphasis role="keyword">const</emphasis>&#32;wxSize&amp;&#32;resize&#32;=&#32;wxSize());
+<anchor xml:id="__my_frame_8h_source_1l00144"/>00144 &#32;&#32;&#32;&#32;wxBitmap&#32;getBitmap(wxImage&amp;&#32;name,<emphasis role="keyword">const</emphasis>&#32;wxSize&amp;&#32;resize=wxSize());
+<anchor xml:id="__my_frame_8h_source_1l00145"/>00145 
+<anchor xml:id="__my_frame_8h_source_1l00146"/>00146 &#32;&#32;&#32;&#32;wxStaticBitmap*&#32;getStaticBitmap(<emphasis role="keyword">const</emphasis>&#32;wxString&amp;&#32;name,&#32;wxWindow*&#32;window,wxSize&#32;resize=wxSize());
+<anchor xml:id="__my_frame_8h_source_1l00147"/>00147 &#32;&#32;&#32;&#32;wxStaticBitmap*&#32;getStaticBitmap(wxImage&amp;&#32;image,&#32;wxWindow*&#32;window,&#32;wxSize&#32;resize);
+<anchor xml:id="__my_frame_8h_source_1l00148"/>00148 &#32;&#32;&#32;&#32;wxStaticBitmap*&#32;getStaticBitmap(wxBitmap&amp;&#32;bitmap,&#32;wxWindow*&#32;window);
+<anchor xml:id="__my_frame_8h_source_1l00149"/>00149 &#32;&#32;&#32;&#32;wxRect&#32;getVisibleArea(wxScrolledWindow*&#32;window);
+<anchor xml:id="__my_frame_8h_source_1l00150"/>00150 &#32;&#32;&#32;&#32;wxImage&#32;getImage(<emphasis role="keyword">const</emphasis>&#32;wxString&amp;&#32;name,<emphasis role="keyword">const</emphasis>&#32;wxSize&amp;&#32;resize&#32;=&#32;wxSize());
+<anchor xml:id="__my_frame_8h_source_1l00151"/>00151 &#32;&#32;&#32;&#32;<emphasis role="keywordtype">bool</emphasis>&#32;Intersects(<emphasis role="keyword">const</emphasis>&#32;wxRect&amp;&#32;rect1,&#32;<emphasis role="keyword">const</emphasis>&#32;wxRect&amp;&#32;rect2);
+<anchor xml:id="__my_frame_8h_source_1l00152"/>00152 &#32;&#32;&#32;&#32;<emphasis role="keywordtype">void</emphasis>&#32;isInClientArea(<link linkend="_class_tag_panel">TagPanel</link>*&#32;tag,&#32;<emphasis role="keyword">const</emphasis>&#32;wxRect&amp;&#32;clientArea);
+<anchor xml:id="__my_frame_8h_source_1l00153"/>00153 &#32;&#32;&#32;&#32;wxSize&#32;getFrameSize();
+<anchor xml:id="__my_frame_8h_source_1l00154"/>00154 &#32;&#32;&#32;&#32;<emphasis role="keywordtype">int</emphasis>&#32;getFrameWidth();
+<anchor xml:id="__my_frame_8h_source_1l00155"/>00155 &#32;&#32;&#32;&#32;<emphasis role="keywordtype">int</emphasis>&#32;getFrameHeight();
+<anchor xml:id="__my_frame_8h_source_1l00156"/>00156 &#32;&#32;&#32;&#32;<emphasis role="keywordtype">void</emphasis>&#32;ResizeImage(wxImage&amp;&#32;image,&#32;<emphasis role="keyword">const</emphasis>&#32;wxSize&amp;&#32;size);
+<anchor xml:id="__my_frame_8h_source_1l00157"/>00157 
+<anchor xml:id="__my_frame_8h_source_1l00158"/>00158 &#32;&#32;&#32;&#32;<emphasis role="comment">//Program</emphasis>
+<anchor xml:id="__my_frame_8h_source_1l00159"/>00159 &#32;&#32;&#32;&#32;<emphasis role="keywordtype">void</emphasis>&#32;LoadPanelFromTag(<link linkend="_class_flow_tag_panel">FlowTagPanel</link>*&#32;ptag,&#32;std::shared_ptr&lt;Tag&gt;&#32;ltag);
+<anchor xml:id="__my_frame_8h_source_1l00160"/>00160 &#32;&#32;&#32;&#32;<emphasis role="keywordtype">void</emphasis>&#32;LoadPanelFromTags(<link linkend="_class_flow_tag_panel">FlowTagPanel</link>*&#32;ptag,std::vector&lt;std::shared_ptr&lt;Tag&gt;&gt;&#32;ltag);
+<anchor xml:id="__my_frame_8h_source_1l00161"/>00161 
+<anchor xml:id="__my_frame_8h_source_1l00162"/>00162 &#32;&#32;&#32;&#32;<emphasis role="comment">//Events</emphasis>
+<anchor xml:id="__my_frame_8h_source_1l00163"/>00163 &#32;&#32;&#32;&#32;<emphasis role="keywordtype">void</emphasis>&#32;resetDetailsPanel();
+<anchor xml:id="__my_frame_8h_source_1l00164"/>00164 &#32;&#32;&#32;&#32;<emphasis role="keywordtype">void</emphasis>&#32;OnProgramWindowScrolled(wxScrollWinEvent&amp;&#32;evt);
+<anchor xml:id="__my_frame_8h_source_1l00165"/>00165 &#32;&#32;&#32;&#32;<emphasis role="keywordtype">void</emphasis>&#32;OnCutClick(wxMouseEvent&amp;&#32;evt);
+<anchor xml:id="__my_frame_8h_source_1l00166"/>00166 &#32;&#32;&#32;&#32;<emphasis role="keywordtype">void</emphasis>&#32;switchFlowTagVisibility(wxMouseEvent&amp;&#32;evt);
+<anchor xml:id="__my_frame_8h_source_1l00167"/>00167 &#32;&#32;&#32;&#32;<emphasis role="keywordtype">void</emphasis>&#32;SwitchChoicePanel(wxMouseEvent&amp;&#32;evt);
+<anchor xml:id="__my_frame_8h_source_1l00168"/>00168 &#32;&#32;&#32;&#32;<emphasis role="keywordtype">void</emphasis>&#32;SwitchControlChoicePanel(wxMouseEvent&amp;&#32;evt);
+<anchor xml:id="__my_frame_8h_source_1l00169"/>00169 &#32;&#32;&#32;&#32;<emphasis role="keywordtype">void</emphasis>&#32;ChangeTagToAdd(std::shared_ptr&lt;Tag&gt;&#32;newTag);
+<anchor xml:id="__my_frame_8h_source_1l00170"/>00170 &#32;&#32;&#32;&#32;<emphasis role="keywordtype">void</emphasis>&#32;PlacedTagToAdd();
+<anchor xml:id="__my_frame_8h_source_1l00171"/>00171 &#32;&#32;&#32;&#32;<emphasis role="keywordtype">void</emphasis>&#32;PlacingTagToAdd();
+<anchor xml:id="__my_frame_8h_source_1l00172"/>00172 &#32;&#32;&#32;&#32;<emphasis role="keywordtype">void</emphasis>&#32;testEvent(wxKeyEvent&amp;&#32;evt);
+<anchor xml:id="__my_frame_8h_source_1l00173"/>00173 &#32;&#32;&#32;&#32;<emphasis role="keywordtype">void</emphasis>&#32;OnTagPanelClick(wxMouseEvent&amp;&#32;evt);
+<anchor xml:id="__my_frame_8h_source_1l00174"/>00174 &#32;&#32;&#32;&#32;<emphasis role="keywordtype">void</emphasis>&#32;CalcCreateInsertInFlowPanel(wxPoint&#32;mousePos,&#32;<link linkend="_class_flow_tag_panel">FlowTagPanel</link>*&#32;flowPanel);
+<anchor xml:id="__my_frame_8h_source_1l00175"/>00175 &#32;&#32;&#32;&#32;<emphasis role="keywordtype">void</emphasis>&#32;CalcCreateInsertInPanel(wxPoint&#32;mousePos,&#32;<link linkend="_class_tag_panel">TagPanel</link>*&#32;panel);
+<anchor xml:id="__my_frame_8h_source_1l00176"/>00176 &#32;&#32;&#32;&#32;<emphasis role="keywordtype">void</emphasis>&#32;OnMouseClicked(wxMouseEvent&amp;&#32;evt);
+<anchor xml:id="__my_frame_8h_source_1l00177"/>00177 &#32;&#32;&#32;&#32;<emphasis role="keywordtype">void</emphasis>&#32;OnTagPanelEnter(wxMouseEvent&amp;&#32;evt);
+<anchor xml:id="__my_frame_8h_source_1l00178"/>00178 &#32;&#32;&#32;&#32;<emphasis role="keywordtype">void</emphasis>&#32;OnTagPanelLeave(wxMouseEvent&amp;&#32;evt);
+<anchor xml:id="__my_frame_8h_source_1l00179"/>00179 &#32;&#32;&#32;&#32;<emphasis role="keywordtype">void</emphasis>&#32;OnMouseMoved(wxMouseEvent&amp;&#32;evt);
+<anchor xml:id="__my_frame_8h_source_1l00180"/>00180 &#32;&#32;&#32;&#32;<emphasis role="keywordtype">void</emphasis>&#32;OnDuplicateClick(wxMouseEvent&amp;&#32;evt);
+<anchor xml:id="__my_frame_8h_source_1l00181"/>00181 &#32;&#32;&#32;&#32;<emphasis role="keywordtype">void</emphasis>&#32;OnCloseDetails(wxMouseEvent&amp;&#32;<link linkend="_paths_8cpp_1a93114eafe7b571802c6787926ec00d93">event</link>);
+<anchor xml:id="__my_frame_8h_source_1l00182"/>00182 };
+<anchor xml:id="__my_frame_8h_source_1l00183"/>00183 
+</programlisting></section>

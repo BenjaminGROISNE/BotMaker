@@ -1,0 +1,30 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<section xmlns="http://docbook.org/ns/docbook" version="5.0" xmlns:xlink="http://www.w3.org/1999/xlink" xml:id="__blue_stacks_8h" xml:lang="en-US">
+<title>src/BlueStacks.h File Reference</title>
+<indexterm><primary>src/BlueStacks.h</primary></indexterm>
+<programlisting linenumbering="unnumbered">#include &lt;iostream&gt;<?linebreak?>#include &lt;vector&gt;<?linebreak?>#include &quot;fadb.h&quot;<?linebreak?>#include &quot;sysCommands.h&quot;<?linebreak?>#include &quot;BluestacksInstance.h&quot;<?linebreak?>#include &quot;Emulator.h&quot;<?linebreak?></programlisting>Include dependency graph for BlueStacks.h:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="_blue_stacks_8h__incl.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+This graph shows which files directly or indirectly include this file:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="_blue_stacks_8h__dep__incl.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+<simplesect>
+    <title>Classes    </title>
+        <itemizedlist>
+            <listitem><para>class <link linkend="_class_bluestacks">Bluestacks</link></para>
+</listitem>
+        </itemizedlist>
+</simplesect>
+</section>

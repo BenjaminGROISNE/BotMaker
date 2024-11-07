@@ -145,11 +145,7 @@ bool isIdentifier(const std::shared_ptr<Token>& token) {
 	return false;
 }
 
-void skipSpace(std::string& text) {
-	auto k = text.find_first_not_of("\b\t\n\r ");
-	if (k < text.size())text = text.substr(k);
-	else text.clear();
-}
+
 
 std::string getNextPunctuationToken(const std::string& str) {
 	auto lowest = std::string::npos;
@@ -1097,7 +1093,7 @@ Interpretor::Interpretor()
 {
 }
 
-Interpretor::Interpretor(std::string folder)
+Interpretor::Interpretor(const std::string& folder)
 {
 	ActivityFolder = folder;
 }
@@ -1106,14 +1102,14 @@ Interpretor::~Interpretor()
 {
 }
 
-void Interpretor::readActivityFile(std::string ActivityName)
+void Interpretor::readActivityFile(const std::string& ActivityName)
 {
- 	createMainTag(copyActivity(ActivityFolder / ActivityName));
+ 	createMainTag(copyActivity(appendToFolder(ActivityFolder,ActivityName)));
 }
 
-std::string Interpretor::copyActivity(std::filesystem::path ActivityName)
+std::string Interpretor::copyActivity(const std::string& ActivityPath)
 {
-	return getFileContent(ActivityName.string());
+	return getFileContent(ActivityPath);
 }
 
 std::shared_ptr<Tag> Interpretor::getActivityTag()

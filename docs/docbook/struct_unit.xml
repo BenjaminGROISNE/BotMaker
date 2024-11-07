@@ -1,0 +1,76 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<section xmlns="http://docbook.org/ns/docbook" version="5.0" xmlns:xlink="http://www.w3.org/1999/xlink" xml:id="_struct_unit" xml:lang="en-US">
+<title>Unit Struct Reference</title>
+<indexterm><primary>Unit</primary></indexterm>
+<para>
+<computeroutput>#include &lt;Units.h&gt;</computeroutput>
+</para>
+Collaboration diagram for Unit:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="struct_unit__coll__graph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+<simplesect>
+    <title>Public Member Functions    </title>
+        <itemizedlist>
+            <listitem><para><link linkend="_struct_unit_1a8e46f663a95736c8002d85ab271a7581">Unit</link> ()</para>
+</listitem>
+            <listitem><para><link linkend="_struct_unit_1aa79c2f98157d0098793b2a64fc69f12a">Unit</link> (std::string name, <link linkend="__units_8h_1a2b350cb683584e1f7db6c78f698c161b">Orders</link> ord)</para>
+</listitem>
+        </itemizedlist>
+</simplesect>
+<simplesect>
+    <title>Public Attributes    </title>
+        <itemizedlist>
+            <listitem><para>std::string <link linkend="_struct_unit_1aa3bb873cac8ba360fdf63fa266e2fdab">nameunit</link></para>
+</listitem>
+            <listitem><para><link linkend="__units_8h_1a2b350cb683584e1f7db6c78f698c161b">Orders</link> <link linkend="_struct_unit_1a698c64f55072e7376a245b5d3bd636ae">Ord</link></para>
+</listitem>
+        </itemizedlist>
+</simplesect>
+<section>
+<title>Detailed Description</title>
+<para>
+Definition at line <link linkend="__units_8h_source_1l00185">185</link> of file <link linkend="__units_8h_source">Units.h</link>.</para>
+</section>
+<section>
+<title>Constructor &amp; Destructor Documentation</title>
+<anchor xml:id="_struct_unit_1a8e46f663a95736c8002d85ab271a7581"/><section>
+    <title>Unit()<computeroutput>[1/2]</computeroutput></title>
+<indexterm><primary>Unit</primary><secondary>Unit</secondary></indexterm>
+<indexterm><primary>Unit</primary><secondary>Unit</secondary></indexterm>
+<para><computeroutput>Unit::Unit ( )<computeroutput>[inline]</computeroutput></computeroutput></para><para>
+Definition at line <link linkend="__units_8h_source_1l00188">188</link> of file <link linkend="__units_8h_source">Units.h</link>.</para>
+</section>
+<anchor xml:id="_struct_unit_1aa79c2f98157d0098793b2a64fc69f12a"/><section>
+    <title>Unit()<computeroutput>[2/2]</computeroutput></title>
+<indexterm><primary>Unit</primary><secondary>Unit</secondary></indexterm>
+<indexterm><primary>Unit</primary><secondary>Unit</secondary></indexterm>
+<para><computeroutput>Unit::Unit (std::string name, <link linkend="__units_8h_1a2b350cb683584e1f7db6c78f698c161b">Orders</link> ord)<computeroutput>[inline]</computeroutput></computeroutput></para><para>
+Definition at line <link linkend="__units_8h_source_1l00192">192</link> of file <link linkend="__units_8h_source">Units.h</link>.</para>
+</section>
+</section>
+<section>
+<title>Member Data Documentation</title>
+<anchor xml:id="_struct_unit_1aa3bb873cac8ba360fdf63fa266e2fdab"/><section>
+    <title>nameunit</title>
+<indexterm><primary>nameunit</primary><secondary>Unit</secondary></indexterm>
+<indexterm><primary>Unit</primary><secondary>nameunit</secondary></indexterm>
+<para><computeroutput>std::string Unit::nameunit</computeroutput></para><para>
+Definition at line <link linkend="__units_8h_source_1l00186">186</link> of file <link linkend="__units_8h_source">Units.h</link>.</para>
+</section>
+<anchor xml:id="_struct_unit_1a698c64f55072e7376a245b5d3bd636ae"/><section>
+    <title>Ord</title>
+<indexterm><primary>Ord</primary><secondary>Unit</secondary></indexterm>
+<indexterm><primary>Unit</primary><secondary>Ord</secondary></indexterm>
+<para><computeroutput><link linkend="__units_8h_1a2b350cb683584e1f7db6c78f698c161b">Orders</link> Unit::Ord</computeroutput></para><para>
+Definition at line <link linkend="__units_8h_source_1l00187">187</link> of file <link linkend="__units_8h_source">Units.h</link>.</para>
+</section>
+<para>
+The documentation for this struct was generated from the following file:</para>
+src/<link linkend="__units_8h">Units.h</link></section>
+</section>

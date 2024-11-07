@@ -1,0 +1,2197 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<section xmlns="http://docbook.org/ns/docbook" version="5.0" xmlns:xlink="http://www.w3.org/1999/xlink" xml:id="_classfsfml" xml:lang="en-US">
+<title>fsfml Class Reference</title>
+<indexterm><primary>fsfml</primary></indexterm>
+<para>
+<computeroutput>#include &lt;fsfml.h&gt;</computeroutput>
+</para>
+Collaboration diagram for fsfml:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="classfsfml__coll__graph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+<simplesect>
+    <title>Public Member Functions    </title>
+        <itemizedlist>
+            <listitem><para><link linkend="_classfsfml_1ac2c892da4a378e4767cce342c3ead92f">fsfml</link> ()</para>
+</listitem>
+            <listitem><para><link linkend="_classfsfml_1aa2e6e852aaf9942b2bace314c75ef661">~fsfml</link> ()</para>
+</listitem>
+            <listitem><para>void <link linkend="_classfsfml_1a37a061f1ee4ccd45b5ae0a900021ecf4">startSFML</link> ()</para>
+</listitem>
+            <listitem><para>void <link linkend="_classfsfml_1a33b00964a94d045d04ddabc99353df0f">initWindow</link> ()</para>
+</listitem>
+            <listitem><para>void <link linkend="_classfsfml_1a4bf50b65a4a6b5ed3e57b7b26638534a">windowLoop</link> ()</para>
+</listitem>
+            <listitem><para>void <link linkend="_classfsfml_1a9570e72eefe15664a6859f36c610fafc">eventLoop</link> ()</para>
+</listitem>
+            <listitem><para>void <link linkend="_classfsfml_1aa090063adfcdc1972b62726803ffd71c">clearWindow</link> (sf::Color color)</para>
+</listitem>
+            <listitem><para>void <link linkend="_classfsfml_1a848c18b566753dc6e6e6097bff216f8d">displayWindow</link> ()</para>
+</listitem>
+            <listitem><para>sf::Vector2u <link linkend="_classfsfml_1a91426b963b5b55787b64e31694bf4791">getWindowSize</link> ()</para>
+</listitem>
+            <listitem><para>int <link linkend="_classfsfml_1ae573a629144f2905af0ef5acf29aac17">getWindowHeight</link> ()</para>
+</listitem>
+            <listitem><para>int <link linkend="_classfsfml_1af27e6bb49f79cd1ff0262ebf0fdeb96d">getWindowWidth</link> ()</para>
+</listitem>
+            <listitem><para>void <link linkend="_classfsfml_1ac7247f5821521ffff228e570f0b74b42">resetEventVariables</link> ()</para>
+</listitem>
+            <listitem><para>void <link linkend="_classfsfml_1ab91828a3b4b1b3c53b5dc8552d46d48a">initVariables</link> ()</para>
+</listitem>
+            <listitem><para>void <link linkend="_classfsfml_1ab45b3aa9320cf22836dc133f40186955">initPanel</link> (<link linkend="_struct_panel">Panel</link> &amp;page, std::string id, std::vector&lt; std::string &gt; &amp;allstr)</para>
+</listitem>
+            <listitem><para>void <link linkend="_classfsfml_1a405db5ed694c7e2664a82f690eeb87d2">initMenu</link> ()</para>
+</listitem>
+            <listitem><para>void <link linkend="_classfsfml_1ad18f9a13c0057b7a42ec1bab4cf15376">initAllPanels</link> ()</para>
+</listitem>
+            <listitem><para>void <link linkend="_classfsfml_1a7473fd3f3ce08ac3e25dc26fad599728">createTexture</link> (std::string nameTexture, int width, int height)</para>
+</listitem>
+            <listitem><para>void <link linkend="_classfsfml_1a1be6e8780abb71f21c69ce8bc3da6bee">addTexture</link> (std::string key, sf::Texture *texture)</para>
+</listitem>
+            <listitem><para>void <link linkend="_classfsfml_1a1855395d90d78b9160203b6b051f46d3">addSprite</link> (std::string key, sf::Sprite &amp;sprite)</para>
+</listitem>
+            <listitem><para>void <link linkend="_classfsfml_1a8172dd2d6f556c7829e9adc766ef2565">addElement</link> (<link linkend="_struct_element">Element</link> &amp;element, <link linkend="_struct_panel">Panel</link> &amp;page)</para>
+</listitem>
+            <listitem><para>void <link linkend="_classfsfml_1a91666521c0a898f3c36635657fe81e9d">autoPadding</link> (<link linkend="_struct_element">Element</link> &amp;element)</para>
+</listitem>
+            <listitem><para>void <link linkend="_classfsfml_1a9dd8962bbcb36f68676b4d39325e727d">autoPadding</link> (std::vector&lt; <link linkend="_struct_element">Element</link> &gt; &amp;element)</para>
+</listitem>
+            <listitem><para>sf::Sprite <link linkend="_classfsfml_1a81fb76af022d798c5829768ebd2e9c04">getSprite</link> (const std::string &amp;path)</para>
+</listitem>
+            <listitem><para>sf::Vector2f <link linkend="_classfsfml_1aa7a23a2f8f1b77216ab78de518572a19">getScale</link> (<link linkend="_struct_element">Element</link> &amp;element)</para>
+</listitem>
+            <listitem><para>sf::Vector2f <link linkend="_classfsfml_1a131dfccbc0d482e9786d5951804de435">getScale</link> (sf::Sprite &amp;sprite)</para>
+</listitem>
+            <listitem><para>void <link linkend="_classfsfml_1a2c79ba56c482be575f405a9871eab787">resizeSprite</link> (sf::Sprite &amp;sprite, sf::Vector2f vect)</para>
+</listitem>
+            <listitem><para>void <link linkend="_classfsfml_1a91c3af88560235ca3bc5bdbb8ddd2e9b">resizeElement</link> (<link linkend="_struct_element">Element</link> &amp;element, sf::Vector2f vect)</para>
+</listitem>
+            <listitem><para>void <link linkend="_classfsfml_1a54f1c15c7c8063c7d8bb0eb2445515d5">autoResize</link> (<link linkend="_struct_element">Element</link> &amp;element)</para>
+</listitem>
+            <listitem><para>void <link linkend="_classfsfml_1a788bf041977aeec9f19d5d8e7171f39f">autoResize</link> (std::vector&lt; <link linkend="_struct_element">Element</link> &gt; &amp;allElements)</para>
+</listitem>
+            <listitem><para>void <link linkend="_classfsfml_1a5baebfef9137bd5f516eea18e45bebe7">loadSprite</link> (const std::string &amp;nameImg)</para>
+</listitem>
+            <listitem><para>void <link linkend="_classfsfml_1aa9726b537036754c5927b584939e0e75">updateElement</link> (<link linkend="_struct_element">Element</link> &amp;element)</para>
+</listitem>
+            <listitem><para>void <link linkend="_classfsfml_1a5528a53174db6d10551021c4371ead80">loadAllSprites</link> (const std::vector&lt; std::string &gt; &amp;allPaths)</para>
+</listitem>
+            <listitem><para><link linkend="_struct_element">Element</link> <link linkend="_classfsfml_1a9abd23f72500b09571e79f521a0e57e6">initElement</link> (const std::string &amp;nameImg)</para>
+</listitem>
+            <listitem><para>void <link linkend="_classfsfml_1af5ec5a73c3deb2ebea2b7ab05e550975">seeElement</link> (<link linkend="_struct_element">Element</link> &amp;element)</para>
+</listitem>
+            <listitem><para>void <link linkend="_classfsfml_1a40595c6220364843e5f2e51779882e9c">unseeElement</link> (<link linkend="_struct_element">Element</link> &amp;element)</para>
+</listitem>
+            <listitem><para>void <link linkend="_classfsfml_1a95f6eb53223fafa2f2b06548f4d1b323">seePanel</link> (<link linkend="_struct_panel">Panel</link> &amp;page)</para>
+</listitem>
+            <listitem><para>void <link linkend="_classfsfml_1a70e48d9726270f976739bc3640d41d1a">unseePanel</link> (<link linkend="_struct_panel">Panel</link> &amp;page)</para>
+</listitem>
+            <listitem><para>void <link linkend="_classfsfml_1aceb59f10f27fe378b70ba005cffd6e95">drawActivePanel</link> ()</para>
+</listitem>
+            <listitem><para>void <link linkend="_classfsfml_1ad0c2351c234aa59ef60b2c38b5fe5dd9">handleActivePanel</link> ()</para>
+</listitem>
+            <listitem><para>void <link linkend="_classfsfml_1a6b4ab16d375ff176a0533dccdc09fc20">PanelEvent</link> (<link linkend="_struct_panel">Panel</link> &amp;page)</para>
+</listitem>
+            <listitem><para>void <link linkend="_classfsfml_1a7e31fbe38054def5364e705811d867de">ElementEvent</link> (<link linkend="_struct_element">Element</link> &amp;element)</para>
+</listitem>
+            <listitem><para>void <link linkend="_classfsfml_1a1e465443ae65cef7eff4c7eb68096edf">initElementsPanel</link> (std::vector&lt; <link linkend="_struct_element">Element</link> &gt; allElements, <link linkend="_struct_panel">Panel</link> &amp;page)</para>
+</listitem>
+            <listitem><para>void <link linkend="_classfsfml_1a51b36c00279c61c6e4688f9b21f0e972">initElementsPanel</link> (std::vector&lt; std::string &gt; allElements, <link linkend="_struct_panel">Panel</link> &amp;page)</para>
+</listitem>
+            <listitem><para>sf::Texture * <link linkend="_classfsfml_1aaad6a42f269f248954ad4d2e253a65db">getTexture</link> (std::string key)</para>
+</listitem>
+            <listitem><para>void <link linkend="_classfsfml_1a85e3525bac516648d01f23a1764087c4">loadTexture</link> (const std::string &amp;path)</para>
+</listitem>
+            <listitem><para>void <link linkend="_classfsfml_1a3fc8c544051e5c26bc9376fc255b87a4">loadAllTextures</link> (const std::vector&lt; std::string &gt; &amp;allPaths)</para>
+</listitem>
+            <listitem><para>void <link linkend="_classfsfml_1ab642e067930233a3a95068fb80c7c410">initGraphics</link> ()</para>
+</listitem>
+            <listitem><para>void <link linkend="_classfsfml_1a7730d60b97128943b4cd89238cf3fe43">add</link> (std::vector&lt; std::string &gt; &amp;vect, std::string str)</para>
+</listitem>
+            <listitem><para>void <link linkend="_classfsfml_1a527d1f9dc8024dab8b6c0af4dc8c6a60">setActivePanel</link> (<link linkend="_struct_panel">Panel</link> &amp;page)</para>
+</listitem>
+            <listitem><para>void <link linkend="_classfsfml_1a914f1f9ee2c9f8a97db5704052161a3e">moveSprite</link> (sf::Sprite &amp;sprite, const sf::Vector2f &amp;vect)</para>
+</listitem>
+            <listitem><para>void <link linkend="_classfsfml_1aaedb2c3e71e110318848a8ccc956a2e2">autoSeparate</link> (std::vector&lt; <link linkend="_struct_element">Element</link> &gt; &amp;element)</para>
+</listitem>
+            <listitem><para>void <link linkend="_classfsfml_1aac1968ad932a98b9142e4cee0c38cd2a">separateElementX</link> (<link linkend="_struct_element">Element</link> &amp;elem1, <link linkend="_struct_element">Element</link> &amp;elem2)</para>
+</listitem>
+            <listitem><para>int <link linkend="_classfsfml_1a27da377b199c90dbed037bf3c298b58f">distanceBorderElementX</link> (<link linkend="_struct_element">Element</link> &amp;elem1, <link linkend="_struct_element">Element</link> &amp;elem2)</para>
+</listitem>
+            <listitem><para>void <link linkend="_classfsfml_1a9f922766e67798b7172b4479a89eed9b">separateElementY</link> (<link linkend="_struct_element">Element</link> &amp;elem1, <link linkend="_struct_element">Element</link> &amp;elem2)</para>
+</listitem>
+            <listitem><para>void <link linkend="_classfsfml_1a6fb612c057edb4d658204982c9212a6a">addPadding</link> (<link linkend="_struct_element">Element</link> &amp;elem, <link linkend="_struct_padding">Padding</link> padding)</para>
+</listitem>
+            <listitem><para>void <link linkend="_classfsfml_1aa0d22ed9a669bf2c60e3210c42683598">addPadding</link> (std::vector&lt; <link linkend="_struct_element">Element</link> &gt; &amp;allElem, <link linkend="_struct_padding">Padding</link> padding)</para>
+</listitem>
+            <listitem><para>int <link linkend="_classfsfml_1a46e8d36f5909284ba10f98b1062b2e8d">distanceBorderElementY</link> (<link linkend="_struct_element">Element</link> &amp;elem1, <link linkend="_struct_element">Element</link> &amp;elem2)</para>
+</listitem>
+            <listitem><para>void <link linkend="_classfsfml_1a9cfc61fa4330f08605082f2dc0a3763f">moveElement</link> (<link linkend="_struct_element">Element</link> &amp;element, const sf::Vector2f &amp;vect)</para>
+</listitem>
+            <listitem><para>void <link linkend="_classfsfml_1a8d52ac7c812248f93f81822eab4580ea">rotateSprite</link> (sf::Sprite &amp;sprite, float angle)</para>
+</listitem>
+            <listitem><para>void <link linkend="_classfsfml_1a5d4a13041264cd403779edb49725cb6e">setRelSpriteScale</link> (sf::Sprite &amp;sprite, const sf::Vector2f &amp;vect)</para>
+</listitem>
+            <listitem><para>void <link linkend="_classfsfml_1a3c57a8e5fdeed43ced308ab4d19c193b">setAbsSpriteScale</link> (sf::Sprite &amp;sprite, const sf::Vector2f &amp;vect)</para>
+</listitem>
+            <listitem><para>void <link linkend="_classfsfml_1ac883cf5d542110aa347e2e4d2991c5f7">setSpritePos</link> (sf::Sprite &amp;sprite, const sf::Vector2f &amp;vect)</para>
+</listitem>
+            <listitem><para>void <link linkend="_classfsfml_1ab87043dece41efe5efaa9c8d68f11a78">setElementPos</link> (<link linkend="_struct_element">Element</link> &amp;element, const sf::Vector2f &amp;vect)</para>
+</listitem>
+            <listitem><para>void <link linkend="_classfsfml_1a7e5def29a9cfa65cd2fad8622ca68128">drawSprite</link> (sf::Sprite &amp;sprite)</para>
+</listitem>
+            <listitem><para>void <link linkend="_classfsfml_1a3932b66747544d6b2f03f0c7c0ec73f1">drawElement</link> (<link linkend="_struct_element">Element</link> &amp;element)</para>
+</listitem>
+            <listitem><para>void <link linkend="_classfsfml_1af96aba7ca8dc0881d294824ef411423e">drawPanel</link> (<link linkend="_struct_panel">Panel</link> &amp;page)</para>
+</listitem>
+            <listitem><para>void <link linkend="_classfsfml_1a635e987dc4ec2825030a9b19e4d0dbf1">drawAllSprites</link> (std::vector&lt; sf::Sprite &gt; &amp;allSprites)</para>
+</listitem>
+            <listitem><para>void <link linkend="_classfsfml_1a5eb57f7a09768d185d53cf87fb8544ee">setSpriteColor</link> (sf::Sprite &amp;sprite, const sf::Color &amp;color)</para>
+</listitem>
+            <listitem><para>void <link linkend="_classfsfml_1aa37c181bb8a16b68af96d615f3d0ad5c">updateAllElements</link> (<link linkend="_struct_panel">Panel</link> &amp;panel)</para>
+</listitem>
+            <listitem><para>void <link linkend="_classfsfml_1a02739431b097cedd700599d9a454d0e8">setPanelLayout</link> (<link linkend="_struct_panel">Panel</link> &amp;page)</para>
+</listitem>
+            <listitem><para>void <link linkend="_classfsfml_1ad8cb433f89e4fe31c8fc87e912853963">setLine</link> (std::vector&lt; <link linkend="_struct_element">Element</link> &gt; &amp;allElements)</para>
+</listitem>
+            <listitem><para>void <link linkend="_classfsfml_1ae6cde1fa3414044fa30303395a43bc18">setColumn</link> (std::vector&lt; <link linkend="_struct_element">Element</link> &gt; &amp;allElements)</para>
+</listitem>
+            <listitem><para>bool <link linkend="_classfsfml_1a086f93c342c36c44f23fd318faab987b">changeColorElementHover</link> (<link linkend="_struct_element">Element</link> &amp;element, sf::Color color)</para>
+</listitem>
+            <listitem><para>bool <link linkend="_classfsfml_1a6206758c01c270444e8c704535a2acb7">changeColorElementPressed</link> (<link linkend="_struct_element">Element</link> &amp;element, sf::Color color)</para>
+</listitem>
+            <listitem><para>void <link linkend="_classfsfml_1a25eeb8db0d0be9115d85caf1400c018f">changeColorElementMouse</link> (<link linkend="_struct_element">Element</link> &amp;elemen)</para>
+</listitem>
+            <listitem><para>void <link linkend="_classfsfml_1ac93c3196218e12fa0e03b10252f9a895">changeColorElement</link> (<link linkend="_struct_element">Element</link> &amp;element)</para>
+</listitem>
+            <listitem><para>void <link linkend="_classfsfml_1a39cda5bb0baadfad22eb4af01b9b14a9">getElementState</link> (<link linkend="_struct_element">Element</link> &amp;element)</para>
+</listitem>
+            <listitem><para>bool <link linkend="_classfsfml_1abdf8a3b6da3d8041aa23a51a52cf5c1f">clickedElement</link> (<link linkend="_struct_element">Element</link> &amp;element)</para>
+</listitem>
+            <listitem><para>bool <link linkend="_classfsfml_1a094eb58373ba492a7c19666625acf2eb">pressedElement</link> (<link linkend="_struct_element">Element</link> &amp;element)</para>
+</listitem>
+            <listitem><para>sf::Vector2i <link linkend="_classfsfml_1a9fb2e5e61204fd24f69307019ec62ea0">getMousePosition</link> ()</para>
+</listitem>
+            <listitem><para>sf::Vector2i <link linkend="_classfsfml_1a920922eb36c2e62702736c3d8315670d">getMousePosition</link> (sf::RenderWindow *<link linkend="_classfsfml_1a290647b737e9c2952f20f2772ee8abe8">window</link>)</para>
+</listitem>
+            <listitem><para>sf::Vector2i <link linkend="_classfsfml_1a960b0223e8170305efb4cb7888386bf9">converti</link> (sf::Vector2f v)</para>
+</listitem>
+            <listitem><para>sf::Vector2i <link linkend="_classfsfml_1a663a18ede211d91046ef2624b8b24f3f">converti</link> (sf::Vector2u v)</para>
+</listitem>
+            <listitem><para>sf::Vector2f <link linkend="_classfsfml_1a6c776fc7941d47fb2f10d9a2579d2a2e">convertf</link> (sf::Vector2i v)</para>
+</listitem>
+            <listitem><para>sf::Vector2f <link linkend="_classfsfml_1ae62fe4a3ba1d6920fd0002d5c5dba765">convertf</link> (sf::Vector2u v)</para>
+</listitem>
+            <listitem><para>sf::Vector2u <link linkend="_classfsfml_1ae77bbd16922c35eb009c7806cde4b50b">convertu</link> (sf::Vector2i v)</para>
+</listitem>
+            <listitem><para>sf::Vector2u <link linkend="_classfsfml_1a7ca53d039ff72eaf08563eaf33a37a6b">convertu</link> (sf::Vector2f v)</para>
+</listitem>
+            <listitem><para>bool <link linkend="_classfsfml_1a0ad8f537cba99a886634de5d16d889c3">OnSprite</link> (sf::Sprite &amp;sprite, sf::Vector2f <link linkend="__units_8h_1a224b9163917ac32fc95a60d8c1eec3aa">Direction</link>)</para>
+</listitem>
+            <listitem><para>bool <link linkend="_classfsfml_1a200802324bb5f37bfae3d935c0b91db4">OnElement</link> (<link linkend="_struct_element">Element</link> &amp;element, sf::Vector2f <link linkend="__units_8h_1a224b9163917ac32fc95a60d8c1eec3aa">Direction</link>)</para>
+</listitem>
+            <listitem><para>int <link linkend="_classfsfml_1af71266974ad24a53f82bf83bc39ebfc7">getMousePosX</link> ()</para>
+</listitem>
+            <listitem><para>int <link linkend="_classfsfml_1a00a33ce50fc178f003022ff683b2ec43">getMousePosY</link> ()</para>
+</listitem>
+            <listitem><para>void <link linkend="_classfsfml_1a78e66a4344c9ba11b477ffc9f33b9a0d">showVector</link> (sf::Vector2f v2)</para>
+</listitem>
+            <listitem><para>void <link linkend="_classfsfml_1a72eb9b81e0f5d518a9d037c4a3610de2">updateWindowSize</link> ()</para>
+</listitem>
+            <listitem><para>void <link linkend="_classfsfml_1a8d4788570e3b2744353ac098112bd6a4">fillTextTyped</link> ()</para>
+</listitem>
+        </itemizedlist>
+</simplesect>
+<simplesect>
+    <title>Static Public Member Functions    </title>
+        <itemizedlist>
+            <listitem><para>static bool <link linkend="_classfsfml_1ac1d737a21d3acfaa8250c1e0765b4dbe">isKeyPressed</link> (sf::Keyboard::Key key)</para>
+</listitem>
+        </itemizedlist>
+</simplesect>
+<simplesect>
+    <title>Public Attributes    </title>
+        <itemizedlist>
+            <listitem><para>sf::RenderWindow * <link linkend="_classfsfml_1a290647b737e9c2952f20f2772ee8abe8">window</link></para>
+</listitem>
+            <listitem><para>sf::Vector2f <link linkend="_classfsfml_1ac814c24640a4ce33a7a3e70c0a36d8f8">size</link></para>
+</listitem>
+            <listitem><para>sf::View <link linkend="_classfsfml_1a2df4fddee73e8012dafeec49884f77d5">view</link></para>
+</listitem>
+            <listitem><para>int <link linkend="_classfsfml_1a2735d0230ebf7e9e2df254560b2a7a5c">screenWidth</link></para>
+</listitem>
+            <listitem><para>int <link linkend="_classfsfml_1a265752acf64bf3e35bc932d1b9f38783">screenHeight</link></para>
+</listitem>
+            <listitem><para>int <link linkend="_classfsfml_1ab16a3b2f286c80df2853b935bfd7e3a8">windowWidth</link></para>
+</listitem>
+            <listitem><para>int <link linkend="_classfsfml_1a95eae1061bc6c6264e760245a0a947d6">windowHeight</link></para>
+</listitem>
+            <listitem><para>sf::Vector2i <link linkend="_classfsfml_1a2ca771d5728b1a6ef160848e4030994c">clickPos</link></para>
+</listitem>
+            <listitem><para>sf::Vector2i <link linkend="_classfsfml_1a58fae2e9641dc75a404f21243e3da856">mousePos</link></para>
+</listitem>
+            <listitem><para>std::string <link linkend="_classfsfml_1a6e4eb669c13800b32a2bbe85b4644078">textTyped</link></para>
+</listitem>
+            <listitem><para>int <link linkend="_classfsfml_1abf75e9b589ecdbd62da93f384aeca157">sizeTextEntered</link></para>
+</listitem>
+            <listitem><para>char <link linkend="_classfsfml_1aeb58b57076e333317100beaa34a73ed4">charEntered</link></para>
+</listitem>
+            <listitem><para>bool <link linkend="_classfsfml_1a5312d051e4e29248701e536c2ef8691e">hasClicked</link></para>
+</listitem>
+            <listitem><para>bool <link linkend="_classfsfml_1ac813da2410b592072f6502f070ec1345">mouseInWindow</link></para>
+</listitem>
+            <listitem><para>bool <link linkend="_classfsfml_1ac15502937b8cd7992a24d3b5fcad8d68">mouseMoved</link></para>
+</listitem>
+            <listitem><para>bool <link linkend="_classfsfml_1a996b807c53d6c2a28d5e6997ffec13e8">charTyped</link></para>
+</listitem>
+            <listitem><para>bool <link linkend="_classfsfml_1af3480a2fec74a4d2233342072085fcae">collectText</link></para>
+</listitem>
+            <listitem><para>bool <link linkend="_classfsfml_1ae0394e58b49093a176ed07ef30a34015">windowResized</link></para>
+</listitem>
+            <listitem><para>bool <link linkend="_classfsfml_1aa2376c471900641a72542a22d04e48f8">closeWindow</link></para>
+</listitem>
+            <listitem><para>bool <link linkend="_classfsfml_1a80ec0508e51494c5fed36738df301007">hasPressedClick</link></para>
+</listitem>
+            <listitem><para>std::map&lt; std::string, sf::Texture * &gt; <link linkend="_classfsfml_1a715b52b2a82537954228b6f4cb933c0d">textures</link></para>
+</listitem>
+            <listitem><para>std::map&lt; std::string, sf::Sprite &gt; <link linkend="_classfsfml_1af77d984f7e3de4b9db2a659c8005ed00">sprites</link></para>
+</listitem>
+            <listitem><para><link linkend="_struct_panel">Panel</link> <link linkend="_classfsfml_1a5f83a3514e66fd71f454ee6f64d3db4f">activePanel</link></para>
+</listitem>
+            <listitem><para><link linkend="_struct_panel">Panel</link> <link linkend="_classfsfml_1a1f25a4160a80be0dba66bfb6a081d953">Menu</link></para>
+</listitem>
+        </itemizedlist>
+</simplesect>
+<section>
+<title>Detailed Description</title>
+<para>
+Definition at line <link linkend="_fsfml_8h_source_1l00147">147</link> of file <link linkend="_fsfml_8h_source">fsfml.h</link>.</para>
+</section>
+<section>
+<title>Constructor &amp; Destructor Documentation</title>
+<anchor xml:id="_classfsfml_1ac2c892da4a378e4767cce342c3ead92f"/><section>
+    <title>fsfml()</title>
+<indexterm><primary>fsfml</primary><secondary>fsfml</secondary></indexterm>
+<indexterm><primary>fsfml</primary><secondary>fsfml</secondary></indexterm>
+<para><computeroutput>fsfml::fsfml ( )</computeroutput></para><para>
+Definition at line <link linkend="_fsfml_8cpp_source_1l00004">4</link> of file <link linkend="_fsfml_8cpp_source">fsfml.cpp</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="classfsfml_ac2c892da4a378e4767cce342c3ead92f_cgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_classfsfml_1aa2e6e852aaf9942b2bace314c75ef661"/><section>
+    <title>~fsfml()</title>
+<indexterm><primary>~fsfml</primary><secondary>fsfml</secondary></indexterm>
+<indexterm><primary>fsfml</primary><secondary>~fsfml</secondary></indexterm>
+<para><computeroutput>fsfml::~fsfml ( )</computeroutput></para><para>
+Definition at line <link linkend="_fsfml_8cpp_source_1l00009">9</link> of file <link linkend="_fsfml_8cpp_source">fsfml.cpp</link>.</para>
+</section>
+</section>
+<section>
+<title>Member Function Documentation</title>
+<anchor xml:id="_classfsfml_1a7730d60b97128943b4cd89238cf3fe43"/><section>
+    <title>add()</title>
+<indexterm><primary>add</primary><secondary>fsfml</secondary></indexterm>
+<indexterm><primary>fsfml</primary><secondary>add</secondary></indexterm>
+<para><computeroutput>void fsfml::add (std::vector&lt; std::string &gt; &amp; vect, std::string str)</computeroutput></para><para>
+Definition at line <link linkend="_fsfml_8cpp_source_1l00266">266</link> of file <link linkend="_fsfml_8cpp_source">fsfml.cpp</link>.</para>
+</section>
+<anchor xml:id="_classfsfml_1a8172dd2d6f556c7829e9adc766ef2565"/><section>
+    <title>addElement()</title>
+<indexterm><primary>addElement</primary><secondary>fsfml</secondary></indexterm>
+<indexterm><primary>fsfml</primary><secondary>addElement</secondary></indexterm>
+<para><computeroutput>void fsfml::addElement (<link linkend="_struct_element">Element</link> &amp; element, <link linkend="_struct_panel">Panel</link> &amp; page)</computeroutput></para><para>
+Definition at line <link linkend="_fsfml_8cpp_source_1l00617">617</link> of file <link linkend="_fsfml_8cpp_source">fsfml.cpp</link>.</para>
+Here is the caller graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="classfsfml_a8172dd2d6f556c7829e9adc766ef2565_icgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_classfsfml_1a6fb612c057edb4d658204982c9212a6a"/><section>
+    <title>addPadding()<computeroutput>[1/2]</computeroutput></title>
+<indexterm><primary>addPadding</primary><secondary>fsfml</secondary></indexterm>
+<indexterm><primary>fsfml</primary><secondary>addPadding</secondary></indexterm>
+<para><computeroutput>void fsfml::addPadding (<link linkend="_struct_element">Element</link> &amp; elem, <link linkend="_struct_padding">Padding</link> padding)</computeroutput></para><para>
+Definition at line <link linkend="_fsfml_8cpp_source_1l00348">348</link> of file <link linkend="_fsfml_8cpp_source">fsfml.cpp</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="classfsfml_a6fb612c057edb4d658204982c9212a6a_cgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+Here is the caller graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="classfsfml_a6fb612c057edb4d658204982c9212a6a_icgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_classfsfml_1aa0d22ed9a669bf2c60e3210c42683598"/><section>
+    <title>addPadding()<computeroutput>[2/2]</computeroutput></title>
+<indexterm><primary>addPadding</primary><secondary>fsfml</secondary></indexterm>
+<indexterm><primary>fsfml</primary><secondary>addPadding</secondary></indexterm>
+<para><computeroutput>void fsfml::addPadding (std::vector&lt; <link linkend="_struct_element">Element</link> &gt; &amp; allElem, <link linkend="_struct_padding">Padding</link> padding)</computeroutput></para><para>
+Definition at line <link linkend="_fsfml_8cpp_source_1l00353">353</link> of file <link linkend="_fsfml_8cpp_source">fsfml.cpp</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="classfsfml_aa0d22ed9a669bf2c60e3210c42683598_cgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_classfsfml_1a1855395d90d78b9160203b6b051f46d3"/><section>
+    <title>addSprite()</title>
+<indexterm><primary>addSprite</primary><secondary>fsfml</secondary></indexterm>
+<indexterm><primary>fsfml</primary><secondary>addSprite</secondary></indexterm>
+<para><computeroutput>void fsfml::addSprite (std::string key, sf::Sprite &amp; sprite)</computeroutput></para><para>
+Definition at line <link linkend="_fsfml_8cpp_source_1l00613">613</link> of file <link linkend="_fsfml_8cpp_source">fsfml.cpp</link>.</para>
+Here is the caller graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="classfsfml_a1855395d90d78b9160203b6b051f46d3_icgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_classfsfml_1a1be6e8780abb71f21c69ce8bc3da6bee"/><section>
+    <title>addTexture()</title>
+<indexterm><primary>addTexture</primary><secondary>fsfml</secondary></indexterm>
+<indexterm><primary>fsfml</primary><secondary>addTexture</secondary></indexterm>
+<para><computeroutput>void fsfml::addTexture (std::string key, sf::Texture * texture)</computeroutput></para><para>
+Definition at line <link linkend="_fsfml_8cpp_source_1l00610">610</link> of file <link linkend="_fsfml_8cpp_source">fsfml.cpp</link>.</para>
+Here is the caller graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="classfsfml_a1be6e8780abb71f21c69ce8bc3da6bee_icgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_classfsfml_1a91666521c0a898f3c36635657fe81e9d"/><section>
+    <title>autoPadding()<computeroutput>[1/2]</computeroutput></title>
+<indexterm><primary>autoPadding</primary><secondary>fsfml</secondary></indexterm>
+<indexterm><primary>fsfml</primary><secondary>autoPadding</secondary></indexterm>
+<para><computeroutput>void fsfml::autoPadding (<link linkend="_struct_element">Element</link> &amp; element)</computeroutput></para><para>
+Definition at line <link linkend="_fsfml_8cpp_source_1l00622">622</link> of file <link linkend="_fsfml_8cpp_source">fsfml.cpp</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="classfsfml_a91666521c0a898f3c36635657fe81e9d_cgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+Here is the caller graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="classfsfml_a91666521c0a898f3c36635657fe81e9d_icgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_classfsfml_1a9dd8962bbcb36f68676b4d39325e727d"/><section>
+    <title>autoPadding()<computeroutput>[2/2]</computeroutput></title>
+<indexterm><primary>autoPadding</primary><secondary>fsfml</secondary></indexterm>
+<indexterm><primary>fsfml</primary><secondary>autoPadding</secondary></indexterm>
+<para><computeroutput>void fsfml::autoPadding (std::vector&lt; <link linkend="_struct_element">Element</link> &gt; &amp; element)</computeroutput></para><para>
+Definition at line <link linkend="_fsfml_8cpp_source_1l00627">627</link> of file <link linkend="_fsfml_8cpp_source">fsfml.cpp</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="classfsfml_a9dd8962bbcb36f68676b4d39325e727d_cgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_classfsfml_1a54f1c15c7c8063c7d8bb0eb2445515d5"/><section>
+    <title>autoResize()<computeroutput>[1/2]</computeroutput></title>
+<indexterm><primary>autoResize</primary><secondary>fsfml</secondary></indexterm>
+<indexterm><primary>fsfml</primary><secondary>autoResize</secondary></indexterm>
+<para><computeroutput>void fsfml::autoResize (<link linkend="_struct_element">Element</link> &amp; element)</computeroutput></para><para>
+Definition at line <link linkend="_fsfml_8cpp_source_1l00666">666</link> of file <link linkend="_fsfml_8cpp_source">fsfml.cpp</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="classfsfml_a54f1c15c7c8063c7d8bb0eb2445515d5_cgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+Here is the caller graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="classfsfml_a54f1c15c7c8063c7d8bb0eb2445515d5_icgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_classfsfml_1a788bf041977aeec9f19d5d8e7171f39f"/><section>
+    <title>autoResize()<computeroutput>[2/2]</computeroutput></title>
+<indexterm><primary>autoResize</primary><secondary>fsfml</secondary></indexterm>
+<indexterm><primary>fsfml</primary><secondary>autoResize</secondary></indexterm>
+<para><computeroutput>void fsfml::autoResize (std::vector&lt; <link linkend="_struct_element">Element</link> &gt; &amp; allElements)</computeroutput></para><para>
+Definition at line <link linkend="_fsfml_8cpp_source_1l00679">679</link> of file <link linkend="_fsfml_8cpp_source">fsfml.cpp</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="classfsfml_a788bf041977aeec9f19d5d8e7171f39f_cgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_classfsfml_1aaedb2c3e71e110318848a8ccc956a2e2"/><section>
+    <title>autoSeparate()</title>
+<indexterm><primary>autoSeparate</primary><secondary>fsfml</secondary></indexterm>
+<indexterm><primary>fsfml</primary><secondary>autoSeparate</secondary></indexterm>
+<para><computeroutput>void fsfml::autoSeparate (std::vector&lt; <link linkend="_struct_element">Element</link> &gt; &amp; element)</computeroutput></para><para>
+Definition at line <link linkend="_fsfml_8cpp_source_1l00326">326</link> of file <link linkend="_fsfml_8cpp_source">fsfml.cpp</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="classfsfml_aaedb2c3e71e110318848a8ccc956a2e2_cgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+Here is the caller graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="classfsfml_aaedb2c3e71e110318848a8ccc956a2e2_icgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_classfsfml_1ac93c3196218e12fa0e03b10252f9a895"/><section>
+    <title>changeColorElement()</title>
+<indexterm><primary>changeColorElement</primary><secondary>fsfml</secondary></indexterm>
+<indexterm><primary>fsfml</primary><secondary>changeColorElement</secondary></indexterm>
+<para><computeroutput>void fsfml::changeColorElement (<link linkend="_struct_element">Element</link> &amp; element)</computeroutput></para><para>
+Definition at line <link linkend="_fsfml_8cpp_source_1l00541">541</link> of file <link linkend="_fsfml_8cpp_source">fsfml.cpp</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="classfsfml_ac93c3196218e12fa0e03b10252f9a895_cgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+Here is the caller graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="classfsfml_ac93c3196218e12fa0e03b10252f9a895_icgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_classfsfml_1a086f93c342c36c44f23fd318faab987b"/><section>
+    <title>changeColorElementHover()</title>
+<indexterm><primary>changeColorElementHover</primary><secondary>fsfml</secondary></indexterm>
+<indexterm><primary>fsfml</primary><secondary>changeColorElementHover</secondary></indexterm>
+<para><computeroutput>bool fsfml::changeColorElementHover (<link linkend="_struct_element">Element</link> &amp; element, sf::Color color)</computeroutput></para><para>
+Definition at line <link linkend="_fsfml_8cpp_source_1l00510">510</link> of file <link linkend="_fsfml_8cpp_source">fsfml.cpp</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="classfsfml_a086f93c342c36c44f23fd318faab987b_cgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+Here is the caller graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="classfsfml_a086f93c342c36c44f23fd318faab987b_icgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_classfsfml_1a25eeb8db0d0be9115d85caf1400c018f"/><section>
+    <title>changeColorElementMouse()</title>
+<indexterm><primary>changeColorElementMouse</primary><secondary>fsfml</secondary></indexterm>
+<indexterm><primary>fsfml</primary><secondary>changeColorElementMouse</secondary></indexterm>
+<para><computeroutput>void fsfml::changeColorElementMouse (<link linkend="_struct_element">Element</link> &amp; elemen)</computeroutput></para><para>
+Definition at line <link linkend="_fsfml_8cpp_source_1l00535">535</link> of file <link linkend="_fsfml_8cpp_source">fsfml.cpp</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="classfsfml_a25eeb8db0d0be9115d85caf1400c018f_cgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+Here is the caller graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="classfsfml_a25eeb8db0d0be9115d85caf1400c018f_icgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_classfsfml_1a6206758c01c270444e8c704535a2acb7"/><section>
+    <title>changeColorElementPressed()</title>
+<indexterm><primary>changeColorElementPressed</primary><secondary>fsfml</secondary></indexterm>
+<indexterm><primary>fsfml</primary><secondary>changeColorElementPressed</secondary></indexterm>
+<para><computeroutput>bool fsfml::changeColorElementPressed (<link linkend="_struct_element">Element</link> &amp; element, sf::Color color)</computeroutput></para><para>
+Definition at line <link linkend="_fsfml_8cpp_source_1l00523">523</link> of file <link linkend="_fsfml_8cpp_source">fsfml.cpp</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="classfsfml_a6206758c01c270444e8c704535a2acb7_cgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+Here is the caller graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="classfsfml_a6206758c01c270444e8c704535a2acb7_icgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_classfsfml_1aa090063adfcdc1972b62726803ffd71c"/><section>
+    <title>clearWindow()</title>
+<indexterm><primary>clearWindow</primary><secondary>fsfml</secondary></indexterm>
+<indexterm><primary>fsfml</primary><secondary>clearWindow</secondary></indexterm>
+<para><computeroutput>void fsfml::clearWindow (sf::Color color)</computeroutput></para><para>
+Definition at line <link linkend="_fsfml_8cpp_source_1l00120">120</link> of file <link linkend="_fsfml_8cpp_source">fsfml.cpp</link>.</para>
+</section>
+<anchor xml:id="_classfsfml_1abdf8a3b6da3d8041aa23a51a52cf5c1f"/><section>
+    <title>clickedElement()</title>
+<indexterm><primary>clickedElement</primary><secondary>fsfml</secondary></indexterm>
+<indexterm><primary>fsfml</primary><secondary>clickedElement</secondary></indexterm>
+<para><computeroutput>bool fsfml::clickedElement (<link linkend="_struct_element">Element</link> &amp; element)</computeroutput></para><para>
+Definition at line <link linkend="_fsfml_8cpp_source_1l00554">554</link> of file <link linkend="_fsfml_8cpp_source">fsfml.cpp</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="classfsfml_abdf8a3b6da3d8041aa23a51a52cf5c1f_cgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+Here is the caller graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="classfsfml_abdf8a3b6da3d8041aa23a51a52cf5c1f_icgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_classfsfml_1a6c776fc7941d47fb2f10d9a2579d2a2e"/><section>
+    <title>convertf()<computeroutput>[1/2]</computeroutput></title>
+<indexterm><primary>convertf</primary><secondary>fsfml</secondary></indexterm>
+<indexterm><primary>fsfml</primary><secondary>convertf</secondary></indexterm>
+<para><computeroutput>sf::Vector2f fsfml::convertf (sf::Vector2i v)</computeroutput></para><para>
+Definition at line <link linkend="_fsfml_8cpp_source_1l00442">442</link> of file <link linkend="_fsfml_8cpp_source">fsfml.cpp</link>.</para>
+Here is the caller graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="classfsfml_a6c776fc7941d47fb2f10d9a2579d2a2e_icgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_classfsfml_1ae62fe4a3ba1d6920fd0002d5c5dba765"/><section>
+    <title>convertf()<computeroutput>[2/2]</computeroutput></title>
+<indexterm><primary>convertf</primary><secondary>fsfml</secondary></indexterm>
+<indexterm><primary>fsfml</primary><secondary>convertf</secondary></indexterm>
+<para><computeroutput>sf::Vector2f fsfml::convertf (sf::Vector2u v)</computeroutput></para><para>
+Definition at line <link linkend="_fsfml_8cpp_source_1l00445">445</link> of file <link linkend="_fsfml_8cpp_source">fsfml.cpp</link>.</para>
+</section>
+<anchor xml:id="_classfsfml_1a960b0223e8170305efb4cb7888386bf9"/><section>
+    <title>converti()<computeroutput>[1/2]</computeroutput></title>
+<indexterm><primary>converti</primary><secondary>fsfml</secondary></indexterm>
+<indexterm><primary>fsfml</primary><secondary>converti</secondary></indexterm>
+<para><computeroutput>sf::Vector2i fsfml::converti (sf::Vector2f v)</computeroutput></para><para>
+Definition at line <link linkend="_fsfml_8cpp_source_1l00436">436</link> of file <link linkend="_fsfml_8cpp_source">fsfml.cpp</link>.</para>
+</section>
+<anchor xml:id="_classfsfml_1a663a18ede211d91046ef2624b8b24f3f"/><section>
+    <title>converti()<computeroutput>[2/2]</computeroutput></title>
+<indexterm><primary>converti</primary><secondary>fsfml</secondary></indexterm>
+<indexterm><primary>fsfml</primary><secondary>converti</secondary></indexterm>
+<para><computeroutput>sf::Vector2i fsfml::converti (sf::Vector2u v)</computeroutput></para><para>
+Definition at line <link linkend="_fsfml_8cpp_source_1l00439">439</link> of file <link linkend="_fsfml_8cpp_source">fsfml.cpp</link>.</para>
+</section>
+<anchor xml:id="_classfsfml_1a7ca53d039ff72eaf08563eaf33a37a6b"/><section>
+    <title>convertu()<computeroutput>[1/2]</computeroutput></title>
+<indexterm><primary>convertu</primary><secondary>fsfml</secondary></indexterm>
+<indexterm><primary>fsfml</primary><secondary>convertu</secondary></indexterm>
+<para><computeroutput>sf::Vector2u fsfml::convertu (sf::Vector2f v)</computeroutput></para><para>
+Definition at line <link linkend="_fsfml_8cpp_source_1l00451">451</link> of file <link linkend="_fsfml_8cpp_source">fsfml.cpp</link>.</para>
+</section>
+<anchor xml:id="_classfsfml_1ae77bbd16922c35eb009c7806cde4b50b"/><section>
+    <title>convertu()<computeroutput>[2/2]</computeroutput></title>
+<indexterm><primary>convertu</primary><secondary>fsfml</secondary></indexterm>
+<indexterm><primary>fsfml</primary><secondary>convertu</secondary></indexterm>
+<para><computeroutput>sf::Vector2u fsfml::convertu (sf::Vector2i v)</computeroutput></para><para>
+Definition at line <link linkend="_fsfml_8cpp_source_1l00448">448</link> of file <link linkend="_fsfml_8cpp_source">fsfml.cpp</link>.</para>
+Here is the caller graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="classfsfml_ae77bbd16922c35eb009c7806cde4b50b_icgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_classfsfml_1a7473fd3f3ce08ac3e25dc26fad599728"/><section>
+    <title>createTexture()</title>
+<indexterm><primary>createTexture</primary><secondary>fsfml</secondary></indexterm>
+<indexterm><primary>fsfml</primary><secondary>createTexture</secondary></indexterm>
+<para><computeroutput>void fsfml::createTexture (std::string nameTexture, int width, int height)</computeroutput></para><para>
+Definition at line <link linkend="_fsfml_8cpp_source_1l00277">277</link> of file <link linkend="_fsfml_8cpp_source">fsfml.cpp</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="classfsfml_a7473fd3f3ce08ac3e25dc26fad599728_cgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_classfsfml_1a848c18b566753dc6e6e6097bff216f8d"/><section>
+    <title>displayWindow()</title>
+<indexterm><primary>displayWindow</primary><secondary>fsfml</secondary></indexterm>
+<indexterm><primary>fsfml</primary><secondary>displayWindow</secondary></indexterm>
+<para><computeroutput>void fsfml::displayWindow ( )</computeroutput></para><para>
+Definition at line <link linkend="_fsfml_8cpp_source_1l00125">125</link> of file <link linkend="_fsfml_8cpp_source">fsfml.cpp</link>.</para>
+</section>
+<anchor xml:id="_classfsfml_1a27da377b199c90dbed037bf3c298b58f"/><section>
+    <title>distanceBorderElementX()</title>
+<indexterm><primary>distanceBorderElementX</primary><secondary>fsfml</secondary></indexterm>
+<indexterm><primary>fsfml</primary><secondary>distanceBorderElementX</secondary></indexterm>
+<para><computeroutput>int fsfml::distanceBorderElementX (<link linkend="_struct_element">Element</link> &amp; elem1, <link linkend="_struct_element">Element</link> &amp; elem2)</computeroutput></para><para>
+Definition at line <link linkend="_fsfml_8cpp_source_1l00369">369</link> of file <link linkend="_fsfml_8cpp_source">fsfml.cpp</link>.</para>
+Here is the caller graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="classfsfml_a27da377b199c90dbed037bf3c298b58f_icgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_classfsfml_1a46e8d36f5909284ba10f98b1062b2e8d"/><section>
+    <title>distanceBorderElementY()</title>
+<indexterm><primary>distanceBorderElementY</primary><secondary>fsfml</secondary></indexterm>
+<indexterm><primary>fsfml</primary><secondary>distanceBorderElementY</secondary></indexterm>
+<para><computeroutput>int fsfml::distanceBorderElementY (<link linkend="_struct_element">Element</link> &amp; elem1, <link linkend="_struct_element">Element</link> &amp; elem2)</computeroutput></para><para>
+Definition at line <link linkend="_fsfml_8cpp_source_1l00360">360</link> of file <link linkend="_fsfml_8cpp_source">fsfml.cpp</link>.</para>
+Here is the caller graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="classfsfml_a46e8d36f5909284ba10f98b1062b2e8d_icgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_classfsfml_1aceb59f10f27fe378b70ba005cffd6e95"/><section>
+    <title>drawActivePanel()</title>
+<indexterm><primary>drawActivePanel</primary><secondary>fsfml</secondary></indexterm>
+<indexterm><primary>fsfml</primary><secondary>drawActivePanel</secondary></indexterm>
+<para><computeroutput>void fsfml::drawActivePanel ( )</computeroutput></para><para>
+Definition at line <link linkend="_fsfml_8cpp_source_1l00186">186</link> of file <link linkend="_fsfml_8cpp_source">fsfml.cpp</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="classfsfml_aceb59f10f27fe378b70ba005cffd6e95_cgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+Here is the caller graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="classfsfml_aceb59f10f27fe378b70ba005cffd6e95_icgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_classfsfml_1a635e987dc4ec2825030a9b19e4d0dbf1"/><section>
+    <title>drawAllSprites()</title>
+<indexterm><primary>drawAllSprites</primary><secondary>fsfml</secondary></indexterm>
+<indexterm><primary>fsfml</primary><secondary>drawAllSprites</secondary></indexterm>
+<para><computeroutput>void fsfml::drawAllSprites (std::vector&lt; sf::Sprite &gt; &amp; allSprites)</computeroutput></para><para>
+Definition at line <link linkend="_fsfml_8cpp_source_1l00300">300</link> of file <link linkend="_fsfml_8cpp_source">fsfml.cpp</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="classfsfml_a635e987dc4ec2825030a9b19e4d0dbf1_cgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_classfsfml_1a3932b66747544d6b2f03f0c7c0ec73f1"/><section>
+    <title>drawElement()</title>
+<indexterm><primary>drawElement</primary><secondary>fsfml</secondary></indexterm>
+<indexterm><primary>fsfml</primary><secondary>drawElement</secondary></indexterm>
+<para><computeroutput>void fsfml::drawElement (<link linkend="_struct_element">Element</link> &amp; element)</computeroutput></para><para>
+Definition at line <link linkend="_fsfml_8cpp_source_1l00288">288</link> of file <link linkend="_fsfml_8cpp_source">fsfml.cpp</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="classfsfml_a3932b66747544d6b2f03f0c7c0ec73f1_cgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+Here is the caller graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="classfsfml_a3932b66747544d6b2f03f0c7c0ec73f1_icgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_classfsfml_1af96aba7ca8dc0881d294824ef411423e"/><section>
+    <title>drawPanel()</title>
+<indexterm><primary>drawPanel</primary><secondary>fsfml</secondary></indexterm>
+<indexterm><primary>fsfml</primary><secondary>drawPanel</secondary></indexterm>
+<para><computeroutput>void fsfml::drawPanel (<link linkend="_struct_panel">Panel</link> &amp; page)</computeroutput></para><para>
+Definition at line <link linkend="_fsfml_8cpp_source_1l00293">293</link> of file <link linkend="_fsfml_8cpp_source">fsfml.cpp</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="classfsfml_af96aba7ca8dc0881d294824ef411423e_cgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+Here is the caller graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="classfsfml_af96aba7ca8dc0881d294824ef411423e_icgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_classfsfml_1a7e5def29a9cfa65cd2fad8622ca68128"/><section>
+    <title>drawSprite()</title>
+<indexterm><primary>drawSprite</primary><secondary>fsfml</secondary></indexterm>
+<indexterm><primary>fsfml</primary><secondary>drawSprite</secondary></indexterm>
+<para><computeroutput>void fsfml::drawSprite (sf::Sprite &amp; sprite)</computeroutput></para><para>
+Definition at line <link linkend="_fsfml_8cpp_source_1l00284">284</link> of file <link linkend="_fsfml_8cpp_source">fsfml.cpp</link>.</para>
+Here is the caller graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="classfsfml_a7e5def29a9cfa65cd2fad8622ca68128_icgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_classfsfml_1a7e31fbe38054def5364e705811d867de"/><section>
+    <title>ElementEvent()</title>
+<indexterm><primary>ElementEvent</primary><secondary>fsfml</secondary></indexterm>
+<indexterm><primary>fsfml</primary><secondary>ElementEvent</secondary></indexterm>
+<para><computeroutput>void fsfml::ElementEvent (<link linkend="_struct_element">Element</link> &amp; element)</computeroutput></para><para>
+Definition at line <link linkend="_fsfml_8cpp_source_1l00209">209</link> of file <link linkend="_fsfml_8cpp_source">fsfml.cpp</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="classfsfml_a7e31fbe38054def5364e705811d867de_cgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+Here is the caller graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="classfsfml_a7e31fbe38054def5364e705811d867de_icgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_classfsfml_1a9570e72eefe15664a6859f36c610fafc"/><section>
+    <title>eventLoop()</title>
+<indexterm><primary>eventLoop</primary><secondary>fsfml</secondary></indexterm>
+<indexterm><primary>fsfml</primary><secondary>eventLoop</secondary></indexterm>
+<para><computeroutput>void fsfml::eventLoop ( )</computeroutput></para><para>
+Definition at line <link linkend="_fsfml_8cpp_source_1l00052">52</link> of file <link linkend="_fsfml_8cpp_source">fsfml.cpp</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="classfsfml_a9570e72eefe15664a6859f36c610fafc_cgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+Here is the caller graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="classfsfml_a9570e72eefe15664a6859f36c610fafc_icgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_classfsfml_1a8d4788570e3b2744353ac098112bd6a4"/><section>
+    <title>fillTextTyped()</title>
+<indexterm><primary>fillTextTyped</primary><secondary>fsfml</secondary></indexterm>
+<indexterm><primary>fsfml</primary><secondary>fillTextTyped</secondary></indexterm>
+<para><computeroutput>void fsfml::fillTextTyped ( )</computeroutput></para><para>
+Definition at line <link linkend="_fsfml_8cpp_source_1l00599">599</link> of file <link linkend="_fsfml_8cpp_source">fsfml.cpp</link>.</para>
+Here is the caller graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="classfsfml_a8d4788570e3b2744353ac098112bd6a4_icgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_classfsfml_1a39cda5bb0baadfad22eb4af01b9b14a9"/><section>
+    <title>getElementState()</title>
+<indexterm><primary>getElementState</primary><secondary>fsfml</secondary></indexterm>
+<indexterm><primary>fsfml</primary><secondary>getElementState</secondary></indexterm>
+<para><computeroutput>void fsfml::getElementState (<link linkend="_struct_element">Element</link> &amp; element)</computeroutput></para><para>
+Definition at line <link linkend="_fsfml_8cpp_source_1l00546">546</link> of file <link linkend="_fsfml_8cpp_source">fsfml.cpp</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="classfsfml_a39cda5bb0baadfad22eb4af01b9b14a9_cgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+Here is the caller graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="classfsfml_a39cda5bb0baadfad22eb4af01b9b14a9_icgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_classfsfml_1a9fb2e5e61204fd24f69307019ec62ea0"/><section>
+    <title>getMousePosition()<computeroutput>[1/2]</computeroutput></title>
+<indexterm><primary>getMousePosition</primary><secondary>fsfml</secondary></indexterm>
+<indexterm><primary>fsfml</primary><secondary>getMousePosition</secondary></indexterm>
+<para><computeroutput>sf::Vector2i fsfml::getMousePosition ( )</computeroutput></para><para>
+Definition at line <link linkend="_fsfml_8cpp_source_1l00427">427</link> of file <link linkend="_fsfml_8cpp_source">fsfml.cpp</link>.</para>
+Here is the caller graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="classfsfml_a9fb2e5e61204fd24f69307019ec62ea0_icgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_classfsfml_1a920922eb36c2e62702736c3d8315670d"/><section>
+    <title>getMousePosition()<computeroutput>[2/2]</computeroutput></title>
+<indexterm><primary>getMousePosition</primary><secondary>fsfml</secondary></indexterm>
+<indexterm><primary>fsfml</primary><secondary>getMousePosition</secondary></indexterm>
+<para><computeroutput>sf::Vector2i fsfml::getMousePosition (sf::RenderWindow * window)</computeroutput></para><para>
+Definition at line <link linkend="_fsfml_8cpp_source_1l00431">431</link> of file <link linkend="_fsfml_8cpp_source">fsfml.cpp</link>.</para>
+</section>
+<anchor xml:id="_classfsfml_1af71266974ad24a53f82bf83bc39ebfc7"/><section>
+    <title>getMousePosX()</title>
+<indexterm><primary>getMousePosX</primary><secondary>fsfml</secondary></indexterm>
+<indexterm><primary>fsfml</primary><secondary>getMousePosX</secondary></indexterm>
+<para><computeroutput>int fsfml::getMousePosX ( )</computeroutput></para><para>
+Definition at line <link linkend="_fsfml_8cpp_source_1l00579">579</link> of file <link linkend="_fsfml_8cpp_source">fsfml.cpp</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="classfsfml_af71266974ad24a53f82bf83bc39ebfc7_cgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_classfsfml_1a00a33ce50fc178f003022ff683b2ec43"/><section>
+    <title>getMousePosY()</title>
+<indexterm><primary>getMousePosY</primary><secondary>fsfml</secondary></indexterm>
+<indexterm><primary>fsfml</primary><secondary>getMousePosY</secondary></indexterm>
+<para><computeroutput>int fsfml::getMousePosY ( )</computeroutput></para><para>
+Definition at line <link linkend="_fsfml_8cpp_source_1l00583">583</link> of file <link linkend="_fsfml_8cpp_source">fsfml.cpp</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="classfsfml_a00a33ce50fc178f003022ff683b2ec43_cgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_classfsfml_1aa7a23a2f8f1b77216ab78de518572a19"/><section>
+    <title>getScale()<computeroutput>[1/2]</computeroutput></title>
+<indexterm><primary>getScale</primary><secondary>fsfml</secondary></indexterm>
+<indexterm><primary>fsfml</primary><secondary>getScale</secondary></indexterm>
+<para><computeroutput>sf::Vector2f fsfml::getScale (<link linkend="_struct_element">Element</link> &amp; element)</computeroutput></para><para>
+Definition at line <link linkend="_fsfml_8cpp_source_1l00646">646</link> of file <link linkend="_fsfml_8cpp_source">fsfml.cpp</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="classfsfml_aa7a23a2f8f1b77216ab78de518572a19_cgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+Here is the caller graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="classfsfml_aa7a23a2f8f1b77216ab78de518572a19_icgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_classfsfml_1a131dfccbc0d482e9786d5951804de435"/><section>
+    <title>getScale()<computeroutput>[2/2]</computeroutput></title>
+<indexterm><primary>getScale</primary><secondary>fsfml</secondary></indexterm>
+<indexterm><primary>fsfml</primary><secondary>getScale</secondary></indexterm>
+<para><computeroutput>sf::Vector2f fsfml::getScale (sf::Sprite &amp; sprite)</computeroutput></para><para>
+Definition at line <link linkend="_fsfml_8cpp_source_1l00651">651</link> of file <link linkend="_fsfml_8cpp_source">fsfml.cpp</link>.</para>
+</section>
+<anchor xml:id="_classfsfml_1a81fb76af022d798c5829768ebd2e9c04"/><section>
+    <title>getSprite()</title>
+<indexterm><primary>getSprite</primary><secondary>fsfml</secondary></indexterm>
+<indexterm><primary>fsfml</primary><secondary>getSprite</secondary></indexterm>
+<para><computeroutput>sf::Sprite fsfml::getSprite (const std::string &amp; path)</computeroutput></para><para>
+Definition at line <link linkend="_fsfml_8cpp_source_1l00640">640</link> of file <link linkend="_fsfml_8cpp_source">fsfml.cpp</link>.</para>
+Here is the caller graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="classfsfml_a81fb76af022d798c5829768ebd2e9c04_icgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_classfsfml_1aaad6a42f269f248954ad4d2e253a65db"/><section>
+    <title>getTexture()</title>
+<indexterm><primary>getTexture</primary><secondary>fsfml</secondary></indexterm>
+<indexterm><primary>fsfml</primary><secondary>getTexture</secondary></indexterm>
+<para><computeroutput>sf::Texture * fsfml::getTexture (std::string key)</computeroutput></para><para>
+Definition at line <link linkend="_fsfml_8cpp_source_1l00635">635</link> of file <link linkend="_fsfml_8cpp_source">fsfml.cpp</link>.</para>
+Here is the caller graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="classfsfml_aaad6a42f269f248954ad4d2e253a65db_icgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_classfsfml_1ae573a629144f2905af0ef5acf29aac17"/><section>
+    <title>getWindowHeight()</title>
+<indexterm><primary>getWindowHeight</primary><secondary>fsfml</secondary></indexterm>
+<indexterm><primary>fsfml</primary><secondary>getWindowHeight</secondary></indexterm>
+<para><computeroutput>int fsfml::getWindowHeight ( )</computeroutput></para><para>
+Definition at line <link linkend="_fsfml_8cpp_source_1l00415">415</link> of file <link linkend="_fsfml_8cpp_source">fsfml.cpp</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="classfsfml_ae573a629144f2905af0ef5acf29aac17_cgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+Here is the caller graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="classfsfml_ae573a629144f2905af0ef5acf29aac17_icgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_classfsfml_1a91426b963b5b55787b64e31694bf4791"/><section>
+    <title>getWindowSize()</title>
+<indexterm><primary>getWindowSize</primary><secondary>fsfml</secondary></indexterm>
+<indexterm><primary>fsfml</primary><secondary>getWindowSize</secondary></indexterm>
+<para><computeroutput>sf::Vector2u fsfml::getWindowSize ( )</computeroutput></para><para>
+Definition at line <link linkend="_fsfml_8cpp_source_1l00409">409</link> of file <link linkend="_fsfml_8cpp_source">fsfml.cpp</link>.</para>
+Here is the caller graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="classfsfml_a91426b963b5b55787b64e31694bf4791_icgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_classfsfml_1af27e6bb49f79cd1ff0262ebf0fdeb96d"/><section>
+    <title>getWindowWidth()</title>
+<indexterm><primary>getWindowWidth</primary><secondary>fsfml</secondary></indexterm>
+<indexterm><primary>fsfml</primary><secondary>getWindowWidth</secondary></indexterm>
+<para><computeroutput>int fsfml::getWindowWidth ( )</computeroutput></para><para>
+Definition at line <link linkend="_fsfml_8cpp_source_1l00422">422</link> of file <link linkend="_fsfml_8cpp_source">fsfml.cpp</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="classfsfml_af27e6bb49f79cd1ff0262ebf0fdeb96d_cgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+Here is the caller graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="classfsfml_af27e6bb49f79cd1ff0262ebf0fdeb96d_icgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_classfsfml_1ad0c2351c234aa59ef60b2c38b5fe5dd9"/><section>
+    <title>handleActivePanel()</title>
+<indexterm><primary>handleActivePanel</primary><secondary>fsfml</secondary></indexterm>
+<indexterm><primary>fsfml</primary><secondary>handleActivePanel</secondary></indexterm>
+<para><computeroutput>void fsfml::handleActivePanel ( )</computeroutput></para><para>
+Definition at line <link linkend="_fsfml_8cpp_source_1l00192">192</link> of file <link linkend="_fsfml_8cpp_source">fsfml.cpp</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="classfsfml_ad0c2351c234aa59ef60b2c38b5fe5dd9_cgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_classfsfml_1ad18f9a13c0057b7a42ec1bab4cf15376"/><section>
+    <title>initAllPanels()</title>
+<indexterm><primary>initAllPanels</primary><secondary>fsfml</secondary></indexterm>
+<indexterm><primary>fsfml</primary><secondary>initAllPanels</secondary></indexterm>
+<para><computeroutput>void fsfml::initAllPanels ( )</computeroutput></para><para>
+Definition at line <link linkend="_fsfml_8cpp_source_1l00246">246</link> of file <link linkend="_fsfml_8cpp_source">fsfml.cpp</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="classfsfml_ad18f9a13c0057b7a42ec1bab4cf15376_cgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+Here is the caller graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="classfsfml_ad18f9a13c0057b7a42ec1bab4cf15376_icgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_classfsfml_1a9abd23f72500b09571e79f521a0e57e6"/><section>
+    <title>initElement()</title>
+<indexterm><primary>initElement</primary><secondary>fsfml</secondary></indexterm>
+<indexterm><primary>fsfml</primary><secondary>initElement</secondary></indexterm>
+<para><computeroutput><link linkend="_struct_element">Element</link> fsfml::initElement (const std::string &amp; nameImg)</computeroutput></para><para>
+Definition at line <link linkend="_fsfml_8cpp_source_1l00157">157</link> of file <link linkend="_fsfml_8cpp_source">fsfml.cpp</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="classfsfml_a9abd23f72500b09571e79f521a0e57e6_cgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+Here is the caller graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="classfsfml_a9abd23f72500b09571e79f521a0e57e6_icgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_classfsfml_1a1e465443ae65cef7eff4c7eb68096edf"/><section>
+    <title>initElementsPanel()<computeroutput>[1/2]</computeroutput></title>
+<indexterm><primary>initElementsPanel</primary><secondary>fsfml</secondary></indexterm>
+<indexterm><primary>fsfml</primary><secondary>initElementsPanel</secondary></indexterm>
+<para><computeroutput>void fsfml::initElementsPanel (std::vector&lt; <link linkend="_struct_element">Element</link> &gt; allElements, <link linkend="_struct_panel">Panel</link> &amp; page)</computeroutput></para><para>
+Definition at line <link linkend="_fsfml_8cpp_source_1l00216">216</link> of file <link linkend="_fsfml_8cpp_source">fsfml.cpp</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="classfsfml_a1e465443ae65cef7eff4c7eb68096edf_cgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+Here is the caller graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="classfsfml_a1e465443ae65cef7eff4c7eb68096edf_icgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_classfsfml_1a51b36c00279c61c6e4688f9b21f0e972"/><section>
+    <title>initElementsPanel()<computeroutput>[2/2]</computeroutput></title>
+<indexterm><primary>initElementsPanel</primary><secondary>fsfml</secondary></indexterm>
+<indexterm><primary>fsfml</primary><secondary>initElementsPanel</secondary></indexterm>
+<para><computeroutput>void fsfml::initElementsPanel (std::vector&lt; std::string &gt; allElements, <link linkend="_struct_panel">Panel</link> &amp; page)</computeroutput></para><para>
+Definition at line <link linkend="_fsfml_8cpp_source_1l00223">223</link> of file <link linkend="_fsfml_8cpp_source">fsfml.cpp</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="classfsfml_a51b36c00279c61c6e4688f9b21f0e972_cgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_classfsfml_1ab642e067930233a3a95068fb80c7c410"/><section>
+    <title>initGraphics()</title>
+<indexterm><primary>initGraphics</primary><secondary>fsfml</secondary></indexterm>
+<indexterm><primary>fsfml</primary><secondary>initGraphics</secondary></indexterm>
+<para><computeroutput>void fsfml::initGraphics ( )</computeroutput></para><para>
+Definition at line <link linkend="_fsfml_8cpp_source_1l00259">259</link> of file <link linkend="_fsfml_8cpp_source">fsfml.cpp</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="classfsfml_ab642e067930233a3a95068fb80c7c410_cgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+Here is the caller graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="classfsfml_ab642e067930233a3a95068fb80c7c410_icgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_classfsfml_1a405db5ed694c7e2664a82f690eeb87d2"/><section>
+    <title>initMenu()</title>
+<indexterm><primary>initMenu</primary><secondary>fsfml</secondary></indexterm>
+<indexterm><primary>fsfml</primary><secondary>initMenu</secondary></indexterm>
+<para><computeroutput>void fsfml::initMenu ( )</computeroutput></para><para>
+Definition at line <link linkend="_fsfml_8cpp_source_1l00239">239</link> of file <link linkend="_fsfml_8cpp_source">fsfml.cpp</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="classfsfml_a405db5ed694c7e2664a82f690eeb87d2_cgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+Here is the caller graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="classfsfml_a405db5ed694c7e2664a82f690eeb87d2_icgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_classfsfml_1ab45b3aa9320cf22836dc133f40186955"/><section>
+    <title>initPanel()</title>
+<indexterm><primary>initPanel</primary><secondary>fsfml</secondary></indexterm>
+<indexterm><primary>fsfml</primary><secondary>initPanel</secondary></indexterm>
+<para><computeroutput>void fsfml::initPanel (<link linkend="_struct_panel">Panel</link> &amp; page, std::string id, std::vector&lt; std::string &gt; &amp; allstr)</computeroutput></para><para>
+Definition at line <link linkend="_fsfml_8cpp_source_1l00232">232</link> of file <link linkend="_fsfml_8cpp_source">fsfml.cpp</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="classfsfml_ab45b3aa9320cf22836dc133f40186955_cgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+Here is the caller graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="classfsfml_ab45b3aa9320cf22836dc133f40186955_icgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_classfsfml_1ab91828a3b4b1b3c53b5dc8552d46d48a"/><section>
+    <title>initVariables()</title>
+<indexterm><primary>initVariables</primary><secondary>fsfml</secondary></indexterm>
+<indexterm><primary>fsfml</primary><secondary>initVariables</secondary></indexterm>
+<para><computeroutput>void fsfml::initVariables ( )</computeroutput></para><para>
+Definition at line <link linkend="_fsfml_8cpp_source_1l00482">482</link> of file <link linkend="_fsfml_8cpp_source">fsfml.cpp</link>.</para>
+Here is the caller graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="classfsfml_ab91828a3b4b1b3c53b5dc8552d46d48a_icgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_classfsfml_1a33b00964a94d045d04ddabc99353df0f"/><section>
+    <title>initWindow()</title>
+<indexterm><primary>initWindow</primary><secondary>fsfml</secondary></indexterm>
+<indexterm><primary>fsfml</primary><secondary>initWindow</secondary></indexterm>
+<para><computeroutput>void fsfml::initWindow ( )</computeroutput></para><para>
+Definition at line <link linkend="_fsfml_8cpp_source_1l00025">25</link> of file <link linkend="_fsfml_8cpp_source">fsfml.cpp</link>.</para>
+Here is the caller graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="classfsfml_a33b00964a94d045d04ddabc99353df0f_icgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_classfsfml_1ac1d737a21d3acfaa8250c1e0765b4dbe"/><section>
+    <title>isKeyPressed()</title>
+<indexterm><primary>isKeyPressed</primary><secondary>fsfml</secondary></indexterm>
+<indexterm><primary>fsfml</primary><secondary>isKeyPressed</secondary></indexterm>
+<para><computeroutput>bool fsfml::isKeyPressed (sf::Keyboard::Key key)<computeroutput>[static]</computeroutput></computeroutput></para><para>
+Definition at line <link linkend="_fsfml_8cpp_source_1l00588">588</link> of file <link linkend="_fsfml_8cpp_source">fsfml.cpp</link>.</para>
+</section>
+<anchor xml:id="_classfsfml_1a5528a53174db6d10551021c4371ead80"/><section>
+    <title>loadAllSprites()</title>
+<indexterm><primary>loadAllSprites</primary><secondary>fsfml</secondary></indexterm>
+<indexterm><primary>fsfml</primary><secondary>loadAllSprites</secondary></indexterm>
+<para><computeroutput>void fsfml::loadAllSprites (const std::vector&lt; std::string &gt; &amp; allPaths)</computeroutput></para><para>
+Definition at line <link linkend="_fsfml_8cpp_source_1l00150">150</link> of file <link linkend="_fsfml_8cpp_source">fsfml.cpp</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="classfsfml_a5528a53174db6d10551021c4371ead80_cgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+Here is the caller graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="classfsfml_a5528a53174db6d10551021c4371ead80_icgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_classfsfml_1a3fc8c544051e5c26bc9376fc255b87a4"/><section>
+    <title>loadAllTextures()</title>
+<indexterm><primary>loadAllTextures</primary><secondary>fsfml</secondary></indexterm>
+<indexterm><primary>fsfml</primary><secondary>loadAllTextures</secondary></indexterm>
+<para><computeroutput>void fsfml::loadAllTextures (const std::vector&lt; std::string &gt; &amp; allPaths)</computeroutput></para><para>
+Definition at line <link linkend="_fsfml_8cpp_source_1l00252">252</link> of file <link linkend="_fsfml_8cpp_source">fsfml.cpp</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="classfsfml_a3fc8c544051e5c26bc9376fc255b87a4_cgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+Here is the caller graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="classfsfml_a3fc8c544051e5c26bc9376fc255b87a4_icgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_classfsfml_1a5baebfef9137bd5f516eea18e45bebe7"/><section>
+    <title>loadSprite()</title>
+<indexterm><primary>loadSprite</primary><secondary>fsfml</secondary></indexterm>
+<indexterm><primary>fsfml</primary><secondary>loadSprite</secondary></indexterm>
+<para><computeroutput>void fsfml::loadSprite (const std::string &amp; nameImg)</computeroutput></para><para>
+Definition at line <link linkend="_fsfml_8cpp_source_1l00138">138</link> of file <link linkend="_fsfml_8cpp_source">fsfml.cpp</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="classfsfml_a5baebfef9137bd5f516eea18e45bebe7_cgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+Here is the caller graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="classfsfml_a5baebfef9137bd5f516eea18e45bebe7_icgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_classfsfml_1a85e3525bac516648d01f23a1764087c4"/><section>
+    <title>loadTexture()</title>
+<indexterm><primary>loadTexture</primary><secondary>fsfml</secondary></indexterm>
+<indexterm><primary>fsfml</primary><secondary>loadTexture</secondary></indexterm>
+<para><computeroutput>void fsfml::loadTexture (const std::string &amp; path)</computeroutput></para><para>
+Definition at line <link linkend="_fsfml_8cpp_source_1l00130">130</link> of file <link linkend="_fsfml_8cpp_source">fsfml.cpp</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="classfsfml_a85e3525bac516648d01f23a1764087c4_cgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+Here is the caller graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="classfsfml_a85e3525bac516648d01f23a1764087c4_icgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_classfsfml_1a9cfc61fa4330f08605082f2dc0a3763f"/><section>
+    <title>moveElement()</title>
+<indexterm><primary>moveElement</primary><secondary>fsfml</secondary></indexterm>
+<indexterm><primary>fsfml</primary><secondary>moveElement</secondary></indexterm>
+<para><computeroutput>void fsfml::moveElement (<link linkend="_struct_element">Element</link> &amp; element, const sf::Vector2f &amp; vect)</computeroutput></para><para>
+Definition at line <link linkend="_fsfml_8cpp_source_1l00378">378</link> of file <link linkend="_fsfml_8cpp_source">fsfml.cpp</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="classfsfml_a9cfc61fa4330f08605082f2dc0a3763f_cgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+Here is the caller graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="classfsfml_a9cfc61fa4330f08605082f2dc0a3763f_icgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_classfsfml_1a914f1f9ee2c9f8a97db5704052161a3e"/><section>
+    <title>moveSprite()</title>
+<indexterm><primary>moveSprite</primary><secondary>fsfml</secondary></indexterm>
+<indexterm><primary>fsfml</primary><secondary>moveSprite</secondary></indexterm>
+<para><computeroutput>void fsfml::moveSprite (sf::Sprite &amp; sprite, const sf::Vector2f &amp; vect)</computeroutput></para><para>
+Definition at line <link linkend="_fsfml_8cpp_source_1l00322">322</link> of file <link linkend="_fsfml_8cpp_source">fsfml.cpp</link>.</para>
+Here is the caller graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="classfsfml_a914f1f9ee2c9f8a97db5704052161a3e_icgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_classfsfml_1a200802324bb5f37bfae3d935c0b91db4"/><section>
+    <title>OnElement()</title>
+<indexterm><primary>OnElement</primary><secondary>fsfml</secondary></indexterm>
+<indexterm><primary>fsfml</primary><secondary>OnElement</secondary></indexterm>
+<para><computeroutput>bool fsfml::OnElement (<link linkend="_struct_element">Element</link> &amp; element, sf::Vector2f Direction)</computeroutput></para><para>
+Definition at line <link linkend="_fsfml_8cpp_source_1l00464">464</link> of file <link linkend="_fsfml_8cpp_source">fsfml.cpp</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="classfsfml_a200802324bb5f37bfae3d935c0b91db4_cgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+Here is the caller graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="classfsfml_a200802324bb5f37bfae3d935c0b91db4_icgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_classfsfml_1a0ad8f537cba99a886634de5d16d889c3"/><section>
+    <title>OnSprite()</title>
+<indexterm><primary>OnSprite</primary><secondary>fsfml</secondary></indexterm>
+<indexterm><primary>fsfml</primary><secondary>OnSprite</secondary></indexterm>
+<para><computeroutput>bool fsfml::OnSprite (sf::Sprite &amp; sprite, sf::Vector2f Direction)</computeroutput></para><para>
+Definition at line <link linkend="_fsfml_8cpp_source_1l00455">455</link> of file <link linkend="_fsfml_8cpp_source">fsfml.cpp</link>.</para>
+Here is the caller graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="classfsfml_a0ad8f537cba99a886634de5d16d889c3_icgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_classfsfml_1a6b4ab16d375ff176a0533dccdc09fc20"/><section>
+    <title>PanelEvent()</title>
+<indexterm><primary>PanelEvent</primary><secondary>fsfml</secondary></indexterm>
+<indexterm><primary>fsfml</primary><secondary>PanelEvent</secondary></indexterm>
+<para><computeroutput>void fsfml::PanelEvent (<link linkend="_struct_panel">Panel</link> &amp; page)</computeroutput></para><para>
+Definition at line <link linkend="_fsfml_8cpp_source_1l00198">198</link> of file <link linkend="_fsfml_8cpp_source">fsfml.cpp</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="classfsfml_a6b4ab16d375ff176a0533dccdc09fc20_cgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+Here is the caller graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="classfsfml_a6b4ab16d375ff176a0533dccdc09fc20_icgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_classfsfml_1a094eb58373ba492a7c19666625acf2eb"/><section>
+    <title>pressedElement()</title>
+<indexterm><primary>pressedElement</primary><secondary>fsfml</secondary></indexterm>
+<indexterm><primary>fsfml</primary><secondary>pressedElement</secondary></indexterm>
+<para><computeroutput>bool fsfml::pressedElement (<link linkend="_struct_element">Element</link> &amp; element)</computeroutput></para><para>
+Definition at line <link linkend="_fsfml_8cpp_source_1l00564">564</link> of file <link linkend="_fsfml_8cpp_source">fsfml.cpp</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="classfsfml_a094eb58373ba492a7c19666625acf2eb_cgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+Here is the caller graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="classfsfml_a094eb58373ba492a7c19666625acf2eb_icgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_classfsfml_1ac7247f5821521ffff228e570f0b74b42"/><section>
+    <title>resetEventVariables()</title>
+<indexterm><primary>resetEventVariables</primary><secondary>fsfml</secondary></indexterm>
+<indexterm><primary>fsfml</primary><secondary>resetEventVariables</secondary></indexterm>
+<para><computeroutput>void fsfml::resetEventVariables ( )</computeroutput></para><para>
+Definition at line <link linkend="_fsfml_8cpp_source_1l00469">469</link> of file <link linkend="_fsfml_8cpp_source">fsfml.cpp</link>.</para>
+Here is the caller graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="classfsfml_ac7247f5821521ffff228e570f0b74b42_icgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_classfsfml_1a91c3af88560235ca3bc5bdbb8ddd2e9b"/><section>
+    <title>resizeElement()</title>
+<indexterm><primary>resizeElement</primary><secondary>fsfml</secondary></indexterm>
+<indexterm><primary>fsfml</primary><secondary>resizeElement</secondary></indexterm>
+<para><computeroutput>void fsfml::resizeElement (<link linkend="_struct_element">Element</link> &amp; element, sf::Vector2f vect)</computeroutput></para><para>
+Definition at line <link linkend="_fsfml_8cpp_source_1l00661">661</link> of file <link linkend="_fsfml_8cpp_source">fsfml.cpp</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="classfsfml_a91c3af88560235ca3bc5bdbb8ddd2e9b_cgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+Here is the caller graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="classfsfml_a91c3af88560235ca3bc5bdbb8ddd2e9b_icgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_classfsfml_1a2c79ba56c482be575f405a9871eab787"/><section>
+    <title>resizeSprite()</title>
+<indexterm><primary>resizeSprite</primary><secondary>fsfml</secondary></indexterm>
+<indexterm><primary>fsfml</primary><secondary>resizeSprite</secondary></indexterm>
+<para><computeroutput>void fsfml::resizeSprite (sf::Sprite &amp; sprite, sf::Vector2f vect)</computeroutput></para><para>
+Definition at line <link linkend="_fsfml_8cpp_source_1l00656">656</link> of file <link linkend="_fsfml_8cpp_source">fsfml.cpp</link>.</para>
+Here is the caller graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="classfsfml_a2c79ba56c482be575f405a9871eab787_icgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_classfsfml_1a8d52ac7c812248f93f81822eab4580ea"/><section>
+    <title>rotateSprite()</title>
+<indexterm><primary>rotateSprite</primary><secondary>fsfml</secondary></indexterm>
+<indexterm><primary>fsfml</primary><secondary>rotateSprite</secondary></indexterm>
+<para><computeroutput>void fsfml::rotateSprite (sf::Sprite &amp; sprite, float angle)</computeroutput></para><para>
+Definition at line <link linkend="_fsfml_8cpp_source_1l00384">384</link> of file <link linkend="_fsfml_8cpp_source">fsfml.cpp</link>.</para>
+</section>
+<anchor xml:id="_classfsfml_1af5ec5a73c3deb2ebea2b7ab05e550975"/><section>
+    <title>seeElement()</title>
+<indexterm><primary>seeElement</primary><secondary>fsfml</secondary></indexterm>
+<indexterm><primary>fsfml</primary><secondary>seeElement</secondary></indexterm>
+<para><computeroutput>void fsfml::seeElement (<link linkend="_struct_element">Element</link> &amp; element)</computeroutput></para><para>
+Definition at line <link linkend="_fsfml_8cpp_source_1l00163">163</link> of file <link linkend="_fsfml_8cpp_source">fsfml.cpp</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="classfsfml_af5ec5a73c3deb2ebea2b7ab05e550975_cgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+Here is the caller graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="classfsfml_af5ec5a73c3deb2ebea2b7ab05e550975_icgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_classfsfml_1a95f6eb53223fafa2f2b06548f4d1b323"/><section>
+    <title>seePanel()</title>
+<indexterm><primary>seePanel</primary><secondary>fsfml</secondary></indexterm>
+<indexterm><primary>fsfml</primary><secondary>seePanel</secondary></indexterm>
+<para><computeroutput>void fsfml::seePanel (<link linkend="_struct_panel">Panel</link> &amp; page)</computeroutput></para><para>
+Definition at line <link linkend="_fsfml_8cpp_source_1l00178">178</link> of file <link linkend="_fsfml_8cpp_source">fsfml.cpp</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="classfsfml_a95f6eb53223fafa2f2b06548f4d1b323_cgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+Here is the caller graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="classfsfml_a95f6eb53223fafa2f2b06548f4d1b323_icgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_classfsfml_1aac1968ad932a98b9142e4cee0c38cd2a"/><section>
+    <title>separateElementX()</title>
+<indexterm><primary>separateElementX</primary><secondary>fsfml</secondary></indexterm>
+<indexterm><primary>fsfml</primary><secondary>separateElementX</secondary></indexterm>
+<para><computeroutput>void fsfml::separateElementX (<link linkend="_struct_element">Element</link> &amp; elem1, <link linkend="_struct_element">Element</link> &amp; elem2)</computeroutput></para><para>
+Definition at line <link linkend="_fsfml_8cpp_source_1l00335">335</link> of file <link linkend="_fsfml_8cpp_source">fsfml.cpp</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="classfsfml_aac1968ad932a98b9142e4cee0c38cd2a_cgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+Here is the caller graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="classfsfml_aac1968ad932a98b9142e4cee0c38cd2a_icgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_classfsfml_1a9f922766e67798b7172b4479a89eed9b"/><section>
+    <title>separateElementY()</title>
+<indexterm><primary>separateElementY</primary><secondary>fsfml</secondary></indexterm>
+<indexterm><primary>fsfml</primary><secondary>separateElementY</secondary></indexterm>
+<para><computeroutput>void fsfml::separateElementY (<link linkend="_struct_element">Element</link> &amp; elem1, <link linkend="_struct_element">Element</link> &amp; elem2)</computeroutput></para><para>
+Definition at line <link linkend="_fsfml_8cpp_source_1l00342">342</link> of file <link linkend="_fsfml_8cpp_source">fsfml.cpp</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="classfsfml_a9f922766e67798b7172b4479a89eed9b_cgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+Here is the caller graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="classfsfml_a9f922766e67798b7172b4479a89eed9b_icgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_classfsfml_1a3c57a8e5fdeed43ced308ab4d19c193b"/><section>
+    <title>setAbsSpriteScale()</title>
+<indexterm><primary>setAbsSpriteScale</primary><secondary>fsfml</secondary></indexterm>
+<indexterm><primary>fsfml</primary><secondary>setAbsSpriteScale</secondary></indexterm>
+<para><computeroutput>void fsfml::setAbsSpriteScale (sf::Sprite &amp; sprite, const sf::Vector2f &amp; vect)</computeroutput></para><para>
+Definition at line <link linkend="_fsfml_8cpp_source_1l00392">392</link> of file <link linkend="_fsfml_8cpp_source">fsfml.cpp</link>.</para>
+</section>
+<anchor xml:id="_classfsfml_1a527d1f9dc8024dab8b6c0af4dc8c6a60"/><section>
+    <title>setActivePanel()</title>
+<indexterm><primary>setActivePanel</primary><secondary>fsfml</secondary></indexterm>
+<indexterm><primary>fsfml</primary><secondary>setActivePanel</secondary></indexterm>
+<para><computeroutput>void fsfml::setActivePanel (<link linkend="_struct_panel">Panel</link> &amp; page)</computeroutput></para><para>
+Definition at line <link linkend="_fsfml_8cpp_source_1l00271">271</link> of file <link linkend="_fsfml_8cpp_source">fsfml.cpp</link>.</para>
+Here is the caller graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="classfsfml_a527d1f9dc8024dab8b6c0af4dc8c6a60_icgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_classfsfml_1ae6cde1fa3414044fa30303395a43bc18"/><section>
+    <title>setColumn()</title>
+<indexterm><primary>setColumn</primary><secondary>fsfml</secondary></indexterm>
+<indexterm><primary>fsfml</primary><secondary>setColumn</secondary></indexterm>
+<para><computeroutput>void fsfml::setColumn (std::vector&lt; <link linkend="_struct_element">Element</link> &gt; &amp; allElements)</computeroutput></para><para>
+Definition at line <link linkend="_fsfml_8cpp_source_1l00503">503</link> of file <link linkend="_fsfml_8cpp_source">fsfml.cpp</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="classfsfml_ae6cde1fa3414044fa30303395a43bc18_cgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_classfsfml_1ab87043dece41efe5efaa9c8d68f11a78"/><section>
+    <title>setElementPos()</title>
+<indexterm><primary>setElementPos</primary><secondary>fsfml</secondary></indexterm>
+<indexterm><primary>fsfml</primary><secondary>setElementPos</secondary></indexterm>
+<para><computeroutput>void fsfml::setElementPos (<link linkend="_struct_element">Element</link> &amp; element, const sf::Vector2f &amp; vect)</computeroutput></para><para>
+Definition at line <link linkend="_fsfml_8cpp_source_1l00401">401</link> of file <link linkend="_fsfml_8cpp_source">fsfml.cpp</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="classfsfml_ab87043dece41efe5efaa9c8d68f11a78_cgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_classfsfml_1ad8cb433f89e4fe31c8fc87e912853963"/><section>
+    <title>setLine()</title>
+<indexterm><primary>setLine</primary><secondary>fsfml</secondary></indexterm>
+<indexterm><primary>fsfml</primary><secondary>setLine</secondary></indexterm>
+<para><computeroutput>void fsfml::setLine (std::vector&lt; <link linkend="_struct_element">Element</link> &gt; &amp; allElements)</computeroutput></para><para>
+Definition at line <link linkend="_fsfml_8cpp_source_1l00495">495</link> of file <link linkend="_fsfml_8cpp_source">fsfml.cpp</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="classfsfml_ad8cb433f89e4fe31c8fc87e912853963_cgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_classfsfml_1a02739431b097cedd700599d9a454d0e8"/><section>
+    <title>setPanelLayout()</title>
+<indexterm><primary>setPanelLayout</primary><secondary>fsfml</secondary></indexterm>
+<indexterm><primary>fsfml</primary><secondary>setPanelLayout</secondary></indexterm>
+<para><computeroutput>void fsfml::setPanelLayout (<link linkend="_struct_panel">Panel</link> &amp; page)</computeroutput></para></section>
+<anchor xml:id="_classfsfml_1a5d4a13041264cd403779edb49725cb6e"/><section>
+    <title>setRelSpriteScale()</title>
+<indexterm><primary>setRelSpriteScale</primary><secondary>fsfml</secondary></indexterm>
+<indexterm><primary>fsfml</primary><secondary>setRelSpriteScale</secondary></indexterm>
+<para><computeroutput>void fsfml::setRelSpriteScale (sf::Sprite &amp; sprite, const sf::Vector2f &amp; vect)</computeroutput></para><para>
+Definition at line <link linkend="_fsfml_8cpp_source_1l00388">388</link> of file <link linkend="_fsfml_8cpp_source">fsfml.cpp</link>.</para>
+</section>
+<anchor xml:id="_classfsfml_1a5eb57f7a09768d185d53cf87fb8544ee"/><section>
+    <title>setSpriteColor()</title>
+<indexterm><primary>setSpriteColor</primary><secondary>fsfml</secondary></indexterm>
+<indexterm><primary>fsfml</primary><secondary>setSpriteColor</secondary></indexterm>
+<para><computeroutput>void fsfml::setSpriteColor (sf::Sprite &amp; sprite, const sf::Color &amp; color)</computeroutput></para><para>
+Definition at line <link linkend="_fsfml_8cpp_source_1l00309">309</link> of file <link linkend="_fsfml_8cpp_source">fsfml.cpp</link>.</para>
+Here is the caller graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="classfsfml_a5eb57f7a09768d185d53cf87fb8544ee_icgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_classfsfml_1ac883cf5d542110aa347e2e4d2991c5f7"/><section>
+    <title>setSpritePos()</title>
+<indexterm><primary>setSpritePos</primary><secondary>fsfml</secondary></indexterm>
+<indexterm><primary>fsfml</primary><secondary>setSpritePos</secondary></indexterm>
+<para><computeroutput>void fsfml::setSpritePos (sf::Sprite &amp; sprite, const sf::Vector2f &amp; vect)</computeroutput></para><para>
+Definition at line <link linkend="_fsfml_8cpp_source_1l00396">396</link> of file <link linkend="_fsfml_8cpp_source">fsfml.cpp</link>.</para>
+Here is the caller graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="classfsfml_ac883cf5d542110aa347e2e4d2991c5f7_icgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_classfsfml_1a78e66a4344c9ba11b477ffc9f33b9a0d"/><section>
+    <title>showVector()</title>
+<indexterm><primary>showVector</primary><secondary>fsfml</secondary></indexterm>
+<indexterm><primary>fsfml</primary><secondary>showVector</secondary></indexterm>
+<para><computeroutput>void fsfml::showVector (sf::Vector2f v2)</computeroutput></para><para>
+Definition at line <link linkend="_fsfml_8cpp_source_1l00575">575</link> of file <link linkend="_fsfml_8cpp_source">fsfml.cpp</link>.</para>
+Here is the caller graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="classfsfml_a78e66a4344c9ba11b477ffc9f33b9a0d_icgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_classfsfml_1a37a061f1ee4ccd45b5ae0a900021ecf4"/><section>
+    <title>startSFML()</title>
+<indexterm><primary>startSFML</primary><secondary>fsfml</secondary></indexterm>
+<indexterm><primary>fsfml</primary><secondary>startSFML</secondary></indexterm>
+<para><computeroutput>void fsfml::startSFML ( )</computeroutput></para><para>
+Definition at line <link linkend="_fsfml_8cpp_source_1l00017">17</link> of file <link linkend="_fsfml_8cpp_source">fsfml.cpp</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="classfsfml_a37a061f1ee4ccd45b5ae0a900021ecf4_cgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_classfsfml_1a40595c6220364843e5f2e51779882e9c"/><section>
+    <title>unseeElement()</title>
+<indexterm><primary>unseeElement</primary><secondary>fsfml</secondary></indexterm>
+<indexterm><primary>fsfml</primary><secondary>unseeElement</secondary></indexterm>
+<para><computeroutput>void fsfml::unseeElement (<link linkend="_struct_element">Element</link> &amp; element)</computeroutput></para><para>
+Definition at line <link linkend="_fsfml_8cpp_source_1l00167">167</link> of file <link linkend="_fsfml_8cpp_source">fsfml.cpp</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="classfsfml_a40595c6220364843e5f2e51779882e9c_cgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+Here is the caller graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="classfsfml_a40595c6220364843e5f2e51779882e9c_icgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_classfsfml_1a70e48d9726270f976739bc3640d41d1a"/><section>
+    <title>unseePanel()</title>
+<indexterm><primary>unseePanel</primary><secondary>fsfml</secondary></indexterm>
+<indexterm><primary>fsfml</primary><secondary>unseePanel</secondary></indexterm>
+<para><computeroutput>void fsfml::unseePanel (<link linkend="_struct_panel">Panel</link> &amp; page)</computeroutput></para><para>
+Definition at line <link linkend="_fsfml_8cpp_source_1l00172">172</link> of file <link linkend="_fsfml_8cpp_source">fsfml.cpp</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="classfsfml_a70e48d9726270f976739bc3640d41d1a_cgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_classfsfml_1aa37c181bb8a16b68af96d615f3d0ad5c"/><section>
+    <title>updateAllElements()</title>
+<indexterm><primary>updateAllElements</primary><secondary>fsfml</secondary></indexterm>
+<indexterm><primary>fsfml</primary><secondary>updateAllElements</secondary></indexterm>
+<para><computeroutput>void fsfml::updateAllElements (<link linkend="_struct_panel">Panel</link> &amp; panel)</computeroutput></para><para>
+Definition at line <link linkend="_fsfml_8cpp_source_1l00313">313</link> of file <link linkend="_fsfml_8cpp_source">fsfml.cpp</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="classfsfml_aa37c181bb8a16b68af96d615f3d0ad5c_cgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_classfsfml_1aa9726b537036754c5927b584939e0e75"/><section>
+    <title>updateElement()</title>
+<indexterm><primary>updateElement</primary><secondary>fsfml</secondary></indexterm>
+<indexterm><primary>fsfml</primary><secondary>updateElement</secondary></indexterm>
+<para><computeroutput>void fsfml::updateElement (<link linkend="_struct_element">Element</link> &amp; element)</computeroutput></para><para>
+Definition at line <link linkend="_fsfml_8cpp_source_1l00144">144</link> of file <link linkend="_fsfml_8cpp_source">fsfml.cpp</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="classfsfml_aa9726b537036754c5927b584939e0e75_cgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+Here is the caller graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="classfsfml_aa9726b537036754c5927b584939e0e75_icgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_classfsfml_1a72eb9b81e0f5d518a9d037c4a3610de2"/><section>
+    <title>updateWindowSize()</title>
+<indexterm><primary>updateWindowSize</primary><secondary>fsfml</secondary></indexterm>
+<indexterm><primary>fsfml</primary><secondary>updateWindowSize</secondary></indexterm>
+<para><computeroutput>void fsfml::updateWindowSize ( )</computeroutput></para><para>
+Definition at line <link linkend="_fsfml_8cpp_source_1l00593">593</link> of file <link linkend="_fsfml_8cpp_source">fsfml.cpp</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="classfsfml_a72eb9b81e0f5d518a9d037c4a3610de2_cgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_classfsfml_1a4bf50b65a4a6b5ed3e57b7b26638534a"/><section>
+    <title>windowLoop()</title>
+<indexterm><primary>windowLoop</primary><secondary>fsfml</secondary></indexterm>
+<indexterm><primary>fsfml</primary><secondary>windowLoop</secondary></indexterm>
+<para><computeroutput>void fsfml::windowLoop ( )</computeroutput></para><para>
+Definition at line <link linkend="_fsfml_8cpp_source_1l00032">32</link> of file <link linkend="_fsfml_8cpp_source">fsfml.cpp</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="classfsfml_a4bf50b65a4a6b5ed3e57b7b26638534a_cgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+Here is the caller graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="classfsfml_a4bf50b65a4a6b5ed3e57b7b26638534a_icgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+</section>
+<section>
+<title>Member Data Documentation</title>
+<anchor xml:id="_classfsfml_1a5f83a3514e66fd71f454ee6f64d3db4f"/><section>
+    <title>activePanel</title>
+<indexterm><primary>activePanel</primary><secondary>fsfml</secondary></indexterm>
+<indexterm><primary>fsfml</primary><secondary>activePanel</secondary></indexterm>
+<para><computeroutput><link linkend="_struct_panel">Panel</link> fsfml::activePanel</computeroutput></para><para>
+Definition at line <link linkend="_fsfml_8h_source_1l00266">266</link> of file <link linkend="_fsfml_8h_source">fsfml.h</link>.</para>
+</section>
+<anchor xml:id="_classfsfml_1aeb58b57076e333317100beaa34a73ed4"/><section>
+    <title>charEntered</title>
+<indexterm><primary>charEntered</primary><secondary>fsfml</secondary></indexterm>
+<indexterm><primary>fsfml</primary><secondary>charEntered</secondary></indexterm>
+<para><computeroutput>char fsfml::charEntered</computeroutput></para><para>
+Definition at line <link linkend="_fsfml_8h_source_1l00262">262</link> of file <link linkend="_fsfml_8h_source">fsfml.h</link>.</para>
+</section>
+<anchor xml:id="_classfsfml_1a996b807c53d6c2a28d5e6997ffec13e8"/><section>
+    <title>charTyped</title>
+<indexterm><primary>charTyped</primary><secondary>fsfml</secondary></indexterm>
+<indexterm><primary>fsfml</primary><secondary>charTyped</secondary></indexterm>
+<para><computeroutput>bool fsfml::charTyped</computeroutput></para><para>
+Definition at line <link linkend="_fsfml_8h_source_1l00263">263</link> of file <link linkend="_fsfml_8h_source">fsfml.h</link>.</para>
+</section>
+<anchor xml:id="_classfsfml_1a2ca771d5728b1a6ef160848e4030994c"/><section>
+    <title>clickPos</title>
+<indexterm><primary>clickPos</primary><secondary>fsfml</secondary></indexterm>
+<indexterm><primary>fsfml</primary><secondary>clickPos</secondary></indexterm>
+<para><computeroutput>sf::Vector2i fsfml::clickPos</computeroutput></para><para>
+Definition at line <link linkend="_fsfml_8h_source_1l00259">259</link> of file <link linkend="_fsfml_8h_source">fsfml.h</link>.</para>
+</section>
+<anchor xml:id="_classfsfml_1aa2376c471900641a72542a22d04e48f8"/><section>
+    <title>closeWindow</title>
+<indexterm><primary>closeWindow</primary><secondary>fsfml</secondary></indexterm>
+<indexterm><primary>fsfml</primary><secondary>closeWindow</secondary></indexterm>
+<para><computeroutput>bool fsfml::closeWindow</computeroutput></para><para>
+Definition at line <link linkend="_fsfml_8h_source_1l00263">263</link> of file <link linkend="_fsfml_8h_source">fsfml.h</link>.</para>
+</section>
+<anchor xml:id="_classfsfml_1af3480a2fec74a4d2233342072085fcae"/><section>
+    <title>collectText</title>
+<indexterm><primary>collectText</primary><secondary>fsfml</secondary></indexterm>
+<indexterm><primary>fsfml</primary><secondary>collectText</secondary></indexterm>
+<para><computeroutput>bool fsfml::collectText</computeroutput></para><para>
+Definition at line <link linkend="_fsfml_8h_source_1l00263">263</link> of file <link linkend="_fsfml_8h_source">fsfml.h</link>.</para>
+</section>
+<anchor xml:id="_classfsfml_1a5312d051e4e29248701e536c2ef8691e"/><section>
+    <title>hasClicked</title>
+<indexterm><primary>hasClicked</primary><secondary>fsfml</secondary></indexterm>
+<indexterm><primary>fsfml</primary><secondary>hasClicked</secondary></indexterm>
+<para><computeroutput>bool fsfml::hasClicked</computeroutput></para><para>
+Definition at line <link linkend="_fsfml_8h_source_1l00263">263</link> of file <link linkend="_fsfml_8h_source">fsfml.h</link>.</para>
+</section>
+<anchor xml:id="_classfsfml_1a80ec0508e51494c5fed36738df301007"/><section>
+    <title>hasPressedClick</title>
+<indexterm><primary>hasPressedClick</primary><secondary>fsfml</secondary></indexterm>
+<indexterm><primary>fsfml</primary><secondary>hasPressedClick</secondary></indexterm>
+<para><computeroutput>bool fsfml::hasPressedClick</computeroutput></para><para>
+Definition at line <link linkend="_fsfml_8h_source_1l00263">263</link> of file <link linkend="_fsfml_8h_source">fsfml.h</link>.</para>
+</section>
+<anchor xml:id="_classfsfml_1a1f25a4160a80be0dba66bfb6a081d953"/><section>
+    <title>Menu</title>
+<indexterm><primary>Menu</primary><secondary>fsfml</secondary></indexterm>
+<indexterm><primary>fsfml</primary><secondary>Menu</secondary></indexterm>
+<para><computeroutput><link linkend="_struct_panel">Panel</link> fsfml::Menu</computeroutput></para><para>
+Definition at line <link linkend="_fsfml_8h_source_1l00269">269</link> of file <link linkend="_fsfml_8h_source">fsfml.h</link>.</para>
+</section>
+<anchor xml:id="_classfsfml_1ac813da2410b592072f6502f070ec1345"/><section>
+    <title>mouseInWindow</title>
+<indexterm><primary>mouseInWindow</primary><secondary>fsfml</secondary></indexterm>
+<indexterm><primary>fsfml</primary><secondary>mouseInWindow</secondary></indexterm>
+<para><computeroutput>bool fsfml::mouseInWindow</computeroutput></para><para>
+Definition at line <link linkend="_fsfml_8h_source_1l00263">263</link> of file <link linkend="_fsfml_8h_source">fsfml.h</link>.</para>
+</section>
+<anchor xml:id="_classfsfml_1ac15502937b8cd7992a24d3b5fcad8d68"/><section>
+    <title>mouseMoved</title>
+<indexterm><primary>mouseMoved</primary><secondary>fsfml</secondary></indexterm>
+<indexterm><primary>fsfml</primary><secondary>mouseMoved</secondary></indexterm>
+<para><computeroutput>bool fsfml::mouseMoved</computeroutput></para><para>
+Definition at line <link linkend="_fsfml_8h_source_1l00263">263</link> of file <link linkend="_fsfml_8h_source">fsfml.h</link>.</para>
+</section>
+<anchor xml:id="_classfsfml_1a58fae2e9641dc75a404f21243e3da856"/><section>
+    <title>mousePos</title>
+<indexterm><primary>mousePos</primary><secondary>fsfml</secondary></indexterm>
+<indexterm><primary>fsfml</primary><secondary>mousePos</secondary></indexterm>
+<para><computeroutput>sf::Vector2i fsfml::mousePos</computeroutput></para><para>
+Definition at line <link linkend="_fsfml_8h_source_1l00259">259</link> of file <link linkend="_fsfml_8h_source">fsfml.h</link>.</para>
+</section>
+<anchor xml:id="_classfsfml_1a265752acf64bf3e35bc932d1b9f38783"/><section>
+    <title>screenHeight</title>
+<indexterm><primary>screenHeight</primary><secondary>fsfml</secondary></indexterm>
+<indexterm><primary>fsfml</primary><secondary>screenHeight</secondary></indexterm>
+<para><computeroutput>int fsfml::screenHeight</computeroutput></para><para>
+Definition at line <link linkend="_fsfml_8h_source_1l00258">258</link> of file <link linkend="_fsfml_8h_source">fsfml.h</link>.</para>
+</section>
+<anchor xml:id="_classfsfml_1a2735d0230ebf7e9e2df254560b2a7a5c"/><section>
+    <title>screenWidth</title>
+<indexterm><primary>screenWidth</primary><secondary>fsfml</secondary></indexterm>
+<indexterm><primary>fsfml</primary><secondary>screenWidth</secondary></indexterm>
+<para><computeroutput>int fsfml::screenWidth</computeroutput></para><para>
+Definition at line <link linkend="_fsfml_8h_source_1l00258">258</link> of file <link linkend="_fsfml_8h_source">fsfml.h</link>.</para>
+</section>
+<anchor xml:id="_classfsfml_1ac814c24640a4ce33a7a3e70c0a36d8f8"/><section>
+    <title>size</title>
+<indexterm><primary>size</primary><secondary>fsfml</secondary></indexterm>
+<indexterm><primary>fsfml</primary><secondary>size</secondary></indexterm>
+<para><computeroutput>sf::Vector2f fsfml::size</computeroutput></para><para>
+Definition at line <link linkend="_fsfml_8h_source_1l00256">256</link> of file <link linkend="_fsfml_8h_source">fsfml.h</link>.</para>
+</section>
+<anchor xml:id="_classfsfml_1abf75e9b589ecdbd62da93f384aeca157"/><section>
+    <title>sizeTextEntered</title>
+<indexterm><primary>sizeTextEntered</primary><secondary>fsfml</secondary></indexterm>
+<indexterm><primary>fsfml</primary><secondary>sizeTextEntered</secondary></indexterm>
+<para><computeroutput>int fsfml::sizeTextEntered</computeroutput></para><para>
+Definition at line <link linkend="_fsfml_8h_source_1l00261">261</link> of file <link linkend="_fsfml_8h_source">fsfml.h</link>.</para>
+</section>
+<anchor xml:id="_classfsfml_1af77d984f7e3de4b9db2a659c8005ed00"/><section>
+    <title>sprites</title>
+<indexterm><primary>sprites</primary><secondary>fsfml</secondary></indexterm>
+<indexterm><primary>fsfml</primary><secondary>sprites</secondary></indexterm>
+<para><computeroutput>std::map&lt;std::string, sf::Sprite&gt; fsfml::sprites</computeroutput></para><para>
+Definition at line <link linkend="_fsfml_8h_source_1l00265">265</link> of file <link linkend="_fsfml_8h_source">fsfml.h</link>.</para>
+</section>
+<anchor xml:id="_classfsfml_1a6e4eb669c13800b32a2bbe85b4644078"/><section>
+    <title>textTyped</title>
+<indexterm><primary>textTyped</primary><secondary>fsfml</secondary></indexterm>
+<indexterm><primary>fsfml</primary><secondary>textTyped</secondary></indexterm>
+<para><computeroutput>std::string fsfml::textTyped</computeroutput></para><para>
+Definition at line <link linkend="_fsfml_8h_source_1l00260">260</link> of file <link linkend="_fsfml_8h_source">fsfml.h</link>.</para>
+</section>
+<anchor xml:id="_classfsfml_1a715b52b2a82537954228b6f4cb933c0d"/><section>
+    <title>textures</title>
+<indexterm><primary>textures</primary><secondary>fsfml</secondary></indexterm>
+<indexterm><primary>fsfml</primary><secondary>textures</secondary></indexterm>
+<para><computeroutput>std::map&lt;std::string, sf::Texture*&gt; fsfml::textures</computeroutput></para><para>
+Definition at line <link linkend="_fsfml_8h_source_1l00264">264</link> of file <link linkend="_fsfml_8h_source">fsfml.h</link>.</para>
+</section>
+<anchor xml:id="_classfsfml_1a2df4fddee73e8012dafeec49884f77d5"/><section>
+    <title>view</title>
+<indexterm><primary>view</primary><secondary>fsfml</secondary></indexterm>
+<indexterm><primary>fsfml</primary><secondary>view</secondary></indexterm>
+<para><computeroutput>sf::View fsfml::view</computeroutput></para><para>
+Definition at line <link linkend="_fsfml_8h_source_1l00257">257</link> of file <link linkend="_fsfml_8h_source">fsfml.h</link>.</para>
+</section>
+<anchor xml:id="_classfsfml_1a290647b737e9c2952f20f2772ee8abe8"/><section>
+    <title>window</title>
+<indexterm><primary>window</primary><secondary>fsfml</secondary></indexterm>
+<indexterm><primary>fsfml</primary><secondary>window</secondary></indexterm>
+<para><computeroutput>sf::RenderWindow* fsfml::window</computeroutput></para><para>
+Definition at line <link linkend="_fsfml_8h_source_1l00255">255</link> of file <link linkend="_fsfml_8h_source">fsfml.h</link>.</para>
+</section>
+<anchor xml:id="_classfsfml_1a95eae1061bc6c6264e760245a0a947d6"/><section>
+    <title>windowHeight</title>
+<indexterm><primary>windowHeight</primary><secondary>fsfml</secondary></indexterm>
+<indexterm><primary>fsfml</primary><secondary>windowHeight</secondary></indexterm>
+<para><computeroutput>int fsfml::windowHeight</computeroutput></para><para>
+Definition at line <link linkend="_fsfml_8h_source_1l00258">258</link> of file <link linkend="_fsfml_8h_source">fsfml.h</link>.</para>
+</section>
+<anchor xml:id="_classfsfml_1ae0394e58b49093a176ed07ef30a34015"/><section>
+    <title>windowResized</title>
+<indexterm><primary>windowResized</primary><secondary>fsfml</secondary></indexterm>
+<indexterm><primary>fsfml</primary><secondary>windowResized</secondary></indexterm>
+<para><computeroutput>bool fsfml::windowResized</computeroutput></para><para>
+Definition at line <link linkend="_fsfml_8h_source_1l00263">263</link> of file <link linkend="_fsfml_8h_source">fsfml.h</link>.</para>
+</section>
+<anchor xml:id="_classfsfml_1ab16a3b2f286c80df2853b935bfd7e3a8"/><section>
+    <title>windowWidth</title>
+<indexterm><primary>windowWidth</primary><secondary>fsfml</secondary></indexterm>
+<indexterm><primary>fsfml</primary><secondary>windowWidth</secondary></indexterm>
+<para><computeroutput>int fsfml::windowWidth</computeroutput></para><para>
+Definition at line <link linkend="_fsfml_8h_source_1l00258">258</link> of file <link linkend="_fsfml_8h_source">fsfml.h</link>.</para>
+</section>
+<para>
+The documentation for this class was generated from the following files:</para>
+src/<link linkend="_fsfml_8h">fsfml.h</link>src/<link linkend="_fsfml_8cpp">fsfml.cpp</link></section>
+</section>

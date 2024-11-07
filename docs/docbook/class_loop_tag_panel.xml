@@ -1,0 +1,432 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<section xmlns="http://docbook.org/ns/docbook" version="5.0" xmlns:xlink="http://www.w3.org/1999/xlink" xml:id="_class_loop_tag_panel" xml:lang="en-US">
+<title>LoopTagPanel Class Reference</title>
+<indexterm><primary>LoopTagPanel</primary></indexterm>
+<para>
+<computeroutput>#include &lt;TagPanel.h&gt;</computeroutput>
+</para>
+Inheritance diagram for LoopTagPanel:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_loop_tag_panel__inherit__graph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+Collaboration diagram for LoopTagPanel:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_loop_tag_panel__coll__graph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+<simplesect>
+    <title>Public Member Functions    </title>
+        <itemizedlist>
+            <listitem><para><link linkend="_class_loop_tag_panel_1a0f070886befcb3cef1d5b1984b95d985">LoopTagPanel</link> ()</para>
+</listitem>
+            <listitem><para><link linkend="_class_loop_tag_panel_1a422521db77f7c14d17aed86df163d1dc">LoopTagPanel</link> (wxWindow *parentWindow)</para>
+</listitem>
+            <listitem><para><link linkend="_class_loop_tag_panel">LoopTagPanel</link> * <link linkend="_class_loop_tag_panel_1a9aef891de5b23170ad57778c6a7c670b">clone</link> () override</para>
+</listitem>
+            <listitem><para><link linkend="_class_loop_tag_panel_1a16b4c63d3e9be7b20a4ef02091f0a993">LoopTagPanel</link> (const <link linkend="_class_loop_tag_panel">LoopTagPanel</link> &amp;toCopy)</para>
+</listitem>
+            <listitem><para>void <link linkend="_class_loop_tag_panel_1ad92c15e604570adffa87bf827ec7a116">setPanelColor</link> () override</para>
+</listitem>
+            <listitem><para>void <link linkend="_class_loop_tag_panel_1a199ec8f84860272037a7d2a25051a0a3">setTagLine</link> () override</para>
+</listitem>
+            <listitem><para>void <link linkend="_class_loop_tag_panel_1a88144a4a6c13cb1e407e9b6b68935137">setTagName</link> () override</para>
+</listitem>
+        </itemizedlist>
+</simplesect>
+Public Member Functions inherited from <link linkend="_class_flow_tag_panel">FlowTagPanel</link>        <itemizedlist>
+            <listitem><para><link linkend="_class_flow_tag_panel_1a3dcc68ef4b7679830e857baa8847d09a">FlowTagPanel</link> (bool topConstructor=true)</para>
+</listitem>
+            <listitem><para><link linkend="_class_flow_tag_panel_1a370665455a3991702bf8f6c5d9c95272">FlowTagPanel</link> (wxWindow *parentWindow, bool topConstructor=true)</para>
+</listitem>
+            <listitem><para><link linkend="_class_flow_tag_panel_1ad022a384de848b36e615014a9f727755">FlowTagPanel</link> (const <link linkend="_class_flow_tag_panel">FlowTagPanel</link> &amp;toCopy, bool topConstructor=true)</para>
+</listitem>
+            <listitem><para><link linkend="_class_flow_tag_panel_1a4057aa51063dc198ca7f1497ecfdf9bd">~FlowTagPanel</link> ()</para>
+</listitem>
+            <listitem><para>void <link linkend="_class_flow_tag_panel_1a8168f4dc819be19de5886ca6fa509b03">initChildrenSizer</link> ()</para>
+</listitem>
+            <listitem><para>void <link linkend="_class_flow_tag_panel_1a0e1305928f680ed7efb08d17d951d814">cloneChildren</link> (const <link linkend="_class_flow_tag_panel">FlowTagPanel</link> *toCopy)</para>
+</listitem>
+            <listitem><para>void <link linkend="_class_flow_tag_panel_1a92c626fbe9ab70ee75813edec7e323ba">addComponents</link> (<link linkend="_class_tag_panel">TagPanel</link> *tag) override</para>
+</listitem>
+            <listitem><para>void <link linkend="_class_flow_tag_panel_1a24aede4ad59f41a079d4c38e26955d55">addChild</link> (<link linkend="_class_tag_panel">TagPanel</link> *childrenTag)</para>
+</listitem>
+            <listitem><para>void <link linkend="_class_flow_tag_panel_1abf730289f88b08402ed5d924d362814c">switchFlowTagVisibility</link> (wxMouseEvent &amp;evt)</para>
+</listitem>
+            <listitem><para>void <link linkend="_class_flow_tag_panel_1af98215cc2497f7ef7d8e4ed00e94ca33">insertChild</link> (<link linkend="_class_tag_panel">TagPanel</link> *target, <link linkend="_class_tag_panel">TagPanel</link> *newPanel, <link linkend="__tag_panel_8h_1a443e25f6957db75e312dbd0fb43d5a6e">AddPosition</link> pos)</para>
+</listitem>
+            <listitem><para>void <link linkend="_class_flow_tag_panel_1a38bade8b3e467e730e739bce386b5ea0">insertChild</link> (<link linkend="_class_tag_panel">TagPanel</link> *newPanel, int index)</para>
+</listitem>
+            <listitem><para>void <link linkend="_class_flow_tag_panel_1a1e44ca3ceb2df81762129896dbdb7b62">swapChildren</link> (<link linkend="_class_tag_panel">TagPanel</link> *panel1, <link linkend="_class_tag_panel">TagPanel</link> *panel2)</para>
+</listitem>
+            <listitem><para>bool <link linkend="_class_flow_tag_panel_1aa81a6c6c05a02665ceef5ee70dfe8552">containsChild</link> (<link linkend="_class_tag_panel">TagPanel</link> *panel)</para>
+</listitem>
+            <listitem><para>void <link linkend="_class_flow_tag_panel_1a8c328c48878111ffebcc91b7b37a8b77">addChildren</link> (std::vector&lt; <link linkend="_class_tag_panel">TagPanel</link> * &gt; childrenTag)</para>
+</listitem>
+            <listitem><para>void <link linkend="_class_flow_tag_panel_1aaeeb052f14fc5e6aa2be1f124e82b694">addTagAndSize</link> (std::vector&lt; <link linkend="_class_tag_panel">TagPanel</link> * &gt; childrenTag)</para>
+</listitem>
+            <listitem><para>int <link linkend="_class_flow_tag_panel_1a93b947ffb6b2dc6c2f359490158b7b90">getTagHeight</link> () override</para>
+</listitem>
+            <listitem><para>void <link linkend="_class_flow_tag_panel_1a94ca55612cbf5a6300712ffaee243c9b">addHider</link> ()</para>
+</listitem>
+            <listitem><para>void <link linkend="_class_flow_tag_panel_1a6c9860496ffc71764f9cfa629d090703">updateInsertRect</link> () override</para>
+</listitem>
+            <listitem><para>void <link linkend="_class_flow_tag_panel_1ac485ea3365ed7d46576190699c2ffca2">initSizers</link> () override</para>
+</listitem>
+            <listitem><para>void <link linkend="_class_flow_tag_panel_1a4e3b68f463d8374b7222c6bd28f47b7e">detachPanel</link> (<link linkend="_class_tag_panel">TagPanel</link> *panel)</para>
+</listitem>
+            <listitem><para>void <link linkend="_class_flow_tag_panel_1ab7a16f3ed1f06f7d060aeb086fd8d683">setInsertPoint</link> (<link linkend="__tag_panel_8h_1a369abf422adc1247d0d7bc295bf34014">HoverPosition</link> hovPos) override</para>
+</listitem>
+            <listitem><para>void <link linkend="_class_flow_tag_panel_1a482b23630874fb9f414c9b029501aadd">updateLayout</link> ()</para>
+</listitem>
+            <listitem><para>void <link linkend="_class_flow_tag_panel_1a1822bbc91daca9379e090f363e870d40">hideChildren</link> ()</para>
+</listitem>
+            <listitem><para>void <link linkend="_class_flow_tag_panel_1a4c02b86a1776b70cdd14afd50de4736b">showChildren</link> ()</para>
+</listitem>
+            <listitem><para>void <link linkend="_class_flow_tag_panel_1a63038ffcf254ad71b547d31456a0fd2f">hideEmptyPanel</link> ()</para>
+</listitem>
+            <listitem><para>void <link linkend="_class_flow_tag_panel_1ad1a55f7e5c1eb22bed92049643bb75b9">showEmptyPanel</link> ()</para>
+</listitem>
+            <listitem><para>void <link linkend="_class_flow_tag_panel_1ab190cd6aefb44611ef4b382c315da514">initEmptyPanel</link> ()</para>
+</listitem>
+            <listitem><para>void <link linkend="_class_flow_tag_panel_1aa69c21d11b4824c7d7955a6c35f33564">addCondition</link> ()</para>
+</listitem>
+            <listitem><para>bool <link linkend="_class_flow_tag_panel_1a3ed9948e56d17d5b28c2c8708a90bea2">isEmpty</link> ()</para>
+</listitem>
+            <listitem><para>wxSizerItem * <link linkend="_class_flow_tag_panel_1a63d586b3a818bf85f3cfa56048c697e5">getBottomSpacer</link> ()</para>
+</listitem>
+            <listitem><para>void <link linkend="_class_flow_tag_panel_1af4ba2dd032b93523943e53dfd873fd8e">addBottomSpacer</link> ()</para>
+</listitem>
+            <listitem><para>void <link linkend="_class_flow_tag_panel_1ae49c859a41f499bd84be65ee29f36f73">RemoveTagPanel</link> (<link linkend="_class_tag_panel">TagPanel</link> *childPanel)</para>
+</listitem>
+            <listitem><para>void <link linkend="_class_flow_tag_panel_1ae4f118933196a60a71cfa6b4b9b69894">setChildrenVisibility</link> (bool <link linkend="__units_8h_1adc6e5733fc3c22f0a7b2914188c49c90">state</link>)</para>
+</listitem>
+            <listitem><para>int <link linkend="_class_flow_tag_panel_1aaa4b6f8ffb98f825f255cdd2017fc17a">getIndex</link> (wxSizerItem *item)</para>
+</listitem>
+            <listitem><para>int <link linkend="_class_flow_tag_panel_1aff934a06834390a1d0b16c4d77740ecd">getIndex</link> (<link linkend="_class_tag_panel">TagPanel</link> *panel)</para>
+</listitem>
+            <listitem><para>int <link linkend="_class_flow_tag_panel_1a8b4daa4a979fd8a3eecba10b92bb46e7">getNbParents</link> ()</para>
+</listitem>
+            <listitem><para>bool <link linkend="_class_flow_tag_panel_1a38a7e2167532623906ae82c0b92728c2">childrenVisible</link> ()</para>
+</listitem>
+            <listitem><para>wxButton * <link linkend="_class_flow_tag_panel_1acf474cc277820301384f9b1d84f1c9d0">getHider</link> ()</para>
+</listitem>
+            <listitem><para>wxBoxSizer * <link linkend="_class_flow_tag_panel_1a7e277f4afc1adee6e2a94f6980d83e80">getChildrenSizer</link> ()</para>
+</listitem>
+            <listitem><para><link linkend="_class_empty_panel">EmptyPanel</link> * <link linkend="_class_flow_tag_panel_1aa7e87378e7647a40099818265a65f21a">getEmptyTagPanel</link> ()</para>
+</listitem>
+            <listitem><para>wxwxSizerItemListNode * <link linkend="_class_flow_tag_panel_1a5745b7ba56040b00437ad0766fc82717">getTagNode</link> (<link linkend="_class_tag_panel">TagPanel</link> *panel)</para>
+</listitem>
+            <listitem><para><link linkend="_class_tag_panel">TagPanel</link> * <link linkend="_class_flow_tag_panel_1acf35f1a7b55da94f68329142af1a1e69">getPreviousTagChild</link> (<link linkend="_class_tag_panel">TagPanel</link> *panel)</para>
+</listitem>
+            <listitem><para><link linkend="_class_tag_panel">TagPanel</link> * <link linkend="_class_flow_tag_panel_1a5c91aa7b2cc4211630bad8682a469b2e">getNodeToTag</link> (wxwxSizerItemListNode *node)</para>
+</listitem>
+            <listitem><para><link linkend="_class_tag_panel">TagPanel</link> * <link linkend="_class_flow_tag_panel_1ad2a7dd8c2e809653b29f53a54e9088bc">getNextTagChild</link> (<link linkend="_class_tag_panel">TagPanel</link> *panel)</para>
+</listitem>
+            <listitem><para><link linkend="_class_tag_panel">TagPanel</link> * <link linkend="_class_flow_tag_panel_1a94ad251f2137de78a0c8b8fd75d81d7f">getFirstTag</link> ()</para>
+</listitem>
+            <listitem><para><link linkend="_class_tag_panel">TagPanel</link> * <link linkend="_class_flow_tag_panel_1ae00ff43656f4b31fa667c69d74317e59">getLastTag</link> ()</para>
+</listitem>
+            <listitem><para>bool <link linkend="_class_flow_tag_panel_1aa8d5b418c6c046a0c53cb67a8d793308">isLastTagChild</link> (<link linkend="_class_tag_panel">TagPanel</link> *panel)</para>
+</listitem>
+            <listitem><para>bool <link linkend="_class_flow_tag_panel_1abef0b2e00620e86ebbe17b017aab8e99">isFirstTagChild</link> (<link linkend="_class_tag_panel">TagPanel</link> *panel)</para>
+</listitem>
+            <listitem><para>int <link linkend="_class_flow_tag_panel_1a06db100e4343fc75a9e947a24c8575fe">getNbChildren</link> ()</para>
+</listitem>
+            <listitem><para>wxSizerItem * <link linkend="_class_flow_tag_panel_1a292d74fbfba61f5c7df90789a9eb31e2">getSizerItem</link> (<link linkend="_class_tag_panel">TagPanel</link> *panel)</para>
+</listitem>
+            <listitem><para>bool <link linkend="_class_flow_tag_panel_1a77dc30ba98e8e84f02f23ef9af057e4d">isMinimized</link> () const</para>
+</listitem>
+            <listitem><para>std::vector&lt; <link linkend="_class_tag_panel">TagPanel</link> * &gt; <link linkend="_class_flow_tag_panel_1a908b8a9b0319c8c60588dff9296e9baf">getChildrenTags</link> () const</para>
+</listitem>
+        </itemizedlist>
+Public Member Functions inherited from <link linkend="_class_tag_panel">TagPanel</link>        <itemizedlist>
+            <listitem><para><link linkend="_class_tag_panel_1a20eb7700df1a0fc1a51352b36a6e5a22">TagPanel</link> (bool topConstructor=true)</para>
+</listitem>
+            <listitem><para><link linkend="_class_tag_panel_1a947de417b587805f538e91916ca1cc5d">TagPanel</link> (wxWindow *parentWindow, bool topConstructor=true)</para>
+</listitem>
+            <listitem><para><link linkend="_class_tag_panel_1a25ab1432ace7974c4abc496f51223942">TagPanel</link> (const <link linkend="_class_tag_panel">TagPanel</link> &amp;toCopy, bool topConstructor=true)</para>
+</listitem>
+            <listitem><para>void <link linkend="_class_tag_panel_1adea8840b3b43bfee7f8e090a71dd708c">setTagNameCustom</link> (const std::string &amp;name)</para>
+</listitem>
+            <listitem><para>virtual void <link linkend="_class_tag_panel_1a746b3898803ea72e2a7500d7ed73d9ce">setColors</link> ()</para>
+</listitem>
+            <listitem><para>void <link linkend="_class_tag_panel_1af74a61159813873c529dbcb17a371a05">initLineSizer</link> ()</para>
+</listitem>
+            <listitem><para>virtual void <link linkend="_class_tag_panel_1ae24d607788ed14f2fc8b6a88ff9b7602">initTagSizer</link> ()</para>
+</listitem>
+            <listitem><para>void <link linkend="_class_tag_panel_1a5d57b2c271078562ca65bf9d0f9c656e">DrawBordersEvent</link> (wxPaintEvent &amp;<link linkend="_paths_8cpp_1a93114eafe7b571802c6787926ec00d93">event</link>)</para>
+</listitem>
+            <listitem><para>void <link linkend="_class_tag_panel_1a72db5ac659ea9dc41b2a236bd5ff0a12">OnHoverPaint</link> (wxPaintEvent &amp;<link linkend="_paths_8cpp_1a93114eafe7b571802c6787926ec00d93">event</link>)</para>
+</listitem>
+            <listitem><para>void <link linkend="_class_tag_panel_1a01e839de7aa3bedbe9a7bc1f152a02f8">setStaticTagName</link> ()</para>
+</listitem>
+            <listitem><para><link linkend="_class_tag_panel">TagPanel</link> * <link linkend="_class_tag_panel_1a20a4cc67dc3ecd4538cb8af3c9668421">getPreviousTag</link> ()</para>
+</listitem>
+            <listitem><para><link linkend="_class_tag_panel">TagPanel</link> * <link linkend="_class_tag_panel_1aefc411bf7be4bd7fd05b3e8a48a6671f">getNextTag</link> ()</para>
+</listitem>
+            <listitem><para>wxBoxSizer * <link linkend="_class_tag_panel_1a7f15f662ac35f7d7b2b96c8d4dae0949">getLineSizer</link> ()</para>
+</listitem>
+            <listitem><para>virtual void <link linkend="_class_tag_panel_1af2926b62ee8940d7aa87591255623814">addTagName</link> ()</para>
+</listitem>
+            <listitem><para>void <link linkend="_class_tag_panel_1a99231e365be781b584996e68197621b9">setTagSizer</link> ()</para>
+</listitem>
+            <listitem><para>void <link linkend="_class_tag_panel_1a752cdf34c8cc8cc25ecc944683dff46b">setTagNameColor</link> ()</para>
+</listitem>
+            <listitem><para>void <link linkend="_class_tag_panel_1aaa6f2d383b2380c7c103b5019bd05782">addMover</link> ()</para>
+</listitem>
+            <listitem><para>bool <link linkend="_class_tag_panel_1a9a11954167303954710c12832b39fbf4">isLastTag</link> ()</para>
+</listitem>
+            <listitem><para>bool <link linkend="_class_tag_panel_1aa16fddf213851034cb33b775ea653efc">isFirstTag</link> ()</para>
+</listitem>
+            <listitem><para>void <link linkend="_class_tag_panel_1a4ddfadd1d39efac7f0123146fc9f8233">OnMoveUpClick</link> (wxMouseEvent &amp;evt)</para>
+</listitem>
+            <listitem><para>void <link linkend="_class_tag_panel_1a716d475b11d29d74392f4b0b581f7a45">OnDuplicateClick</link> (wxMouseEvent &amp;evt)</para>
+</listitem>
+            <listitem><para>void <link linkend="_class_tag_panel_1a33ffecd8625bc7e0783d208d8d18daf7">OnMoveDownClick</link> (wxMouseEvent &amp;evt)</para>
+</listitem>
+            <listitem><para>virtual void <link linkend="_class_tag_panel_1ab2f6c36e777443dcffd1cff986027790">initDeletePanel</link> ()</para>
+</listitem>
+            <listitem><para>void <link linkend="_class_tag_panel_1a92b74a6332f46423e1509044989a4a0a">OnDeleteButtonClick</link> (wxMouseEvent &amp;evt)</para>
+</listitem>
+            <listitem><para>void <link linkend="_class_tag_panel_1a370e5a7a79772ae4775f24de35506582">setPaintEvents</link> ()</para>
+</listitem>
+            <listitem><para>std::shared_ptr&lt; <link linkend="_class_tag">Tag</link> &gt; <link linkend="_class_tag_panel_1acf04179a1277e790a613902b33513a77">getTag</link> () const</para>
+</listitem>
+            <listitem><para>void <link linkend="_class_tag_panel_1aa2808a9ecda8c8181a49b4460e046395">setTag</link> (std::shared_ptr&lt; <link linkend="_class_tag">Tag</link> &gt; tag)</para>
+</listitem>
+            <listitem><para>void <link linkend="_class_tag_panel_1a5a896e5052102ac83010bc155bfd49aa">initDetailsPanel</link> (wxPanel *parentPanel)</para>
+</listitem>
+            <listitem><para>void <link linkend="_class_tag_panel_1a66d61d27a1bc39bf48ec00fd0f09dfd8">initDetailsTagName</link> ()</para>
+</listitem>
+            <listitem><para>void <link linkend="_class_tag_panel_1a43c96ffa9523c002fb96126500209ce8">SetLineFont</link> (wxButton *button, int <link linkend="_class_tag_panel_1aadc6b7d84d378ff8db4682080627030f">policeSize</link>=15)</para>
+</listitem>
+            <listitem><para>void <link linkend="_class_tag_panel_1a53d2a3068096670c08f249b1c2f6e798">SetLineFont</link> (wxStaticText *button, int <link linkend="_class_tag_panel_1aadc6b7d84d378ff8db4682080627030f">policeSize</link>=15)</para>
+</listitem>
+            <listitem><para>void <link linkend="_class_tag_panel_1af7c491223a887d2ce97353157adc9110">OnInsert</link> (wxPaintEvent &amp;evt)</para>
+</listitem>
+            <listitem><para>void <link linkend="_class_tag_panel_1a82ceff512bd6bf6302d782ea908c9ef9">linkToPanel</link> (wxBoxSizer *gridSizer)</para>
+</listitem>
+            <listitem><para>virtual void <link linkend="_class_tag_panel_1aa1a12f478359b6549c0d9c1c90f331b8">createDetailsPanel</link> (<link linkend="_class_tag_panel">TagPanel</link> *tag, wxPanel *parentPanel, wxBoxSizer *gridSizer)</para>
+</listitem>
+            <listitem><para>wxBoxSizer * <link linkend="_class_tag_panel_1a0c29f16235ad971cfa466f5e852cbcd8">getDetailsSizer</link> ()</para>
+</listitem>
+            <listitem><para>wxPanel * <link linkend="_class_tag_panel_1abc3125dfcc3694efea652a2232a6b23e">getDetailsPanel</link> ()</para>
+</listitem>
+            <listitem><para>wxColour <link linkend="_class_tag_panel_1a2968cbcc5c04e34a50085877ddb53f65">getPanelColour</link> ()</para>
+</listitem>
+            <listitem><para>wxBoxSizer * <link linkend="_class_tag_panel_1a98044cff891ada484ee4c845e878735b">getTagSizer</link> ()</para>
+</listitem>
+            <listitem><para><link linkend="_class_tag_panel">TagPanel</link> * <link linkend="_class_tag_panel_1af3b5b6fc2b16171af7cab7b0d79d9ed7">getParentTag</link> ()</para>
+</listitem>
+            <listitem><para>wxPoint <link linkend="_class_tag_panel_1aaaf019a2cc75cfb1014a0b9fd366e7f7">getInsertPoint</link> ()</para>
+</listitem>
+            <listitem><para>wxButton * <link linkend="_class_tag_panel_1a3987f5a00ba29cb8f5c1e7d09474f819">getCloneButton</link> () const</para>
+</listitem>
+            <listitem><para>wxButton * <link linkend="_class_tag_panel_1ad32a3e47413abc0b1f2252b7ce530b3d">getCutButton</link> () const</para>
+</listitem>
+        </itemizedlist>
+<simplesect>
+    <title>Additional Inherited Members    </title>
+Static Public Member Functions inherited from <link linkend="_class_tag_panel">TagPanel</link>        <itemizedlist>
+            <listitem><para>static int <link linkend="_class_tag_panel_1a975da9b33d0c94992472b291df4aadbe">getIndexOf</link> (wxSizer *sizer, wxSizerItem *item)</para>
+</listitem>
+            <listitem><para>static void <link linkend="_class_tag_panel_1a4fcedad553eb65983ba7a8da2d5895f3">init</link> (<link linkend="_class_tag_panel">TagPanel</link> *tag)</para>
+</listitem>
+            <listitem><para>static bool <link linkend="_class_tag_panel_1a556f0c05ac13e1c9c9f9ea39cd5041f8">isTagPanel</link> (wxWindow *window)</para>
+</listitem>
+            <listitem><para>static <link linkend="_class_tag_panel">TagPanel</link> * <link linkend="_class_tag_panel_1af656776798692c730135d692c6a48a62">getTagPanel</link> (wxWindow *window)</para>
+</listitem>
+        </itemizedlist>
+</simplesect>
+Public Attributes inherited from <link linkend="_class_tag_panel">TagPanel</link>        <itemizedlist>
+            <listitem><para><link linkend="__tag_panel_8h_1a369abf422adc1247d0d7bc295bf34014">HoverPosition</link> <link linkend="_class_tag_panel_1ae51a14087a4b11aa65b79bca524a2dc9">previousHover</link></para>
+</listitem>
+            <listitem><para>bool <link linkend="_class_tag_panel_1a57f33df8ee51553bbb6a1f4b4f727d82">isInserting</link></para>
+</listitem>
+            <listitem><para>bool <link linkend="_class_tag_panel_1ab9e4fd9beea1943bb1fb664bf4b0f876">isHovering</link></para>
+</listitem>
+        </itemizedlist>
+Protected Attributes inherited from <link linkend="_class_flow_tag_panel">FlowTagPanel</link>        <itemizedlist>
+            <listitem><para>wxSizerItem * <link linkend="_class_flow_tag_panel_1a023570c0ce18045ff6d02e7edcd83df6">bottomSpacer</link></para>
+</listitem>
+            <listitem><para><link linkend="_class_empty_panel">EmptyPanel</link> * <link linkend="_class_flow_tag_panel_1a449e6c46847cf6ff4849c43603e576a3">emptyTagPanel</link></para>
+</listitem>
+            <listitem><para>int <link linkend="_class_flow_tag_panel_1a29d6875da55a05e85043eafb6d4e9e0f">nbFlowParents</link></para>
+</listitem>
+            <listitem><para>wxBoxSizer * <link linkend="_class_flow_tag_panel_1aeb64852326aa4019061f0ba333276b6f">childrenSizer</link></para>
+</listitem>
+            <listitem><para>wxButton * <link linkend="_class_flow_tag_panel_1a168025a358c496c0b7916c64ca718d0c">hider</link></para>
+</listitem>
+        </itemizedlist>
+Protected Attributes inherited from <link linkend="_class_tag_panel">TagPanel</link>        <itemizedlist>
+            <listitem><para>wxButton * <link linkend="_class_tag_panel_1a81aca1816f6fc0985077fc5f461046e2">cloneButton</link></para>
+</listitem>
+            <listitem><para>wxButton * <link linkend="_class_tag_panel_1a227cddc11db1954dde6b5e3c49591e7a">cutButton</link></para>
+</listitem>
+            <listitem><para>wxButton * <link linkend="_class_tag_panel_1a569386f1f3226d5aa452cbbba46b1ffa">moveUpButton</link></para>
+</listitem>
+            <listitem><para>wxButton * <link linkend="_class_tag_panel_1a7972e5db29975326c850a2dae622eda6">moveDownButton</link></para>
+</listitem>
+            <listitem><para>wxButton * <link linkend="_class_tag_panel_1a481229251b8e6ee6d44ce1b5abd94c1b">deleteButton</link></para>
+</listitem>
+            <listitem><para>wxPoint <link linkend="_class_tag_panel_1ac08e1909ad79173fead54cf2e6c7be61">insertPoint</link></para>
+</listitem>
+            <listitem><para>wxSize <link linkend="_class_tag_panel_1ac6667f655542d928b04f273ba453e7c9">insertRect</link></para>
+</listitem>
+            <listitem><para>wxColour <link linkend="_class_tag_panel_1a0de4005aceb4d6809ec88ffb899f6d17">panelColor</link></para>
+</listitem>
+            <listitem><para>wxColour <link linkend="_class_tag_panel_1a23f2d5d739a33e4f3e4c26e1ee160d46">tagNameColor</link></para>
+</listitem>
+            <listitem><para>wxString <link linkend="_class_tag_panel_1a5dd671ef158b702eb9b17b88fe6c79b6">tagName</link></para>
+</listitem>
+            <listitem><para>int <link linkend="_class_tag_panel_1aadc6b7d84d378ff8db4682080627030f">policeSize</link></para>
+</listitem>
+            <listitem><para>wxBoxSizer * <link linkend="_class_tag_panel_1a0fb4a6bb2fdc47ce21e30a61784b804a">lineSizer</link></para>
+</listitem>
+            <listitem><para>wxBoxSizer * <link linkend="_class_tag_panel_1a480b452569c046bfc03e86a2be72a8eb">tagSizer</link></para>
+</listitem>
+            <listitem><para>wxStaticText * <link linkend="_class_tag_panel_1a0decd0f2236551f78024b107a5ed2e5f">staticTagName</link></para>
+</listitem>
+            <listitem><para>wxStaticText * <link linkend="_class_tag_panel_1a8d05f326ee6854342a0a5cf06228c527">staticDetailsName</link></para>
+</listitem>
+            <listitem><para>wxBoxSizer * <link linkend="_class_tag_panel_1acb5613b513abd882b94dd79981f15e5b">detailsSizer</link></para>
+</listitem>
+            <listitem><para>wxPanel * <link linkend="_class_tag_panel_1afa29a560070ac453fadae46f052cc53f">detailsPanel</link></para>
+</listitem>
+            <listitem><para>std::shared_ptr&lt; <link linkend="_class_tag">Tag</link> &gt; <link linkend="_class_tag_panel_1a5c983b7b476010dc908bdea5b3ce954a">myTag</link></para>
+</listitem>
+        </itemizedlist>
+<section>
+<title>Detailed Description</title>
+<para>
+Definition at line <link linkend="__tag_panel_8h_source_1l00208">208</link> of file <link linkend="__tag_panel_8h_source">TagPanel.h</link>.</para>
+</section>
+<section>
+<title>Constructor &amp; Destructor Documentation</title>
+<anchor xml:id="_class_loop_tag_panel_1a0f070886befcb3cef1d5b1984b95d985"/><section>
+    <title>LoopTagPanel()<computeroutput>[1/3]</computeroutput></title>
+<indexterm><primary>LoopTagPanel</primary><secondary>LoopTagPanel</secondary></indexterm>
+<indexterm><primary>LoopTagPanel</primary><secondary>LoopTagPanel</secondary></indexterm>
+<para><computeroutput>LoopTagPanel::LoopTagPanel ( )</computeroutput></para><para>
+Definition at line <link linkend="__tag_panel_8cpp_source_1l00085">85</link> of file <link linkend="__tag_panel_8cpp_source">TagPanel.cpp</link>.</para>
+Here is the caller graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_loop_tag_panel_a0f070886befcb3cef1d5b1984b95d985_icgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_class_loop_tag_panel_1a422521db77f7c14d17aed86df163d1dc"/><section>
+    <title>LoopTagPanel()<computeroutput>[2/3]</computeroutput></title>
+<indexterm><primary>LoopTagPanel</primary><secondary>LoopTagPanel</secondary></indexterm>
+<indexterm><primary>LoopTagPanel</primary><secondary>LoopTagPanel</secondary></indexterm>
+<para><computeroutput>LoopTagPanel::LoopTagPanel (wxWindow * parentWindow)</computeroutput></para><para>
+Definition at line <link linkend="__tag_panel_8cpp_source_1l00089">89</link> of file <link linkend="__tag_panel_8cpp_source">TagPanel.cpp</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_loop_tag_panel_a422521db77f7c14d17aed86df163d1dc_cgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_class_loop_tag_panel_1a16b4c63d3e9be7b20a4ef02091f0a993"/><section>
+    <title>LoopTagPanel()<computeroutput>[3/3]</computeroutput></title>
+<indexterm><primary>LoopTagPanel</primary><secondary>LoopTagPanel</secondary></indexterm>
+<indexterm><primary>LoopTagPanel</primary><secondary>LoopTagPanel</secondary></indexterm>
+<para><computeroutput>LoopTagPanel::LoopTagPanel (const <link linkend="_class_loop_tag_panel">LoopTagPanel</link> &amp; toCopy)</computeroutput></para><para>
+Definition at line <link linkend="__tag_panel_8cpp_source_1l00070">70</link> of file <link linkend="__tag_panel_8cpp_source">TagPanel.cpp</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_loop_tag_panel_a16b4c63d3e9be7b20a4ef02091f0a993_cgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+</section>
+<section>
+<title>Member Function Documentation</title>
+<anchor xml:id="_class_loop_tag_panel_1a9aef891de5b23170ad57778c6a7c670b"/><section>
+    <title>clone()</title>
+<indexterm><primary>clone</primary><secondary>LoopTagPanel</secondary></indexterm>
+<indexterm><primary>LoopTagPanel</primary><secondary>clone</secondary></indexterm>
+<para><computeroutput><link linkend="_class_loop_tag_panel">LoopTagPanel</link> * LoopTagPanel::clone ( )<computeroutput>[override]</computeroutput>, <computeroutput>[virtual]</computeroutput></computeroutput></para><para>
+Reimplemented from <link linkend="_class_flow_tag_panel_1a39e04805c0a27303a05e72d44a531aa4">FlowTagPanel</link>.</para>
+<para>
+Definition at line <link linkend="__tag_panel_8cpp_source_1l00323">323</link> of file <link linkend="__tag_panel_8cpp_source">TagPanel.cpp</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_loop_tag_panel_a9aef891de5b23170ad57778c6a7c670b_cgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_class_loop_tag_panel_1ad92c15e604570adffa87bf827ec7a116"/><section>
+    <title>setPanelColor()</title>
+<indexterm><primary>setPanelColor</primary><secondary>LoopTagPanel</secondary></indexterm>
+<indexterm><primary>LoopTagPanel</primary><secondary>setPanelColor</secondary></indexterm>
+<para><computeroutput>void LoopTagPanel::setPanelColor ( )<computeroutput>[override]</computeroutput>, <computeroutput>[virtual]</computeroutput></computeroutput></para><para>
+Reimplemented from <link linkend="_class_flow_tag_panel_1a76162eeee3010c06151bae79e421f87e">FlowTagPanel</link>.</para>
+<para>
+Definition at line <link linkend="__tag_panel_8cpp_source_1l00776">776</link> of file <link linkend="__tag_panel_8cpp_source">TagPanel.cpp</link>.</para>
+</section>
+<anchor xml:id="_class_loop_tag_panel_1a199ec8f84860272037a7d2a25051a0a3"/><section>
+    <title>setTagLine()</title>
+<indexterm><primary>setTagLine</primary><secondary>LoopTagPanel</secondary></indexterm>
+<indexterm><primary>LoopTagPanel</primary><secondary>setTagLine</secondary></indexterm>
+<para><computeroutput>void LoopTagPanel::setTagLine ( )<computeroutput>[override]</computeroutput>, <computeroutput>[virtual]</computeroutput></computeroutput></para><para>
+Reimplemented from <link linkend="_class_flow_tag_panel_1a6a2ba7ef0cfdae4b333371b8704a0612">FlowTagPanel</link>.</para>
+<para>
+Definition at line <link linkend="__tag_panel_8cpp_source_1l00891">891</link> of file <link linkend="__tag_panel_8cpp_source">TagPanel.cpp</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_loop_tag_panel_a199ec8f84860272037a7d2a25051a0a3_cgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_class_loop_tag_panel_1a88144a4a6c13cb1e407e9b6b68935137"/><section>
+    <title>setTagName()</title>
+<indexterm><primary>setTagName</primary><secondary>LoopTagPanel</secondary></indexterm>
+<indexterm><primary>LoopTagPanel</primary><secondary>setTagName</secondary></indexterm>
+<para><computeroutput>void LoopTagPanel::setTagName ( )<computeroutput>[override]</computeroutput>, <computeroutput>[virtual]</computeroutput></computeroutput></para><para>
+Reimplemented from <link linkend="_class_flow_tag_panel_1abdf6ba578faa620f2aaa4aa5cc4852d6">FlowTagPanel</link>.</para>
+<para>
+Definition at line <link linkend="__tag_panel_8cpp_source_1l00523">523</link> of file <link linkend="__tag_panel_8cpp_source">TagPanel.cpp</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_loop_tag_panel_a88144a4a6c13cb1e407e9b6b68935137_cgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<para>
+The documentation for this class was generated from the following files:</para>
+src/<link linkend="__tag_panel_8h">TagPanel.h</link>src/<link linkend="__tag_panel_8cpp">TagPanel.cpp</link></section>
+</section>

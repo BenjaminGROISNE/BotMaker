@@ -1,0 +1,133 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<section xmlns="http://docbook.org/ns/docbook" version="5.0" xmlns:xlink="http://www.w3.org/1999/xlink" xml:id="_class_token_result" xml:lang="en-US">
+<title>TokenResult Class Reference</title>
+<indexterm><primary>TokenResult</primary></indexterm>
+<para>
+<computeroutput>#include &lt;Interpretor.h&gt;</computeroutput>
+</para>
+Collaboration diagram for TokenResult:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_token_result__coll__graph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+<simplesect>
+    <title>Public Member Functions    </title>
+        <itemizedlist>
+            <listitem><para><link linkend="_class_token_result_1ac49cd5f7a236cd78ac5633df0144e54b">TokenResult</link> ()</para>
+</listitem>
+            <listitem><para><link linkend="_class_token_result_1a6219f0d8d1e1aeca36b204c41c739f28">TokenResult</link> (<link linkend="__interpretor_8h_1acbd1e63c605cbb3dbe67c7411841b46c">TokenVALUE</link> value, int l)</para>
+</listitem>
+            <listitem><para>void <link linkend="_class_token_result_1a1b90cbf9042a502868ffbb657399f5bf">showErrors</link> ()</para>
+</listitem>
+            <listitem><para>void <link linkend="_class_token_result_1acce057f14c7bd3ccab85dc021b709b50">addError</link> (<link linkend="__interpretor_8h_1acbd1e63c605cbb3dbe67c7411841b46c">TokenVALUE</link> value, <link linkend="__interpretor_8h_1ab0df38968e4f03a3f1f6d6df0f31f45a">ErrorType</link> et, int l)</para>
+</listitem>
+            <listitem><para>void <link linkend="_class_token_result_1a32d99327e29ff65c4af36d143a12c4c5">addError</link> (<link linkend="__interpretor_8h_1ad8ed01ff3ff33333d8e19db4d2818bb6">DataType</link> type, <link linkend="__interpretor_8h_1ab0df38968e4f03a3f1f6d6df0f31f45a">ErrorType</link> et, int l)</para>
+</listitem>
+            <listitem><para>void <link linkend="_class_token_result_1a539fcf21f614de453f07985bbd3dec30">addError</link> (const std::shared_ptr&lt; <link linkend="_class_token_result">TokenResult</link> &gt; &amp;nestedToken)</para>
+</listitem>
+            <listitem><para>void <link linkend="_class_token_result_1acfc405b7a0e288b9463f24fd105931cf">addVar</link> (const std::string &amp;name, const <link linkend="__interpretor_8h_1ad8ed01ff3ff33333d8e19db4d2818bb6">DataType</link> &amp;type)</para>
+</listitem>
+            <listitem><para>bool <link linkend="_class_token_result_1a40eab1e11abedf2ad760a9095579573c">isSuccess</link> ()</para>
+</listitem>
+        </itemizedlist>
+</simplesect>
+<simplesect>
+    <title>Public Attributes    </title>
+        <itemizedlist>
+            <listitem><para>std::shared_ptr&lt; std::map&lt; std::string, <link linkend="__interpretor_8h_1ad8ed01ff3ff33333d8e19db4d2818bb6">DataType</link> &gt; &gt; <link linkend="_class_token_result_1a9de92354db253e5cc26c490d3768eb6c">varTable</link></para>
+</listitem>
+            <listitem><para>std::vector&lt; std::shared_ptr&lt; <link linkend="_class_error">Error</link> &gt; &gt; <link linkend="_class_token_result_1afa05387cebf6ba69bfbd086155a63d8d">listErrors</link></para>
+</listitem>
+        </itemizedlist>
+</simplesect>
+<section>
+<title>Detailed Description</title>
+<para>
+Definition at line <link linkend="__interpretor_8h_source_1l00108">108</link> of file <link linkend="__interpretor_8h_source">Interpretor.h</link>.</para>
+</section>
+<section>
+<title>Constructor &amp; Destructor Documentation</title>
+<anchor xml:id="_class_token_result_1ac49cd5f7a236cd78ac5633df0144e54b"/><section>
+    <title>TokenResult()<computeroutput>[1/2]</computeroutput></title>
+<indexterm><primary>TokenResult</primary><secondary>TokenResult</secondary></indexterm>
+<indexterm><primary>TokenResult</primary><secondary>TokenResult</secondary></indexterm>
+<para><computeroutput>TokenResult::TokenResult ( )</computeroutput></para><para>
+Definition at line <link linkend="__interpretor_8cpp_source_1l00970">970</link> of file <link linkend="__interpretor_8cpp_source">Interpretor.cpp</link>.</para>
+</section>
+<anchor xml:id="_class_token_result_1a6219f0d8d1e1aeca36b204c41c739f28"/><section>
+    <title>TokenResult()<computeroutput>[2/2]</computeroutput></title>
+<indexterm><primary>TokenResult</primary><secondary>TokenResult</secondary></indexterm>
+<indexterm><primary>TokenResult</primary><secondary>TokenResult</secondary></indexterm>
+<para><computeroutput>TokenResult::TokenResult (<link linkend="__interpretor_8h_1acbd1e63c605cbb3dbe67c7411841b46c">TokenVALUE</link> value, int l)</computeroutput></para><para>
+Definition at line <link linkend="__interpretor_8cpp_source_1l00975">975</link> of file <link linkend="__interpretor_8cpp_source">Interpretor.cpp</link>.</para>
+</section>
+</section>
+<section>
+<title>Member Function Documentation</title>
+<anchor xml:id="_class_token_result_1a539fcf21f614de453f07985bbd3dec30"/><section>
+    <title>addError()<computeroutput>[1/3]</computeroutput></title>
+<indexterm><primary>addError</primary><secondary>TokenResult</secondary></indexterm>
+<indexterm><primary>TokenResult</primary><secondary>addError</secondary></indexterm>
+<para><computeroutput>void TokenResult::addError (const std::shared_ptr&lt; <link linkend="_class_token_result">TokenResult</link> &gt; &amp; nestedToken)</computeroutput></para><para>
+Definition at line <link linkend="__interpretor_8cpp_source_1l00996">996</link> of file <link linkend="__interpretor_8cpp_source">Interpretor.cpp</link>.</para>
+</section>
+<anchor xml:id="_class_token_result_1a32d99327e29ff65c4af36d143a12c4c5"/><section>
+    <title>addError()<computeroutput>[2/3]</computeroutput></title>
+<indexterm><primary>addError</primary><secondary>TokenResult</secondary></indexterm>
+<indexterm><primary>TokenResult</primary><secondary>addError</secondary></indexterm>
+<para><computeroutput>void TokenResult::addError (<link linkend="__interpretor_8h_1ad8ed01ff3ff33333d8e19db4d2818bb6">DataType</link> type, <link linkend="__interpretor_8h_1ab0df38968e4f03a3f1f6d6df0f31f45a">ErrorType</link> et, int l)</computeroutput></para><para>
+Definition at line <link linkend="__interpretor_8cpp_source_1l00991">991</link> of file <link linkend="__interpretor_8cpp_source">Interpretor.cpp</link>.</para>
+</section>
+<anchor xml:id="_class_token_result_1acce057f14c7bd3ccab85dc021b709b50"/><section>
+    <title>addError()<computeroutput>[3/3]</computeroutput></title>
+<indexterm><primary>addError</primary><secondary>TokenResult</secondary></indexterm>
+<indexterm><primary>TokenResult</primary><secondary>addError</secondary></indexterm>
+<para><computeroutput>void TokenResult::addError (<link linkend="__interpretor_8h_1acbd1e63c605cbb3dbe67c7411841b46c">TokenVALUE</link> value, <link linkend="__interpretor_8h_1ab0df38968e4f03a3f1f6d6df0f31f45a">ErrorType</link> et, int l)</computeroutput></para><para>
+Definition at line <link linkend="__interpretor_8cpp_source_1l00986">986</link> of file <link linkend="__interpretor_8cpp_source">Interpretor.cpp</link>.</para>
+</section>
+<anchor xml:id="_class_token_result_1acfc405b7a0e288b9463f24fd105931cf"/><section>
+    <title>addVar()</title>
+<indexterm><primary>addVar</primary><secondary>TokenResult</secondary></indexterm>
+<indexterm><primary>TokenResult</primary><secondary>addVar</secondary></indexterm>
+<para><computeroutput>void TokenResult::addVar (const std::string &amp; name, const <link linkend="__interpretor_8h_1ad8ed01ff3ff33333d8e19db4d2818bb6">DataType</link> &amp; type)</computeroutput></para><para>
+Definition at line <link linkend="__interpretor_8cpp_source_1l01001">1001</link> of file <link linkend="__interpretor_8cpp_source">Interpretor.cpp</link>.</para>
+</section>
+<anchor xml:id="_class_token_result_1a40eab1e11abedf2ad760a9095579573c"/><section>
+    <title>isSuccess()</title>
+<indexterm><primary>isSuccess</primary><secondary>TokenResult</secondary></indexterm>
+<indexterm><primary>TokenResult</primary><secondary>isSuccess</secondary></indexterm>
+<para><computeroutput>bool TokenResult::isSuccess ( )</computeroutput></para><para>
+Definition at line <link linkend="__interpretor_8cpp_source_1l01006">1006</link> of file <link linkend="__interpretor_8cpp_source">Interpretor.cpp</link>.</para>
+</section>
+<anchor xml:id="_class_token_result_1a1b90cbf9042a502868ffbb657399f5bf"/><section>
+    <title>showErrors()</title>
+<indexterm><primary>showErrors</primary><secondary>TokenResult</secondary></indexterm>
+<indexterm><primary>TokenResult</primary><secondary>showErrors</secondary></indexterm>
+<para><computeroutput>void TokenResult::showErrors ( )</computeroutput></para><para>
+Definition at line <link linkend="__interpretor_8cpp_source_1l00979">979</link> of file <link linkend="__interpretor_8cpp_source">Interpretor.cpp</link>.</para>
+</section>
+</section>
+<section>
+<title>Member Data Documentation</title>
+<anchor xml:id="_class_token_result_1afa05387cebf6ba69bfbd086155a63d8d"/><section>
+    <title>listErrors</title>
+<indexterm><primary>listErrors</primary><secondary>TokenResult</secondary></indexterm>
+<indexterm><primary>TokenResult</primary><secondary>listErrors</secondary></indexterm>
+<para><computeroutput>std::vector&lt;std::shared_ptr&lt;<link linkend="_class_error">Error</link>&gt; &gt; TokenResult::listErrors</computeroutput></para><para>
+Definition at line <link linkend="__interpretor_8h_source_1l00119">119</link> of file <link linkend="__interpretor_8h_source">Interpretor.h</link>.</para>
+</section>
+<anchor xml:id="_class_token_result_1a9de92354db253e5cc26c490d3768eb6c"/><section>
+    <title>varTable</title>
+<indexterm><primary>varTable</primary><secondary>TokenResult</secondary></indexterm>
+<indexterm><primary>TokenResult</primary><secondary>varTable</secondary></indexterm>
+<para><computeroutput>std::shared_ptr&lt;std::map&lt;std::string, <link linkend="__interpretor_8h_1ad8ed01ff3ff33333d8e19db4d2818bb6">DataType</link>&gt; &gt; TokenResult::varTable</computeroutput></para><para>
+Definition at line <link linkend="__interpretor_8h_source_1l00118">118</link> of file <link linkend="__interpretor_8h_source">Interpretor.h</link>.</para>
+</section>
+<para>
+The documentation for this class was generated from the following files:</para>
+src/<link linkend="__interpretor_8h">Interpretor.h</link>src/<link linkend="__interpretor_8cpp">Interpretor.cpp</link></section>
+</section>

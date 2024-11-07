@@ -1,0 +1,155 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<section xmlns="http://docbook.org/ns/docbook" version="5.0" xmlns:xlink="http://www.w3.org/1999/xlink" xml:id="_class_bluestacks_instance" xml:lang="en-US">
+<title>BluestacksInstance Class Reference</title>
+<indexterm><primary>BluestacksInstance</primary></indexterm>
+<para>
+<computeroutput>#include &lt;BluestacksInstance.h&gt;</computeroutput>
+</para>
+Inheritance diagram for BluestacksInstance:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_bluestacks_instance__inherit__graph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+Collaboration diagram for BluestacksInstance:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_bluestacks_instance__coll__graph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+<simplesect>
+    <title>Public Member Functions    </title>
+        <itemizedlist>
+            <listitem><para><link linkend="_class_bluestacks_instance_1ae0073bf8dd69ee4c7ab4df820a18ef5a">BluestacksInstance</link> ()</para>
+</listitem>
+            <listitem><para>void <link linkend="_class_bluestacks_instance_1a0185c5b9566d057bdd69c6e58617a5f2">showInstance</link> () override</para>
+</listitem>
+            <listitem><para>void <link linkend="_class_bluestacks_instance_1ab125fa47188d48bf7c09502c0992f60a">setGlobalId</link> () override</para>
+</listitem>
+        </itemizedlist>
+</simplesect>
+Public Member Functions inherited from <link linkend="_class_instance">Instance</link>        <itemizedlist>
+            <listitem><para><link linkend="_class_instance_1a399506c7e75ab9ab78fbc34a25932bbd">Instance</link> ()</para>
+</listitem>
+            <listitem><para><link linkend="_class_instance_1ae3ab7cf90005ff7a4c64600e8d938ea8">Instance</link> (std::string <link linkend="_class_instance_1a71e6b641e231bdfcfb4f255c6b9e58af">instanceName</link>)</para>
+</listitem>
+            <listitem><para>virtual std::string <link linkend="_class_instance_1abb8d03ac04893774e93ea06e85338d39">getAdbKey</link> ()</para>
+</listitem>
+            <listitem><para>const std::string <link linkend="_class_instance_1a951c978f2d8b94264ada22b2f881469b">getGlobalId</link> ()</para>
+</listitem>
+            <listitem><para>virtual <link linkend="__instance_8h_1a5b026f4903e92a7e60dda754b5028227">EmulatorType</link> <link linkend="_class_instance_1aaf12301a5aae7020e73e68fbc8cc8e72">getType</link> ()</para>
+</listitem>
+            <listitem><para>virtual void <link linkend="_class_instance_1ad2e6d56fd99a364888b0e2aafb37d610">setLaunch</link> (bool b)</para>
+</listitem>
+        </itemizedlist>
+<simplesect>
+    <title>Public Attributes    </title>
+        <itemizedlist>
+            <listitem><para>int <link linkend="_class_bluestacks_instance_1a0574efb3a1123877a4c7b5979f650ae6">bootTime</link></para>
+</listitem>
+            <listitem><para>std::string <link linkend="_class_bluestacks_instance_1aad717d238b89a314d38e0ace7a77628c">engineName</link></para>
+</listitem>
+            <listitem><para>std::string <link linkend="_class_bluestacks_instance_1a1dcc0c6ec94fbe1a73689d76e12ad8d7">instancePath</link></para>
+</listitem>
+            <listitem><para>std::string <link linkend="_class_bluestacks_instance_1af36829c2efd8e8a4112be3051f21f909">id</link></para>
+</listitem>
+        </itemizedlist>
+</simplesect>
+Public Attributes inherited from <link linkend="_class_instance">Instance</link>        <itemizedlist>
+            <listitem><para>std::string <link linkend="_class_instance_1a71e6b641e231bdfcfb4f255c6b9e58af">instanceName</link></para>
+</listitem>
+            <listitem><para>std::string <link linkend="_class_instance_1ad66900da1ca18b45bae2e46c04a4cdda">instanceFolder</link></para>
+</listitem>
+            <listitem><para>std::string <link linkend="_class_instance_1a1f72388531ddb773750fc7503c134a26">adbKey</link></para>
+</listitem>
+            <listitem><para>std::string <link linkend="_class_instance_1adbf9914982dfc15b3542b57eee68574d">instanceId</link></para>
+</listitem>
+            <listitem><para><link linkend="__instance_8h_1a5b026f4903e92a7e60dda754b5028227">EmulatorType</link> <link linkend="_class_instance_1ac8eb7fd97639a6d93161bcd7a4e07317">myType</link></para>
+</listitem>
+            <listitem><para>bool <link linkend="_class_instance_1ae597325ce3bc6efdd8d0811c6b54c0c6">launch</link></para>
+</listitem>
+            <listitem><para>int <link linkend="_class_instance_1afac2cbff1e241735f914ee0b95a04ea5">dpi</link></para>
+</listitem>
+            <listitem><para>int <link linkend="_class_instance_1ae9cb37b80e1b2586ea1136552f5471c7">width</link></para>
+</listitem>
+            <listitem><para>int <link linkend="_class_instance_1a5780eba6a75b91039e627799f07637ee">height</link></para>
+</listitem>
+            <listitem><para>bool <link linkend="_class_instance_1a163202c6c66861f51cb2b0bffff2993d">hasGame</link></para>
+</listitem>
+        </itemizedlist>
+<section>
+<title>Detailed Description</title>
+<para>
+Definition at line <link linkend="__bluestacks_instance_8h_source_1l00003">3</link> of file <link linkend="__bluestacks_instance_8h_source">BluestacksInstance.h</link>.</para>
+</section>
+<section>
+<title>Constructor &amp; Destructor Documentation</title>
+<anchor xml:id="_class_bluestacks_instance_1ae0073bf8dd69ee4c7ab4df820a18ef5a"/><section>
+    <title>BluestacksInstance()</title>
+<indexterm><primary>BluestacksInstance</primary><secondary>BluestacksInstance</secondary></indexterm>
+<indexterm><primary>BluestacksInstance</primary><secondary>BluestacksInstance</secondary></indexterm>
+<para><computeroutput>BluestacksInstance::BluestacksInstance ( )</computeroutput></para><para>
+Definition at line <link linkend="__bluestacks_instance_8cpp_source_1l00003">3</link> of file <link linkend="__bluestacks_instance_8cpp_source">BluestacksInstance.cpp</link>.</para>
+</section>
+</section>
+<section>
+<title>Member Function Documentation</title>
+<anchor xml:id="_class_bluestacks_instance_1ab125fa47188d48bf7c09502c0992f60a"/><section>
+    <title>setGlobalId()</title>
+<indexterm><primary>setGlobalId</primary><secondary>BluestacksInstance</secondary></indexterm>
+<indexterm><primary>BluestacksInstance</primary><secondary>setGlobalId</secondary></indexterm>
+<para><computeroutput>void BluestacksInstance::setGlobalId ( )<computeroutput>[override]</computeroutput>, <computeroutput>[virtual]</computeroutput></computeroutput></para><para>
+Implements <link linkend="_class_instance_1a841c6a04ef8649dc6008d75c8ccbf97d">Instance</link>.</para>
+<para>
+Definition at line <link linkend="__bluestacks_instance_8cpp_source_1l00025">25</link> of file <link linkend="__bluestacks_instance_8cpp_source">BluestacksInstance.cpp</link>.</para>
+</section>
+<anchor xml:id="_class_bluestacks_instance_1a0185c5b9566d057bdd69c6e58617a5f2"/><section>
+    <title>showInstance()</title>
+<indexterm><primary>showInstance</primary><secondary>BluestacksInstance</secondary></indexterm>
+<indexterm><primary>BluestacksInstance</primary><secondary>showInstance</secondary></indexterm>
+<para><computeroutput>void BluestacksInstance::showInstance ( )<computeroutput>[override]</computeroutput>, <computeroutput>[virtual]</computeroutput></computeroutput></para><para>
+Implements <link linkend="_class_instance_1a789f80bb6165405145c9b61da092b1d3">Instance</link>.</para>
+<para>
+Definition at line <link linkend="__bluestacks_instance_8cpp_source_1l00011">11</link> of file <link linkend="__bluestacks_instance_8cpp_source">BluestacksInstance.cpp</link>.</para>
+</section>
+</section>
+<section>
+<title>Member Data Documentation</title>
+<anchor xml:id="_class_bluestacks_instance_1a0574efb3a1123877a4c7b5979f650ae6"/><section>
+    <title>bootTime</title>
+<indexterm><primary>bootTime</primary><secondary>BluestacksInstance</secondary></indexterm>
+<indexterm><primary>BluestacksInstance</primary><secondary>bootTime</secondary></indexterm>
+<para><computeroutput>int BluestacksInstance::bootTime</computeroutput></para><para>
+Definition at line <link linkend="__bluestacks_instance_8h_source_1l00009">9</link> of file <link linkend="__bluestacks_instance_8h_source">BluestacksInstance.h</link>.</para>
+</section>
+<anchor xml:id="_class_bluestacks_instance_1aad717d238b89a314d38e0ace7a77628c"/><section>
+    <title>engineName</title>
+<indexterm><primary>engineName</primary><secondary>BluestacksInstance</secondary></indexterm>
+<indexterm><primary>BluestacksInstance</primary><secondary>engineName</secondary></indexterm>
+<para><computeroutput>std::string BluestacksInstance::engineName</computeroutput></para><para>
+Definition at line <link linkend="__bluestacks_instance_8h_source_1l00010">10</link> of file <link linkend="__bluestacks_instance_8h_source">BluestacksInstance.h</link>.</para>
+</section>
+<anchor xml:id="_class_bluestacks_instance_1af36829c2efd8e8a4112be3051f21f909"/><section>
+    <title>id</title>
+<indexterm><primary>id</primary><secondary>BluestacksInstance</secondary></indexterm>
+<indexterm><primary>BluestacksInstance</primary><secondary>id</secondary></indexterm>
+<para><computeroutput>std::string BluestacksInstance::id</computeroutput></para><para>
+Definition at line <link linkend="__bluestacks_instance_8h_source_1l00012">12</link> of file <link linkend="__bluestacks_instance_8h_source">BluestacksInstance.h</link>.</para>
+</section>
+<anchor xml:id="_class_bluestacks_instance_1a1dcc0c6ec94fbe1a73689d76e12ad8d7"/><section>
+    <title>instancePath</title>
+<indexterm><primary>instancePath</primary><secondary>BluestacksInstance</secondary></indexterm>
+<indexterm><primary>BluestacksInstance</primary><secondary>instancePath</secondary></indexterm>
+<para><computeroutput>std::string BluestacksInstance::instancePath</computeroutput></para><para>
+Definition at line <link linkend="__bluestacks_instance_8h_source_1l00011">11</link> of file <link linkend="__bluestacks_instance_8h_source">BluestacksInstance.h</link>.</para>
+</section>
+<para>
+The documentation for this class was generated from the following files:</para>
+src/<link linkend="__bluestacks_instance_8h">BluestacksInstance.h</link>src/<link linkend="__bluestacks_instance_8cpp">BluestacksInstance.cpp</link></section>
+</section>

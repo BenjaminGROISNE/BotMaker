@@ -41,7 +41,7 @@ AllEmulators::AllEmulators(const std::string gamePackage,int dimX,int dimY,int d
 std::string BotConfig::readString(const std::string& filename, const std::string& lineParameter, const std::string& first, const std::string& last) {
     std::string text = getFileContent(filename);
     std::string line = getLine(text, lineParameter);
-    return extractContent(line, first, last);
+    return extractBetween(line, first, last);
 }
 
 int BotConfig::readInt(const std::string& filename, const std::string& lineParameter, const std::string& first, const std::string& last) {
@@ -392,17 +392,17 @@ bool BotConfig::verifyParameters()
 
 bool BotConfig::verifyBluestacksParameters(const std::string& botFile)
 {
-    return findContent(botFile, dataBluestacks) && findContent(botFile, bluestacksFolder)&& findContent(botFile, bluestacksConfigFolder);
+    return botFile.find(dataBluestacks) && botFile.find(bluestacksFolder)&& botFile.find(bluestacksConfigFolder);
 }
 
 bool BotConfig::verifyLdPlayerParameters(const std::string& botFile)
 {
-    return findContent(botFile, dataLDPlayer)&&findContent(botFile,ldPlayerFolder);
+    return botFile.find(dataLDPlayer)&& botFile.find(ldPlayerFolder);
 }
 
 bool BotConfig::verifyfavoriteParameters(const std::string& botFile)
 {
-    return findContent(botFile, favInstanceParam) && findContent(botFile, favPresetParam);
+    return botFile.find(favInstanceParam) && botFile.find(favPresetParam);
 }
 
 int BotConfig::handleFavoriteInstance()

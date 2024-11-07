@@ -140,7 +140,7 @@ bool LDPlayer::isInstanceRunning(Instance* inst)
     LDPlayerInstance* newInst = transformInstance(inst);
     std::string args = executableName + " isrunning --index " + std::to_string(newInst->ldId);
     std::string result=moveAndExecute(ldPlayerFolder, args);
-    return findContent(result, "running");
+    return result.find("running");
 }
 
 void LDPlayer::clearAllInstances()
@@ -201,11 +201,11 @@ void LDPlayer::searchInstanceConfig(std::string engineName)
     std::string instanceDpiParameter = "\"advancedSettings.resolutionDpi\": ";
     newInstance->instanceName = extractLineContent(configText, instanceNameParameter,": \"", "\"");
     newInstance->dpi = stoi(extractLineContent(configText, instanceDpiParameter, instanceDpiParameter, ","));
-    std::string resolution = extractContent(configText, resolutionParameter, "}");
+    std::string resolution = extractBetween(configText,resolutionParameter, "}");
     newInstance->width= stoi(extractLineContent(resolution, instanceWidthParameter, ": ", ","));
     std::string heightline = getContentAfter(resolution, instanceHeightParameter);
     newInstance->height = stoi(getContentBefore(heightline, "\n"));
-    newInstance->ldId = stoi(extractContent(engineName, formalEngineName, ".config"));
+    newInstance->ldId = stoi(extractBetween(engineName, formalEngineName, ".config"));
     newInstance->engineName = getContentBefore(engineName,".config");
     newInstance->setGlobalId();
     newInstance->instanceFolder = vmsFolder + "\\" + newInstance->engineName + "\\";
@@ -256,7 +256,7 @@ bool LDPlayer::hasGame(Instance* inst)
    
     if (LDPlayerInstance* newInst = transformInstance(inst)) {
         std::string reportText = getFileContent(inst->instanceFolder + newInst->packageInfoFileName);
-        if (findContent(reportText, gamePackage)) {
+        if (reportText.find(gamePackage)) {
             newInst->hasGame = true;
         }
         else newInst->hasGame = false;

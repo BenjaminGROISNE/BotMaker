@@ -1,0 +1,691 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<section xmlns="http://docbook.org/ns/docbook" version="5.0" xmlns:xlink="http://www.w3.org/1999/xlink" xml:id="_fsfml_8cpp_source" xml:lang="en-US">
+<title>fsfml.cpp</title>
+<indexterm><primary>src/fsfml.cpp</primary></indexterm>
+Go to the documentation of this file.<programlisting linenumbering="unnumbered"><anchor xml:id="_fsfml_8cpp_source_1l00001"/>00001 <emphasis role="preprocessor">#include&#32;&quot;<link linkend="_fsfml_8h">fsfml.h</link>&quot;</emphasis>
+<anchor xml:id="_fsfml_8cpp_source_1l00002"/>00002 
+<anchor xml:id="_fsfml_8cpp_source_1l00003"/>00003 
+<anchor xml:id="_fsfml_8cpp_source_1l00004"/><link linkend="_classfsfml_1ac2c892da4a378e4767cce342c3ead92f">00004</link> <link linkend="_classfsfml_1ac2c892da4a378e4767cce342c3ead92f">fsfml::fsfml</link>()
+<anchor xml:id="_fsfml_8cpp_source_1l00005"/>00005 {
+<anchor xml:id="_fsfml_8cpp_source_1l00006"/>00006 &#32;&#32;&#32;&#32;<link linkend="_classfsfml_1ab91828a3b4b1b3c53b5dc8552d46d48a">initVariables</link>();
+<anchor xml:id="_fsfml_8cpp_source_1l00007"/>00007 }
+<anchor xml:id="_fsfml_8cpp_source_1l00008"/>00008 
+<anchor xml:id="_fsfml_8cpp_source_1l00009"/><link linkend="_classfsfml_1aa2e6e852aaf9942b2bace314c75ef661">00009</link> <link linkend="_classfsfml_1aa2e6e852aaf9942b2bace314c75ef661">fsfml::~fsfml</link>()
+<anchor xml:id="_fsfml_8cpp_source_1l00010"/>00010 {
+<anchor xml:id="_fsfml_8cpp_source_1l00011"/>00011 &#32;&#32;&#32;&#32;<emphasis role="keywordflow">for</emphasis>&#32;(std::map&lt;std::string,&#32;sf::Texture*&gt;::iterator&#32;it&#32;=&#32;<link linkend="_classfsfml_1a715b52b2a82537954228b6f4cb933c0d">textures</link>.begin();&#32;it&#32;!=&#32;<link linkend="_classfsfml_1a715b52b2a82537954228b6f4cb933c0d">textures</link>.end();&#32;++it)&#32;{
+<anchor xml:id="_fsfml_8cpp_source_1l00012"/>00012 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keyword">delete</emphasis>&#32;(it-&gt;second);
+<anchor xml:id="_fsfml_8cpp_source_1l00013"/>00013 &#32;&#32;&#32;&#32;}
+<anchor xml:id="_fsfml_8cpp_source_1l00014"/>00014 &#32;&#32;&#32;&#32;<emphasis role="keyword">delete</emphasis>&#32;<link linkend="_classfsfml_1a290647b737e9c2952f20f2772ee8abe8">window</link>;
+<anchor xml:id="_fsfml_8cpp_source_1l00015"/>00015 }
+<anchor xml:id="_fsfml_8cpp_source_1l00016"/>00016 
+<anchor xml:id="_fsfml_8cpp_source_1l00017"/><link linkend="_classfsfml_1a37a061f1ee4ccd45b5ae0a900021ecf4">00017</link> <emphasis role="keywordtype">void</emphasis>&#32;<link linkend="_classfsfml_1a37a061f1ee4ccd45b5ae0a900021ecf4">fsfml::startSFML</link>()
+<anchor xml:id="_fsfml_8cpp_source_1l00018"/>00018 {
+<anchor xml:id="_fsfml_8cpp_source_1l00019"/>00019 &#32;&#32;&#32;&#32;<link linkend="_sys_commands_8cpp_1a61d85a8cc16ea3d6e2e86d14beb29804">GetRelativeResolution</link>(<link linkend="_classfsfml_1a2735d0230ebf7e9e2df254560b2a7a5c">screenWidth</link>,&#32;<link linkend="_classfsfml_1a265752acf64bf3e35bc932d1b9f38783">screenHeight</link>);
+<anchor xml:id="_fsfml_8cpp_source_1l00020"/>00020 &#32;&#32;&#32;&#32;<link linkend="_classfsfml_1ab642e067930233a3a95068fb80c7c410">initGraphics</link>();
+<anchor xml:id="_fsfml_8cpp_source_1l00021"/>00021 &#32;&#32;&#32;&#32;<link linkend="_classfsfml_1a33b00964a94d045d04ddabc99353df0f">initWindow</link>();
+<anchor xml:id="_fsfml_8cpp_source_1l00022"/>00022 &#32;&#32;&#32;&#32;<link linkend="_classfsfml_1a4bf50b65a4a6b5ed3e57b7b26638534a">windowLoop</link>();
+<anchor xml:id="_fsfml_8cpp_source_1l00023"/>00023 }
+<anchor xml:id="_fsfml_8cpp_source_1l00024"/>00024 
+<anchor xml:id="_fsfml_8cpp_source_1l00025"/><link linkend="_classfsfml_1a33b00964a94d045d04ddabc99353df0f">00025</link> <emphasis role="keywordtype">void</emphasis>&#32;<link linkend="_classfsfml_1a33b00964a94d045d04ddabc99353df0f">fsfml::initWindow</link>()&#32;{
+<anchor xml:id="_fsfml_8cpp_source_1l00026"/>00026 &#32;&#32;&#32;&#32;<link linkend="_classfsfml_1a290647b737e9c2952f20f2772ee8abe8">window</link>&#32;=&#32;<emphasis role="keyword">new</emphasis>&#32;sf::RenderWindow(sf::VideoMode(0,&#32;0),&#32;<emphasis role="stringliteral">&quot;Window&quot;</emphasis>,&#32;sf::Style::None);
+<anchor xml:id="_fsfml_8cpp_source_1l00027"/>00027 &#32;&#32;&#32;&#32;<link linkend="_classfsfml_1a290647b737e9c2952f20f2772ee8abe8">window</link>-&gt;setKeyRepeatEnabled(<emphasis role="keyword">true</emphasis>);
+<anchor xml:id="_fsfml_8cpp_source_1l00028"/>00028 &#32;&#32;&#32;&#32;<link linkend="_classfsfml_1a290647b737e9c2952f20f2772ee8abe8">window</link>-&gt;setPosition(sf::Vector2i(0,&#32;(<link linkend="_classfsfml_1a265752acf64bf3e35bc932d1b9f38783">screenHeight</link>&#32;/&#32;4)));
+<anchor xml:id="_fsfml_8cpp_source_1l00029"/>00029 &#32;&#32;&#32;&#32;<link linkend="_classfsfml_1a290647b737e9c2952f20f2772ee8abe8">window</link>-&gt;setVerticalSyncEnabled(<emphasis role="keyword">true</emphasis>);
+<anchor xml:id="_fsfml_8cpp_source_1l00030"/>00030 }
+<anchor xml:id="_fsfml_8cpp_source_1l00031"/>00031 
+<anchor xml:id="_fsfml_8cpp_source_1l00032"/><link linkend="_classfsfml_1a4bf50b65a4a6b5ed3e57b7b26638534a">00032</link> <emphasis role="keywordtype">void</emphasis>&#32;<link linkend="_classfsfml_1a4bf50b65a4a6b5ed3e57b7b26638534a">fsfml::windowLoop</link>()
+<anchor xml:id="_fsfml_8cpp_source_1l00033"/>00033 {
+<anchor xml:id="_fsfml_8cpp_source_1l00034"/>00034 &#32;&#32;&#32;&#32;<link linkend="_classfsfml_1af3480a2fec74a4d2233342072085fcae">collectText</link>&#32;=&#32;<emphasis role="keyword">false</emphasis>;
+<anchor xml:id="_fsfml_8cpp_source_1l00035"/>00035 &#32;&#32;&#32;&#32;<link linkend="_classfsfml_1ad18f9a13c0057b7a42ec1bab4cf15376">initAllPanels</link>();
+<anchor xml:id="_fsfml_8cpp_source_1l00036"/>00036 &#32;&#32;&#32;&#32;<link linkend="_classfsfml_1a95f6eb53223fafa2f2b06548f4d1b323">seePanel</link>(<link linkend="_classfsfml_1a1f25a4160a80be0dba66bfb6a081d953">Menu</link>);
+<anchor xml:id="_fsfml_8cpp_source_1l00037"/>00037 &#32;&#32;&#32;&#32;<emphasis role="comment">//window-&gt;close();</emphasis>
+<anchor xml:id="_fsfml_8cpp_source_1l00038"/>00038 &#32;&#32;&#32;&#32;<emphasis role="keywordflow">while</emphasis>&#32;(<link linkend="_classfsfml_1a290647b737e9c2952f20f2772ee8abe8">window</link>-&gt;isOpen())
+<anchor xml:id="_fsfml_8cpp_source_1l00039"/>00039 &#32;&#32;&#32;&#32;{
+<anchor xml:id="_fsfml_8cpp_source_1l00040"/>00040 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<link linkend="_classfsfml_1a290647b737e9c2952f20f2772ee8abe8">window</link>-&gt;requestFocus();
+<anchor xml:id="_fsfml_8cpp_source_1l00041"/>00041 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="comment">//mousePos&#32;=&#32;getMousePosition(window);</emphasis>
+<anchor xml:id="_fsfml_8cpp_source_1l00042"/>00042 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<link linkend="_classfsfml_1a9570e72eefe15664a6859f36c610fafc">eventLoop</link>();
+<anchor xml:id="_fsfml_8cpp_source_1l00043"/>00043 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="comment">//clearWindow(sf::Color::Cyan);</emphasis>
+<anchor xml:id="_fsfml_8cpp_source_1l00044"/>00044 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="comment">//handleActivePanel();</emphasis>
+<anchor xml:id="_fsfml_8cpp_source_1l00045"/>00045 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="comment">//displayWindow();</emphasis>
+<anchor xml:id="_fsfml_8cpp_source_1l00046"/>00046 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<link linkend="_classfsfml_1a8d4788570e3b2744353ac098112bd6a4">fillTextTyped</link>();
+<anchor xml:id="_fsfml_8cpp_source_1l00047"/>00047 
+<anchor xml:id="_fsfml_8cpp_source_1l00048"/>00048 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<link linkend="_classfsfml_1ac7247f5821521ffff228e570f0b74b42">resetEventVariables</link>();
+<anchor xml:id="_fsfml_8cpp_source_1l00049"/>00049 &#32;&#32;&#32;&#32;}
+<anchor xml:id="_fsfml_8cpp_source_1l00050"/>00050 }
+<anchor xml:id="_fsfml_8cpp_source_1l00051"/>00051 
+<anchor xml:id="_fsfml_8cpp_source_1l00052"/><link linkend="_classfsfml_1a9570e72eefe15664a6859f36c610fafc">00052</link> <emphasis role="keywordtype">void</emphasis>&#32;<link linkend="_classfsfml_1a9570e72eefe15664a6859f36c610fafc">fsfml::eventLoop</link>()
+<anchor xml:id="_fsfml_8cpp_source_1l00053"/>00053 {
+<anchor xml:id="_fsfml_8cpp_source_1l00054"/>00054 &#32;&#32;&#32;&#32;sf::Event&#32;<link linkend="_paths_8cpp_1a93114eafe7b571802c6787926ec00d93">event</link>;
+<anchor xml:id="_fsfml_8cpp_source_1l00055"/>00055 &#32;&#32;&#32;&#32;<emphasis role="keywordflow">while</emphasis>&#32;(<link linkend="_classfsfml_1a290647b737e9c2952f20f2772ee8abe8">window</link>-&gt;pollEvent(<link linkend="_paths_8cpp_1a93114eafe7b571802c6787926ec00d93">event</link>))
+<anchor xml:id="_fsfml_8cpp_source_1l00056"/>00056 &#32;&#32;&#32;&#32;{
+<anchor xml:id="_fsfml_8cpp_source_1l00057"/>00057 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">switch</emphasis>&#32;(<link linkend="_paths_8cpp_1a93114eafe7b571802c6787926ec00d93">event</link>.type)
+<anchor xml:id="_fsfml_8cpp_source_1l00058"/>00058 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;{
+<anchor xml:id="_fsfml_8cpp_source_1l00059"/>00059 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">case</emphasis>&#32;sf::Event::Closed:
+<anchor xml:id="_fsfml_8cpp_source_1l00060"/>00060 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<link linkend="_classfsfml_1aa2376c471900641a72542a22d04e48f8">closeWindow</link>&#32;=&#32;<emphasis role="keyword">true</emphasis>;
+<anchor xml:id="_fsfml_8cpp_source_1l00061"/>00061 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">break</emphasis>;
+<anchor xml:id="_fsfml_8cpp_source_1l00062"/>00062 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">case</emphasis>&#32;sf::Event::MouseButtonReleased:
+<anchor xml:id="_fsfml_8cpp_source_1l00063"/>00063 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">switch</emphasis>&#32;(<link linkend="_paths_8cpp_1a93114eafe7b571802c6787926ec00d93">event</link>.mouseButton.button)&#32;{
+<anchor xml:id="_fsfml_8cpp_source_1l00064"/>00064 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">case</emphasis>&#32;sf::Mouse::Left:
+<anchor xml:id="_fsfml_8cpp_source_1l00065"/>00065 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<link linkend="_classfsfml_1a2ca771d5728b1a6ef160848e4030994c">clickPos</link>&#32;=&#32;<link linkend="_classfsfml_1a58fae2e9641dc75a404f21243e3da856">mousePos</link>;
+<anchor xml:id="_fsfml_8cpp_source_1l00066"/>00066 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<link linkend="_classfsfml_1a78e66a4344c9ba11b477ffc9f33b9a0d">showVector</link>(<link linkend="_classfsfml_1a6c776fc7941d47fb2f10d9a2579d2a2e">convertf</link>(<link linkend="_classfsfml_1a2ca771d5728b1a6ef160848e4030994c">clickPos</link>));
+<anchor xml:id="_fsfml_8cpp_source_1l00067"/>00067 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<link linkend="_classfsfml_1a80ec0508e51494c5fed36738df301007">hasPressedClick</link>&#32;=&#32;<emphasis role="keyword">false</emphasis>;
+<anchor xml:id="_fsfml_8cpp_source_1l00068"/>00068 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<link linkend="_classfsfml_1a5312d051e4e29248701e536c2ef8691e">hasClicked</link>&#32;=&#32;<emphasis role="keyword">true</emphasis>;
+<anchor xml:id="_fsfml_8cpp_source_1l00069"/>00069 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">break</emphasis>;
+<anchor xml:id="_fsfml_8cpp_source_1l00070"/>00070 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;}
+<anchor xml:id="_fsfml_8cpp_source_1l00071"/>00071 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">break</emphasis>;
+<anchor xml:id="_fsfml_8cpp_source_1l00072"/>00072 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">case</emphasis>&#32;sf::Event::MouseButtonPressed:
+<anchor xml:id="_fsfml_8cpp_source_1l00073"/>00073 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">switch</emphasis>&#32;(<link linkend="_paths_8cpp_1a93114eafe7b571802c6787926ec00d93">event</link>.mouseButton.button)&#32;{
+<anchor xml:id="_fsfml_8cpp_source_1l00074"/>00074 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">case</emphasis>&#32;sf::Mouse::Left:
+<anchor xml:id="_fsfml_8cpp_source_1l00075"/>00075 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<link linkend="_classfsfml_1a2ca771d5728b1a6ef160848e4030994c">clickPos</link>&#32;=&#32;<link linkend="_classfsfml_1a58fae2e9641dc75a404f21243e3da856">mousePos</link>;
+<anchor xml:id="_fsfml_8cpp_source_1l00076"/>00076 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<link linkend="_classfsfml_1a78e66a4344c9ba11b477ffc9f33b9a0d">showVector</link>(<link linkend="_classfsfml_1a6c776fc7941d47fb2f10d9a2579d2a2e">convertf</link>(<link linkend="_classfsfml_1a2ca771d5728b1a6ef160848e4030994c">clickPos</link>));
+<anchor xml:id="_fsfml_8cpp_source_1l00077"/>00077 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<link linkend="_classfsfml_1a80ec0508e51494c5fed36738df301007">hasPressedClick</link>&#32;=&#32;<emphasis role="keyword">true</emphasis>;
+<anchor xml:id="_fsfml_8cpp_source_1l00078"/>00078 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">break</emphasis>;
+<anchor xml:id="_fsfml_8cpp_source_1l00079"/>00079 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;}
+<anchor xml:id="_fsfml_8cpp_source_1l00080"/>00080 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">break</emphasis>;
+<anchor xml:id="_fsfml_8cpp_source_1l00081"/>00081 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">case</emphasis>&#32;sf::Event::KeyReleased:
+<anchor xml:id="_fsfml_8cpp_source_1l00082"/>00082 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">switch</emphasis>&#32;(<link linkend="_paths_8cpp_1a93114eafe7b571802c6787926ec00d93">event</link>.key.code)&#32;{
+<anchor xml:id="_fsfml_8cpp_source_1l00083"/>00083 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">case</emphasis>&#32;sf::Keyboard::A:
+<anchor xml:id="_fsfml_8cpp_source_1l00084"/>00084 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">break</emphasis>;
+<anchor xml:id="_fsfml_8cpp_source_1l00085"/>00085 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;}
+<anchor xml:id="_fsfml_8cpp_source_1l00086"/>00086 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">break</emphasis>;
+<anchor xml:id="_fsfml_8cpp_source_1l00087"/>00087 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">case</emphasis>&#32;sf::Event::KeyPressed:
+<anchor xml:id="_fsfml_8cpp_source_1l00088"/>00088 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">break</emphasis>;
+<anchor xml:id="_fsfml_8cpp_source_1l00089"/>00089 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">case</emphasis>&#32;sf::Event::MouseMoved:
+<anchor xml:id="_fsfml_8cpp_source_1l00090"/>00090 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<link linkend="_classfsfml_1ac15502937b8cd7992a24d3b5fcad8d68">mouseMoved</link>&#32;=&#32;<emphasis role="keyword">true</emphasis>;
+<anchor xml:id="_fsfml_8cpp_source_1l00091"/>00091 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">break</emphasis>;
+<anchor xml:id="_fsfml_8cpp_source_1l00092"/>00092 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">case</emphasis>&#32;sf::Event::MouseEntered:
+<anchor xml:id="_fsfml_8cpp_source_1l00093"/>00093 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<link linkend="_classfsfml_1ac813da2410b592072f6502f070ec1345">mouseInWindow</link>&#32;=&#32;<emphasis role="keyword">true</emphasis>;
+<anchor xml:id="_fsfml_8cpp_source_1l00094"/>00094 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">break</emphasis>;
+<anchor xml:id="_fsfml_8cpp_source_1l00095"/>00095 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">case</emphasis>&#32;sf::Event::MouseLeft:
+<anchor xml:id="_fsfml_8cpp_source_1l00096"/>00096 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<link linkend="_classfsfml_1ac813da2410b592072f6502f070ec1345">mouseInWindow</link>&#32;=&#32;<emphasis role="keyword">false</emphasis>;
+<anchor xml:id="_fsfml_8cpp_source_1l00097"/>00097 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">break</emphasis>;
+<anchor xml:id="_fsfml_8cpp_source_1l00098"/>00098 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">case</emphasis>&#32;sf::Event::TextEntered:
+<anchor xml:id="_fsfml_8cpp_source_1l00099"/>00099 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">if</emphasis>&#32;(<link linkend="_paths_8cpp_1a93114eafe7b571802c6787926ec00d93">event</link>.text.unicode&#32;&lt;&#32;128)&#32;{
+<anchor xml:id="_fsfml_8cpp_source_1l00100"/>00100 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<link linkend="_classfsfml_1aeb58b57076e333317100beaa34a73ed4">charEntered</link>&#32;=&#32;<emphasis role="keyword">static_cast&lt;</emphasis><emphasis role="keywordtype">char</emphasis><emphasis role="keyword">&gt;</emphasis>(<emphasis role="keyword">event</emphasis>.text.unicode);
+<anchor xml:id="_fsfml_8cpp_source_1l00101"/>00101 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<link linkend="_classfsfml_1a996b807c53d6c2a28d5e6997ffec13e8">charTyped</link>&#32;=&#32;<emphasis role="keyword">true</emphasis>;
+<anchor xml:id="_fsfml_8cpp_source_1l00102"/>00102 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;std::cout&#32;&lt;&lt;&#32;<emphasis role="stringliteral">&quot;SFML&#32;PART&quot;</emphasis>&#32;&lt;&lt;&#32;<link linkend="_classfsfml_1aeb58b57076e333317100beaa34a73ed4">charEntered</link>&#32;&lt;&lt;&#32;<emphasis role="stringliteral">&quot;\n&quot;</emphasis>;
+<anchor xml:id="_fsfml_8cpp_source_1l00103"/>00103 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;}
+<anchor xml:id="_fsfml_8cpp_source_1l00104"/>00104 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">break</emphasis>;
+<anchor xml:id="_fsfml_8cpp_source_1l00105"/>00105 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">case</emphasis>&#32;sf::Event::Resized:
+<anchor xml:id="_fsfml_8cpp_source_1l00106"/>00106 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<link linkend="_classfsfml_1ac814c24640a4ce33a7a3e70c0a36d8f8">size</link>&#32;=&#32;<link linkend="_classfsfml_1a6c776fc7941d47fb2f10d9a2579d2a2e">convertf</link>(<link linkend="_classfsfml_1a290647b737e9c2952f20f2772ee8abe8">window</link>-&gt;getSize());
+<anchor xml:id="_fsfml_8cpp_source_1l00107"/>00107 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<link linkend="_classfsfml_1a2df4fddee73e8012dafeec49884f77d5">view</link>.setCenter(<link linkend="_classfsfml_1ac814c24640a4ce33a7a3e70c0a36d8f8">size</link>&#32;/&#32;2.f);
+<anchor xml:id="_fsfml_8cpp_source_1l00108"/>00108 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<link linkend="_classfsfml_1a2df4fddee73e8012dafeec49884f77d5">view</link>.setSize(<link linkend="_classfsfml_1ac814c24640a4ce33a7a3e70c0a36d8f8">size</link>);
+<anchor xml:id="_fsfml_8cpp_source_1l00109"/>00109 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<link linkend="_classfsfml_1a290647b737e9c2952f20f2772ee8abe8">window</link>-&gt;setSize(<link linkend="_classfsfml_1ae77bbd16922c35eb009c7806cde4b50b">convertu</link>(<link linkend="_classfsfml_1ac814c24640a4ce33a7a3e70c0a36d8f8">size</link>));
+<anchor xml:id="_fsfml_8cpp_source_1l00110"/>00110 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<link linkend="_classfsfml_1a290647b737e9c2952f20f2772ee8abe8">window</link>-&gt;setView(<link linkend="_classfsfml_1a2df4fddee73e8012dafeec49884f77d5">view</link>);
+<anchor xml:id="_fsfml_8cpp_source_1l00111"/>00111 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<link linkend="_classfsfml_1ae0394e58b49093a176ed07ef30a34015">windowResized</link>&#32;=&#32;<emphasis role="keyword">true</emphasis>;
+<anchor xml:id="_fsfml_8cpp_source_1l00112"/>00112 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">break</emphasis>;
+<anchor xml:id="_fsfml_8cpp_source_1l00113"/>00113 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">default</emphasis>:
+<anchor xml:id="_fsfml_8cpp_source_1l00114"/>00114 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">break</emphasis>;
+<anchor xml:id="_fsfml_8cpp_source_1l00115"/>00115 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;}
+<anchor xml:id="_fsfml_8cpp_source_1l00116"/>00116 &#32;&#32;&#32;&#32;}
+<anchor xml:id="_fsfml_8cpp_source_1l00117"/>00117 
+<anchor xml:id="_fsfml_8cpp_source_1l00118"/>00118 }
+<anchor xml:id="_fsfml_8cpp_source_1l00119"/>00119 
+<anchor xml:id="_fsfml_8cpp_source_1l00120"/><link linkend="_classfsfml_1aa090063adfcdc1972b62726803ffd71c">00120</link> <emphasis role="keywordtype">void</emphasis>&#32;<link linkend="_classfsfml_1aa090063adfcdc1972b62726803ffd71c">fsfml::clearWindow</link>(sf::Color&#32;color)
+<anchor xml:id="_fsfml_8cpp_source_1l00121"/>00121 {
+<anchor xml:id="_fsfml_8cpp_source_1l00122"/>00122 &#32;&#32;&#32;&#32;<link linkend="_classfsfml_1a290647b737e9c2952f20f2772ee8abe8">window</link>-&gt;clear(color);
+<anchor xml:id="_fsfml_8cpp_source_1l00123"/>00123 }
+<anchor xml:id="_fsfml_8cpp_source_1l00124"/>00124 
+<anchor xml:id="_fsfml_8cpp_source_1l00125"/><link linkend="_classfsfml_1a848c18b566753dc6e6e6097bff216f8d">00125</link> <emphasis role="keywordtype">void</emphasis>&#32;<link linkend="_classfsfml_1a848c18b566753dc6e6e6097bff216f8d">fsfml::displayWindow</link>()
+<anchor xml:id="_fsfml_8cpp_source_1l00126"/>00126 {
+<anchor xml:id="_fsfml_8cpp_source_1l00127"/>00127 &#32;&#32;&#32;&#32;<link linkend="_classfsfml_1a290647b737e9c2952f20f2772ee8abe8">window</link>-&gt;display();
+<anchor xml:id="_fsfml_8cpp_source_1l00128"/>00128 }
+<anchor xml:id="_fsfml_8cpp_source_1l00129"/>00129 
+<anchor xml:id="_fsfml_8cpp_source_1l00130"/><link linkend="_classfsfml_1a85e3525bac516648d01f23a1764087c4">00130</link> <emphasis role="keywordtype">void</emphasis>&#32;<link linkend="_classfsfml_1a85e3525bac516648d01f23a1764087c4">fsfml::loadTexture</link>(<emphasis role="keyword">const</emphasis>&#32;std::string&amp;&#32;nameImg)
+<anchor xml:id="_fsfml_8cpp_source_1l00131"/>00131 {
+<anchor xml:id="_fsfml_8cpp_source_1l00132"/>00132 &#32;&#32;&#32;&#32;sf::Texture*&#32;texture&#32;=&#32;<emphasis role="keyword">new</emphasis>&#32;sf::Texture();
+<anchor xml:id="_fsfml_8cpp_source_1l00133"/>00133 &#32;&#32;&#32;&#32;texture-&gt;loadFromFile(nameImg);
+<anchor xml:id="_fsfml_8cpp_source_1l00134"/>00134 &#32;&#32;&#32;&#32;texture-&gt;setSmooth(<emphasis role="keyword">true</emphasis>);
+<anchor xml:id="_fsfml_8cpp_source_1l00135"/>00135 &#32;&#32;&#32;&#32;<link linkend="_classfsfml_1a1be6e8780abb71f21c69ce8bc3da6bee">addTexture</link>(nameImg,&#32;texture);
+<anchor xml:id="_fsfml_8cpp_source_1l00136"/>00136 }
+<anchor xml:id="_fsfml_8cpp_source_1l00137"/>00137 
+<anchor xml:id="_fsfml_8cpp_source_1l00138"/><link linkend="_classfsfml_1a5baebfef9137bd5f516eea18e45bebe7">00138</link> <emphasis role="keywordtype">void</emphasis>&#32;<link linkend="_classfsfml_1a5baebfef9137bd5f516eea18e45bebe7">fsfml::loadSprite</link>(<emphasis role="keyword">const</emphasis>&#32;std::string&amp;&#32;nameImg)
+<anchor xml:id="_fsfml_8cpp_source_1l00139"/>00139 {
+<anchor xml:id="_fsfml_8cpp_source_1l00140"/>00140 &#32;&#32;&#32;&#32;sf::Sprite&#32;sprite(*<link linkend="_classfsfml_1aaad6a42f269f248954ad4d2e253a65db">getTexture</link>(nameImg));
+<anchor xml:id="_fsfml_8cpp_source_1l00141"/>00141 &#32;&#32;&#32;&#32;<link linkend="_classfsfml_1a1855395d90d78b9160203b6b051f46d3">addSprite</link>(nameImg,&#32;sprite);
+<anchor xml:id="_fsfml_8cpp_source_1l00142"/>00142 }
+<anchor xml:id="_fsfml_8cpp_source_1l00143"/>00143 
+<anchor xml:id="_fsfml_8cpp_source_1l00144"/><link linkend="_classfsfml_1aa9726b537036754c5927b584939e0e75">00144</link> <emphasis role="keywordtype">void</emphasis>&#32;<link linkend="_classfsfml_1aa9726b537036754c5927b584939e0e75">fsfml::updateElement</link>(<link linkend="_struct_element">Element</link>&amp;&#32;element)
+<anchor xml:id="_fsfml_8cpp_source_1l00145"/>00145 {
+<anchor xml:id="_fsfml_8cpp_source_1l00146"/>00146 &#32;&#32;&#32;&#32;element.<link linkend="_struct_element_1a40f17d5f017c9c43f204fc5d92010485">setSize</link>();
+<anchor xml:id="_fsfml_8cpp_source_1l00147"/>00147 &#32;&#32;&#32;&#32;element.<link linkend="_struct_element_1afb65b315f0c1ce49bcaa10aec825fc45">setArea</link>();
+<anchor xml:id="_fsfml_8cpp_source_1l00148"/>00148 }
+<anchor xml:id="_fsfml_8cpp_source_1l00149"/>00149 
+<anchor xml:id="_fsfml_8cpp_source_1l00150"/><link linkend="_classfsfml_1a5528a53174db6d10551021c4371ead80">00150</link> <emphasis role="keywordtype">void</emphasis>&#32;<link linkend="_classfsfml_1a5528a53174db6d10551021c4371ead80">fsfml::loadAllSprites</link>(<emphasis role="keyword">const</emphasis>&#32;std::vector&lt;std::string&gt;&amp;&#32;allPaths)
+<anchor xml:id="_fsfml_8cpp_source_1l00151"/>00151 {
+<anchor xml:id="_fsfml_8cpp_source_1l00152"/>00152 &#32;&#32;&#32;&#32;<emphasis role="keywordflow">for</emphasis>&#32;(<emphasis role="keyword">const</emphasis>&#32;<emphasis role="keyword">auto</emphasis>&#32;path&#32;:&#32;allPaths)&#32;{
+<anchor xml:id="_fsfml_8cpp_source_1l00153"/>00153 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<link linkend="_classfsfml_1a5baebfef9137bd5f516eea18e45bebe7">loadSprite</link>(path);
+<anchor xml:id="_fsfml_8cpp_source_1l00154"/>00154 &#32;&#32;&#32;&#32;}
+<anchor xml:id="_fsfml_8cpp_source_1l00155"/>00155 }
+<anchor xml:id="_fsfml_8cpp_source_1l00156"/>00156 
+<anchor xml:id="_fsfml_8cpp_source_1l00157"/><link linkend="_classfsfml_1a9abd23f72500b09571e79f521a0e57e6">00157</link> <link linkend="_struct_element">Element</link>&#32;<link linkend="_classfsfml_1a9abd23f72500b09571e79f521a0e57e6">fsfml::initElement</link>(<emphasis role="keyword">const</emphasis>&#32;std::string&amp;&#32;nameImg)
+<anchor xml:id="_fsfml_8cpp_source_1l00158"/>00158 {
+<anchor xml:id="_fsfml_8cpp_source_1l00159"/>00159 &#32;&#32;&#32;&#32;<link linkend="_struct_element">Element</link>&#32;element(<link linkend="_classfsfml_1a81fb76af022d798c5829768ebd2e9c04">getSprite</link>(nameImg));
+<anchor xml:id="_fsfml_8cpp_source_1l00160"/>00160 &#32;&#32;&#32;&#32;<emphasis role="keywordflow">return</emphasis>&#32;element;
+<anchor xml:id="_fsfml_8cpp_source_1l00161"/>00161 }
+<anchor xml:id="_fsfml_8cpp_source_1l00162"/>00162 
+<anchor xml:id="_fsfml_8cpp_source_1l00163"/><link linkend="_classfsfml_1af5ec5a73c3deb2ebea2b7ab05e550975">00163</link> <emphasis role="keywordtype">void</emphasis>&#32;<link linkend="_classfsfml_1af5ec5a73c3deb2ebea2b7ab05e550975">fsfml::seeElement</link>(<link linkend="_struct_element">Element</link>&amp;&#32;element)
+<anchor xml:id="_fsfml_8cpp_source_1l00164"/>00164 {
+<anchor xml:id="_fsfml_8cpp_source_1l00165"/>00165 &#32;&#32;&#32;&#32;element.<link linkend="_struct_element_1a5df40a1ac2e9e8f5aa782f1dd40830d4">setVisible</link>(<emphasis role="keyword">true</emphasis>);
+<anchor xml:id="_fsfml_8cpp_source_1l00166"/>00166 }
+<anchor xml:id="_fsfml_8cpp_source_1l00167"/><link linkend="_classfsfml_1a40595c6220364843e5f2e51779882e9c">00167</link> <emphasis role="keywordtype">void</emphasis>&#32;<link linkend="_classfsfml_1a40595c6220364843e5f2e51779882e9c">fsfml::unseeElement</link>(<link linkend="_struct_element">Element</link>&amp;&#32;element)
+<anchor xml:id="_fsfml_8cpp_source_1l00168"/>00168 {
+<anchor xml:id="_fsfml_8cpp_source_1l00169"/>00169 &#32;&#32;&#32;&#32;element.<link linkend="_struct_element_1a5df40a1ac2e9e8f5aa782f1dd40830d4">setVisible</link>(<emphasis role="keyword">false</emphasis>);
+<anchor xml:id="_fsfml_8cpp_source_1l00170"/>00170 }
+<anchor xml:id="_fsfml_8cpp_source_1l00171"/>00171 
+<anchor xml:id="_fsfml_8cpp_source_1l00172"/><link linkend="_classfsfml_1a70e48d9726270f976739bc3640d41d1a">00172</link> <emphasis role="keywordtype">void</emphasis>&#32;<link linkend="_classfsfml_1a70e48d9726270f976739bc3640d41d1a">fsfml::unseePanel</link>(<link linkend="_struct_panel">Panel</link>&amp;&#32;page)
+<anchor xml:id="_fsfml_8cpp_source_1l00173"/>00173 {
+<anchor xml:id="_fsfml_8cpp_source_1l00174"/>00174 &#32;&#32;&#32;&#32;<emphasis role="keywordflow">for</emphasis>&#32;(<emphasis role="keyword">auto</emphasis>&#32;element&#32;:&#32;page.<link linkend="_struct_panel_1a2f6ee26081516d74db4eb5817d7bc7bc">elements</link>)&#32;{
+<anchor xml:id="_fsfml_8cpp_source_1l00175"/>00175 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<link linkend="_classfsfml_1a40595c6220364843e5f2e51779882e9c">unseeElement</link>(element);
+<anchor xml:id="_fsfml_8cpp_source_1l00176"/>00176 &#32;&#32;&#32;&#32;}
+<anchor xml:id="_fsfml_8cpp_source_1l00177"/>00177 }
+<anchor xml:id="_fsfml_8cpp_source_1l00178"/><link linkend="_classfsfml_1a95f6eb53223fafa2f2b06548f4d1b323">00178</link> <emphasis role="keywordtype">void</emphasis>&#32;<link linkend="_classfsfml_1a95f6eb53223fafa2f2b06548f4d1b323">fsfml::seePanel</link>(<link linkend="_struct_panel">Panel</link>&amp;&#32;page)
+<anchor xml:id="_fsfml_8cpp_source_1l00179"/>00179 {
+<anchor xml:id="_fsfml_8cpp_source_1l00180"/>00180 &#32;&#32;&#32;&#32;<emphasis role="keywordflow">for</emphasis>&#32;(<link linkend="_struct_element">Element</link>&amp;&#32;element&#32;:&#32;page.<link linkend="_struct_panel_1a2f6ee26081516d74db4eb5817d7bc7bc">elements</link>)&#32;{
+<anchor xml:id="_fsfml_8cpp_source_1l00181"/>00181 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<link linkend="_classfsfml_1af5ec5a73c3deb2ebea2b7ab05e550975">seeElement</link>(element);
+<anchor xml:id="_fsfml_8cpp_source_1l00182"/>00182 &#32;&#32;&#32;&#32;}
+<anchor xml:id="_fsfml_8cpp_source_1l00183"/>00183 &#32;&#32;&#32;&#32;<link linkend="_classfsfml_1a527d1f9dc8024dab8b6c0af4dc8c6a60">setActivePanel</link>(page);
+<anchor xml:id="_fsfml_8cpp_source_1l00184"/>00184 }
+<anchor xml:id="_fsfml_8cpp_source_1l00185"/>00185 
+<anchor xml:id="_fsfml_8cpp_source_1l00186"/><link linkend="_classfsfml_1aceb59f10f27fe378b70ba005cffd6e95">00186</link> <emphasis role="keywordtype">void</emphasis>&#32;<link linkend="_classfsfml_1aceb59f10f27fe378b70ba005cffd6e95">fsfml::drawActivePanel</link>()
+<anchor xml:id="_fsfml_8cpp_source_1l00187"/>00187 {
+<anchor xml:id="_fsfml_8cpp_source_1l00188"/>00188 &#32;&#32;&#32;&#32;<link linkend="_classfsfml_1af96aba7ca8dc0881d294824ef411423e">drawPanel</link>(<link linkend="_classfsfml_1a5f83a3514e66fd71f454ee6f64d3db4f">activePanel</link>);
+<anchor xml:id="_fsfml_8cpp_source_1l00189"/>00189 
+<anchor xml:id="_fsfml_8cpp_source_1l00190"/>00190 }
+<anchor xml:id="_fsfml_8cpp_source_1l00191"/>00191 
+<anchor xml:id="_fsfml_8cpp_source_1l00192"/><link linkend="_classfsfml_1ad0c2351c234aa59ef60b2c38b5fe5dd9">00192</link> <emphasis role="keywordtype">void</emphasis>&#32;<link linkend="_classfsfml_1ad0c2351c234aa59ef60b2c38b5fe5dd9">fsfml::handleActivePanel</link>()
+<anchor xml:id="_fsfml_8cpp_source_1l00193"/>00193 {
+<anchor xml:id="_fsfml_8cpp_source_1l00194"/>00194 &#32;&#32;&#32;&#32;<link linkend="_classfsfml_1a6b4ab16d375ff176a0533dccdc09fc20">PanelEvent</link>(<link linkend="_classfsfml_1a5f83a3514e66fd71f454ee6f64d3db4f">activePanel</link>);
+<anchor xml:id="_fsfml_8cpp_source_1l00195"/>00195 &#32;&#32;&#32;&#32;<link linkend="_classfsfml_1aceb59f10f27fe378b70ba005cffd6e95">drawActivePanel</link>();
+<anchor xml:id="_fsfml_8cpp_source_1l00196"/>00196 }
+<anchor xml:id="_fsfml_8cpp_source_1l00197"/>00197 
+<anchor xml:id="_fsfml_8cpp_source_1l00198"/><link linkend="_classfsfml_1a6b4ab16d375ff176a0533dccdc09fc20">00198</link> <emphasis role="keywordtype">void</emphasis>&#32;<link linkend="_classfsfml_1a6b4ab16d375ff176a0533dccdc09fc20">fsfml::PanelEvent</link>(<link linkend="_struct_panel">Panel</link>&amp;&#32;page)
+<anchor xml:id="_fsfml_8cpp_source_1l00199"/>00199 {
+<anchor xml:id="_fsfml_8cpp_source_1l00200"/>00200 &#32;&#32;&#32;&#32;<link linkend="_classfsfml_1a54f1c15c7c8063c7d8bb0eb2445515d5">autoResize</link>(page.<link linkend="_struct_panel_1a2f6ee26081516d74db4eb5817d7bc7bc">elements</link>);
+<anchor xml:id="_fsfml_8cpp_source_1l00201"/>00201 &#32;&#32;&#32;&#32;<link linkend="_classfsfml_1a91666521c0a898f3c36635657fe81e9d">autoPadding</link>(page.<link linkend="_struct_panel_1a2f6ee26081516d74db4eb5817d7bc7bc">elements</link>);
+<anchor xml:id="_fsfml_8cpp_source_1l00202"/>00202 &#32;&#32;&#32;&#32;<link linkend="_classfsfml_1aaedb2c3e71e110318848a8ccc956a2e2">autoSeparate</link>(page.<link linkend="_struct_panel_1a2f6ee26081516d74db4eb5817d7bc7bc">elements</link>);
+<anchor xml:id="_fsfml_8cpp_source_1l00203"/>00203 &#32;&#32;&#32;&#32;<emphasis role="keywordflow">for</emphasis>&#32;(<link linkend="_struct_element">Element</link>&amp;&#32;element&#32;:&#32;page.<link linkend="_struct_panel_1a2f6ee26081516d74db4eb5817d7bc7bc">elements</link>)&#32;{
+<anchor xml:id="_fsfml_8cpp_source_1l00204"/>00204 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<link linkend="_classfsfml_1a7e31fbe38054def5364e705811d867de">ElementEvent</link>(element);
+<anchor xml:id="_fsfml_8cpp_source_1l00205"/>00205 &#32;&#32;&#32;&#32;}
+<anchor xml:id="_fsfml_8cpp_source_1l00206"/>00206 
+<anchor xml:id="_fsfml_8cpp_source_1l00207"/>00207 }
+<anchor xml:id="_fsfml_8cpp_source_1l00208"/>00208 
+<anchor xml:id="_fsfml_8cpp_source_1l00209"/><link linkend="_classfsfml_1a7e31fbe38054def5364e705811d867de">00209</link> <emphasis role="keywordtype">void</emphasis>&#32;<link linkend="_classfsfml_1a7e31fbe38054def5364e705811d867de">fsfml::ElementEvent</link>(<link linkend="_struct_element">Element</link>&amp;&#32;element)
+<anchor xml:id="_fsfml_8cpp_source_1l00210"/>00210 {
+<anchor xml:id="_fsfml_8cpp_source_1l00211"/>00211 &#32;&#32;&#32;&#32;<link linkend="_classfsfml_1aa9726b537036754c5927b584939e0e75">updateElement</link>(element);
+<anchor xml:id="_fsfml_8cpp_source_1l00212"/>00212 &#32;&#32;&#32;&#32;<link linkend="_classfsfml_1a39cda5bb0baadfad22eb4af01b9b14a9">getElementState</link>(element);
+<anchor xml:id="_fsfml_8cpp_source_1l00213"/>00213 &#32;&#32;&#32;&#32;<link linkend="_classfsfml_1ac93c3196218e12fa0e03b10252f9a895">changeColorElement</link>(element);
+<anchor xml:id="_fsfml_8cpp_source_1l00214"/>00214 }
+<anchor xml:id="_fsfml_8cpp_source_1l00215"/>00215 
+<anchor xml:id="_fsfml_8cpp_source_1l00216"/><link linkend="_classfsfml_1a1e465443ae65cef7eff4c7eb68096edf">00216</link> <emphasis role="keywordtype">void</emphasis>&#32;<link linkend="_classfsfml_1a1e465443ae65cef7eff4c7eb68096edf">fsfml::initElementsPanel</link>(std::vector&lt;Element&gt;allElements,&#32;<link linkend="_struct_panel">Panel</link>&amp;&#32;page)
+<anchor xml:id="_fsfml_8cpp_source_1l00217"/>00217 {
+<anchor xml:id="_fsfml_8cpp_source_1l00218"/>00218 &#32;&#32;&#32;&#32;<emphasis role="keywordflow">for</emphasis>&#32;(<link linkend="_struct_element">Element</link>&amp;&#32;element&#32;:&#32;allElements)&#32;{
+<anchor xml:id="_fsfml_8cpp_source_1l00219"/>00219 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<link linkend="_classfsfml_1a8172dd2d6f556c7829e9adc766ef2565">addElement</link>(element,&#32;page);
+<anchor xml:id="_fsfml_8cpp_source_1l00220"/>00220 &#32;&#32;&#32;&#32;}
+<anchor xml:id="_fsfml_8cpp_source_1l00221"/>00221 }
+<anchor xml:id="_fsfml_8cpp_source_1l00222"/>00222 
+<anchor xml:id="_fsfml_8cpp_source_1l00223"/><link linkend="_classfsfml_1a51b36c00279c61c6e4688f9b21f0e972">00223</link> <emphasis role="keywordtype">void</emphasis>&#32;<link linkend="_classfsfml_1a1e465443ae65cef7eff4c7eb68096edf">fsfml::initElementsPanel</link>(std::vector&lt;std::string&gt;allElementstr,&#32;<link linkend="_struct_panel">Panel</link>&amp;&#32;page)
+<anchor xml:id="_fsfml_8cpp_source_1l00224"/>00224 {
+<anchor xml:id="_fsfml_8cpp_source_1l00225"/>00225 &#32;&#32;&#32;&#32;std::vector&lt;Element&gt;allElements;
+<anchor xml:id="_fsfml_8cpp_source_1l00226"/>00226 &#32;&#32;&#32;&#32;<emphasis role="keywordflow">for</emphasis>&#32;(std::string&amp;&#32;element&#32;:&#32;allElementstr)&#32;{
+<anchor xml:id="_fsfml_8cpp_source_1l00227"/>00227 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;allElements.push_back(<link linkend="_classfsfml_1a9abd23f72500b09571e79f521a0e57e6">initElement</link>(element));
+<anchor xml:id="_fsfml_8cpp_source_1l00228"/>00228 &#32;&#32;&#32;&#32;}
+<anchor xml:id="_fsfml_8cpp_source_1l00229"/>00229 &#32;&#32;&#32;&#32;<link linkend="_classfsfml_1a1e465443ae65cef7eff4c7eb68096edf">initElementsPanel</link>(allElements,&#32;page);
+<anchor xml:id="_fsfml_8cpp_source_1l00230"/>00230 }
+<anchor xml:id="_fsfml_8cpp_source_1l00231"/>00231 
+<anchor xml:id="_fsfml_8cpp_source_1l00232"/><link linkend="_classfsfml_1ab45b3aa9320cf22836dc133f40186955">00232</link> <emphasis role="keywordtype">void</emphasis>&#32;<link linkend="_classfsfml_1ab45b3aa9320cf22836dc133f40186955">fsfml::initPanel</link>(<link linkend="_struct_panel">Panel</link>&amp;&#32;page,&#32;std::string&#32;<emphasis role="keywordtype">id</emphasis>,&#32;std::vector&lt;std::string&gt;&amp;&#32;allstr)
+<anchor xml:id="_fsfml_8cpp_source_1l00233"/>00233 {
+<anchor xml:id="_fsfml_8cpp_source_1l00234"/>00234 &#32;&#32;&#32;&#32;page.<link linkend="_struct_panel_1a8dab698a662660c5b2e5d5b4e742f96e">id</link>&#32;=&#32;id;
+<anchor xml:id="_fsfml_8cpp_source_1l00235"/>00235 &#32;&#32;&#32;&#32;<link linkend="_classfsfml_1a1e465443ae65cef7eff4c7eb68096edf">initElementsPanel</link>(allstr,&#32;page);
+<anchor xml:id="_fsfml_8cpp_source_1l00236"/>00236 &#32;&#32;&#32;&#32;<link linkend="_classfsfml_1a95f6eb53223fafa2f2b06548f4d1b323">seePanel</link>(page);
+<anchor xml:id="_fsfml_8cpp_source_1l00237"/>00237 }
+<anchor xml:id="_fsfml_8cpp_source_1l00238"/>00238 
+<anchor xml:id="_fsfml_8cpp_source_1l00239"/><link linkend="_classfsfml_1a405db5ed694c7e2664a82f690eeb87d2">00239</link> <emphasis role="keywordtype">void</emphasis>&#32;<link linkend="_classfsfml_1a405db5ed694c7e2664a82f690eeb87d2">fsfml::initMenu</link>()
+<anchor xml:id="_fsfml_8cpp_source_1l00240"/>00240 {
+<anchor xml:id="_fsfml_8cpp_source_1l00241"/>00241 &#32;&#32;&#32;&#32;std::vector&lt;std::string&gt;&#32;allstr&#32;=&#32;{};
+<anchor xml:id="_fsfml_8cpp_source_1l00242"/>00242 &#32;&#32;&#32;&#32;std::string&#32;<emphasis role="keywordtype">id</emphasis>&#32;=&#32;<emphasis role="stringliteral">&quot;Menu&quot;</emphasis>;
+<anchor xml:id="_fsfml_8cpp_source_1l00243"/>00243 &#32;&#32;&#32;&#32;<link linkend="_classfsfml_1ab45b3aa9320cf22836dc133f40186955">initPanel</link>(<link linkend="_classfsfml_1a1f25a4160a80be0dba66bfb6a081d953">Menu</link>,&#32;<emphasis role="keywordtype">id</emphasis>,&#32;allstr);
+<anchor xml:id="_fsfml_8cpp_source_1l00244"/>00244 }
+<anchor xml:id="_fsfml_8cpp_source_1l00245"/>00245 
+<anchor xml:id="_fsfml_8cpp_source_1l00246"/><link linkend="_classfsfml_1ad18f9a13c0057b7a42ec1bab4cf15376">00246</link> <emphasis role="keywordtype">void</emphasis>&#32;<link linkend="_classfsfml_1ad18f9a13c0057b7a42ec1bab4cf15376">fsfml::initAllPanels</link>()
+<anchor xml:id="_fsfml_8cpp_source_1l00247"/>00247 {
+<anchor xml:id="_fsfml_8cpp_source_1l00248"/>00248 &#32;&#32;&#32;&#32;<link linkend="_classfsfml_1a405db5ed694c7e2664a82f690eeb87d2">initMenu</link>();
+<anchor xml:id="_fsfml_8cpp_source_1l00249"/>00249 }
+<anchor xml:id="_fsfml_8cpp_source_1l00250"/>00250 
+<anchor xml:id="_fsfml_8cpp_source_1l00251"/>00251 
+<anchor xml:id="_fsfml_8cpp_source_1l00252"/><link linkend="_classfsfml_1a3fc8c544051e5c26bc9376fc255b87a4">00252</link> <emphasis role="keywordtype">void</emphasis>&#32;<link linkend="_classfsfml_1a3fc8c544051e5c26bc9376fc255b87a4">fsfml::loadAllTextures</link>(<emphasis role="keyword">const</emphasis>&#32;std::vector&lt;std::string&gt;&amp;&#32;allPaths)
+<anchor xml:id="_fsfml_8cpp_source_1l00253"/>00253 {
+<anchor xml:id="_fsfml_8cpp_source_1l00254"/>00254 &#32;&#32;&#32;&#32;<emphasis role="keywordflow">for</emphasis>&#32;(<emphasis role="keyword">const</emphasis>&#32;<emphasis role="keyword">auto</emphasis>&#32;path&#32;:&#32;allPaths)&#32;{
+<anchor xml:id="_fsfml_8cpp_source_1l00255"/>00255 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<link linkend="_classfsfml_1a85e3525bac516648d01f23a1764087c4">loadTexture</link>(path);
+<anchor xml:id="_fsfml_8cpp_source_1l00256"/>00256 &#32;&#32;&#32;&#32;}
+<anchor xml:id="_fsfml_8cpp_source_1l00257"/>00257 }
+<anchor xml:id="_fsfml_8cpp_source_1l00258"/>00258 
+<anchor xml:id="_fsfml_8cpp_source_1l00259"/><link linkend="_classfsfml_1ab642e067930233a3a95068fb80c7c410">00259</link> <emphasis role="keywordtype">void</emphasis>&#32;<link linkend="_classfsfml_1ab642e067930233a3a95068fb80c7c410">fsfml::initGraphics</link>()
+<anchor xml:id="_fsfml_8cpp_source_1l00260"/>00260 {
+<anchor xml:id="_fsfml_8cpp_source_1l00261"/>00261 &#32;&#32;&#32;&#32;std::vector&lt;std::string&gt;&#32;allpaths;
+<anchor xml:id="_fsfml_8cpp_source_1l00262"/>00262 &#32;&#32;&#32;&#32;<link linkend="_classfsfml_1a3fc8c544051e5c26bc9376fc255b87a4">loadAllTextures</link>(allpaths);
+<anchor xml:id="_fsfml_8cpp_source_1l00263"/>00263 &#32;&#32;&#32;&#32;<link linkend="_classfsfml_1a5528a53174db6d10551021c4371ead80">loadAllSprites</link>(allpaths);
+<anchor xml:id="_fsfml_8cpp_source_1l00264"/>00264 }
+<anchor xml:id="_fsfml_8cpp_source_1l00265"/>00265 
+<anchor xml:id="_fsfml_8cpp_source_1l00266"/><link linkend="_classfsfml_1a7730d60b97128943b4cd89238cf3fe43">00266</link> <emphasis role="keywordtype">void</emphasis>&#32;<link linkend="_classfsfml_1a7730d60b97128943b4cd89238cf3fe43">fsfml::add</link>(std::vector&lt;std::string&gt;&amp;&#32;vect,&#32;std::string&#32;str)
+<anchor xml:id="_fsfml_8cpp_source_1l00267"/>00267 {
+<anchor xml:id="_fsfml_8cpp_source_1l00268"/>00268 &#32;&#32;&#32;&#32;vect.push_back(str);
+<anchor xml:id="_fsfml_8cpp_source_1l00269"/>00269 }
+<anchor xml:id="_fsfml_8cpp_source_1l00270"/>00270 
+<anchor xml:id="_fsfml_8cpp_source_1l00271"/><link linkend="_classfsfml_1a527d1f9dc8024dab8b6c0af4dc8c6a60">00271</link> <emphasis role="keywordtype">void</emphasis>&#32;<link linkend="_classfsfml_1a527d1f9dc8024dab8b6c0af4dc8c6a60">fsfml::setActivePanel</link>(<link linkend="_struct_panel">Panel</link>&amp;&#32;page)
+<anchor xml:id="_fsfml_8cpp_source_1l00272"/>00272 {
+<anchor xml:id="_fsfml_8cpp_source_1l00273"/>00273 &#32;&#32;&#32;&#32;<link linkend="_classfsfml_1a5f83a3514e66fd71f454ee6f64d3db4f">activePanel</link>&#32;=&#32;page;
+<anchor xml:id="_fsfml_8cpp_source_1l00274"/>00274 }
+<anchor xml:id="_fsfml_8cpp_source_1l00275"/>00275 
+<anchor xml:id="_fsfml_8cpp_source_1l00276"/>00276 
+<anchor xml:id="_fsfml_8cpp_source_1l00277"/><link linkend="_classfsfml_1a7473fd3f3ce08ac3e25dc26fad599728">00277</link> <emphasis role="keywordtype">void</emphasis>&#32;<link linkend="_classfsfml_1a7473fd3f3ce08ac3e25dc26fad599728">fsfml::createTexture</link>(std::string&#32;nameTexture,&#32;<emphasis role="keywordtype">int</emphasis>&#32;width,&#32;<emphasis role="keywordtype">int</emphasis>&#32;height)
+<anchor xml:id="_fsfml_8cpp_source_1l00278"/>00278 {
+<anchor xml:id="_fsfml_8cpp_source_1l00279"/>00279 &#32;&#32;&#32;&#32;sf::Texture*&#32;texture&#32;=&#32;<emphasis role="keyword">nullptr</emphasis>;
+<anchor xml:id="_fsfml_8cpp_source_1l00280"/>00280 &#32;&#32;&#32;&#32;texture-&gt;create(width,&#32;height);
+<anchor xml:id="_fsfml_8cpp_source_1l00281"/>00281 &#32;&#32;&#32;&#32;<link linkend="_classfsfml_1a1be6e8780abb71f21c69ce8bc3da6bee">addTexture</link>(nameTexture,&#32;texture);
+<anchor xml:id="_fsfml_8cpp_source_1l00282"/>00282 }
+<anchor xml:id="_fsfml_8cpp_source_1l00283"/>00283 
+<anchor xml:id="_fsfml_8cpp_source_1l00284"/><link linkend="_classfsfml_1a7e5def29a9cfa65cd2fad8622ca68128">00284</link> <emphasis role="keywordtype">void</emphasis>&#32;<link linkend="_classfsfml_1a7e5def29a9cfa65cd2fad8622ca68128">fsfml::drawSprite</link>(sf::Sprite&amp;&#32;sprite)&#32;{
+<anchor xml:id="_fsfml_8cpp_source_1l00285"/>00285 &#32;&#32;&#32;&#32;<link linkend="_classfsfml_1a290647b737e9c2952f20f2772ee8abe8">window</link>-&gt;draw(sprite);
+<anchor xml:id="_fsfml_8cpp_source_1l00286"/>00286 }
+<anchor xml:id="_fsfml_8cpp_source_1l00287"/>00287 
+<anchor xml:id="_fsfml_8cpp_source_1l00288"/><link linkend="_classfsfml_1a3932b66747544d6b2f03f0c7c0ec73f1">00288</link> <emphasis role="keywordtype">void</emphasis>&#32;<link linkend="_classfsfml_1a3932b66747544d6b2f03f0c7c0ec73f1">fsfml::drawElement</link>(<link linkend="_struct_element">Element</link>&amp;&#32;element)
+<anchor xml:id="_fsfml_8cpp_source_1l00289"/>00289 {
+<anchor xml:id="_fsfml_8cpp_source_1l00290"/>00290 &#32;&#32;&#32;&#32;<emphasis role="keywordflow">if</emphasis>&#32;(element.<link linkend="_struct_element_1a07e1e91123c32209a98fc7530e55a541">isVisible</link>)<link linkend="_classfsfml_1a7e5def29a9cfa65cd2fad8622ca68128">drawSprite</link>(element.<link linkend="_struct_element_1a3f9e10790e44b0caa7d3ccf4e55c4991">sprite</link>);
+<anchor xml:id="_fsfml_8cpp_source_1l00291"/>00291 }
+<anchor xml:id="_fsfml_8cpp_source_1l00292"/>00292 
+<anchor xml:id="_fsfml_8cpp_source_1l00293"/><link linkend="_classfsfml_1af96aba7ca8dc0881d294824ef411423e">00293</link> <emphasis role="keywordtype">void</emphasis>&#32;<link linkend="_classfsfml_1af96aba7ca8dc0881d294824ef411423e">fsfml::drawPanel</link>(<link linkend="_struct_panel">Panel</link>&amp;&#32;page)
+<anchor xml:id="_fsfml_8cpp_source_1l00294"/>00294 {
+<anchor xml:id="_fsfml_8cpp_source_1l00295"/>00295 &#32;&#32;&#32;&#32;<emphasis role="keywordflow">for</emphasis>&#32;(<link linkend="_struct_element">Element</link>&amp;&#32;element&#32;:&#32;page.<link linkend="_struct_panel_1a2f6ee26081516d74db4eb5817d7bc7bc">elements</link>)&#32;{
+<anchor xml:id="_fsfml_8cpp_source_1l00296"/>00296 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<link linkend="_classfsfml_1a3932b66747544d6b2f03f0c7c0ec73f1">drawElement</link>(element);
+<anchor xml:id="_fsfml_8cpp_source_1l00297"/>00297 &#32;&#32;&#32;&#32;}
+<anchor xml:id="_fsfml_8cpp_source_1l00298"/>00298 }
+<anchor xml:id="_fsfml_8cpp_source_1l00299"/>00299 
+<anchor xml:id="_fsfml_8cpp_source_1l00300"/><link linkend="_classfsfml_1a635e987dc4ec2825030a9b19e4d0dbf1">00300</link> <emphasis role="keywordtype">void</emphasis>&#32;<link linkend="_classfsfml_1a635e987dc4ec2825030a9b19e4d0dbf1">fsfml::drawAllSprites</link>(std::vector&lt;sf::Sprite&gt;&amp;&#32;allSprites)
+<anchor xml:id="_fsfml_8cpp_source_1l00301"/>00301 {
+<anchor xml:id="_fsfml_8cpp_source_1l00302"/>00302 &#32;&#32;&#32;&#32;<emphasis role="keywordflow">for</emphasis>&#32;(sf::Sprite&amp;&#32;sprite&#32;:&#32;allSprites)&#32;{
+<anchor xml:id="_fsfml_8cpp_source_1l00303"/>00303 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<link linkend="_classfsfml_1a7e5def29a9cfa65cd2fad8622ca68128">drawSprite</link>(sprite);
+<anchor xml:id="_fsfml_8cpp_source_1l00304"/>00304 &#32;&#32;&#32;&#32;}
+<anchor xml:id="_fsfml_8cpp_source_1l00305"/>00305 }
+<anchor xml:id="_fsfml_8cpp_source_1l00306"/>00306 
+<anchor xml:id="_fsfml_8cpp_source_1l00307"/>00307 
+<anchor xml:id="_fsfml_8cpp_source_1l00308"/>00308 
+<anchor xml:id="_fsfml_8cpp_source_1l00309"/><link linkend="_classfsfml_1a5eb57f7a09768d185d53cf87fb8544ee">00309</link> <emphasis role="keywordtype">void</emphasis>&#32;<link linkend="_classfsfml_1a5eb57f7a09768d185d53cf87fb8544ee">fsfml::setSpriteColor</link>(sf::Sprite&amp;&#32;sprite,&#32;<emphasis role="keyword">const</emphasis>&#32;sf::Color&amp;&#32;color)&#32;{
+<anchor xml:id="_fsfml_8cpp_source_1l00310"/>00310 &#32;&#32;&#32;&#32;sprite.setColor(color);
+<anchor xml:id="_fsfml_8cpp_source_1l00311"/>00311 }
+<anchor xml:id="_fsfml_8cpp_source_1l00312"/>00312 
+<anchor xml:id="_fsfml_8cpp_source_1l00313"/><link linkend="_classfsfml_1aa37c181bb8a16b68af96d615f3d0ad5c">00313</link> <emphasis role="keywordtype">void</emphasis>&#32;<link linkend="_classfsfml_1aa37c181bb8a16b68af96d615f3d0ad5c">fsfml::updateAllElements</link>(<link linkend="_struct_panel">Panel</link>&amp;&#32;panel)
+<anchor xml:id="_fsfml_8cpp_source_1l00314"/>00314 {
+<anchor xml:id="_fsfml_8cpp_source_1l00315"/>00315 &#32;&#32;&#32;&#32;<emphasis role="keywordflow">for</emphasis>&#32;(<link linkend="_struct_element">Element</link>&amp;&#32;element&#32;:&#32;panel.<link linkend="_struct_panel_1a2f6ee26081516d74db4eb5817d7bc7bc">elements</link>)&#32;{
+<anchor xml:id="_fsfml_8cpp_source_1l00316"/>00316 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<link linkend="_classfsfml_1aa9726b537036754c5927b584939e0e75">updateElement</link>(element);
+<anchor xml:id="_fsfml_8cpp_source_1l00317"/>00317 &#32;&#32;&#32;&#32;}
+<anchor xml:id="_fsfml_8cpp_source_1l00318"/>00318 }
+<anchor xml:id="_fsfml_8cpp_source_1l00319"/>00319 
+<anchor xml:id="_fsfml_8cpp_source_1l00320"/>00320 
+<anchor xml:id="_fsfml_8cpp_source_1l00321"/>00321 
+<anchor xml:id="_fsfml_8cpp_source_1l00322"/><link linkend="_classfsfml_1a914f1f9ee2c9f8a97db5704052161a3e">00322</link> <emphasis role="keywordtype">void</emphasis>&#32;<link linkend="_classfsfml_1a914f1f9ee2c9f8a97db5704052161a3e">fsfml::moveSprite</link>(sf::Sprite&amp;&#32;sprite,&#32;<emphasis role="keyword">const</emphasis>&#32;sf::Vector2f&amp;&#32;vect)&#32;{
+<anchor xml:id="_fsfml_8cpp_source_1l00323"/>00323 &#32;&#32;&#32;&#32;sprite.move(vect);
+<anchor xml:id="_fsfml_8cpp_source_1l00324"/>00324 }
+<anchor xml:id="_fsfml_8cpp_source_1l00325"/>00325 
+<anchor xml:id="_fsfml_8cpp_source_1l00326"/><link linkend="_classfsfml_1aaedb2c3e71e110318848a8ccc956a2e2">00326</link> <emphasis role="keywordtype">void</emphasis>&#32;<link linkend="_classfsfml_1aaedb2c3e71e110318848a8ccc956a2e2">fsfml::autoSeparate</link>(std::vector&lt;Element&gt;&amp;&#32;elements)
+<anchor xml:id="_fsfml_8cpp_source_1l00327"/>00327 {
+<anchor xml:id="_fsfml_8cpp_source_1l00328"/>00328 &#32;&#32;&#32;&#32;<emphasis role="keywordflow">for</emphasis>&#32;(<emphasis role="keywordtype">int</emphasis>&#32;i&#32;=&#32;0;&#32;i&#32;&lt;&#32;elements.size()&#32;-&#32;1;&#32;++i)&#32;{
+<anchor xml:id="_fsfml_8cpp_source_1l00329"/>00329 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<link linkend="_classfsfml_1aac1968ad932a98b9142e4cee0c38cd2a">separateElementX</link>(elements.at(i),&#32;elements.at(i&#32;+&#32;1));
+<anchor xml:id="_fsfml_8cpp_source_1l00330"/>00330 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<link linkend="_classfsfml_1a9f922766e67798b7172b4479a89eed9b">separateElementY</link>(elements.at(i),&#32;elements.at(i&#32;+&#32;1));
+<anchor xml:id="_fsfml_8cpp_source_1l00331"/>00331 &#32;&#32;&#32;&#32;}
+<anchor xml:id="_fsfml_8cpp_source_1l00332"/>00332 
+<anchor xml:id="_fsfml_8cpp_source_1l00333"/>00333 }
+<anchor xml:id="_fsfml_8cpp_source_1l00334"/>00334 
+<anchor xml:id="_fsfml_8cpp_source_1l00335"/><link linkend="_classfsfml_1aac1968ad932a98b9142e4cee0c38cd2a">00335</link> <emphasis role="keywordtype">void</emphasis>&#32;<link linkend="_classfsfml_1aac1968ad932a98b9142e4cee0c38cd2a">fsfml::separateElementX</link>(<link linkend="_struct_element">Element</link>&amp;&#32;unmovable,&#32;<link linkend="_struct_element">Element</link>&amp;&#32;movable)
+<anchor xml:id="_fsfml_8cpp_source_1l00336"/>00336 {
+<anchor xml:id="_fsfml_8cpp_source_1l00337"/>00337 &#32;&#32;&#32;&#32;sf::Vector2f&#32;distance&#32;=&#32;{&#32;(float)<link linkend="_classfsfml_1a27da377b199c90dbed037bf3c298b58f">distanceBorderElementX</link>(unmovable,movable),0&#32;};
+<anchor xml:id="_fsfml_8cpp_source_1l00338"/>00338 &#32;&#32;&#32;&#32;<link linkend="_classfsfml_1a9cfc61fa4330f08605082f2dc0a3763f">moveElement</link>(movable,&#32;distance);
+<anchor xml:id="_fsfml_8cpp_source_1l00339"/>00339 }
+<anchor xml:id="_fsfml_8cpp_source_1l00340"/>00340 
+<anchor xml:id="_fsfml_8cpp_source_1l00341"/>00341 
+<anchor xml:id="_fsfml_8cpp_source_1l00342"/><link linkend="_classfsfml_1a9f922766e67798b7172b4479a89eed9b">00342</link> <emphasis role="keywordtype">void</emphasis>&#32;<link linkend="_classfsfml_1a9f922766e67798b7172b4479a89eed9b">fsfml::separateElementY</link>(<link linkend="_struct_element">Element</link>&amp;&#32;unmovable,&#32;<link linkend="_struct_element">Element</link>&amp;&#32;movable)
+<anchor xml:id="_fsfml_8cpp_source_1l00343"/>00343 {
+<anchor xml:id="_fsfml_8cpp_source_1l00344"/>00344 &#32;&#32;&#32;&#32;sf::Vector2f&#32;distance&#32;=&#32;{&#32;0,&#32;(float)<link linkend="_classfsfml_1a46e8d36f5909284ba10f98b1062b2e8d">distanceBorderElementY</link>(unmovable,movable)&#32;};
+<anchor xml:id="_fsfml_8cpp_source_1l00345"/>00345 &#32;&#32;&#32;&#32;<link linkend="_classfsfml_1a9cfc61fa4330f08605082f2dc0a3763f">moveElement</link>(movable,&#32;distance);
+<anchor xml:id="_fsfml_8cpp_source_1l00346"/>00346 }
+<anchor xml:id="_fsfml_8cpp_source_1l00347"/>00347 
+<anchor xml:id="_fsfml_8cpp_source_1l00348"/><link linkend="_classfsfml_1a6fb612c057edb4d658204982c9212a6a">00348</link> <emphasis role="keywordtype">void</emphasis>&#32;<link linkend="_classfsfml_1a6fb612c057edb4d658204982c9212a6a">fsfml::addPadding</link>(<link linkend="_struct_element">Element</link>&amp;&#32;elem,&#32;<link linkend="_struct_padding">Padding</link>&#32;padding)
+<anchor xml:id="_fsfml_8cpp_source_1l00349"/>00349 {
+<anchor xml:id="_fsfml_8cpp_source_1l00350"/>00350 &#32;&#32;&#32;&#32;elem.<link linkend="_struct_element_1aa94441b1818c1267cb015bdb1db0b157">setPadding</link>(padding);
+<anchor xml:id="_fsfml_8cpp_source_1l00351"/>00351 }
+<anchor xml:id="_fsfml_8cpp_source_1l00352"/>00352 
+<anchor xml:id="_fsfml_8cpp_source_1l00353"/><link linkend="_classfsfml_1aa0d22ed9a669bf2c60e3210c42683598">00353</link> <emphasis role="keywordtype">void</emphasis>&#32;<link linkend="_classfsfml_1a6fb612c057edb4d658204982c9212a6a">fsfml::addPadding</link>(std::vector&lt;Element&gt;&amp;&#32;allElem,&#32;<link linkend="_struct_padding">Padding</link>&#32;padding)
+<anchor xml:id="_fsfml_8cpp_source_1l00354"/>00354 {
+<anchor xml:id="_fsfml_8cpp_source_1l00355"/>00355 &#32;&#32;&#32;&#32;<emphasis role="keywordflow">for</emphasis>&#32;(<link linkend="_struct_element">Element</link>&amp;&#32;elem&#32;:&#32;allElem)&#32;{
+<anchor xml:id="_fsfml_8cpp_source_1l00356"/>00356 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<link linkend="_classfsfml_1a6fb612c057edb4d658204982c9212a6a">addPadding</link>(elem,&#32;padding);
+<anchor xml:id="_fsfml_8cpp_source_1l00357"/>00357 &#32;&#32;&#32;&#32;}
+<anchor xml:id="_fsfml_8cpp_source_1l00358"/>00358 }
+<anchor xml:id="_fsfml_8cpp_source_1l00359"/>00359 
+<anchor xml:id="_fsfml_8cpp_source_1l00360"/><link linkend="_classfsfml_1a46e8d36f5909284ba10f98b1062b2e8d">00360</link> <emphasis role="keywordtype">int</emphasis>&#32;<link linkend="_classfsfml_1a46e8d36f5909284ba10f98b1062b2e8d">fsfml::distanceBorderElementY</link>(<link linkend="_struct_element">Element</link>&amp;&#32;elem1,&#32;<link linkend="_struct_element">Element</link>&amp;&#32;elem2)
+<anchor xml:id="_fsfml_8cpp_source_1l00361"/>00361 {
+<anchor xml:id="_fsfml_8cpp_source_1l00362"/>00362 &#32;&#32;&#32;&#32;<emphasis role="keywordtype">int</emphasis>&#32;borderbottomelem1&#32;=&#32;elem1.<link linkend="_struct_element_1a5596f3c7392501833919c2e353702f42">bottomRight</link>.y;
+<anchor xml:id="_fsfml_8cpp_source_1l00363"/>00363 &#32;&#32;&#32;&#32;<emphasis role="keywordtype">int</emphasis>&#32;bordertopelem2&#32;=&#32;elem2.<link linkend="_struct_element_1a02fd6a48c84dfae610dff4a7f1088bff">topLeft</link>.y;
+<anchor xml:id="_fsfml_8cpp_source_1l00364"/>00364 &#32;&#32;&#32;&#32;<emphasis role="keywordtype">int</emphasis>&#32;distance&#32;=&#32;bordertopelem2&#32;-&#32;borderbottomelem1;
+<anchor xml:id="_fsfml_8cpp_source_1l00365"/>00365 &#32;&#32;&#32;&#32;<emphasis role="keywordflow">if</emphasis>&#32;(distance&#32;&gt;=&#32;0)<emphasis role="keywordflow">return</emphasis>&#32;0;
+<anchor xml:id="_fsfml_8cpp_source_1l00366"/>00366 &#32;&#32;&#32;&#32;<emphasis role="keywordflow">else</emphasis>&#32;<emphasis role="keywordflow">return</emphasis>&#32;abs(distance);
+<anchor xml:id="_fsfml_8cpp_source_1l00367"/>00367 }
+<anchor xml:id="_fsfml_8cpp_source_1l00368"/>00368 
+<anchor xml:id="_fsfml_8cpp_source_1l00369"/><link linkend="_classfsfml_1a27da377b199c90dbed037bf3c298b58f">00369</link> <emphasis role="keywordtype">int</emphasis>&#32;<link linkend="_classfsfml_1a27da377b199c90dbed037bf3c298b58f">fsfml::distanceBorderElementX</link>(<link linkend="_struct_element">Element</link>&amp;&#32;elem1,&#32;<link linkend="_struct_element">Element</link>&amp;&#32;elem2)
+<anchor xml:id="_fsfml_8cpp_source_1l00370"/>00370 {
+<anchor xml:id="_fsfml_8cpp_source_1l00371"/>00371 &#32;&#32;&#32;&#32;<emphasis role="keywordtype">int</emphasis>&#32;borderrightelem1&#32;=&#32;elem1.<link linkend="_struct_element_1a5596f3c7392501833919c2e353702f42">bottomRight</link>.x;
+<anchor xml:id="_fsfml_8cpp_source_1l00372"/>00372 &#32;&#32;&#32;&#32;<emphasis role="keywordtype">int</emphasis>&#32;borderleftelem2&#32;=&#32;elem2.<link linkend="_struct_element_1a02fd6a48c84dfae610dff4a7f1088bff">topLeft</link>.x;
+<anchor xml:id="_fsfml_8cpp_source_1l00373"/>00373 &#32;&#32;&#32;&#32;<emphasis role="keywordtype">int</emphasis>&#32;distance&#32;=&#32;borderleftelem2&#32;-&#32;borderrightelem1;
+<anchor xml:id="_fsfml_8cpp_source_1l00374"/>00374 &#32;&#32;&#32;&#32;<emphasis role="keywordflow">if</emphasis>&#32;(distance&#32;&gt;=&#32;0)<emphasis role="keywordflow">return</emphasis>&#32;0;
+<anchor xml:id="_fsfml_8cpp_source_1l00375"/>00375 &#32;&#32;&#32;&#32;<emphasis role="keywordflow">else</emphasis>&#32;<emphasis role="keywordflow">return</emphasis>&#32;abs(distance);
+<anchor xml:id="_fsfml_8cpp_source_1l00376"/>00376 }
+<anchor xml:id="_fsfml_8cpp_source_1l00377"/>00377 
+<anchor xml:id="_fsfml_8cpp_source_1l00378"/><link linkend="_classfsfml_1a9cfc61fa4330f08605082f2dc0a3763f">00378</link> <emphasis role="keywordtype">void</emphasis>&#32;<link linkend="_classfsfml_1a9cfc61fa4330f08605082f2dc0a3763f">fsfml::moveElement</link>(<link linkend="_struct_element">Element</link>&amp;&#32;element,&#32;<emphasis role="keyword">const</emphasis>&#32;sf::Vector2f&amp;&#32;vect)
+<anchor xml:id="_fsfml_8cpp_source_1l00379"/>00379 {
+<anchor xml:id="_fsfml_8cpp_source_1l00380"/>00380 &#32;&#32;&#32;&#32;<link linkend="_classfsfml_1a914f1f9ee2c9f8a97db5704052161a3e">moveSprite</link>(element.<link linkend="_struct_element_1a3f9e10790e44b0caa7d3ccf4e55c4991">sprite</link>,&#32;vect);
+<anchor xml:id="_fsfml_8cpp_source_1l00381"/>00381 &#32;&#32;&#32;&#32;<link linkend="_classfsfml_1aa9726b537036754c5927b584939e0e75">updateElement</link>(element);
+<anchor xml:id="_fsfml_8cpp_source_1l00382"/>00382 }
+<anchor xml:id="_fsfml_8cpp_source_1l00383"/>00383 
+<anchor xml:id="_fsfml_8cpp_source_1l00384"/><link linkend="_classfsfml_1a8d52ac7c812248f93f81822eab4580ea">00384</link> <emphasis role="keywordtype">void</emphasis>&#32;<link linkend="_classfsfml_1a8d52ac7c812248f93f81822eab4580ea">fsfml::rotateSprite</link>(sf::Sprite&amp;&#32;sprite,&#32;<emphasis role="keywordtype">float</emphasis>&#32;angle)&#32;{
+<anchor xml:id="_fsfml_8cpp_source_1l00385"/>00385 &#32;&#32;&#32;&#32;sprite.rotate(angle);
+<anchor xml:id="_fsfml_8cpp_source_1l00386"/>00386 }
+<anchor xml:id="_fsfml_8cpp_source_1l00387"/>00387 
+<anchor xml:id="_fsfml_8cpp_source_1l00388"/><link linkend="_classfsfml_1a5d4a13041264cd403779edb49725cb6e">00388</link> <emphasis role="keywordtype">void</emphasis>&#32;<link linkend="_classfsfml_1a5d4a13041264cd403779edb49725cb6e">fsfml::setRelSpriteScale</link>(sf::Sprite&amp;&#32;sprite,&#32;<emphasis role="keyword">const</emphasis>&#32;sf::Vector2f&amp;&#32;vect)&#32;{
+<anchor xml:id="_fsfml_8cpp_source_1l00389"/>00389 &#32;&#32;&#32;&#32;sprite.scale(vect);
+<anchor xml:id="_fsfml_8cpp_source_1l00390"/>00390 }
+<anchor xml:id="_fsfml_8cpp_source_1l00391"/>00391 
+<anchor xml:id="_fsfml_8cpp_source_1l00392"/><link linkend="_classfsfml_1a3c57a8e5fdeed43ced308ab4d19c193b">00392</link> <emphasis role="keywordtype">void</emphasis>&#32;<link linkend="_classfsfml_1a3c57a8e5fdeed43ced308ab4d19c193b">fsfml::setAbsSpriteScale</link>(sf::Sprite&amp;&#32;sprite,&#32;<emphasis role="keyword">const</emphasis>&#32;sf::Vector2f&amp;&#32;vect)&#32;{
+<anchor xml:id="_fsfml_8cpp_source_1l00393"/>00393 &#32;&#32;&#32;&#32;sprite.setScale(vect);
+<anchor xml:id="_fsfml_8cpp_source_1l00394"/>00394 }
+<anchor xml:id="_fsfml_8cpp_source_1l00395"/>00395 
+<anchor xml:id="_fsfml_8cpp_source_1l00396"/><link linkend="_classfsfml_1ac883cf5d542110aa347e2e4d2991c5f7">00396</link> <emphasis role="keywordtype">void</emphasis>&#32;<link linkend="_classfsfml_1ac883cf5d542110aa347e2e4d2991c5f7">fsfml::setSpritePos</link>(sf::Sprite&amp;&#32;sprite,&#32;<emphasis role="keyword">const</emphasis>&#32;sf::Vector2f&amp;&#32;vect)
+<anchor xml:id="_fsfml_8cpp_source_1l00397"/>00397 {
+<anchor xml:id="_fsfml_8cpp_source_1l00398"/>00398 &#32;&#32;&#32;&#32;sprite.setPosition(vect);
+<anchor xml:id="_fsfml_8cpp_source_1l00399"/>00399 }
+<anchor xml:id="_fsfml_8cpp_source_1l00400"/>00400 
+<anchor xml:id="_fsfml_8cpp_source_1l00401"/><link linkend="_classfsfml_1ab87043dece41efe5efaa9c8d68f11a78">00401</link> <emphasis role="keywordtype">void</emphasis>&#32;<link linkend="_classfsfml_1ab87043dece41efe5efaa9c8d68f11a78">fsfml::setElementPos</link>(<link linkend="_struct_element">Element</link>&amp;&#32;element,&#32;<emphasis role="keyword">const</emphasis>&#32;sf::Vector2f&amp;&#32;vect)
+<anchor xml:id="_fsfml_8cpp_source_1l00402"/>00402 {
+<anchor xml:id="_fsfml_8cpp_source_1l00403"/>00403 &#32;&#32;&#32;&#32;<link linkend="_classfsfml_1ac883cf5d542110aa347e2e4d2991c5f7">setSpritePos</link>(element.<link linkend="_struct_element_1a3f9e10790e44b0caa7d3ccf4e55c4991">sprite</link>,&#32;vect);
+<anchor xml:id="_fsfml_8cpp_source_1l00404"/>00404 &#32;&#32;&#32;&#32;<link linkend="_classfsfml_1aa9726b537036754c5927b584939e0e75">updateElement</link>(element);
+<anchor xml:id="_fsfml_8cpp_source_1l00405"/>00405 }
+<anchor xml:id="_fsfml_8cpp_source_1l00406"/>00406 
+<anchor xml:id="_fsfml_8cpp_source_1l00407"/>00407 
+<anchor xml:id="_fsfml_8cpp_source_1l00408"/>00408 
+<anchor xml:id="_fsfml_8cpp_source_1l00409"/><link linkend="_classfsfml_1a91426b963b5b55787b64e31694bf4791">00409</link> sf::Vector2u&#32;<link linkend="_classfsfml_1a91426b963b5b55787b64e31694bf4791">fsfml::getWindowSize</link>()
+<anchor xml:id="_fsfml_8cpp_source_1l00410"/>00410 {
+<anchor xml:id="_fsfml_8cpp_source_1l00411"/>00411 &#32;&#32;&#32;&#32;<emphasis role="keywordflow">return</emphasis>&#32;<link linkend="_classfsfml_1a290647b737e9c2952f20f2772ee8abe8">window</link>-&gt;getSize();
+<anchor xml:id="_fsfml_8cpp_source_1l00412"/>00412 }
+<anchor xml:id="_fsfml_8cpp_source_1l00413"/>00413 
+<anchor xml:id="_fsfml_8cpp_source_1l00414"/>00414 
+<anchor xml:id="_fsfml_8cpp_source_1l00415"/><link linkend="_classfsfml_1ae573a629144f2905af0ef5acf29aac17">00415</link> <emphasis role="keywordtype">int</emphasis>&#32;<link linkend="_classfsfml_1ae573a629144f2905af0ef5acf29aac17">fsfml::getWindowHeight</link>()
+<anchor xml:id="_fsfml_8cpp_source_1l00416"/>00416 {
+<anchor xml:id="_fsfml_8cpp_source_1l00417"/>00417 &#32;&#32;&#32;&#32;<emphasis role="keywordflow">return</emphasis>&#32;<link linkend="_classfsfml_1a91426b963b5b55787b64e31694bf4791">getWindowSize</link>().y;
+<anchor xml:id="_fsfml_8cpp_source_1l00418"/>00418 }
+<anchor xml:id="_fsfml_8cpp_source_1l00419"/>00419 
+<anchor xml:id="_fsfml_8cpp_source_1l00420"/>00420 
+<anchor xml:id="_fsfml_8cpp_source_1l00421"/>00421 
+<anchor xml:id="_fsfml_8cpp_source_1l00422"/><link linkend="_classfsfml_1af27e6bb49f79cd1ff0262ebf0fdeb96d">00422</link> <emphasis role="keywordtype">int</emphasis>&#32;<link linkend="_classfsfml_1af27e6bb49f79cd1ff0262ebf0fdeb96d">fsfml::getWindowWidth</link>()
+<anchor xml:id="_fsfml_8cpp_source_1l00423"/>00423 {
+<anchor xml:id="_fsfml_8cpp_source_1l00424"/>00424 &#32;&#32;&#32;&#32;<emphasis role="keywordflow">return</emphasis>&#32;<link linkend="_classfsfml_1a91426b963b5b55787b64e31694bf4791">getWindowSize</link>().x;
+<anchor xml:id="_fsfml_8cpp_source_1l00425"/>00425 }
+<anchor xml:id="_fsfml_8cpp_source_1l00426"/>00426 
+<anchor xml:id="_fsfml_8cpp_source_1l00427"/><link linkend="_classfsfml_1a9fb2e5e61204fd24f69307019ec62ea0">00427</link> sf::Vector2i&#32;<link linkend="_classfsfml_1a9fb2e5e61204fd24f69307019ec62ea0">fsfml::getMousePosition</link>()
+<anchor xml:id="_fsfml_8cpp_source_1l00428"/>00428 {
+<anchor xml:id="_fsfml_8cpp_source_1l00429"/>00429 &#32;&#32;&#32;&#32;<emphasis role="keywordflow">return</emphasis>&#32;sf::Mouse::getPosition();
+<anchor xml:id="_fsfml_8cpp_source_1l00430"/>00430 }
+<anchor xml:id="_fsfml_8cpp_source_1l00431"/><link linkend="_classfsfml_1a920922eb36c2e62702736c3d8315670d">00431</link> sf::Vector2i&#32;<link linkend="_classfsfml_1a9fb2e5e61204fd24f69307019ec62ea0">fsfml::getMousePosition</link>(sf::RenderWindow*&#32;window)
+<anchor xml:id="_fsfml_8cpp_source_1l00432"/>00432 {
+<anchor xml:id="_fsfml_8cpp_source_1l00433"/>00433 &#32;&#32;&#32;&#32;<emphasis role="keywordflow">return</emphasis>&#32;sf::Mouse::getPosition(*<link linkend="_classfsfml_1a290647b737e9c2952f20f2772ee8abe8">window</link>);
+<anchor xml:id="_fsfml_8cpp_source_1l00434"/>00434 }
+<anchor xml:id="_fsfml_8cpp_source_1l00435"/>00435 
+<anchor xml:id="_fsfml_8cpp_source_1l00436"/><link linkend="_classfsfml_1a960b0223e8170305efb4cb7888386bf9">00436</link> sf::Vector2i&#32;<link linkend="_classfsfml_1a960b0223e8170305efb4cb7888386bf9">fsfml::converti</link>(sf::Vector2f&#32;v)&#32;{
+<anchor xml:id="_fsfml_8cpp_source_1l00437"/>00437 &#32;&#32;&#32;&#32;<emphasis role="keywordflow">return</emphasis>&#32;sf::Vector2i(v);
+<anchor xml:id="_fsfml_8cpp_source_1l00438"/>00438 }
+<anchor xml:id="_fsfml_8cpp_source_1l00439"/><link linkend="_classfsfml_1a663a18ede211d91046ef2624b8b24f3f">00439</link> sf::Vector2i&#32;<link linkend="_classfsfml_1a960b0223e8170305efb4cb7888386bf9">fsfml::converti</link>(sf::Vector2u&#32;v)&#32;{
+<anchor xml:id="_fsfml_8cpp_source_1l00440"/>00440 &#32;&#32;&#32;&#32;<emphasis role="keywordflow">return</emphasis>&#32;sf::Vector2i(v);
+<anchor xml:id="_fsfml_8cpp_source_1l00441"/>00441 }
+<anchor xml:id="_fsfml_8cpp_source_1l00442"/><link linkend="_classfsfml_1a6c776fc7941d47fb2f10d9a2579d2a2e">00442</link> sf::Vector2f&#32;<link linkend="_classfsfml_1a6c776fc7941d47fb2f10d9a2579d2a2e">fsfml::convertf</link>(sf::Vector2i&#32;v)&#32;{
+<anchor xml:id="_fsfml_8cpp_source_1l00443"/>00443 &#32;&#32;&#32;&#32;<emphasis role="keywordflow">return</emphasis>&#32;sf::Vector2f(v);
+<anchor xml:id="_fsfml_8cpp_source_1l00444"/>00444 }
+<anchor xml:id="_fsfml_8cpp_source_1l00445"/><link linkend="_classfsfml_1ae62fe4a3ba1d6920fd0002d5c5dba765">00445</link> sf::Vector2f&#32;<link linkend="_classfsfml_1a6c776fc7941d47fb2f10d9a2579d2a2e">fsfml::convertf</link>(sf::Vector2u&#32;v)&#32;{
+<anchor xml:id="_fsfml_8cpp_source_1l00446"/>00446 &#32;&#32;&#32;&#32;<emphasis role="keywordflow">return</emphasis>&#32;sf::Vector2f(v);
+<anchor xml:id="_fsfml_8cpp_source_1l00447"/>00447 }
+<anchor xml:id="_fsfml_8cpp_source_1l00448"/><link linkend="_classfsfml_1ae77bbd16922c35eb009c7806cde4b50b">00448</link> sf::Vector2u&#32;<link linkend="_classfsfml_1ae77bbd16922c35eb009c7806cde4b50b">fsfml::convertu</link>(sf::Vector2i&#32;v)&#32;{
+<anchor xml:id="_fsfml_8cpp_source_1l00449"/>00449 &#32;&#32;&#32;&#32;<emphasis role="keywordflow">return</emphasis>&#32;sf::Vector2u(v);
+<anchor xml:id="_fsfml_8cpp_source_1l00450"/>00450 }
+<anchor xml:id="_fsfml_8cpp_source_1l00451"/><link linkend="_classfsfml_1a7ca53d039ff72eaf08563eaf33a37a6b">00451</link> sf::Vector2u&#32;<link linkend="_classfsfml_1ae77bbd16922c35eb009c7806cde4b50b">fsfml::convertu</link>(sf::Vector2f&#32;v)&#32;{
+<anchor xml:id="_fsfml_8cpp_source_1l00452"/>00452 &#32;&#32;&#32;&#32;<emphasis role="keywordflow">return</emphasis>&#32;sf::Vector2u(v);
+<anchor xml:id="_fsfml_8cpp_source_1l00453"/>00453 }
+<anchor xml:id="_fsfml_8cpp_source_1l00454"/>00454 
+<anchor xml:id="_fsfml_8cpp_source_1l00455"/><link linkend="_classfsfml_1a0ad8f537cba99a886634de5d16d889c3">00455</link> <emphasis role="keywordtype">bool</emphasis>&#32;<link linkend="_classfsfml_1a0ad8f537cba99a886634de5d16d889c3">fsfml::OnSprite</link>(sf::Sprite&amp;&#32;sprite,&#32;sf::Vector2f&#32;<link linkend="__units_8h_1a224b9163917ac32fc95a60d8c1eec3aa">Direction</link>)
+<anchor xml:id="_fsfml_8cpp_source_1l00456"/>00456 {
+<anchor xml:id="_fsfml_8cpp_source_1l00457"/>00457 &#32;&#32;&#32;&#32;sf::Vector2f&#32;topCorner(sprite.getPosition());
+<anchor xml:id="_fsfml_8cpp_source_1l00458"/>00458 &#32;&#32;&#32;&#32;sf::Vector2f&#32;bottomCorner(topCorner.x&#32;+&#32;sprite.getGlobalBounds().width,&#32;topCorner.y&#32;+&#32;sprite.getGlobalBounds().height);
+<anchor xml:id="_fsfml_8cpp_source_1l00459"/>00459 &#32;&#32;&#32;&#32;<emphasis role="keywordtype">bool</emphasis>&#32;belowtopcorner&#32;=&#32;topCorner.x&#32;&lt;=&#32;<link linkend="__units_8h_1a224b9163917ac32fc95a60d8c1eec3aa">Direction</link>.x&#32;&amp;&amp;&#32;topCorner.y&#32;&lt;=&#32;<link linkend="__units_8h_1a224b9163917ac32fc95a60d8c1eec3aa">Direction</link>.y;
+<anchor xml:id="_fsfml_8cpp_source_1l00460"/>00460 &#32;&#32;&#32;&#32;<emphasis role="keywordtype">bool</emphasis>&#32;abovebottomcorner&#32;=&#32;<link linkend="__units_8h_1a224b9163917ac32fc95a60d8c1eec3aa">Direction</link>.x&#32;&lt;=&#32;bottomCorner.x&#32;&amp;&amp;&#32;<link linkend="__units_8h_1a224b9163917ac32fc95a60d8c1eec3aa">Direction</link>.y&#32;&lt;=&#32;bottomCorner.y;
+<anchor xml:id="_fsfml_8cpp_source_1l00461"/>00461 &#32;&#32;&#32;&#32;<emphasis role="keywordflow">return</emphasis>&#32;(belowtopcorner&#32;&amp;&amp;&#32;abovebottomcorner);
+<anchor xml:id="_fsfml_8cpp_source_1l00462"/>00462 }
+<anchor xml:id="_fsfml_8cpp_source_1l00463"/>00463 
+<anchor xml:id="_fsfml_8cpp_source_1l00464"/><link linkend="_classfsfml_1a200802324bb5f37bfae3d935c0b91db4">00464</link> <emphasis role="keywordtype">bool</emphasis>&#32;<link linkend="_classfsfml_1a200802324bb5f37bfae3d935c0b91db4">fsfml::OnElement</link>(<link linkend="_struct_element">Element</link>&amp;&#32;element,&#32;sf::Vector2f&#32;<link linkend="__units_8h_1a224b9163917ac32fc95a60d8c1eec3aa">Direction</link>)
+<anchor xml:id="_fsfml_8cpp_source_1l00465"/>00465 {
+<anchor xml:id="_fsfml_8cpp_source_1l00466"/>00466 &#32;&#32;&#32;&#32;<emphasis role="keywordflow">return</emphasis>&#32;<link linkend="_classfsfml_1a0ad8f537cba99a886634de5d16d889c3">OnSprite</link>(element.<link linkend="_struct_element_1a3f9e10790e44b0caa7d3ccf4e55c4991">sprite</link>,&#32;<link linkend="__units_8h_1a224b9163917ac32fc95a60d8c1eec3aa">Direction</link>);
+<anchor xml:id="_fsfml_8cpp_source_1l00467"/>00467 }
+<anchor xml:id="_fsfml_8cpp_source_1l00468"/>00468 
+<anchor xml:id="_fsfml_8cpp_source_1l00469"/><link linkend="_classfsfml_1ac7247f5821521ffff228e570f0b74b42">00469</link> <emphasis role="keywordtype">void</emphasis>&#32;<link linkend="_classfsfml_1ac7247f5821521ffff228e570f0b74b42">fsfml::resetEventVariables</link>()
+<anchor xml:id="_fsfml_8cpp_source_1l00470"/>00470 {
+<anchor xml:id="_fsfml_8cpp_source_1l00471"/>00471 &#32;&#32;&#32;&#32;<emphasis role="keywordflow">if</emphasis>&#32;(!<link linkend="_classfsfml_1af3480a2fec74a4d2233342072085fcae">collectText</link>)<link linkend="_classfsfml_1a6e4eb669c13800b32a2bbe85b4644078">textTyped</link>.clear();
+<anchor xml:id="_fsfml_8cpp_source_1l00472"/>00472 &#32;&#32;&#32;&#32;<emphasis role="comment">//charEntered&#32;=&#32;&apos;\0&apos;;</emphasis>
+<anchor xml:id="_fsfml_8cpp_source_1l00473"/>00473 &#32;&#32;&#32;&#32;<link linkend="_classfsfml_1a996b807c53d6c2a28d5e6997ffec13e8">charTyped</link>&#32;=&#32;<emphasis role="keyword">false</emphasis>;
+<anchor xml:id="_fsfml_8cpp_source_1l00474"/>00474 &#32;&#32;&#32;&#32;<link linkend="_classfsfml_1a5312d051e4e29248701e536c2ef8691e">hasClicked</link>&#32;=&#32;<emphasis role="keyword">false</emphasis>;
+<anchor xml:id="_fsfml_8cpp_source_1l00475"/>00475 &#32;&#32;&#32;&#32;<link linkend="_classfsfml_1ac813da2410b592072f6502f070ec1345">mouseInWindow</link>&#32;=&#32;<emphasis role="keyword">false</emphasis>;
+<anchor xml:id="_fsfml_8cpp_source_1l00476"/>00476 &#32;&#32;&#32;&#32;<link linkend="_classfsfml_1ae0394e58b49093a176ed07ef30a34015">windowResized</link>&#32;=&#32;<emphasis role="keyword">false</emphasis>;
+<anchor xml:id="_fsfml_8cpp_source_1l00477"/>00477 &#32;&#32;&#32;&#32;<link linkend="_classfsfml_1ac15502937b8cd7992a24d3b5fcad8d68">mouseMoved</link>&#32;=&#32;<emphasis role="keyword">false</emphasis>;
+<anchor xml:id="_fsfml_8cpp_source_1l00478"/>00478 &#32;&#32;&#32;&#32;<link linkend="_classfsfml_1a58fae2e9641dc75a404f21243e3da856">mousePos</link>&#32;=&#32;sf::Vector2i();
+<anchor xml:id="_fsfml_8cpp_source_1l00479"/>00479 &#32;&#32;&#32;&#32;<emphasis role="keywordflow">if</emphasis>&#32;(!<link linkend="_classfsfml_1a80ec0508e51494c5fed36738df301007">hasPressedClick</link>)<link linkend="_classfsfml_1a2ca771d5728b1a6ef160848e4030994c">clickPos</link>&#32;=&#32;sf::Vector2i();
+<anchor xml:id="_fsfml_8cpp_source_1l00480"/>00480 }
+<anchor xml:id="_fsfml_8cpp_source_1l00481"/>00481 
+<anchor xml:id="_fsfml_8cpp_source_1l00482"/><link linkend="_classfsfml_1ab91828a3b4b1b3c53b5dc8552d46d48a">00482</link> <emphasis role="keywordtype">void</emphasis>&#32;<link linkend="_classfsfml_1ab91828a3b4b1b3c53b5dc8552d46d48a">fsfml::initVariables</link>()
+<anchor xml:id="_fsfml_8cpp_source_1l00483"/>00483 {
+<anchor xml:id="_fsfml_8cpp_source_1l00484"/>00484 &#32;&#32;&#32;&#32;<link linkend="_classfsfml_1a5f83a3514e66fd71f454ee6f64d3db4f">activePanel</link>&#32;=&#32;<link linkend="_struct_panel">Panel</link>();
+<anchor xml:id="_fsfml_8cpp_source_1l00485"/>00485 &#32;&#32;&#32;&#32;<link linkend="_classfsfml_1af77d984f7e3de4b9db2a659c8005ed00">sprites</link>.clear();
+<anchor xml:id="_fsfml_8cpp_source_1l00486"/>00486 &#32;&#32;&#32;&#32;<link linkend="_classfsfml_1a715b52b2a82537954228b6f4cb933c0d">textures</link>.clear();
+<anchor xml:id="_fsfml_8cpp_source_1l00487"/>00487 &#32;&#32;&#32;&#32;<link linkend="_classfsfml_1aa2376c471900641a72542a22d04e48f8">closeWindow</link>,&#32;<link linkend="_classfsfml_1a5312d051e4e29248701e536c2ef8691e">hasClicked</link>,&#32;<link linkend="_classfsfml_1a80ec0508e51494c5fed36738df301007">hasPressedClick</link>&#32;=&#32;<emphasis role="keyword">false</emphasis>;
+<anchor xml:id="_fsfml_8cpp_source_1l00488"/>00488 &#32;&#32;&#32;&#32;<link linkend="_classfsfml_1a290647b737e9c2952f20f2772ee8abe8">window</link>&#32;=&#32;<emphasis role="keyword">nullptr</emphasis>;
+<anchor xml:id="_fsfml_8cpp_source_1l00489"/>00489 &#32;&#32;&#32;&#32;<link linkend="_classfsfml_1abf75e9b589ecdbd62da93f384aeca157">sizeTextEntered</link>&#32;=&#32;0;
+<anchor xml:id="_fsfml_8cpp_source_1l00490"/>00490 &#32;&#32;&#32;&#32;<link linkend="_classfsfml_1a6e4eb669c13800b32a2bbe85b4644078">textTyped</link>.clear();
+<anchor xml:id="_fsfml_8cpp_source_1l00491"/>00491 &#32;&#32;&#32;&#32;<link linkend="_classfsfml_1aeb58b57076e333317100beaa34a73ed4">charEntered</link>&#32;=&#32;<emphasis role="charliteral">&apos;\0&apos;</emphasis>;
+<anchor xml:id="_fsfml_8cpp_source_1l00492"/>00492 &#32;&#32;&#32;&#32;<link linkend="_classfsfml_1a5312d051e4e29248701e536c2ef8691e">hasClicked</link>&#32;=&#32;<link linkend="_classfsfml_1ac813da2410b592072f6502f070ec1345">mouseInWindow</link>&#32;=&#32;<link linkend="_classfsfml_1ac15502937b8cd7992a24d3b5fcad8d68">mouseMoved</link>&#32;=&#32;<link linkend="_classfsfml_1a996b807c53d6c2a28d5e6997ffec13e8">charTyped</link>&#32;=&#32;<link linkend="_classfsfml_1af3480a2fec74a4d2233342072085fcae">collectText</link>&#32;=&#32;<link linkend="_classfsfml_1ae0394e58b49093a176ed07ef30a34015">windowResized</link>&#32;=&#32;<emphasis role="keyword">false</emphasis>;
+<anchor xml:id="_fsfml_8cpp_source_1l00493"/>00493 }
+<anchor xml:id="_fsfml_8cpp_source_1l00494"/>00494 
+<anchor xml:id="_fsfml_8cpp_source_1l00495"/><link linkend="_classfsfml_1ad8cb433f89e4fe31c8fc87e912853963">00495</link> <emphasis role="keywordtype">void</emphasis>&#32;<link linkend="_classfsfml_1ad8cb433f89e4fe31c8fc87e912853963">fsfml::setLine</link>(std::vector&lt;Element&gt;&amp;&#32;allElements)
+<anchor xml:id="_fsfml_8cpp_source_1l00496"/>00496 {
+<anchor xml:id="_fsfml_8cpp_source_1l00497"/>00497 &#32;&#32;&#32;&#32;<emphasis role="keywordflow">for</emphasis>&#32;(<emphasis role="keywordtype">int</emphasis>&#32;i&#32;=&#32;0;&#32;i&#32;&lt;&#32;allElements.size()&#32;-&#32;1;&#32;++i)&#32;{
+<anchor xml:id="_fsfml_8cpp_source_1l00498"/>00498 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<link linkend="_classfsfml_1aac1968ad932a98b9142e4cee0c38cd2a">separateElementX</link>(allElements.at(i),&#32;allElements.at(i&#32;+&#32;1));
+<anchor xml:id="_fsfml_8cpp_source_1l00499"/>00499 &#32;&#32;&#32;&#32;}
+<anchor xml:id="_fsfml_8cpp_source_1l00500"/>00500 }
+<anchor xml:id="_fsfml_8cpp_source_1l00501"/>00501 
+<anchor xml:id="_fsfml_8cpp_source_1l00502"/>00502 
+<anchor xml:id="_fsfml_8cpp_source_1l00503"/><link linkend="_classfsfml_1ae6cde1fa3414044fa30303395a43bc18">00503</link> <emphasis role="keywordtype">void</emphasis>&#32;<link linkend="_classfsfml_1ae6cde1fa3414044fa30303395a43bc18">fsfml::setColumn</link>(std::vector&lt;Element&gt;&amp;&#32;allElements)
+<anchor xml:id="_fsfml_8cpp_source_1l00504"/>00504 {
+<anchor xml:id="_fsfml_8cpp_source_1l00505"/>00505 &#32;&#32;&#32;&#32;<emphasis role="keywordflow">for</emphasis>&#32;(<emphasis role="keywordtype">int</emphasis>&#32;i&#32;=&#32;0;&#32;i&#32;&lt;&#32;allElements.size()&#32;-&#32;1;&#32;++i)&#32;{
+<anchor xml:id="_fsfml_8cpp_source_1l00506"/>00506 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<link linkend="_classfsfml_1a9f922766e67798b7172b4479a89eed9b">separateElementY</link>(allElements.at(i),&#32;allElements.at(i&#32;+&#32;1));
+<anchor xml:id="_fsfml_8cpp_source_1l00507"/>00507 &#32;&#32;&#32;&#32;}
+<anchor xml:id="_fsfml_8cpp_source_1l00508"/>00508 }
+<anchor xml:id="_fsfml_8cpp_source_1l00509"/>00509 
+<anchor xml:id="_fsfml_8cpp_source_1l00510"/><link linkend="_classfsfml_1a086f93c342c36c44f23fd318faab987b">00510</link> <emphasis role="keywordtype">bool</emphasis>&#32;<link linkend="_classfsfml_1a086f93c342c36c44f23fd318faab987b">fsfml::changeColorElementHover</link>(<link linkend="_struct_element">Element</link>&amp;&#32;element,&#32;sf::Color&#32;color)
+<anchor xml:id="_fsfml_8cpp_source_1l00511"/>00511 {
+<anchor xml:id="_fsfml_8cpp_source_1l00512"/>00512 &#32;&#32;&#32;&#32;<emphasis role="keywordflow">if</emphasis>&#32;(element.<link linkend="_struct_element_1ac74ec73c08cf0d02ee02fe5b19c0788f">bstate</link>&#32;==&#32;<link linkend="_fsfml_8h_1aa46074d34fe2d6631c6bd9dc74633657a9f75a89264a07aa9f4f461d546626bc8">Hover</link>)&#32;{
+<anchor xml:id="_fsfml_8cpp_source_1l00513"/>00513 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<link linkend="_classfsfml_1a5eb57f7a09768d185d53cf87fb8544ee">setSpriteColor</link>(element.<link linkend="_struct_element_1a3f9e10790e44b0caa7d3ccf4e55c4991">sprite</link>,&#32;color);
+<anchor xml:id="_fsfml_8cpp_source_1l00514"/>00514 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">return</emphasis>&#32;<emphasis role="keyword">true</emphasis>;
+<anchor xml:id="_fsfml_8cpp_source_1l00515"/>00515 &#32;&#32;&#32;&#32;}
+<anchor xml:id="_fsfml_8cpp_source_1l00516"/>00516 &#32;&#32;&#32;&#32;<emphasis role="keywordflow">else</emphasis>&#32;{
+<anchor xml:id="_fsfml_8cpp_source_1l00517"/>00517 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<link linkend="_classfsfml_1a5eb57f7a09768d185d53cf87fb8544ee">setSpriteColor</link>(element.<link linkend="_struct_element_1a3f9e10790e44b0caa7d3ccf4e55c4991">sprite</link>,&#32;sf::Color::White);
+<anchor xml:id="_fsfml_8cpp_source_1l00518"/>00518 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">return</emphasis>&#32;<emphasis role="keyword">false</emphasis>;
+<anchor xml:id="_fsfml_8cpp_source_1l00519"/>00519 &#32;&#32;&#32;&#32;}
+<anchor xml:id="_fsfml_8cpp_source_1l00520"/>00520 }
+<anchor xml:id="_fsfml_8cpp_source_1l00521"/>00521 
+<anchor xml:id="_fsfml_8cpp_source_1l00522"/>00522 
+<anchor xml:id="_fsfml_8cpp_source_1l00523"/><link linkend="_classfsfml_1a6206758c01c270444e8c704535a2acb7">00523</link> <emphasis role="keywordtype">bool</emphasis>&#32;<link linkend="_classfsfml_1a6206758c01c270444e8c704535a2acb7">fsfml::changeColorElementPressed</link>(<link linkend="_struct_element">Element</link>&amp;&#32;element,&#32;sf::Color&#32;color)
+<anchor xml:id="_fsfml_8cpp_source_1l00524"/>00524 {
+<anchor xml:id="_fsfml_8cpp_source_1l00525"/>00525 &#32;&#32;&#32;&#32;<emphasis role="keywordflow">if</emphasis>&#32;(element.<link linkend="_struct_element_1ac74ec73c08cf0d02ee02fe5b19c0788f">bstate</link>&#32;==&#32;<link linkend="_fsfml_8h_1aa46074d34fe2d6631c6bd9dc74633657a05f4abb2322aa023aba9570c327aff25">Pressed</link>)&#32;{
+<anchor xml:id="_fsfml_8cpp_source_1l00526"/>00526 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<link linkend="_classfsfml_1a5eb57f7a09768d185d53cf87fb8544ee">setSpriteColor</link>(element.<link linkend="_struct_element_1a3f9e10790e44b0caa7d3ccf4e55c4991">sprite</link>,&#32;color);
+<anchor xml:id="_fsfml_8cpp_source_1l00527"/>00527 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">return</emphasis>&#32;<emphasis role="keyword">true</emphasis>;
+<anchor xml:id="_fsfml_8cpp_source_1l00528"/>00528 &#32;&#32;&#32;&#32;}
+<anchor xml:id="_fsfml_8cpp_source_1l00529"/>00529 &#32;&#32;&#32;&#32;<emphasis role="keywordflow">else</emphasis>&#32;{
+<anchor xml:id="_fsfml_8cpp_source_1l00530"/>00530 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<link linkend="_classfsfml_1a5eb57f7a09768d185d53cf87fb8544ee">setSpriteColor</link>(element.<link linkend="_struct_element_1a3f9e10790e44b0caa7d3ccf4e55c4991">sprite</link>,&#32;sf::Color::White);
+<anchor xml:id="_fsfml_8cpp_source_1l00531"/>00531 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">return</emphasis>&#32;<emphasis role="keyword">false</emphasis>;
+<anchor xml:id="_fsfml_8cpp_source_1l00532"/>00532 &#32;&#32;&#32;&#32;}
+<anchor xml:id="_fsfml_8cpp_source_1l00533"/>00533 }
+<anchor xml:id="_fsfml_8cpp_source_1l00534"/>00534 
+<anchor xml:id="_fsfml_8cpp_source_1l00535"/><link linkend="_classfsfml_1a25eeb8db0d0be9115d85caf1400c018f">00535</link> <emphasis role="keywordtype">void</emphasis>&#32;<link linkend="_classfsfml_1a25eeb8db0d0be9115d85caf1400c018f">fsfml::changeColorElementMouse</link>(<link linkend="_struct_element">Element</link>&amp;&#32;element)
+<anchor xml:id="_fsfml_8cpp_source_1l00536"/>00536 {
+<anchor xml:id="_fsfml_8cpp_source_1l00537"/>00537 &#32;&#32;&#32;&#32;<emphasis role="keywordflow">if</emphasis>&#32;(<link linkend="_classfsfml_1a6206758c01c270444e8c704535a2acb7">changeColorElementPressed</link>(element,&#32;sf::Color(220,&#32;255,&#32;220)));
+<anchor xml:id="_fsfml_8cpp_source_1l00538"/>00538 &#32;&#32;&#32;&#32;<emphasis role="keywordflow">else</emphasis>&#32;<link linkend="_classfsfml_1a086f93c342c36c44f23fd318faab987b">changeColorElementHover</link>(element,&#32;sf::Color(255,&#32;225,&#32;225));
+<anchor xml:id="_fsfml_8cpp_source_1l00539"/>00539 }
+<anchor xml:id="_fsfml_8cpp_source_1l00540"/>00540 
+<anchor xml:id="_fsfml_8cpp_source_1l00541"/><link linkend="_classfsfml_1ac93c3196218e12fa0e03b10252f9a895">00541</link> <emphasis role="keywordtype">void</emphasis>&#32;<link linkend="_classfsfml_1ac93c3196218e12fa0e03b10252f9a895">fsfml::changeColorElement</link>(<link linkend="_struct_element">Element</link>&amp;&#32;element)
+<anchor xml:id="_fsfml_8cpp_source_1l00542"/>00542 {
+<anchor xml:id="_fsfml_8cpp_source_1l00543"/>00543 &#32;&#32;&#32;&#32;<link linkend="_classfsfml_1a25eeb8db0d0be9115d85caf1400c018f">changeColorElementMouse</link>(element);
+<anchor xml:id="_fsfml_8cpp_source_1l00544"/>00544 }
+<anchor xml:id="_fsfml_8cpp_source_1l00545"/>00545 
+<anchor xml:id="_fsfml_8cpp_source_1l00546"/><link linkend="_classfsfml_1a39cda5bb0baadfad22eb4af01b9b14a9">00546</link> <emphasis role="keywordtype">void</emphasis>&#32;<link linkend="_classfsfml_1a39cda5bb0baadfad22eb4af01b9b14a9">fsfml::getElementState</link>(<link linkend="_struct_element">Element</link>&amp;&#32;element)
+<anchor xml:id="_fsfml_8cpp_source_1l00547"/>00547 {
+<anchor xml:id="_fsfml_8cpp_source_1l00548"/>00548 &#32;&#32;&#32;&#32;<emphasis role="keywordflow">if</emphasis>&#32;(<link linkend="_classfsfml_1abdf8a3b6da3d8041aa23a51a52cf5c1f">clickedElement</link>(element))element.<link linkend="_struct_element_1ab0a841dcde36a4cae2aba77c2572368d">setState</link>(<link linkend="_fsfml_8h_1aa46074d34fe2d6631c6bd9dc74633657abfafa17aa2a0d3a8d62bd3c78e3a7610">ButtonState::Clicked</link>);
+<anchor xml:id="_fsfml_8cpp_source_1l00549"/>00549 &#32;&#32;&#32;&#32;<emphasis role="keywordflow">else</emphasis>&#32;<emphasis role="keywordflow">if</emphasis>&#32;(<link linkend="_classfsfml_1a094eb58373ba492a7c19666625acf2eb">pressedElement</link>(element))element.<link linkend="_struct_element_1ab0a841dcde36a4cae2aba77c2572368d">setState</link>(<link linkend="_fsfml_8h_1aa46074d34fe2d6631c6bd9dc74633657a05f4abb2322aa023aba9570c327aff25">ButtonState::Pressed</link>);
+<anchor xml:id="_fsfml_8cpp_source_1l00550"/>00550 &#32;&#32;&#32;&#32;<emphasis role="keywordflow">else</emphasis>&#32;<emphasis role="keywordflow">if</emphasis>&#32;(<link linkend="_classfsfml_1a200802324bb5f37bfae3d935c0b91db4">OnElement</link>(element,&#32;<link linkend="_classfsfml_1a6c776fc7941d47fb2f10d9a2579d2a2e">convertf</link>(<link linkend="_classfsfml_1a58fae2e9641dc75a404f21243e3da856">mousePos</link>)))element.<link linkend="_struct_element_1ab0a841dcde36a4cae2aba77c2572368d">setState</link>(<link linkend="_fsfml_8h_1aa46074d34fe2d6631c6bd9dc74633657a9f75a89264a07aa9f4f461d546626bc8">ButtonState::Hover</link>);
+<anchor xml:id="_fsfml_8cpp_source_1l00551"/>00551 &#32;&#32;&#32;&#32;<emphasis role="keywordflow">else</emphasis>&#32;element.<link linkend="_struct_element_1ab0a841dcde36a4cae2aba77c2572368d">setState</link>(<link linkend="_fsfml_8h_1aa46074d34fe2d6631c6bd9dc74633657a5ecbcf0afce98b042f35ec71ba03fa4b">ButtonState::Normal</link>);
+<anchor xml:id="_fsfml_8cpp_source_1l00552"/>00552 }
+<anchor xml:id="_fsfml_8cpp_source_1l00553"/>00553 
+<anchor xml:id="_fsfml_8cpp_source_1l00554"/><link linkend="_classfsfml_1abdf8a3b6da3d8041aa23a51a52cf5c1f">00554</link> <emphasis role="keywordtype">bool</emphasis>&#32;<link linkend="_classfsfml_1abdf8a3b6da3d8041aa23a51a52cf5c1f">fsfml::clickedElement</link>(<link linkend="_struct_element">Element</link>&amp;&#32;element)
+<anchor xml:id="_fsfml_8cpp_source_1l00555"/>00555 {
+<anchor xml:id="_fsfml_8cpp_source_1l00556"/>00556 &#32;&#32;&#32;&#32;<emphasis role="keywordflow">if</emphasis>&#32;(<link linkend="_classfsfml_1a5312d051e4e29248701e536c2ef8691e">hasClicked</link>)&#32;{
+<anchor xml:id="_fsfml_8cpp_source_1l00557"/>00557 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">if</emphasis>&#32;(<link linkend="_classfsfml_1a200802324bb5f37bfae3d935c0b91db4">OnElement</link>(element,&#32;<link linkend="_classfsfml_1a6c776fc7941d47fb2f10d9a2579d2a2e">convertf</link>(<link linkend="_classfsfml_1a58fae2e9641dc75a404f21243e3da856">mousePos</link>)))&#32;{
+<anchor xml:id="_fsfml_8cpp_source_1l00558"/>00558 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">return</emphasis>&#32;<emphasis role="keyword">true</emphasis>;
+<anchor xml:id="_fsfml_8cpp_source_1l00559"/>00559 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;}
+<anchor xml:id="_fsfml_8cpp_source_1l00560"/>00560 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">else</emphasis>&#32;<emphasis role="keywordflow">return</emphasis>&#32;<emphasis role="keyword">false</emphasis>;
+<anchor xml:id="_fsfml_8cpp_source_1l00561"/>00561 &#32;&#32;&#32;&#32;}
+<anchor xml:id="_fsfml_8cpp_source_1l00562"/>00562 &#32;&#32;&#32;&#32;<emphasis role="keywordflow">else</emphasis>&#32;<emphasis role="keywordflow">return</emphasis>&#32;<link linkend="_classfsfml_1a5312d051e4e29248701e536c2ef8691e">hasClicked</link>;
+<anchor xml:id="_fsfml_8cpp_source_1l00563"/>00563 }
+<anchor xml:id="_fsfml_8cpp_source_1l00564"/><link linkend="_classfsfml_1a094eb58373ba492a7c19666625acf2eb">00564</link> <emphasis role="keywordtype">bool</emphasis>&#32;<link linkend="_classfsfml_1a094eb58373ba492a7c19666625acf2eb">fsfml::pressedElement</link>(<link linkend="_struct_element">Element</link>&amp;&#32;element)
+<anchor xml:id="_fsfml_8cpp_source_1l00565"/>00565 {
+<anchor xml:id="_fsfml_8cpp_source_1l00566"/>00566 &#32;&#32;&#32;&#32;<emphasis role="keywordflow">if</emphasis>&#32;(<link linkend="_classfsfml_1a80ec0508e51494c5fed36738df301007">hasPressedClick</link>)&#32;{
+<anchor xml:id="_fsfml_8cpp_source_1l00567"/>00567 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">if</emphasis>&#32;(<link linkend="_classfsfml_1a200802324bb5f37bfae3d935c0b91db4">OnElement</link>(element,&#32;<link linkend="_classfsfml_1a6c776fc7941d47fb2f10d9a2579d2a2e">convertf</link>(<link linkend="_classfsfml_1a58fae2e9641dc75a404f21243e3da856">mousePos</link>)))&#32;{
+<anchor xml:id="_fsfml_8cpp_source_1l00568"/>00568 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">return</emphasis>&#32;<emphasis role="keyword">true</emphasis>;
+<anchor xml:id="_fsfml_8cpp_source_1l00569"/>00569 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;}
+<anchor xml:id="_fsfml_8cpp_source_1l00570"/>00570 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">else</emphasis>&#32;<emphasis role="keywordflow">return</emphasis>&#32;<emphasis role="keyword">false</emphasis>;
+<anchor xml:id="_fsfml_8cpp_source_1l00571"/>00571 &#32;&#32;&#32;&#32;}
+<anchor xml:id="_fsfml_8cpp_source_1l00572"/>00572 &#32;&#32;&#32;&#32;<emphasis role="keywordflow">else</emphasis>&#32;<emphasis role="keywordflow">return</emphasis>&#32;<emphasis role="keyword">false</emphasis>;
+<anchor xml:id="_fsfml_8cpp_source_1l00573"/>00573 }
+<anchor xml:id="_fsfml_8cpp_source_1l00574"/>00574 
+<anchor xml:id="_fsfml_8cpp_source_1l00575"/><link linkend="_classfsfml_1a78e66a4344c9ba11b477ffc9f33b9a0d">00575</link> <emphasis role="keywordtype">void</emphasis>&#32;<link linkend="_classfsfml_1a78e66a4344c9ba11b477ffc9f33b9a0d">fsfml::showVector</link>(sf::Vector2f&#32;v2)&#32;{
+<anchor xml:id="_fsfml_8cpp_source_1l00576"/>00576 &#32;&#32;&#32;&#32;std::cout&#32;&lt;&lt;&#32;<emphasis role="stringliteral">&quot;X:&#32;&quot;</emphasis>&#32;&lt;&lt;&#32;v2.x&#32;&lt;&lt;&#32;<emphasis role="stringliteral">&quot;&#32;&#32;Y:&#32;&quot;</emphasis>&#32;&lt;&lt;&#32;v2.y&#32;&lt;&lt;&#32;std::endl;
+<anchor xml:id="_fsfml_8cpp_source_1l00577"/>00577 }
+<anchor xml:id="_fsfml_8cpp_source_1l00578"/>00578 
+<anchor xml:id="_fsfml_8cpp_source_1l00579"/><link linkend="_classfsfml_1af71266974ad24a53f82bf83bc39ebfc7">00579</link> <emphasis role="keywordtype">int</emphasis>&#32;<link linkend="_classfsfml_1af71266974ad24a53f82bf83bc39ebfc7">fsfml::getMousePosX</link>()
+<anchor xml:id="_fsfml_8cpp_source_1l00580"/>00580 {
+<anchor xml:id="_fsfml_8cpp_source_1l00581"/>00581 &#32;&#32;&#32;&#32;<emphasis role="keywordflow">return</emphasis>&#32;<link linkend="_classfsfml_1a9fb2e5e61204fd24f69307019ec62ea0">getMousePosition</link>().x;
+<anchor xml:id="_fsfml_8cpp_source_1l00582"/>00582 }
+<anchor xml:id="_fsfml_8cpp_source_1l00583"/><link linkend="_classfsfml_1a00a33ce50fc178f003022ff683b2ec43">00583</link> <emphasis role="keywordtype">int</emphasis>&#32;<link linkend="_classfsfml_1a00a33ce50fc178f003022ff683b2ec43">fsfml::getMousePosY</link>()
+<anchor xml:id="_fsfml_8cpp_source_1l00584"/>00584 {
+<anchor xml:id="_fsfml_8cpp_source_1l00585"/>00585 &#32;&#32;&#32;&#32;<emphasis role="keywordflow">return</emphasis>&#32;<link linkend="_classfsfml_1a9fb2e5e61204fd24f69307019ec62ea0">getMousePosition</link>().y;
+<anchor xml:id="_fsfml_8cpp_source_1l00586"/>00586 }
+<anchor xml:id="_fsfml_8cpp_source_1l00587"/>00587 
+<anchor xml:id="_fsfml_8cpp_source_1l00588"/><link linkend="_classfsfml_1ac1d737a21d3acfaa8250c1e0765b4dbe">00588</link> <emphasis role="keywordtype">bool</emphasis>&#32;<link linkend="_classfsfml_1ac1d737a21d3acfaa8250c1e0765b4dbe">fsfml::isKeyPressed</link>(sf::Keyboard::Key&#32;key)
+<anchor xml:id="_fsfml_8cpp_source_1l00589"/>00589 {
+<anchor xml:id="_fsfml_8cpp_source_1l00590"/>00590 &#32;&#32;&#32;&#32;<emphasis role="keywordflow">return</emphasis>&#32;sf::Keyboard::isKeyPressed(key);
+<anchor xml:id="_fsfml_8cpp_source_1l00591"/>00591 }
+<anchor xml:id="_fsfml_8cpp_source_1l00592"/>00592 
+<anchor xml:id="_fsfml_8cpp_source_1l00593"/><link linkend="_classfsfml_1a72eb9b81e0f5d518a9d037c4a3610de2">00593</link> <emphasis role="keywordtype">void</emphasis>&#32;<link linkend="_classfsfml_1a72eb9b81e0f5d518a9d037c4a3610de2">fsfml::updateWindowSize</link>()
+<anchor xml:id="_fsfml_8cpp_source_1l00594"/>00594 {
+<anchor xml:id="_fsfml_8cpp_source_1l00595"/>00595 &#32;&#32;&#32;&#32;<link linkend="_classfsfml_1ab16a3b2f286c80df2853b935bfd7e3a8">windowWidth</link>&#32;=&#32;<link linkend="_classfsfml_1af27e6bb49f79cd1ff0262ebf0fdeb96d">getWindowWidth</link>();
+<anchor xml:id="_fsfml_8cpp_source_1l00596"/>00596 &#32;&#32;&#32;&#32;<link linkend="_classfsfml_1a95eae1061bc6c6264e760245a0a947d6">windowHeight</link>&#32;=&#32;<link linkend="_classfsfml_1ae573a629144f2905af0ef5acf29aac17">getWindowHeight</link>();
+<anchor xml:id="_fsfml_8cpp_source_1l00597"/>00597 }
+<anchor xml:id="_fsfml_8cpp_source_1l00598"/>00598 
+<anchor xml:id="_fsfml_8cpp_source_1l00599"/><link linkend="_classfsfml_1a8d4788570e3b2744353ac098112bd6a4">00599</link> <emphasis role="keywordtype">void</emphasis>&#32;<link linkend="_classfsfml_1a8d4788570e3b2744353ac098112bd6a4">fsfml::fillTextTyped</link>()
+<anchor xml:id="_fsfml_8cpp_source_1l00600"/>00600 {
+<anchor xml:id="_fsfml_8cpp_source_1l00601"/>00601 &#32;&#32;&#32;&#32;<emphasis role="keywordflow">if</emphasis>&#32;(<link linkend="_classfsfml_1af3480a2fec74a4d2233342072085fcae">collectText</link>)&#32;{
+<anchor xml:id="_fsfml_8cpp_source_1l00602"/>00602 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">if</emphasis>&#32;(<link linkend="_classfsfml_1a996b807c53d6c2a28d5e6997ffec13e8">charTyped</link>)&#32;{
+<anchor xml:id="_fsfml_8cpp_source_1l00603"/>00603 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<link linkend="_classfsfml_1abf75e9b589ecdbd62da93f384aeca157">sizeTextEntered</link>&#32;=&#32;<link linkend="_classfsfml_1a6e4eb669c13800b32a2bbe85b4644078">textTyped</link>.size();
+<anchor xml:id="_fsfml_8cpp_source_1l00604"/>00604 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<link linkend="_classfsfml_1a6e4eb669c13800b32a2bbe85b4644078">textTyped</link>.push_back(<link linkend="_classfsfml_1aeb58b57076e333317100beaa34a73ed4">charEntered</link>);
+<anchor xml:id="_fsfml_8cpp_source_1l00605"/>00605 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;std::cout&#32;&lt;&lt;&#32;<emphasis role="stringliteral">&quot;Text:&#32;&quot;</emphasis>&#32;&lt;&lt;&#32;<link linkend="_classfsfml_1a6e4eb669c13800b32a2bbe85b4644078">textTyped</link>&#32;&lt;&lt;&#32;std::endl;
+<anchor xml:id="_fsfml_8cpp_source_1l00606"/>00606 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;}
+<anchor xml:id="_fsfml_8cpp_source_1l00607"/>00607 &#32;&#32;&#32;&#32;}
+<anchor xml:id="_fsfml_8cpp_source_1l00608"/>00608 }
+<anchor xml:id="_fsfml_8cpp_source_1l00609"/>00609 
+<anchor xml:id="_fsfml_8cpp_source_1l00610"/><link linkend="_classfsfml_1a1be6e8780abb71f21c69ce8bc3da6bee">00610</link> <emphasis role="keywordtype">void</emphasis>&#32;<link linkend="_classfsfml_1a1be6e8780abb71f21c69ce8bc3da6bee">fsfml::addTexture</link>(std::string&#32;key,&#32;sf::Texture*&#32;texture)&#32;{
+<anchor xml:id="_fsfml_8cpp_source_1l00611"/>00611 &#32;&#32;&#32;&#32;<link linkend="_classfsfml_1a715b52b2a82537954228b6f4cb933c0d">textures</link>.insert(std::pair&lt;std::string,&#32;sf::Texture*&gt;(key,&#32;texture));
+<anchor xml:id="_fsfml_8cpp_source_1l00612"/>00612 }
+<anchor xml:id="_fsfml_8cpp_source_1l00613"/><link linkend="_classfsfml_1a1855395d90d78b9160203b6b051f46d3">00613</link> <emphasis role="keywordtype">void</emphasis>&#32;<link linkend="_classfsfml_1a1855395d90d78b9160203b6b051f46d3">fsfml::addSprite</link>(std::string&#32;key,&#32;sf::Sprite&amp;&#32;sprite)&#32;{
+<anchor xml:id="_fsfml_8cpp_source_1l00614"/>00614 &#32;&#32;&#32;&#32;<link linkend="_classfsfml_1af77d984f7e3de4b9db2a659c8005ed00">sprites</link>.insert(std::pair&lt;std::string,&#32;sf::Sprite&gt;(key,&#32;sprite));
+<anchor xml:id="_fsfml_8cpp_source_1l00615"/>00615 }
+<anchor xml:id="_fsfml_8cpp_source_1l00616"/>00616 
+<anchor xml:id="_fsfml_8cpp_source_1l00617"/><link linkend="_classfsfml_1a8172dd2d6f556c7829e9adc766ef2565">00617</link> <emphasis role="keywordtype">void</emphasis>&#32;<link linkend="_classfsfml_1a8172dd2d6f556c7829e9adc766ef2565">fsfml::addElement</link>(<link linkend="_struct_element">Element</link>&amp;&#32;element,&#32;<link linkend="_struct_panel">Panel</link>&amp;&#32;page)
+<anchor xml:id="_fsfml_8cpp_source_1l00618"/>00618 {
+<anchor xml:id="_fsfml_8cpp_source_1l00619"/>00619 &#32;&#32;&#32;&#32;page.<link linkend="_struct_panel_1a2f6ee26081516d74db4eb5817d7bc7bc">elements</link>.push_back(element);
+<anchor xml:id="_fsfml_8cpp_source_1l00620"/>00620 }
+<anchor xml:id="_fsfml_8cpp_source_1l00621"/>00621 
+<anchor xml:id="_fsfml_8cpp_source_1l00622"/><link linkend="_classfsfml_1a91666521c0a898f3c36635657fe81e9d">00622</link> <emphasis role="keywordtype">void</emphasis>&#32;<link linkend="_classfsfml_1a91666521c0a898f3c36635657fe81e9d">fsfml::autoPadding</link>(<link linkend="_struct_element">Element</link>&amp;&#32;element)
+<anchor xml:id="_fsfml_8cpp_source_1l00623"/>00623 {
+<anchor xml:id="_fsfml_8cpp_source_1l00624"/>00624 &#32;&#32;&#32;&#32;sf::Vector2f&#32;spritesize&#32;=&#32;element.<link linkend="_struct_element_1a3f9e10790e44b0caa7d3ccf4e55c4991">sprite</link>.getGlobalBounds().getSize()&#32;/&#32;3.f;
+<anchor xml:id="_fsfml_8cpp_source_1l00625"/>00625 &#32;&#32;&#32;&#32;element.<link linkend="_struct_element_1aa94441b1818c1267cb015bdb1db0b157">setPadding</link>(<link linkend="_struct_padding">Padding</link>(spritesize.x,&#32;spritesize.y));
+<anchor xml:id="_fsfml_8cpp_source_1l00626"/>00626 }
+<anchor xml:id="_fsfml_8cpp_source_1l00627"/><link linkend="_classfsfml_1a9dd8962bbcb36f68676b4d39325e727d">00627</link> <emphasis role="keywordtype">void</emphasis>&#32;<link linkend="_classfsfml_1a91666521c0a898f3c36635657fe81e9d">fsfml::autoPadding</link>(std::vector&lt;Element&gt;&amp;&#32;elements)
+<anchor xml:id="_fsfml_8cpp_source_1l00628"/>00628 {
+<anchor xml:id="_fsfml_8cpp_source_1l00629"/>00629 &#32;&#32;&#32;&#32;<emphasis role="keywordflow">for</emphasis>&#32;(<link linkend="_struct_element">Element</link>&amp;&#32;element&#32;:&#32;elements)&#32;{
+<anchor xml:id="_fsfml_8cpp_source_1l00630"/>00630 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<link linkend="_classfsfml_1a91666521c0a898f3c36635657fe81e9d">autoPadding</link>(element);
+<anchor xml:id="_fsfml_8cpp_source_1l00631"/>00631 &#32;&#32;&#32;&#32;}
+<anchor xml:id="_fsfml_8cpp_source_1l00632"/>00632 }
+<anchor xml:id="_fsfml_8cpp_source_1l00633"/>00633 
+<anchor xml:id="_fsfml_8cpp_source_1l00634"/>00634 
+<anchor xml:id="_fsfml_8cpp_source_1l00635"/><link linkend="_classfsfml_1aaad6a42f269f248954ad4d2e253a65db">00635</link> sf::Texture*&#32;<link linkend="_classfsfml_1aaad6a42f269f248954ad4d2e253a65db">fsfml::getTexture</link>(std::string&#32;key)&#32;{
+<anchor xml:id="_fsfml_8cpp_source_1l00636"/>00636 &#32;&#32;&#32;&#32;<emphasis role="keywordflow">if</emphasis>&#32;(<link linkend="_classfsfml_1a715b52b2a82537954228b6f4cb933c0d">textures</link>.find(key)&#32;!=&#32;<link linkend="_classfsfml_1a715b52b2a82537954228b6f4cb933c0d">textures</link>.end())<emphasis role="keywordflow">return</emphasis>&#32;<link linkend="_classfsfml_1a715b52b2a82537954228b6f4cb933c0d">textures</link>.at(key);
+<anchor xml:id="_fsfml_8cpp_source_1l00637"/>00637 &#32;&#32;&#32;&#32;<emphasis role="keywordflow">else</emphasis>&#32;<emphasis role="keywordflow">return</emphasis>&#32;<emphasis role="keyword">nullptr</emphasis>;
+<anchor xml:id="_fsfml_8cpp_source_1l00638"/>00638 }
+<anchor xml:id="_fsfml_8cpp_source_1l00639"/>00639 
+<anchor xml:id="_fsfml_8cpp_source_1l00640"/><link linkend="_classfsfml_1a81fb76af022d798c5829768ebd2e9c04">00640</link> sf::Sprite&#32;<link linkend="_classfsfml_1a81fb76af022d798c5829768ebd2e9c04">fsfml::getSprite</link>(<emphasis role="keyword">const</emphasis>&#32;std::string&amp;&#32;key)&#32;{
+<anchor xml:id="_fsfml_8cpp_source_1l00641"/>00641 
+<anchor xml:id="_fsfml_8cpp_source_1l00642"/>00642 &#32;&#32;&#32;&#32;<emphasis role="keywordflow">if</emphasis>&#32;(<link linkend="_classfsfml_1af77d984f7e3de4b9db2a659c8005ed00">sprites</link>.find(key)&#32;!=&#32;<link linkend="_classfsfml_1af77d984f7e3de4b9db2a659c8005ed00">sprites</link>.end())<emphasis role="keywordflow">return</emphasis>&#32;<link linkend="_classfsfml_1af77d984f7e3de4b9db2a659c8005ed00">sprites</link>.at(key);
+<anchor xml:id="_fsfml_8cpp_source_1l00643"/>00643 &#32;&#32;&#32;&#32;<emphasis role="keywordflow">else</emphasis>&#32;<emphasis role="keywordflow">return</emphasis>&#32;sf::Sprite();
+<anchor xml:id="_fsfml_8cpp_source_1l00644"/>00644 }
+<anchor xml:id="_fsfml_8cpp_source_1l00645"/>00645 
+<anchor xml:id="_fsfml_8cpp_source_1l00646"/><link linkend="_classfsfml_1aa7a23a2f8f1b77216ab78de518572a19">00646</link> sf::Vector2f&#32;<link linkend="_classfsfml_1aa7a23a2f8f1b77216ab78de518572a19">fsfml::getScale</link>(<link linkend="_struct_element">Element</link>&amp;&#32;element)
+<anchor xml:id="_fsfml_8cpp_source_1l00647"/>00647 {
+<anchor xml:id="_fsfml_8cpp_source_1l00648"/>00648 &#32;&#32;&#32;&#32;<emphasis role="keywordflow">return</emphasis>&#32;<link linkend="_classfsfml_1aa7a23a2f8f1b77216ab78de518572a19">getScale</link>(element.<link linkend="_struct_element_1a3f9e10790e44b0caa7d3ccf4e55c4991">sprite</link>);
+<anchor xml:id="_fsfml_8cpp_source_1l00649"/>00649 }
+<anchor xml:id="_fsfml_8cpp_source_1l00650"/>00650 
+<anchor xml:id="_fsfml_8cpp_source_1l00651"/><link linkend="_classfsfml_1a131dfccbc0d482e9786d5951804de435">00651</link> sf::Vector2f&#32;<link linkend="_classfsfml_1aa7a23a2f8f1b77216ab78de518572a19">fsfml::getScale</link>(sf::Sprite&amp;&#32;sprite)
+<anchor xml:id="_fsfml_8cpp_source_1l00652"/>00652 {
+<anchor xml:id="_fsfml_8cpp_source_1l00653"/>00653 &#32;&#32;&#32;&#32;<emphasis role="keywordflow">return</emphasis>&#32;sprite.getScale();
+<anchor xml:id="_fsfml_8cpp_source_1l00654"/>00654 }
+<anchor xml:id="_fsfml_8cpp_source_1l00655"/>00655 
+<anchor xml:id="_fsfml_8cpp_source_1l00656"/><link linkend="_classfsfml_1a2c79ba56c482be575f405a9871eab787">00656</link> <emphasis role="keywordtype">void</emphasis>&#32;<link linkend="_classfsfml_1a2c79ba56c482be575f405a9871eab787">fsfml::resizeSprite</link>(sf::Sprite&amp;&#32;sprite,&#32;sf::Vector2f&#32;vect)
+<anchor xml:id="_fsfml_8cpp_source_1l00657"/>00657 {
+<anchor xml:id="_fsfml_8cpp_source_1l00658"/>00658 &#32;&#32;&#32;&#32;sprite.setScale(vect);
+<anchor xml:id="_fsfml_8cpp_source_1l00659"/>00659 }
+<anchor xml:id="_fsfml_8cpp_source_1l00660"/>00660 
+<anchor xml:id="_fsfml_8cpp_source_1l00661"/><link linkend="_classfsfml_1a91c3af88560235ca3bc5bdbb8ddd2e9b">00661</link> <emphasis role="keywordtype">void</emphasis>&#32;<link linkend="_classfsfml_1a91c3af88560235ca3bc5bdbb8ddd2e9b">fsfml::resizeElement</link>(<link linkend="_struct_element">Element</link>&amp;&#32;element,&#32;sf::Vector2f&#32;vect)
+<anchor xml:id="_fsfml_8cpp_source_1l00662"/>00662 {
+<anchor xml:id="_fsfml_8cpp_source_1l00663"/>00663 &#32;&#32;&#32;&#32;<link linkend="_classfsfml_1a2c79ba56c482be575f405a9871eab787">resizeSprite</link>(element.<link linkend="_struct_element_1a3f9e10790e44b0caa7d3ccf4e55c4991">sprite</link>,&#32;vect);
+<anchor xml:id="_fsfml_8cpp_source_1l00664"/>00664 }
+<anchor xml:id="_fsfml_8cpp_source_1l00665"/>00665 
+<anchor xml:id="_fsfml_8cpp_source_1l00666"/><link linkend="_classfsfml_1a54f1c15c7c8063c7d8bb0eb2445515d5">00666</link> <emphasis role="keywordtype">void</emphasis>&#32;<link linkend="_classfsfml_1a54f1c15c7c8063c7d8bb0eb2445515d5">fsfml::autoResize</link>(<link linkend="_struct_element">Element</link>&amp;&#32;element)
+<anchor xml:id="_fsfml_8cpp_source_1l00667"/>00667 {
+<anchor xml:id="_fsfml_8cpp_source_1l00668"/>00668 &#32;&#32;&#32;&#32;<emphasis role="keywordtype">float</emphasis>&#32;ratioWidth,&#32;ratioHeight;
+<anchor xml:id="_fsfml_8cpp_source_1l00669"/>00669 &#32;&#32;&#32;&#32;<emphasis role="keywordflow">do</emphasis>&#32;{
+<anchor xml:id="_fsfml_8cpp_source_1l00670"/>00670 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;ratioWidth&#32;=&#32;element.<link linkend="_struct_element_1a74179c56b3b79fa82bee05f7a9993060">width</link>&#32;/&#32;<link linkend="_classfsfml_1ab16a3b2f286c80df2853b935bfd7e3a8">windowWidth</link>;
+<anchor xml:id="_fsfml_8cpp_source_1l00671"/>00671 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;ratioHeight&#32;=&#32;element.<link linkend="_struct_element_1a686fea7b6d5ba92a4a653eeb25f03ed1">height</link>&#32;/&#32;<link linkend="_classfsfml_1a95eae1061bc6c6264e760245a0a947d6">windowHeight</link>;
+<anchor xml:id="_fsfml_8cpp_source_1l00672"/>00672 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">if</emphasis>&#32;(ratioWidth&#32;&gt;&#32;0.3&#32;||&#32;ratioHeight&#32;&gt;&#32;0.3)&#32;{
+<anchor xml:id="_fsfml_8cpp_source_1l00673"/>00673 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;sf::Vector2f&#32;currentScale&#32;=&#32;<link linkend="_classfsfml_1aa7a23a2f8f1b77216ab78de518572a19">getScale</link>(element);
+<anchor xml:id="_fsfml_8cpp_source_1l00674"/>00674 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<link linkend="_classfsfml_1a91c3af88560235ca3bc5bdbb8ddd2e9b">resizeElement</link>(element,&#32;sf::Vector2f(currentScale.x&#32;*&#32;0.9,&#32;currentScale.y&#32;*&#32;0.9));
+<anchor xml:id="_fsfml_8cpp_source_1l00675"/>00675 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;}
+<anchor xml:id="_fsfml_8cpp_source_1l00676"/>00676 &#32;&#32;&#32;&#32;}&#32;<emphasis role="keywordflow">while</emphasis>&#32;(ratioWidth&#32;&gt;&#32;0.3&#32;||&#32;ratioHeight&#32;&gt;&#32;0.3);
+<anchor xml:id="_fsfml_8cpp_source_1l00677"/>00677 }
+<anchor xml:id="_fsfml_8cpp_source_1l00678"/>00678 
+<anchor xml:id="_fsfml_8cpp_source_1l00679"/><link linkend="_classfsfml_1a788bf041977aeec9f19d5d8e7171f39f">00679</link> <emphasis role="keywordtype">void</emphasis>&#32;<link linkend="_classfsfml_1a54f1c15c7c8063c7d8bb0eb2445515d5">fsfml::autoResize</link>(std::vector&lt;Element&gt;&amp;&#32;allElements)
+<anchor xml:id="_fsfml_8cpp_source_1l00680"/>00680 {
+<anchor xml:id="_fsfml_8cpp_source_1l00681"/>00681 &#32;&#32;&#32;&#32;<emphasis role="keywordflow">for</emphasis>&#32;(<link linkend="_struct_element">Element</link>&amp;&#32;element&#32;:&#32;allElements)&#32;{
+<anchor xml:id="_fsfml_8cpp_source_1l00682"/>00682 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<link linkend="_classfsfml_1a54f1c15c7c8063c7d8bb0eb2445515d5">autoResize</link>(element);
+<anchor xml:id="_fsfml_8cpp_source_1l00683"/>00683 &#32;&#32;&#32;&#32;}
+<anchor xml:id="_fsfml_8cpp_source_1l00684"/>00684 }
+<anchor xml:id="_fsfml_8cpp_source_1l00685"/>00685 
+<anchor xml:id="_fsfml_8cpp_source_1l00686"/>00686 
+</programlisting></section>

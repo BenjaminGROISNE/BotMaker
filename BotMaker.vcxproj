@@ -220,7 +220,16 @@
   <ItemGroup>
     <None Include="Activities\ranking.act" />
     <None Include="Activities\short.act" />
+    <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
-  <ImportGroup Label="ExtensionTargets" />
+  <ImportGroup Label="ExtensionTargets">
+    <Import Project="packages\WixToolset.Util.wixext.5.0.2\build\WixToolset.Util.wixext.targets" Condition="Exists('packages\WixToolset.Util.wixext.5.0.2\build\WixToolset.Util.wixext.targets')" />
+  </ImportGroup>
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('packages\WixToolset.Util.wixext.5.0.2\build\WixToolset.Util.wixext.targets')" Text="$([System.String]::Format('$(ErrorText)', 'packages\WixToolset.Util.wixext.5.0.2\build\WixToolset.Util.wixext.targets'))" />
+  </Target>
 </Project>

@@ -1,0 +1,213 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<section xmlns="http://docbook.org/ns/docbook" version="5.0" xmlns:xlink="http://www.w3.org/1999/xlink" xml:id="_game_8cpp_source" xml:lang="en-US">
+<title>game.cpp</title>
+<indexterm><primary>src/game.cpp</primary></indexterm>
+Go to the documentation of this file.<programlisting linenumbering="unnumbered"><anchor xml:id="_game_8cpp_source_1l00001"/>00001 <emphasis role="preprocessor">#include&#32;&quot;<link linkend="_game_8h">game.h</link>&quot;</emphasis>
+<anchor xml:id="_game_8cpp_source_1l00002"/>00002 
+<anchor xml:id="_game_8cpp_source_1l00003"/>00003 
+<anchor xml:id="_game_8cpp_source_1l00004"/><link linkend="_classgame_1a0a7c02ea9f02e80203667b3d07270293">00004</link> <emphasis role="keywordtype">void</emphasis>&#32;<link linkend="_classgame_1a0a7c02ea9f02e80203667b3d07270293">game::botLoop</link>()&#32;{
+<anchor xml:id="_game_8cpp_source_1l00005"/>00005 
+<anchor xml:id="_game_8cpp_source_1l00006"/>00006 &#32;&#32;&#32;&#32;<emphasis role="keywordflow">while</emphasis>&#32;(!<link linkend="_classgame_1ab6bb4916272502f285043a2f8943bd67">endBot</link>)&#32;{
+<anchor xml:id="_game_8cpp_source_1l00007"/>00007 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">switch</emphasis>&#32;(<link linkend="_classgame_1ad1178da6db0098ac7ec28b9ac878aa43">restartBot</link>)&#32;{
+<anchor xml:id="_game_8cpp_source_1l00008"/>00008 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">case</emphasis>&#32;<emphasis role="keyword">true</emphasis>:
+<anchor xml:id="_game_8cpp_source_1l00009"/>00009 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<link linkend="_classgame_1afcd2ff4a7609fb43e06d69b46647a316">startGame</link>();
+<anchor xml:id="_game_8cpp_source_1l00010"/>00010 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">break</emphasis>;
+<anchor xml:id="_game_8cpp_source_1l00011"/>00011 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">case</emphasis>&#32;<emphasis role="keyword">false</emphasis>:
+<anchor xml:id="_game_8cpp_source_1l00012"/>00012 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<link linkend="_classgo_home">goHome</link>();
+<anchor xml:id="_game_8cpp_source_1l00013"/>00013 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">if</emphasis>&#32;(<link linkend="_classgame_1a3aa7ed026a904be453162ca146ab4f3e">botEnd</link>())&#32;{
+<anchor xml:id="_game_8cpp_source_1l00014"/>00014 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<link linkend="_classgame_1ab6bb4916272502f285043a2f8943bd67">endBot</link>=<emphasis role="keyword">true</emphasis>;
+<anchor xml:id="_game_8cpp_source_1l00015"/>00015 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">break</emphasis>;
+<anchor xml:id="_game_8cpp_source_1l00016"/>00016 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;}
+<anchor xml:id="_game_8cpp_source_1l00017"/>00017 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<link linkend="_classgame_1a1fb63d8618a3ec3989f04d2e71d90858">activityLoop</link>();
+<anchor xml:id="_game_8cpp_source_1l00018"/>00018 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;}
+<anchor xml:id="_game_8cpp_source_1l00019"/>00019 &#32;&#32;&#32;&#32;}
+<anchor xml:id="_game_8cpp_source_1l00020"/>00020 &#32;&#32;&#32;&#32;std::cout&#32;&lt;&lt;&#32;<emphasis role="stringliteral">&quot;End&#32;of&#32;Bot!&quot;</emphasis>&#32;&lt;&lt;&#32;std::endl;
+<anchor xml:id="_game_8cpp_source_1l00021"/>00021 }
+<anchor xml:id="_game_8cpp_source_1l00022"/>00022 
+<anchor xml:id="_game_8cpp_source_1l00023"/><link linkend="_classgame_1a1fb63d8618a3ec3989f04d2e71d90858">00023</link> <emphasis role="keywordtype">void</emphasis>&#32;<link linkend="_classgame_1a1fb63d8618a3ec3989f04d2e71d90858">game::activityLoop</link>()
+<anchor xml:id="_game_8cpp_source_1l00024"/>00024 {
+<anchor xml:id="_game_8cpp_source_1l00025"/>00025 &#32;&#32;&#32;<emphasis role="comment">//&#32;Activity&#32;todo=allAct.getOnActivity();</emphasis>
+<anchor xml:id="_game_8cpp_source_1l00026"/>00026 &#32;&#32;&#32;<emphasis role="comment">//&#32;todo.doActivity();</emphasis>
+<anchor xml:id="_game_8cpp_source_1l00027"/>00027 &#32;&#32;&#32;<emphasis role="comment">//&#32;*todo.activate&#32;=&#32;false;</emphasis>
+<anchor xml:id="_game_8cpp_source_1l00028"/>00028 }
+<anchor xml:id="_game_8cpp_source_1l00029"/>00029 
+<anchor xml:id="_game_8cpp_source_1l00030"/>00030 
+<anchor xml:id="_game_8cpp_source_1l00031"/>00031 
+<anchor xml:id="_game_8cpp_source_1l00032"/><link linkend="_classgame_1afcd2ff4a7609fb43e06d69b46647a316">00032</link> <emphasis role="keywordtype">void</emphasis>&#32;<link linkend="_classgame_1afcd2ff4a7609fb43e06d69b46647a316">game::startGame</link>()&#32;{
+<anchor xml:id="_game_8cpp_source_1l00033"/>00033 &#32;&#32;&#32;&#32;<emphasis role="keywordflow">try</emphasis>&#32;{
+<anchor xml:id="_game_8cpp_source_1l00034"/>00034 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;std::cout&#32;&lt;&lt;&#32;<emphasis role="stringliteral">&quot;RESTART&quot;</emphasis>&#32;&lt;&lt;&#32;std::endl;
+<anchor xml:id="_game_8cpp_source_1l00035"/>00035 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<link linkend="_classgame_1ad1178da6db0098ac7ec28b9ac878aa43">restartBot</link>&#32;=&#32;<emphasis role="keyword">false</emphasis>;
+<anchor xml:id="_game_8cpp_source_1l00036"/>00036 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordtype">int</emphasis>&#32;packageTime=&#32;2;
+<anchor xml:id="_game_8cpp_source_1l00037"/>00037 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">if</emphasis>&#32;(<link linkend="_fadb_8cpp_1af7514591ff3da72ae2be4034040ef38d">onPackage</link>(<link linkend="_classgame_1acacd7e48dd6857b2882eb1f79b5b7048">package</link>,<link linkend="_classgame_1a27776ce3ba40ed4950aad3e2a19cb798">adbId</link>));
+<anchor xml:id="_game_8cpp_source_1l00038"/>00038 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">else</emphasis>&#32;{
+<anchor xml:id="_game_8cpp_source_1l00039"/>00039 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<link linkend="_classgame_1a6483a8442abdfbe211e5bcca939cb788">firstBoot</link>&#32;=&#32;<emphasis role="keyword">false</emphasis>;
+<anchor xml:id="_game_8cpp_source_1l00040"/>00040 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">while</emphasis>&#32;(!<link linkend="_fadb_8cpp_1af7514591ff3da72ae2be4034040ef38d">onPackage</link>(<link linkend="_classgame_1acacd7e48dd6857b2882eb1f79b5b7048">package</link>,<link linkend="_classgame_1a27776ce3ba40ed4950aad3e2a19cb798">adbId</link>))&#32;{
+<anchor xml:id="_game_8cpp_source_1l00041"/>00041 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<link linkend="_fadb_8cpp_1ac06de0d00f1b7585ae992534c92cda2f">quitPackage</link>(<link linkend="_classgame_1acacd7e48dd6857b2882eb1f79b5b7048">package</link>,<link linkend="_classgame_1a27776ce3ba40ed4950aad3e2a19cb798">adbId</link>);
+<anchor xml:id="_game_8cpp_source_1l00042"/>00042 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<link linkend="_fadb_8cpp_1afe8e2ff759a76e50349b7346fa6064bb">launchPackage</link>(<link linkend="_classgame_1a456f40f6a2f404075f40986f860648c5">activity</link>,<link linkend="_classgame_1a27776ce3ba40ed4950aad3e2a19cb798">adbId</link>);
+<anchor xml:id="_game_8cpp_source_1l00043"/>00043 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<link linkend="_class_activities_1ab7e97671a57608531aeefec046ab9f86">inte</link>.<link linkend="_class_interactions_1abd5b5d8a44970e1333e3611e302f166c">wait</link>(1000&#32;*&#32;packageTime);
+<anchor xml:id="_game_8cpp_source_1l00044"/>00044 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;packageTime++;
+<anchor xml:id="_game_8cpp_source_1l00045"/>00045 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;}
+<anchor xml:id="_game_8cpp_source_1l00046"/>00046 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<link linkend="_classlaunch_game">launchGame</link>;
+<anchor xml:id="_game_8cpp_source_1l00047"/>00047 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;}
+<anchor xml:id="_game_8cpp_source_1l00048"/>00048 &#32;&#32;&#32;&#32;}
+<anchor xml:id="_game_8cpp_source_1l00049"/>00049 &#32;&#32;&#32;&#32;<emphasis role="keywordflow">catch</emphasis>&#32;(<link linkend="_struct_reboot_exception">RebootException</link>&#32;e)&#32;{
+<anchor xml:id="_game_8cpp_source_1l00050"/>00050 
+<anchor xml:id="_game_8cpp_source_1l00051"/>00051 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">return</emphasis>;
+<anchor xml:id="_game_8cpp_source_1l00052"/>00052 &#32;&#32;&#32;&#32;}
+<anchor xml:id="_game_8cpp_source_1l00053"/>00053 }
+<anchor xml:id="_game_8cpp_source_1l00054"/>00054 
+<anchor xml:id="_game_8cpp_source_1l00055"/><link linkend="_classgame_1a46b349b7c6c092bdc30718beef8c07eb">00055</link> <emphasis role="keywordtype">void</emphasis>&#32;<link linkend="_classgame_1a46b349b7c6c092bdc30718beef8c07eb">game::getAdbId</link>()
+<anchor xml:id="_game_8cpp_source_1l00056"/>00056 {
+<anchor xml:id="_game_8cpp_source_1l00057"/>00057 &#32;&#32;&#32;&#32;<link linkend="_classgame_1a27776ce3ba40ed4950aad3e2a19cb798">adbId</link>=&#32;<link linkend="_classgame_1a403df7ec3addea952a7658b4859adf6b">bc</link>.<link linkend="_class_bot_config_1a6b10b258e97759cf77f5c35f57698bc7">getAdbKey</link>();
+<anchor xml:id="_game_8cpp_source_1l00058"/>00058 }
+<anchor xml:id="_game_8cpp_source_1l00059"/>00059 
+<anchor xml:id="_game_8cpp_source_1l00060"/><link linkend="_classgame_1ad9c102127b5038f880067ad6c9198d38">00060</link> <link linkend="_classgame_1ad9c102127b5038f880067ad6c9198d38">game::game</link>()&#32;{
+<anchor xml:id="_game_8cpp_source_1l00061"/>00061 &#32;&#32;&#32;&#32;<link linkend="_classgame_1ad2bc56764b5ea512bfbc0aeb18e1815e">dimX</link>&#32;=&#32;1080;
+<anchor xml:id="_game_8cpp_source_1l00062"/>00062 &#32;&#32;&#32;&#32;<link linkend="_classgame_1ad8f97ae6dc59dea029250ed48e8c227d">dimY</link>&#32;=&#32;1920;
+<anchor xml:id="_game_8cpp_source_1l00063"/>00063 &#32;&#32;&#32;&#32;<link linkend="_classgame_1abd3631e17175cb27affed0061aa7a9e7">dpi</link>&#32;=&#32;320;
+<anchor xml:id="_game_8cpp_source_1l00064"/>00064 &#32;&#32;&#32;&#32;<emphasis role="keyword">package&#32;</emphasis>=&#32;&quot;com.ltgames.android.m71.sea&quot;;
+<anchor xml:id="_game_8cpp_source_1l00065"/>00065 &#32;&#32;&#32;&#32;activity&#32;=&#32;<emphasis role="stringliteral">&quot;com.ltgames.android.m71.sea/com.gbits.hook.HookUnityPlayerActivity&quot;</emphasis>;
+<anchor xml:id="_game_8cpp_source_1l00066"/>00066 &#32;&#32;&#32;&#32;std::string&#32;currentPath=&#32;<emphasis role="stringliteral">&quot;C:\\Users\\bgroi\\OneDrive&#32;-&#32;Université&#32;De&#32;Technologie&#32;De&#32;Belfort&#32;-&#32;Montbeliard\\Documents\\Coding\\C++\\Bots\\BotOVMT&quot;</emphasis>;
+<anchor xml:id="_game_8cpp_source_1l00067"/>00067 &#32;&#32;&#32;&#32;myIt&#32;=&#32;<link linkend="_class_interpretor">Interpretor</link>(currentPath+<emphasis role="stringliteral">&quot;\\Activities&quot;</emphasis>);
+<anchor xml:id="_game_8cpp_source_1l00068"/>00068 &#32;&#32;&#32;&#32;bc&#32;=&#32;<link linkend="_class_bot_config">BotConfig</link>(package,&#32;activity,&#32;dimX,&#32;dimY,&#32;dpi);
+<anchor xml:id="_game_8cpp_source_1l00069"/>00069 &#32;&#32;&#32;&#32;myIt.readActivityFile(<emphasis role="stringliteral">&quot;ranking&quot;</emphasis>);
+<anchor xml:id="_game_8cpp_source_1l00070"/>00070 &#32;&#32;&#32;&#32;<link linkend="_sys_commands_8cpp_1ab778b8fee9bec0c7d9cfdbeb219bcc6b">createpaths</link>(<link linkend="_paths_8cpp_1a3f5065f3e5646125317ecbd5d12ae173">templates</link>);
+<anchor xml:id="_game_8cpp_source_1l00071"/>00071 &#32;&#32;&#32;&#32;firstBoot&#32;=&#32;<emphasis role="keyword">true</emphasis>;
+<anchor xml:id="_game_8cpp_source_1l00072"/>00072 &#32;&#32;&#32;&#32;restartBot&#32;=&#32;<emphasis role="keyword">true</emphasis>;
+<anchor xml:id="_game_8cpp_source_1l00073"/>00073 &#32;&#32;&#32;&#32;endBot&#32;=&#32;<emphasis role="keyword">false</emphasis>;
+<anchor xml:id="_game_8cpp_source_1l00074"/>00074 }
+<anchor xml:id="_game_8cpp_source_1l00075"/>00075 
+<anchor xml:id="_game_8cpp_source_1l00076"/><link linkend="_classgame_1a952de181a7dc8c51939d995ab81e1136">00076</link> <emphasis role="keywordtype">void</emphasis>&#32;<link linkend="_classgame_1a952de181a7dc8c51939d995ab81e1136">game::initActivities</link>()
+<anchor xml:id="_game_8cpp_source_1l00077"/>00077 {
+<anchor xml:id="_game_8cpp_source_1l00078"/>00078 &#32;&#32;&#32;&#32;
+<anchor xml:id="_game_8cpp_source_1l00079"/>00079 
+<anchor xml:id="_game_8cpp_source_1l00080"/>00080 }
+<anchor xml:id="_game_8cpp_source_1l00081"/>00081 
+<anchor xml:id="_game_8cpp_source_1l00082"/>00082 
+<anchor xml:id="_game_8cpp_source_1l00083"/><link linkend="_classgame_1a8e1e939e9ccca1570f7be33d1026e7a8">00083</link> <emphasis role="keywordtype">void</emphasis>&#32;<link linkend="_classgame_1a8e1e939e9ccca1570f7be33d1026e7a8">game::selectActivity</link>()&#32;{
+<anchor xml:id="_game_8cpp_source_1l00084"/>00084 &#32;&#32;&#32;&#32;<emphasis role="keywordtype">int</emphasis>&#32;duration&#32;=&#32;30;
+<anchor xml:id="_game_8cpp_source_1l00085"/>00085 &#32;&#32;&#32;&#32;std::string&#32;choix;
+<anchor xml:id="_game_8cpp_source_1l00086"/>00086 &#32;&#32;&#32;&#32;<emphasis role="keyword">auto</emphasis>&#32;<link linkend="_paths_8cpp_1a423ec00aa9b17614cb8a0c52de937623">start</link>&#32;=&#32;std::chrono::steady_clock::now();
+<anchor xml:id="_game_8cpp_source_1l00087"/>00087 &#32;&#32;&#32;&#32;<emphasis role="keywordtype">int</emphasis>&#32;lastelapsed&#32;=&#32;0;
+<anchor xml:id="_game_8cpp_source_1l00088"/>00088 &#32;&#32;&#32;&#32;<emphasis role="keywordtype">bool</emphasis>&#32;chosePreset&#32;=&#32;<emphasis role="keyword">false</emphasis>;
+<anchor xml:id="_game_8cpp_source_1l00089"/>00089 &#32;&#32;&#32;&#32;<link linkend="_classgame_1ad156d149bb90f491291189604771673e">explainPresetChoice</link>();
+<anchor xml:id="_game_8cpp_source_1l00090"/>00090 &#32;&#32;&#32;&#32;<emphasis role="keywordflow">do</emphasis>&#32;{
+<anchor xml:id="_game_8cpp_source_1l00091"/>00091 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keyword">auto</emphasis>&#32;now&#32;=&#32;std::chrono::steady_clock::now();
+<anchor xml:id="_game_8cpp_source_1l00092"/>00092 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordtype">int</emphasis>&#32;skipelapsed&#32;=&#32;std::chrono::duration_cast&lt;std::chrono::seconds&gt;(now&#32;-&#32;<link linkend="_paths_8cpp_1a423ec00aa9b17614cb8a0c52de937623">start</link>).count();
+<anchor xml:id="_game_8cpp_source_1l00093"/>00093 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">if</emphasis>&#32;(<link linkend="_classgame_1aaf6205dbd1bb8c009e12196d5c187f77">chronoPresetMenu</link>(<link linkend="_paths_8cpp_1a423ec00aa9b17614cb8a0c52de937623">start</link>,&#32;duration,&#32;lastelapsed))<emphasis role="keywordflow">break</emphasis>;
+<anchor xml:id="_game_8cpp_source_1l00094"/>00094 &#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="comment">/*&#32;if&#32;(fsfml::isKeyPressed(sf::Keyboard::P))&#32;{</emphasis>
+<anchor xml:id="_game_8cpp_source_1l00095"/>00095 <emphasis role="comment">&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;choix&#32;=&#32;selectPreset();</emphasis>
+<anchor xml:id="_game_8cpp_source_1l00096"/>00096 <emphasis role="comment">&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;chosePreset&#32;=&#32;true;</emphasis>
+<anchor xml:id="_game_8cpp_source_1l00097"/>00097 <emphasis role="comment">&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;break;</emphasis>
+<anchor xml:id="_game_8cpp_source_1l00098"/>00098 <emphasis role="comment">&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;}</emphasis>
+<anchor xml:id="_game_8cpp_source_1l00099"/>00099 <emphasis role="comment">&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;if&#32;(fsfml::isKeyPressed(sf::Keyboard::F))&#32;{</emphasis>
+<anchor xml:id="_game_8cpp_source_1l00100"/>00100 <emphasis role="comment">&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;selectFavoritePreset();</emphasis>
+<anchor xml:id="_game_8cpp_source_1l00101"/>00101 <emphasis role="comment">&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;}</emphasis>
+<anchor xml:id="_game_8cpp_source_1l00102"/>00102 <emphasis role="comment">&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;if&#32;(fsfml::isKeyPressed(sf::Keyboard::S)&#32;&amp;&amp;&#32;skipelapsed&#32;&gt;&#32;0.5f)break;*/</emphasis>
+<anchor xml:id="_game_8cpp_source_1l00103"/>00103 
+<anchor xml:id="_game_8cpp_source_1l00104"/>00104 &#32;&#32;&#32;&#32;}&#32;<emphasis role="keywordflow">while</emphasis>&#32;(<emphasis role="keyword">true</emphasis>);
+<anchor xml:id="_game_8cpp_source_1l00105"/>00105 
+<anchor xml:id="_game_8cpp_source_1l00106"/>00106 &#32;&#32;&#32;&#32;<emphasis role="keywordflow">if</emphasis>&#32;(!chosePreset)&#32;{
+<anchor xml:id="_game_8cpp_source_1l00107"/>00107 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;choix&#32;=&#32;<link linkend="_classgame_1a403df7ec3addea952a7658b4859adf6b">bc</link>.<link linkend="_class_bot_config_1ad4f685732935069ed53b312cf6a35b58">readFavoritePreset</link>();
+<anchor xml:id="_game_8cpp_source_1l00108"/>00108 &#32;&#32;&#32;&#32;}
+<anchor xml:id="_game_8cpp_source_1l00109"/>00109 &#32;&#32;<emphasis role="comment">//&#32;&#32;allAct.activate(choix);</emphasis>
+<anchor xml:id="_game_8cpp_source_1l00110"/>00110 &#32;&#32;&#32;<emphasis role="comment">//&#32;allAct.showChoices();</emphasis>
+<anchor xml:id="_game_8cpp_source_1l00111"/>00111 
+<anchor xml:id="_game_8cpp_source_1l00112"/>00112 }
+<anchor xml:id="_game_8cpp_source_1l00113"/>00113 
+<anchor xml:id="_game_8cpp_source_1l00114"/><link linkend="_classgame_1a1f4b41799e348adcfc2c5982f38f1dae">00114</link> std::string&#32;<link linkend="_classgame_1a1f4b41799e348adcfc2c5982f38f1dae">game::selectPreset</link>()&#32;{
+<anchor xml:id="_game_8cpp_source_1l00115"/>00115 &#32;&#32;&#32;&#32;std::string&#32;choix;
+<anchor xml:id="_game_8cpp_source_1l00116"/>00116 &#32;&#32;&#32;&#32;std::cout&#32;&lt;&lt;&#32;<emphasis role="stringliteral">&quot;\nType&#32;Preset:&#32;&quot;</emphasis>;
+<anchor xml:id="_game_8cpp_source_1l00117"/>00117 &#32;&#32;&#32;&#32;std::cin&#32;&gt;&gt;&#32;choix;
+<anchor xml:id="_game_8cpp_source_1l00118"/>00118 &#32;&#32;&#32;&#32;<emphasis role="keywordflow">return</emphasis>&#32;choix;
+<anchor xml:id="_game_8cpp_source_1l00119"/>00119 }
+<anchor xml:id="_game_8cpp_source_1l00120"/>00120 
+<anchor xml:id="_game_8cpp_source_1l00121"/><link linkend="_classgame_1a8aa5386b248e0602728af471e0e19184">00121</link> <emphasis role="keywordtype">void</emphasis>&#32;<link linkend="_classgame_1a8aa5386b248e0602728af471e0e19184">game::selectFavoritePreset</link>()&#32;{
+<anchor xml:id="_game_8cpp_source_1l00122"/>00122 &#32;&#32;&#32;&#32;std::string&#32;fav;
+<anchor xml:id="_game_8cpp_source_1l00123"/>00123 &#32;&#32;&#32;&#32;std::cout&#32;&lt;&lt;&#32;<emphasis role="stringliteral">&quot;\nType&#32;favorite&#32;Preset:&#32;&quot;</emphasis>;
+<anchor xml:id="_game_8cpp_source_1l00124"/>00124 &#32;&#32;&#32;&#32;std::cin&#32;&gt;&gt;&#32;fav;
+<anchor xml:id="_game_8cpp_source_1l00125"/>00125 &#32;&#32;&#32;&#32;<link linkend="_classgame_1a403df7ec3addea952a7658b4859adf6b">bc</link>.<link linkend="_class_bot_config_1ac766bf2645c392ae3057a93c7628aa85">updateFavoritePreset</link>(fav);
+<anchor xml:id="_game_8cpp_source_1l00126"/>00126 }
+<anchor xml:id="_game_8cpp_source_1l00127"/>00127 
+<anchor xml:id="_game_8cpp_source_1l00128"/><link linkend="_classgame_1ad156d149bb90f491291189604771673e">00128</link> <emphasis role="keywordtype">void</emphasis>&#32;<link linkend="_classgame_1ad156d149bb90f491291189604771673e">game::explainPresetChoice</link>()&#32;{
+<anchor xml:id="_game_8cpp_source_1l00129"/>00129 &#32;&#32;&#32;&#32;std::cout&#32;&lt;&lt;&#32;<emphasis role="stringliteral">&quot;\nChoose&#32;your&#32;preset:\n\n&quot;</emphasis>;
+<anchor xml:id="_game_8cpp_source_1l00130"/>00130 &#32;&#32;&#32;&#32;<emphasis role="comment">//allAct.showShortcuts();</emphasis>
+<anchor xml:id="_game_8cpp_source_1l00131"/>00131 &#32;&#32;&#32;&#32;std::cout&#32;&lt;&lt;&#32;<emphasis role="stringliteral">&quot;\n&quot;</emphasis>;
+<anchor xml:id="_game_8cpp_source_1l00132"/>00132 &#32;&#32;&#32;<emphasis role="comment">//&#32;allAct.showActivities();</emphasis>
+<anchor xml:id="_game_8cpp_source_1l00133"/>00133 &#32;&#32;&#32;&#32;std::cout&#32;&lt;&lt;&#32;<emphasis role="stringliteral">&quot;Favorite&#32;Preset:&#32;&quot;</emphasis>&#32;&lt;&lt;&#32;<link linkend="_classgame_1a403df7ec3addea952a7658b4859adf6b">bc</link>.<link linkend="_class_bot_config_1ad4f685732935069ed53b312cf6a35b58">readFavoritePreset</link>()&#32;&lt;&lt;&#32;<emphasis role="stringliteral">&quot;\n\n&quot;</emphasis>;
+<anchor xml:id="_game_8cpp_source_1l00134"/>00134 &#32;&#32;&#32;&#32;std::cout&#32;&lt;&lt;&#32;<emphasis role="stringliteral">&quot;Type&#32;the&#32;associated&#32;character:\n\n&quot;</emphasis>;
+<anchor xml:id="_game_8cpp_source_1l00135"/>00135 &#32;&#32;&#32;&#32;std::cout&#32;&lt;&lt;&#32;<emphasis role="stringliteral">&quot;For&#32;example&#32;:&#32;abjdlm&#32;or&#32;ABJghDd&#32;or&#32;0\n&quot;</emphasis>;
+<anchor xml:id="_game_8cpp_source_1l00136"/>00136 &#32;&#32;&#32;&#32;std::cout&#32;&lt;&lt;&#32;<emphasis role="stringliteral">&quot;Type&#32;P&#32;to&#32;choose&#32;preset\n&quot;</emphasis>;
+<anchor xml:id="_game_8cpp_source_1l00137"/>00137 &#32;&#32;&#32;&#32;std::cout&#32;&lt;&lt;&#32;<emphasis role="stringliteral">&quot;Type&#32;F&#32;to&#32;choose&#32;favorite&#32;Preset\n&quot;</emphasis>;
+<anchor xml:id="_game_8cpp_source_1l00138"/>00138 &#32;&#32;&#32;&#32;std::cout&#32;&lt;&lt;&#32;<emphasis role="stringliteral">&quot;Type&#32;S&#32;to&#32;Skip\n&quot;</emphasis>;
+<anchor xml:id="_game_8cpp_source_1l00139"/>00139 &#32;&#32;&#32;&#32;std::cout&#32;&lt;&lt;&#32;<emphasis role="stringliteral">&quot;Validate&#32;your&#32;input&#32;with&#32;Enter\n&quot;</emphasis>;
+<anchor xml:id="_game_8cpp_source_1l00140"/>00140 }
+<anchor xml:id="_game_8cpp_source_1l00141"/>00141 
+<anchor xml:id="_game_8cpp_source_1l00142"/><link linkend="_classgame_1aaf6205dbd1bb8c009e12196d5c187f77">00142</link> <emphasis role="keywordtype">bool</emphasis>&#32;<link linkend="_classgame_1aaf6205dbd1bb8c009e12196d5c187f77">game::chronoPresetMenu</link>(std::chrono::time_point&lt;std::chrono::steady_clock&gt;&#32;<link linkend="_paths_8cpp_1a423ec00aa9b17614cb8a0c52de937623">start</link>,&#32;<emphasis role="keywordtype">int</emphasis>&#32;duration,&#32;<emphasis role="keywordtype">int</emphasis>&amp;&#32;lastelapsed)&#32;{
+<anchor xml:id="_game_8cpp_source_1l00143"/>00143 &#32;&#32;&#32;&#32;std::string&#32;textseconds&#32;=&#32;<emphasis role="stringliteral">&quot;Seconds&#32;left:&#32;&quot;</emphasis>;
+<anchor xml:id="_game_8cpp_source_1l00144"/>00144 &#32;&#32;&#32;&#32;<emphasis role="keywordtype">int</emphasis>&#32;maxchar&#32;=&#32;0;
+<anchor xml:id="_game_8cpp_source_1l00145"/>00145 &#32;&#32;&#32;&#32;<emphasis role="keyword">auto</emphasis>&#32;now&#32;=&#32;std::chrono::steady_clock::now();
+<anchor xml:id="_game_8cpp_source_1l00146"/>00146 &#32;&#32;&#32;&#32;<emphasis role="keywordtype">int</emphasis>&#32;elapsed&#32;=&#32;std::chrono::duration_cast&lt;std::chrono::seconds&gt;(now&#32;-&#32;<link linkend="_paths_8cpp_1a423ec00aa9b17614cb8a0c52de937623">start</link>).count();
+<anchor xml:id="_game_8cpp_source_1l00147"/>00147 &#32;&#32;&#32;&#32;<emphasis role="keywordtype">int</emphasis>&#32;timeleft&#32;=&#32;(int)duration&#32;-&#32;elapsed;
+<anchor xml:id="_game_8cpp_source_1l00148"/>00148 &#32;&#32;&#32;&#32;<emphasis role="keywordflow">if</emphasis>&#32;(lastelapsed&#32;!=&#32;elapsed)&#32;{
+<anchor xml:id="_game_8cpp_source_1l00149"/>00149 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;std::string&#32;time&#32;=&#32;std::to_string(timeleft);
+<anchor xml:id="_game_8cpp_source_1l00150"/>00150 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordtype">int</emphasis>&#32;nbchar&#32;=&#32;(int)time.size();
+<anchor xml:id="_game_8cpp_source_1l00151"/>00151 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">for</emphasis>&#32;(<emphasis role="keywordtype">int</emphasis>&#32;j&#32;=&#32;0;&#32;j&#32;&lt;&#32;nbchar&#32;+&#32;textseconds.length();&#32;++j)&#32;{
+<anchor xml:id="_game_8cpp_source_1l00152"/>00152 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;std::cout&#32;&lt;&lt;&#32;<emphasis role="stringliteral">&quot;\b&quot;</emphasis>;
+<anchor xml:id="_game_8cpp_source_1l00153"/>00153 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;}
+<anchor xml:id="_game_8cpp_source_1l00154"/>00154 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;std::cout&#32;&lt;&lt;&#32;textseconds;
+<anchor xml:id="_game_8cpp_source_1l00155"/>00155 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;std::cout&#32;&lt;&lt;&#32;time;
+<anchor xml:id="_game_8cpp_source_1l00156"/>00156 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;lastelapsed&#32;=&#32;elapsed;
+<anchor xml:id="_game_8cpp_source_1l00157"/>00157 &#32;&#32;&#32;&#32;}
+<anchor xml:id="_game_8cpp_source_1l00158"/>00158 &#32;&#32;&#32;&#32;<emphasis role="keywordflow">return</emphasis>&#32;timeleft&#32;&lt;&#32;0;
+<anchor xml:id="_game_8cpp_source_1l00159"/>00159 }
+<anchor xml:id="_game_8cpp_source_1l00160"/>00160 
+<anchor xml:id="_game_8cpp_source_1l00161"/>00161 
+<anchor xml:id="_game_8cpp_source_1l00162"/><link linkend="_classgame_1a3aa7ed026a904be453162ca146ab4f3e">00162</link> <emphasis role="keywordtype">bool</emphasis>&#32;<link linkend="_classgame_1a3aa7ed026a904be453162ca146ab4f3e">game::botEnd</link>()&#32;{
+<anchor xml:id="_game_8cpp_source_1l00163"/>00163 &#32;&#32;&#32;<emphasis role="comment">//&#32;return&#32;allAct.noActivityLeft();</emphasis>
+<anchor xml:id="_game_8cpp_source_1l00164"/>00164 &#32;&#32;&#32;&#32;<emphasis role="keywordflow">return</emphasis>&#32;<emphasis role="keyword">false</emphasis>;
+<anchor xml:id="_game_8cpp_source_1l00165"/>00165 }
+<anchor xml:id="_game_8cpp_source_1l00166"/>00166 
+<anchor xml:id="_game_8cpp_source_1l00167"/><link linkend="_classgame_1aea6b13468585f1be55d1736100158706">00167</link> <emphasis role="keywordtype">bool</emphasis>&#32;<link linkend="_classgame_1aea6b13468585f1be55d1736100158706">game::startBot</link>()
+<anchor xml:id="_game_8cpp_source_1l00168"/>00168 {
+<anchor xml:id="_game_8cpp_source_1l00169"/>00169 &#32;&#32;&#32;&#32;<link linkend="_classgame_1a403df7ec3addea952a7658b4859adf6b">bc</link>.<link linkend="_class_bot_config_1ae575c3fd3b6384b68c87ffca7e269132">setDim</link>(<link linkend="_classgame_1ad2bc56764b5ea512bfbc0aeb18e1815e">dimX</link>,&#32;<link linkend="_classgame_1ad8f97ae6dc59dea029250ed48e8c227d">dimY</link>);
+<anchor xml:id="_game_8cpp_source_1l00170"/>00170 &#32;&#32;&#32;&#32;<emphasis role="keywordflow">if</emphasis>&#32;(!<link linkend="_classgame_1a403df7ec3addea952a7658b4859adf6b">bc</link>.<link linkend="_class_bot_config_1a8925ef3403b945f27b9ee2719ef257b9">initBotConfig</link>())<emphasis role="keywordflow">return</emphasis>&#32;<emphasis role="keyword">false</emphasis>;
+<anchor xml:id="_game_8cpp_source_1l00171"/>00171 &#32;&#32;&#32;&#32;<link linkend="_classgame_1a952de181a7dc8c51939d995ab81e1136">initActivities</link>();
+<anchor xml:id="_game_8cpp_source_1l00172"/>00172 &#32;&#32;&#32;&#32;<link linkend="_classgame_1a8e1e939e9ccca1570f7be33d1026e7a8">selectActivity</link>();
+<anchor xml:id="_game_8cpp_source_1l00173"/>00173 &#32;&#32;&#32;&#32;<link linkend="_sys_commands_8cpp_1ab778b8fee9bec0c7d9cfdbeb219bcc6b">createpaths</link>(<link linkend="_paths_8cpp_1a3f5065f3e5646125317ecbd5d12ae173">templates</link>);
+<anchor xml:id="_game_8cpp_source_1l00174"/>00174 &#32;&#32;&#32;&#32;<link linkend="_classgame_1a403df7ec3addea952a7658b4859adf6b">bc</link>.<link linkend="_class_bot_config_1a721c788702f464bb4406b919d018c5f9">startPlayingInstance</link>();
+<anchor xml:id="_game_8cpp_source_1l00175"/>00175 &#32;&#32;&#32;&#32;<link linkend="_classgame_1a403df7ec3addea952a7658b4859adf6b">bc</link>.<link linkend="_class_bot_config_1a2a28f19b68e5d8a4b8fa52f9d4f2fbbe">waitBootDevice</link>();
+<anchor xml:id="_game_8cpp_source_1l00176"/>00176 &#32;&#32;&#32;&#32;std::cout&#32;&lt;&lt;&#32;<emphasis role="stringliteral">&quot;Instance&#32;loaded\n&quot;</emphasis>;
+<anchor xml:id="_game_8cpp_source_1l00177"/>00177 &#32;&#32;&#32;&#32;<link linkend="_classgame_1a46b349b7c6c092bdc30718beef8c07eb">getAdbId</link>();
+<anchor xml:id="_game_8cpp_source_1l00178"/>00178 &#32;&#32;&#32;&#32;std::cout&#32;&lt;&lt;&#32;<emphasis role="stringliteral">&quot;Loading&#32;templates\n&quot;</emphasis>;
+<anchor xml:id="_game_8cpp_source_1l00179"/>00179 &#32;&#32;&#32;&#32;<link linkend="_classgame_1a0df6f5f3481cce3d9e3b46ba311fcc95">allAct</link>.<link linkend="_class_activities_1ab7e97671a57608531aeefec046ab9f86">inte</link>.<link linkend="_class_interactions_1acf4720976ec410b61c65e13d2979fd1f">loadAllTemplates</link>();
+<anchor xml:id="_game_8cpp_source_1l00180"/>00180 &#32;&#32;&#32;&#32;std::cout&#32;&lt;&lt;&#32;<emphasis role="stringliteral">&quot;Templates&#32;loaded\n&quot;</emphasis>;
+<anchor xml:id="_game_8cpp_source_1l00181"/>00181 &#32;&#32;&#32;&#32;<emphasis role="keywordflow">return</emphasis>&#32;<emphasis role="keyword">true</emphasis>;
+<anchor xml:id="_game_8cpp_source_1l00182"/>00182 }
+<anchor xml:id="_game_8cpp_source_1l00183"/>00183 
+<anchor xml:id="_game_8cpp_source_1l00184"/>00184 
+<anchor xml:id="_game_8cpp_source_1l00185"/>00185 
+<anchor xml:id="_game_8cpp_source_1l00186"/>00186 
+<anchor xml:id="_game_8cpp_source_1l00187"/>00187 
+<anchor xml:id="_game_8cpp_source_1l00188"/>00188 
+<anchor xml:id="_game_8cpp_source_1l00189"/>00189 
+<anchor xml:id="_game_8cpp_source_1l00190"/>00190 
+<anchor xml:id="_game_8cpp_source_1l00191"/>00191 
+<anchor xml:id="_game_8cpp_source_1l00192"/>00192 
+<anchor xml:id="_game_8cpp_source_1l00193"/>00193 
+<anchor xml:id="_game_8cpp_source_1l00194"/>00194 
+<anchor xml:id="_game_8cpp_source_1l00195"/>00195 
+<anchor xml:id="_game_8cpp_source_1l00196"/>00196 
+<anchor xml:id="_game_8cpp_source_1l00197"/>00197 
+<anchor xml:id="_game_8cpp_source_1l00198"/>00198 
+<anchor xml:id="_game_8cpp_source_1l00199"/>00199 
+<anchor xml:id="_game_8cpp_source_1l00200"/>00200 
+<anchor xml:id="_game_8cpp_source_1l00201"/>00201 
+<anchor xml:id="_game_8cpp_source_1l00202"/>00202 
+<anchor xml:id="_game_8cpp_source_1l00203"/>00203 
+<anchor xml:id="_game_8cpp_source_1l00204"/>00204 
+<anchor xml:id="_game_8cpp_source_1l00205"/>00205 
+<anchor xml:id="_game_8cpp_source_1l00206"/>00206 
+<anchor xml:id="_game_8cpp_source_1l00207"/>00207 
+<anchor xml:id="_game_8cpp_source_1l00208"/>00208 
+</programlisting></section>

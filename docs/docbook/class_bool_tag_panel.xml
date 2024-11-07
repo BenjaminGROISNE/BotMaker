@@ -1,0 +1,315 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<section xmlns="http://docbook.org/ns/docbook" version="5.0" xmlns:xlink="http://www.w3.org/1999/xlink" xml:id="_class_bool_tag_panel" xml:lang="en-US">
+<title>BoolTagPanel Class Reference</title>
+<indexterm><primary>BoolTagPanel</primary></indexterm>
+<para>
+<computeroutput>#include &lt;TagPanel.h&gt;</computeroutput>
+</para>
+Inheritance diagram for BoolTagPanel:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_bool_tag_panel__inherit__graph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+Collaboration diagram for BoolTagPanel:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_bool_tag_panel__coll__graph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+<simplesect>
+    <title>Public Member Functions    </title>
+        <itemizedlist>
+            <listitem><para><link linkend="_class_bool_tag_panel_1a12a134be4ff2d9444aaf1cd3b61eb08c">BoolTagPanel</link> (wxWindow *parentWindow)</para>
+</listitem>
+            <listitem><para><link linkend="_class_bool_tag_panel">BoolTagPanel</link> * <link linkend="_class_bool_tag_panel_1ae57699d163de0572b9f78f7661a0baff">clone</link> () override</para>
+</listitem>
+            <listitem><para><link linkend="_class_bool_tag_panel_1aa99e3e9917820818ad864ac21b7bde53">BoolTagPanel</link> (const <link linkend="_class_bool_tag_panel">BoolTagPanel</link> &amp;toCopy)</para>
+</listitem>
+            <listitem><para>void <link linkend="_class_bool_tag_panel_1af673aae426f3d51edca047c7031d6846">setTagName</link> ()</para>
+</listitem>
+            <listitem><para>void <link linkend="_class_bool_tag_panel_1a80329102b57ab9a2db08539bfbe7bf10">setPanelColor</link> ()</para>
+</listitem>
+            <listitem><para>void <link linkend="_class_bool_tag_panel_1a978fadc45204eff86c5053fda3bde0b7">setTagLine</link> () override</para>
+</listitem>
+        </itemizedlist>
+</simplesect>
+Public Member Functions inherited from <link linkend="_class_tag_panel">TagPanel</link>        <itemizedlist>
+            <listitem><para><link linkend="_class_tag_panel_1a20eb7700df1a0fc1a51352b36a6e5a22">TagPanel</link> (bool topConstructor=true)</para>
+</listitem>
+            <listitem><para><link linkend="_class_tag_panel_1a947de417b587805f538e91916ca1cc5d">TagPanel</link> (wxWindow *parentWindow, bool topConstructor=true)</para>
+</listitem>
+            <listitem><para><link linkend="_class_tag_panel_1a25ab1432ace7974c4abc496f51223942">TagPanel</link> (const <link linkend="_class_tag_panel">TagPanel</link> &amp;toCopy, bool topConstructor=true)</para>
+</listitem>
+            <listitem><para>virtual int <link linkend="_class_tag_panel_1aa533ce0568d728140272752a071e133a">getTagHeight</link> ()</para>
+</listitem>
+            <listitem><para>void <link linkend="_class_tag_panel_1adea8840b3b43bfee7f8e090a71dd708c">setTagNameCustom</link> (const std::string &amp;name)</para>
+</listitem>
+            <listitem><para>virtual void <link linkend="_class_tag_panel_1a746b3898803ea72e2a7500d7ed73d9ce">setColors</link> ()</para>
+</listitem>
+            <listitem><para>void <link linkend="_class_tag_panel_1af74a61159813873c529dbcb17a371a05">initLineSizer</link> ()</para>
+</listitem>
+            <listitem><para>virtual void <link linkend="_class_tag_panel_1ae24d607788ed14f2fc8b6a88ff9b7602">initTagSizer</link> ()</para>
+</listitem>
+            <listitem><para>virtual void <link linkend="_class_tag_panel_1a75a1eb94084fc21b1e50322a1c385733">addComponents</link> (<link linkend="_class_tag_panel">TagPanel</link> *tag)</para>
+</listitem>
+            <listitem><para>virtual void <link linkend="_class_tag_panel_1a2974706b1d2a79806571fbebd1f7d56b">initSizers</link> ()</para>
+</listitem>
+            <listitem><para>void <link linkend="_class_tag_panel_1a5d57b2c271078562ca65bf9d0f9c656e">DrawBordersEvent</link> (wxPaintEvent &amp;<link linkend="_paths_8cpp_1a93114eafe7b571802c6787926ec00d93">event</link>)</para>
+</listitem>
+            <listitem><para>void <link linkend="_class_tag_panel_1a72db5ac659ea9dc41b2a236bd5ff0a12">OnHoverPaint</link> (wxPaintEvent &amp;<link linkend="_paths_8cpp_1a93114eafe7b571802c6787926ec00d93">event</link>)</para>
+</listitem>
+            <listitem><para>void <link linkend="_class_tag_panel_1a01e839de7aa3bedbe9a7bc1f152a02f8">setStaticTagName</link> ()</para>
+</listitem>
+            <listitem><para><link linkend="_class_tag_panel">TagPanel</link> * <link linkend="_class_tag_panel_1a20a4cc67dc3ecd4538cb8af3c9668421">getPreviousTag</link> ()</para>
+</listitem>
+            <listitem><para><link linkend="_class_tag_panel">TagPanel</link> * <link linkend="_class_tag_panel_1aefc411bf7be4bd7fd05b3e8a48a6671f">getNextTag</link> ()</para>
+</listitem>
+            <listitem><para>wxBoxSizer * <link linkend="_class_tag_panel_1a7f15f662ac35f7d7b2b96c8d4dae0949">getLineSizer</link> ()</para>
+</listitem>
+            <listitem><para>virtual void <link linkend="_class_tag_panel_1af2926b62ee8940d7aa87591255623814">addTagName</link> ()</para>
+</listitem>
+            <listitem><para>void <link linkend="_class_tag_panel_1a99231e365be781b584996e68197621b9">setTagSizer</link> ()</para>
+</listitem>
+            <listitem><para>void <link linkend="_class_tag_panel_1a752cdf34c8cc8cc25ecc944683dff46b">setTagNameColor</link> ()</para>
+</listitem>
+            <listitem><para>void <link linkend="_class_tag_panel_1aaa6f2d383b2380c7c103b5019bd05782">addMover</link> ()</para>
+</listitem>
+            <listitem><para>bool <link linkend="_class_tag_panel_1a9a11954167303954710c12832b39fbf4">isLastTag</link> ()</para>
+</listitem>
+            <listitem><para>bool <link linkend="_class_tag_panel_1aa16fddf213851034cb33b775ea653efc">isFirstTag</link> ()</para>
+</listitem>
+            <listitem><para>void <link linkend="_class_tag_panel_1a4ddfadd1d39efac7f0123146fc9f8233">OnMoveUpClick</link> (wxMouseEvent &amp;evt)</para>
+</listitem>
+            <listitem><para>void <link linkend="_class_tag_panel_1a716d475b11d29d74392f4b0b581f7a45">OnDuplicateClick</link> (wxMouseEvent &amp;evt)</para>
+</listitem>
+            <listitem><para>void <link linkend="_class_tag_panel_1a33ffecd8625bc7e0783d208d8d18daf7">OnMoveDownClick</link> (wxMouseEvent &amp;evt)</para>
+</listitem>
+            <listitem><para>virtual void <link linkend="_class_tag_panel_1ab2f6c36e777443dcffd1cff986027790">initDeletePanel</link> ()</para>
+</listitem>
+            <listitem><para>void <link linkend="_class_tag_panel_1a92b74a6332f46423e1509044989a4a0a">OnDeleteButtonClick</link> (wxMouseEvent &amp;evt)</para>
+</listitem>
+            <listitem><para>void <link linkend="_class_tag_panel_1a370e5a7a79772ae4775f24de35506582">setPaintEvents</link> ()</para>
+</listitem>
+            <listitem><para>std::shared_ptr&lt; <link linkend="_class_tag">Tag</link> &gt; <link linkend="_class_tag_panel_1acf04179a1277e790a613902b33513a77">getTag</link> () const</para>
+</listitem>
+            <listitem><para>void <link linkend="_class_tag_panel_1aa2808a9ecda8c8181a49b4460e046395">setTag</link> (std::shared_ptr&lt; <link linkend="_class_tag">Tag</link> &gt; tag)</para>
+</listitem>
+            <listitem><para>void <link linkend="_class_tag_panel_1a5a896e5052102ac83010bc155bfd49aa">initDetailsPanel</link> (wxPanel *parentPanel)</para>
+</listitem>
+            <listitem><para>void <link linkend="_class_tag_panel_1a66d61d27a1bc39bf48ec00fd0f09dfd8">initDetailsTagName</link> ()</para>
+</listitem>
+            <listitem><para>void <link linkend="_class_tag_panel_1a43c96ffa9523c002fb96126500209ce8">SetLineFont</link> (wxButton *button, int <link linkend="_class_tag_panel_1aadc6b7d84d378ff8db4682080627030f">policeSize</link>=15)</para>
+</listitem>
+            <listitem><para>void <link linkend="_class_tag_panel_1a53d2a3068096670c08f249b1c2f6e798">SetLineFont</link> (wxStaticText *button, int <link linkend="_class_tag_panel_1aadc6b7d84d378ff8db4682080627030f">policeSize</link>=15)</para>
+</listitem>
+            <listitem><para>void <link linkend="_class_tag_panel_1af7c491223a887d2ce97353157adc9110">OnInsert</link> (wxPaintEvent &amp;evt)</para>
+</listitem>
+            <listitem><para>void <link linkend="_class_tag_panel_1a82ceff512bd6bf6302d782ea908c9ef9">linkToPanel</link> (wxBoxSizer *gridSizer)</para>
+</listitem>
+            <listitem><para>virtual void <link linkend="_class_tag_panel_1aa1a12f478359b6549c0d9c1c90f331b8">createDetailsPanel</link> (<link linkend="_class_tag_panel">TagPanel</link> *tag, wxPanel *parentPanel, wxBoxSizer *gridSizer)</para>
+</listitem>
+            <listitem><para>wxBoxSizer * <link linkend="_class_tag_panel_1a0c29f16235ad971cfa466f5e852cbcd8">getDetailsSizer</link> ()</para>
+</listitem>
+            <listitem><para>wxPanel * <link linkend="_class_tag_panel_1abc3125dfcc3694efea652a2232a6b23e">getDetailsPanel</link> ()</para>
+</listitem>
+            <listitem><para>wxColour <link linkend="_class_tag_panel_1a2968cbcc5c04e34a50085877ddb53f65">getPanelColour</link> ()</para>
+</listitem>
+            <listitem><para>wxBoxSizer * <link linkend="_class_tag_panel_1a98044cff891ada484ee4c845e878735b">getTagSizer</link> ()</para>
+</listitem>
+            <listitem><para><link linkend="_class_tag_panel">TagPanel</link> * <link linkend="_class_tag_panel_1af3b5b6fc2b16171af7cab7b0d79d9ed7">getParentTag</link> ()</para>
+</listitem>
+            <listitem><para>virtual void <link linkend="_class_tag_panel_1a861fccff4a41bbcb235d9d898f0ef17d">setInsertPoint</link> (<link linkend="__tag_panel_8h_1a369abf422adc1247d0d7bc295bf34014">HoverPosition</link> hovPos)</para>
+</listitem>
+            <listitem><para>virtual void <link linkend="_class_tag_panel_1af925f36858bbc30c39bd4716f64822d3">updateInsertRect</link> ()</para>
+</listitem>
+            <listitem><para>wxPoint <link linkend="_class_tag_panel_1aaaf019a2cc75cfb1014a0b9fd366e7f7">getInsertPoint</link> ()</para>
+</listitem>
+            <listitem><para>wxButton * <link linkend="_class_tag_panel_1a3987f5a00ba29cb8f5c1e7d09474f819">getCloneButton</link> () const</para>
+</listitem>
+            <listitem><para>wxButton * <link linkend="_class_tag_panel_1ad32a3e47413abc0b1f2252b7ce530b3d">getCutButton</link> () const</para>
+</listitem>
+        </itemizedlist>
+<simplesect>
+    <title>Additional Inherited Members    </title>
+Static Public Member Functions inherited from <link linkend="_class_tag_panel">TagPanel</link>        <itemizedlist>
+            <listitem><para>static int <link linkend="_class_tag_panel_1a975da9b33d0c94992472b291df4aadbe">getIndexOf</link> (wxSizer *sizer, wxSizerItem *item)</para>
+</listitem>
+            <listitem><para>static void <link linkend="_class_tag_panel_1a4fcedad553eb65983ba7a8da2d5895f3">init</link> (<link linkend="_class_tag_panel">TagPanel</link> *tag)</para>
+</listitem>
+            <listitem><para>static bool <link linkend="_class_tag_panel_1a556f0c05ac13e1c9c9f9ea39cd5041f8">isTagPanel</link> (wxWindow *window)</para>
+</listitem>
+            <listitem><para>static <link linkend="_class_tag_panel">TagPanel</link> * <link linkend="_class_tag_panel_1af656776798692c730135d692c6a48a62">getTagPanel</link> (wxWindow *window)</para>
+</listitem>
+        </itemizedlist>
+</simplesect>
+Public Attributes inherited from <link linkend="_class_tag_panel">TagPanel</link>        <itemizedlist>
+            <listitem><para><link linkend="__tag_panel_8h_1a369abf422adc1247d0d7bc295bf34014">HoverPosition</link> <link linkend="_class_tag_panel_1ae51a14087a4b11aa65b79bca524a2dc9">previousHover</link></para>
+</listitem>
+            <listitem><para>bool <link linkend="_class_tag_panel_1a57f33df8ee51553bbb6a1f4b4f727d82">isInserting</link></para>
+</listitem>
+            <listitem><para>bool <link linkend="_class_tag_panel_1ab9e4fd9beea1943bb1fb664bf4b0f876">isHovering</link></para>
+</listitem>
+        </itemizedlist>
+Protected Attributes inherited from <link linkend="_class_tag_panel">TagPanel</link>        <itemizedlist>
+            <listitem><para>wxButton * <link linkend="_class_tag_panel_1a81aca1816f6fc0985077fc5f461046e2">cloneButton</link></para>
+</listitem>
+            <listitem><para>wxButton * <link linkend="_class_tag_panel_1a227cddc11db1954dde6b5e3c49591e7a">cutButton</link></para>
+</listitem>
+            <listitem><para>wxButton * <link linkend="_class_tag_panel_1a569386f1f3226d5aa452cbbba46b1ffa">moveUpButton</link></para>
+</listitem>
+            <listitem><para>wxButton * <link linkend="_class_tag_panel_1a7972e5db29975326c850a2dae622eda6">moveDownButton</link></para>
+</listitem>
+            <listitem><para>wxButton * <link linkend="_class_tag_panel_1a481229251b8e6ee6d44ce1b5abd94c1b">deleteButton</link></para>
+</listitem>
+            <listitem><para>wxPoint <link linkend="_class_tag_panel_1ac08e1909ad79173fead54cf2e6c7be61">insertPoint</link></para>
+</listitem>
+            <listitem><para>wxSize <link linkend="_class_tag_panel_1ac6667f655542d928b04f273ba453e7c9">insertRect</link></para>
+</listitem>
+            <listitem><para>wxColour <link linkend="_class_tag_panel_1a0de4005aceb4d6809ec88ffb899f6d17">panelColor</link></para>
+</listitem>
+            <listitem><para>wxColour <link linkend="_class_tag_panel_1a23f2d5d739a33e4f3e4c26e1ee160d46">tagNameColor</link></para>
+</listitem>
+            <listitem><para>wxString <link linkend="_class_tag_panel_1a5dd671ef158b702eb9b17b88fe6c79b6">tagName</link></para>
+</listitem>
+            <listitem><para>int <link linkend="_class_tag_panel_1aadc6b7d84d378ff8db4682080627030f">policeSize</link></para>
+</listitem>
+            <listitem><para>wxBoxSizer * <link linkend="_class_tag_panel_1a0fb4a6bb2fdc47ce21e30a61784b804a">lineSizer</link></para>
+</listitem>
+            <listitem><para>wxBoxSizer * <link linkend="_class_tag_panel_1a480b452569c046bfc03e86a2be72a8eb">tagSizer</link></para>
+</listitem>
+            <listitem><para>wxStaticText * <link linkend="_class_tag_panel_1a0decd0f2236551f78024b107a5ed2e5f">staticTagName</link></para>
+</listitem>
+            <listitem><para>wxStaticText * <link linkend="_class_tag_panel_1a8d05f326ee6854342a0a5cf06228c527">staticDetailsName</link></para>
+</listitem>
+            <listitem><para>wxBoxSizer * <link linkend="_class_tag_panel_1acb5613b513abd882b94dd79981f15e5b">detailsSizer</link></para>
+</listitem>
+            <listitem><para>wxPanel * <link linkend="_class_tag_panel_1afa29a560070ac453fadae46f052cc53f">detailsPanel</link></para>
+</listitem>
+            <listitem><para>std::shared_ptr&lt; <link linkend="_class_tag">Tag</link> &gt; <link linkend="_class_tag_panel_1a5c983b7b476010dc908bdea5b3ce954a">myTag</link></para>
+</listitem>
+        </itemizedlist>
+<section>
+<title>Detailed Description</title>
+<para>
+Definition at line <link linkend="__tag_panel_8h_source_1l00193">193</link> of file <link linkend="__tag_panel_8h_source">TagPanel.h</link>.</para>
+</section>
+<section>
+<title>Constructor &amp; Destructor Documentation</title>
+<anchor xml:id="_class_bool_tag_panel_1a12a134be4ff2d9444aaf1cd3b61eb08c"/><section>
+    <title>BoolTagPanel()<computeroutput>[1/2]</computeroutput></title>
+<indexterm><primary>BoolTagPanel</primary><secondary>BoolTagPanel</secondary></indexterm>
+<indexterm><primary>BoolTagPanel</primary><secondary>BoolTagPanel</secondary></indexterm>
+<para><computeroutput>BoolTagPanel::BoolTagPanel (wxWindow * parentWindow)</computeroutput></para><para>
+Definition at line <link linkend="__tag_panel_8cpp_source_1l00098">98</link> of file <link linkend="__tag_panel_8cpp_source">TagPanel.cpp</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_bool_tag_panel_a12a134be4ff2d9444aaf1cd3b61eb08c_cgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+Here is the caller graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_bool_tag_panel_a12a134be4ff2d9444aaf1cd3b61eb08c_icgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_class_bool_tag_panel_1aa99e3e9917820818ad864ac21b7bde53"/><section>
+    <title>BoolTagPanel()<computeroutput>[2/2]</computeroutput></title>
+<indexterm><primary>BoolTagPanel</primary><secondary>BoolTagPanel</secondary></indexterm>
+<indexterm><primary>BoolTagPanel</primary><secondary>BoolTagPanel</secondary></indexterm>
+<para><computeroutput>BoolTagPanel::BoolTagPanel (const <link linkend="_class_bool_tag_panel">BoolTagPanel</link> &amp; toCopy)</computeroutput></para><para>
+Definition at line <link linkend="__tag_panel_8cpp_source_1l00056">56</link> of file <link linkend="__tag_panel_8cpp_source">TagPanel.cpp</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_bool_tag_panel_aa99e3e9917820818ad864ac21b7bde53_cgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+</section>
+<section>
+<title>Member Function Documentation</title>
+<anchor xml:id="_class_bool_tag_panel_1ae57699d163de0572b9f78f7661a0baff"/><section>
+    <title>clone()</title>
+<indexterm><primary>clone</primary><secondary>BoolTagPanel</secondary></indexterm>
+<indexterm><primary>BoolTagPanel</primary><secondary>clone</secondary></indexterm>
+<para><computeroutput><link linkend="_class_bool_tag_panel">BoolTagPanel</link> * BoolTagPanel::clone ( )<computeroutput>[override]</computeroutput>, <computeroutput>[virtual]</computeroutput></computeroutput></para><para>
+Reimplemented from <link linkend="_class_tag_panel_1a22c1748896f9b2a20dfb610b76216029">TagPanel</link>.</para>
+<para>
+Definition at line <link linkend="__tag_panel_8cpp_source_1l00316">316</link> of file <link linkend="__tag_panel_8cpp_source">TagPanel.cpp</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_bool_tag_panel_ae57699d163de0572b9f78f7661a0baff_cgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_class_bool_tag_panel_1a80329102b57ab9a2db08539bfbe7bf10"/><section>
+    <title>setPanelColor()</title>
+<indexterm><primary>setPanelColor</primary><secondary>BoolTagPanel</secondary></indexterm>
+<indexterm><primary>BoolTagPanel</primary><secondary>setPanelColor</secondary></indexterm>
+<para><computeroutput>void BoolTagPanel::setPanelColor ( )<computeroutput>[virtual]</computeroutput></computeroutput></para><para>
+Reimplemented from <link linkend="_class_tag_panel_1a5edee5cee34656fe89fec14f26af0f80">TagPanel</link>.</para>
+<para>
+Definition at line <link linkend="__tag_panel_8cpp_source_1l00796">796</link> of file <link linkend="__tag_panel_8cpp_source">TagPanel.cpp</link>.</para>
+</section>
+<anchor xml:id="_class_bool_tag_panel_1a978fadc45204eff86c5053fda3bde0b7"/><section>
+    <title>setTagLine()</title>
+<indexterm><primary>setTagLine</primary><secondary>BoolTagPanel</secondary></indexterm>
+<indexterm><primary>BoolTagPanel</primary><secondary>setTagLine</secondary></indexterm>
+<para><computeroutput>void BoolTagPanel::setTagLine ( )<computeroutput>[override]</computeroutput>, <computeroutput>[virtual]</computeroutput></computeroutput></para><para>
+Reimplemented from <link linkend="_class_tag_panel_1a6e53bfa1e9893d31775867a4f0c7c749">TagPanel</link>.</para>
+<para>
+Definition at line <link linkend="__tag_panel_8cpp_source_1l00859">859</link> of file <link linkend="__tag_panel_8cpp_source">TagPanel.cpp</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_bool_tag_panel_a978fadc45204eff86c5053fda3bde0b7_cgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_class_bool_tag_panel_1af673aae426f3d51edca047c7031d6846"/><section>
+    <title>setTagName()</title>
+<indexterm><primary>setTagName</primary><secondary>BoolTagPanel</secondary></indexterm>
+<indexterm><primary>BoolTagPanel</primary><secondary>setTagName</secondary></indexterm>
+<para><computeroutput>void BoolTagPanel::setTagName ( )<computeroutput>[virtual]</computeroutput></computeroutput></para><para>
+Reimplemented from <link linkend="_class_tag_panel_1aa65c4779bd09af4389b2ca49e6ea4136">TagPanel</link>.</para>
+<para>
+Definition at line <link linkend="__tag_panel_8cpp_source_1l00517">517</link> of file <link linkend="__tag_panel_8cpp_source">TagPanel.cpp</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_bool_tag_panel_af673aae426f3d51edca047c7031d6846_cgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<para>
+The documentation for this class was generated from the following files:</para>
+src/<link linkend="__tag_panel_8h">TagPanel.h</link>src/<link linkend="__tag_panel_8cpp">TagPanel.cpp</link></section>
+</section>

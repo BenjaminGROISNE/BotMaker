@@ -1,0 +1,115 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<section xmlns="http://docbook.org/ns/docbook" version="5.0" xmlns:xlink="http://www.w3.org/1999/xlink" xml:id="_class_error" xml:lang="en-US">
+<title>Error Class Reference</title>
+<indexterm><primary>Error</primary></indexterm>
+<para>
+<computeroutput>#include &lt;Interpretor.h&gt;</computeroutput>
+</para>
+Collaboration diagram for Error:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_error__coll__graph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+<simplesect>
+    <title>Public Member Functions    </title>
+        <itemizedlist>
+            <listitem><para><link linkend="_class_error_1aca339d00ad8481fb4c184f0ece42698b">Error</link> ()</para>
+</listitem>
+            <listitem><para><link linkend="_class_error_1a41fa314b97f7f78626b09b7163bb453e">Error</link> (<link linkend="__interpretor_8h_1acbd1e63c605cbb3dbe67c7411841b46c">TokenVALUE</link> ev, <link linkend="__interpretor_8h_1ab0df38968e4f03a3f1f6d6df0f31f45a">ErrorType</link> et, int el)</para>
+</listitem>
+            <listitem><para><link linkend="_class_error_1adaabf01080d2a47e52644a9c007cf341">Error</link> (<link linkend="__interpretor_8h_1ad8ed01ff3ff33333d8e19db4d2818bb6">DataType</link> <link linkend="_class_error_1a69186124b4acc75df505345de7b934a1">dType</link>, <link linkend="__interpretor_8h_1ab0df38968e4f03a3f1f6d6df0f31f45a">ErrorType</link> et, int el)</para>
+</listitem>
+            <listitem><para>void <link linkend="_class_error_1a690b81205a544b44f91746f086b752d2">showError</link> ()</para>
+</listitem>
+        </itemizedlist>
+</simplesect>
+<simplesect>
+    <title>Public Attributes    </title>
+        <itemizedlist>
+            <listitem><para><link linkend="__interpretor_8h_1ab0df38968e4f03a3f1f6d6df0f31f45a">ErrorType</link> <link linkend="_class_error_1a435fcafbddc8eb133017119c555a2ed0">errorType</link></para>
+</listitem>
+            <listitem><para><link linkend="__interpretor_8h_1acbd1e63c605cbb3dbe67c7411841b46c">TokenVALUE</link> <link linkend="_class_error_1ad04a7a6376aba5b6337b3865648ef8ba">errorValue</link></para>
+</listitem>
+            <listitem><para><link linkend="__interpretor_8h_1ad8ed01ff3ff33333d8e19db4d2818bb6">DataType</link> <link linkend="_class_error_1a69186124b4acc75df505345de7b934a1">dType</link></para>
+</listitem>
+            <listitem><para>int <link linkend="_class_error_1acbea8a404e63977dc75c9f5e615fabe5">errorLine</link></para>
+</listitem>
+        </itemizedlist>
+</simplesect>
+<section>
+<title>Detailed Description</title>
+<para>
+Definition at line <link linkend="__interpretor_8h_source_1l00096">96</link> of file <link linkend="__interpretor_8h_source">Interpretor.h</link>.</para>
+</section>
+<section>
+<title>Constructor &amp; Destructor Documentation</title>
+<anchor xml:id="_class_error_1aca339d00ad8481fb4c184f0ece42698b"/><section>
+    <title>Error()<computeroutput>[1/3]</computeroutput></title>
+<indexterm><primary>Error</primary><secondary>Error</secondary></indexterm>
+<indexterm><primary>Error</primary><secondary>Error</secondary></indexterm>
+<para><computeroutput>Error::Error ( )</computeroutput></para><para>
+Definition at line <link linkend="__interpretor_8cpp_source_1l01033">1033</link> of file <link linkend="__interpretor_8cpp_source">Interpretor.cpp</link>.</para>
+</section>
+<anchor xml:id="_class_error_1a41fa314b97f7f78626b09b7163bb453e"/><section>
+    <title>Error()<computeroutput>[2/3]</computeroutput></title>
+<indexterm><primary>Error</primary><secondary>Error</secondary></indexterm>
+<indexterm><primary>Error</primary><secondary>Error</secondary></indexterm>
+<para><computeroutput>Error::Error (<link linkend="__interpretor_8h_1acbd1e63c605cbb3dbe67c7411841b46c">TokenVALUE</link> ev, <link linkend="__interpretor_8h_1ab0df38968e4f03a3f1f6d6df0f31f45a">ErrorType</link> et, int el)</computeroutput></para><para>
+Definition at line <link linkend="__interpretor_8cpp_source_1l01037">1037</link> of file <link linkend="__interpretor_8cpp_source">Interpretor.cpp</link>.</para>
+</section>
+<anchor xml:id="_class_error_1adaabf01080d2a47e52644a9c007cf341"/><section>
+    <title>Error()<computeroutput>[3/3]</computeroutput></title>
+<indexterm><primary>Error</primary><secondary>Error</secondary></indexterm>
+<indexterm><primary>Error</primary><secondary>Error</secondary></indexterm>
+<para><computeroutput>Error::Error (<link linkend="__interpretor_8h_1ad8ed01ff3ff33333d8e19db4d2818bb6">DataType</link> dType, <link linkend="__interpretor_8h_1ab0df38968e4f03a3f1f6d6df0f31f45a">ErrorType</link> et, int el)</computeroutput></para><para>
+Definition at line <link linkend="__interpretor_8cpp_source_1l01045">1045</link> of file <link linkend="__interpretor_8cpp_source">Interpretor.cpp</link>.</para>
+</section>
+</section>
+<section>
+<title>Member Function Documentation</title>
+<anchor xml:id="_class_error_1a690b81205a544b44f91746f086b752d2"/><section>
+    <title>showError()</title>
+<indexterm><primary>showError</primary><secondary>Error</secondary></indexterm>
+<indexterm><primary>Error</primary><secondary>showError</secondary></indexterm>
+<para><computeroutput>void Error::showError ( )</computeroutput></para><para>
+Definition at line <link linkend="__interpretor_8cpp_source_1l01052">1052</link> of file <link linkend="__interpretor_8cpp_source">Interpretor.cpp</link>.</para>
+</section>
+</section>
+<section>
+<title>Member Data Documentation</title>
+<anchor xml:id="_class_error_1a69186124b4acc75df505345de7b934a1"/><section>
+    <title>dType</title>
+<indexterm><primary>dType</primary><secondary>Error</secondary></indexterm>
+<indexterm><primary>Error</primary><secondary>dType</secondary></indexterm>
+<para><computeroutput><link linkend="__interpretor_8h_1ad8ed01ff3ff33333d8e19db4d2818bb6">DataType</link> Error::dType</computeroutput></para><para>
+Definition at line <link linkend="__interpretor_8h_source_1l00104">104</link> of file <link linkend="__interpretor_8h_source">Interpretor.h</link>.</para>
+</section>
+<anchor xml:id="_class_error_1acbea8a404e63977dc75c9f5e615fabe5"/><section>
+    <title>errorLine</title>
+<indexterm><primary>errorLine</primary><secondary>Error</secondary></indexterm>
+<indexterm><primary>Error</primary><secondary>errorLine</secondary></indexterm>
+<para><computeroutput>int Error::errorLine</computeroutput></para><para>
+Definition at line <link linkend="__interpretor_8h_source_1l00105">105</link> of file <link linkend="__interpretor_8h_source">Interpretor.h</link>.</para>
+</section>
+<anchor xml:id="_class_error_1a435fcafbddc8eb133017119c555a2ed0"/><section>
+    <title>errorType</title>
+<indexterm><primary>errorType</primary><secondary>Error</secondary></indexterm>
+<indexterm><primary>Error</primary><secondary>errorType</secondary></indexterm>
+<para><computeroutput><link linkend="__interpretor_8h_1ab0df38968e4f03a3f1f6d6df0f31f45a">ErrorType</link> Error::errorType</computeroutput></para><para>
+Definition at line <link linkend="__interpretor_8h_source_1l00102">102</link> of file <link linkend="__interpretor_8h_source">Interpretor.h</link>.</para>
+</section>
+<anchor xml:id="_class_error_1ad04a7a6376aba5b6337b3865648ef8ba"/><section>
+    <title>errorValue</title>
+<indexterm><primary>errorValue</primary><secondary>Error</secondary></indexterm>
+<indexterm><primary>Error</primary><secondary>errorValue</secondary></indexterm>
+<para><computeroutput><link linkend="__interpretor_8h_1acbd1e63c605cbb3dbe67c7411841b46c">TokenVALUE</link> Error::errorValue</computeroutput></para><para>
+Definition at line <link linkend="__interpretor_8h_source_1l00103">103</link> of file <link linkend="__interpretor_8h_source">Interpretor.h</link>.</para>
+</section>
+<para>
+The documentation for this class was generated from the following files:</para>
+src/<link linkend="__interpretor_8h">Interpretor.h</link>src/<link linkend="__interpretor_8cpp">Interpretor.cpp</link></section>
+</section>

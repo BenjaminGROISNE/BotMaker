@@ -1,0 +1,1842 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<section xmlns="http://docbook.org/ns/docbook" version="5.0" xmlns:xlink="http://www.w3.org/1999/xlink" xml:id="_class_interactions" xml:lang="en-US">
+<title>Interactions Class Reference</title>
+<indexterm><primary>Interactions</primary></indexterm>
+<para>
+<computeroutput>#include &lt;Interactions.h&gt;</computeroutput>
+</para>
+Inheritance diagram for Interactions:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_interactions__inherit__graph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+Collaboration diagram for Interactions:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_interactions__coll__graph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+<simplesect>
+    <title>Public Member Functions    </title>
+        <itemizedlist>
+            <listitem><para><link linkend="_class_interactions_1ae26abbfd309e818022d07c1d47cb0ede">Interactions</link> ()</para>
+</listitem>
+            <listitem><para>bool <link linkend="_class_interactions_1a85395e185b74c6e25d0f27459b0de33c">fcA</link> (const std::string &amp;Templ, <link linkend="_struct_zone">Zone</link> Z=<link linkend="_struct_zone">Zone</link>(), unsigned int delayMilliseconds=<link linkend="_class_interactions_1a2ba3357ced2764e8901b742c941547c1">DEFAULTDELAY</link>)</para>
+</listitem>
+            <listitem><para>bool <link linkend="_class_interactions_1a25637266a0bf2b2c77d5c7e276baabd0">fA</link> (const std::string &amp;Templ, <link linkend="_struct_zone">Zone</link> Z=<link linkend="_struct_zone">Zone</link>(), unsigned int delayMilliseconds=<link linkend="_class_interactions_1a2ba3357ced2764e8901b742c941547c1">DEFAULTDELAY</link>, bool willInteract=false)</para>
+</listitem>
+            <listitem><para>bool <link linkend="_class_interactions_1aed04f9177d2aba467d71818a5e82c7bc">fcpopupA</link> ()</para>
+</listitem>
+            <listitem><para><link linkend="_struct_template">Template</link> <link linkend="_class_interactions_1a0a0ffd9ad1990de31fd7b2773db32667">loopPopUp</link> (<link linkend="__units_8h_1a6b62789b863165c9d424a7504d4a6f61">typeMat</link> color=<link linkend="__units_8h_1a6b62789b863165c9d424a7504d4a6f61a551cc46435cf57d89ca000b540d78ab0">Gray</link>)</para>
+</listitem>
+            <listitem><para>void <link linkend="_class_interactions_1af819b8e0f2ed260bcef0806e84043db7">fillPopup</link> ()</para>
+</listitem>
+            <listitem><para>bool <link linkend="_class_interactions_1a25b3a4dba323cbb14057035056bf9d56">fcOneTemplateMultipleTemplateA</link> (const std::string &amp;Templ, <link linkend="__units_8h_1a224b9163917ac32fc95a60d8c1eec3aa">Direction</link> direction, int order, <link linkend="_struct_zone">Zone</link> Z=<link linkend="_struct_zone">Zone</link>(), unsigned int delayMilliseconds=<link linkend="_class_interactions_1a2ba3357ced2764e8901b742c941547c1">DEFAULTDELAY</link>)</para>
+</listitem>
+            <listitem><para>bool <link linkend="_class_interactions_1a2b8392d9a1a414b61dca6d6320fd2f79">fOneTemplateMultipleTemplateA</link> (const std::string &amp;Templ, <link linkend="__units_8h_1a224b9163917ac32fc95a60d8c1eec3aa">Direction</link> direction, int order, <link linkend="_struct_zone">Zone</link> Z=<link linkend="_struct_zone">Zone</link>(), unsigned int delayMilliseconds=<link linkend="_class_interactions_1a2ba3357ced2764e8901b742c941547c1">DEFAULTDELAY</link>, bool willInteract=false)</para>
+</listitem>
+            <listitem><para>bool <link linkend="_class_interactions_1a523842705412e68f6461679f201caf07">fOneTemplateMultipleTemplateA</link> (const std::vector&lt; std::string &gt; &amp;alltempl, const <link linkend="__units_8h_1a224b9163917ac32fc95a60d8c1eec3aa">Direction</link> &amp;direction, int order, <link linkend="_struct_zone">Zone</link> Z=<link linkend="_struct_zone">Zone</link>(), unsigned int delayMilliseconds=<link linkend="_class_interactions_1a2ba3357ced2764e8901b742c941547c1">DEFAULTDELAY</link>, bool willInteract=false)</para>
+</listitem>
+            <listitem><para>bool <link linkend="_class_interactions_1a8de1d76318ef0c22ad891b28008a44a3">fcOneTemplateMultipleTemplateA</link> (const std::vector&lt; std::string &gt; &amp;alltempl, const <link linkend="__units_8h_1a224b9163917ac32fc95a60d8c1eec3aa">Direction</link> &amp;direction, int order, <link linkend="_struct_zone">Zone</link> Z=<link linkend="_struct_zone">Zone</link>(), unsigned int delayMilliseconds=<link linkend="_class_interactions_1a2ba3357ced2764e8901b742c941547c1">DEFAULTDELAY</link>)</para>
+</listitem>
+            <listitem><para>bool <link linkend="_class_interactions_1a610a820dde0e642d3bcae7fdf971a75e">fOneMultipleTemplateA</link> (std::vector&lt; std::vector&lt; std::string &gt; &gt; allTempl, <link linkend="_struct_zone">Zone</link> Z=<link linkend="_struct_zone">Zone</link>(), unsigned int delayMilliseconds=<link linkend="_class_interactions_1a2ba3357ced2764e8901b742c941547c1">DEFAULTDELAY</link>, bool willInteract=false)</para>
+</listitem>
+            <listitem><para>bool <link linkend="_class_interactions_1a420519a4236772332018c8acd6f35ab0">fMultipleTemplateA</link> (const std::vector&lt; std::string &gt;alltempl, std::vector&lt; std::string &gt; &amp;foundTemplates, <link linkend="_struct_zone">Zone</link> Z=<link linkend="_struct_zone">Zone</link>(), unsigned int delayMilliseconds=<link linkend="_class_interactions_1a2ba3357ced2764e8901b742c941547c1">DEFAULTDELAY</link>, bool willInteract=false)</para>
+</listitem>
+            <listitem><para>bool <link linkend="_class_interactions_1ad71346be58dfe5a5d5d8ac7f2122a765">fMultipleCompareTemplateA</link> (const std::vector&lt; std::string &gt;alltempl, const std::vector&lt; std::string &gt;simTempl, std::vector&lt; std::string &gt; &amp;foundTemplates, <link linkend="_struct_zone">Zone</link> Z=<link linkend="_struct_zone">Zone</link>(), unsigned int delayMilliseconds=<link linkend="_class_interactions_1a2ba3357ced2764e8901b742c941547c1">DEFAULTDELAY</link>, bool willInteract=false)</para>
+</listitem>
+            <listitem><para>bool <link linkend="_class_interactions_1af01fb8407a9f18982f7e75f0433f7ef2">fcOneTemplateA</link> (const std::vector&lt; std::string &gt; &amp;allTempl, std::string &amp;foundTempl, <link linkend="_struct_zone">Zone</link> Z=<link linkend="_struct_zone">Zone</link>(), unsigned int delayMilliseconds=<link linkend="_class_interactions_1a2ba3357ced2764e8901b742c941547c1">DEFAULTDELAY</link>)</para>
+</listitem>
+            <listitem><para>bool <link linkend="_class_interactions_1ad86db2bcd0900e15cfd36374937d7748">fOneTemplateA</link> (const std::vector&lt; std::string &gt; allTempl, std::string &amp;foundTempl, <link linkend="_struct_zone">Zone</link> Z=<link linkend="_struct_zone">Zone</link>(), unsigned int delayMilliseconds=<link linkend="_class_interactions_1a2ba3357ced2764e8901b742c941547c1">DEFAULTDELAY</link>, bool willInteract=false)</para>
+</listitem>
+            <listitem><para>bool <link linkend="_class_interactions_1aae244f39f0b9b6be1f85f90d0d2c1ff2">fcOneTemplateA</link> (const std::vector&lt; std::string &gt; &amp;toclick, const std::vector&lt; std::string &gt; &amp;tonotclick, std::string &amp;foundTempl, <link linkend="_struct_zone">Zone</link> Z=<link linkend="_struct_zone">Zone</link>(), unsigned int delayMilliseconds=<link linkend="_class_interactions_1a2ba3357ced2764e8901b742c941547c1">DEFAULTDELAY</link>)</para>
+</listitem>
+            <listitem><para>bool <link linkend="_class_interactions_1abe11d91838527eb473bb207986536b70">fcOneTemplateA</link> (const std::vector&lt; std::string &gt; &amp;toclick, const std::vector&lt; std::string &gt; &amp;tonotclick, <link linkend="_struct_zone">Zone</link> Z=<link linkend="_struct_zone">Zone</link>(), unsigned int delayMilliseconds=<link linkend="_class_interactions_1a2ba3357ced2764e8901b742c941547c1">DEFAULTDELAY</link>)</para>
+</listitem>
+            <listitem><para>bool <link linkend="_class_interactions_1a3e09f4be284f0321d27588fc336eef21">fCompareOneTemplateA</link> (const std::vector&lt; std::string &gt; &amp;allTempl, const std::vector&lt; std::string &gt; &amp;simTempl, std::string &amp;Tresult, <link linkend="_struct_zone">Zone</link> Z=<link linkend="_struct_zone">Zone</link>(), unsigned int delayMilliseconds=<link linkend="_class_interactions_1a2ba3357ced2764e8901b742c941547c1">DEFAULTDELAY</link>, bool willInteract=false)</para>
+</listitem>
+            <listitem><para>bool <link linkend="_class_interactions_1a14660eef97f54664ede7c0cccdd524a9">fcOneTemplateA</link> (const std::vector&lt; std::string &gt; &amp;allTempl, <link linkend="_struct_zone">Zone</link> Z=<link linkend="_struct_zone">Zone</link>(), unsigned int delayMilliseconds=<link linkend="_class_interactions_1a2ba3357ced2764e8901b742c941547c1">DEFAULTDELAY</link>)</para>
+</listitem>
+            <listitem><para>bool <link linkend="_class_interactions_1a75d1c7883ad5786240851e1396c85ccf">fOneTemplateA</link> (const std::vector&lt; std::string &gt; &amp;allTempl, <link linkend="_struct_zone">Zone</link> Z=<link linkend="_struct_zone">Zone</link>(), unsigned int delayMilliseconds=<link linkend="_class_interactions_1a2ba3357ced2764e8901b742c941547c1">DEFAULTDELAY</link>, bool willInteract=false)</para>
+</listitem>
+            <listitem><para>bool <link linkend="_class_interactions_1a628a6c47d7580529d4b4e99abc4136fc">fOneTemplateEraseA</link> (std::vector&lt; std::string &gt; &amp;allTempl, <link linkend="_struct_zone">Zone</link> Z=<link linkend="_struct_zone">Zone</link>(), unsigned int delayMilliseconds=<link linkend="_class_interactions_1a2ba3357ced2764e8901b742c941547c1">DEFAULTDELAY</link>, bool willInteract=false)</para>
+</listitem>
+            <listitem><para>bool <link linkend="_class_interactions_1a55a9a71c6ad731e023520197774e1c29">fcOneTemplateEraseA</link> (std::vector&lt; std::string &gt; &amp;allTempl, <link linkend="_struct_zone">Zone</link> Z=<link linkend="_struct_zone">Zone</link>(), unsigned int delayMilliseconds=<link linkend="_class_interactions_1a2ba3357ced2764e8901b742c941547c1">DEFAULTDELAY</link>)</para>
+</listitem>
+            <listitem><para>bool <link linkend="_class_interactions_1aece6b96d6a02046f7805e6ac46d6656b">fnbTemplateA</link> (const std::string &amp;Templ, int &amp;nb, <link linkend="_struct_zone">Zone</link> Z=<link linkend="_struct_zone">Zone</link>(), unsigned int delayMilliseconds=<link linkend="_class_interactions_1a2ba3357ced2764e8901b742c941547c1">DEFAULTDELAY</link>, bool willInteract=false)</para>
+</listitem>
+            <listitem><para>int <link linkend="_class_interactions_1ac0c9eb1e6b218bc4a1dc67d0ee50dc39">fnbTemplateA</link> (const std::string &amp;Templ, <link linkend="_struct_zone">Zone</link> Z=<link linkend="_struct_zone">Zone</link>(), unsigned int delayMilliseconds=<link linkend="_class_interactions_1a2ba3357ced2764e8901b742c941547c1">DEFAULTDELAY</link>, bool willInteract=false)</para>
+</listitem>
+            <listitem><para>int <link linkend="_class_interactions_1a0b5af6e9b6b8bffffd01c1c9c3f60289">fnbTemplateA</link> (const std::vector&lt; std::string &gt; &amp;allTempl, <link linkend="_struct_zone">Zone</link> Z=<link linkend="_struct_zone">Zone</link>(), unsigned int delayMilliseconds=<link linkend="_class_interactions_1a2ba3357ced2764e8901b742c941547c1">DEFAULTDELAY</link>, bool willInteract=false)</para>
+</listitem>
+            <listitem><para>int <link linkend="_class_interactions_1a0fc0c12ee5950b8d0b47bfc6a9eebe14">fnbMultipleCompareTemplateA</link> (const std::vector&lt; std::string &gt; &amp;allTempl, const std::vector&lt; std::string &gt; &amp;simTempls, <link linkend="_struct_zone">Zone</link> Z=<link linkend="_struct_zone">Zone</link>(), unsigned int delayMilliseconds=<link linkend="_class_interactions_1a2ba3357ced2764e8901b742c941547c1">DEFAULTDELAY</link>, bool willInteract=false)</para>
+</listitem>
+            <listitem><para>int <link linkend="_class_interactions_1a136e4508ae7f2b36eea44465ffa0002d">fnbUniqueCompareTemplateA</link> (const std::vector&lt; std::string &gt; &amp;allTempl, const std::vector&lt; std::string &gt; &amp;simTempls, <link linkend="_struct_zone">Zone</link> Z=<link linkend="_struct_zone">Zone</link>(), unsigned int delayMilliseconds=<link linkend="_class_interactions_1a2ba3357ced2764e8901b742c941547c1">DEFAULTDELAY</link>, bool willInteract=false)</para>
+</listitem>
+            <listitem><para>int <link linkend="_class_interactions_1ac8c4e46023594103ca4184699118b6f6">fnbCompareTemplateA</link> (const std::string &amp;Templ, const std::vector&lt; std::string &gt; &amp;simTempls, <link linkend="_struct_zone">Zone</link> Z=<link linkend="_struct_zone">Zone</link>(), unsigned int delayMilliseconds=<link linkend="_class_interactions_1a2ba3357ced2764e8901b742c941547c1">DEFAULTDELAY</link>, bool willInteract=false)</para>
+</listitem>
+            <listitem><para>bool <link linkend="_class_interactions_1afd8c8bc50bb964d44f8880afefe7a6f9">fcCompareA</link> (const std::string &amp;goodTemplate, const std::string &amp;similartemplate, <link linkend="_struct_zone">Zone</link> Z=<link linkend="_struct_zone">Zone</link>(), unsigned int delayMilliseconds=<link linkend="_class_interactions_1a2ba3357ced2764e8901b742c941547c1">DEFAULTDELAY</link>)</para>
+</listitem>
+            <listitem><para>bool <link linkend="_class_interactions_1ad24b4992a69c681dc645d213527d2a07">fCompareA</link> (const std::string &amp;goodTemplate, const std::string &amp;similartemplate, <link linkend="_struct_zone">Zone</link> Z=<link linkend="_struct_zone">Zone</link>(), unsigned int delayMilliseconds=<link linkend="_class_interactions_1a2ba3357ced2764e8901b742c941547c1">DEFAULTDELAY</link>, bool willInteract=false)</para>
+</listitem>
+            <listitem><para>bool <link linkend="_class_interactions_1aaba8562157b738fac74c4ab64ba6a9f8">fcCompareMultipleTemplateA</link> (const std::string &amp;goodTemplate, const std::vector&lt; std::string &gt; &amp;similartemplates, <link linkend="_struct_zone">Zone</link> Z=<link linkend="_struct_zone">Zone</link>(), unsigned int delayMilliseconds=<link linkend="_class_interactions_1a2ba3357ced2764e8901b742c941547c1">DEFAULTDELAY</link>)</para>
+</listitem>
+            <listitem><para>bool <link linkend="_class_interactions_1a1e4898ef6baa65c69e8f4a94e34f91f9">fCompareMultipleTemplateA</link> (const std::string &amp;goodTemplate, const std::vector&lt; std::string &gt; &amp;similartemplates, <link linkend="_struct_zone">Zone</link> Z=<link linkend="_struct_zone">Zone</link>(), unsigned int delayMilliseconds=<link linkend="_class_interactions_1a2ba3357ced2764e8901b742c941547c1">DEFAULTDELAY</link>, bool willInteract=false)</para>
+</listitem>
+            <listitem><para>bool <link linkend="_class_interactions_1a34f2db9d4b23289b4243c14bfd8e67cd">fMultipleCompareMultipleTemplateA</link> (const std::string &amp;goodTemplate, const std::vector&lt; std::string &gt; &amp;similartemplates, <link linkend="_struct_zone">Zone</link> Z=<link linkend="_struct_zone">Zone</link>(), unsigned int delayMilliseconds=<link linkend="_class_interactions_1a2ba3357ced2764e8901b742c941547c1">DEFAULTDELAY</link>, bool willInteract=false)</para>
+</listitem>
+            <listitem><para>bool <link linkend="_class_interactions_1ac561e137b5d8550a5e58d7017aae8cbf">fCompareOneTemplateMultipleTemplateA</link> (const std::vector&lt; std::string &gt; &amp;alltempl, const std::vector&lt; std::string &gt; &amp;simTempl, <link linkend="__units_8h_1a224b9163917ac32fc95a60d8c1eec3aa">Direction</link> direction, int order, <link linkend="_struct_zone">Zone</link> Z=<link linkend="_struct_zone">Zone</link>(), unsigned int delayMilliseconds=<link linkend="_class_interactions_1a2ba3357ced2764e8901b742c941547c1">DEFAULTDELAY</link>, bool willInteract=false)</para>
+</listitem>
+            <listitem><para>bool <link linkend="_class_interactions_1a79cb358170ab8b3f87a252d12cac8528">fcCompareOneTemplateMultipleTemplateA</link> (const std::vector&lt; std::string &gt; &amp;alltempl, const std::vector&lt; std::string &gt; &amp;simTempl, <link linkend="__units_8h_1a224b9163917ac32fc95a60d8c1eec3aa">Direction</link> direction, int order, <link linkend="_struct_zone">Zone</link> Z=<link linkend="_struct_zone">Zone</link>(), unsigned int delayMilliseconds=<link linkend="_class_interactions_1a2ba3357ced2764e8901b742c941547c1">DEFAULTDELAY</link>)</para>
+</listitem>
+            <listitem><para>bool <link linkend="_class_interactions_1ad7daddd9df3cea80e69872b8afd6c8dc">templateFound</link> (bool found, const <link linkend="_struct_template">Template</link> &amp;templ, bool willInteract=false, unsigned int delayMilliseconds=<link linkend="_class_interactions_1a2ba3357ced2764e8901b742c941547c1">DEFAULTDELAY</link>)</para>
+</listitem>
+            <listitem><para>bool <link linkend="_class_interactions_1a1491cc82f7f888b42c035f0325b9610d">templateFound</link> (bool found, const <link linkend="_struct_template">Template</link> &amp;templ, bool willInteract=false, <link linkend="__units_8h_1a8bb1ef53467e4f61410d12822d922498">Action</link> act=<link linkend="__units_8h_1a8bb1ef53467e4f61410d12822d922498a9345e59b3346666444f7cfa61648a609">Action::Click</link>, <link linkend="_struct_coord">Coord</link> coord=<link linkend="_struct_coord">Coord</link>(), unsigned int delayMilliseconds=<link linkend="_class_interactions_1a2ba3357ced2764e8901b742c941547c1">DEFAULTDELAY</link>)</para>
+</listitem>
+            <listitem><para>void <link linkend="_class_interactions_1ade7f52c59105f434650b9358b22e5488">resetCount</link> ()</para>
+</listitem>
+            <listitem><para>bool <link linkend="_class_interactions_1ae6f71f7be8c80c4954bdd0f594891e66">fSwipeA</link> (std::string imgtemplate, <link linkend="_struct_coord">Coord</link> Cresult, <link linkend="_struct_zone">Zone</link> Z=<link linkend="_struct_zone">Zone</link>(), bool willInteract=true)</para>
+</listitem>
+            <listitem><para>bool <link linkend="_class_interactions_1aeecb637d08c04de1439096ad646fdb36">fSwipeA</link> (std::string imgtemplate, <link linkend="__units_8h_1a224b9163917ac32fc95a60d8c1eec3aa">Direction</link> endx, <link linkend="_struct_zone">Zone</link> Z=<link linkend="_struct_zone">Zone</link>(), bool willInteract=true)</para>
+</listitem>
+            <listitem><para>bool <link linkend="_class_interactions_1a8dd8d6d917a4a95c2e2ef2d389380751">fMultipleDigitsA</link> (int nb, std::vector&lt; std::string &gt;Nb, std::vector&lt; <link linkend="_struct_template">Template</link> &gt; &amp;Tresult, <link linkend="_struct_zone">Zone</link> Z)</para>
+</listitem>
+            <listitem><para><link linkend="_struct_number">Number</link> <link linkend="_class_interactions_1a7a8357271583869fba1939d42718a569">fNumberIntegerA</link> (std::vector&lt; std::string &gt;digits, std::vector&lt; <link linkend="_struct_unit">Unit</link> &gt;Units, <link linkend="_struct_zone">Zone</link> Z)</para>
+</listitem>
+            <listitem><para><link linkend="_struct_number">Number</link> <link linkend="_class_interactions_1ab309ac8a5a9dce72e641a1d83dfddcb4">fNumberIntegerA</link> (std::vector&lt; std::string &gt;digits, <link linkend="_struct_zone">Zone</link> Z)</para>
+</listitem>
+            <listitem><para><link linkend="_struct_number">Number</link> <link linkend="_class_interactions_1a4b05b281fd479a1e86264290462f7112">fNumberDecimalA</link> (std::vector&lt; std::string &gt;digits, std::vector&lt; <link linkend="_struct_unit">Unit</link> &gt;Units, std::string dot, <link linkend="_struct_zone">Zone</link> Z)</para>
+</listitem>
+            <listitem><para><link linkend="_struct_number">Number</link> <link linkend="_class_interactions_1a834d2963fb9d55be32d7123f94057c1c">fNumberDecimalA</link> (std::vector&lt; std::string &gt;digits, std::string dot, <link linkend="_struct_zone">Zone</link> Z)</para>
+</listitem>
+            <listitem><para>std::vector&lt; <link linkend="_struct_coord">Coord</link> &gt; <link linkend="_class_interactions_1ae39566ea8b39040355099c95f1e7998d">orderCoords</link> (const std::vector&lt; <link linkend="_struct_coord">Coord</link> &gt; &amp;coords, <link linkend="__units_8h_1a224b9163917ac32fc95a60d8c1eec3aa">Direction</link> dir)</para>
+</listitem>
+            <listitem><para>std::vector&lt; <link linkend="_struct_template">Template</link> &gt; <link linkend="_class_interactions_1a9947d091de5ba2d09ec925866d231fe1">orderTemplates</link> (const std::vector&lt; <link linkend="_struct_template">Template</link> &gt; &amp;allTempl, <link linkend="__units_8h_1a224b9163917ac32fc95a60d8c1eec3aa">Direction</link> dir)</para>
+</listitem>
+            <listitem><para>std::vector&lt; <link linkend="_struct_coord">Coord</link> &gt; <link linkend="_class_interactions_1af916d0cdf7643f49bed0f81afd914f6f">orderPoint</link> (const std::vector&lt; <link linkend="_struct_coord">Coord</link> &gt; &amp;coord, const <link linkend="_struct_coord">Coord</link> &amp;Cf)</para>
+</listitem>
+            <listitem><para><link linkend="_struct_template">Template</link> <link linkend="_class_interactions_1a5b5af2b125ff152043789cfcf70ffb2b">getTemplate</link> (const std::string &amp;images, <link linkend="__units_8h_1a6b62789b863165c9d424a7504d4a6f61">typeMat</link> type)</para>
+</listitem>
+            <listitem><para>std::vector&lt; <link linkend="_struct_template">Template</link> &gt; <link linkend="_class_interactions_1af388711680a68ad02aa6fa6ed9e59cfb">getTemplate</link> (const std::vector&lt; std::string &gt; &amp;images, <link linkend="__units_8h_1a6b62789b863165c9d424a7504d4a6f61">typeMat</link> type)</para>
+</listitem>
+            <listitem><para>int <link linkend="_class_interactions_1a0bd08e482083b90d3b228ec518b12c4d">getDimX</link> ()</para>
+</listitem>
+            <listitem><para>int <link linkend="_class_interactions_1ac4c5a76c6c1c878d67caef77bd2520f2">getDimY</link> ()</para>
+</listitem>
+            <listitem><para><link linkend="__units_8h_1ae8bf5a756cf15252b4e514a258bbbde9">day</link> <link linkend="_class_interactions_1ab56a5b3cd91c4ec1063b9d19205358a0">getUTCDay</link> ()</para>
+</listitem>
+            <listitem><para>int <link linkend="_class_interactions_1a6063dfa44fd2439c23e7b04a0a70c177">getUTCHour</link> ()</para>
+</listitem>
+            <listitem><para>void <link linkend="_class_interactions_1aa07a6de3761c67111c20084509a9ff5e">loadTemplate</link> (std::string image)</para>
+</listitem>
+            <listitem><para>void <link linkend="_class_interactions_1acf4720976ec410b61c65e13d2979fd1f">loadAllTemplates</link> ()</para>
+</listitem>
+            <listitem><para>void <link linkend="_class_interactions_1a5ee06840be01ec86e99072ca262d3791">getFilesPath</link> (std::vector&lt; std::string &gt; &amp;tab, std::filesystem::directory_iterator path)</para>
+</listitem>
+            <listitem><para>void <link linkend="_class_interactions_1a7f2c26654c8cbde803d2267b98479dc1">showVector</link> (std::vector&lt; std::string &gt; vect)</para>
+</listitem>
+            <listitem><para>int <link linkend="_class_interactions_1a981d4790a0903cde44961f2781636cad">getYear</link> ()</para>
+</listitem>
+            <listitem><para>int <link linkend="_class_interactions_1a4e27fdc5316915fd29db386563780388">getMonth</link> ()</para>
+</listitem>
+            <listitem><para>int <link linkend="_class_interactions_1ac7fc1f0d7d65c6b926bf12eb12204ff3">getDay</link> ()</para>
+</listitem>
+            <listitem><para>int <link linkend="_class_interactions_1a0b3c1a0320752fc90bb3d969a472009d">getHour</link> ()</para>
+</listitem>
+            <listitem><para>int <link linkend="_class_interactions_1ab31446219b9680d6960e1c76484c9331">getMinute</link> ()</para>
+</listitem>
+            <listitem><para>int <link linkend="_class_interactions_1a5569890eeb93a27f8c428439460c52b2">getSecond</link> ()</para>
+</listitem>
+            <listitem><para>void <link linkend="_class_interactions_1a185fecdd73adc781ffb402bf0dac3ed7">setRebootCount</link> (int nb)</para>
+</listitem>
+            <listitem><para>int <link linkend="_class_interactions_1a9a7024bd6937b747a114af86263850d5">getRebootCount</link> ()</para>
+</listitem>
+            <listitem><para>void <link linkend="_class_interactions_1a77df030e3199449235b9f50c360b7095">setDimX</link> (int x)</para>
+</listitem>
+            <listitem><para>void <link linkend="_class_interactions_1a9686fccac68a6f049d2d04690febc3d1">setDimY</link> (int y)</para>
+</listitem>
+            <listitem><para>int <link linkend="_class_interactions_1a58d25a692c5ee6773914f3c0c4f2cb6e">getMatWidth</link> (const std::string &amp;name)</para>
+</listitem>
+            <listitem><para>int <link linkend="_class_interactions_1a4c7bbb037e2814f276bdbb3625d25c17">getMatHeight</link> (const std::string &amp;name)</para>
+</listitem>
+            <listitem><para>void <link linkend="_class_interactions_1abd5b5d8a44970e1333e3611e302f166c">wait</link> (int milliSeconds)</para>
+</listitem>
+            <listitem><para>void <link linkend="_class_interactions_1a1a602b1baed0f80f749fbb5d569349b8">gSwipeX</link> (double x1, double x2, int millitime)</para>
+</listitem>
+            <listitem><para>void <link linkend="_class_interactions_1a21f2cc1ce6998a0d6d934f36d7f2df24">gSwipeY</link> (double y1, double y2, int millitime)</para>
+</listitem>
+            <listitem><para>void <link linkend="_class_interactions_1a9044fca002a4287ad1a89ce0422a68e5">gSwipe</link> (double x1, double y1, double x2, double y2, int millitime)</para>
+</listitem>
+            <listitem><para>void <link linkend="_class_interactions_1aae6172962092f278714536142e987cde">click</link> (<link linkend="_struct_coord">Coord</link> <link linkend="_struct_coord">Coord</link>)</para>
+</listitem>
+            <listitem><para>void <link linkend="_class_interactions_1af23557a5473cf551e7a1268f5fc2f0c6">click</link> (int x, int y)</para>
+</listitem>
+            <listitem><para>void <link linkend="_class_interactions_1af3c13c1ae7d10eb3f41f626549982d41">orderDigits</link> (std::vector&lt; <link linkend="_struct_digit">Digit</link> &gt; &amp;digits)</para>
+</listitem>
+            <listitem><para>bool <link linkend="_class_interactions_1a3796cd8ba317d67243241f2510de6fdf">eraseString</link> (std::vector&lt; std::string &gt; &amp;allTempl, std::string templ)</para>
+</listitem>
+            <listitem><para>bool <link linkend="_class_interactions_1a47882846bb356655826f5e9347f1d580">fStr</link> (const std::vector&lt; std::string &gt; &amp;allTempl, std::string templ)</para>
+</listitem>
+            <listitem><para>bool <link linkend="_class_interactions_1a495250a31d9f3762cf300b44a11cd613">fStr</link> (const std::vector&lt; std::string &gt; &amp;allTempl, const std::vector&lt; std::string &gt; allkeys)</para>
+</listitem>
+            <listitem><para>bool <link linkend="_class_interactions_1a1eb3a67f15cd278977b200c6ffca71eb">fOneStr</link> (const std::vector&lt; std::string &gt; &amp;allTempl, const std::vector&lt; std::string &gt; allkeys)</para>
+</listitem>
+            <listitem><para>int <link linkend="_class_interactions_1a1738bd49c06bd5bffb9ac625d46afc19">distancePoint</link> (const <link linkend="_struct_coord">Coord</link> &amp;fixpt, const <link linkend="_struct_coord">Coord</link> &amp;pt)</para>
+</listitem>
+        </itemizedlist>
+</simplesect>
+<simplesect>
+    <title>Public Attributes    </title>
+        <itemizedlist>
+            <listitem><para><link linkend="_struct_coord">Coord</link> <link linkend="_class_interactions_1a9315497a155670565c9c24f1448940d2">resCoords</link></para>
+</listitem>
+            <listitem><para>std::vector&lt; <link linkend="_struct_coord">Coord</link> &gt; <link linkend="_class_interactions_1a25a543c2ba74a40f05ee1a47cfe9f40b">resMultCoords</link></para>
+</listitem>
+            <listitem><para>std::string <link linkend="_class_interactions_1ae5b95018d6b3e8c79174757907dbd685">adbId</link></para>
+</listitem>
+            <listitem><para>std::vector&lt; <link linkend="_struct_popup">Popup</link> &gt; <link linkend="_class_interactions_1a52ebd573ecfea5806b30e2225f3b9a3f">listPopup</link></para>
+</listitem>
+            <listitem><para>std::map&lt; std::string, <link linkend="_struct_template">Template</link> &gt; <link linkend="_class_interactions_1ac822b4a91ce02780f96305562b755a25">allTemplates</link></para>
+</listitem>
+            <listitem><para><link linkend="_struct_template">Template</link> <link linkend="_class_interactions_1a5c9403e01a3347ff4aef2da96b623617">background</link></para>
+</listitem>
+            <listitem><para>int <link linkend="_class_interactions_1a884bfcd6394ec8faac5777d6fb69a8d7">rebootCount</link></para>
+</listitem>
+            <listitem><para>int <link linkend="_class_interactions_1ac8184067871e90f96c9dec8891125cce">dimX</link></para>
+</listitem>
+            <listitem><para>int <link linkend="_class_interactions_1ab2a75e021a19afe95b43c09b0cb7a0e5">dimY</link></para>
+</listitem>
+        </itemizedlist>
+</simplesect>
+<simplesect>
+    <title>Static Public Attributes    </title>
+        <itemizedlist>
+            <listitem><para>static const int <link linkend="_class_interactions_1a61b758d8ccf55d4d58b1c5c4f70c03e5">waitnotfound</link> = 1000</para>
+</listitem>
+            <listitem><para>static const int <link linkend="_class_interactions_1a4902f2e22aa30bab114000995a508b1d">waitfound</link> = 2000</para>
+</listitem>
+            <listitem><para>static const int <link linkend="_class_interactions_1a2ba3357ced2764e8901b742c941547c1">DEFAULTDELAY</link> = <link linkend="_class_interactions_1a4902f2e22aa30bab114000995a508b1d">waitfound</link></para>
+</listitem>
+            <listitem><para>static const int <link linkend="_class_interactions_1a2831f0a46f87c4caed466857a76a3f0e">MAXREBOOT</link> = 20</para>
+</listitem>
+        </itemizedlist>
+</simplesect>
+<section>
+<title>Detailed Description</title>
+<para>
+Definition at line <link linkend="__interactions_8h_source_1l00008">8</link> of file <link linkend="__interactions_8h_source">Interactions.h</link>.</para>
+</section>
+<section>
+<title>Constructor &amp; Destructor Documentation</title>
+<anchor xml:id="_class_interactions_1ae26abbfd309e818022d07c1d47cb0ede"/><section>
+    <title>Interactions()</title>
+<indexterm><primary>Interactions</primary><secondary>Interactions</secondary></indexterm>
+<indexterm><primary>Interactions</primary><secondary>Interactions</secondary></indexterm>
+<para><computeroutput>Interactions::Interactions ( )</computeroutput></para><para>
+Definition at line <link linkend="__interactions_8cpp_source_1l00021">21</link> of file <link linkend="__interactions_8cpp_source">Interactions.cpp</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_interactions_ae26abbfd309e818022d07c1d47cb0ede_cgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+</section>
+<section>
+<title>Member Function Documentation</title>
+<anchor xml:id="_class_interactions_1aae6172962092f278714536142e987cde"/><section>
+    <title>click()<computeroutput>[1/2]</computeroutput></title>
+<indexterm><primary>click</primary><secondary>Interactions</secondary></indexterm>
+<indexterm><primary>Interactions</primary><secondary>click</secondary></indexterm>
+<para><computeroutput>void Interactions::click (<link linkend="_struct_coord">Coord</link> Coord)</computeroutput></para><para>
+Definition at line <link linkend="__interactions_8cpp_source_1l01144">1144</link> of file <link linkend="__interactions_8cpp_source">Interactions.cpp</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_interactions_aae6172962092f278714536142e987cde_cgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+Here is the caller graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_interactions_aae6172962092f278714536142e987cde_icgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_class_interactions_1af23557a5473cf551e7a1268f5fc2f0c6"/><section>
+    <title>click()<computeroutput>[2/2]</computeroutput></title>
+<indexterm><primary>click</primary><secondary>Interactions</secondary></indexterm>
+<indexterm><primary>Interactions</primary><secondary>click</secondary></indexterm>
+<para><computeroutput>void Interactions::click (int x, int y)</computeroutput></para><para>
+Definition at line <link linkend="__interactions_8cpp_source_1l01148">1148</link> of file <link linkend="__interactions_8cpp_source">Interactions.cpp</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_interactions_af23557a5473cf551e7a1268f5fc2f0c6_cgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_class_interactions_1a1738bd49c06bd5bffb9ac625d46afc19"/><section>
+    <title>distancePoint()</title>
+<indexterm><primary>distancePoint</primary><secondary>Interactions</secondary></indexterm>
+<indexterm><primary>Interactions</primary><secondary>distancePoint</secondary></indexterm>
+<para><computeroutput>int Interactions::distancePoint (const <link linkend="_struct_coord">Coord</link> &amp; fixpt, const <link linkend="_struct_coord">Coord</link> &amp; pt)</computeroutput></para><para>
+Definition at line <link linkend="__interactions_8cpp_source_1l00811">811</link> of file <link linkend="__interactions_8cpp_source">Interactions.cpp</link>.</para>
+</section>
+<anchor xml:id="_class_interactions_1a3796cd8ba317d67243241f2510de6fdf"/><section>
+    <title>eraseString()</title>
+<indexterm><primary>eraseString</primary><secondary>Interactions</secondary></indexterm>
+<indexterm><primary>Interactions</primary><secondary>eraseString</secondary></indexterm>
+<para><computeroutput>bool Interactions::eraseString (std::vector&lt; std::string &gt; &amp; allTempl, std::string templ)</computeroutput></para><para>
+Definition at line <link linkend="__interactions_8cpp_source_1l01159">1159</link> of file <link linkend="__interactions_8cpp_source">Interactions.cpp</link>.</para>
+Here is the caller graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_interactions_a3796cd8ba317d67243241f2510de6fdf_icgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_class_interactions_1a25637266a0bf2b2c77d5c7e276baabd0"/><section>
+    <title>fA()</title>
+<indexterm><primary>fA</primary><secondary>Interactions</secondary></indexterm>
+<indexterm><primary>Interactions</primary><secondary>fA</secondary></indexterm>
+<para><computeroutput>bool Interactions::fA (const std::string &amp; Templ, <link linkend="_struct_zone">Zone</link> Z = <computeroutput><link linkend="_struct_zone">Zone</link>()</computeroutput>
+, unsigned int delayMilliseconds = <computeroutput><link linkend="_class_interactions_1a2ba3357ced2764e8901b742c941547c1">DEFAULTDELAY</link></computeroutput>
+, bool willInteract = <computeroutput>false</computeroutput>
+)</computeroutput></para><para>
+Definition at line <link linkend="__interactions_8cpp_source_1l00033">33</link> of file <link linkend="__interactions_8cpp_source">Interactions.cpp</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_interactions_a25637266a0bf2b2c77d5c7e276baabd0_cgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+Here is the caller graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_interactions_a25637266a0bf2b2c77d5c7e276baabd0_icgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_class_interactions_1a85395e185b74c6e25d0f27459b0de33c"/><section>
+    <title>fcA()</title>
+<indexterm><primary>fcA</primary><secondary>Interactions</secondary></indexterm>
+<indexterm><primary>Interactions</primary><secondary>fcA</secondary></indexterm>
+<para><computeroutput>bool Interactions::fcA (const std::string &amp; Templ, <link linkend="_struct_zone">Zone</link> Z = <computeroutput><link linkend="_struct_zone">Zone</link>()</computeroutput>
+, unsigned int delayMilliseconds = <computeroutput><link linkend="_class_interactions_1a2ba3357ced2764e8901b742c941547c1">DEFAULTDELAY</link></computeroutput>
+)</computeroutput></para><para>
+Definition at line <link linkend="__interactions_8cpp_source_1l00029">29</link> of file <link linkend="__interactions_8cpp_source">Interactions.cpp</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_interactions_a85395e185b74c6e25d0f27459b0de33c_cgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+Here is the caller graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_interactions_a85395e185b74c6e25d0f27459b0de33c_icgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_class_interactions_1afd8c8bc50bb964d44f8880afefe7a6f9"/><section>
+    <title>fcCompareA()</title>
+<indexterm><primary>fcCompareA</primary><secondary>Interactions</secondary></indexterm>
+<indexterm><primary>Interactions</primary><secondary>fcCompareA</secondary></indexterm>
+<para><computeroutput>bool Interactions::fcCompareA (const std::string &amp; goodTemplate, const std::string &amp; similartemplate, <link linkend="_struct_zone">Zone</link> Z = <computeroutput><link linkend="_struct_zone">Zone</link>()</computeroutput>
+, unsigned int delayMilliseconds = <computeroutput><link linkend="_class_interactions_1a2ba3357ced2764e8901b742c941547c1">DEFAULTDELAY</link></computeroutput>
+)</computeroutput></para><para>
+Definition at line <link linkend="__interactions_8cpp_source_1l00248">248</link> of file <link linkend="__interactions_8cpp_source">Interactions.cpp</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_interactions_afd8c8bc50bb964d44f8880afefe7a6f9_cgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+Here is the caller graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_interactions_afd8c8bc50bb964d44f8880afefe7a6f9_icgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_class_interactions_1aaba8562157b738fac74c4ab64ba6a9f8"/><section>
+    <title>fcCompareMultipleTemplateA()</title>
+<indexterm><primary>fcCompareMultipleTemplateA</primary><secondary>Interactions</secondary></indexterm>
+<indexterm><primary>Interactions</primary><secondary>fcCompareMultipleTemplateA</secondary></indexterm>
+<para><computeroutput>bool Interactions::fcCompareMultipleTemplateA (const std::string &amp; goodTemplate, const std::vector&lt; std::string &gt; &amp; similartemplates, <link linkend="_struct_zone">Zone</link> Z = <computeroutput><link linkend="_struct_zone">Zone</link>()</computeroutput>
+, unsigned int delayMilliseconds = <computeroutput><link linkend="_class_interactions_1a2ba3357ced2764e8901b742c941547c1">DEFAULTDELAY</link></computeroutput>
+)</computeroutput></para><para>
+Definition at line <link linkend="__interactions_8cpp_source_1l00266">266</link> of file <link linkend="__interactions_8cpp_source">Interactions.cpp</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_interactions_aaba8562157b738fac74c4ab64ba6a9f8_cgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+Here is the caller graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_interactions_aaba8562157b738fac74c4ab64ba6a9f8_icgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_class_interactions_1a79cb358170ab8b3f87a252d12cac8528"/><section>
+    <title>fcCompareOneTemplateMultipleTemplateA()</title>
+<indexterm><primary>fcCompareOneTemplateMultipleTemplateA</primary><secondary>Interactions</secondary></indexterm>
+<indexterm><primary>Interactions</primary><secondary>fcCompareOneTemplateMultipleTemplateA</secondary></indexterm>
+<para><computeroutput>bool Interactions::fcCompareOneTemplateMultipleTemplateA (const std::vector&lt; std::string &gt; &amp; alltempl, const std::vector&lt; std::string &gt; &amp; simTempl, <link linkend="__units_8h_1a224b9163917ac32fc95a60d8c1eec3aa">Direction</link> direction, int order, <link linkend="_struct_zone">Zone</link> Z = <computeroutput><link linkend="_struct_zone">Zone</link>()</computeroutput>
+, unsigned int delayMilliseconds = <computeroutput><link linkend="_class_interactions_1a2ba3357ced2764e8901b742c941547c1">DEFAULTDELAY</link></computeroutput>
+)</computeroutput></para><para>
+Definition at line <link linkend="__interactions_8cpp_source_1l00123">123</link> of file <link linkend="__interactions_8cpp_source">Interactions.cpp</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_interactions_a79cb358170ab8b3f87a252d12cac8528_cgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_class_interactions_1ad24b4992a69c681dc645d213527d2a07"/><section>
+    <title>fCompareA()</title>
+<indexterm><primary>fCompareA</primary><secondary>Interactions</secondary></indexterm>
+<indexterm><primary>Interactions</primary><secondary>fCompareA</secondary></indexterm>
+<para><computeroutput>bool Interactions::fCompareA (const std::string &amp; goodTemplate, const std::string &amp; similartemplate, <link linkend="_struct_zone">Zone</link> Z = <computeroutput><link linkend="_struct_zone">Zone</link>()</computeroutput>
+, unsigned int delayMilliseconds = <computeroutput><link linkend="_class_interactions_1a2ba3357ced2764e8901b742c941547c1">DEFAULTDELAY</link></computeroutput>
+, bool willInteract = <computeroutput>false</computeroutput>
+)</computeroutput></para><para>
+Definition at line <link linkend="__interactions_8cpp_source_1l00253">253</link> of file <link linkend="__interactions_8cpp_source">Interactions.cpp</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_interactions_ad24b4992a69c681dc645d213527d2a07_cgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+Here is the caller graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_interactions_ad24b4992a69c681dc645d213527d2a07_icgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_class_interactions_1a1e4898ef6baa65c69e8f4a94e34f91f9"/><section>
+    <title>fCompareMultipleTemplateA()</title>
+<indexterm><primary>fCompareMultipleTemplateA</primary><secondary>Interactions</secondary></indexterm>
+<indexterm><primary>Interactions</primary><secondary>fCompareMultipleTemplateA</secondary></indexterm>
+<para><computeroutput>bool Interactions::fCompareMultipleTemplateA (const std::string &amp; goodTemplate, const std::vector&lt; std::string &gt; &amp; similartemplates, <link linkend="_struct_zone">Zone</link> Z = <computeroutput><link linkend="_struct_zone">Zone</link>()</computeroutput>
+, unsigned int delayMilliseconds = <computeroutput><link linkend="_class_interactions_1a2ba3357ced2764e8901b742c941547c1">DEFAULTDELAY</link></computeroutput>
+, bool willInteract = <computeroutput>false</computeroutput>
+)</computeroutput></para><para>
+Definition at line <link linkend="__interactions_8cpp_source_1l00271">271</link> of file <link linkend="__interactions_8cpp_source">Interactions.cpp</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_interactions_a1e4898ef6baa65c69e8f4a94e34f91f9_cgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+Here is the caller graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_interactions_a1e4898ef6baa65c69e8f4a94e34f91f9_icgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_class_interactions_1a3e09f4be284f0321d27588fc336eef21"/><section>
+    <title>fCompareOneTemplateA()</title>
+<indexterm><primary>fCompareOneTemplateA</primary><secondary>Interactions</secondary></indexterm>
+<indexterm><primary>Interactions</primary><secondary>fCompareOneTemplateA</secondary></indexterm>
+<para><computeroutput>bool Interactions::fCompareOneTemplateA (const std::vector&lt; std::string &gt; &amp; allTempl, const std::vector&lt; std::string &gt; &amp; simTempl, std::string &amp; Tresult, <link linkend="_struct_zone">Zone</link> Z = <computeroutput><link linkend="_struct_zone">Zone</link>()</computeroutput>
+, unsigned int delayMilliseconds = <computeroutput><link linkend="_class_interactions_1a2ba3357ced2764e8901b742c941547c1">DEFAULTDELAY</link></computeroutput>
+, bool willInteract = <computeroutput>false</computeroutput>
+)</computeroutput></para><para>
+Definition at line <link linkend="__interactions_8cpp_source_1l00446">446</link> of file <link linkend="__interactions_8cpp_source">Interactions.cpp</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_interactions_a3e09f4be284f0321d27588fc336eef21_cgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_class_interactions_1ac561e137b5d8550a5e58d7017aae8cbf"/><section>
+    <title>fCompareOneTemplateMultipleTemplateA()</title>
+<indexterm><primary>fCompareOneTemplateMultipleTemplateA</primary><secondary>Interactions</secondary></indexterm>
+<indexterm><primary>Interactions</primary><secondary>fCompareOneTemplateMultipleTemplateA</secondary></indexterm>
+<para><computeroutput>bool Interactions::fCompareOneTemplateMultipleTemplateA (const std::vector&lt; std::string &gt; &amp; alltempl, const std::vector&lt; std::string &gt; &amp; simTempl, <link linkend="__units_8h_1a224b9163917ac32fc95a60d8c1eec3aa">Direction</link> direction, int order, <link linkend="_struct_zone">Zone</link> Z = <computeroutput><link linkend="_struct_zone">Zone</link>()</computeroutput>
+, unsigned int delayMilliseconds = <computeroutput><link linkend="_class_interactions_1a2ba3357ced2764e8901b742c941547c1">DEFAULTDELAY</link></computeroutput>
+, bool willInteract = <computeroutput>false</computeroutput>
+)</computeroutput></para><para>
+Definition at line <link linkend="__interactions_8cpp_source_1l00103">103</link> of file <link linkend="__interactions_8cpp_source">Interactions.cpp</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_interactions_ac561e137b5d8550a5e58d7017aae8cbf_cgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+Here is the caller graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_interactions_ac561e137b5d8550a5e58d7017aae8cbf_icgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_class_interactions_1af01fb8407a9f18982f7e75f0433f7ef2"/><section>
+    <title>fcOneTemplateA()<computeroutput>[1/4]</computeroutput></title>
+<indexterm><primary>fcOneTemplateA</primary><secondary>Interactions</secondary></indexterm>
+<indexterm><primary>Interactions</primary><secondary>fcOneTemplateA</secondary></indexterm>
+<para><computeroutput>bool Interactions::fcOneTemplateA (const std::vector&lt; std::string &gt; &amp; allTempl, std::string &amp; foundTempl, <link linkend="_struct_zone">Zone</link> Z = <computeroutput><link linkend="_struct_zone">Zone</link>()</computeroutput>
+, unsigned int delayMilliseconds = <computeroutput><link linkend="_class_interactions_1a2ba3357ced2764e8901b742c941547c1">DEFAULTDELAY</link></computeroutput>
+)</computeroutput></para><para>
+Definition at line <link linkend="__interactions_8cpp_source_1l00372">372</link> of file <link linkend="__interactions_8cpp_source">Interactions.cpp</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_interactions_af01fb8407a9f18982f7e75f0433f7ef2_cgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+Here is the caller graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_interactions_af01fb8407a9f18982f7e75f0433f7ef2_icgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_class_interactions_1a14660eef97f54664ede7c0cccdd524a9"/><section>
+    <title>fcOneTemplateA()<computeroutput>[2/4]</computeroutput></title>
+<indexterm><primary>fcOneTemplateA</primary><secondary>Interactions</secondary></indexterm>
+<indexterm><primary>Interactions</primary><secondary>fcOneTemplateA</secondary></indexterm>
+<para><computeroutput>bool Interactions::fcOneTemplateA (const std::vector&lt; std::string &gt; &amp; allTempl, <link linkend="_struct_zone">Zone</link> Z = <computeroutput><link linkend="_struct_zone">Zone</link>()</computeroutput>
+, unsigned int delayMilliseconds = <computeroutput><link linkend="_class_interactions_1a2ba3357ced2764e8901b742c941547c1">DEFAULTDELAY</link></computeroutput>
+)</computeroutput></para><para>
+Definition at line <link linkend="__interactions_8cpp_source_1l00463">463</link> of file <link linkend="__interactions_8cpp_source">Interactions.cpp</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_interactions_a14660eef97f54664ede7c0cccdd524a9_cgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_class_interactions_1aae244f39f0b9b6be1f85f90d0d2c1ff2"/><section>
+    <title>fcOneTemplateA()<computeroutput>[3/4]</computeroutput></title>
+<indexterm><primary>fcOneTemplateA</primary><secondary>Interactions</secondary></indexterm>
+<indexterm><primary>Interactions</primary><secondary>fcOneTemplateA</secondary></indexterm>
+<para><computeroutput>bool Interactions::fcOneTemplateA (const std::vector&lt; std::string &gt; &amp; toclick, const std::vector&lt; std::string &gt; &amp; tonotclick, std::string &amp; foundTempl, <link linkend="_struct_zone">Zone</link> Z = <computeroutput><link linkend="_struct_zone">Zone</link>()</computeroutput>
+, unsigned int delayMilliseconds = <computeroutput><link linkend="_class_interactions_1a2ba3357ced2764e8901b742c941547c1">DEFAULTDELAY</link></computeroutput>
+)</computeroutput></para><para>
+Definition at line <link linkend="__interactions_8cpp_source_1l00376">376</link> of file <link linkend="__interactions_8cpp_source">Interactions.cpp</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_interactions_aae244f39f0b9b6be1f85f90d0d2c1ff2_cgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_class_interactions_1abe11d91838527eb473bb207986536b70"/><section>
+    <title>fcOneTemplateA()<computeroutput>[4/4]</computeroutput></title>
+<indexterm><primary>fcOneTemplateA</primary><secondary>Interactions</secondary></indexterm>
+<indexterm><primary>Interactions</primary><secondary>fcOneTemplateA</secondary></indexterm>
+<para><computeroutput>bool Interactions::fcOneTemplateA (const std::vector&lt; std::string &gt; &amp; toclick, const std::vector&lt; std::string &gt; &amp; tonotclick, <link linkend="_struct_zone">Zone</link> Z = <computeroutput><link linkend="_struct_zone">Zone</link>()</computeroutput>
+, unsigned int delayMilliseconds = <computeroutput><link linkend="_class_interactions_1a2ba3357ced2764e8901b742c941547c1">DEFAULTDELAY</link></computeroutput>
+)</computeroutput></para><para>
+Definition at line <link linkend="__interactions_8cpp_source_1l00383">383</link> of file <link linkend="__interactions_8cpp_source">Interactions.cpp</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_interactions_abe11d91838527eb473bb207986536b70_cgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_class_interactions_1a55a9a71c6ad731e023520197774e1c29"/><section>
+    <title>fcOneTemplateEraseA()</title>
+<indexterm><primary>fcOneTemplateEraseA</primary><secondary>Interactions</secondary></indexterm>
+<indexterm><primary>Interactions</primary><secondary>fcOneTemplateEraseA</secondary></indexterm>
+<para><computeroutput>bool Interactions::fcOneTemplateEraseA (std::vector&lt; std::string &gt; &amp; allTempl, <link linkend="_struct_zone">Zone</link> Z = <computeroutput><link linkend="_struct_zone">Zone</link>()</computeroutput>
+, unsigned int delayMilliseconds = <computeroutput><link linkend="_class_interactions_1a2ba3357ced2764e8901b742c941547c1">DEFAULTDELAY</link></computeroutput>
+)</computeroutput></para><para>
+Definition at line <link linkend="__interactions_8cpp_source_1l00494">494</link> of file <link linkend="__interactions_8cpp_source">Interactions.cpp</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_interactions_a55a9a71c6ad731e023520197774e1c29_cgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_class_interactions_1a25b3a4dba323cbb14057035056bf9d56"/><section>
+    <title>fcOneTemplateMultipleTemplateA()<computeroutput>[1/2]</computeroutput></title>
+<indexterm><primary>fcOneTemplateMultipleTemplateA</primary><secondary>Interactions</secondary></indexterm>
+<indexterm><primary>Interactions</primary><secondary>fcOneTemplateMultipleTemplateA</secondary></indexterm>
+<para><computeroutput>bool Interactions::fcOneTemplateMultipleTemplateA (const std::string &amp; Templ, <link linkend="__units_8h_1a224b9163917ac32fc95a60d8c1eec3aa">Direction</link> direction, int order, <link linkend="_struct_zone">Zone</link> Z = <computeroutput><link linkend="_struct_zone">Zone</link>()</computeroutput>
+, unsigned int delayMilliseconds = <computeroutput><link linkend="_class_interactions_1a2ba3357ced2764e8901b742c941547c1">DEFAULTDELAY</link></computeroutput>
+)</computeroutput></para><para>
+Definition at line <link linkend="__interactions_8cpp_source_1l00080">80</link> of file <link linkend="__interactions_8cpp_source">Interactions.cpp</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_interactions_a25b3a4dba323cbb14057035056bf9d56_cgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+Here is the caller graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_interactions_a25b3a4dba323cbb14057035056bf9d56_icgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_class_interactions_1a8de1d76318ef0c22ad891b28008a44a3"/><section>
+    <title>fcOneTemplateMultipleTemplateA()<computeroutput>[2/2]</computeroutput></title>
+<indexterm><primary>fcOneTemplateMultipleTemplateA</primary><secondary>Interactions</secondary></indexterm>
+<indexterm><primary>Interactions</primary><secondary>fcOneTemplateMultipleTemplateA</secondary></indexterm>
+<para><computeroutput>bool Interactions::fcOneTemplateMultipleTemplateA (const std::vector&lt; std::string &gt; &amp; alltempl, const <link linkend="__units_8h_1a224b9163917ac32fc95a60d8c1eec3aa">Direction</link> &amp; direction, int order, <link linkend="_struct_zone">Zone</link> Z = <computeroutput><link linkend="_struct_zone">Zone</link>()</computeroutput>
+, unsigned int delayMilliseconds = <computeroutput><link linkend="_class_interactions_1a2ba3357ced2764e8901b742c941547c1">DEFAULTDELAY</link></computeroutput>
+)</computeroutput></para><para>
+Definition at line <link linkend="__interactions_8cpp_source_1l00148">148</link> of file <link linkend="__interactions_8cpp_source">Interactions.cpp</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_interactions_a8de1d76318ef0c22ad891b28008a44a3_cgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_class_interactions_1aed04f9177d2aba467d71818a5e82c7bc"/><section>
+    <title>fcpopupA()</title>
+<indexterm><primary>fcpopupA</primary><secondary>Interactions</secondary></indexterm>
+<indexterm><primary>Interactions</primary><secondary>fcpopupA</secondary></indexterm>
+<para><computeroutput>bool Interactions::fcpopupA ( )</computeroutput></para><para>
+Definition at line <link linkend="__interactions_8cpp_source_1l00043">43</link> of file <link linkend="__interactions_8cpp_source">Interactions.cpp</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_interactions_aed04f9177d2aba467d71818a5e82c7bc_cgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+Here is the caller graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_interactions_aed04f9177d2aba467d71818a5e82c7bc_icgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_class_interactions_1af819b8e0f2ed260bcef0806e84043db7"/><section>
+    <title>fillPopup()</title>
+<indexterm><primary>fillPopup</primary><secondary>Interactions</secondary></indexterm>
+<indexterm><primary>Interactions</primary><secondary>fillPopup</secondary></indexterm>
+<para><computeroutput>void Interactions::fillPopup ( )</computeroutput></para><para>
+Definition at line <link linkend="__interactions_8cpp_source_1l00005">5</link> of file <link linkend="__interactions_8cpp_source">Interactions.cpp</link>.</para>
+Here is the caller graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_interactions_af819b8e0f2ed260bcef0806e84043db7_icgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_class_interactions_1a34f2db9d4b23289b4243c14bfd8e67cd"/><section>
+    <title>fMultipleCompareMultipleTemplateA()</title>
+<indexterm><primary>fMultipleCompareMultipleTemplateA</primary><secondary>Interactions</secondary></indexterm>
+<indexterm><primary>Interactions</primary><secondary>fMultipleCompareMultipleTemplateA</secondary></indexterm>
+<para><computeroutput>bool Interactions::fMultipleCompareMultipleTemplateA (const std::string &amp; goodTemplate, const std::vector&lt; std::string &gt; &amp; similartemplates, <link linkend="_struct_zone">Zone</link> Z = <computeroutput><link linkend="_struct_zone">Zone</link>()</computeroutput>
+, unsigned int delayMilliseconds = <computeroutput><link linkend="_class_interactions_1a2ba3357ced2764e8901b742c941547c1">DEFAULTDELAY</link></computeroutput>
+, bool willInteract = <computeroutput>false</computeroutput>
+)</computeroutput></para><para>
+Definition at line <link linkend="__interactions_8cpp_source_1l00284">284</link> of file <link linkend="__interactions_8cpp_source">Interactions.cpp</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_interactions_a34f2db9d4b23289b4243c14bfd8e67cd_cgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_class_interactions_1ad71346be58dfe5a5d5d8ac7f2122a765"/><section>
+    <title>fMultipleCompareTemplateA()</title>
+<indexterm><primary>fMultipleCompareTemplateA</primary><secondary>Interactions</secondary></indexterm>
+<indexterm><primary>Interactions</primary><secondary>fMultipleCompareTemplateA</secondary></indexterm>
+<para><computeroutput>bool Interactions::fMultipleCompareTemplateA (const std::vector&lt; std::string &gt; alltempl, const std::vector&lt; std::string &gt; simTempl, std::vector&lt; std::string &gt; &amp; foundTemplates, <link linkend="_struct_zone">Zone</link> Z = <computeroutput><link linkend="_struct_zone">Zone</link>()</computeroutput>
+, unsigned int delayMilliseconds = <computeroutput><link linkend="_class_interactions_1a2ba3357ced2764e8901b742c941547c1">DEFAULTDELAY</link></computeroutput>
+, bool willInteract = <computeroutput>false</computeroutput>
+)</computeroutput></para><para>
+Definition at line <link linkend="__interactions_8cpp_source_1l00426">426</link> of file <link linkend="__interactions_8cpp_source">Interactions.cpp</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_interactions_ad71346be58dfe5a5d5d8ac7f2122a765_cgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_class_interactions_1a8dd8d6d917a4a95c2e2ef2d389380751"/><section>
+    <title>fMultipleDigitsA()</title>
+<indexterm><primary>fMultipleDigitsA</primary><secondary>Interactions</secondary></indexterm>
+<indexterm><primary>Interactions</primary><secondary>fMultipleDigitsA</secondary></indexterm>
+<para><computeroutput>bool Interactions::fMultipleDigitsA (int nb, std::vector&lt; std::string &gt; Nb, std::vector&lt; <link linkend="_struct_template">Template</link> &gt; &amp; Tresult, <link linkend="_struct_zone">Zone</link> Z)</computeroutput></para><para>
+Definition at line <link linkend="__interactions_8cpp_source_1l00570">570</link> of file <link linkend="__interactions_8cpp_source">Interactions.cpp</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_interactions_a8dd8d6d917a4a95c2e2ef2d389380751_cgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+Here is the caller graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_interactions_a8dd8d6d917a4a95c2e2ef2d389380751_icgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_class_interactions_1a420519a4236772332018c8acd6f35ab0"/><section>
+    <title>fMultipleTemplateA()</title>
+<indexterm><primary>fMultipleTemplateA</primary><secondary>Interactions</secondary></indexterm>
+<indexterm><primary>Interactions</primary><secondary>fMultipleTemplateA</secondary></indexterm>
+<para><computeroutput>bool Interactions::fMultipleTemplateA (const std::vector&lt; std::string &gt; alltempl, std::vector&lt; std::string &gt; &amp; foundTemplates, <link linkend="_struct_zone">Zone</link> Z = <computeroutput><link linkend="_struct_zone">Zone</link>()</computeroutput>
+, unsigned int delayMilliseconds = <computeroutput><link linkend="_class_interactions_1a2ba3357ced2764e8901b742c941547c1">DEFAULTDELAY</link></computeroutput>
+, bool willInteract = <computeroutput>false</computeroutput>
+)</computeroutput></para><para>
+Definition at line <link linkend="__interactions_8cpp_source_1l00408">408</link> of file <link linkend="__interactions_8cpp_source">Interactions.cpp</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_interactions_a420519a4236772332018c8acd6f35ab0_cgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_class_interactions_1ac8c4e46023594103ca4184699118b6f6"/><section>
+    <title>fnbCompareTemplateA()</title>
+<indexterm><primary>fnbCompareTemplateA</primary><secondary>Interactions</secondary></indexterm>
+<indexterm><primary>Interactions</primary><secondary>fnbCompareTemplateA</secondary></indexterm>
+<para><computeroutput>int Interactions::fnbCompareTemplateA (const std::string &amp; Templ, const std::vector&lt; std::string &gt; &amp; simTempls, <link linkend="_struct_zone">Zone</link> Z = <computeroutput><link linkend="_struct_zone">Zone</link>()</computeroutput>
+, unsigned int delayMilliseconds = <computeroutput><link linkend="_class_interactions_1a2ba3357ced2764e8901b742c941547c1">DEFAULTDELAY</link></computeroutput>
+, bool willInteract = <computeroutput>false</computeroutput>
+)</computeroutput></para><para>
+Definition at line <link linkend="__interactions_8cpp_source_1l00233">233</link> of file <link linkend="__interactions_8cpp_source">Interactions.cpp</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_interactions_ac8c4e46023594103ca4184699118b6f6_cgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_class_interactions_1a0fc0c12ee5950b8d0b47bfc6a9eebe14"/><section>
+    <title>fnbMultipleCompareTemplateA()</title>
+<indexterm><primary>fnbMultipleCompareTemplateA</primary><secondary>Interactions</secondary></indexterm>
+<indexterm><primary>Interactions</primary><secondary>fnbMultipleCompareTemplateA</secondary></indexterm>
+<para><computeroutput>int Interactions::fnbMultipleCompareTemplateA (const std::vector&lt; std::string &gt; &amp; allTempl, const std::vector&lt; std::string &gt; &amp; simTempls, <link linkend="_struct_zone">Zone</link> Z = <computeroutput><link linkend="_struct_zone">Zone</link>()</computeroutput>
+, unsigned int delayMilliseconds = <computeroutput><link linkend="_class_interactions_1a2ba3357ced2764e8901b742c941547c1">DEFAULTDELAY</link></computeroutput>
+, bool willInteract = <computeroutput>false</computeroutput>
+)</computeroutput></para><para>
+Definition at line <link linkend="__interactions_8cpp_source_1l00196">196</link> of file <link linkend="__interactions_8cpp_source">Interactions.cpp</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_interactions_a0fc0c12ee5950b8d0b47bfc6a9eebe14_cgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_class_interactions_1aece6b96d6a02046f7805e6ac46d6656b"/><section>
+    <title>fnbTemplateA()<computeroutput>[1/3]</computeroutput></title>
+<indexterm><primary>fnbTemplateA</primary><secondary>Interactions</secondary></indexterm>
+<indexterm><primary>Interactions</primary><secondary>fnbTemplateA</secondary></indexterm>
+<para><computeroutput>bool Interactions::fnbTemplateA (const std::string &amp; Templ, int &amp; nb, <link linkend="_struct_zone">Zone</link> Z = <computeroutput><link linkend="_struct_zone">Zone</link>()</computeroutput>
+, unsigned int delayMilliseconds = <computeroutput><link linkend="_class_interactions_1a2ba3357ced2764e8901b742c941547c1">DEFAULTDELAY</link></computeroutput>
+, bool willInteract = <computeroutput>false</computeroutput>
+)</computeroutput></para><para>
+Definition at line <link linkend="__interactions_8cpp_source_1l00153">153</link> of file <link linkend="__interactions_8cpp_source">Interactions.cpp</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_interactions_aece6b96d6a02046f7805e6ac46d6656b_cgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+Here is the caller graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_interactions_aece6b96d6a02046f7805e6ac46d6656b_icgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_class_interactions_1ac0c9eb1e6b218bc4a1dc67d0ee50dc39"/><section>
+    <title>fnbTemplateA()<computeroutput>[2/3]</computeroutput></title>
+<indexterm><primary>fnbTemplateA</primary><secondary>Interactions</secondary></indexterm>
+<indexterm><primary>Interactions</primary><secondary>fnbTemplateA</secondary></indexterm>
+<para><computeroutput>int Interactions::fnbTemplateA (const std::string &amp; Templ, <link linkend="_struct_zone">Zone</link> Z = <computeroutput><link linkend="_struct_zone">Zone</link>()</computeroutput>
+, unsigned int delayMilliseconds = <computeroutput><link linkend="_class_interactions_1a2ba3357ced2764e8901b742c941547c1">DEFAULTDELAY</link></computeroutput>
+, bool willInteract = <computeroutput>false</computeroutput>
+)</computeroutput></para><para>
+Definition at line <link linkend="__interactions_8cpp_source_1l00168">168</link> of file <link linkend="__interactions_8cpp_source">Interactions.cpp</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_interactions_ac0c9eb1e6b218bc4a1dc67d0ee50dc39_cgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_class_interactions_1a0b5af6e9b6b8bffffd01c1c9c3f60289"/><section>
+    <title>fnbTemplateA()<computeroutput>[3/3]</computeroutput></title>
+<indexterm><primary>fnbTemplateA</primary><secondary>Interactions</secondary></indexterm>
+<indexterm><primary>Interactions</primary><secondary>fnbTemplateA</secondary></indexterm>
+<para><computeroutput>int Interactions::fnbTemplateA (const std::vector&lt; std::string &gt; &amp; allTempl, <link linkend="_struct_zone">Zone</link> Z = <computeroutput><link linkend="_struct_zone">Zone</link>()</computeroutput>
+, unsigned int delayMilliseconds = <computeroutput><link linkend="_class_interactions_1a2ba3357ced2764e8901b742c941547c1">DEFAULTDELAY</link></computeroutput>
+, bool willInteract = <computeroutput>false</computeroutput>
+)</computeroutput></para><para>
+Definition at line <link linkend="__interactions_8cpp_source_1l00182">182</link> of file <link linkend="__interactions_8cpp_source">Interactions.cpp</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_interactions_a0b5af6e9b6b8bffffd01c1c9c3f60289_cgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_class_interactions_1a136e4508ae7f2b36eea44465ffa0002d"/><section>
+    <title>fnbUniqueCompareTemplateA()</title>
+<indexterm><primary>fnbUniqueCompareTemplateA</primary><secondary>Interactions</secondary></indexterm>
+<indexterm><primary>Interactions</primary><secondary>fnbUniqueCompareTemplateA</secondary></indexterm>
+<para><computeroutput>int Interactions::fnbUniqueCompareTemplateA (const std::vector&lt; std::string &gt; &amp; allTempl, const std::vector&lt; std::string &gt; &amp; simTempls, <link linkend="_struct_zone">Zone</link> Z = <computeroutput><link linkend="_struct_zone">Zone</link>()</computeroutput>
+, unsigned int delayMilliseconds = <computeroutput><link linkend="_class_interactions_1a2ba3357ced2764e8901b742c941547c1">DEFAULTDELAY</link></computeroutput>
+, bool willInteract = <computeroutput>false</computeroutput>
+)</computeroutput></para><para>
+Definition at line <link linkend="__interactions_8cpp_source_1l00211">211</link> of file <link linkend="__interactions_8cpp_source">Interactions.cpp</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_interactions_a136e4508ae7f2b36eea44465ffa0002d_cgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_class_interactions_1a834d2963fb9d55be32d7123f94057c1c"/><section>
+    <title>fNumberDecimalA()<computeroutput>[1/2]</computeroutput></title>
+<indexterm><primary>fNumberDecimalA</primary><secondary>Interactions</secondary></indexterm>
+<indexterm><primary>Interactions</primary><secondary>fNumberDecimalA</secondary></indexterm>
+<para><computeroutput><link linkend="_struct_number">Number</link> Interactions::fNumberDecimalA (std::vector&lt; std::string &gt; digits, std::string dot, <link linkend="_struct_zone">Zone</link> Z)</computeroutput></para><para>
+Definition at line <link linkend="__interactions_8cpp_source_1l00765">765</link> of file <link linkend="__interactions_8cpp_source">Interactions.cpp</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_interactions_a834d2963fb9d55be32d7123f94057c1c_cgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_class_interactions_1a4b05b281fd479a1e86264290462f7112"/><section>
+    <title>fNumberDecimalA()<computeroutput>[2/2]</computeroutput></title>
+<indexterm><primary>fNumberDecimalA</primary><secondary>Interactions</secondary></indexterm>
+<indexterm><primary>Interactions</primary><secondary>fNumberDecimalA</secondary></indexterm>
+<para><computeroutput><link linkend="_struct_number">Number</link> Interactions::fNumberDecimalA (std::vector&lt; std::string &gt; digits, std::vector&lt; <link linkend="_struct_unit">Unit</link> &gt; Units, std::string dot, <link linkend="_struct_zone">Zone</link> Z)</computeroutput></para><para>
+Definition at line <link linkend="__interactions_8cpp_source_1l00677">677</link> of file <link linkend="__interactions_8cpp_source">Interactions.cpp</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_interactions_a4b05b281fd479a1e86264290462f7112_cgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+Here is the caller graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_interactions_a4b05b281fd479a1e86264290462f7112_icgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_class_interactions_1a7a8357271583869fba1939d42718a569"/><section>
+    <title>fNumberIntegerA()<computeroutput>[1/2]</computeroutput></title>
+<indexterm><primary>fNumberIntegerA</primary><secondary>Interactions</secondary></indexterm>
+<indexterm><primary>Interactions</primary><secondary>fNumberIntegerA</secondary></indexterm>
+<para><computeroutput><link linkend="_struct_number">Number</link> Interactions::fNumberIntegerA (std::vector&lt; std::string &gt; digits, std::vector&lt; <link linkend="_struct_unit">Unit</link> &gt; Units, <link linkend="_struct_zone">Zone</link> Z)</computeroutput></para><para>
+Definition at line <link linkend="__interactions_8cpp_source_1l00581">581</link> of file <link linkend="__interactions_8cpp_source">Interactions.cpp</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_interactions_a7a8357271583869fba1939d42718a569_cgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+Here is the caller graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_interactions_a7a8357271583869fba1939d42718a569_icgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_class_interactions_1ab309ac8a5a9dce72e641a1d83dfddcb4"/><section>
+    <title>fNumberIntegerA()<computeroutput>[2/2]</computeroutput></title>
+<indexterm><primary>fNumberIntegerA</primary><secondary>Interactions</secondary></indexterm>
+<indexterm><primary>Interactions</primary><secondary>fNumberIntegerA</secondary></indexterm>
+<para><computeroutput><link linkend="_struct_number">Number</link> Interactions::fNumberIntegerA (std::vector&lt; std::string &gt; digits, <link linkend="_struct_zone">Zone</link> Z)</computeroutput></para><para>
+Definition at line <link linkend="__interactions_8cpp_source_1l00651">651</link> of file <link linkend="__interactions_8cpp_source">Interactions.cpp</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_interactions_ab309ac8a5a9dce72e641a1d83dfddcb4_cgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_class_interactions_1a610a820dde0e642d3bcae7fdf971a75e"/><section>
+    <title>fOneMultipleTemplateA()</title>
+<indexterm><primary>fOneMultipleTemplateA</primary><secondary>Interactions</secondary></indexterm>
+<indexterm><primary>Interactions</primary><secondary>fOneMultipleTemplateA</secondary></indexterm>
+<para><computeroutput>bool Interactions::fOneMultipleTemplateA (std::vector&lt; std::vector&lt; std::string &gt; &gt; allTempl, <link linkend="_struct_zone">Zone</link> Z = <computeroutput><link linkend="_struct_zone">Zone</link>()</computeroutput>
+, unsigned int delayMilliseconds = <computeroutput><link linkend="_class_interactions_1a2ba3357ced2764e8901b742c941547c1">DEFAULTDELAY</link></computeroutput>
+, bool willInteract = <computeroutput>false</computeroutput>
+)</computeroutput></para><para>
+Definition at line <link linkend="__interactions_8cpp_source_1l00500">500</link> of file <link linkend="__interactions_8cpp_source">Interactions.cpp</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_interactions_a610a820dde0e642d3bcae7fdf971a75e_cgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_class_interactions_1a1eb3a67f15cd278977b200c6ffca71eb"/><section>
+    <title>fOneStr()</title>
+<indexterm><primary>fOneStr</primary><secondary>Interactions</secondary></indexterm>
+<indexterm><primary>Interactions</primary><secondary>fOneStr</secondary></indexterm>
+<para><computeroutput>bool Interactions::fOneStr (const std::vector&lt; std::string &gt; &amp; allTempl, const std::vector&lt; std::string &gt; allkeys)</computeroutput></para><para>
+Definition at line <link linkend="__interactions_8cpp_source_1l01184">1184</link> of file <link linkend="__interactions_8cpp_source">Interactions.cpp</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_interactions_a1eb3a67f15cd278977b200c6ffca71eb_cgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_class_interactions_1a75d1c7883ad5786240851e1396c85ccf"/><section>
+    <title>fOneTemplateA()<computeroutput>[1/2]</computeroutput></title>
+<indexterm><primary>fOneTemplateA</primary><secondary>Interactions</secondary></indexterm>
+<indexterm><primary>Interactions</primary><secondary>fOneTemplateA</secondary></indexterm>
+<para><computeroutput>bool Interactions::fOneTemplateA (const std::vector&lt; std::string &gt; &amp; allTempl, <link linkend="_struct_zone">Zone</link> Z = <computeroutput><link linkend="_struct_zone">Zone</link>()</computeroutput>
+, unsigned int delayMilliseconds = <computeroutput><link linkend="_class_interactions_1a2ba3357ced2764e8901b742c941547c1">DEFAULTDELAY</link></computeroutput>
+, bool willInteract = <computeroutput>false</computeroutput>
+)</computeroutput></para><para>
+Definition at line <link linkend="__interactions_8cpp_source_1l00469">469</link> of file <link linkend="__interactions_8cpp_source">Interactions.cpp</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_interactions_a75d1c7883ad5786240851e1396c85ccf_cgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_class_interactions_1ad86db2bcd0900e15cfd36374937d7748"/><section>
+    <title>fOneTemplateA()<computeroutput>[2/2]</computeroutput></title>
+<indexterm><primary>fOneTemplateA</primary><secondary>Interactions</secondary></indexterm>
+<indexterm><primary>Interactions</primary><secondary>fOneTemplateA</secondary></indexterm>
+<para><computeroutput>bool Interactions::fOneTemplateA (const std::vector&lt; std::string &gt; allTempl, std::string &amp; foundTempl, <link linkend="_struct_zone">Zone</link> Z = <computeroutput><link linkend="_struct_zone">Zone</link>()</computeroutput>
+, unsigned int delayMilliseconds = <computeroutput><link linkend="_class_interactions_1a2ba3357ced2764e8901b742c941547c1">DEFAULTDELAY</link></computeroutput>
+, bool willInteract = <computeroutput>false</computeroutput>
+)</computeroutput></para><para>
+Definition at line <link linkend="__interactions_8cpp_source_1l00394">394</link> of file <link linkend="__interactions_8cpp_source">Interactions.cpp</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_interactions_ad86db2bcd0900e15cfd36374937d7748_cgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+Here is the caller graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_interactions_ad86db2bcd0900e15cfd36374937d7748_icgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_class_interactions_1a628a6c47d7580529d4b4e99abc4136fc"/><section>
+    <title>fOneTemplateEraseA()</title>
+<indexterm><primary>fOneTemplateEraseA</primary><secondary>Interactions</secondary></indexterm>
+<indexterm><primary>Interactions</primary><secondary>fOneTemplateEraseA</secondary></indexterm>
+<para><computeroutput>bool Interactions::fOneTemplateEraseA (std::vector&lt; std::string &gt; &amp; allTempl, <link linkend="_struct_zone">Zone</link> Z = <computeroutput><link linkend="_struct_zone">Zone</link>()</computeroutput>
+, unsigned int delayMilliseconds = <computeroutput><link linkend="_class_interactions_1a2ba3357ced2764e8901b742c941547c1">DEFAULTDELAY</link></computeroutput>
+, bool willInteract = <computeroutput>false</computeroutput>
+)</computeroutput></para><para>
+Definition at line <link linkend="__interactions_8cpp_source_1l00480">480</link> of file <link linkend="__interactions_8cpp_source">Interactions.cpp</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_interactions_a628a6c47d7580529d4b4e99abc4136fc_cgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+Here is the caller graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_interactions_a628a6c47d7580529d4b4e99abc4136fc_icgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_class_interactions_1a2b8392d9a1a414b61dca6d6320fd2f79"/><section>
+    <title>fOneTemplateMultipleTemplateA()<computeroutput>[1/2]</computeroutput></title>
+<indexterm><primary>fOneTemplateMultipleTemplateA</primary><secondary>Interactions</secondary></indexterm>
+<indexterm><primary>Interactions</primary><secondary>fOneTemplateMultipleTemplateA</secondary></indexterm>
+<para><computeroutput>bool Interactions::fOneTemplateMultipleTemplateA (const std::string &amp; Templ, <link linkend="__units_8h_1a224b9163917ac32fc95a60d8c1eec3aa">Direction</link> direction, int order, <link linkend="_struct_zone">Zone</link> Z = <computeroutput><link linkend="_struct_zone">Zone</link>()</computeroutput>
+, unsigned int delayMilliseconds = <computeroutput><link linkend="_class_interactions_1a2ba3357ced2764e8901b742c941547c1">DEFAULTDELAY</link></computeroutput>
+, bool willInteract = <computeroutput>false</computeroutput>
+)</computeroutput></para><para>
+Definition at line <link linkend="__interactions_8cpp_source_1l00084">84</link> of file <link linkend="__interactions_8cpp_source">Interactions.cpp</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_interactions_a2b8392d9a1a414b61dca6d6320fd2f79_cgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+Here is the caller graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_interactions_a2b8392d9a1a414b61dca6d6320fd2f79_icgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_class_interactions_1a523842705412e68f6461679f201caf07"/><section>
+    <title>fOneTemplateMultipleTemplateA()<computeroutput>[2/2]</computeroutput></title>
+<indexterm><primary>fOneTemplateMultipleTemplateA</primary><secondary>Interactions</secondary></indexterm>
+<indexterm><primary>Interactions</primary><secondary>fOneTemplateMultipleTemplateA</secondary></indexterm>
+<para><computeroutput>bool Interactions::fOneTemplateMultipleTemplateA (const std::vector&lt; std::string &gt; &amp; alltempl, const <link linkend="__units_8h_1a224b9163917ac32fc95a60d8c1eec3aa">Direction</link> &amp; direction, int order, <link linkend="_struct_zone">Zone</link> Z = <computeroutput><link linkend="_struct_zone">Zone</link>()</computeroutput>
+, unsigned int delayMilliseconds = <computeroutput><link linkend="_class_interactions_1a2ba3357ced2764e8901b742c941547c1">DEFAULTDELAY</link></computeroutput>
+, bool willInteract = <computeroutput>false</computeroutput>
+)</computeroutput></para><para>
+Definition at line <link linkend="__interactions_8cpp_source_1l00129">129</link> of file <link linkend="__interactions_8cpp_source">Interactions.cpp</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_interactions_a523842705412e68f6461679f201caf07_cgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_class_interactions_1a495250a31d9f3762cf300b44a11cd613"/><section>
+    <title>fStr()<computeroutput>[1/2]</computeroutput></title>
+<indexterm><primary>fStr</primary><secondary>Interactions</secondary></indexterm>
+<indexterm><primary>Interactions</primary><secondary>fStr</secondary></indexterm>
+<para><computeroutput>bool Interactions::fStr (const std::vector&lt; std::string &gt; &amp; allTempl, const std::vector&lt; std::string &gt; allkeys)</computeroutput></para><para>
+Definition at line <link linkend="__interactions_8cpp_source_1l01176">1176</link> of file <link linkend="__interactions_8cpp_source">Interactions.cpp</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_interactions_a495250a31d9f3762cf300b44a11cd613_cgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_class_interactions_1a47882846bb356655826f5e9347f1d580"/><section>
+    <title>fStr()<computeroutput>[2/2]</computeroutput></title>
+<indexterm><primary>fStr</primary><secondary>Interactions</secondary></indexterm>
+<indexterm><primary>Interactions</primary><secondary>fStr</secondary></indexterm>
+<para><computeroutput>bool Interactions::fStr (const std::vector&lt; std::string &gt; &amp; allTempl, std::string templ)</computeroutput></para><para>
+Definition at line <link linkend="__interactions_8cpp_source_1l01170">1170</link> of file <link linkend="__interactions_8cpp_source">Interactions.cpp</link>.</para>
+Here is the caller graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_interactions_a47882846bb356655826f5e9347f1d580_icgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_class_interactions_1ae6f71f7be8c80c4954bdd0f594891e66"/><section>
+    <title>fSwipeA()<computeroutput>[1/2]</computeroutput></title>
+<indexterm><primary>fSwipeA</primary><secondary>Interactions</secondary></indexterm>
+<indexterm><primary>Interactions</primary><secondary>fSwipeA</secondary></indexterm>
+<para><computeroutput>bool Interactions::fSwipeA (std::string imgtemplate, <link linkend="_struct_coord">Coord</link> Cresult, <link linkend="_struct_zone">Zone</link> Z = <computeroutput><link linkend="_struct_zone">Zone</link>()</computeroutput>
+, bool willInteract = <computeroutput>true</computeroutput>
+)</computeroutput></para><para>
+Definition at line <link linkend="__interactions_8cpp_source_1l00516">516</link> of file <link linkend="__interactions_8cpp_source">Interactions.cpp</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_interactions_ae6f71f7be8c80c4954bdd0f594891e66_cgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+Here is the caller graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_interactions_ae6f71f7be8c80c4954bdd0f594891e66_icgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_class_interactions_1aeecb637d08c04de1439096ad646fdb36"/><section>
+    <title>fSwipeA()<computeroutput>[2/2]</computeroutput></title>
+<indexterm><primary>fSwipeA</primary><secondary>Interactions</secondary></indexterm>
+<indexterm><primary>Interactions</primary><secondary>fSwipeA</secondary></indexterm>
+<para><computeroutput>bool Interactions::fSwipeA (std::string imgtemplate, <link linkend="__units_8h_1a224b9163917ac32fc95a60d8c1eec3aa">Direction</link> endx, <link linkend="_struct_zone">Zone</link> Z = <computeroutput><link linkend="_struct_zone">Zone</link>()</computeroutput>
+, bool willInteract = <computeroutput>true</computeroutput>
+)</computeroutput></para><para>
+Definition at line <link linkend="__interactions_8cpp_source_1l00527">527</link> of file <link linkend="__interactions_8cpp_source">Interactions.cpp</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_interactions_aeecb637d08c04de1439096ad646fdb36_cgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_class_interactions_1ac7fc1f0d7d65c6b926bf12eb12204ff3"/><section>
+    <title>getDay()</title>
+<indexterm><primary>getDay</primary><secondary>Interactions</secondary></indexterm>
+<indexterm><primary>Interactions</primary><secondary>getDay</secondary></indexterm>
+<para><computeroutput>int Interactions::getDay ( )</computeroutput></para><para>
+Definition at line <link linkend="__interactions_8cpp_source_1l01069">1069</link> of file <link linkend="__interactions_8cpp_source">Interactions.cpp</link>.</para>
+</section>
+<anchor xml:id="_class_interactions_1a0bd08e482083b90d3b228ec518b12c4d"/><section>
+    <title>getDimX()</title>
+<indexterm><primary>getDimX</primary><secondary>Interactions</secondary></indexterm>
+<indexterm><primary>Interactions</primary><secondary>getDimX</secondary></indexterm>
+<para><computeroutput>int Interactions::getDimX ( )</computeroutput></para><para>
+Definition at line <link linkend="__interactions_8cpp_source_1l00965">965</link> of file <link linkend="__interactions_8cpp_source">Interactions.cpp</link>.</para>
+</section>
+<anchor xml:id="_class_interactions_1ac4c5a76c6c1c878d67caef77bd2520f2"/><section>
+    <title>getDimY()</title>
+<indexterm><primary>getDimY</primary><secondary>Interactions</secondary></indexterm>
+<indexterm><primary>Interactions</primary><secondary>getDimY</secondary></indexterm>
+<para><computeroutput>int Interactions::getDimY ( )</computeroutput></para><para>
+Definition at line <link linkend="__interactions_8cpp_source_1l00969">969</link> of file <link linkend="__interactions_8cpp_source">Interactions.cpp</link>.</para>
+</section>
+<anchor xml:id="_class_interactions_1a5ee06840be01ec86e99072ca262d3791"/><section>
+    <title>getFilesPath()</title>
+<indexterm><primary>getFilesPath</primary><secondary>Interactions</secondary></indexterm>
+<indexterm><primary>Interactions</primary><secondary>getFilesPath</secondary></indexterm>
+<para><computeroutput>void Interactions::getFilesPath (std::vector&lt; std::string &gt; &amp; tab, std::filesystem::directory_iterator path)</computeroutput></para><para>
+Definition at line <link linkend="__interactions_8cpp_source_1l01023">1023</link> of file <link linkend="__interactions_8cpp_source">Interactions.cpp</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_interactions_a5ee06840be01ec86e99072ca262d3791_cgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+Here is the caller graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_interactions_a5ee06840be01ec86e99072ca262d3791_icgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_class_interactions_1a0b3c1a0320752fc90bb3d969a472009d"/><section>
+    <title>getHour()</title>
+<indexterm><primary>getHour</primary><secondary>Interactions</secondary></indexterm>
+<indexterm><primary>Interactions</primary><secondary>getHour</secondary></indexterm>
+<para><computeroutput>int Interactions::getHour ( )</computeroutput></para><para>
+Definition at line <link linkend="__interactions_8cpp_source_1l01080">1080</link> of file <link linkend="__interactions_8cpp_source">Interactions.cpp</link>.</para>
+</section>
+<anchor xml:id="_class_interactions_1a4c7bbb037e2814f276bdbb3625d25c17"/><section>
+    <title>getMatHeight()</title>
+<indexterm><primary>getMatHeight</primary><secondary>Interactions</secondary></indexterm>
+<indexterm><primary>Interactions</primary><secondary>getMatHeight</secondary></indexterm>
+<para><computeroutput>int Interactions::getMatHeight (const std::string &amp; name)</computeroutput></para><para>
+Definition at line <link linkend="__interactions_8cpp_source_1l01120">1120</link> of file <link linkend="__interactions_8cpp_source">Interactions.cpp</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_interactions_a4c7bbb037e2814f276bdbb3625d25c17_cgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+Here is the caller graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_interactions_a4c7bbb037e2814f276bdbb3625d25c17_icgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_class_interactions_1a58d25a692c5ee6773914f3c0c4f2cb6e"/><section>
+    <title>getMatWidth()</title>
+<indexterm><primary>getMatWidth</primary><secondary>Interactions</secondary></indexterm>
+<indexterm><primary>Interactions</primary><secondary>getMatWidth</secondary></indexterm>
+<para><computeroutput>int Interactions::getMatWidth (const std::string &amp; name)</computeroutput></para><para>
+Definition at line <link linkend="__interactions_8cpp_source_1l01116">1116</link> of file <link linkend="__interactions_8cpp_source">Interactions.cpp</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_interactions_a58d25a692c5ee6773914f3c0c4f2cb6e_cgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+Here is the caller graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_interactions_a58d25a692c5ee6773914f3c0c4f2cb6e_icgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_class_interactions_1ab31446219b9680d6960e1c76484c9331"/><section>
+    <title>getMinute()</title>
+<indexterm><primary>getMinute</primary><secondary>Interactions</secondary></indexterm>
+<indexterm><primary>Interactions</primary><secondary>getMinute</secondary></indexterm>
+<para><computeroutput>int Interactions::getMinute ( )</computeroutput></para><para>
+Definition at line <link linkend="__interactions_8cpp_source_1l01087">1087</link> of file <link linkend="__interactions_8cpp_source">Interactions.cpp</link>.</para>
+</section>
+<anchor xml:id="_class_interactions_1a4e27fdc5316915fd29db386563780388"/><section>
+    <title>getMonth()</title>
+<indexterm><primary>getMonth</primary><secondary>Interactions</secondary></indexterm>
+<indexterm><primary>Interactions</primary><secondary>getMonth</secondary></indexterm>
+<para><computeroutput>int Interactions::getMonth ( )</computeroutput></para><para>
+Definition at line <link linkend="__interactions_8cpp_source_1l01062">1062</link> of file <link linkend="__interactions_8cpp_source">Interactions.cpp</link>.</para>
+</section>
+<anchor xml:id="_class_interactions_1a9a7024bd6937b747a114af86263850d5"/><section>
+    <title>getRebootCount()</title>
+<indexterm><primary>getRebootCount</primary><secondary>Interactions</secondary></indexterm>
+<indexterm><primary>Interactions</primary><secondary>getRebootCount</secondary></indexterm>
+<para><computeroutput>int Interactions::getRebootCount ( )</computeroutput></para><para>
+Definition at line <link linkend="__interactions_8cpp_source_1l01106">1106</link> of file <link linkend="__interactions_8cpp_source">Interactions.cpp</link>.</para>
+</section>
+<anchor xml:id="_class_interactions_1a5569890eeb93a27f8c428439460c52b2"/><section>
+    <title>getSecond()</title>
+<indexterm><primary>getSecond</primary><secondary>Interactions</secondary></indexterm>
+<indexterm><primary>Interactions</primary><secondary>getSecond</secondary></indexterm>
+<para><computeroutput>int Interactions::getSecond ( )</computeroutput></para><para>
+Definition at line <link linkend="__interactions_8cpp_source_1l01094">1094</link> of file <link linkend="__interactions_8cpp_source">Interactions.cpp</link>.</para>
+</section>
+<anchor xml:id="_class_interactions_1a5b5af2b125ff152043789cfcf70ffb2b"/><section>
+    <title>getTemplate()<computeroutput>[1/2]</computeroutput></title>
+<indexterm><primary>getTemplate</primary><secondary>Interactions</secondary></indexterm>
+<indexterm><primary>Interactions</primary><secondary>getTemplate</secondary></indexterm>
+<para><computeroutput><link linkend="_struct_template">Template</link> Interactions::getTemplate (const std::string &amp; images, <link linkend="__units_8h_1a6b62789b863165c9d424a7504d4a6f61">typeMat</link> type)</computeroutput></para><para>
+Definition at line <link linkend="__interactions_8cpp_source_1l00941">941</link> of file <link linkend="__interactions_8cpp_source">Interactions.cpp</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_interactions_a5b5af2b125ff152043789cfcf70ffb2b_cgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+Here is the caller graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_interactions_a5b5af2b125ff152043789cfcf70ffb2b_icgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_class_interactions_1af388711680a68ad02aa6fa6ed9e59cfb"/><section>
+    <title>getTemplate()<computeroutput>[2/2]</computeroutput></title>
+<indexterm><primary>getTemplate</primary><secondary>Interactions</secondary></indexterm>
+<indexterm><primary>Interactions</primary><secondary>getTemplate</secondary></indexterm>
+<para><computeroutput>std::vector&lt; <link linkend="_struct_template">Template</link> &gt; Interactions::getTemplate (const std::vector&lt; std::string &gt; &amp; images, <link linkend="__units_8h_1a6b62789b863165c9d424a7504d4a6f61">typeMat</link> type)</computeroutput></para><para>
+Definition at line <link linkend="__interactions_8cpp_source_1l00950">950</link> of file <link linkend="__interactions_8cpp_source">Interactions.cpp</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_interactions_af388711680a68ad02aa6fa6ed9e59cfb_cgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_class_interactions_1ab56a5b3cd91c4ec1063b9d19205358a0"/><section>
+    <title>getUTCDay()</title>
+<indexterm><primary>getUTCDay</primary><secondary>Interactions</secondary></indexterm>
+<indexterm><primary>Interactions</primary><secondary>getUTCDay</secondary></indexterm>
+<para><computeroutput><link linkend="__units_8h_1ae8bf5a756cf15252b4e514a258bbbde9">day</link> Interactions::getUTCDay ( )</computeroutput></para><para>
+Definition at line <link linkend="__interactions_8cpp_source_1l00973">973</link> of file <link linkend="__interactions_8cpp_source">Interactions.cpp</link>.</para>
+Here is the caller graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_interactions_ab56a5b3cd91c4ec1063b9d19205358a0_icgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_class_interactions_1a6063dfa44fd2439c23e7b04a0a70c177"/><section>
+    <title>getUTCHour()</title>
+<indexterm><primary>getUTCHour</primary><secondary>Interactions</secondary></indexterm>
+<indexterm><primary>Interactions</primary><secondary>getUTCHour</secondary></indexterm>
+<para><computeroutput>int Interactions::getUTCHour ( )</computeroutput></para><para>
+Definition at line <link linkend="__interactions_8cpp_source_1l00999">999</link> of file <link linkend="__interactions_8cpp_source">Interactions.cpp</link>.</para>
+Here is the caller graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_interactions_a6063dfa44fd2439c23e7b04a0a70c177_icgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_class_interactions_1a981d4790a0903cde44961f2781636cad"/><section>
+    <title>getYear()</title>
+<indexterm><primary>getYear</primary><secondary>Interactions</secondary></indexterm>
+<indexterm><primary>Interactions</primary><secondary>getYear</secondary></indexterm>
+<para><computeroutput>int Interactions::getYear ( )</computeroutput></para><para>
+Definition at line <link linkend="__interactions_8cpp_source_1l01055">1055</link> of file <link linkend="__interactions_8cpp_source">Interactions.cpp</link>.</para>
+</section>
+<anchor xml:id="_class_interactions_1a9044fca002a4287ad1a89ce0422a68e5"/><section>
+    <title>gSwipe()</title>
+<indexterm><primary>gSwipe</primary><secondary>Interactions</secondary></indexterm>
+<indexterm><primary>Interactions</primary><secondary>gSwipe</secondary></indexterm>
+<para><computeroutput>void Interactions::gSwipe (double x1, double y1, double x2, double y2, int millitime)</computeroutput></para><para>
+Definition at line <link linkend="__interactions_8cpp_source_1l01139">1139</link> of file <link linkend="__interactions_8cpp_source">Interactions.cpp</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_interactions_a9044fca002a4287ad1a89ce0422a68e5_cgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+Here is the caller graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_interactions_a9044fca002a4287ad1a89ce0422a68e5_icgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_class_interactions_1a1a602b1baed0f80f749fbb5d569349b8"/><section>
+    <title>gSwipeX()</title>
+<indexterm><primary>gSwipeX</primary><secondary>Interactions</secondary></indexterm>
+<indexterm><primary>Interactions</primary><secondary>gSwipeX</secondary></indexterm>
+<para><computeroutput>void Interactions::gSwipeX (double x1, double x2, int millitime)</computeroutput></para><para>
+Definition at line <link linkend="__interactions_8cpp_source_1l01129">1129</link> of file <link linkend="__interactions_8cpp_source">Interactions.cpp</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_interactions_a1a602b1baed0f80f749fbb5d569349b8_cgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_class_interactions_1a21f2cc1ce6998a0d6d934f36d7f2df24"/><section>
+    <title>gSwipeY()</title>
+<indexterm><primary>gSwipeY</primary><secondary>Interactions</secondary></indexterm>
+<indexterm><primary>Interactions</primary><secondary>gSwipeY</secondary></indexterm>
+<para><computeroutput>void Interactions::gSwipeY (double y1, double y2, int millitime)</computeroutput></para><para>
+Definition at line <link linkend="__interactions_8cpp_source_1l01134">1134</link> of file <link linkend="__interactions_8cpp_source">Interactions.cpp</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_interactions_a21f2cc1ce6998a0d6d934f36d7f2df24_cgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_class_interactions_1acf4720976ec410b61c65e13d2979fd1f"/><section>
+    <title>loadAllTemplates()</title>
+<indexterm><primary>loadAllTemplates</primary><secondary>Interactions</secondary></indexterm>
+<indexterm><primary>Interactions</primary><secondary>loadAllTemplates</secondary></indexterm>
+<para><computeroutput>void Interactions::loadAllTemplates ( )</computeroutput></para><para>
+Definition at line <link linkend="__interactions_8cpp_source_1l01013">1013</link> of file <link linkend="__interactions_8cpp_source">Interactions.cpp</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_interactions_acf4720976ec410b61c65e13d2979fd1f_cgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+Here is the caller graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_interactions_acf4720976ec410b61c65e13d2979fd1f_icgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_class_interactions_1aa07a6de3761c67111c20084509a9ff5e"/><section>
+    <title>loadTemplate()</title>
+<indexterm><primary>loadTemplate</primary><secondary>Interactions</secondary></indexterm>
+<indexterm><primary>Interactions</primary><secondary>loadTemplate</secondary></indexterm>
+<para><computeroutput>void Interactions::loadTemplate (std::string image)</computeroutput></para><para>
+Definition at line <link linkend="__interactions_8cpp_source_1l01007">1007</link> of file <link linkend="__interactions_8cpp_source">Interactions.cpp</link>.</para>
+Here is the caller graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_interactions_aa07a6de3761c67111c20084509a9ff5e_icgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_class_interactions_1a0a0ffd9ad1990de31fd7b2773db32667"/><section>
+    <title>loopPopUp()</title>
+<indexterm><primary>loopPopUp</primary><secondary>Interactions</secondary></indexterm>
+<indexterm><primary>Interactions</primary><secondary>loopPopUp</secondary></indexterm>
+<para><computeroutput><link linkend="_struct_template">Template</link> Interactions::loopPopUp (<link linkend="__units_8h_1a6b62789b863165c9d424a7504d4a6f61">typeMat</link> color = <computeroutput><link linkend="__units_8h_1a6b62789b863165c9d424a7504d4a6f61a551cc46435cf57d89ca000b540d78ab0">Gray</link></computeroutput>
+)</computeroutput></para><para>
+Definition at line <link linkend="__interactions_8cpp_source_1l00067">67</link> of file <link linkend="__interactions_8cpp_source">Interactions.cpp</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_interactions_a0a0ffd9ad1990de31fd7b2773db32667_cgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+Here is the caller graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_interactions_a0a0ffd9ad1990de31fd7b2773db32667_icgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_class_interactions_1ae39566ea8b39040355099c95f1e7998d"/><section>
+    <title>orderCoords()</title>
+<indexterm><primary>orderCoords</primary><secondary>Interactions</secondary></indexterm>
+<indexterm><primary>Interactions</primary><secondary>orderCoords</secondary></indexterm>
+<para><computeroutput>std::vector&lt; <link linkend="_struct_coord">Coord</link> &gt; Interactions::orderCoords (const std::vector&lt; <link linkend="_struct_coord">Coord</link> &gt; &amp; coords, <link linkend="__units_8h_1a224b9163917ac32fc95a60d8c1eec3aa">Direction</link> dir)</computeroutput></para><para>
+Definition at line <link linkend="__interactions_8cpp_source_1l00816">816</link> of file <link linkend="__interactions_8cpp_source">Interactions.cpp</link>.</para>
+</section>
+<anchor xml:id="_class_interactions_1af3c13c1ae7d10eb3f41f626549982d41"/><section>
+    <title>orderDigits()</title>
+<indexterm><primary>orderDigits</primary><secondary>Interactions</secondary></indexterm>
+<indexterm><primary>Interactions</primary><secondary>orderDigits</secondary></indexterm>
+<para><computeroutput>void Interactions::orderDigits (std::vector&lt; <link linkend="_struct_digit">Digit</link> &gt; &amp; digits)</computeroutput></para><para>
+Definition at line <link linkend="__interactions_8cpp_source_1l01153">1153</link> of file <link linkend="__interactions_8cpp_source">Interactions.cpp</link>.</para>
+Here is the caller graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_interactions_af3c13c1ae7d10eb3f41f626549982d41_icgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_class_interactions_1af916d0cdf7643f49bed0f81afd914f6f"/><section>
+    <title>orderPoint()</title>
+<indexterm><primary>orderPoint</primary><secondary>Interactions</secondary></indexterm>
+<indexterm><primary>Interactions</primary><secondary>orderPoint</secondary></indexterm>
+<para><computeroutput>std::vector&lt; <link linkend="_struct_coord">Coord</link> &gt; Interactions::orderPoint (const std::vector&lt; <link linkend="_struct_coord">Coord</link> &gt; &amp; coord, const <link linkend="_struct_coord">Coord</link> &amp; Cf)</computeroutput></para><para>
+Definition at line <link linkend="__interactions_8cpp_source_1l00930">930</link> of file <link linkend="__interactions_8cpp_source">Interactions.cpp</link>.</para>
+</section>
+<anchor xml:id="_class_interactions_1a9947d091de5ba2d09ec925866d231fe1"/><section>
+    <title>orderTemplates()</title>
+<indexterm><primary>orderTemplates</primary><secondary>Interactions</secondary></indexterm>
+<indexterm><primary>Interactions</primary><secondary>orderTemplates</secondary></indexterm>
+<para><computeroutput>std::vector&lt; <link linkend="_struct_template">Template</link> &gt; Interactions::orderTemplates (const std::vector&lt; <link linkend="_struct_template">Template</link> &gt; &amp; allTempl, <link linkend="__units_8h_1a224b9163917ac32fc95a60d8c1eec3aa">Direction</link> dir)</computeroutput></para><para>
+Definition at line <link linkend="__interactions_8cpp_source_1l00873">873</link> of file <link linkend="__interactions_8cpp_source">Interactions.cpp</link>.</para>
+Here is the caller graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_interactions_a9947d091de5ba2d09ec925866d231fe1_icgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_class_interactions_1ade7f52c59105f434650b9358b22e5488"/><section>
+    <title>resetCount()</title>
+<indexterm><primary>resetCount</primary><secondary>Interactions</secondary></indexterm>
+<indexterm><primary>Interactions</primary><secondary>resetCount</secondary></indexterm>
+<para><computeroutput>void Interactions::resetCount ( )</computeroutput></para><para>
+Definition at line <link linkend="__interactions_8cpp_source_1l00328">328</link> of file <link linkend="__interactions_8cpp_source">Interactions.cpp</link>.</para>
+Here is the caller graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_interactions_ade7f52c59105f434650b9358b22e5488_icgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_class_interactions_1a77df030e3199449235b9f50c360b7095"/><section>
+    <title>setDimX()</title>
+<indexterm><primary>setDimX</primary><secondary>Interactions</secondary></indexterm>
+<indexterm><primary>Interactions</primary><secondary>setDimX</secondary></indexterm>
+<para><computeroutput>void Interactions::setDimX (int x)</computeroutput></para><para>
+Definition at line <link linkend="__interactions_8cpp_source_1l01110">1110</link> of file <link linkend="__interactions_8cpp_source">Interactions.cpp</link>.</para>
+</section>
+<anchor xml:id="_class_interactions_1a9686fccac68a6f049d2d04690febc3d1"/><section>
+    <title>setDimY()</title>
+<indexterm><primary>setDimY</primary><secondary>Interactions</secondary></indexterm>
+<indexterm><primary>Interactions</primary><secondary>setDimY</secondary></indexterm>
+<para><computeroutput>void Interactions::setDimY (int y)</computeroutput></para><para>
+Definition at line <link linkend="__interactions_8cpp_source_1l01113">1113</link> of file <link linkend="__interactions_8cpp_source">Interactions.cpp</link>.</para>
+</section>
+<anchor xml:id="_class_interactions_1a185fecdd73adc781ffb402bf0dac3ed7"/><section>
+    <title>setRebootCount()</title>
+<indexterm><primary>setRebootCount</primary><secondary>Interactions</secondary></indexterm>
+<indexterm><primary>Interactions</primary><secondary>setRebootCount</secondary></indexterm>
+<para><computeroutput>void Interactions::setRebootCount (int nb)</computeroutput></para><para>
+Definition at line <link linkend="__interactions_8cpp_source_1l01101">1101</link> of file <link linkend="__interactions_8cpp_source">Interactions.cpp</link>.</para>
+</section>
+<anchor xml:id="_class_interactions_1a7f2c26654c8cbde803d2267b98479dc1"/><section>
+    <title>showVector()</title>
+<indexterm><primary>showVector</primary><secondary>Interactions</secondary></indexterm>
+<indexterm><primary>Interactions</primary><secondary>showVector</secondary></indexterm>
+<para><computeroutput>void Interactions::showVector (std::vector&lt; std::string &gt; vect)</computeroutput></para><para>
+Definition at line <link linkend="__interactions_8cpp_source_1l01047">1047</link> of file <link linkend="__interactions_8cpp_source">Interactions.cpp</link>.</para>
+</section>
+<anchor xml:id="_class_interactions_1a1491cc82f7f888b42c035f0325b9610d"/><section>
+    <title>templateFound()<computeroutput>[1/2]</computeroutput></title>
+<indexterm><primary>templateFound</primary><secondary>Interactions</secondary></indexterm>
+<indexterm><primary>Interactions</primary><secondary>templateFound</secondary></indexterm>
+<para><computeroutput>bool Interactions::templateFound (bool found, const <link linkend="_struct_template">Template</link> &amp; templ, bool willInteract = <computeroutput>false</computeroutput>
+, <link linkend="__units_8h_1a8bb1ef53467e4f61410d12822d922498">Action</link> act = <computeroutput><link linkend="__units_8h_1a8bb1ef53467e4f61410d12822d922498a9345e59b3346666444f7cfa61648a609">Action::Click</link></computeroutput>
+, <link linkend="_struct_coord">Coord</link> coord = <computeroutput><link linkend="_struct_coord">Coord</link>()</computeroutput>
+, unsigned int delayMilliseconds = <computeroutput><link linkend="_class_interactions_1a2ba3357ced2764e8901b742c941547c1">DEFAULTDELAY</link></computeroutput>
+)</computeroutput></para><para>
+Definition at line <link linkend="__interactions_8cpp_source_1l00336">336</link> of file <link linkend="__interactions_8cpp_source">Interactions.cpp</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_interactions_a1491cc82f7f888b42c035f0325b9610d_cgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_class_interactions_1ad7daddd9df3cea80e69872b8afd6c8dc"/><section>
+    <title>templateFound()<computeroutput>[2/2]</computeroutput></title>
+<indexterm><primary>templateFound</primary><secondary>Interactions</secondary></indexterm>
+<indexterm><primary>Interactions</primary><secondary>templateFound</secondary></indexterm>
+<para><computeroutput>bool Interactions::templateFound (bool found, const <link linkend="_struct_template">Template</link> &amp; templ, bool willInteract = <computeroutput>false</computeroutput>
+, unsigned int delayMilliseconds = <computeroutput><link linkend="_class_interactions_1a2ba3357ced2764e8901b742c941547c1">DEFAULTDELAY</link></computeroutput>
+)</computeroutput></para><para>
+Definition at line <link linkend="__interactions_8cpp_source_1l00298">298</link> of file <link linkend="__interactions_8cpp_source">Interactions.cpp</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_interactions_ad7daddd9df3cea80e69872b8afd6c8dc_cgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+Here is the caller graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_interactions_ad7daddd9df3cea80e69872b8afd6c8dc_icgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_class_interactions_1abd5b5d8a44970e1333e3611e302f166c"/><section>
+    <title>wait()</title>
+<indexterm><primary>wait</primary><secondary>Interactions</secondary></indexterm>
+<indexterm><primary>Interactions</primary><secondary>wait</secondary></indexterm>
+<para><computeroutput>void Interactions::wait (int milliSeconds)</computeroutput></para><para>
+Definition at line <link linkend="__interactions_8cpp_source_1l01125">1125</link> of file <link linkend="__interactions_8cpp_source">Interactions.cpp</link>.</para>
+Here is the caller graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_interactions_abd5b5d8a44970e1333e3611e302f166c_icgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+</section>
+<section>
+<title>Member Data Documentation</title>
+<anchor xml:id="_class_interactions_1ae5b95018d6b3e8c79174757907dbd685"/><section>
+    <title>adbId</title>
+<indexterm><primary>adbId</primary><secondary>Interactions</secondary></indexterm>
+<indexterm><primary>Interactions</primary><secondary>adbId</secondary></indexterm>
+<para><computeroutput>std::string Interactions::adbId</computeroutput></para><para>
+Definition at line <link linkend="__interactions_8h_source_1l00098">98</link> of file <link linkend="__interactions_8h_source">Interactions.h</link>.</para>
+</section>
+<anchor xml:id="_class_interactions_1ac822b4a91ce02780f96305562b755a25"/><section>
+    <title>allTemplates</title>
+<indexterm><primary>allTemplates</primary><secondary>Interactions</secondary></indexterm>
+<indexterm><primary>Interactions</primary><secondary>allTemplates</secondary></indexterm>
+<para><computeroutput>std::map&lt;std::string, <link linkend="_struct_template">Template</link>&gt; Interactions::allTemplates</computeroutput></para><para>
+Definition at line <link linkend="__interactions_8h_source_1l00104">104</link> of file <link linkend="__interactions_8h_source">Interactions.h</link>.</para>
+</section>
+<anchor xml:id="_class_interactions_1a5c9403e01a3347ff4aef2da96b623617"/><section>
+    <title>background</title>
+<indexterm><primary>background</primary><secondary>Interactions</secondary></indexterm>
+<indexterm><primary>Interactions</primary><secondary>background</secondary></indexterm>
+<para><computeroutput><link linkend="_struct_template">Template</link> Interactions::background</computeroutput></para><para>
+Definition at line <link linkend="__interactions_8h_source_1l00105">105</link> of file <link linkend="__interactions_8h_source">Interactions.h</link>.</para>
+</section>
+<anchor xml:id="_class_interactions_1a2ba3357ced2764e8901b742c941547c1"/><section>
+    <title>DEFAULTDELAY</title>
+<indexterm><primary>DEFAULTDELAY</primary><secondary>Interactions</secondary></indexterm>
+<indexterm><primary>Interactions</primary><secondary>DEFAULTDELAY</secondary></indexterm>
+<para><computeroutput>const int Interactions::DEFAULTDELAY = <link linkend="_class_interactions_1a4902f2e22aa30bab114000995a508b1d">waitfound</link><computeroutput>[static]</computeroutput></computeroutput></para><para>
+Definition at line <link linkend="__interactions_8h_source_1l00101">101</link> of file <link linkend="__interactions_8h_source">Interactions.h</link>.</para>
+</section>
+<anchor xml:id="_class_interactions_1ac8184067871e90f96c9dec8891125cce"/><section>
+    <title>dimX</title>
+<indexterm><primary>dimX</primary><secondary>Interactions</secondary></indexterm>
+<indexterm><primary>Interactions</primary><secondary>dimX</secondary></indexterm>
+<para><computeroutput>int Interactions::dimX</computeroutput></para><para>
+Definition at line <link linkend="__interactions_8h_source_1l00107">107</link> of file <link linkend="__interactions_8h_source">Interactions.h</link>.</para>
+</section>
+<anchor xml:id="_class_interactions_1ab2a75e021a19afe95b43c09b0cb7a0e5"/><section>
+    <title>dimY</title>
+<indexterm><primary>dimY</primary><secondary>Interactions</secondary></indexterm>
+<indexterm><primary>Interactions</primary><secondary>dimY</secondary></indexterm>
+<para><computeroutput>int Interactions::dimY</computeroutput></para><para>
+Definition at line <link linkend="__interactions_8h_source_1l00107">107</link> of file <link linkend="__interactions_8h_source">Interactions.h</link>.</para>
+</section>
+<anchor xml:id="_class_interactions_1a52ebd573ecfea5806b30e2225f3b9a3f"/><section>
+    <title>listPopup</title>
+<indexterm><primary>listPopup</primary><secondary>Interactions</secondary></indexterm>
+<indexterm><primary>Interactions</primary><secondary>listPopup</secondary></indexterm>
+<para><computeroutput>std::vector&lt;<link linkend="_struct_popup">Popup</link>&gt; Interactions::listPopup</computeroutput></para><para>
+Definition at line <link linkend="__interactions_8h_source_1l00103">103</link> of file <link linkend="__interactions_8h_source">Interactions.h</link>.</para>
+</section>
+<anchor xml:id="_class_interactions_1a2831f0a46f87c4caed466857a76a3f0e"/><section>
+    <title>MAXREBOOT</title>
+<indexterm><primary>MAXREBOOT</primary><secondary>Interactions</secondary></indexterm>
+<indexterm><primary>Interactions</primary><secondary>MAXREBOOT</secondary></indexterm>
+<para><computeroutput>const int Interactions::MAXREBOOT = 20<computeroutput>[static]</computeroutput></computeroutput></para><para>
+Definition at line <link linkend="__interactions_8h_source_1l00102">102</link> of file <link linkend="__interactions_8h_source">Interactions.h</link>.</para>
+</section>
+<anchor xml:id="_class_interactions_1a884bfcd6394ec8faac5777d6fb69a8d7"/><section>
+    <title>rebootCount</title>
+<indexterm><primary>rebootCount</primary><secondary>Interactions</secondary></indexterm>
+<indexterm><primary>Interactions</primary><secondary>rebootCount</secondary></indexterm>
+<para><computeroutput>int Interactions::rebootCount</computeroutput></para><para>
+Definition at line <link linkend="__interactions_8h_source_1l00106">106</link> of file <link linkend="__interactions_8h_source">Interactions.h</link>.</para>
+</section>
+<anchor xml:id="_class_interactions_1a9315497a155670565c9c24f1448940d2"/><section>
+    <title>resCoords</title>
+<indexterm><primary>resCoords</primary><secondary>Interactions</secondary></indexterm>
+<indexterm><primary>Interactions</primary><secondary>resCoords</secondary></indexterm>
+<para><computeroutput><link linkend="_struct_coord">Coord</link> Interactions::resCoords</computeroutput></para><para>
+Definition at line <link linkend="__interactions_8h_source_1l00096">96</link> of file <link linkend="__interactions_8h_source">Interactions.h</link>.</para>
+</section>
+<anchor xml:id="_class_interactions_1a25a543c2ba74a40f05ee1a47cfe9f40b"/><section>
+    <title>resMultCoords</title>
+<indexterm><primary>resMultCoords</primary><secondary>Interactions</secondary></indexterm>
+<indexterm><primary>Interactions</primary><secondary>resMultCoords</secondary></indexterm>
+<para><computeroutput>std::vector&lt;<link linkend="_struct_coord">Coord</link>&gt; Interactions::resMultCoords</computeroutput></para><para>
+Definition at line <link linkend="__interactions_8h_source_1l00097">97</link> of file <link linkend="__interactions_8h_source">Interactions.h</link>.</para>
+</section>
+<anchor xml:id="_class_interactions_1a4902f2e22aa30bab114000995a508b1d"/><section>
+    <title>waitfound</title>
+<indexterm><primary>waitfound</primary><secondary>Interactions</secondary></indexterm>
+<indexterm><primary>Interactions</primary><secondary>waitfound</secondary></indexterm>
+<para><computeroutput>const int Interactions::waitfound = 2000<computeroutput>[static]</computeroutput></computeroutput></para><para>
+Definition at line <link linkend="__interactions_8h_source_1l00100">100</link> of file <link linkend="__interactions_8h_source">Interactions.h</link>.</para>
+</section>
+<anchor xml:id="_class_interactions_1a61b758d8ccf55d4d58b1c5c4f70c03e5"/><section>
+    <title>waitnotfound</title>
+<indexterm><primary>waitnotfound</primary><secondary>Interactions</secondary></indexterm>
+<indexterm><primary>Interactions</primary><secondary>waitnotfound</secondary></indexterm>
+<para><computeroutput>const int Interactions::waitnotfound = 1000<computeroutput>[static]</computeroutput></computeroutput></para><para>
+Definition at line <link linkend="__interactions_8h_source_1l00099">99</link> of file <link linkend="__interactions_8h_source">Interactions.h</link>.</para>
+</section>
+<para>
+The documentation for this class was generated from the following files:</para>
+src/<link linkend="__interactions_8h">Interactions.h</link>src/<link linkend="__interactions_8cpp">Interactions.cpp</link></section>
+</section>

@@ -1,0 +1,176 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<section xmlns="http://docbook.org/ns/docbook" version="5.0" xmlns:xlink="http://www.w3.org/1999/xlink" xml:id="__tag_panel_8h" xml:lang="en-US">
+<title>src/TagPanel.h File Reference</title>
+<indexterm><primary>src/TagPanel.h</primary></indexterm>
+<programlisting linenumbering="unnumbered">#include &lt;wx/wxprec.h&gt;<?linebreak?>#include &lt;wx/artprov.h&gt;<?linebreak?>#include &lt;wx/splitter.h&gt;<?linebreak?>#include &lt;math.h&gt;<?linebreak?>#include &quot;Tags.h&quot;<?linebreak?>#include &lt;wx/wx.h&gt;<?linebreak?></programlisting>Include dependency graph for TagPanel.h:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="_tag_panel_8h__incl.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+This graph shows which files directly or indirectly include this file:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="_tag_panel_8h__dep__incl.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+<simplesect>
+    <title>Classes    </title>
+        <itemizedlist>
+            <listitem><para>class <link linkend="_class_tag_panel">TagPanel</link></para>
+</listitem>
+            <listitem><para>class <link linkend="_class_empty_panel">EmptyPanel</link></para>
+</listitem>
+            <listitem><para>class <link linkend="_class_flow_tag_panel">FlowTagPanel</link></para>
+</listitem>
+            <listitem><para>class <link linkend="_class_main_tag_panel">MainTagPanel</link></para>
+</listitem>
+            <listitem><para>class <link linkend="_class_bool_tag_panel">BoolTagPanel</link></para>
+</listitem>
+            <listitem><para>class <link linkend="_class_loop_tag_panel">LoopTagPanel</link></para>
+</listitem>
+            <listitem><para>class <link linkend="_class_if_tag_panel">IfTagPanel</link></para>
+</listitem>
+        </itemizedlist>
+</simplesect>
+<simplesect>
+    <title>Enumerations    </title>
+        <itemizedlist>
+            <listitem><para>enum <link linkend="__tag_panel_8h_1a443e25f6957db75e312dbd0fb43d5a6e">AddPosition</link> { <link linkend="__tag_panel_8h_1a443e25f6957db75e312dbd0fb43d5a6eaaad01162f441b9162610e81352541694">ABOVE</link>
+, <link linkend="__tag_panel_8h_1a443e25f6957db75e312dbd0fb43d5a6eab5726a81978ba2a47fcea5ef4fb8fbf4">UNDER</link>
+ }</para>
+</listitem>
+            <listitem><para>enum <link linkend="__tag_panel_8h_1a369abf422adc1247d0d7bc295bf34014">HoverPosition</link> { <?linebreak?><link linkend="__tag_panel_8h_1a369abf422adc1247d0d7bc295bf34014a25c7d86b307960a56aa7821fe0ae1828">NOHOVER</link>
+, <link linkend="__tag_panel_8h_1a369abf422adc1247d0d7bc295bf34014ae53ae292e2c382ba015842834af7573d">TOPHOVER</link>
+, <link linkend="__tag_panel_8h_1a369abf422adc1247d0d7bc295bf34014afc898622b38d2238adbc9c7cdc5f97a8">BOTTOMHOVER</link>
+, <link linkend="__tag_panel_8h_1a369abf422adc1247d0d7bc295bf34014a426b1d3c399e8ef6f1a5e6e29798593d">MIDTOPHOVER</link>
+, <?linebreak?><link linkend="__tag_panel_8h_1a369abf422adc1247d0d7bc295bf34014aa21f59c48bbee6108c6aee1231bdfa16">MIDBOTHOVER</link>
+ }</para>
+</listitem>
+        </itemizedlist>
+</simplesect>
+<simplesect>
+    <title>Functions    </title>
+        <itemizedlist>
+            <listitem><para><link linkend="_class_flow_tag_panel">FlowTagPanel</link> * <link linkend="__tag_panel_8h_1ac84ea9bcdca185eee33778fb780fc7db">getFlowTagPanel</link> (wxWindow *window)</para>
+</listitem>
+            <listitem><para><link linkend="_class_main_tag_panel">MainTagPanel</link> * <link linkend="__tag_panel_8h_1a01d8a42713b14639535d4c6a5ecdef27">getMainTagPanel</link> (<link linkend="_class_tag_panel">TagPanel</link> *panel)</para>
+</listitem>
+            <listitem><para><link linkend="_class_flow_tag_panel">FlowTagPanel</link> * <link linkend="__tag_panel_8h_1a2f4c4fdbb29d8e8fadcbbd9673b3c370">GetParentTag</link> (<link linkend="_class_tag_panel">TagPanel</link> *panel)</para>
+</listitem>
+            <listitem><para><link linkend="_class_tag_panel">TagPanel</link> * <link linkend="__tag_panel_8h_1a42bc904a35535d90969bf9a2766f391f">CreatePanelFromTag</link> (wxWindow *parentTag, <link linkend="_class_tag">Tag</link> *tag)</para>
+</listitem>
+        </itemizedlist>
+</simplesect>
+<section>
+<title>Enumeration Type Documentation</title>
+<anchor xml:id="__tag_panel_8h_1a443e25f6957db75e312dbd0fb43d5a6e"/><section>
+    <title>AddPosition</title>
+<indexterm><primary>AddPosition</primary><secondary>TagPanel.h</secondary></indexterm>
+<indexterm><primary>TagPanel.h</primary><secondary>AddPosition</secondary></indexterm>
+<para><computeroutput>enum <link linkend="__tag_panel_8h_1a443e25f6957db75e312dbd0fb43d5a6e">AddPosition</link></computeroutput></para><informaltable frame="all">
+<title>Enumerator</title>
+    <tgroup cols="2" align="left" colsep="1" rowsep="1">
+      <colspec colname='c1'/>
+      <colspec colname='c2'/>
+<tbody>
+<row><entry><indexterm><primary>ABOVE</primary><secondary>TagPanel.h</secondary></indexterm>
+<indexterm><primary>TagPanel.h</primary><secondary>ABOVE</secondary></indexterm>
+<anchor xml:id="__tag_panel_8h_1a443e25f6957db75e312dbd0fb43d5a6eaaad01162f441b9162610e81352541694"/>ABOVE</entry><entry></entry></row><row><entry><indexterm><primary>UNDER</primary><secondary>TagPanel.h</secondary></indexterm>
+<indexterm><primary>TagPanel.h</primary><secondary>UNDER</secondary></indexterm>
+<anchor xml:id="__tag_panel_8h_1a443e25f6957db75e312dbd0fb43d5a6eab5726a81978ba2a47fcea5ef4fb8fbf4"/>UNDER</entry><entry></entry></row>    </tbody>
+    </tgroup>
+</informaltable>
+<para>
+Definition at line <link linkend="__tag_panel_8h_source_1l00014">14</link> of file <link linkend="__tag_panel_8h_source">TagPanel.h</link>.</para>
+</section>
+<anchor xml:id="__tag_panel_8h_1a369abf422adc1247d0d7bc295bf34014"/><section>
+    <title>HoverPosition</title>
+<indexterm><primary>HoverPosition</primary><secondary>TagPanel.h</secondary></indexterm>
+<indexterm><primary>TagPanel.h</primary><secondary>HoverPosition</secondary></indexterm>
+<para><computeroutput>enum <link linkend="__tag_panel_8h_1a369abf422adc1247d0d7bc295bf34014">HoverPosition</link></computeroutput></para><informaltable frame="all">
+<title>Enumerator</title>
+    <tgroup cols="2" align="left" colsep="1" rowsep="1">
+      <colspec colname='c1'/>
+      <colspec colname='c2'/>
+<tbody>
+<row><entry><indexterm><primary>NOHOVER</primary><secondary>TagPanel.h</secondary></indexterm>
+<indexterm><primary>TagPanel.h</primary><secondary>NOHOVER</secondary></indexterm>
+<anchor xml:id="__tag_panel_8h_1a369abf422adc1247d0d7bc295bf34014a25c7d86b307960a56aa7821fe0ae1828"/>NOHOVER</entry><entry></entry></row><row><entry><indexterm><primary>TOPHOVER</primary><secondary>TagPanel.h</secondary></indexterm>
+<indexterm><primary>TagPanel.h</primary><secondary>TOPHOVER</secondary></indexterm>
+<anchor xml:id="__tag_panel_8h_1a369abf422adc1247d0d7bc295bf34014ae53ae292e2c382ba015842834af7573d"/>TOPHOVER</entry><entry></entry></row><row><entry><indexterm><primary>BOTTOMHOVER</primary><secondary>TagPanel.h</secondary></indexterm>
+<indexterm><primary>TagPanel.h</primary><secondary>BOTTOMHOVER</secondary></indexterm>
+<anchor xml:id="__tag_panel_8h_1a369abf422adc1247d0d7bc295bf34014afc898622b38d2238adbc9c7cdc5f97a8"/>BOTTOMHOVER</entry><entry></entry></row><row><entry><indexterm><primary>MIDTOPHOVER</primary><secondary>TagPanel.h</secondary></indexterm>
+<indexterm><primary>TagPanel.h</primary><secondary>MIDTOPHOVER</secondary></indexterm>
+<anchor xml:id="__tag_panel_8h_1a369abf422adc1247d0d7bc295bf34014a426b1d3c399e8ef6f1a5e6e29798593d"/>MIDTOPHOVER</entry><entry></entry></row><row><entry><indexterm><primary>MIDBOTHOVER</primary><secondary>TagPanel.h</secondary></indexterm>
+<indexterm><primary>TagPanel.h</primary><secondary>MIDBOTHOVER</secondary></indexterm>
+<anchor xml:id="__tag_panel_8h_1a369abf422adc1247d0d7bc295bf34014aa21f59c48bbee6108c6aee1231bdfa16"/>MIDBOTHOVER</entry><entry></entry></row>    </tbody>
+    </tgroup>
+</informaltable>
+<para>
+Definition at line <link linkend="__tag_panel_8h_source_1l00015">15</link> of file <link linkend="__tag_panel_8h_source">TagPanel.h</link>.</para>
+</section>
+</section>
+<section>
+<title>Function Documentation</title>
+<anchor xml:id="__tag_panel_8h_1a42bc904a35535d90969bf9a2766f391f"/><section>
+    <title>CreatePanelFromTag()</title>
+<indexterm><primary>CreatePanelFromTag</primary><secondary>TagPanel.h</secondary></indexterm>
+<indexterm><primary>TagPanel.h</primary><secondary>CreatePanelFromTag</secondary></indexterm>
+<para><computeroutput><link linkend="_class_tag_panel">TagPanel</link> * CreatePanelFromTag (wxWindow * parentTag, <link linkend="_class_tag">Tag</link> * tag)</computeroutput></para></section>
+<anchor xml:id="__tag_panel_8h_1ac84ea9bcdca185eee33778fb780fc7db"/><section>
+    <title>getFlowTagPanel()</title>
+<indexterm><primary>getFlowTagPanel</primary><secondary>TagPanel.h</secondary></indexterm>
+<indexterm><primary>TagPanel.h</primary><secondary>getFlowTagPanel</secondary></indexterm>
+<para><computeroutput><link linkend="_class_flow_tag_panel">FlowTagPanel</link> * getFlowTagPanel (wxWindow * window)</computeroutput></para><para>
+Definition at line <link linkend="__tag_panel_8cpp_source_1l00466">466</link> of file <link linkend="__tag_panel_8cpp_source">TagPanel.cpp</link>.</para>
+Here is the caller graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="_tag_panel_8h_ac84ea9bcdca185eee33778fb780fc7db_icgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="__tag_panel_8h_1a01d8a42713b14639535d4c6a5ecdef27"/><section>
+    <title>getMainTagPanel()</title>
+<indexterm><primary>getMainTagPanel</primary><secondary>TagPanel.h</secondary></indexterm>
+<indexterm><primary>TagPanel.h</primary><secondary>getMainTagPanel</secondary></indexterm>
+<para><computeroutput><link linkend="_class_main_tag_panel">MainTagPanel</link> * getMainTagPanel (<link linkend="_class_tag_panel">TagPanel</link> * panel)</computeroutput></para><para>
+Definition at line <link linkend="__tag_panel_8cpp_source_1l00473">473</link> of file <link linkend="__tag_panel_8cpp_source">TagPanel.cpp</link>.</para>
+</section>
+<anchor xml:id="__tag_panel_8h_1a2f4c4fdbb29d8e8fadcbbd9673b3c370"/><section>
+    <title>GetParentTag()</title>
+<indexterm><primary>GetParentTag</primary><secondary>TagPanel.h</secondary></indexterm>
+<indexterm><primary>TagPanel.h</primary><secondary>GetParentTag</secondary></indexterm>
+<para><computeroutput><link linkend="_class_flow_tag_panel">FlowTagPanel</link> * GetParentTag (<link linkend="_class_tag_panel">TagPanel</link> * panel)</computeroutput></para><para>
+Definition at line <link linkend="__tag_panel_8cpp_source_1l01137">1137</link> of file <link linkend="__tag_panel_8cpp_source">TagPanel.cpp</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="_tag_panel_8h_a2f4c4fdbb29d8e8fadcbbd9673b3c370_cgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+Here is the caller graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="_tag_panel_8h_a2f4c4fdbb29d8e8fadcbbd9673b3c370_icgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+</section>
+</section>

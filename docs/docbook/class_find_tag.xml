@@ -1,0 +1,73 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<section xmlns="http://docbook.org/ns/docbook" version="5.0" xmlns:xlink="http://www.w3.org/1999/xlink" xml:id="_class_find_tag" xml:lang="en-US">
+<title>FindTag Class Reference</title>
+<indexterm><primary>FindTag</primary></indexterm>
+<para>
+<computeroutput>#include &lt;Tags.h&gt;</computeroutput>
+</para>
+Inheritance diagram for FindTag:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_find_tag__inherit__graph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+Collaboration diagram for FindTag:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_find_tag__coll__graph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+<simplesect>
+    <title>Public Member Functions    </title>
+        <itemizedlist>
+            <listitem><para><link linkend="_class_find_tag_1a49badd4ade138e2071911070fc06b4a5">FindTag</link> ()</para>
+</listitem>
+        </itemizedlist>
+</simplesect>
+Public Member Functions inherited from <link linkend="_class_tag">Tag</link>        <itemizedlist>
+            <listitem><para><link linkend="_class_tag_1af2008705aa18e21efecb9e737b6b1a26">Tag</link> ()</para>
+</listitem>
+            <listitem><para><link linkend="_class_tag_1a5955a7ef3228749f5d264581d5c612ab">Tag</link> (const <link linkend="_class_tag">Tag</link> &amp;toCopy)</para>
+</listitem>
+            <listitem><para>std::shared_ptr&lt; <link linkend="_class_tag">Tag</link> &gt; <link linkend="_class_tag_1ae01465d32e9a52c777492048fd06bdd5">clone</link> ()</para>
+</listitem>
+            <listitem><para>virtual void <link linkend="_class_tag_1a54054f3c9db4decb422972460bbb34c3">execute</link> ()</para>
+</listitem>
+        </itemizedlist>
+<simplesect>
+    <title>Additional Inherited Members    </title>
+Public Attributes inherited from <link linkend="_class_tag">Tag</link>        <itemizedlist>
+            <listitem><para>std::string <link linkend="_class_tag_1a2b252c6a602db12fcb53a67ce3e9ca1b">tagText</link></para>
+</listitem>
+            <listitem><para>int <link linkend="_class_tag_1a25aa826cd8818bcf0670164d285c3fdd">nbParents</link></para>
+</listitem>
+            <listitem><para>bool <link linkend="_class_tag_1a688d838bee273d203d6b16caaca3ed2b">doExecute</link></para>
+</listitem>
+            <listitem><para><link linkend="__tags_8h_1a7c4faef6b7c4a30990ee13030bc51880">TagType</link> <link linkend="_class_tag_1aa82f368cc2d55922ea75ba85020517c1">myType</link></para>
+</listitem>
+        </itemizedlist>
+</simplesect>
+<section>
+<title>Detailed Description</title>
+<para>
+Definition at line <link linkend="__tags_8h_source_1l00341">341</link> of file <link linkend="__tags_8h_source">Tags.h</link>.</para>
+</section>
+<section>
+<title>Constructor &amp; Destructor Documentation</title>
+<anchor xml:id="_class_find_tag_1a49badd4ade138e2071911070fc06b4a5"/><section>
+    <title>FindTag()</title>
+<indexterm><primary>FindTag</primary><secondary>FindTag</secondary></indexterm>
+<indexterm><primary>FindTag</primary><secondary>FindTag</secondary></indexterm>
+<para><computeroutput>FindTag::FindTag ( )</computeroutput></para><para>
+Definition at line <link linkend="__tags_8cpp_source_1l01018">1018</link> of file <link linkend="__tags_8cpp_source">Tags.cpp</link>.</para>
+</section>
+<para>
+The documentation for this class was generated from the following files:</para>
+src/<link linkend="__tags_8h">Tags.h</link>src/<link linkend="__tags_8cpp">Tags.cpp</link></section>
+</section>

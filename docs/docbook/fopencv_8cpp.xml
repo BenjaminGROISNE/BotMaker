@@ -1,0 +1,581 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<section xmlns="http://docbook.org/ns/docbook" version="5.0" xmlns:xlink="http://www.w3.org/1999/xlink" xml:id="_fopencv_8cpp" xml:lang="en-US">
+<title>src/fopencv.cpp File Reference</title>
+<indexterm><primary>src/fopencv.cpp</primary></indexterm>
+<programlisting linenumbering="unnumbered">#include &quot;fopencv.h&quot;<?linebreak?></programlisting>Include dependency graph for fopencv.cpp:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="fopencv_8cpp__incl.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+<simplesect>
+    <title>Functions    </title>
+        <itemizedlist>
+            <listitem><para>cv::Vec3b <link linkend="_fopencv_8cpp_1a0fbdf9bdacefdd4664983d08813d73d3">getPixel</link> (cv::Mat img, int x, int y)</para>
+</listitem>
+            <listitem><para>cv::Mat <link linkend="_fopencv_8cpp_1a5c455ed716b7fa4c675446fc5b8ba4fb">CreateMat</link> (const std::string &amp;imagePath, <link linkend="__units_8h_1a6b62789b863165c9d424a7504d4a6f61">typeMat</link> color=<link linkend="__units_8h_1a6b62789b863165c9d424a7504d4a6f61a0d368292f17012d66912908725eaedbb">Color</link>)</para>
+</listitem>
+            <listitem><para>void <link linkend="_fopencv_8cpp_1a7c904b3404eaf5f63b27530c5460b87c">showImg</link> (std::string path)</para>
+</listitem>
+            <listitem><para>void <link linkend="_fopencv_8cpp_1a26eb586061a340e892509bc69dd61dfa">showMat</link> (const cv::Mat &amp;img)</para>
+</listitem>
+            <listitem><para>cv::Mat <link linkend="_fopencv_8cpp_1aa4a2e719d8c3ffa0251a144f3c7bb7f6">DetectContours</link> (cv::Mat img)</para>
+</listitem>
+            <listitem><para>void <link linkend="_fopencv_8cpp_1a88f1073464ea1eda29fdd6585b1225e0">getContours</link> (std::string pathImg)</para>
+</listitem>
+            <listitem><para>void <link linkend="_fopencv_8cpp_1af5834294efa4c99773e98a8945ac5e90">showImgtest</link> (std::string path)</para>
+</listitem>
+            <listitem><para>bool <link linkend="_fopencv_8cpp_1a6abdcaeee06b3da6f210daf0162bcd01">intersects</link> (const <link linkend="_struct_template">Template</link> &amp;templ1, const <link linkend="_struct_template">Template</link> &amp;templ2)</para>
+</listitem>
+            <listitem><para>bool <link linkend="_fopencv_8cpp_1af84c02a29674161ec6726f7c6a3463fe">intersects</link> (const <link linkend="_struct_zone">Zone</link> &amp;rect1, const <link linkend="_struct_zone">Zone</link> &amp;rect2)</para>
+</listitem>
+            <listitem><para>void <link linkend="_fopencv_8cpp_1a1ed1ff1a9df2ab889e1423cb11a58c06">messageFound</link> (const <link linkend="_struct_template">Template</link> &amp;Tresult, bool found)</para>
+</listitem>
+            <listitem><para>void <link linkend="_fopencv_8cpp_1ac8e3a251644361c193c8b3d95403b85d">messageFound</link> (const std::vector&lt; <link linkend="_struct_template">Template</link> &gt; &amp;Tresult, bool found)</para>
+</listitem>
+            <listitem><para><link linkend="_struct_template">Template</link> <link linkend="_fopencv_8cpp_1af6fc77188d314c0d5a58888452f9b313">extractZone</link> (const <link linkend="_struct_template">Template</link> &amp;templ, <link linkend="_struct_zone">Zone</link> Z)</para>
+</listitem>
+            <listitem><para>bool <link linkend="_fopencv_8cpp_1a69713584f69a121e4ed91918a64448a0">cvmtfTemplate</link> (const <link linkend="_struct_template">Template</link> &amp;templateImg, const <link linkend="_struct_template">Template</link> &amp;background, <link linkend="_struct_template">Template</link> &amp;Tresult, <link linkend="_struct_zone">Zone</link> Z)</para>
+</listitem>
+            <listitem><para>bool <link linkend="_fopencv_8cpp_1ae51fd1f3ed39bd8c9b8da4a313d5aeb3">oneMatchTemplate</link> (const <link linkend="_struct_template">Template</link> &amp;templateImg, const <link linkend="_struct_template">Template</link> &amp;background, <link linkend="_struct_template">Template</link> &amp;Tresult)</para>
+</listitem>
+            <listitem><para>bool <link linkend="_fopencv_8cpp_1a7521a083566181475d36ee14aad60f1d">multipleMatchTemplate</link> (const <link linkend="_struct_template">Template</link> &amp;templateImg, const <link linkend="_struct_template">Template</link> &amp;background, std::vector&lt; <link linkend="_struct_template">Template</link> &gt; &amp;Tresult)</para>
+</listitem>
+            <listitem><para>bool <link linkend="_fopencv_8cpp_1a95c56af5716e2b2d1b4df612796cc229">cvmtfMultipleTemplate</link> (const <link linkend="_struct_template">Template</link> &amp;templateImg, const <link linkend="_struct_template">Template</link> &amp;background, std::vector&lt; <link linkend="_struct_template">Template</link> &gt; &amp;Tresult, <link linkend="_struct_zone">Zone</link> Z)</para>
+</listitem>
+            <listitem><para>bool <link linkend="_fopencv_8cpp_1a25e372dc4350d3deae6094f385233852">cvmtfMultipleTemplate</link> (const std::vector&lt; <link linkend="_struct_template">Template</link> &gt; &amp;allTempl, const <link linkend="_struct_template">Template</link> &amp;background, std::vector&lt; <link linkend="_struct_template">Template</link> &gt; &amp;Tresult, <link linkend="_struct_zone">Zone</link> Z)</para>
+</listitem>
+            <listitem><para>bool <link linkend="_fopencv_8cpp_1abe41135f4dce8bf30bbdf6fd28d2abbc">cvmtfOneTemplate</link> (const std::vector&lt; <link linkend="_struct_template">Template</link> &gt; &amp;allTempl, const <link linkend="_struct_template">Template</link> &amp;background, <link linkend="_struct_template">Template</link> &amp;Tresult, <link linkend="_struct_zone">Zone</link> Z)</para>
+</listitem>
+            <listitem><para>bool <link linkend="_fopencv_8cpp_1a4b7f4310e3f3a9227fa4b12401c3a94b">cvmtfCompareOneTemplate</link> (const std::vector&lt; <link linkend="_struct_template">Template</link> &gt; &amp;allTempl, const <link linkend="_struct_template">Template</link> &amp;background, const std::vector&lt; <link linkend="_struct_template">Template</link> &gt; &amp;similartemplates, <link linkend="_struct_template">Template</link> &amp;Tresult, <link linkend="_struct_zone">Zone</link> Z)</para>
+</listitem>
+            <listitem><para>bool <link linkend="_fopencv_8cpp_1ae8b731e67c3c69e0ca3f60a25fa37dc2">cvmtfOneMultipleTemplate</link> (const std::vector&lt; std::vector&lt; <link linkend="_struct_template">Template</link> &gt; &gt; &amp;allTempl, const <link linkend="_struct_template">Template</link> &amp;background, std::vector&lt; <link linkend="_struct_template">Template</link> &gt; &amp;Tresult, <link linkend="_struct_zone">Zone</link> Z)</para>
+</listitem>
+            <listitem><para>bool <link linkend="_fopencv_8cpp_1af7a3ba48f40c0daed2b12759647e5b89">cvmtfAllTemplate</link> (const std::vector&lt; <link linkend="_struct_template">Template</link> &gt; &amp;allTempl, const <link linkend="_struct_template">Template</link> &amp;background, std::vector&lt; <link linkend="_struct_template">Template</link> &gt; &amp;Tresult, <link linkend="_struct_zone">Zone</link> Z)</para>
+</listitem>
+            <listitem><para>bool <link linkend="_fopencv_8cpp_1a248b5cdc64398082a700818b8e29ff59">cvmtfCompareTemplate</link> (const <link linkend="_struct_template">Template</link> &amp;goodTemplate, const <link linkend="_struct_template">Template</link> &amp;background, const <link linkend="_struct_template">Template</link> &amp;simTemplate, <link linkend="_struct_template">Template</link> &amp;Tresult, <link linkend="_struct_zone">Zone</link> Z)</para>
+</listitem>
+            <listitem><para>bool <link linkend="_fopencv_8cpp_1ade157d547c93a4a6c0c6395cbcd15e10">cvmtfCompareMultipleTemplate</link> (const <link linkend="_struct_template">Template</link> &amp;goodTemplate, const <link linkend="_struct_template">Template</link> &amp;background, const std::vector&lt; <link linkend="_struct_template">Template</link> &gt; &amp;simTemplates, <link linkend="_struct_template">Template</link> &amp;Tresult, <link linkend="_struct_zone">Zone</link> Z)</para>
+</listitem>
+            <listitem><para>bool <link linkend="_fopencv_8cpp_1a154cb9c9b19db5ba6c4df73e72c98256">cvmtfMultipleTemplateCompareMultipleTemplate</link> (const <link linkend="_struct_template">Template</link> &amp;goodTemplate, const <link linkend="_struct_template">Template</link> &amp;background, const std::vector&lt; <link linkend="_struct_template">Template</link> &gt; &amp;simTemplates, std::vector&lt; <link linkend="_struct_template">Template</link> &gt; &amp;Tresult, <link linkend="_struct_zone">Zone</link> Z)</para>
+</listitem>
+            <listitem><para>bool <link linkend="_fopencv_8cpp_1a13c3ec7e437cd03974e9a2c2e10f355a">cvmtfMultipleTemplateCompareMultipleTemplate</link> (const std::vector&lt; <link linkend="_struct_template">Template</link> &gt; &amp;goodTemplate, const <link linkend="_struct_template">Template</link> &amp;background, const std::vector&lt; <link linkend="_struct_template">Template</link> &gt; &amp;simTemplates, std::vector&lt; <link linkend="_struct_template">Template</link> &gt; &amp;Tresult, <link linkend="_struct_zone">Zone</link> Z)</para>
+</listitem>
+            <listitem><para>void <link linkend="_fopencv_8cpp_1a5d4b6abd23a228c7da1096ac9929a9d2">CannyEdgeVideo</link> (std::string videoPath)</para>
+</listitem>
+            <listitem><para>void <link linkend="_fopencv_8cpp_1ab473a21d9103080cb23e448906582fea">SaveCannyEdgeVideo</link> (const std::string &amp;videoPath, const std::string &amp;outputPath)</para>
+</listitem>
+            <listitem><para>cv::Mat <link linkend="_fopencv_8cpp_1add9eb7c3df17f77c22f0a31113b2cca5">performCannyEdgeDetectionFromPicture</link> (const std::string &amp;imagePath)</para>
+</listitem>
+            <listitem><para>void <link linkend="_fopencv_8cpp_1a6b4612eb9922d9f6a63f553b45046790">performCannyEdgeDetectionFromLiveCamera</link> ()</para>
+</listitem>
+        </itemizedlist>
+</simplesect>
+<section>
+<title>Function Documentation</title>
+<anchor xml:id="_fopencv_8cpp_1a5d4b6abd23a228c7da1096ac9929a9d2"/><section>
+    <title>CannyEdgeVideo()</title>
+<indexterm><primary>CannyEdgeVideo</primary><secondary>fopencv.cpp</secondary></indexterm>
+<indexterm><primary>fopencv.cpp</primary><secondary>CannyEdgeVideo</secondary></indexterm>
+<para><computeroutput>void CannyEdgeVideo (std::string videoPath)</computeroutput></para><para>
+Definition at line <link linkend="_fopencv_8cpp_source_1l00428">428</link> of file <link linkend="_fopencv_8cpp_source">fopencv.cpp</link>.</para>
+</section>
+<anchor xml:id="_fopencv_8cpp_1a5c455ed716b7fa4c675446fc5b8ba4fb"/><section>
+    <title>CreateMat()</title>
+<indexterm><primary>CreateMat</primary><secondary>fopencv.cpp</secondary></indexterm>
+<indexterm><primary>fopencv.cpp</primary><secondary>CreateMat</secondary></indexterm>
+<para><computeroutput>cv::Mat CreateMat (const std::string &amp; imagePath, <link linkend="__units_8h_1a6b62789b863165c9d424a7504d4a6f61">typeMat</link> color = <computeroutput><link linkend="__units_8h_1a6b62789b863165c9d424a7504d4a6f61a0d368292f17012d66912908725eaedbb">Color</link></computeroutput>
+)</computeroutput></para><para>
+Definition at line <link linkend="_fopencv_8cpp_source_1l00009">9</link> of file <link linkend="_fopencv_8cpp_source">fopencv.cpp</link>.</para>
+Here is the caller graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="fopencv_8cpp_a5c455ed716b7fa4c675446fc5b8ba4fb_icgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_fopencv_8cpp_1af7a3ba48f40c0daed2b12759647e5b89"/><section>
+    <title>cvmtfAllTemplate()</title>
+<indexterm><primary>cvmtfAllTemplate</primary><secondary>fopencv.cpp</secondary></indexterm>
+<indexterm><primary>fopencv.cpp</primary><secondary>cvmtfAllTemplate</secondary></indexterm>
+<para><computeroutput>bool cvmtfAllTemplate (const std::vector&lt; <link linkend="_struct_template">Template</link> &gt; &amp; allTempl, const <link linkend="_struct_template">Template</link> &amp; background, std::vector&lt; <link linkend="_struct_template">Template</link> &gt; &amp; Tresult, <link linkend="_struct_zone">Zone</link> Z)</computeroutput></para><para>
+Definition at line <link linkend="_fopencv_8cpp_source_1l00293">293</link> of file <link linkend="_fopencv_8cpp_source">fopencv.cpp</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="fopencv_8cpp_af7a3ba48f40c0daed2b12759647e5b89_cgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+Here is the caller graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="fopencv_8cpp_af7a3ba48f40c0daed2b12759647e5b89_icgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_fopencv_8cpp_1ade157d547c93a4a6c0c6395cbcd15e10"/><section>
+    <title>cvmtfCompareMultipleTemplate()</title>
+<indexterm><primary>cvmtfCompareMultipleTemplate</primary><secondary>fopencv.cpp</secondary></indexterm>
+<indexterm><primary>fopencv.cpp</primary><secondary>cvmtfCompareMultipleTemplate</secondary></indexterm>
+<para><computeroutput>bool cvmtfCompareMultipleTemplate (const <link linkend="_struct_template">Template</link> &amp; goodTemplate, const <link linkend="_struct_template">Template</link> &amp; background, const std::vector&lt; <link linkend="_struct_template">Template</link> &gt; &amp; simTemplates, <link linkend="_struct_template">Template</link> &amp; Tresult, <link linkend="_struct_zone">Zone</link> Z)</computeroutput></para><para>
+Definition at line <link linkend="_fopencv_8cpp_source_1l00330">330</link> of file <link linkend="_fopencv_8cpp_source">fopencv.cpp</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="fopencv_8cpp_ade157d547c93a4a6c0c6395cbcd15e10_cgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+Here is the caller graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="fopencv_8cpp_ade157d547c93a4a6c0c6395cbcd15e10_icgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_fopencv_8cpp_1a4b7f4310e3f3a9227fa4b12401c3a94b"/><section>
+    <title>cvmtfCompareOneTemplate()</title>
+<indexterm><primary>cvmtfCompareOneTemplate</primary><secondary>fopencv.cpp</secondary></indexterm>
+<indexterm><primary>fopencv.cpp</primary><secondary>cvmtfCompareOneTemplate</secondary></indexterm>
+<para><computeroutput>bool cvmtfCompareOneTemplate (const std::vector&lt; <link linkend="_struct_template">Template</link> &gt; &amp; allTempl, const <link linkend="_struct_template">Template</link> &amp; background, const std::vector&lt; <link linkend="_struct_template">Template</link> &gt; &amp; similartemplates, <link linkend="_struct_template">Template</link> &amp; Tresult, <link linkend="_struct_zone">Zone</link> Z)</computeroutput></para><para>
+Definition at line <link linkend="_fopencv_8cpp_source_1l00272">272</link> of file <link linkend="_fopencv_8cpp_source">fopencv.cpp</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="fopencv_8cpp_a4b7f4310e3f3a9227fa4b12401c3a94b_cgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+Here is the caller graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="fopencv_8cpp_a4b7f4310e3f3a9227fa4b12401c3a94b_icgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_fopencv_8cpp_1a248b5cdc64398082a700818b8e29ff59"/><section>
+    <title>cvmtfCompareTemplate()</title>
+<indexterm><primary>cvmtfCompareTemplate</primary><secondary>fopencv.cpp</secondary></indexterm>
+<indexterm><primary>fopencv.cpp</primary><secondary>cvmtfCompareTemplate</secondary></indexterm>
+<para><computeroutput>bool cvmtfCompareTemplate (const <link linkend="_struct_template">Template</link> &amp; goodTemplate, const <link linkend="_struct_template">Template</link> &amp; background, const <link linkend="_struct_template">Template</link> &amp; simTemplate, <link linkend="_struct_template">Template</link> &amp; Tresult, <link linkend="_struct_zone">Zone</link> Z)</computeroutput></para><para>
+Definition at line <link linkend="_fopencv_8cpp_source_1l00307">307</link> of file <link linkend="_fopencv_8cpp_source">fopencv.cpp</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="fopencv_8cpp_a248b5cdc64398082a700818b8e29ff59_cgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+Here is the caller graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="fopencv_8cpp_a248b5cdc64398082a700818b8e29ff59_icgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_fopencv_8cpp_1a25e372dc4350d3deae6094f385233852"/><section>
+    <title>cvmtfMultipleTemplate()<computeroutput>[1/2]</computeroutput></title>
+<indexterm><primary>cvmtfMultipleTemplate</primary><secondary>fopencv.cpp</secondary></indexterm>
+<indexterm><primary>fopencv.cpp</primary><secondary>cvmtfMultipleTemplate</secondary></indexterm>
+<para><computeroutput>bool cvmtfMultipleTemplate (const std::vector&lt; <link linkend="_struct_template">Template</link> &gt; &amp; allTempl, const <link linkend="_struct_template">Template</link> &amp; background, std::vector&lt; <link linkend="_struct_template">Template</link> &gt; &amp; Tresult, <link linkend="_struct_zone">Zone</link> Z)</computeroutput></para><para>
+Definition at line <link linkend="_fopencv_8cpp_source_1l00253">253</link> of file <link linkend="_fopencv_8cpp_source">fopencv.cpp</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="fopencv_8cpp_a25e372dc4350d3deae6094f385233852_cgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_fopencv_8cpp_1a95c56af5716e2b2d1b4df612796cc229"/><section>
+    <title>cvmtfMultipleTemplate()<computeroutput>[2/2]</computeroutput></title>
+<indexterm><primary>cvmtfMultipleTemplate</primary><secondary>fopencv.cpp</secondary></indexterm>
+<indexterm><primary>fopencv.cpp</primary><secondary>cvmtfMultipleTemplate</secondary></indexterm>
+<para><computeroutput>bool cvmtfMultipleTemplate (const <link linkend="_struct_template">Template</link> &amp; templateImg, const <link linkend="_struct_template">Template</link> &amp; background, std::vector&lt; <link linkend="_struct_template">Template</link> &gt; &amp; Tresult, <link linkend="_struct_zone">Zone</link> Z)</computeroutput></para><para>
+Definition at line <link linkend="_fopencv_8cpp_source_1l00235">235</link> of file <link linkend="_fopencv_8cpp_source">fopencv.cpp</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="fopencv_8cpp_a95c56af5716e2b2d1b4df612796cc229_cgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+Here is the caller graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="fopencv_8cpp_a95c56af5716e2b2d1b4df612796cc229_icgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_fopencv_8cpp_1a13c3ec7e437cd03974e9a2c2e10f355a"/><section>
+    <title>cvmtfMultipleTemplateCompareMultipleTemplate()<computeroutput>[1/2]</computeroutput></title>
+<indexterm><primary>cvmtfMultipleTemplateCompareMultipleTemplate</primary><secondary>fopencv.cpp</secondary></indexterm>
+<indexterm><primary>fopencv.cpp</primary><secondary>cvmtfMultipleTemplateCompareMultipleTemplate</secondary></indexterm>
+<para><computeroutput>bool cvmtfMultipleTemplateCompareMultipleTemplate (const std::vector&lt; <link linkend="_struct_template">Template</link> &gt; &amp; goodTemplate, const <link linkend="_struct_template">Template</link> &amp; background, const std::vector&lt; <link linkend="_struct_template">Template</link> &gt; &amp; simTemplates, std::vector&lt; <link linkend="_struct_template">Template</link> &gt; &amp; Tresult, <link linkend="_struct_zone">Zone</link> Z)</computeroutput></para><para>
+Definition at line <link linkend="_fopencv_8cpp_source_1l00385">385</link> of file <link linkend="_fopencv_8cpp_source">fopencv.cpp</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="fopencv_8cpp_a13c3ec7e437cd03974e9a2c2e10f355a_cgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_fopencv_8cpp_1a154cb9c9b19db5ba6c4df73e72c98256"/><section>
+    <title>cvmtfMultipleTemplateCompareMultipleTemplate()<computeroutput>[2/2]</computeroutput></title>
+<indexterm><primary>cvmtfMultipleTemplateCompareMultipleTemplate</primary><secondary>fopencv.cpp</secondary></indexterm>
+<indexterm><primary>fopencv.cpp</primary><secondary>cvmtfMultipleTemplateCompareMultipleTemplate</secondary></indexterm>
+<para><computeroutput>bool cvmtfMultipleTemplateCompareMultipleTemplate (const <link linkend="_struct_template">Template</link> &amp; goodTemplate, const <link linkend="_struct_template">Template</link> &amp; background, const std::vector&lt; <link linkend="_struct_template">Template</link> &gt; &amp; simTemplates, std::vector&lt; <link linkend="_struct_template">Template</link> &gt; &amp; Tresult, <link linkend="_struct_zone">Zone</link> Z)</computeroutput></para><para>
+Definition at line <link linkend="_fopencv_8cpp_source_1l00352">352</link> of file <link linkend="_fopencv_8cpp_source">fopencv.cpp</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="fopencv_8cpp_a154cb9c9b19db5ba6c4df73e72c98256_cgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+Here is the caller graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="fopencv_8cpp_a154cb9c9b19db5ba6c4df73e72c98256_icgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_fopencv_8cpp_1ae8b731e67c3c69e0ca3f60a25fa37dc2"/><section>
+    <title>cvmtfOneMultipleTemplate()</title>
+<indexterm><primary>cvmtfOneMultipleTemplate</primary><secondary>fopencv.cpp</secondary></indexterm>
+<indexterm><primary>fopencv.cpp</primary><secondary>cvmtfOneMultipleTemplate</secondary></indexterm>
+<para><computeroutput>bool cvmtfOneMultipleTemplate (const std::vector&lt; std::vector&lt; <link linkend="_struct_template">Template</link> &gt; &gt; &amp; allTempl, const <link linkend="_struct_template">Template</link> &amp; background, std::vector&lt; <link linkend="_struct_template">Template</link> &gt; &amp; Tresult, <link linkend="_struct_zone">Zone</link> Z)</computeroutput></para><para>
+Definition at line <link linkend="_fopencv_8cpp_source_1l00282">282</link> of file <link linkend="_fopencv_8cpp_source">fopencv.cpp</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="fopencv_8cpp_ae8b731e67c3c69e0ca3f60a25fa37dc2_cgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+Here is the caller graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="fopencv_8cpp_ae8b731e67c3c69e0ca3f60a25fa37dc2_icgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_fopencv_8cpp_1abe41135f4dce8bf30bbdf6fd28d2abbc"/><section>
+    <title>cvmtfOneTemplate()</title>
+<indexterm><primary>cvmtfOneTemplate</primary><secondary>fopencv.cpp</secondary></indexterm>
+<indexterm><primary>fopencv.cpp</primary><secondary>cvmtfOneTemplate</secondary></indexterm>
+<para><computeroutput>bool cvmtfOneTemplate (const std::vector&lt; <link linkend="_struct_template">Template</link> &gt; &amp; allTempl, const <link linkend="_struct_template">Template</link> &amp; background, <link linkend="_struct_template">Template</link> &amp; Tresult, <link linkend="_struct_zone">Zone</link> Z)</computeroutput></para><para>
+Definition at line <link linkend="_fopencv_8cpp_source_1l00264">264</link> of file <link linkend="_fopencv_8cpp_source">fopencv.cpp</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="fopencv_8cpp_abe41135f4dce8bf30bbdf6fd28d2abbc_cgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+Here is the caller graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="fopencv_8cpp_abe41135f4dce8bf30bbdf6fd28d2abbc_icgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_fopencv_8cpp_1a69713584f69a121e4ed91918a64448a0"/><section>
+    <title>cvmtfTemplate()</title>
+<indexterm><primary>cvmtfTemplate</primary><secondary>fopencv.cpp</secondary></indexterm>
+<indexterm><primary>fopencv.cpp</primary><secondary>cvmtfTemplate</secondary></indexterm>
+<para><computeroutput>bool cvmtfTemplate (const <link linkend="_struct_template">Template</link> &amp; templateImg, const <link linkend="_struct_template">Template</link> &amp; background, <link linkend="_struct_template">Template</link> &amp; Tresult, <link linkend="_struct_zone">Zone</link> Z)</computeroutput></para><para>
+Definition at line <link linkend="_fopencv_8cpp_source_1l00154">154</link> of file <link linkend="_fopencv_8cpp_source">fopencv.cpp</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="fopencv_8cpp_a69713584f69a121e4ed91918a64448a0_cgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+Here is the caller graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="fopencv_8cpp_a69713584f69a121e4ed91918a64448a0_icgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_fopencv_8cpp_1aa4a2e719d8c3ffa0251a144f3c7bb7f6"/><section>
+    <title>DetectContours()</title>
+<indexterm><primary>DetectContours</primary><secondary>fopencv.cpp</secondary></indexterm>
+<indexterm><primary>fopencv.cpp</primary><secondary>DetectContours</secondary></indexterm>
+<para><computeroutput>cv::Mat DetectContours (cv::Mat img)</computeroutput></para><para>
+Definition at line <link linkend="_fopencv_8cpp_source_1l00047">47</link> of file <link linkend="_fopencv_8cpp_source">fopencv.cpp</link>.</para>
+Here is the caller graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="fopencv_8cpp_aa4a2e719d8c3ffa0251a144f3c7bb7f6_icgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_fopencv_8cpp_1af6fc77188d314c0d5a58888452f9b313"/><section>
+    <title>extractZone()</title>
+<indexterm><primary>extractZone</primary><secondary>fopencv.cpp</secondary></indexterm>
+<indexterm><primary>fopencv.cpp</primary><secondary>extractZone</secondary></indexterm>
+<para><computeroutput><link linkend="_struct_template">Template</link> extractZone (const <link linkend="_struct_template">Template</link> &amp; templ, <link linkend="_struct_zone">Zone</link> Z)</computeroutput></para><para>
+Definition at line <link linkend="_fopencv_8cpp_source_1l00132">132</link> of file <link linkend="_fopencv_8cpp_source">fopencv.cpp</link>.</para>
+Here is the caller graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="fopencv_8cpp_af6fc77188d314c0d5a58888452f9b313_icgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_fopencv_8cpp_1a88f1073464ea1eda29fdd6585b1225e0"/><section>
+    <title>getContours()</title>
+<indexterm><primary>getContours</primary><secondary>fopencv.cpp</secondary></indexterm>
+<indexterm><primary>fopencv.cpp</primary><secondary>getContours</secondary></indexterm>
+<para><computeroutput>void getContours (std::string pathImg)</computeroutput></para><para>
+Definition at line <link linkend="_fopencv_8cpp_source_1l00059">59</link> of file <link linkend="_fopencv_8cpp_source">fopencv.cpp</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="fopencv_8cpp_a88f1073464ea1eda29fdd6585b1225e0_cgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_fopencv_8cpp_1a0fbdf9bdacefdd4664983d08813d73d3"/><section>
+    <title>getPixel()</title>
+<indexterm><primary>getPixel</primary><secondary>fopencv.cpp</secondary></indexterm>
+<indexterm><primary>fopencv.cpp</primary><secondary>getPixel</secondary></indexterm>
+<para><computeroutput>cv::Vec3b getPixel (cv::Mat img, int x, int y)</computeroutput></para><para>
+Definition at line <link linkend="_fopencv_8cpp_source_1l00005">5</link> of file <link linkend="_fopencv_8cpp_source">fopencv.cpp</link>.</para>
+</section>
+<anchor xml:id="_fopencv_8cpp_1a6abdcaeee06b3da6f210daf0162bcd01"/><section>
+    <title>intersects()<computeroutput>[1/2]</computeroutput></title>
+<indexterm><primary>intersects</primary><secondary>fopencv.cpp</secondary></indexterm>
+<indexterm><primary>fopencv.cpp</primary><secondary>intersects</secondary></indexterm>
+<para><computeroutput>bool intersects (const <link linkend="_struct_template">Template</link> &amp; templ1, const <link linkend="_struct_template">Template</link> &amp; templ2)</computeroutput></para><para>
+Definition at line <link linkend="_fopencv_8cpp_source_1l00099">99</link> of file <link linkend="_fopencv_8cpp_source">fopencv.cpp</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="fopencv_8cpp_a6abdcaeee06b3da6f210daf0162bcd01_cgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+Here is the caller graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="fopencv_8cpp_a6abdcaeee06b3da6f210daf0162bcd01_icgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_fopencv_8cpp_1af84c02a29674161ec6726f7c6a3463fe"/><section>
+    <title>intersects()<computeroutput>[2/2]</computeroutput></title>
+<indexterm><primary>intersects</primary><secondary>fopencv.cpp</secondary></indexterm>
+<indexterm><primary>fopencv.cpp</primary><secondary>intersects</secondary></indexterm>
+<para><computeroutput>bool intersects (const <link linkend="_struct_zone">Zone</link> &amp; rect1, const <link linkend="_struct_zone">Zone</link> &amp; rect2)</computeroutput></para><para>
+Definition at line <link linkend="_fopencv_8cpp_source_1l00110">110</link> of file <link linkend="_fopencv_8cpp_source">fopencv.cpp</link>.</para>
+</section>
+<anchor xml:id="_fopencv_8cpp_1ac8e3a251644361c193c8b3d95403b85d"/><section>
+    <title>messageFound()<computeroutput>[1/2]</computeroutput></title>
+<indexterm><primary>messageFound</primary><secondary>fopencv.cpp</secondary></indexterm>
+<indexterm><primary>fopencv.cpp</primary><secondary>messageFound</secondary></indexterm>
+<para><computeroutput>void messageFound (const std::vector&lt; <link linkend="_struct_template">Template</link> &gt; &amp; Tresult, bool found)</computeroutput></para><para>
+Definition at line <link linkend="_fopencv_8cpp_source_1l00124">124</link> of file <link linkend="_fopencv_8cpp_source">fopencv.cpp</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="fopencv_8cpp_ac8e3a251644361c193c8b3d95403b85d_cgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_fopencv_8cpp_1a1ed1ff1a9df2ab889e1423cb11a58c06"/><section>
+    <title>messageFound()<computeroutput>[2/2]</computeroutput></title>
+<indexterm><primary>messageFound</primary><secondary>fopencv.cpp</secondary></indexterm>
+<indexterm><primary>fopencv.cpp</primary><secondary>messageFound</secondary></indexterm>
+<para><computeroutput>void messageFound (const <link linkend="_struct_template">Template</link> &amp; Tresult, bool found)</computeroutput></para><para>
+Definition at line <link linkend="_fopencv_8cpp_source_1l00115">115</link> of file <link linkend="_fopencv_8cpp_source">fopencv.cpp</link>.</para>
+Here is the caller graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="fopencv_8cpp_a1ed1ff1a9df2ab889e1423cb11a58c06_icgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_fopencv_8cpp_1a7521a083566181475d36ee14aad60f1d"/><section>
+    <title>multipleMatchTemplate()</title>
+<indexterm><primary>multipleMatchTemplate</primary><secondary>fopencv.cpp</secondary></indexterm>
+<indexterm><primary>fopencv.cpp</primary><secondary>multipleMatchTemplate</secondary></indexterm>
+<para><computeroutput>bool multipleMatchTemplate (const <link linkend="_struct_template">Template</link> &amp; templateImg, const <link linkend="_struct_template">Template</link> &amp; background, std::vector&lt; <link linkend="_struct_template">Template</link> &gt; &amp; Tresult)</computeroutput></para><para>
+Definition at line <link linkend="_fopencv_8cpp_source_1l00197">197</link> of file <link linkend="_fopencv_8cpp_source">fopencv.cpp</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="fopencv_8cpp_a7521a083566181475d36ee14aad60f1d_cgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+Here is the caller graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="fopencv_8cpp_a7521a083566181475d36ee14aad60f1d_icgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_fopencv_8cpp_1ae51fd1f3ed39bd8c9b8da4a313d5aeb3"/><section>
+    <title>oneMatchTemplate()</title>
+<indexterm><primary>oneMatchTemplate</primary><secondary>fopencv.cpp</secondary></indexterm>
+<indexterm><primary>fopencv.cpp</primary><secondary>oneMatchTemplate</secondary></indexterm>
+<para><computeroutput>bool oneMatchTemplate (const <link linkend="_struct_template">Template</link> &amp; templateImg, const <link linkend="_struct_template">Template</link> &amp; background, <link linkend="_struct_template">Template</link> &amp; Tresult)</computeroutput></para><para>
+Definition at line <link linkend="_fopencv_8cpp_source_1l00173">173</link> of file <link linkend="_fopencv_8cpp_source">fopencv.cpp</link>.</para>
+Here is the caller graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="fopencv_8cpp_ae51fd1f3ed39bd8c9b8da4a313d5aeb3_icgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_fopencv_8cpp_1a6b4612eb9922d9f6a63f553b45046790"/><section>
+    <title>performCannyEdgeDetectionFromLiveCamera()</title>
+<indexterm><primary>performCannyEdgeDetectionFromLiveCamera</primary><secondary>fopencv.cpp</secondary></indexterm>
+<indexterm><primary>fopencv.cpp</primary><secondary>performCannyEdgeDetectionFromLiveCamera</secondary></indexterm>
+<para><computeroutput>void performCannyEdgeDetectionFromLiveCamera ( )</computeroutput></para><para>
+Definition at line <link linkend="_fopencv_8cpp_source_1l00535">535</link> of file <link linkend="_fopencv_8cpp_source">fopencv.cpp</link>.</para>
+</section>
+<anchor xml:id="_fopencv_8cpp_1add9eb7c3df17f77c22f0a31113b2cca5"/><section>
+    <title>performCannyEdgeDetectionFromPicture()</title>
+<indexterm><primary>performCannyEdgeDetectionFromPicture</primary><secondary>fopencv.cpp</secondary></indexterm>
+<indexterm><primary>fopencv.cpp</primary><secondary>performCannyEdgeDetectionFromPicture</secondary></indexterm>
+<para><computeroutput>cv::Mat performCannyEdgeDetectionFromPicture (const std::string &amp; imagePath)</computeroutput></para><para>
+Definition at line <link linkend="_fopencv_8cpp_source_1l00515">515</link> of file <link linkend="_fopencv_8cpp_source">fopencv.cpp</link>.</para>
+</section>
+<anchor xml:id="_fopencv_8cpp_1ab473a21d9103080cb23e448906582fea"/><section>
+    <title>SaveCannyEdgeVideo()</title>
+<indexterm><primary>SaveCannyEdgeVideo</primary><secondary>fopencv.cpp</secondary></indexterm>
+<indexterm><primary>fopencv.cpp</primary><secondary>SaveCannyEdgeVideo</secondary></indexterm>
+<para><computeroutput>void SaveCannyEdgeVideo (const std::string &amp; videoPath, const std::string &amp; outputPath)</computeroutput></para><para>
+Definition at line <link linkend="_fopencv_8cpp_source_1l00473">473</link> of file <link linkend="_fopencv_8cpp_source">fopencv.cpp</link>.</para>
+</section>
+<anchor xml:id="_fopencv_8cpp_1a7c904b3404eaf5f63b27530c5460b87c"/><section>
+    <title>showImg()</title>
+<indexterm><primary>showImg</primary><secondary>fopencv.cpp</secondary></indexterm>
+<indexterm><primary>fopencv.cpp</primary><secondary>showImg</secondary></indexterm>
+<para><computeroutput>void showImg (std::string path)</computeroutput></para><para>
+Definition at line <link linkend="_fopencv_8cpp_source_1l00026">26</link> of file <link linkend="_fopencv_8cpp_source">fopencv.cpp</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="fopencv_8cpp_a7c904b3404eaf5f63b27530c5460b87c_cgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_fopencv_8cpp_1af5834294efa4c99773e98a8945ac5e90"/><section>
+    <title>showImgtest()</title>
+<indexterm><primary>showImgtest</primary><secondary>fopencv.cpp</secondary></indexterm>
+<indexterm><primary>fopencv.cpp</primary><secondary>showImgtest</secondary></indexterm>
+<para><computeroutput>void showImgtest (std::string path)</computeroutput></para><para>
+Definition at line <link linkend="_fopencv_8cpp_source_1l00069">69</link> of file <link linkend="_fopencv_8cpp_source">fopencv.cpp</link>.</para>
+</section>
+<anchor xml:id="_fopencv_8cpp_1a26eb586061a340e892509bc69dd61dfa"/><section>
+    <title>showMat()</title>
+<indexterm><primary>showMat</primary><secondary>fopencv.cpp</secondary></indexterm>
+<indexterm><primary>fopencv.cpp</primary><secondary>showMat</secondary></indexterm>
+<para><computeroutput>void showMat (const cv::Mat &amp; img)</computeroutput></para><para>
+Definition at line <link linkend="_fopencv_8cpp_source_1l00036">36</link> of file <link linkend="_fopencv_8cpp_source">fopencv.cpp</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="fopencv_8cpp_a26eb586061a340e892509bc69dd61dfa_cgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+</section>
+</section>

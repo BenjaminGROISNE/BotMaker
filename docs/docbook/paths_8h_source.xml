@@ -1,0 +1,557 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<section xmlns="http://docbook.org/ns/docbook" version="5.0" xmlns:xlink="http://www.w3.org/1999/xlink" xml:id="_paths_8h_source" xml:lang="en-US">
+<title>paths.h</title>
+<indexterm><primary>src/paths.h</primary></indexterm>
+Go to the documentation of this file.<programlisting linenumbering="unnumbered"><anchor xml:id="_paths_8h_source_1l00001"/>00001 <emphasis role="preprocessor">#ifndef&#32;PATHS_H</emphasis>
+<anchor xml:id="_paths_8h_source_1l00002"/>00002 <emphasis role="preprocessor">#define&#32;PATHS_H</emphasis>
+<anchor xml:id="_paths_8h_source_1l00003"/>00003 <emphasis role="preprocessor">#include&#32;&lt;string&gt;</emphasis>
+<anchor xml:id="_paths_8h_source_1l00004"/>00004 
+<anchor xml:id="_paths_8h_source_1l00005"/>00005 
+<anchor xml:id="_paths_8h_source_1l00006"/>00006 <emphasis role="comment">//templates</emphasis>
+<anchor xml:id="_paths_8h_source_1l00007"/>00007 <emphasis role="keyword">extern</emphasis>&#32;std::string&#32;<link linkend="_paths_8h_1a3f5065f3e5646125317ecbd5d12ae173">templates</link>;
+<anchor xml:id="_paths_8h_source_1l00008"/>00008 <emphasis role="keyword">extern</emphasis>&#32;std::string&#32;<link linkend="_paths_8h_1ab4024e5273f45de079b5001a5bb21c88">backg</link>;
+<anchor xml:id="_paths_8h_source_1l00009"/>00009 <emphasis role="keyword">extern</emphasis>&#32;std::string&#32;<link linkend="_paths_8h_1a58ce0ceeb758415a6a2dce3b3369ccf6">back</link>;
+<anchor xml:id="_paths_8h_source_1l00010"/>00010 <emphasis role="keyword">extern</emphasis>&#32;std::string&#32;<link linkend="_paths_8h_1afa3efcdbd5c71784f9330f546faadde3">tapblank</link>;
+<anchor xml:id="_paths_8h_source_1l00011"/>00011 <emphasis role="keyword">extern</emphasis>&#32;std::string&#32;<link linkend="_paths_8h_1a7b35349f9ac491a73c06b3375682558d">youreceived</link>;
+<anchor xml:id="_paths_8h_source_1l00012"/>00012 
+<anchor xml:id="_paths_8h_source_1l00013"/>00013 <emphasis role="comment">//Abode</emphasis>
+<anchor xml:id="_paths_8h_source_1l00014"/>00014 <emphasis role="keyword">extern</emphasis>&#32;std::string&#32;<link linkend="_paths_8h_1a1b81f08688b5860afd092981a0c1ec96">Abode</link>;
+<anchor xml:id="_paths_8h_source_1l00015"/>00015 <emphasis role="keyword">extern</emphasis>&#32;std::string&#32;<link linkend="_paths_8h_1a487056fcab540867859974d29af7322d">alchemyicon</link>;
+<anchor xml:id="_paths_8h_source_1l00016"/>00016 <emphasis role="keyword">extern</emphasis>&#32;std::string&#32;<link linkend="_paths_8h_1a8923f2658a98ad5d1b185fe74b7c3f03">artifacticon</link>;
+<anchor xml:id="_paths_8h_source_1l00017"/>00017 <emphasis role="keyword">extern</emphasis>&#32;std::string&#32;<link linkend="_paths_8h_1a1c6c655edcf7b4cd01a41382c47101f1">corporiacave</link>;
+<anchor xml:id="_paths_8h_source_1l00018"/>00018 <emphasis role="keyword">extern</emphasis>&#32;std::string&#32;<link linkend="_paths_8h_1a486db055ba66ef183b060c59b5687f6c">fieldicon</link>;
+<anchor xml:id="_paths_8h_source_1l00019"/>00019 <emphasis role="keyword">extern</emphasis>&#32;std::string&#32;<link linkend="_paths_8h_1aa459cf61964015e608a2317665bef95a">forgeicon</link>;
+<anchor xml:id="_paths_8h_source_1l00020"/>00020 <emphasis role="keyword">extern</emphasis>&#32;std::string&#32;<link linkend="_paths_8h_1a5c4b972ec061cc99f4b109c7cb6c7757">gardenicon</link>;
+<anchor xml:id="_paths_8h_source_1l00021"/>00021 <emphasis role="keyword">extern</emphasis>&#32;std::string&#32;<link linkend="_paths_8h_1acfea04265ed2368869cce98659e90085">lawsicon</link>;
+<anchor xml:id="_paths_8h_source_1l00022"/>00022 <emphasis role="keyword">extern</emphasis>&#32;std::string&#32;<link linkend="_paths_8h_1ab3e24ba7c0b7215be01483ce89460ba9">magickacave</link>;
+<anchor xml:id="_paths_8h_source_1l00023"/>00023 <emphasis role="keyword">extern</emphasis>&#32;std::string&#32;<link linkend="_paths_8h_1af2f20a97f87a0a0ffe5d8249225dcc0a">peticon</link>;
+<anchor xml:id="_paths_8h_source_1l00024"/>00024 <emphasis role="keyword">extern</emphasis>&#32;std::string&#32;<link linkend="_paths_8h_1aa15bbe06e6c40785e9ff27d5013fc3ec">worldrifticon</link>;
+<anchor xml:id="_paths_8h_source_1l00025"/>00025 <emphasis role="keyword">extern</emphasis>&#32;std::string&#32;<link linkend="_paths_8h_1a8619e358b7b905e712f7778bd7ecdb12">zodiacicon</link>;
+<anchor xml:id="_paths_8h_source_1l00026"/>00026 
+<anchor xml:id="_paths_8h_source_1l00027"/>00027 <emphasis role="comment">//Alchemy</emphasis>
+<anchor xml:id="_paths_8h_source_1l00028"/>00028 <emphasis role="keyword">extern</emphasis>&#32;std::string&#32;<link linkend="_paths_8h_1a7fdbde22a85c543aad748cd92bf2ca99">Alchemy</link>;
+<anchor xml:id="_paths_8h_source_1l00029"/>00029 <emphasis role="keyword">extern</emphasis>&#32;std::string&#32;<link linkend="_paths_8h_1adaa53547fd4cb15cd5498b9ba3367a4e">activecauldron</link>;
+<anchor xml:id="_paths_8h_source_1l00030"/>00030 <emphasis role="keyword">extern</emphasis>&#32;std::string&#32;<link linkend="_paths_8h_1a3ec4ae72967a654b6afc1a8c12a0610f">alwaystext</link>;
+<anchor xml:id="_paths_8h_source_1l00031"/>00031 <emphasis role="keyword">extern</emphasis>&#32;std::string&#32;<link linkend="_paths_8h_1ab244f62338cbbbd4604a0880e741e830">augmentpill</link>;
+<anchor xml:id="_paths_8h_source_1l00032"/>00032 <emphasis role="keyword">extern</emphasis>&#32;std::string&#32;<link linkend="_paths_8h_1a2c9e94264d3030bf31025d19ec0d0fba">bluecore</link>;
+<anchor xml:id="_paths_8h_source_1l00033"/>00033 <emphasis role="keyword">extern</emphasis>&#32;std::string&#32;<link linkend="_paths_8h_1a40713c3b65e30051c6947c5808d2b676">buttonchoosequantity</link>;
+<anchor xml:id="_paths_8h_source_1l00034"/>00034 <emphasis role="keyword">extern</emphasis>&#32;std::string&#32;<link linkend="_paths_8h_1a5f43e3c784e66d12aa9d7c3fd3893809">caelumpowder</link>;
+<anchor xml:id="_paths_8h_source_1l00035"/>00035 <emphasis role="keyword">extern</emphasis>&#32;std::string&#32;<link linkend="_paths_8h_1a5d94f17d8f0726d8dbc8811d2edf155b">cancelpills</link>;
+<anchor xml:id="_paths_8h_source_1l00036"/>00036 <emphasis role="keyword">extern</emphasis>&#32;std::string&#32;<link linkend="_paths_8h_1a83ca61b7902b4363e3824f7bdf79e30b">cauldron</link>;
+<anchor xml:id="_paths_8h_source_1l00037"/>00037 <emphasis role="keyword">extern</emphasis>&#32;std::string&#32;<link linkend="_paths_8h_1a190baf4f50e5a6d930ba204d0b917002">changepills</link>;
+<anchor xml:id="_paths_8h_source_1l00038"/>00038 <emphasis role="keyword">extern</emphasis>&#32;std::string&#32;<link linkend="_paths_8h_1ab1fe1bff511d55fa1302bfb9c966a537">choosebluematspillr8</link>;
+<anchor xml:id="_paths_8h_source_1l00039"/>00039 <emphasis role="keyword">extern</emphasis>&#32;std::string&#32;<link linkend="_paths_8h_1a5b9311d97a644795e97fe96e6414361c">choosecosmospill</link>;
+<anchor xml:id="_paths_8h_source_1l00040"/>00040 <emphasis role="keyword">extern</emphasis>&#32;std::string&#32;<link linkend="_paths_8h_1a105f0ef2d9350228db40146aae62da64">choosegraymatspill</link>;
+<anchor xml:id="_paths_8h_source_1l00041"/>00041 <emphasis role="keyword">extern</emphasis>&#32;std::string&#32;<link linkend="_paths_8h_1acbbd0f33d1dc24173fb590e83e0bc1d6">choosegreenmatspill</link>;
+<anchor xml:id="_paths_8h_source_1l00042"/>00042 <emphasis role="keyword">extern</emphasis>&#32;std::string&#32;<link linkend="_paths_8h_1a112e47aa46a39874b9023b9b0e85bc08">choosejadeitypill</link>;
+<anchor xml:id="_paths_8h_source_1l00043"/>00043 <emphasis role="keyword">extern</emphasis>&#32;std::string&#32;<link linkend="_paths_8h_1a9935e99feb0f40de9d7e4708554ec8d2">choosepurplematspillr8</link>;
+<anchor xml:id="_paths_8h_source_1l00044"/>00044 <emphasis role="keyword">extern</emphasis>&#32;std::string&#32;<link linkend="_paths_8h_1a9c8cb837521998bd6202720788992526">chooseyellowmatspillr8</link>;
+<anchor xml:id="_paths_8h_source_1l00045"/>00045 <emphasis role="keyword">extern</emphasis>&#32;std::string&#32;<link linkend="_paths_8h_1a3a639270723a2cc3770182956f9e0fa6">claimpills</link>;
+<anchor xml:id="_paths_8h_source_1l00046"/>00046 <emphasis role="keyword">extern</emphasis>&#32;std::string&#32;<link linkend="_paths_8h_1ad67b36b8f72161de278a2dc2b46d5351">confirmpillquantity</link>;
+<anchor xml:id="_paths_8h_source_1l00047"/>00047 <emphasis role="keyword">extern</emphasis>&#32;std::string&#32;<link linkend="_paths_8h_1a6f117186b8143ab0357920edb5f4375f">craftingmaterial</link>;
+<anchor xml:id="_paths_8h_source_1l00048"/>00048 <emphasis role="keyword">extern</emphasis>&#32;std::string&#32;<link linkend="_paths_8h_1a0bd700b343d558c19a97f78be4098415">craftpill</link>;
+<anchor xml:id="_paths_8h_source_1l00049"/>00049 <emphasis role="keyword">extern</emphasis>&#32;std::string&#32;<link linkend="_paths_8h_1a93e1aa078ec4a78e7b9766cbaa3d0301">crafttext</link>;
+<anchor xml:id="_paths_8h_source_1l00050"/>00050 <emphasis role="keyword">extern</emphasis>&#32;std::string&#32;<link linkend="_paths_8h_1a533151123dedb3b7d644120e5b964bde">dracophantpowder</link>;
+<anchor xml:id="_paths_8h_source_1l00051"/>00051 <emphasis role="keyword">extern</emphasis>&#32;std::string&#32;<link linkend="_paths_8h_1a0c6ec24eb1e705168110cee6daa343b2">eightcraft</link>;
+<anchor xml:id="_paths_8h_source_1l00052"/>00052 <emphasis role="keyword">extern</emphasis>&#32;std::string&#32;<link linkend="_paths_8h_1a5b877be288227071b767014efb4c1fb2">eightlimit</link>;
+<anchor xml:id="_paths_8h_source_1l00053"/>00053 <emphasis role="keyword">extern</emphasis>&#32;std::string&#32;<link linkend="_paths_8h_1ab70841341d646c04a924e6856fd0518a">etiquettepill</link>;
+<anchor xml:id="_paths_8h_source_1l00054"/>00054 <emphasis role="keyword">extern</emphasis>&#32;std::string&#32;<link linkend="_paths_8h_1a34c4ad99ca3dafc92c8b73d86dc45daf">fivecraft</link>;
+<anchor xml:id="_paths_8h_source_1l00055"/>00055 <emphasis role="keyword">extern</emphasis>&#32;std::string&#32;<link linkend="_paths_8h_1a5db29b87a12f2ac0d4b3425584d57560">fivelimit</link>;
+<anchor xml:id="_paths_8h_source_1l00056"/>00056 <emphasis role="keyword">extern</emphasis>&#32;std::string&#32;<link linkend="_paths_8h_1abd0aaea7a5e055049d9a11d67bd96842">fourcraft</link>;
+<anchor xml:id="_paths_8h_source_1l00057"/>00057 <emphasis role="keyword">extern</emphasis>&#32;std::string&#32;<link linkend="_paths_8h_1a0ba6180d05c9fe4c60d56b04b5a9a963">fourlimit</link>;
+<anchor xml:id="_paths_8h_source_1l00058"/>00058 <emphasis role="keyword">extern</emphasis>&#32;std::string&#32;<link linkend="_paths_8h_1a5d60967017ef168c99033a47855e90ed">foursymbolspowder</link>;
+<anchor xml:id="_paths_8h_source_1l00059"/>00059 <emphasis role="keyword">extern</emphasis>&#32;std::string&#32;<link linkend="_paths_8h_1abc9961cf5fe69f367fb2ab99406ef495">gettext</link>;
+<anchor xml:id="_paths_8h_source_1l00060"/>00060 <emphasis role="keyword">extern</emphasis>&#32;std::string&#32;<link linkend="_paths_8h_1a15fae3f342b29aaee2771c0fd1a1e943">goldendragonpill</link>;
+<anchor xml:id="_paths_8h_source_1l00061"/>00061 <emphasis role="keyword">extern</emphasis>&#32;std::string&#32;<link linkend="_paths_8h_1adfeda7d5042dcc546d333d3c1ba0d020">graycore</link>;
+<anchor xml:id="_paths_8h_source_1l00062"/>00062 <emphasis role="keyword">extern</emphasis>&#32;std::string&#32;<link linkend="_paths_8h_1aaba072112468c88288ab4acdd84f5fa7">greencore</link>;
+<anchor xml:id="_paths_8h_source_1l00063"/>00063 <emphasis role="keyword">extern</emphasis>&#32;std::string&#32;<link linkend="_paths_8h_1aaeac92cbaea36df8787582a362c2c80e">legendarycraft</link>;
+<anchor xml:id="_paths_8h_source_1l00064"/>00064 <emphasis role="keyword">extern</emphasis>&#32;std::string&#32;<link linkend="_paths_8h_1a780a1fe41287730d35bcf53bdfba5586">lowerpill</link>;
+<anchor xml:id="_paths_8h_source_1l00065"/>00065 <emphasis role="keyword">extern</emphasis>&#32;std::string&#32;<link linkend="_paths_8h_1ad9201f060d77a0a66232a924364d2775">moretext</link>;
+<anchor xml:id="_paths_8h_source_1l00066"/>00066 <emphasis role="keyword">extern</emphasis>&#32;std::string&#32;<link linkend="_paths_8h_1a6fe6562b98bbff8664ade3db9e8e1c64">ninecraft</link>;
+<anchor xml:id="_paths_8h_source_1l00067"/>00067 <emphasis role="keyword">extern</emphasis>&#32;std::string&#32;<link linkend="_paths_8h_1abbcb41b30083e82cc3f17acea8f1a949">ninelimit</link>;
+<anchor xml:id="_paths_8h_source_1l00068"/>00068 <emphasis role="keyword">extern</emphasis>&#32;std::string&#32;<link linkend="_paths_8h_1a57bdc8a5063a062257418ba62cdde0fe">nopillmat</link>;
+<anchor xml:id="_paths_8h_source_1l00069"/>00069 <emphasis role="keyword">extern</emphasis>&#32;std::string&#32;<link linkend="_paths_8h_1af72227f8620a0c4d346689508c64bab9">norecipe</link>;
+<anchor xml:id="_paths_8h_source_1l00070"/>00070 <emphasis role="keyword">extern</emphasis>&#32;std::string&#32;<link linkend="_paths_8h_1ac7e97ae03291e51745c9293852ef96b6">onecraft</link>;
+<anchor xml:id="_paths_8h_source_1l00071"/>00071 <emphasis role="keyword">extern</emphasis>&#32;std::string&#32;<link linkend="_paths_8h_1a41e188be93a79f9d4aa5efddbe0de25c">onelimit</link>;
+<anchor xml:id="_paths_8h_source_1l00072"/>00072 <emphasis role="keyword">extern</emphasis>&#32;std::string&#32;<link linkend="_paths_8h_1aac2ec760c9146f82a22c845d992ee0c1">onselectpillpage</link>;
+<anchor xml:id="_paths_8h_source_1l00073"/>00073 <emphasis role="keyword">extern</emphasis>&#32;std::string&#32;<link linkend="_paths_8h_1aafb673044320868fa03183370c3e572f">purplecore</link>;
+<anchor xml:id="_paths_8h_source_1l00074"/>00074 <emphasis role="keyword">extern</emphasis>&#32;std::string&#32;<link linkend="_paths_8h_1a1d045be98306cfe310466b5384f6aded">quantitypill</link>;
+<anchor xml:id="_paths_8h_source_1l00075"/>00075 <emphasis role="keyword">extern</emphasis>&#32;std::string&#32;<link linkend="_paths_8h_1ad1a4184c1a0d0a3484a33179e5add9a5">selectcauldron</link>;
+<anchor xml:id="_paths_8h_source_1l00076"/>00076 <emphasis role="keyword">extern</emphasis>&#32;std::string&#32;<link linkend="_paths_8h_1a96867590fce12d28fd7f37afc80aa7b1">selectpill</link>;
+<anchor xml:id="_paths_8h_source_1l00077"/>00077 <emphasis role="keyword">extern</emphasis>&#32;std::string&#32;<link linkend="_paths_8h_1aee04a02a2434bae5e4d779de85fc5b34">sevencraft</link>;
+<anchor xml:id="_paths_8h_source_1l00078"/>00078 <emphasis role="keyword">extern</emphasis>&#32;std::string&#32;<link linkend="_paths_8h_1af0c02c0a060fdabe527bfe9bfbf85684">sevenlimit</link>;
+<anchor xml:id="_paths_8h_source_1l00079"/>00079 <emphasis role="keyword">extern</emphasis>&#32;std::string&#32;<link linkend="_paths_8h_1a73414dc1de5ad21569bd2d2153fa50fa">sixcraft</link>;
+<anchor xml:id="_paths_8h_source_1l00080"/>00080 <emphasis role="keyword">extern</emphasis>&#32;std::string&#32;<link linkend="_paths_8h_1ae39efbe05026933e3e8ddf43400ca1a9">sixlimit</link>;
+<anchor xml:id="_paths_8h_source_1l00081"/>00081 <emphasis role="keyword">extern</emphasis>&#32;std::string&#32;<link linkend="_paths_8h_1ac8bc566056fab732d355b823645e029f">statpillmat</link>;
+<anchor xml:id="_paths_8h_source_1l00082"/>00082 <emphasis role="keyword">extern</emphasis>&#32;std::string&#32;<link linkend="_paths_8h_1acdfdf78978b1fc85f608bbb58686d667">threecraft</link>;
+<anchor xml:id="_paths_8h_source_1l00083"/>00083 <emphasis role="keyword">extern</emphasis>&#32;std::string&#32;<link linkend="_paths_8h_1ad982344c5f72f6ffa814f012f7ee2288">threelimit</link>;
+<anchor xml:id="_paths_8h_source_1l00084"/>00084 <emphasis role="keyword">extern</emphasis>&#32;std::string&#32;<link linkend="_paths_8h_1a2f14451c9df4af44ca033d22f396eb38">twocraft</link>;
+<anchor xml:id="_paths_8h_source_1l00085"/>00085 <emphasis role="keyword">extern</emphasis>&#32;std::string&#32;<link linkend="_paths_8h_1a6a2999c7f96204447ec865bdee2b4ac5">twolimit</link>;
+<anchor xml:id="_paths_8h_source_1l00086"/>00086 <emphasis role="keyword">extern</emphasis>&#32;std::string&#32;<link linkend="_paths_8h_1a0783360f469ad7e1c7b2c2f100b95438">utilitypowder</link>;
+<anchor xml:id="_paths_8h_source_1l00087"/>00087 <emphasis role="keyword">extern</emphasis>&#32;std::string&#32;<link linkend="_paths_8h_1a0c4b41def5a61334dc93c3388660f994">yellowcore</link>;
+<anchor xml:id="_paths_8h_source_1l00088"/>00088 <emphasis role="keyword">extern</emphasis>&#32;std::string&#32;<link linkend="_paths_8h_1a34fc858abd92a4fd63efa22abf1a23c6">zerocraft</link>;
+<anchor xml:id="_paths_8h_source_1l00089"/>00089 <emphasis role="keyword">extern</emphasis>&#32;std::string&#32;<link linkend="_paths_8h_1afb312914dc51af454646e93598579532">zerolimit</link>;
+<anchor xml:id="_paths_8h_source_1l00090"/>00090 
+<anchor xml:id="_paths_8h_source_1l00091"/>00091 <emphasis role="comment">//BygoneRift</emphasis>
+<anchor xml:id="_paths_8h_source_1l00092"/>00092 <emphasis role="keyword">extern</emphasis>&#32;std::string&#32;<link linkend="_paths_8h_1ac771706c5a665faa595a9fce955167a8">BygoneRift</link>;
+<anchor xml:id="_paths_8h_source_1l00093"/>00093 
+<anchor xml:id="_paths_8h_source_1l00094"/>00094 <emphasis role="comment">//Cultivation</emphasis>
+<anchor xml:id="_paths_8h_source_1l00095"/>00095 <emphasis role="keyword">extern</emphasis>&#32;std::string&#32;<link linkend="_paths_8h_1a8681c39febd26a3da4f956c767af2d00">Cultivation</link>;
+<anchor xml:id="_paths_8h_source_1l00096"/>00096 <emphasis role="keyword">extern</emphasis>&#32;std::string&#32;<link linkend="_paths_8h_1af2d8f49ed49cc1b357209ced61492a82">cancelpill</link>;
+<anchor xml:id="_paths_8h_source_1l00097"/>00097 <emphasis role="keyword">extern</emphasis>&#32;std::string&#32;<link linkend="_paths_8h_1a5cba400385dfd7c09091efb6aee32012">choosecorporia</link>;
+<anchor xml:id="_paths_8h_source_1l00098"/>00098 <emphasis role="keyword">extern</emphasis>&#32;std::string&#32;<link linkend="_paths_8h_1a57f6607b486ad348b3b8b0274c8ef9bc">choosemagicka</link>;
+<anchor xml:id="_paths_8h_source_1l00099"/>00099 <emphasis role="keyword">extern</emphasis>&#32;std::string&#32;<link linkend="_paths_8h_1a1c9217878f6849cbad1676ea4ad0d368">choosepath</link>;
+<anchor xml:id="_paths_8h_source_1l00100"/>00100 <emphasis role="keyword">extern</emphasis>&#32;std::string&#32;<link linkend="_paths_8h_1acd59d7d4a2fb495693dec3c5fcd93776">corporiacultivator</link>;
+<anchor xml:id="_paths_8h_source_1l00101"/>00101 <emphasis role="keyword">extern</emphasis>&#32;std::string&#32;<link linkend="_paths_8h_1ab4a61da73725ea16f44d6254ee397dee">elixir</link>;
+<anchor xml:id="_paths_8h_source_1l00102"/>00102 <emphasis role="keyword">extern</emphasis>&#32;std::string&#32;<link linkend="_paths_8h_1ab01ebf3f392b13fa91bf0f2a5c51c463">leavepills</link>;
+<anchor xml:id="_paths_8h_source_1l00103"/>00103 <emphasis role="keyword">extern</emphasis>&#32;std::string&#32;<link linkend="_paths_8h_1aea6b695bb0b5d5f7decb894e5ec26424">magickacultivator</link>;
+<anchor xml:id="_paths_8h_source_1l00104"/>00104 <emphasis role="keyword">extern</emphasis>&#32;std::string&#32;<link linkend="_paths_8h_1a871b32e28b34492275500b016b98d10d">pickelixir</link>;
+<anchor xml:id="_paths_8h_source_1l00105"/>00105 <emphasis role="keyword">extern</emphasis>&#32;std::string&#32;<link linkend="_paths_8h_1a50d621991c1b3a40816a372afb111948">pickpill</link>;
+<anchor xml:id="_paths_8h_source_1l00106"/>00106 <emphasis role="keyword">extern</emphasis>&#32;std::string&#32;<link linkend="_paths_8h_1a94a2f6c4b99e7a5ddaf18f0f1b4016d8">quickrespira</link>;
+<anchor xml:id="_paths_8h_source_1l00107"/>00107 <emphasis role="keyword">extern</emphasis>&#32;std::string&#32;<link linkend="_paths_8h_1aa347d7e1c44098b042f7e8500b00b22a">respiraeffect1</link>;
+<anchor xml:id="_paths_8h_source_1l00108"/>00108 <emphasis role="keyword">extern</emphasis>&#32;std::string&#32;<link linkend="_paths_8h_1aedd546eb6128a8639c4f25afb4d452dd">respiraeffect2</link>;
+<anchor xml:id="_paths_8h_source_1l00109"/>00109 <emphasis role="keyword">extern</emphasis>&#32;std::string&#32;<link linkend="_paths_8h_1a5531f9bdceef347b2eeed4aec56d7066">respiraeffect3</link>;
+<anchor xml:id="_paths_8h_source_1l00110"/>00110 <emphasis role="keyword">extern</emphasis>&#32;std::string&#32;<link linkend="_paths_8h_1a3db12561332b8d08abec2f6ff8b8b334">strive</link>;
+<anchor xml:id="_paths_8h_source_1l00111"/>00111 <emphasis role="keyword">extern</emphasis>&#32;std::string&#32;<link linkend="_paths_8h_1a007853e182705e5d8b3456a09f6c83f6">symbolpill</link>;
+<anchor xml:id="_paths_8h_source_1l00112"/>00112 <emphasis role="keyword">extern</emphasis>&#32;std::string&#32;<link linkend="_paths_8h_1ab5789f47182821141bf0b8cbb3ed3fe7">useallelixirs</link>;
+<anchor xml:id="_paths_8h_source_1l00113"/>00113 
+<anchor xml:id="_paths_8h_source_1l00114"/>00114 <emphasis role="comment">//Field</emphasis>
+<anchor xml:id="_paths_8h_source_1l00115"/>00115 <emphasis role="keyword">extern</emphasis>&#32;std::string&#32;<link linkend="_paths_8h_1ae9137778c28ce2c3ecb8b903acf5d3cb">Field</link>;
+<anchor xml:id="_paths_8h_source_1l00116"/>00116 
+<anchor xml:id="_paths_8h_source_1l00117"/>00117 <emphasis role="comment">//Forge</emphasis>
+<anchor xml:id="_paths_8h_source_1l00118"/>00118 <emphasis role="keyword">extern</emphasis>&#32;std::string&#32;<link linkend="_paths_8h_1a9a7312e30b8c75ec39c2cb93a7843aa0">Forge</link>;
+<anchor xml:id="_paths_8h_source_1l00119"/>00119 
+<anchor xml:id="_paths_8h_source_1l00120"/>00120 <emphasis role="comment">//Garden</emphasis>
+<anchor xml:id="_paths_8h_source_1l00121"/>00121 <emphasis role="keyword">extern</emphasis>&#32;std::string&#32;<link linkend="_paths_8h_1a6414f56a837372019e3b492d99e29594">Garden</link>;
+<anchor xml:id="_paths_8h_source_1l00122"/>00122 <emphasis role="keyword">extern</emphasis>&#32;std::string&#32;<link linkend="_paths_8h_1a14c197725cf2e9c2553e5029b58db4bd">cancelwater</link>;
+<anchor xml:id="_paths_8h_source_1l00123"/>00123 <emphasis role="keyword">extern</emphasis>&#32;std::string&#32;<link linkend="_paths_8h_1a617c0d8be0a49236f07ca8a579861b09">claimgarden</link>;
+<anchor xml:id="_paths_8h_source_1l00124"/>00124 <emphasis role="keyword">extern</emphasis>&#32;std::string&#32;<link linkend="_paths_8h_1a4c1463c15dc718f91cfb081ecdaeca82">confirmwater</link>;
+<anchor xml:id="_paths_8h_source_1l00125"/>00125 <emphasis role="keyword">extern</emphasis>&#32;std::string&#32;<link linkend="_paths_8h_1af60807f20e61d15c63ed7989a77ed37d">eightwater</link>;
+<anchor xml:id="_paths_8h_source_1l00126"/>00126 <emphasis role="keyword">extern</emphasis>&#32;std::string&#32;<link linkend="_paths_8h_1a6a34b5fc5066cd00df88f74fd8379817">fatewater</link>;
+<anchor xml:id="_paths_8h_source_1l00127"/>00127 <emphasis role="keyword">extern</emphasis>&#32;std::string&#32;<link linkend="_paths_8h_1ac2f9f72fa89b0325b9228e4da4a5294d">fivewater</link>;
+<anchor xml:id="_paths_8h_source_1l00128"/>00128 <emphasis role="keyword">extern</emphasis>&#32;std::string&#32;<link linkend="_paths_8h_1aaae2415ecf320a19d96b9c1d283adee9">fourwater</link>;
+<anchor xml:id="_paths_8h_source_1l00129"/>00129 <emphasis role="keyword">extern</emphasis>&#32;std::string&#32;<link linkend="_paths_8h_1a624392d2ecd08d47749810bc32940c42">freegarden</link>;
+<anchor xml:id="_paths_8h_source_1l00130"/>00130 <emphasis role="keyword">extern</emphasis>&#32;std::string&#32;<link linkend="_paths_8h_1a21b0285d33d5746cc26e0cb42cd7cafb">ninewater</link>;
+<anchor xml:id="_paths_8h_source_1l00131"/>00131 <emphasis role="keyword">extern</emphasis>&#32;std::string&#32;<link linkend="_paths_8h_1ab8b71f3212f5535ce34deb0314bff1c3">onewater</link>;
+<anchor xml:id="_paths_8h_source_1l00132"/>00132 <emphasis role="keyword">extern</emphasis>&#32;std::string&#32;<link linkend="_paths_8h_1a4bea7b1e01d7fcf8549907a7d8d68cc2">sevenwater</link>;
+<anchor xml:id="_paths_8h_source_1l00133"/>00133 <emphasis role="keyword">extern</emphasis>&#32;std::string&#32;<link linkend="_paths_8h_1a8b2de644334fc12f59367107d94c59bb">sixwater</link>;
+<anchor xml:id="_paths_8h_source_1l00134"/>00134 <emphasis role="keyword">extern</emphasis>&#32;std::string&#32;<link linkend="_paths_8h_1ac4af413acef5bac84ae967aa7e0045f4">slash</link>;
+<anchor xml:id="_paths_8h_source_1l00135"/>00135 <emphasis role="keyword">extern</emphasis>&#32;std::string&#32;<link linkend="_paths_8h_1a010bbc80cb944f096eeac51f1ac681f3">threewater</link>;
+<anchor xml:id="_paths_8h_source_1l00136"/>00136 <emphasis role="keyword">extern</emphasis>&#32;std::string&#32;<link linkend="_paths_8h_1a1a315c4d5214e4f62169ac3b2765691a">twowater</link>;
+<anchor xml:id="_paths_8h_source_1l00137"/>00137 <emphasis role="keyword">extern</emphasis>&#32;std::string&#32;<link linkend="_paths_8h_1ad7a1cde80f5e2b4b5b15431ff90539b7">water</link>;
+<anchor xml:id="_paths_8h_source_1l00138"/>00138 <emphasis role="keyword">extern</emphasis>&#32;std::string&#32;<link linkend="_paths_8h_1a565a048d48446c106266b089bf3e4507">waterattempts</link>;
+<anchor xml:id="_paths_8h_source_1l00139"/>00139 <emphasis role="keyword">extern</emphasis>&#32;std::string&#32;<link linkend="_paths_8h_1a66904635f797e817b7f1986cf009d7a2">zerowater</link>;
+<anchor xml:id="_paths_8h_source_1l00140"/>00140 
+<anchor xml:id="_paths_8h_source_1l00141"/>00141 <emphasis role="comment">//Laws</emphasis>
+<anchor xml:id="_paths_8h_source_1l00142"/>00142 <emphasis role="keyword">extern</emphasis>&#32;std::string&#32;<link linkend="_paths_8h_1aa4889879060c490bf5bc29fcbd685940">Laws</link>;
+<anchor xml:id="_paths_8h_source_1l00143"/>00143 <emphasis role="keyword">extern</emphasis>&#32;std::string&#32;<link linkend="_paths_8h_1a969b38645fc3b16eeedcb648a9383a45">activatelaw</link>;
+<anchor xml:id="_paths_8h_source_1l00144"/>00144 <emphasis role="keyword">extern</emphasis>&#32;std::string&#32;<link linkend="_paths_8h_1a55a4158978f3534ea1f178e9bc9e1a15">autoactivatelaws</link>;
+<anchor xml:id="_paths_8h_source_1l00145"/>00145 <emphasis role="keyword">extern</emphasis>&#32;std::string&#32;<link linkend="_paths_8h_1a8ad24ce7087009265b7523c32e20f020">blitzlaws</link>;
+<anchor xml:id="_paths_8h_source_1l00146"/>00146 <emphasis role="keyword">extern</emphasis>&#32;std::string&#32;<link linkend="_paths_8h_1af6c4ec2c0ab70f486548b923a83259c4">bluefruit</link>;
+<anchor xml:id="_paths_8h_source_1l00147"/>00147 <emphasis role="keyword">extern</emphasis>&#32;std::string&#32;<link linkend="_paths_8h_1a1d0e8f9441ba0404634d3c15b24ebee5">cfiveelements</link>;
+<anchor xml:id="_paths_8h_source_1l00148"/>00148 <emphasis role="keyword">extern</emphasis>&#32;std::string&#32;<link linkend="_paths_8h_1a8f65fddf9b3d1cf9d02d80daaf850423">earthlaw</link>;
+<anchor xml:id="_paths_8h_source_1l00149"/>00149 <emphasis role="keyword">extern</emphasis>&#32;std::string&#32;<link linkend="_paths_8h_1a7a16dddd8efd848d32eb85196dfb62cd">eightlawlvl</link>;
+<anchor xml:id="_paths_8h_source_1l00150"/>00150 <emphasis role="keyword">extern</emphasis>&#32;std::string&#32;<link linkend="_paths_8h_1ae22ec143cc0e6a061c710dcb66b9d161">firelaw</link>;
+<anchor xml:id="_paths_8h_source_1l00151"/>00151 <emphasis role="keyword">extern</emphasis>&#32;std::string&#32;<link linkend="_paths_8h_1aadd85249cb865023bbbc99ad4b857d2c">fivelawlvl</link>;
+<anchor xml:id="_paths_8h_source_1l00152"/>00152 <emphasis role="keyword">extern</emphasis>&#32;std::string&#32;<link linkend="_paths_8h_1ac0be5f9260eb5320319938983c0f8c32">fourlawlevel</link>;
+<anchor xml:id="_paths_8h_source_1l00153"/>00153 <emphasis role="keyword">extern</emphasis>&#32;std::string&#32;<link linkend="_paths_8h_1a11d098e0e1608ca690a19ea0e6823027">greenfruit</link>;
+<anchor xml:id="_paths_8h_source_1l00154"/>00154 <emphasis role="keyword">extern</emphasis>&#32;std::string&#32;<link linkend="_paths_8h_1a163686e080806c90bf4f1a19e6ecbeec">lawxp</link>;
+<anchor xml:id="_paths_8h_source_1l00155"/>00155 <emphasis role="keyword">extern</emphasis>&#32;std::string&#32;<link linkend="_paths_8h_1adc2a35ad9aba7e1ebb9775a31864deca">metallaw</link>;
+<anchor xml:id="_paths_8h_source_1l00156"/>00156 <emphasis role="keyword">extern</emphasis>&#32;std::string&#32;<link linkend="_paths_8h_1a0d004c65fd666d57184505d8fb09e9b2">ninelawlvl</link>;
+<anchor xml:id="_paths_8h_source_1l00157"/>00157 <emphasis role="keyword">extern</emphasis>&#32;std::string&#32;<link linkend="_paths_8h_1ac826e3ec73ad98df8763be785201690e">ninelearn</link>;
+<anchor xml:id="_paths_8h_source_1l00158"/>00158 <emphasis role="keyword">extern</emphasis>&#32;std::string&#32;<link linkend="_paths_8h_1a2260d7cc1b6a6d7cb1302b437123f181">nofruitleft</link>;
+<anchor xml:id="_paths_8h_source_1l00159"/>00159 <emphasis role="keyword">extern</emphasis>&#32;std::string&#32;<link linkend="_paths_8h_1ab7012675219e0161c40d294d8598c524">notimeleft</link>;
+<anchor xml:id="_paths_8h_source_1l00160"/>00160 <emphasis role="keyword">extern</emphasis>&#32;std::string&#32;<link linkend="_paths_8h_1a0bdfa9d371a1c1b80647d4714fdba228">onearthlaw</link>;
+<anchor xml:id="_paths_8h_source_1l00161"/>00161 <emphasis role="keyword">extern</emphasis>&#32;std::string&#32;<link linkend="_paths_8h_1ad141b3a4cae7c550dc87d92caea10044">onelawlevel</link>;
+<anchor xml:id="_paths_8h_source_1l00162"/>00162 <emphasis role="keyword">extern</emphasis>&#32;std::string&#32;<link linkend="_paths_8h_1a190f107e55c3521ba6df57641d86c543">onelearn</link>;
+<anchor xml:id="_paths_8h_source_1l00163"/>00163 <emphasis role="keyword">extern</emphasis>&#32;std::string&#32;<link linkend="_paths_8h_1a5e9f6367b5818d8ba1c7b026f10c107c">onfirelaw</link>;
+<anchor xml:id="_paths_8h_source_1l00164"/>00164 <emphasis role="keyword">extern</emphasis>&#32;std::string&#32;<link linkend="_paths_8h_1aba417530fc136054380355de7e4b1e93">onmetallaw</link>;
+<anchor xml:id="_paths_8h_source_1l00165"/>00165 <emphasis role="keyword">extern</emphasis>&#32;std::string&#32;<link linkend="_paths_8h_1a279dd793e3e74a07b090d94a2be080b8">onwaterlaw</link>;
+<anchor xml:id="_paths_8h_source_1l00166"/>00166 <emphasis role="keyword">extern</emphasis>&#32;std::string&#32;<link linkend="_paths_8h_1a16524b47dda9bea1ba4f32cd3d607702">onwoodlaw</link>;
+<anchor xml:id="_paths_8h_source_1l00167"/>00167 <emphasis role="keyword">extern</emphasis>&#32;std::string&#32;<link linkend="_paths_8h_1abb5dde4ad34704cd8975aace94fdcd60">purplefruit</link>;
+<anchor xml:id="_paths_8h_source_1l00168"/>00168 <emphasis role="keyword">extern</emphasis>&#32;std::string&#32;<link linkend="_paths_8h_1a0e04a9bc0b7628cfcd33f3d051fcfe3e">redfruit</link>;
+<anchor xml:id="_paths_8h_source_1l00169"/>00169 <emphasis role="keyword">extern</emphasis>&#32;std::string&#32;<link linkend="_paths_8h_1a0ea465c25d00ab23bca3836082491dd9">sevenlawlvl</link>;
+<anchor xml:id="_paths_8h_source_1l00170"/>00170 <emphasis role="keyword">extern</emphasis>&#32;std::string&#32;<link linkend="_paths_8h_1a3dfb444785c535b1d515c8179f0fd8fa">sevenlearn</link>;
+<anchor xml:id="_paths_8h_source_1l00171"/>00171 <emphasis role="keyword">extern</emphasis>&#32;std::string&#32;<link linkend="_paths_8h_1a533effe6fed81c3e228958579931a6e2">sixlawlvl</link>;
+<anchor xml:id="_paths_8h_source_1l00172"/>00172 <emphasis role="keyword">extern</emphasis>&#32;std::string&#32;<link linkend="_paths_8h_1a7a4f9c9270b46ce10c4080679b107378">sixlearn</link>;
+<anchor xml:id="_paths_8h_source_1l00173"/>00173 <emphasis role="keyword">extern</emphasis>&#32;std::string&#32;<link linkend="_paths_8h_1a963e6e24f4e24fa47ec2b420060ad1ae">threelawlvl</link>;
+<anchor xml:id="_paths_8h_source_1l00174"/>00174 <emphasis role="keyword">extern</emphasis>&#32;std::string&#32;<link linkend="_paths_8h_1afecdf9e23e550687bce647e84a84bda9">threelearn</link>;
+<anchor xml:id="_paths_8h_source_1l00175"/>00175 <emphasis role="keyword">extern</emphasis>&#32;std::string&#32;<link linkend="_paths_8h_1a26ca363aee3df5323880184f98d91691">twolawlvl</link>;
+<anchor xml:id="_paths_8h_source_1l00176"/>00176 <emphasis role="keyword">extern</emphasis>&#32;std::string&#32;<link linkend="_paths_8h_1a4fa452bfcddf3e5c336833e6930880ee">twolearn</link>;
+<anchor xml:id="_paths_8h_source_1l00177"/>00177 <emphasis role="keyword">extern</emphasis>&#32;std::string&#32;<link linkend="_paths_8h_1a58602dda14df5dd610cd7d57e6104afa">waterlaw</link>;
+<anchor xml:id="_paths_8h_source_1l00178"/>00178 <emphasis role="keyword">extern</emphasis>&#32;std::string&#32;<link linkend="_paths_8h_1a426ab39f8d50d5f51d74ceec7f21bdab">woodlaw</link>;
+<anchor xml:id="_paths_8h_source_1l00179"/>00179 <emphasis role="keyword">extern</emphasis>&#32;std::string&#32;<link linkend="_paths_8h_1ad84ec16f317029273d6896e876e53f8a">yellowfruit</link>;
+<anchor xml:id="_paths_8h_source_1l00180"/>00180 <emphasis role="keyword">extern</emphasis>&#32;std::string&#32;<link linkend="_paths_8h_1a803ce64c92ec82b2a71e53bc1f7f3768">zerolawlvl</link>;
+<anchor xml:id="_paths_8h_source_1l00181"/>00181 
+<anchor xml:id="_paths_8h_source_1l00182"/>00182 <emphasis role="comment">//Pet</emphasis>
+<anchor xml:id="_paths_8h_source_1l00183"/>00183 <emphasis role="keyword">extern</emphasis>&#32;std::string&#32;<link linkend="_paths_8h_1abe34bfecec286956e54ab04ecb492505">Pet</link>;
+<anchor xml:id="_paths_8h_source_1l00184"/>00184 <emphasis role="keyword">extern</emphasis>&#32;std::string&#32;<link linkend="_paths_8h_1aced5b85cc27a7145452c4c1ba36cb85c">autofeed</link>;
+<anchor xml:id="_paths_8h_source_1l00185"/>00185 <emphasis role="keyword">extern</emphasis>&#32;std::string&#32;<link linkend="_paths_8h_1ad1ab1df91f6ccbd2dce9d6e2415b0b9f">confirmfeed</link>;
+<anchor xml:id="_paths_8h_source_1l00186"/>00186 <emphasis role="keyword">extern</emphasis>&#32;std::string&#32;<link linkend="_paths_8h_1a9aaddb510c1015d2f22ff24e8cbeaf17">cpetarray</link>;
+<anchor xml:id="_paths_8h_source_1l00187"/>00187 <emphasis role="keyword">extern</emphasis>&#32;std::string&#32;<link linkend="_paths_8h_1aa33e73c1f0cb4ac1edbb53412f7b3870">feedpet</link>;
+<anchor xml:id="_paths_8h_source_1l00188"/>00188 <emphasis role="keyword">extern</emphasis>&#32;std::string&#32;<link linkend="_paths_8h_1a8fbaaeb8311284427415d77fc4013dc3">foodpet1</link>;
+<anchor xml:id="_paths_8h_source_1l00189"/>00189 <emphasis role="keyword">extern</emphasis>&#32;std::string&#32;<link linkend="_paths_8h_1afc118b89edc7e7f67ceb853d52539310">foodpet2</link>;
+<anchor xml:id="_paths_8h_source_1l00190"/>00190 <emphasis role="keyword">extern</emphasis>&#32;std::string&#32;<link linkend="_paths_8h_1a0288643eb0c8197afd7488d92de0223f">foodpet3</link>;
+<anchor xml:id="_paths_8h_source_1l00191"/>00191 <emphasis role="keyword">extern</emphasis>&#32;std::string&#32;<link linkend="_paths_8h_1adbcc6674afcad8ae1662b8867f185da5">foodpet4</link>;
+<anchor xml:id="_paths_8h_source_1l00192"/>00192 <emphasis role="keyword">extern</emphasis>&#32;std::string&#32;<link linkend="_paths_8h_1ab4cce5aa8c29493bbf1593786850db40">graypet</link>;
+<anchor xml:id="_paths_8h_source_1l00193"/>00193 <emphasis role="keyword">extern</emphasis>&#32;std::string&#32;<link linkend="_paths_8h_1a0a7d612aeeaa60dc9c9d49cad0455765">greenpet</link>;
+<anchor xml:id="_paths_8h_source_1l00194"/>00194 <emphasis role="keyword">extern</emphasis>&#32;std::string&#32;<link linkend="_paths_8h_1a6d7675985626ad540eb8f43a443c3c14">infopet</link>;
+<anchor xml:id="_paths_8h_source_1l00195"/>00195 <emphasis role="keyword">extern</emphasis>&#32;std::string&#32;<link linkend="_paths_8h_1a1246c3ecdcfd28d5fafed5a30c7a5592">menagerie</link>;
+<anchor xml:id="_paths_8h_source_1l00196"/>00196 <emphasis role="keyword">extern</emphasis>&#32;std::string&#32;<link linkend="_paths_8h_1a8f994034df04ab9e96171ddf1315acd5">petformation</link>;
+<anchor xml:id="_paths_8h_source_1l00197"/>00197 <emphasis role="keyword">extern</emphasis>&#32;std::string&#32;<link linkend="_paths_8h_1a314d743112eaf32d4305eaef1e4825d3">statspet</link>;
+<anchor xml:id="_paths_8h_source_1l00198"/>00198 <emphasis role="keyword">extern</emphasis>&#32;std::string&#32;<link linkend="_paths_8h_1a2de6ca87c4ed70358349198dea4fcafc">yellowpet</link>;
+<anchor xml:id="_paths_8h_source_1l00199"/>00199 
+<anchor xml:id="_paths_8h_source_1l00200"/>00200 <emphasis role="comment">//WorldRift</emphasis>
+<anchor xml:id="_paths_8h_source_1l00201"/>00201 <emphasis role="keyword">extern</emphasis>&#32;std::string&#32;<link linkend="_paths_8h_1aae7da0eecf624b481d5d1c78539c3245">WorldRift</link>;
+<anchor xml:id="_paths_8h_source_1l00202"/>00202 <emphasis role="keyword">extern</emphasis>&#32;std::string&#32;<link linkend="_paths_8h_1a217fe823f36a349fe16d5ad380b885a3">autoreincarnationtile</link>;
+<anchor xml:id="_paths_8h_source_1l00203"/>00203 <emphasis role="keyword">extern</emphasis>&#32;std::string&#32;<link linkend="_paths_8h_1a4f5abf90adbcb5c4651767ab7b35e463">autoworldrift</link>;
+<anchor xml:id="_paths_8h_source_1l00204"/>00204 <emphasis role="keyword">extern</emphasis>&#32;std::string&#32;<link linkend="_paths_8h_1ae213985a864637dab54d5238e45017fc">cancelautoreincarnation</link>;
+<anchor xml:id="_paths_8h_source_1l00205"/>00205 <emphasis role="keyword">extern</emphasis>&#32;std::string&#32;<link linkend="_paths_8h_1af3377b6e242487cde91a2f9a20eaffdb">changenbreincarnation</link>;
+<anchor xml:id="_paths_8h_source_1l00206"/>00206 <emphasis role="keyword">extern</emphasis>&#32;std::string&#32;<link linkend="_paths_8h_1a05b55fc34ea7a236da7170ba41be676f">confirmreincarnation</link>;
+<anchor xml:id="_paths_8h_source_1l00207"/>00207 <emphasis role="keyword">extern</emphasis>&#32;std::string&#32;<link linkend="_paths_8h_1aac032e79f03203eef7044cefe562b1f8">continuereincarnation</link>;
+<anchor xml:id="_paths_8h_source_1l00208"/>00208 <emphasis role="keyword">extern</emphasis>&#32;std::string&#32;<link linkend="_paths_8h_1a1cc322cd2370fd61405464da1ebd6911">corigin</link>;
+<anchor xml:id="_paths_8h_source_1l00209"/>00209 <emphasis role="keyword">extern</emphasis>&#32;std::string&#32;<link linkend="_paths_8h_1a13db65cb832f6bab50140286bf4592ca">creincarnate</link>;
+<anchor xml:id="_paths_8h_source_1l00210"/>00210 <emphasis role="keyword">extern</emphasis>&#32;std::string&#32;<link linkend="_paths_8h_1a47f9a78145075169a6601292ce62b1cd">endreincarnation</link>;
+<anchor xml:id="_paths_8h_source_1l00211"/>00211 <emphasis role="keyword">extern</emphasis>&#32;std::string&#32;<link linkend="_paths_8h_1af0cc50381a84430e7ea21ed6911dfd15">ncorigin</link>;
+<anchor xml:id="_paths_8h_source_1l00212"/>00212 <emphasis role="keyword">extern</emphasis>&#32;std::string&#32;<link linkend="_paths_8h_1a88bb0af18b2b9d320f5940cdae558900">ncreincarnate</link>;
+<anchor xml:id="_paths_8h_source_1l00213"/>00213 <emphasis role="keyword">extern</emphasis>&#32;std::string&#32;<link linkend="_paths_8h_1a78c65216cfc1fb3df1e8d914b1c139ef">noreincarnationattempts</link>;
+<anchor xml:id="_paths_8h_source_1l00214"/>00214 <emphasis role="keyword">extern</emphasis>&#32;std::string&#32;<link linkend="_paths_8h_1a319a472c8365c630d091cdd792814bf5">randomstart</link>;
+<anchor xml:id="_paths_8h_source_1l00215"/>00215 <emphasis role="keyword">extern</emphasis>&#32;std::string&#32;<link linkend="_paths_8h_1aa4e0c672b0448b4fc89855d98aba12ac">skipreincarnation</link>;
+<anchor xml:id="_paths_8h_source_1l00216"/>00216 <emphasis role="keyword">extern</emphasis>&#32;std::string&#32;<link linkend="_paths_8h_1ad2c985c6f5f31f3b919486a37b3bf6c3">startreincarnation</link>;
+<anchor xml:id="_paths_8h_source_1l00217"/>00217 
+<anchor xml:id="_paths_8h_source_1l00218"/>00218 <emphasis role="comment">//Zodiac</emphasis>
+<anchor xml:id="_paths_8h_source_1l00219"/>00219 <emphasis role="keyword">extern</emphasis>&#32;std::string&#32;<link linkend="_paths_8h_1af2dc247c74b34a262edacbe5f1429d18">Zodiac</link>;
+<anchor xml:id="_paths_8h_source_1l00220"/>00220 <emphasis role="keyword">extern</emphasis>&#32;std::string&#32;<link linkend="_paths_8h_1a783fefea68f78bb64e41acd5a9ae2edd">breakthroughzodiac</link>;
+<anchor xml:id="_paths_8h_source_1l00221"/>00221 <emphasis role="keyword">extern</emphasis>&#32;std::string&#32;<link linkend="_paths_8h_1ac9e07d40246c2252686b169e8092ab56">nobtzodiac</link>;
+<anchor xml:id="_paths_8h_source_1l00222"/>00222 <emphasis role="keyword">extern</emphasis>&#32;std::string&#32;<link linkend="_paths_8h_1a918d9a41c52b52a3fa5131bc132de717">soulfice</link>;
+<anchor xml:id="_paths_8h_source_1l00223"/>00223 
+<anchor xml:id="_paths_8h_source_1l00224"/>00224 <emphasis role="comment">//Arena</emphasis>
+<anchor xml:id="_paths_8h_source_1l00225"/>00225 <emphasis role="keyword">extern</emphasis>&#32;std::string&#32;<link linkend="_paths_8h_1a4a1109da8e87394c6858f9832b7869e4">Arena</link>;
+<anchor xml:id="_paths_8h_source_1l00226"/>00226 <emphasis role="keyword">extern</emphasis>&#32;std::string&#32;<link linkend="_paths_8h_1a284b374b929ff5fb0984ee5896e6ac6e">arenapurchase</link>;
+<anchor xml:id="_paths_8h_source_1l00227"/>00227 <emphasis role="keyword">extern</emphasis>&#32;std::string&#32;<link linkend="_paths_8h_1a3d6fdeba1d7afeb92502f07060e0eafc">billionarena</link>;
+<anchor xml:id="_paths_8h_source_1l00228"/>00228 <emphasis role="keyword">extern</emphasis>&#32;std::string&#32;<link linkend="_paths_8h_1a03ea0903fd9748cd94d20bc7bd893e72">challengearena</link>;
+<anchor xml:id="_paths_8h_source_1l00229"/>00229 <emphasis role="keyword">extern</emphasis>&#32;std::string&#32;<link linkend="_paths_8h_1a3077c591995d42b60fcdc0e029b27aca">challengetilearena</link>;
+<anchor xml:id="_paths_8h_source_1l00230"/>00230 <emphasis role="keyword">extern</emphasis>&#32;std::string&#32;<link linkend="_paths_8h_1a22dd314eb91e7f0ca0a1c3db1c372214">defeatarena</link>;
+<anchor xml:id="_paths_8h_source_1l00231"/>00231 <emphasis role="keyword">extern</emphasis>&#32;std::string&#32;<link linkend="_paths_8h_1acb4bf06a73ec5abb57e44759e01239e0">dotarena</link>;
+<anchor xml:id="_paths_8h_source_1l00232"/>00232 <emphasis role="keyword">extern</emphasis>&#32;std::string&#32;<link linkend="_paths_8h_1ab7415df6f8171f86dc2c9086f1efb866">eightarena</link>;
+<anchor xml:id="_paths_8h_source_1l00233"/>00233 <emphasis role="keyword">extern</emphasis>&#32;std::string&#32;<link linkend="_paths_8h_1acd5bb0109523f6a33fd512e051168d76">fivearena</link>;
+<anchor xml:id="_paths_8h_source_1l00234"/>00234 <emphasis role="keyword">extern</emphasis>&#32;std::string&#32;<link linkend="_paths_8h_1aa7dfd3cc117e29a54c215d515f0eec0d">fourarena</link>;
+<anchor xml:id="_paths_8h_source_1l00235"/>00235 <emphasis role="keyword">extern</emphasis>&#32;std::string&#32;<link linkend="_paths_8h_1aec0e95f334ad92c8f5b66ea21c01ecf8">heroinvitationarena</link>;
+<anchor xml:id="_paths_8h_source_1l00236"/>00236 <emphasis role="keyword">extern</emphasis>&#32;std::string&#32;<link linkend="_paths_8h_1a7a5781870fa81374afc032ef2f921407">ninearena</link>;
+<anchor xml:id="_paths_8h_source_1l00237"/>00237 <emphasis role="keyword">extern</emphasis>&#32;std::string&#32;<link linkend="_paths_8h_1a009847b070f69431bd6a0e9c915f5ed0">onearena</link>;
+<anchor xml:id="_paths_8h_source_1l00238"/>00238 <emphasis role="keyword">extern</emphasis>&#32;std::string&#32;<link linkend="_paths_8h_1a7216ccd99da15d0cc432659fb63d34a9">refresharena</link>;
+<anchor xml:id="_paths_8h_source_1l00239"/>00239 <emphasis role="keyword">extern</emphasis>&#32;std::string&#32;<link linkend="_paths_8h_1a48d7027091524a683298fcfb8d9f063d">sevenarena</link>;
+<anchor xml:id="_paths_8h_source_1l00240"/>00240 <emphasis role="keyword">extern</emphasis>&#32;std::string&#32;<link linkend="_paths_8h_1a8db38eca2c75f37cafdbac9d1b8dfe16">sixarena</link>;
+<anchor xml:id="_paths_8h_source_1l00241"/>00241 <emphasis role="keyword">extern</emphasis>&#32;std::string&#32;<link linkend="_paths_8h_1a4930d7beeb85330b988c9007eef4f195">speedone</link>;
+<anchor xml:id="_paths_8h_source_1l00242"/>00242 <emphasis role="keyword">extern</emphasis>&#32;std::string&#32;<link linkend="_paths_8h_1aa56872cf3230a03847caf92e3e989103">speedthree</link>;
+<anchor xml:id="_paths_8h_source_1l00243"/>00243 <emphasis role="keyword">extern</emphasis>&#32;std::string&#32;<link linkend="_paths_8h_1ab7cc2e77928062b82f972dba41a52631">speedtwo</link>;
+<anchor xml:id="_paths_8h_source_1l00244"/>00244 <emphasis role="keyword">extern</emphasis>&#32;std::string&#32;<link linkend="_paths_8h_1a650acc01efe821d45b4ef7ca9c7e8a96">threearena</link>;
+<anchor xml:id="_paths_8h_source_1l00245"/>00245 <emphasis role="keyword">extern</emphasis>&#32;std::string&#32;<link linkend="_paths_8h_1ad07075a0f1014b95a815e8f1829259be">twoarena</link>;
+<anchor xml:id="_paths_8h_source_1l00246"/>00246 <emphasis role="keyword">extern</emphasis>&#32;std::string&#32;<link linkend="_paths_8h_1a0f4467fe9d1d35c6a34e2db51990d4f5">victoryarena</link>;
+<anchor xml:id="_paths_8h_source_1l00247"/>00247 <emphasis role="keyword">extern</emphasis>&#32;std::string&#32;<link linkend="_paths_8h_1a8db890868eec6266a684ea1cc77bff40">yinyangarena</link>;
+<anchor xml:id="_paths_8h_source_1l00248"/>00248 <emphasis role="keyword">extern</emphasis>&#32;std::string&#32;<link linkend="_paths_8h_1ae32e770d0b2834da564aff43055b7858">zeroarena</link>;
+<anchor xml:id="_paths_8h_source_1l00249"/>00249 
+<anchor xml:id="_paths_8h_source_1l00250"/>00250 <emphasis role="comment">//Assistant</emphasis>
+<anchor xml:id="_paths_8h_source_1l00251"/>00251 <emphasis role="keyword">extern</emphasis>&#32;std::string&#32;<link linkend="_paths_8h_1adb899144e43128c90a4a88e199344bc7">Assistant</link>;
+<anchor xml:id="_paths_8h_source_1l00252"/>00252 <emphasis role="keyword">extern</emphasis>&#32;std::string&#32;<link linkend="_paths_8h_1a059985ddc60ed4bb320f121ff0c3f081">assistantalchemy</link>;
+<anchor xml:id="_paths_8h_source_1l00253"/>00253 <emphasis role="keyword">extern</emphasis>&#32;std::string&#32;<link linkend="_paths_8h_1a7e0db9f0b1195697d3519e0ca239cfb6">assistantbounty</link>;
+<anchor xml:id="_paths_8h_source_1l00254"/>00254 <emphasis role="keyword">extern</emphasis>&#32;std::string&#32;<link linkend="_paths_8h_1ada349fa8d39b92234f5cbb797c5e671c">assistantdailytask</link>;
+<anchor xml:id="_paths_8h_source_1l00255"/>00255 <emphasis role="keyword">extern</emphasis>&#32;std::string&#32;<link linkend="_paths_8h_1aaa7e00adb90115d197f7d1c3d0818bcd">assistantfatevillion</link>;
+<anchor xml:id="_paths_8h_source_1l00256"/>00256 <emphasis role="keyword">extern</emphasis>&#32;std::string&#32;<link linkend="_paths_8h_1aa978e4c6c8c3b675e21141ef44944f62">assistantmarket</link>;
+<anchor xml:id="_paths_8h_source_1l00257"/>00257 <emphasis role="keyword">extern</emphasis>&#32;std::string&#32;<link linkend="_paths_8h_1a12f03afb51aa753a5feacb5e84f9a537">atask</link>;
+<anchor xml:id="_paths_8h_source_1l00258"/>00258 <emphasis role="keyword">extern</emphasis>&#32;std::string&#32;<link linkend="_paths_8h_1a9d0fa4c2c18e986b2dc61cd2452796db">bluecollection</link>;
+<anchor xml:id="_paths_8h_source_1l00259"/>00259 <emphasis role="keyword">extern</emphasis>&#32;std::string&#32;<link linkend="_paths_8h_1abb691e00748e232c7988bd0147454241">bluewanted</link>;
+<anchor xml:id="_paths_8h_source_1l00260"/>00260 <emphasis role="keyword">extern</emphasis>&#32;std::string&#32;<link linkend="_paths_8h_1a226345006bde8156f336a999fb738cbf">btask</link>;
+<anchor xml:id="_paths_8h_source_1l00261"/>00261 <emphasis role="keyword">extern</emphasis>&#32;std::string&#32;<link linkend="_paths_8h_1a1d852ff10d111df41b558ea87e471cf7">claimalchemyassistant</link>;
+<anchor xml:id="_paths_8h_source_1l00262"/>00262 <emphasis role="keyword">extern</emphasis>&#32;std::string&#32;<link linkend="_paths_8h_1aa8d348f979b976ceb2a96c5fd739b31e">claimtask</link>;
+<anchor xml:id="_paths_8h_source_1l00263"/>00263 <emphasis role="keyword">extern</emphasis>&#32;std::string&#32;<link linkend="_paths_8h_1a592fb79e4700b113fc65b7893e26a933">completebounty</link>;
+<anchor xml:id="_paths_8h_source_1l00264"/>00264 <emphasis role="keyword">extern</emphasis>&#32;std::string&#32;<link linkend="_paths_8h_1a788108ffcca44bba20a5d3684d0f74e7">completedbounty</link>;
+<anchor xml:id="_paths_8h_source_1l00265"/>00265 <emphasis role="keyword">extern</emphasis>&#32;std::string&#32;<link linkend="_paths_8h_1abf2ade17a0b5954aff5252057a788ede">ctask</link>;
+<anchor xml:id="_paths_8h_source_1l00266"/>00266 <emphasis role="keyword">extern</emphasis>&#32;std::string&#32;<link linkend="_paths_8h_1aa2e3ba06af3cc33f4e53267e0b496f74">dailytask</link>;
+<anchor xml:id="_paths_8h_source_1l00267"/>00267 <emphasis role="keyword">extern</emphasis>&#32;std::string&#32;<link linkend="_paths_8h_1a0a20353822215deaaa10164e69726cc5">dtask</link>;
+<anchor xml:id="_paths_8h_source_1l00268"/>00268 <emphasis role="keyword">extern</emphasis>&#32;std::string&#32;<link linkend="_paths_8h_1ae58b018a9a4d09f4cf11ceed83a4db02">etask</link>;
+<anchor xml:id="_paths_8h_source_1l00269"/>00269 <emphasis role="keyword">extern</emphasis>&#32;std::string&#32;<link linkend="_paths_8h_1a4d1000d71f04013326d52b48f8b2c9bf">graycollection</link>;
+<anchor xml:id="_paths_8h_source_1l00270"/>00270 <emphasis role="keyword">extern</emphasis>&#32;std::string&#32;<link linkend="_paths_8h_1a62181702cc16c90a00025d4e7e3fe774">graywanted</link>;
+<anchor xml:id="_paths_8h_source_1l00271"/>00271 <emphasis role="keyword">extern</emphasis>&#32;std::string&#32;<link linkend="_paths_8h_1ac42b203cc4553c8b8c69c36ac64b9a89">greencollection</link>;
+<anchor xml:id="_paths_8h_source_1l00272"/>00272 <emphasis role="keyword">extern</emphasis>&#32;std::string&#32;<link linkend="_paths_8h_1a698e12a397cd2804dccbe98e6ad8cf37">greenwanted</link>;
+<anchor xml:id="_paths_8h_source_1l00273"/>00273 <emphasis role="keyword">extern</emphasis>&#32;std::string&#32;<link linkend="_paths_8h_1afd9d0df1a254c1cd4c2a7a8bb6e9449a">implement</link>;
+<anchor xml:id="_paths_8h_source_1l00274"/>00274 <emphasis role="keyword">extern</emphasis>&#32;std::string&#32;<link linkend="_paths_8h_1a58814238e0abb27ffefe058a87a94ac4">implementalchemyassistant</link>;
+<anchor xml:id="_paths_8h_source_1l00275"/>00275 <emphasis role="keyword">extern</emphasis>&#32;std::string&#32;<link linkend="_paths_8h_1a9f0634b1d553066f978d75e8654c243d">makeaplan</link>;
+<anchor xml:id="_paths_8h_source_1l00276"/>00276 <emphasis role="keyword">extern</emphasis>&#32;std::string&#32;<link linkend="_paths_8h_1af6d2c24cf63f4818ff23f5a1754e29ca">onassistant</link>;
+<anchor xml:id="_paths_8h_source_1l00277"/>00277 <emphasis role="keyword">extern</emphasis>&#32;std::string&#32;<link linkend="_paths_8h_1aa25b38a57fbe532e840061ee574437b6">purplecollection</link>;
+<anchor xml:id="_paths_8h_source_1l00278"/>00278 <emphasis role="keyword">extern</emphasis>&#32;std::string&#32;<link linkend="_paths_8h_1aea55a0a9010ca1bcd4c58a6d38482ff6">purplewanted</link>;
+<anchor xml:id="_paths_8h_source_1l00279"/>00279 <emphasis role="keyword">extern</emphasis>&#32;std::string&#32;<link linkend="_paths_8h_1acfbeeb5b7974e1f0dd6223c6841caaaf">quickimplement</link>;
+<anchor xml:id="_paths_8h_source_1l00280"/>00280 <emphasis role="keyword">extern</emphasis>&#32;std::string&#32;<link linkend="_paths_8h_1a6b518b8073b00f0e53adaf9de9bbffae">refreshfatevillion</link>;
+<anchor xml:id="_paths_8h_source_1l00281"/>00281 <emphasis role="keyword">extern</emphasis>&#32;std::string&#32;<link linkend="_paths_8h_1a56dbcb50e93918d9b0faefd0b6b7739c">secttaskassistant</link>;
+<anchor xml:id="_paths_8h_source_1l00282"/>00282 <emphasis role="keyword">extern</emphasis>&#32;std::string&#32;<link linkend="_paths_8h_1ab08f222896ad3d46e8c8cfa86b58210a">starttask</link>;
+<anchor xml:id="_paths_8h_source_1l00283"/>00283 <emphasis role="keyword">extern</emphasis>&#32;std::string&#32;<link linkend="_paths_8h_1a41a87827d0b273bf0161eca39640f7f8">stopassistant</link>;
+<anchor xml:id="_paths_8h_source_1l00284"/>00284 <emphasis role="keyword">extern</emphasis>&#32;std::string&#32;<link linkend="_paths_8h_1a55ba8e8475e539a545764b0b1de5c4f6">yellowcollection</link>;
+<anchor xml:id="_paths_8h_source_1l00285"/>00285 <emphasis role="keyword">extern</emphasis>&#32;std::string&#32;<link linkend="_paths_8h_1af95e6379e9fd9dc373a475e766e87588">yellowwanted</link>;
+<anchor xml:id="_paths_8h_source_1l00286"/>00286 
+<anchor xml:id="_paths_8h_source_1l00287"/>00287 <emphasis role="comment">//Backpack</emphasis>
+<anchor xml:id="_paths_8h_source_1l00288"/>00288 <emphasis role="keyword">extern</emphasis>&#32;std::string&#32;<link linkend="_paths_8h_1a729f877eee8ddb3182f426e49d456821">Backpack</link>;
+<anchor xml:id="_paths_8h_source_1l00289"/>00289 <emphasis role="keyword">extern</emphasis>&#32;std::string&#32;<link linkend="_paths_8h_1af117e9873e38eb0dc9493a3c89d6edf2">autosell</link>;
+<anchor xml:id="_paths_8h_source_1l00290"/>00290 <emphasis role="keyword">extern</emphasis>&#32;std::string&#32;<link linkend="_paths_8h_1a340d38b3a059bd5131414aba94e4060d">identifybag</link>;
+<anchor xml:id="_paths_8h_source_1l00291"/>00291 <emphasis role="keyword">extern</emphasis>&#32;std::string&#32;<link linkend="_paths_8h_1a07121bdfad842fb61dd1c096b890febb">obtainbag</link>;
+<anchor xml:id="_paths_8h_source_1l00292"/>00292 <emphasis role="keyword">extern</emphasis>&#32;std::string&#32;<link linkend="_paths_8h_1a0a55aed7f89f81fab6661b4d4ea7c554">petstone</link>;
+<anchor xml:id="_paths_8h_source_1l00293"/>00293 <emphasis role="keyword">extern</emphasis>&#32;std::string&#32;<link linkend="_paths_8h_1a8881fd7fcdb81816b96ad1c626c44100">usebag</link>;
+<anchor xml:id="_paths_8h_source_1l00294"/>00294 
+<anchor xml:id="_paths_8h_source_1l00295"/>00295 <emphasis role="comment">//Character</emphasis>
+<anchor xml:id="_paths_8h_source_1l00296"/>00296 <emphasis role="keyword">extern</emphasis>&#32;std::string&#32;<link linkend="_paths_8h_1a67db7e9ece1f7b2b47765be6fcaf62c5">Character</link>;
+<anchor xml:id="_paths_8h_source_1l00297"/>00297 <emphasis role="keyword">extern</emphasis>&#32;std::string&#32;<link linkend="_paths_8h_1aa78615161c6fb9987420518da84c061a">ability</link>;
+<anchor xml:id="_paths_8h_source_1l00298"/>00298 <emphasis role="keyword">extern</emphasis>&#32;std::string&#32;<link linkend="_paths_8h_1a3ef05a05f5a2d88eb1a7bb06fb78dd37">curio</link>;
+<anchor xml:id="_paths_8h_source_1l00299"/>00299 <emphasis role="keyword">extern</emphasis>&#32;std::string&#32;<link linkend="_paths_8h_1a0f00d521d19411a0096b1432babca781">technique</link>;
+<anchor xml:id="_paths_8h_source_1l00300"/>00300 
+<anchor xml:id="_paths_8h_source_1l00301"/>00301 <emphasis role="comment">//Divinities</emphasis>
+<anchor xml:id="_paths_8h_source_1l00302"/>00302 <emphasis role="keyword">extern</emphasis>&#32;std::string&#32;<link linkend="_paths_8h_1a4d0bb7543fe9b422c7c096887bbf08bf">Divinities</link>;
+<anchor xml:id="_paths_8h_source_1l00303"/>00303 <emphasis role="keyword">extern</emphasis>&#32;std::string&#32;<link linkend="_paths_8h_1a7321a6a6ba811622fc95822fb6d71543">bagbanquet</link>;
+<anchor xml:id="_paths_8h_source_1l00304"/>00304 <emphasis role="keyword">extern</emphasis>&#32;std::string&#32;<link linkend="_paths_8h_1a0072a160d36dd5ddf965cec4cdefedc2">carraytile</link>;
+<anchor xml:id="_paths_8h_source_1l00305"/>00305 <emphasis role="keyword">extern</emphasis>&#32;std::string&#32;<link linkend="_paths_8h_1abb7a8b863841fcd97db9ea05863a0354">immortalbanquet</link>;
+<anchor xml:id="_paths_8h_source_1l00306"/>00306 <emphasis role="keyword">extern</emphasis>&#32;std::string&#32;<link linkend="_paths_8h_1a39dadf12e3591d5d833bc8f0e28f8723">immortalfriends</link>;
+<anchor xml:id="_paths_8h_source_1l00307"/>00307 <emphasis role="keyword">extern</emphasis>&#32;std::string&#32;<link linkend="_paths_8h_1a5dae99df580eed57e57daf6ec49b82e4">immortalpeach</link>;
+<anchor xml:id="_paths_8h_source_1l00308"/>00308 <emphasis role="keyword">extern</emphasis>&#32;std::string&#32;<link linkend="_paths_8h_1a61505f135a5bfbd8684853aa52c7e7e1">invitebanquet</link>;
+<anchor xml:id="_paths_8h_source_1l00309"/>00309 <emphasis role="keyword">extern</emphasis>&#32;std::string&#32;<link linkend="_paths_8h_1a46ad43f890b3f62b8682dd3856296576">leveltile</link>;
+<anchor xml:id="_paths_8h_source_1l00310"/>00310 <emphasis role="keyword">extern</emphasis>&#32;std::string&#32;<link linkend="_paths_8h_1a676d5a76d31476b184b27c79dcec0259">ncarraytile</link>;
+<anchor xml:id="_paths_8h_source_1l00311"/>00311 <emphasis role="keyword">extern</emphasis>&#32;std::string&#32;<link linkend="_paths_8h_1a7b97cfa937cf0b6d1255819b0c74cd5d">nostone</link>;
+<anchor xml:id="_paths_8h_source_1l00312"/>00312 <emphasis role="keyword">extern</emphasis>&#32;std::string&#32;<link linkend="_paths_8h_1aee4071aaba726db0f09ae9786d231321">partyover</link>;
+<anchor xml:id="_paths_8h_source_1l00313"/>00313 <emphasis role="keyword">extern</emphasis>&#32;std::string&#32;<link linkend="_paths_8h_1a0b2736b0482a1e4b2603454f83869ed3">roam10times</link>;
+<anchor xml:id="_paths_8h_source_1l00314"/>00314 <emphasis role="keyword">extern</emphasis>&#32;std::string&#32;<link linkend="_paths_8h_1a088b97034c964457173d522fd64268af">roamresults</link>;
+<anchor xml:id="_paths_8h_source_1l00315"/>00315 <emphasis role="keyword">extern</emphasis>&#32;std::string&#32;<link linkend="_paths_8h_1a7da0be7132daa2ce9748fdc2c7beb288">spiritualroaming</link>;
+<anchor xml:id="_paths_8h_source_1l00316"/>00316 <emphasis role="keyword">extern</emphasis>&#32;std::string&#32;<link linkend="_paths_8h_1a51240e17ea4c6052c801d0e5e48ccd3f">ultimateskills</link>;
+<anchor xml:id="_paths_8h_source_1l00317"/>00317 <emphasis role="keyword">extern</emphasis>&#32;std::string&#32;<link linkend="_paths_8h_1a8766d322a43e622403aaace5438b834b">upgradearray</link>;
+<anchor xml:id="_paths_8h_source_1l00318"/>00318 
+<anchor xml:id="_paths_8h_source_1l00319"/>00319 <emphasis role="comment">//Gate</emphasis>
+<anchor xml:id="_paths_8h_source_1l00320"/>00320 <emphasis role="keyword">extern</emphasis>&#32;std::string&#32;<link linkend="_paths_8h_1a3de9d83f7df2a42464f7f21a1012dd56">Gate</link>;
+<anchor xml:id="_paths_8h_source_1l00321"/>00321 <emphasis role="keyword">extern</emphasis>&#32;std::string&#32;<link linkend="_paths_8h_1af24b692db5f87754e9e903d12831ed8c">aoeattack</link>;
+<anchor xml:id="_paths_8h_source_1l00322"/>00322 <emphasis role="keyword">extern</emphasis>&#32;std::string&#32;<link linkend="_paths_8h_1a7c50208909463212f4888a707a288620">attackicon</link>;
+<anchor xml:id="_paths_8h_source_1l00323"/>00323 <emphasis role="keyword">extern</emphasis>&#32;std::string&#32;<link linkend="_paths_8h_1a6fd360149f7612de97dd5d80fbc57f05">autofight</link>;
+<anchor xml:id="_paths_8h_source_1l00324"/>00324 <emphasis role="keyword">extern</emphasis>&#32;std::string&#32;<link linkend="_paths_8h_1adb9e34579e0a65c578521a028c3c33cf">blackborder</link>;
+<anchor xml:id="_paths_8h_source_1l00325"/>00325 <emphasis role="keyword">extern</emphasis>&#32;std::string&#32;<link linkend="_paths_8h_1ac703c8a1675bc2966df260d042fabde5">blitzpandemonium</link>;
+<anchor xml:id="_paths_8h_source_1l00326"/>00326 <emphasis role="keyword">extern</emphasis>&#32;std::string&#32;<link linkend="_paths_8h_1a5351607d27fbb833311346db910f4e62">blitztile</link>;
+<anchor xml:id="_paths_8h_source_1l00327"/>00327 <emphasis role="keyword">extern</emphasis>&#32;std::string&#32;<link linkend="_paths_8h_1a3a363b3b252625bf6284fea8b770fc08">buff</link>;
+<anchor xml:id="_paths_8h_source_1l00328"/>00328 <emphasis role="keyword">extern</emphasis>&#32;std::string&#32;<link linkend="_paths_8h_1ad3725248fe5e67bb31b64672f6a31c43">challengepandemonium</link>;
+<anchor xml:id="_paths_8h_source_1l00329"/>00329 <emphasis role="keyword">extern</emphasis>&#32;std::string&#32;<link linkend="_paths_8h_1ab788cd8bd7a5fe2dddcc0cbf446db038">challengetower</link>;
+<anchor xml:id="_paths_8h_source_1l00330"/>00330 <emphasis role="keyword">extern</emphasis>&#32;std::string&#32;<link linkend="_paths_8h_1a14921ba8e4b90c20d0ebbaae7e63c8ae">controlattack</link>;
+<anchor xml:id="_paths_8h_source_1l00331"/>00331 <emphasis role="keyword">extern</emphasis>&#32;std::string&#32;<link linkend="_paths_8h_1a75cf828cb14725d48fc5b9b425817e8b">debuffattack</link>;
+<anchor xml:id="_paths_8h_source_1l00332"/>00332 <emphasis role="keyword">extern</emphasis>&#32;std::string&#32;<link linkend="_paths_8h_1a3b19d35875e2a692c94d3431004c559c">defeattower</link>;
+<anchor xml:id="_paths_8h_source_1l00333"/>00333 <emphasis role="keyword">extern</emphasis>&#32;std::string&#32;<link linkend="_paths_8h_1ac4c48b6ccf8b15a624afebcb38e66eba">freeblitz</link>;
+<anchor xml:id="_paths_8h_source_1l00334"/>00334 <emphasis role="keyword">extern</emphasis>&#32;std::string&#32;<link linkend="_paths_8h_1a4213d340e587a15ef1fd2913d76095f4">gatestardust</link>;
+<anchor xml:id="_paths_8h_source_1l00335"/>00335 <emphasis role="keyword">extern</emphasis>&#32;std::string&#32;<link linkend="_paths_8h_1ab8b918256d84e4ba01bb64842eb3b36b">manualfight</link>;
+<anchor xml:id="_paths_8h_source_1l00336"/>00336 <emphasis role="keyword">extern</emphasis>&#32;std::string&#32;<link linkend="_paths_8h_1a358048bec1414e412f74063eccde2f3d">monsterhunt</link>;
+<anchor xml:id="_paths_8h_source_1l00337"/>00337 <emphasis role="keyword">extern</emphasis>&#32;std::string&#32;<link linkend="_paths_8h_1aaf617f09b146028bb3aebaf6cbc39242">pandemonium</link>;
+<anchor xml:id="_paths_8h_source_1l00338"/>00338 <emphasis role="keyword">extern</emphasis>&#32;std::string&#32;<link linkend="_paths_8h_1a4a8e0e744c8bc751f35d590bfb2c7bdf">singleattack</link>;
+<anchor xml:id="_paths_8h_source_1l00339"/>00339 <emphasis role="keyword">extern</emphasis>&#32;std::string&#32;<link linkend="_paths_8h_1a6ae0b0f424ab463104e059a04fcafaa3">skipfight</link>;
+<anchor xml:id="_paths_8h_source_1l00340"/>00340 <emphasis role="keyword">extern</emphasis>&#32;std::string&#32;<link linkend="_paths_8h_1a4766615a550a9d8c0ffeabfe24e8ea13">victorytower</link>;
+<anchor xml:id="_paths_8h_source_1l00341"/>00341 
+<anchor xml:id="_paths_8h_source_1l00342"/>00342 <emphasis role="comment">//Heirloom</emphasis>
+<anchor xml:id="_paths_8h_source_1l00343"/>00343 <emphasis role="keyword">extern</emphasis>&#32;std::string&#32;<link linkend="_paths_8h_1a657702177746f679bb323438058eb594">Heirloom</link>;
+<anchor xml:id="_paths_8h_source_1l00344"/>00344 <emphasis role="keyword">extern</emphasis>&#32;std::string&#32;<link linkend="_paths_8h_1a5d0048f2f25be8f8141d4d1050e9ff0f">cdaemonfae</link>;
+<anchor xml:id="_paths_8h_source_1l00345"/>00345 <emphasis role="keyword">extern</emphasis>&#32;std::string&#32;<link linkend="_paths_8h_1a4ff779b7c9c9889fb0870b9f1b65ba8b">cexotic</link>;
+<anchor xml:id="_paths_8h_source_1l00346"/>00346 <emphasis role="keyword">extern</emphasis>&#32;std::string&#32;<link linkend="_paths_8h_1a639556acc9115793053465aefbe0ba1c">cfieldhunt</link>;
+<anchor xml:id="_paths_8h_source_1l00347"/>00347 <emphasis role="keyword">extern</emphasis>&#32;std::string&#32;<link linkend="_paths_8h_1ad1f7dafcea8926095f7d7928efe4f57a">cspiritland</link>;
+<anchor xml:id="_paths_8h_source_1l00348"/>00348 <emphasis role="keyword">extern</emphasis>&#32;std::string&#32;<link linkend="_paths_8h_1a77de3ac2bbd40e22c29d5eac2079266d">explore10</link>;
+<anchor xml:id="_paths_8h_source_1l00349"/>00349 <emphasis role="keyword">extern</emphasis>&#32;std::string&#32;<link linkend="_paths_8h_1a06ea59297602a715cf0ee714f4405072">exploreonce</link>;
+<anchor xml:id="_paths_8h_source_1l00350"/>00350 <emphasis role="keyword">extern</emphasis>&#32;std::string&#32;<link linkend="_paths_8h_1a3c795900783e9fa311cbfecd660330ce">freeexplore</link>;
+<anchor xml:id="_paths_8h_source_1l00351"/>00351 <emphasis role="keyword">extern</emphasis>&#32;std::string&#32;<link linkend="_paths_8h_1a250a4372e0ee30168233ec53eaff48b9">ncdaemonfae</link>;
+<anchor xml:id="_paths_8h_source_1l00352"/>00352 <emphasis role="keyword">extern</emphasis>&#32;std::string&#32;<link linkend="_paths_8h_1a0c8ecb6b66e73c4a093353a2b742e008">ncexotic</link>;
+<anchor xml:id="_paths_8h_source_1l00353"/>00353 <emphasis role="keyword">extern</emphasis>&#32;std::string&#32;<link linkend="_paths_8h_1adae7118329edc09b2176b3492867e542">ncfieldhunt</link>;
+<anchor xml:id="_paths_8h_source_1l00354"/>00354 <emphasis role="keyword">extern</emphasis>&#32;std::string&#32;<link linkend="_paths_8h_1a3d03f1bd6c7cb9aca60b64d46cd85749">ncspiritland</link>;
+<anchor xml:id="_paths_8h_source_1l00355"/>00355 
+<anchor xml:id="_paths_8h_source_1l00356"/>00356 <emphasis role="comment">//Launch</emphasis>
+<anchor xml:id="_paths_8h_source_1l00357"/>00357 <emphasis role="keyword">extern</emphasis>&#32;std::string&#32;<link linkend="_paths_8h_1a355715affaf815143ec8aa85f30eab84">Launch</link>;
+<anchor xml:id="_paths_8h_source_1l00358"/>00358 <emphasis role="keyword">extern</emphasis>&#32;std::string&#32;<link linkend="_paths_8h_1ada246c3f87a2ee9731cb742fdedc16da">loadingpage</link>;
+<anchor xml:id="_paths_8h_source_1l00359"/>00359 <emphasis role="keyword">extern</emphasis>&#32;std::string&#32;<link linkend="_paths_8h_1a16aa4d40ab978645fc01b5348797cb3f">logotherdevice</link>;
+<anchor xml:id="_paths_8h_source_1l00360"/>00360 <emphasis role="keyword">extern</emphasis>&#32;std::string&#32;<link linkend="_paths_8h_1ab9433f7beda9e3f032ff8cdca809e05f">notice</link>;
+<anchor xml:id="_paths_8h_source_1l00361"/>00361 <emphasis role="keyword">extern</emphasis>&#32;std::string&#32;<link linkend="_paths_8h_1a98c91f32f2354f1400358b61a8aa8a55">okdisconnect</link>;
+<anchor xml:id="_paths_8h_source_1l00362"/>00362 <emphasis role="keyword">extern</emphasis>&#32;std::string&#32;<link linkend="_paths_8h_1a45a2f0097f2c03e9ed1fcc66a33418f2">quitreconnecting</link>;
+<anchor xml:id="_paths_8h_source_1l00363"/>00363 <emphasis role="keyword">extern</emphasis>&#32;std::string&#32;<link linkend="_paths_8h_1a423ec00aa9b17614cb8a0c52de937623">start</link>;
+<anchor xml:id="_paths_8h_source_1l00364"/>00364 <emphasis role="keyword">extern</emphasis>&#32;std::string&#32;<link linkend="_paths_8h_1a6dfa0071362986f2680867cd51fa2ea8">user</link>;
+<anchor xml:id="_paths_8h_source_1l00365"/>00365 
+<anchor xml:id="_paths_8h_source_1l00366"/>00366 <emphasis role="comment">//Mail</emphasis>
+<anchor xml:id="_paths_8h_source_1l00367"/>00367 <emphasis role="keyword">extern</emphasis>&#32;std::string&#32;<link linkend="_paths_8h_1ab884f2a59a6175207148e316cbcf646f">Mail</link>;
+<anchor xml:id="_paths_8h_source_1l00368"/>00368 <emphasis role="keyword">extern</emphasis>&#32;std::string&#32;<link linkend="_paths_8h_1af9b0aa9df37c799a85d32eab3837b1c0">claimallmail</link>;
+<anchor xml:id="_paths_8h_source_1l00369"/>00369 
+<anchor xml:id="_paths_8h_source_1l00370"/>00370 <emphasis role="comment">//Otherworld</emphasis>
+<anchor xml:id="_paths_8h_source_1l00371"/>00371 <emphasis role="keyword">extern</emphasis>&#32;std::string&#32;<link linkend="_paths_8h_1ab1a06e7e8d1998359fa383ba8722a59e">Otherworld</link>;
+<anchor xml:id="_paths_8h_source_1l00372"/>00372 <emphasis role="keyword">extern</emphasis>&#32;std::string&#32;<link linkend="_paths_8h_1a2c42958c51011654c324994dc302b6f8">battleotherworld</link>;
+<anchor xml:id="_paths_8h_source_1l00373"/>00373 <emphasis role="keyword">extern</emphasis>&#32;std::string&#32;<link linkend="_paths_8h_1a8138a996d49d366a9cee02c6c91b65d6">battlexotherworld</link>;
+<anchor xml:id="_paths_8h_source_1l00374"/>00374 <emphasis role="keyword">extern</emphasis>&#32;std::string&#32;<link linkend="_paths_8h_1aff2a80a54e69ac1dde2ceea4ecc42541">billionxserver</link>;
+<anchor xml:id="_paths_8h_source_1l00375"/>00375 <emphasis role="keyword">extern</emphasis>&#32;std::string&#32;<link linkend="_paths_8h_1ae304487ef5af89aaca366eccb84a3d86">bottomxserver</link>;
+<anchor xml:id="_paths_8h_source_1l00376"/>00376 <emphasis role="keyword">extern</emphasis>&#32;std::string&#32;<link linkend="_paths_8h_1a0e0d0e1ed4f14a6ff80b9f6368cb24f7">cduelxserver</link>;
+<anchor xml:id="_paths_8h_source_1l00377"/>00377 <emphasis role="keyword">extern</emphasis>&#32;std::string&#32;<link linkend="_paths_8h_1a91f39e89a79cb1a942522b55a3413c5f">challengexserver</link>;
+<anchor xml:id="_paths_8h_source_1l00378"/>00378 <emphasis role="keyword">extern</emphasis>&#32;std::string&#32;<link linkend="_paths_8h_1a4e6b236ece03ab543cc75ae0b3bc8175">dotxserver</link>;
+<anchor xml:id="_paths_8h_source_1l00379"/>00379 <emphasis role="keyword">extern</emphasis>&#32;std::string&#32;<link linkend="_paths_8h_1a848bbbb87fb041c7b3402ea74dd62b6e">duelinvitationxserver</link>;
+<anchor xml:id="_paths_8h_source_1l00380"/>00380 <emphasis role="keyword">extern</emphasis>&#32;std::string&#32;<link linkend="_paths_8h_1a6e8174a37e1035b8a052085c514afc53">eightxserver</link>;
+<anchor xml:id="_paths_8h_source_1l00381"/>00381 <emphasis role="keyword">extern</emphasis>&#32;std::string&#32;<link linkend="_paths_8h_1a6274acb0df66de671894eebae9f4af69">exchangexserver</link>;
+<anchor xml:id="_paths_8h_source_1l00382"/>00382 <emphasis role="keyword">extern</emphasis>&#32;std::string&#32;<link linkend="_paths_8h_1a1e87c28445d3c3b07c5b818e6b74a0c7">fivexserver</link>;
+<anchor xml:id="_paths_8h_source_1l00383"/>00383 <emphasis role="keyword">extern</emphasis>&#32;std::string&#32;<link linkend="_paths_8h_1a40fcb1b512de1f8ee9e7ae9133cfe3f6">fourxserver</link>;
+<anchor xml:id="_paths_8h_source_1l00384"/>00384 <emphasis role="keyword">extern</emphasis>&#32;std::string&#32;<link linkend="_paths_8h_1ad9e24bf20aca9e255cfc7bc3ba0886c3">fromdisrupt</link>;
+<anchor xml:id="_paths_8h_source_1l00385"/>00385 <emphasis role="keyword">extern</emphasis>&#32;std::string&#32;<link linkend="_paths_8h_1ac09f013bc922e4b58fcf361cab2b0bb7">millionxserver</link>;
+<anchor xml:id="_paths_8h_source_1l00386"/>00386 <emphasis role="keyword">extern</emphasis>&#32;std::string&#32;<link linkend="_paths_8h_1a4c4949c9a5686b3dc01d60d4e219aed0">mybillionxserver</link>;
+<anchor xml:id="_paths_8h_source_1l00387"/>00387 <emphasis role="keyword">extern</emphasis>&#32;std::string&#32;<link linkend="_paths_8h_1ae6e4cd88d71ab226162a8e10d3bb23fe">mydotxserver</link>;
+<anchor xml:id="_paths_8h_source_1l00388"/>00388 <emphasis role="keyword">extern</emphasis>&#32;std::string&#32;<link linkend="_paths_8h_1a1d7444050a4b38251cf6a73bb82348c7">myeightxserver</link>;
+<anchor xml:id="_paths_8h_source_1l00389"/>00389 <emphasis role="keyword">extern</emphasis>&#32;std::string&#32;<link linkend="_paths_8h_1a0111f725c786b44fa49184ac2ec5c569">myfivexserver</link>;
+<anchor xml:id="_paths_8h_source_1l00390"/>00390 <emphasis role="keyword">extern</emphasis>&#32;std::string&#32;<link linkend="_paths_8h_1ab1a5f21672d1db09cf15f3dd55c7547d">myfourxserver</link>;
+<anchor xml:id="_paths_8h_source_1l00391"/>00391 <emphasis role="keyword">extern</emphasis>&#32;std::string&#32;<link linkend="_paths_8h_1ab28d41cd854b2624dcf5a47c4ab2d7ac">myninexserver</link>;
+<anchor xml:id="_paths_8h_source_1l00392"/>00392 <emphasis role="keyword">extern</emphasis>&#32;std::string&#32;<link linkend="_paths_8h_1adfa57150883c19b715e3f1ea43d20285">myonexserver</link>;
+<anchor xml:id="_paths_8h_source_1l00393"/>00393 <emphasis role="keyword">extern</emphasis>&#32;std::string&#32;<link linkend="_paths_8h_1a928c84e78e2907ec7541333c02621026">mysevenxserver</link>;
+<anchor xml:id="_paths_8h_source_1l00394"/>00394 <emphasis role="keyword">extern</emphasis>&#32;std::string&#32;<link linkend="_paths_8h_1a8607095f97160e0cb48eb25cae0c62be">mysixxserver</link>;
+<anchor xml:id="_paths_8h_source_1l00395"/>00395 <emphasis role="keyword">extern</emphasis>&#32;std::string&#32;<link linkend="_paths_8h_1a810528c4966cd49a22a370f200939902">mythreexserver</link>;
+<anchor xml:id="_paths_8h_source_1l00396"/>00396 <emphasis role="keyword">extern</emphasis>&#32;std::string&#32;<link linkend="_paths_8h_1abd93a2268088a094ba1baa635c70e8fc">mytwoxserver</link>;
+<anchor xml:id="_paths_8h_source_1l00397"/>00397 <emphasis role="keyword">extern</emphasis>&#32;std::string&#32;<link linkend="_paths_8h_1a5264653862bd39ab093dc1723b1b748e">myzeroxserver</link>;
+<anchor xml:id="_paths_8h_source_1l00398"/>00398 <emphasis role="keyword">extern</emphasis>&#32;std::string&#32;<link linkend="_paths_8h_1a2b0ee1761e38cd79fed1fca1f1c9c7d6">ncshopxserver</link>;
+<anchor xml:id="_paths_8h_source_1l00399"/>00399 <emphasis role="keyword">extern</emphasis>&#32;std::string&#32;<link linkend="_paths_8h_1a001ffed9a3ee8145b5816d3fe82cb627">ninexserver</link>;
+<anchor xml:id="_paths_8h_source_1l00400"/>00400 <emphasis role="keyword">extern</emphasis>&#32;std::string&#32;<link linkend="_paths_8h_1a97c19cb35df8aab284463307f273fed6">onexserver</link>;
+<anchor xml:id="_paths_8h_source_1l00401"/>00401 <emphasis role="keyword">extern</emphasis>&#32;std::string&#32;<link linkend="_paths_8h_1a5a602a6bed5e86cd4a1e7edf191b0f8a">otherworldinvasion</link>;
+<anchor xml:id="_paths_8h_source_1l00402"/>00402 <emphasis role="keyword">extern</emphasis>&#32;std::string&#32;<link linkend="_paths_8h_1a6156fdc4976f24c09d6f4572ecc87084">purchasexserver</link>;
+<anchor xml:id="_paths_8h_source_1l00403"/>00403 <emphasis role="keyword">extern</emphasis>&#32;std::string&#32;<link linkend="_paths_8h_1a937a653261639e01ab146fe482f92fc7">refreshxserver</link>;
+<anchor xml:id="_paths_8h_source_1l00404"/>00404 <emphasis role="keyword">extern</emphasis>&#32;std::string&#32;<link linkend="_paths_8h_1a5d18f0703303393ad453e96a10b192e5">sevenxserver</link>;
+<anchor xml:id="_paths_8h_source_1l00405"/>00405 <emphasis role="keyword">extern</emphasis>&#32;std::string&#32;<link linkend="_paths_8h_1a30a232ef8c7af7e449903ee534964d27">sixxserver</link>;
+<anchor xml:id="_paths_8h_source_1l00406"/>00406 <emphasis role="keyword">extern</emphasis>&#32;std::string&#32;<link linkend="_paths_8h_1a1c453d5931981b6a0933cea132d2fdca">thousandxserver</link>;
+<anchor xml:id="_paths_8h_source_1l00407"/>00407 <emphasis role="keyword">extern</emphasis>&#32;std::string&#32;<link linkend="_paths_8h_1ab19569ed70d2e9385136e932a9efa794">threexserver</link>;
+<anchor xml:id="_paths_8h_source_1l00408"/>00408 <emphasis role="keyword">extern</emphasis>&#32;std::string&#32;<link linkend="_paths_8h_1a46f74fd4b7bfd1d2c83887b6f4cbf17d">twoxserver</link>;
+<anchor xml:id="_paths_8h_source_1l00409"/>00409 <emphasis role="keyword">extern</emphasis>&#32;std::string&#32;<link linkend="_paths_8h_1ace7da0fab1b752818330b177bbd025b1">xserverduel</link>;
+<anchor xml:id="_paths_8h_source_1l00410"/>00410 <emphasis role="keyword">extern</emphasis>&#32;std::string&#32;<link linkend="_paths_8h_1ad85af7a137534b34dee39ef9d83cd78f">yinyangxserver</link>;
+<anchor xml:id="_paths_8h_source_1l00411"/>00411 <emphasis role="keyword">extern</emphasis>&#32;std::string&#32;<link linkend="_paths_8h_1a02ddab8cb1f2564538238d6710d6d0ae">zeroxserver</link>;
+<anchor xml:id="_paths_8h_source_1l00412"/>00412 
+<anchor xml:id="_paths_8h_source_1l00413"/>00413 <emphasis role="comment">//Pack</emphasis>
+<anchor xml:id="_paths_8h_source_1l00414"/>00414 <emphasis role="keyword">extern</emphasis>&#32;std::string&#32;<link linkend="_paths_8h_1aea778fee7fc94dd70309b95d62cba1ae">Pack</link>;
+<anchor xml:id="_paths_8h_source_1l00415"/>00415 <emphasis role="keyword">extern</emphasis>&#32;std::string&#32;<link linkend="_paths_8h_1a3ebc9463a7a767e1e953d300c6736d49">adpack</link>;
+<anchor xml:id="_paths_8h_source_1l00416"/>00416 <emphasis role="keyword">extern</emphasis>&#32;std::string&#32;<link linkend="_paths_8h_1a832c3fdbbdd5a6e7b9ac4befe87fcc63">adsoldout</link>;
+<anchor xml:id="_paths_8h_source_1l00417"/>00417 <emphasis role="keyword">extern</emphasis>&#32;std::string&#32;<link linkend="_paths_8h_1ab07d4fa9cdb1791430961eec9f4e06cf">cflashsales</link>;
+<anchor xml:id="_paths_8h_source_1l00418"/>00418 <emphasis role="keyword">extern</emphasis>&#32;std::string&#32;<link linkend="_paths_8h_1aff548f1611a5439c7f60dff4953e7014">claimfreetoken</link>;
+<anchor xml:id="_paths_8h_source_1l00419"/>00419 <emphasis role="keyword">extern</emphasis>&#32;std::string&#32;<link linkend="_paths_8h_1acc86a09dec7af3508f3ec6745ac91155">crcmd</link>;
+<anchor xml:id="_paths_8h_source_1l00420"/>00420 <emphasis role="keyword">extern</emphasis>&#32;std::string&#32;<link linkend="_paths_8h_1afb7d760fd56a677fb39dc76c99366f46">dailyspecial</link>;
+<anchor xml:id="_paths_8h_source_1l00421"/>00421 <emphasis role="keyword">extern</emphasis>&#32;std::string&#32;<link linkend="_paths_8h_1ac07a8ac231b859c37c8bc040bbbc0848">freead</link>;
+<anchor xml:id="_paths_8h_source_1l00422"/>00422 <emphasis role="keyword">extern</emphasis>&#32;std::string&#32;<link linkend="_paths_8h_1a73c0f2647058bf9218eed64c7b2437ac">freedailyspecial</link>;
+<anchor xml:id="_paths_8h_source_1l00423"/>00423 <emphasis role="keyword">extern</emphasis>&#32;std::string&#32;<link linkend="_paths_8h_1a12ca9d02ee00c125b89de69c68c1425a">freepack</link>;
+<anchor xml:id="_paths_8h_source_1l00424"/>00424 <emphasis role="keyword">extern</emphasis>&#32;std::string&#32;<link linkend="_paths_8h_1a96ea556e8f9416dd076f1aa38f5d59ea">imcompletefreetoken</link>;
+<anchor xml:id="_paths_8h_source_1l00425"/>00425 <emphasis role="keyword">extern</emphasis>&#32;std::string&#32;<link linkend="_paths_8h_1a7dd24089e9f7508e3112931788090819">ncflashsales</link>;
+<anchor xml:id="_paths_8h_source_1l00426"/>00426 <emphasis role="keyword">extern</emphasis>&#32;std::string&#32;<link linkend="_paths_8h_1a91bc2eece6fc3bf920242567e69efdd3">ncrcmd</link>;
+<anchor xml:id="_paths_8h_source_1l00427"/>00427 <emphasis role="keyword">extern</emphasis>&#32;std::string&#32;<link linkend="_paths_8h_1a81eb8dd523df1155b45182add5813f83">skipall</link>;
+<anchor xml:id="_paths_8h_source_1l00428"/>00428 <emphasis role="keyword">extern</emphasis>&#32;std::string&#32;<link linkend="_paths_8h_1aa213869d6485c8ef604b398610449bd4">skiptoken</link>;
+<anchor xml:id="_paths_8h_source_1l00429"/>00429 <emphasis role="keyword">extern</emphasis>&#32;std::string&#32;<link linkend="_paths_8h_1ab2a21a30e8b9a0dd83a524115993cc5c">soldoutdailyspecial</link>;
+<anchor xml:id="_paths_8h_source_1l00430"/>00430 <emphasis role="keyword">extern</emphasis>&#32;std::string&#32;<link linkend="_paths_8h_1a7585b5ca572ebe03d03552ba0b6e9658">soldoutflashsales</link>;
+<anchor xml:id="_paths_8h_source_1l00431"/>00431 <emphasis role="keyword">extern</emphasis>&#32;std::string&#32;<link linkend="_paths_8h_1aa103d26ffd51cfb88c5ea9fffc5e2a87">specialoffers</link>;
+<anchor xml:id="_paths_8h_source_1l00432"/>00432 <emphasis role="keyword">extern</emphasis>&#32;std::string&#32;<link linkend="_paths_8h_1a852c567526745013e393d31f686928c9">viewrcmd</link>;
+<anchor xml:id="_paths_8h_source_1l00433"/>00433 <emphasis role="keyword">extern</emphasis>&#32;std::string&#32;<link linkend="_paths_8h_1a53be4eb55beddaa224445ba890e769e8">watchad</link>;
+<anchor xml:id="_paths_8h_source_1l00434"/>00434 <emphasis role="keyword">extern</emphasis>&#32;std::string&#32;<link linkend="_paths_8h_1aa8f758a4dc6c5c02eacd425cd05fc87b">weeklypack</link>;
+<anchor xml:id="_paths_8h_source_1l00435"/>00435 
+<anchor xml:id="_paths_8h_source_1l00436"/>00436 <emphasis role="comment">//Perks</emphasis>
+<anchor xml:id="_paths_8h_source_1l00437"/>00437 <emphasis role="keyword">extern</emphasis>&#32;std::string&#32;<link linkend="_paths_8h_1ae147f7e3822e315fad9d1f7781717587">Perks</link>;
+<anchor xml:id="_paths_8h_source_1l00438"/>00438 <emphasis role="keyword">extern</emphasis>&#32;std::string&#32;<link linkend="_paths_8h_1ac22b01e105fcd3bdf6daa015b814cedf">cdailyperks</link>;
+<anchor xml:id="_paths_8h_source_1l00439"/>00439 <emphasis role="keyword">extern</emphasis>&#32;std::string&#32;<link linkend="_paths_8h_1a4d0e602323308eca47941ad6ff03dac7">claimperks</link>;
+<anchor xml:id="_paths_8h_source_1l00440"/>00440 <emphasis role="keyword">extern</emphasis>&#32;std::string&#32;<link linkend="_paths_8h_1a0df666b5d993932ba4784419d75d46b1">cweeklyperks</link>;
+<anchor xml:id="_paths_8h_source_1l00441"/>00441 <emphasis role="keyword">extern</emphasis>&#32;std::string&#32;<link linkend="_paths_8h_1a0a257b22c2c53e79b6efa0dc253a838f">emptytreasureperks</link>;
+<anchor xml:id="_paths_8h_source_1l00442"/>00442 <emphasis role="keyword">extern</emphasis>&#32;std::string&#32;<link linkend="_paths_8h_1ab22d990de52afff2b38649a6c66fd955">goperks</link>;
+<anchor xml:id="_paths_8h_source_1l00443"/>00443 <emphasis role="keyword">extern</emphasis>&#32;std::string&#32;<link linkend="_paths_8h_1a7885cf33d2646e50a6c8c00d04fec59a">ncdailyperks</link>;
+<anchor xml:id="_paths_8h_source_1l00444"/>00444 <emphasis role="keyword">extern</emphasis>&#32;std::string&#32;<link linkend="_paths_8h_1ae1a9f82c594f906bcadc755f45ee887e">ncweeklyperks</link>;
+<anchor xml:id="_paths_8h_source_1l00445"/>00445 <emphasis role="keyword">extern</emphasis>&#32;std::string&#32;<link linkend="_paths_8h_1a41452abcd40d261162a58111ab682018">normaltreasureperks</link>;
+<anchor xml:id="_paths_8h_source_1l00446"/>00446 <emphasis role="keyword">extern</emphasis>&#32;std::string&#32;<link linkend="_paths_8h_1a78e64f92dce7e612990ccd601925e31a">rewardtreasureperks</link>;
+<anchor xml:id="_paths_8h_source_1l00447"/>00447 
+<anchor xml:id="_paths_8h_source_1l00448"/>00448 <emphasis role="comment">//Ranking</emphasis>
+<anchor xml:id="_paths_8h_source_1l00449"/>00449 <emphasis role="keyword">extern</emphasis>&#32;std::string&#32;<link linkend="_paths_8h_1adab0d3a6737aa1b1dd6691c33e1a8a9c">Ranking</link>;
+<anchor xml:id="_paths_8h_source_1l00450"/>00450 <emphasis role="keyword">extern</emphasis>&#32;std::string&#32;<link linkend="_paths_8h_1a622e806b35586339d9bd45317164d4c7">brranking</link>;
+<anchor xml:id="_paths_8h_source_1l00451"/>00451 <emphasis role="keyword">extern</emphasis>&#32;std::string&#32;<link linkend="_paths_8h_1a1a9bc2105c9444bcabec5201dff50a22">clikeranking</link>;
+<anchor xml:id="_paths_8h_source_1l00452"/>00452 <emphasis role="keyword">extern</emphasis>&#32;std::string&#32;<link linkend="_paths_8h_1acb7ffad8f24bfc8f082dd85d4962b2f7">likeranking</link>;
+<anchor xml:id="_paths_8h_source_1l00453"/>00453 
+<anchor xml:id="_paths_8h_source_1l00454"/>00454 <emphasis role="comment">//Realm</emphasis>
+<anchor xml:id="_paths_8h_source_1l00455"/>00455 <emphasis role="keyword">extern</emphasis>&#32;std::string&#32;<link linkend="_paths_8h_1a31d6c83a78c6ff155c22d0ddc4d66aed">Realm</link>;
+<anchor xml:id="_paths_8h_source_1l00456"/>00456 
+<anchor xml:id="_paths_8h_source_1l00457"/>00457 <emphasis role="comment">//Sect</emphasis>
+<anchor xml:id="_paths_8h_source_1l00458"/>00458 <emphasis role="keyword">extern</emphasis>&#32;std::string&#32;<link linkend="_paths_8h_1aa5525c70695958298890408a819f2b49">Sect</link>;
+<anchor xml:id="_paths_8h_source_1l00459"/>00459 <emphasis role="keyword">extern</emphasis>&#32;std::string&#32;<link linkend="_paths_8h_1a968ef03743f39df9cc3f8e034fc278ed">sectabyss</link>;
+<anchor xml:id="_paths_8h_source_1l00460"/>00460 <emphasis role="keyword">extern</emphasis>&#32;std::string&#32;<link linkend="_paths_8h_1a585a4345e243bcc209dd3e0df9322412">sectbarrier</link>;
+<anchor xml:id="_paths_8h_source_1l00461"/>00461 <emphasis role="keyword">extern</emphasis>&#32;std::string&#32;<link linkend="_paths_8h_1afe155dc4ac3af736009b1dd602ae2ca8">sectclash</link>;
+<anchor xml:id="_paths_8h_source_1l00462"/>00462 <emphasis role="keyword">extern</emphasis>&#32;std::string&#32;<link linkend="_paths_8h_1a1cc354eaa50e109948f2b0d9433fe896">sectlibrary</link>;
+<anchor xml:id="_paths_8h_source_1l00463"/>00463 <emphasis role="keyword">extern</emphasis>&#32;std::string&#32;<link linkend="_paths_8h_1a0dc5be4c72b7399adb54b1267ce8a041">sectranking</link>;
+<anchor xml:id="_paths_8h_source_1l00464"/>00464 <emphasis role="keyword">extern</emphasis>&#32;std::string&#32;<link linkend="_paths_8h_1afe5fe9b6a1a390d8bebe11320c5c4d4d">secttasks</link>;
+<anchor xml:id="_paths_8h_source_1l00465"/>00465 
+<anchor xml:id="_paths_8h_source_1l00466"/>00466 <emphasis role="comment">//Abyss</emphasis>
+<anchor xml:id="_paths_8h_source_1l00467"/>00467 <emphasis role="keyword">extern</emphasis>&#32;std::string&#32;<link linkend="_paths_8h_1a6a4c3a2321233c5f12e31e9dac7f1940">Abyss</link>;
+<anchor xml:id="_paths_8h_source_1l00468"/>00468 <emphasis role="keyword">extern</emphasis>&#32;std::string&#32;<link linkend="_paths_8h_1ab2a016a3f671976e7d3b95fa357d61a2">cabysstile</link>;
+<anchor xml:id="_paths_8h_source_1l00469"/>00469 <emphasis role="keyword">extern</emphasis>&#32;std::string&#32;<link linkend="_paths_8h_1a8b0b64d8b0fd70283719b7f355eff696">cchallengeabyss</link>;
+<anchor xml:id="_paths_8h_source_1l00470"/>00470 <emphasis role="keyword">extern</emphasis>&#32;std::string&#32;<link linkend="_paths_8h_1a002f3ea48cdfc608771de2afc6a80631">chestabyss</link>;
+<anchor xml:id="_paths_8h_source_1l00471"/>00471 <emphasis role="keyword">extern</emphasis>&#32;std::string&#32;<link linkend="_paths_8h_1a84505e56efbd69b60d9a44d870d48377">claimallvaultabyss</link>;
+<anchor xml:id="_paths_8h_source_1l00472"/>00472 <emphasis role="keyword">extern</emphasis>&#32;std::string&#32;<link linkend="_paths_8h_1a686a8a93390f7349b3c178f90ad189b6">claimchallengeabyss</link>;
+<anchor xml:id="_paths_8h_source_1l00473"/>00473 <emphasis role="keyword">extern</emphasis>&#32;std::string&#32;<link linkend="_paths_8h_1aef2282c507345db21c4e1b22322f2783">cvaultabyss</link>;
+<anchor xml:id="_paths_8h_source_1l00474"/>00474 <emphasis role="keyword">extern</emphasis>&#32;std::string&#32;<link linkend="_paths_8h_1a4c8609bc02df3ce1a8d97d8d3fd5eeb6">fightabyss</link>;
+<anchor xml:id="_paths_8h_source_1l00475"/>00475 <emphasis role="keyword">extern</emphasis>&#32;std::string&#32;<link linkend="_paths_8h_1aca341ca27ac68efe48b333f1a733a7ab">fightingabyss</link>;
+<anchor xml:id="_paths_8h_source_1l00476"/>00476 <emphasis role="keyword">extern</emphasis>&#32;std::string&#32;<link linkend="_paths_8h_1a97d9839f0c35359bd7c4f26872f0afe2">lockedabyss</link>;
+<anchor xml:id="_paths_8h_source_1l00477"/>00477 <emphasis role="keyword">extern</emphasis>&#32;std::string&#32;<link linkend="_paths_8h_1a1a5749f3f65f3f5b4275c7f90a68a3eb">ncabysstile</link>;
+<anchor xml:id="_paths_8h_source_1l00478"/>00478 <emphasis role="keyword">extern</emphasis>&#32;std::string&#32;<link linkend="_paths_8h_1af41034f106d3ed7930eb0a82a389622f">ncchallengeabyss</link>;
+<anchor xml:id="_paths_8h_source_1l00479"/>00479 <emphasis role="keyword">extern</emphasis>&#32;std::string&#32;<link linkend="_paths_8h_1ad771a7b9178ba64d087b8992bf22ccb3">ncvaultabyss</link>;
+<anchor xml:id="_paths_8h_source_1l00480"/>00480 
+<anchor xml:id="_paths_8h_source_1l00481"/>00481 <emphasis role="comment">//Library</emphasis>
+<anchor xml:id="_paths_8h_source_1l00482"/>00482 <emphasis role="keyword">extern</emphasis>&#32;std::string&#32;<link linkend="_paths_8h_1a12406847c1565655b26f7e2ab8bb2009">Library</link>;
+<anchor xml:id="_paths_8h_source_1l00483"/>00483 <emphasis role="keyword">extern</emphasis>&#32;std::string&#32;<link linkend="_paths_8h_1a951920e6086494cf7a33c3ffccba9f62">exchangelibrary</link>;
+<anchor xml:id="_paths_8h_source_1l00484"/>00484 <emphasis role="keyword">extern</emphasis>&#32;std::string&#32;<link linkend="_paths_8h_1a6faca0e1bed95b1b8a9f6f793f8f16e8">soldoutlibrary</link>;
+<anchor xml:id="_paths_8h_source_1l00485"/>00485 
+<anchor xml:id="_paths_8h_source_1l00486"/>00486 <emphasis role="comment">//Meditation</emphasis>
+<anchor xml:id="_paths_8h_source_1l00487"/>00487 <emphasis role="keyword">extern</emphasis>&#32;std::string&#32;<link linkend="_paths_8h_1adf56c1dcd5ab079f4dce29250e853b1b">Meditation</link>;
+<anchor xml:id="_paths_8h_source_1l00488"/>00488 
+<anchor xml:id="_paths_8h_source_1l00489"/>00489 <emphasis role="comment">//Town</emphasis>
+<anchor xml:id="_paths_8h_source_1l00490"/>00490 <emphasis role="keyword">extern</emphasis>&#32;std::string&#32;<link linkend="_paths_8h_1ab7c5e0523fe65b47adca57af8a5b1db5">Town</link>;
+<anchor xml:id="_paths_8h_source_1l00491"/>00491 <emphasis role="keyword">extern</emphasis>&#32;std::string&#32;<link linkend="_paths_8h_1a71036a35502bbcb375873de6faa6a85b">abysstown</link>;
+<anchor xml:id="_paths_8h_source_1l00492"/>00492 <emphasis role="keyword">extern</emphasis>&#32;std::string&#32;<link linkend="_paths_8h_1af1d782a17b88fabbdd550b22e6d26b6a">arena</link>;
+<anchor xml:id="_paths_8h_source_1l00493"/>00493 <emphasis role="keyword">extern</emphasis>&#32;std::string&#32;<link linkend="_paths_8h_1ab7d0b6865ff1a3556312f2f26ddec0d6">assistant</link>;
+<anchor xml:id="_paths_8h_source_1l00494"/>00494 <emphasis role="keyword">extern</emphasis>&#32;std::string&#32;<link linkend="_paths_8h_1a0a4fadb40619de7f60f9ff23496c7354">auction</link>;
+<anchor xml:id="_paths_8h_source_1l00495"/>00495 <emphasis role="keyword">extern</emphasis>&#32;std::string&#32;<link linkend="_paths_8h_1ab30a2f503bc1fe6264bb82397d2f9c32">beastmaster</link>;
+<anchor xml:id="_paths_8h_source_1l00496"/>00496 <emphasis role="keyword">extern</emphasis>&#32;std::string&#32;<link linkend="_paths_8h_1ac677828f2013a7d1a9f1f9962552e99d">cabode</link>;
+<anchor xml:id="_paths_8h_source_1l00497"/>00497 <emphasis role="keyword">extern</emphasis>&#32;std::string&#32;<link linkend="_paths_8h_1ac244b269be435a9539d3810b05b7b721">cbackpack</link>;
+<anchor xml:id="_paths_8h_source_1l00498"/>00498 <emphasis role="keyword">extern</emphasis>&#32;std::string&#32;<link linkend="_paths_8h_1abdc738cd2c0d5a827f3e49339d91b63f">ccharacter</link>;
+<anchor xml:id="_paths_8h_source_1l00499"/>00499 <emphasis role="keyword">extern</emphasis>&#32;std::string&#32;<link linkend="_paths_8h_1a1c3bfb4481b88a0fe9d00fca5959fdf6">crealm</link>;
+<anchor xml:id="_paths_8h_source_1l00500"/>00500 <emphasis role="keyword">extern</emphasis>&#32;std::string&#32;<link linkend="_paths_8h_1a5da1917c8ed0f10afa1eb0b8bcd1d500">csect</link>;
+<anchor xml:id="_paths_8h_source_1l00501"/>00501 <emphasis role="keyword">extern</emphasis>&#32;std::string&#32;<link linkend="_paths_8h_1a7eeec6754ac1e862fee2bd26adcdaec0">ctown</link>;
+<anchor xml:id="_paths_8h_source_1l00502"/>00502 <emphasis role="keyword">extern</emphasis>&#32;std::string&#32;<link linkend="_paths_8h_1a45550c566db7db6beb8943e547039cfa">cultivationicon</link>;
+<anchor xml:id="_paths_8h_source_1l00503"/>00503 <emphasis role="keyword">extern</emphasis>&#32;std::string&#32;<link linkend="_paths_8h_1a0ed8fef2f833281cc7b39834c81c3919">divinities</link>;
+<anchor xml:id="_paths_8h_source_1l00504"/>00504 <emphasis role="keyword">extern</emphasis>&#32;std::string&#32;<link linkend="_paths_8h_1a93114eafe7b571802c6787926ec00d93">event</link>;
+<anchor xml:id="_paths_8h_source_1l00505"/>00505 <emphasis role="keyword">extern</emphasis>&#32;std::string&#32;<link linkend="_paths_8h_1a844232c50dd2ac2bfc87ec743bd068c8">gate</link>;
+<anchor xml:id="_paths_8h_source_1l00506"/>00506 <emphasis role="keyword">extern</emphasis>&#32;std::string&#32;<link linkend="_paths_8h_1a8c000d5fda87504efb43ae6cdb47dec1">gotomortalworld</link>;
+<anchor xml:id="_paths_8h_source_1l00507"/>00507 <emphasis role="keyword">extern</emphasis>&#32;std::string&#32;<link linkend="_paths_8h_1a5da458b79fa3c17ef5633ae1265c8f19">gotospiritualworld</link>;
+<anchor xml:id="_paths_8h_source_1l00508"/>00508 <emphasis role="keyword">extern</emphasis>&#32;std::string&#32;<link linkend="_paths_8h_1adf4a8eccd0c1d2523dc59f4eb6201232">heirloom</link>;
+<anchor xml:id="_paths_8h_source_1l00509"/>00509 <emphasis role="keyword">extern</emphasis>&#32;std::string&#32;<link linkend="_paths_8h_1a546243311e1bb28ba13c57c41f885327">mail</link>;
+<anchor xml:id="_paths_8h_source_1l00510"/>00510 <emphasis role="keyword">extern</emphasis>&#32;std::string&#32;<link linkend="_paths_8h_1ac9be7734fe7edeb7a48038a673e4b291">ncabode</link>;
+<anchor xml:id="_paths_8h_source_1l00511"/>00511 <emphasis role="keyword">extern</emphasis>&#32;std::string&#32;<link linkend="_paths_8h_1a992094358eee0e689f2a08c2a70e6353">ncbackpack</link>;
+<anchor xml:id="_paths_8h_source_1l00512"/>00512 <emphasis role="keyword">extern</emphasis>&#32;std::string&#32;<link linkend="_paths_8h_1a9a4e82853efe066cfe508a0b25ad40f7">nccharacter</link>;
+<anchor xml:id="_paths_8h_source_1l00513"/>00513 <emphasis role="keyword">extern</emphasis>&#32;std::string&#32;<link linkend="_paths_8h_1a6d66854e779b12dc4c2a30fc165397e6">ncrealm</link>;
+<anchor xml:id="_paths_8h_source_1l00514"/>00514 <emphasis role="keyword">extern</emphasis>&#32;std::string&#32;<link linkend="_paths_8h_1aa385ff68a2b6af5eeb975c1868603b4b">ncsect</link>;
+<anchor xml:id="_paths_8h_source_1l00515"/>00515 <emphasis role="keyword">extern</emphasis>&#32;std::string&#32;<link linkend="_paths_8h_1a7d9598826a24d5a33a6e428fe37b30ed">nctown</link>;
+<anchor xml:id="_paths_8h_source_1l00516"/>00516 <emphasis role="keyword">extern</emphasis>&#32;std::string&#32;<link linkend="_paths_8h_1a57a15419a5fbbb0101989750c3411b86">onmortalworld</link>;
+<anchor xml:id="_paths_8h_source_1l00517"/>00517 <emphasis role="keyword">extern</emphasis>&#32;std::string&#32;<link linkend="_paths_8h_1a6a6348ef180c0b88fc4459cf1840621f">onspiritualworld</link>;
+<anchor xml:id="_paths_8h_source_1l00518"/>00518 <emphasis role="keyword">extern</emphasis>&#32;std::string&#32;<link linkend="_paths_8h_1add51c5b4356138d3f92866425dd85b57">otherworld</link>;
+<anchor xml:id="_paths_8h_source_1l00519"/>00519 <emphasis role="keyword">extern</emphasis>&#32;std::string&#32;<link linkend="_paths_8h_1a4255a8d3a7735a83e9a7608b7dec91b5">pack</link>;
+<anchor xml:id="_paths_8h_source_1l00520"/>00520 <emphasis role="keyword">extern</emphasis>&#32;std::string&#32;<link linkend="_paths_8h_1ad6a1633ec92d9a72c406e31482118836">perks</link>;
+<anchor xml:id="_paths_8h_source_1l00521"/>00521 <emphasis role="keyword">extern</emphasis>&#32;std::string&#32;<link linkend="_paths_8h_1a0f118ef30ae3559587a12cd244dbf64c">ranking</link>;
+<anchor xml:id="_paths_8h_source_1l00522"/>00522 <emphasis role="keyword">extern</emphasis>&#32;std::string&#32;<link linkend="_paths_8h_1a004c8a70c00e8bb4ef26c51bb9c7a75e">ressourcesicon</link>;
+<anchor xml:id="_paths_8h_source_1l00523"/>00523 <emphasis role="keyword">extern</emphasis>&#32;std::string&#32;<link linkend="_paths_8h_1afca3a722eaf7ed068b5ce158d71fb157">temple</link>;
+<anchor xml:id="_paths_8h_source_1l00524"/>00524 <emphasis role="keyword">extern</emphasis>&#32;std::string&#32;<link linkend="_paths_8h_1a372b4722f6757f45db2c7258d834482f">weeklyevent</link>;
+<anchor xml:id="_paths_8h_source_1l00525"/>00525 
+<anchor xml:id="_paths_8h_source_1l00526"/>00526 <emphasis role="comment">//DreamyAd</emphasis>
+<anchor xml:id="_paths_8h_source_1l00527"/>00527 <emphasis role="keyword">extern</emphasis>&#32;std::string&#32;<link linkend="_paths_8h_1a5fe0d9238461c6649c327b71d8b1d7e4">DreamyAd</link>;
+<anchor xml:id="_paths_8h_source_1l00528"/>00528 <emphasis role="keyword">extern</emphasis>&#32;std::string&#32;<link linkend="_paths_8h_1aaaffb099f0cc91bd1e908d820a6330d5">dreamyad</link>;
+<anchor xml:id="_paths_8h_source_1l00529"/>00529 <emphasis role="keyword">extern</emphasis>&#32;std::string&#32;<link linkend="_paths_8h_1a7bd0bee4348da0c9e83f7be379f5412f">skipdreamyad</link>;
+<anchor xml:id="_paths_8h_source_1l00530"/>00530 <emphasis role="keyword">extern</emphasis>&#32;std::string&#32;<link linkend="_paths_8h_1a4de2eb71bb1739d29beb3ece1b260d09">watchdreamyad</link>;
+<anchor xml:id="_paths_8h_source_1l00531"/>00531 
+<anchor xml:id="_paths_8h_source_1l00532"/>00532 <emphasis role="comment">//Ressources</emphasis>
+<anchor xml:id="_paths_8h_source_1l00533"/>00533 <emphasis role="keyword">extern</emphasis>&#32;std::string&#32;<link linkend="_paths_8h_1aa8176cc14bc52a63301f81427f82a084">Ressources</link>;
+<anchor xml:id="_paths_8h_source_1l00534"/>00534 <emphasis role="keyword">extern</emphasis>&#32;std::string&#32;<link linkend="_paths_8h_1a86e8b659e9f0164cf96322bfec894af1">claimedressources</link>;
+<anchor xml:id="_paths_8h_source_1l00535"/>00535 <emphasis role="keyword">extern</emphasis>&#32;std::string&#32;<link linkend="_paths_8h_1a3bd19e5baeaa89f5b096bbe98c382294">claimexploration</link>;
+<anchor xml:id="_paths_8h_source_1l00536"/>00536 <emphasis role="keyword">extern</emphasis>&#32;std::string&#32;<link linkend="_paths_8h_1a78c9a656124aaee80d652744c558c31c">confirmcultivation</link>;
+<anchor xml:id="_paths_8h_source_1l00537"/>00537 <emphasis role="keyword">extern</emphasis>&#32;std::string&#32;<link linkend="_paths_8h_1ad10c98c67b452b6e824c15ca1a6efc36">realmexploration</link>;
+<anchor xml:id="_paths_8h_source_1l00538"/>00538 
+<anchor xml:id="_paths_8h_source_1l00539"/>00539 <emphasis role="comment">//WeeklyEvent</emphasis>
+<anchor xml:id="_paths_8h_source_1l00540"/>00540 <emphasis role="keyword">extern</emphasis>&#32;std::string&#32;<link linkend="_paths_8h_1a6f03497708b1e04167b9cae65f3bbafd">WeeklyEvent</link>;
+<anchor xml:id="_paths_8h_source_1l00541"/>00541 
+<anchor xml:id="_paths_8h_source_1l00542"/>00542 <emphasis role="comment">//MonsterHunt</emphasis>
+<anchor xml:id="_paths_8h_source_1l00543"/>00543 <emphasis role="keyword">extern</emphasis>&#32;std::string&#32;<link linkend="_paths_8h_1af28354d709a2d8ef2ee760259efc767a">MonsterHunt</link>;
+<anchor xml:id="_paths_8h_source_1l00544"/>00544 <emphasis role="keyword">extern</emphasis>&#32;std::string&#32;<link linkend="_paths_8h_1ac634e84959be2ef7d811ae8a6dc3559b">chunttile</link>;
+<anchor xml:id="_paths_8h_source_1l00545"/>00545 <emphasis role="keyword">extern</emphasis>&#32;std::string&#32;<link linkend="_paths_8h_1a845208e76c364fe173f98631cf653473">cshopmonster</link>;
+<anchor xml:id="_paths_8h_source_1l00546"/>00546 <emphasis role="keyword">extern</emphasis>&#32;std::string&#32;<link linkend="_paths_8h_1a5c49bb24d1086eff67f97f0828b14299">exchangemonster</link>;
+<anchor xml:id="_paths_8h_source_1l00547"/>00547 <emphasis role="keyword">extern</emphasis>&#32;std::string&#32;<link linkend="_paths_8h_1ac6f4c4f1e752a566b7665bfdeda34e43">huntmonster</link>;
+<anchor xml:id="_paths_8h_source_1l00548"/>00548 <emphasis role="keyword">extern</emphasis>&#32;std::string&#32;<link linkend="_paths_8h_1ac774b20b29c7d8202fc7997bdcf96a8b">nchunttile</link>;
+<anchor xml:id="_paths_8h_source_1l00549"/>00549 <emphasis role="keyword">extern</emphasis>&#32;std::string&#32;<link linkend="_paths_8h_1ae13bb404bccd4df063849c9ba54248ee">ncshopmonster</link>;
+<anchor xml:id="_paths_8h_source_1l00550"/>00550 <emphasis role="keyword">extern</emphasis>&#32;std::string&#32;<link linkend="_paths_8h_1a3cae684c335b6a611d6dfb0ece3696e1">purchasemonster</link>;
+<anchor xml:id="_paths_8h_source_1l00551"/>00551 
+<anchor xml:id="_paths_8h_source_1l00552"/>00552 <emphasis role="preprocessor">#endif</emphasis>
+</programlisting></section>

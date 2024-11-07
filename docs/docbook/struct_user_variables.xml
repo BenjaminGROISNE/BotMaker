@@ -1,0 +1,76 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<section xmlns="http://docbook.org/ns/docbook" version="5.0" xmlns:xlink="http://www.w3.org/1999/xlink" xml:id="_struct_user_variables" xml:lang="en-US">
+<title>UserVariables Struct Reference</title>
+<indexterm><primary>UserVariables</primary></indexterm>
+<para>
+<computeroutput>#include &lt;Tags.h&gt;</computeroutput>
+</para>
+Collaboration diagram for UserVariables:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="struct_user_variables__coll__graph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+<simplesect>
+    <title>Public Member Functions    </title>
+        <itemizedlist>
+            <listitem><para>template&lt;typename <link linkend="__units_8h_1a2b350cb683584e1f7db6c78f698c161ba21f40778b7db9343a6ca75ec2c41ccce">T</link> &gt; </para><para>void <link linkend="_struct_user_variables_1a9e112abb84bf33e3219aeeb95da3cf24">addVariable</link> (std::string name, <link linkend="__units_8h_1a2b350cb683584e1f7db6c78f698c161ba21f40778b7db9343a6ca75ec2c41ccce">T</link> value)</para>
+</listitem>
+            <listitem><para>template&lt;typename <link linkend="__units_8h_1a2b350cb683584e1f7db6c78f698c161ba21f40778b7db9343a6ca75ec2c41ccce">T</link> &gt; </para><para><link linkend="__units_8h_1a2b350cb683584e1f7db6c78f698c161ba21f40778b7db9343a6ca75ec2c41ccce">T</link> <link linkend="_struct_user_variables_1a326009aee9af0b9d7fd34232207842ad">getValue</link> (std::string name)</para>
+</listitem>
+        </itemizedlist>
+</simplesect>
+<simplesect>
+    <title>Public Attributes    </title>
+        <itemizedlist>
+            <listitem><para>std::map&lt; std::string, void * &gt; <link linkend="_struct_user_variables_1a7b48806f00e1074368e6f1132e45728d">variables</link></para>
+</listitem>
+        </itemizedlist>
+</simplesect>
+<section>
+<title>Detailed Description</title>
+<para>
+Definition at line <link linkend="__tags_8h_source_1l00081">81</link> of file <link linkend="__tags_8h_source">Tags.h</link>.</para>
+</section>
+<section>
+<title>Member Function Documentation</title>
+<anchor xml:id="_struct_user_variables_1a9e112abb84bf33e3219aeeb95da3cf24"/><section>
+    <title>addVariable()</title>
+<indexterm><primary>addVariable</primary><secondary>UserVariables</secondary></indexterm>
+<indexterm><primary>UserVariables</primary><secondary>addVariable</secondary></indexterm>
+<computeroutput>template&lt;typename <link linkend="__units_8h_1a2b350cb683584e1f7db6c78f698c161ba21f40778b7db9343a6ca75ec2c41ccce">T</link> &gt; </computeroutput><para><computeroutput>void UserVariables::addVariable (std::string name, <link linkend="__units_8h_1a2b350cb683584e1f7db6c78f698c161ba21f40778b7db9343a6ca75ec2c41ccce">T</link> value)</computeroutput></para><para>
+Definition at line <link linkend="__tags_8h_source_1l00092">92</link> of file <link linkend="__tags_8h_source">Tags.h</link>.</para>
+</section>
+<anchor xml:id="_struct_user_variables_1a326009aee9af0b9d7fd34232207842ad"/><section>
+    <title>getValue()</title>
+<indexterm><primary>getValue</primary><secondary>UserVariables</secondary></indexterm>
+<indexterm><primary>UserVariables</primary><secondary>getValue</secondary></indexterm>
+<computeroutput>template&lt;typename <link linkend="__units_8h_1a2b350cb683584e1f7db6c78f698c161ba21f40778b7db9343a6ca75ec2c41ccce">T</link> &gt; </computeroutput><para><computeroutput><link linkend="__units_8h_1a2b350cb683584e1f7db6c78f698c161ba21f40778b7db9343a6ca75ec2c41ccce">T</link> UserVariables::getValue (std::string name)</computeroutput></para><para>
+Definition at line <link linkend="__tags_8h_source_1l00097">97</link> of file <link linkend="__tags_8h_source">Tags.h</link>.</para>
+Here is the caller graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="struct_user_variables_a326009aee9af0b9d7fd34232207842ad_icgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+</section>
+<section>
+<title>Member Data Documentation</title>
+<anchor xml:id="_struct_user_variables_1a7b48806f00e1074368e6f1132e45728d"/><section>
+    <title>variables</title>
+<indexterm><primary>variables</primary><secondary>UserVariables</secondary></indexterm>
+<indexterm><primary>UserVariables</primary><secondary>variables</secondary></indexterm>
+<para><computeroutput>std::map&lt;std::string, void*&gt; UserVariables::variables</computeroutput></para><para>
+Definition at line <link linkend="__tags_8h_source_1l00082">82</link> of file <link linkend="__tags_8h_source">Tags.h</link>.</para>
+</section>
+<para>
+The documentation for this struct was generated from the following file:</para>
+src/<link linkend="__tags_8h">Tags.h</link></section>
+</section>

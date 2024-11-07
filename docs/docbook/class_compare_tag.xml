@@ -1,0 +1,221 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<section xmlns="http://docbook.org/ns/docbook" version="5.0" xmlns:xlink="http://www.w3.org/1999/xlink" xml:id="_class_compare_tag" xml:lang="en-US">
+<title>CompareTag&lt; T &gt; Class Template Reference</title>
+<indexterm><primary>CompareTag&lt; T &gt;</primary></indexterm>
+<para>
+<computeroutput>#include &lt;Tags.h&gt;</computeroutput>
+</para>
+Inheritance diagram for CompareTag&lt; T &gt;:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_compare_tag__inherit__graph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+Collaboration diagram for CompareTag&lt; T &gt;:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_compare_tag__coll__graph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+<simplesect>
+    <title>Public Member Functions    </title>
+        <itemizedlist>
+            <listitem><para><link linkend="_class_compare_tag_1a09c27d4b1b4263dc56992733d10aeb24">CompareTag</link> ()</para>
+</listitem>
+            <listitem><para><link linkend="_class_compare_tag_1a68a4235b16258efd215b6db0be537154">CompareTag</link> (const <link linkend="_class_compare_tag">CompareTag</link> &amp;toCopy)</para>
+</listitem>
+            <listitem><para><link linkend="_class_compare_tag_1adb5c84adc077cafd2ca312e65b1266e3">CompareTag</link> (const std::vector&lt; std::shared_ptr&lt; <link linkend="_class_tag">Tag</link> &gt; &gt; &amp;parameters, const <link linkend="__tags_8h_1afbc5396d9a88c41d6aeb522b9f06f426">CompareType</link> &amp;cType)</para>
+</listitem>
+            <listitem><para>std::shared_ptr&lt; <link linkend="_class_compare_tag">CompareTag</link> &gt; <link linkend="_class_compare_tag_1a2b2135b5515c04d997bf74d823149dfa">clone</link> ()</para>
+</listitem>
+            <listitem><para>void <link linkend="_class_compare_tag_1a574c5229cbbc446a28fa2ef1cea813c3">execute</link> () override</para>
+</listitem>
+            <listitem><para>void <link linkend="_class_compare_tag_1a86f4370ec7c06612dc614d5ee0a80bbc">execute</link> ()</para>
+</listitem>
+            <listitem><para>void <link linkend="_class_compare_tag_1a85e20d6d3c66adf2b5835842c36cceb6">execute</link> ()</para>
+</listitem>
+            <listitem><para>void <link linkend="_class_compare_tag_1a85e20d6d3c66adf2b5835842c36cceb6">execute</link> ()</para>
+</listitem>
+            <listitem><para>void <link linkend="_class_compare_tag_1a86f4370ec7c06612dc614d5ee0a80bbc">execute</link> ()</para>
+</listitem>
+        </itemizedlist>
+</simplesect>
+Public Member Functions inherited from <link linkend="_class_bool_tag">BoolTag</link>        <itemizedlist>
+            <listitem><para><link linkend="_class_bool_tag_1a59cb7cb189f83466defc5ace699357b9">BoolTag</link> ()</para>
+</listitem>
+            <listitem><para><link linkend="_class_bool_tag_1a8a9c7d5e741c4c4b9a25cd83d45f5939">BoolTag</link> (const <link linkend="_class_bool_tag">BoolTag</link> &amp;toCopy)</para>
+</listitem>
+            <listitem><para><link linkend="_class_bool_tag_1a16c918890174b92cca2db5f5c7e99f17">BoolTag</link> (const std::shared_ptr&lt; <link linkend="_class_tag">Tag</link> &gt; &amp;parameter)</para>
+</listitem>
+            <listitem><para><link linkend="_class_bool_tag_1ab834422d97f1c364878e8561d39aecfe">BoolTag</link> (bool v)</para>
+</listitem>
+            <listitem><para>std::shared_ptr&lt; <link linkend="_class_bool_tag">BoolTag</link> &gt; <link linkend="_class_bool_tag_1af6016dc8e74a29099ba9c174f4f747df">clone</link> ()</para>
+</listitem>
+        </itemizedlist>
+Public Member Functions inherited from <link linkend="_class_tag">Tag</link>        <itemizedlist>
+            <listitem><para><link linkend="_class_tag_1af2008705aa18e21efecb9e737b6b1a26">Tag</link> ()</para>
+</listitem>
+            <listitem><para><link linkend="_class_tag_1a5955a7ef3228749f5d264581d5c612ab">Tag</link> (const <link linkend="_class_tag">Tag</link> &amp;toCopy)</para>
+</listitem>
+            <listitem><para>std::shared_ptr&lt; <link linkend="_class_tag">Tag</link> &gt; <link linkend="_class_tag_1ae01465d32e9a52c777492048fd06bdd5">clone</link> ()</para>
+</listitem>
+        </itemizedlist>
+<simplesect>
+    <title>Public Attributes    </title>
+        <itemizedlist>
+            <listitem><para>std::vector&lt; std::shared_ptr&lt; <link linkend="_class_tag">Tag</link> &gt; &gt; <link linkend="_class_compare_tag_1a4bd1f8441e86eed46ed849b844af3050">listTags</link></para>
+</listitem>
+            <listitem><para><link linkend="__tags_8h_1afbc5396d9a88c41d6aeb522b9f06f426">CompareType</link> <link linkend="_class_compare_tag_1a54e47f577da225488a630333f34cf9b3">compType</link></para>
+</listitem>
+        </itemizedlist>
+</simplesect>
+Public Attributes inherited from <link linkend="_class_bool_tag">BoolTag</link>        <itemizedlist>
+            <listitem><para>std::shared_ptr&lt; <link linkend="_class_tag">Tag</link> &gt; <link linkend="_class_bool_tag_1a1f8f23c75e15979c0a5542dfab204234">boolTag</link></para>
+</listitem>
+            <listitem><para>bool <link linkend="_class_bool_tag_1a533e516d764bce21a79a433ccd0ac1e1">myBool</link></para>
+</listitem>
+        </itemizedlist>
+Public Attributes inherited from <link linkend="_class_tag">Tag</link>        <itemizedlist>
+            <listitem><para>std::string <link linkend="_class_tag_1a2b252c6a602db12fcb53a67ce3e9ca1b">tagText</link></para>
+</listitem>
+            <listitem><para>int <link linkend="_class_tag_1a25aa826cd8818bcf0670164d285c3fdd">nbParents</link></para>
+</listitem>
+            <listitem><para>bool <link linkend="_class_tag_1a688d838bee273d203d6b16caaca3ed2b">doExecute</link></para>
+</listitem>
+            <listitem><para><link linkend="__tags_8h_1a7c4faef6b7c4a30990ee13030bc51880">TagType</link> <link linkend="_class_tag_1aa82f368cc2d55922ea75ba85020517c1">myType</link></para>
+</listitem>
+        </itemizedlist>
+<section>
+<title>Detailed Description</title>
+<simplesect><title>template&lt;typename <link linkend="__units_8h_1a2b350cb683584e1f7db6c78f698c161ba21f40778b7db9343a6ca75ec2c41ccce">T</link>&gt;<?linebreak?>class CompareTag&lt; T &gt;</title></simplesect>
+<para>
+Definition at line <link linkend="__tags_8h_source_1l00492">492</link> of file <link linkend="__tags_8h_source">Tags.h</link>.</para>
+</section>
+<section>
+<title>Constructor &amp; Destructor Documentation</title>
+<anchor xml:id="_class_compare_tag_1a09c27d4b1b4263dc56992733d10aeb24"/><section>
+    <title>CompareTag()<computeroutput>[1/3]</computeroutput></title>
+<indexterm><primary>CompareTag</primary><secondary>CompareTag&lt; T &gt;</secondary></indexterm>
+<indexterm><primary>CompareTag&lt; T &gt;</primary><secondary>CompareTag</secondary></indexterm>
+<computeroutput>template&lt;typename <link linkend="__units_8h_1a2b350cb683584e1f7db6c78f698c161ba21f40778b7db9343a6ca75ec2c41ccce">T</link> &gt; </computeroutput><para><computeroutput><link linkend="_class_compare_tag">CompareTag</link>&lt; <link linkend="__units_8h_1a2b350cb683584e1f7db6c78f698c161ba21f40778b7db9343a6ca75ec2c41ccce">T</link> &gt;<link linkend="_class_compare_tag">::CompareTag</link> ( )</computeroutput></para><para>
+Definition at line <link linkend="__tags_8cpp_source_1l01262">1262</link> of file <link linkend="__tags_8cpp_source">Tags.cpp</link>.</para>
+</section>
+<anchor xml:id="_class_compare_tag_1a68a4235b16258efd215b6db0be537154"/><section>
+    <title>CompareTag()<computeroutput>[2/3]</computeroutput></title>
+<indexterm><primary>CompareTag</primary><secondary>CompareTag&lt; T &gt;</secondary></indexterm>
+<indexterm><primary>CompareTag&lt; T &gt;</primary><secondary>CompareTag</secondary></indexterm>
+<computeroutput>template&lt;typename <link linkend="__units_8h_1a2b350cb683584e1f7db6c78f698c161ba21f40778b7db9343a6ca75ec2c41ccce">T</link> &gt; </computeroutput><para><computeroutput><link linkend="_class_compare_tag">CompareTag</link>&lt; <link linkend="__units_8h_1a2b350cb683584e1f7db6c78f698c161ba21f40778b7db9343a6ca75ec2c41ccce">T</link> &gt;<link linkend="_class_compare_tag">::CompareTag</link> (const <link linkend="_class_compare_tag">CompareTag</link>&lt; <link linkend="__units_8h_1a2b350cb683584e1f7db6c78f698c161ba21f40778b7db9343a6ca75ec2c41ccce">T</link> &gt; &amp; toCopy)</computeroutput></para><para>
+Definition at line <link linkend="__tags_8cpp_source_1l00245">245</link> of file <link linkend="__tags_8cpp_source">Tags.cpp</link>.</para>
+</section>
+<anchor xml:id="_class_compare_tag_1adb5c84adc077cafd2ca312e65b1266e3"/><section>
+    <title>CompareTag()<computeroutput>[3/3]</computeroutput></title>
+<indexterm><primary>CompareTag</primary><secondary>CompareTag&lt; T &gt;</secondary></indexterm>
+<indexterm><primary>CompareTag&lt; T &gt;</primary><secondary>CompareTag</secondary></indexterm>
+<computeroutput>template&lt;typename <link linkend="__units_8h_1a2b350cb683584e1f7db6c78f698c161ba21f40778b7db9343a6ca75ec2c41ccce">T</link> &gt; </computeroutput><para><computeroutput><link linkend="_class_compare_tag">CompareTag</link>&lt; <link linkend="__units_8h_1a2b350cb683584e1f7db6c78f698c161ba21f40778b7db9343a6ca75ec2c41ccce">T</link> &gt;<link linkend="_class_compare_tag">::CompareTag</link> (const std::vector&lt; std::shared_ptr&lt; <link linkend="_class_tag">Tag</link> &gt; &gt; &amp; parameters, const <link linkend="__tags_8h_1afbc5396d9a88c41d6aeb522b9f06f426">CompareType</link> &amp; cType)</computeroutput></para><para>
+Definition at line <link linkend="__tags_8cpp_source_1l01438">1438</link> of file <link linkend="__tags_8cpp_source">Tags.cpp</link>.</para>
+</section>
+</section>
+<section>
+<title>Member Function Documentation</title>
+<anchor xml:id="_class_compare_tag_1a2b2135b5515c04d997bf74d823149dfa"/><section>
+    <title>clone()</title>
+<indexterm><primary>clone</primary><secondary>CompareTag&lt; T &gt;</secondary></indexterm>
+<indexterm><primary>CompareTag&lt; T &gt;</primary><secondary>clone</secondary></indexterm>
+<computeroutput>template&lt;typename <link linkend="__units_8h_1a2b350cb683584e1f7db6c78f698c161ba21f40778b7db9343a6ca75ec2c41ccce">T</link> &gt; </computeroutput><para><computeroutput>std::shared_ptr&lt; <link linkend="_class_compare_tag">CompareTag</link>&lt; <link linkend="__units_8h_1a2b350cb683584e1f7db6c78f698c161ba21f40778b7db9343a6ca75ec2c41ccce">T</link> &gt; &gt; <link linkend="_class_compare_tag">CompareTag</link>&lt; <link linkend="__units_8h_1a2b350cb683584e1f7db6c78f698c161ba21f40778b7db9343a6ca75ec2c41ccce">T</link> &gt;::clone ( )</computeroutput></para><para>
+Definition at line <link linkend="__tags_8cpp_source_1l00117">117</link> of file <link linkend="__tags_8cpp_source">Tags.cpp</link>.</para>
+</section>
+<anchor xml:id="_class_compare_tag_1a86f4370ec7c06612dc614d5ee0a80bbc"/><section>
+    <title>execute()<computeroutput>[1/5]</computeroutput></title>
+<indexterm><primary>execute</primary><secondary>CompareTag&lt; T &gt;</secondary></indexterm>
+<indexterm><primary>CompareTag&lt; T &gt;</primary><secondary>execute</secondary></indexterm>
+<para><computeroutput>void <link linkend="_class_compare_tag">CompareTag</link>&lt; int &gt;::execute ( )<computeroutput>[virtual]</computeroutput></computeroutput></para><para>
+Reimplemented from <link linkend="_class_bool_tag_1a2695d817dcbf4150f25cec21a453633a">BoolTag</link>.</para>
+<para>
+Definition at line <link linkend="__tags_8cpp_source_1l01378">1378</link> of file <link linkend="__tags_8cpp_source">Tags.cpp</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_compare_tag_a86f4370ec7c06612dc614d5ee0a80bbc_cgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_class_compare_tag_1a85e20d6d3c66adf2b5835842c36cceb6"/><section>
+    <title>execute()<computeroutput>[2/5]</computeroutput></title>
+<indexterm><primary>execute</primary><secondary>CompareTag&lt; T &gt;</secondary></indexterm>
+<indexterm><primary>CompareTag&lt; T &gt;</primary><secondary>execute</secondary></indexterm>
+<para><computeroutput>void <link linkend="_class_compare_tag">CompareTag</link>&lt; float &gt;::execute ( )<computeroutput>[virtual]</computeroutput></computeroutput></para><para>
+Reimplemented from <link linkend="_class_bool_tag_1a2695d817dcbf4150f25cec21a453633a">BoolTag</link>.</para>
+<para>
+Definition at line <link linkend="__tags_8cpp_source_1l01406">1406</link> of file <link linkend="__tags_8cpp_source">Tags.cpp</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_compare_tag_a85e20d6d3c66adf2b5835842c36cceb6_cgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_class_compare_tag_1a85e20d6d3c66adf2b5835842c36cceb6"/><section>
+    <title>execute()<computeroutput>[3/5]</computeroutput></title>
+<indexterm><primary>execute</primary><secondary>CompareTag&lt; T &gt;</secondary></indexterm>
+<indexterm><primary>CompareTag&lt; T &gt;</primary><secondary>execute</secondary></indexterm>
+<para><computeroutput>void <link linkend="_class_compare_tag">CompareTag</link>&lt; float &gt;::execute ( )<computeroutput>[virtual]</computeroutput></computeroutput></para><para>
+Reimplemented from <link linkend="_class_bool_tag_1a2695d817dcbf4150f25cec21a453633a">BoolTag</link>.</para>
+</section>
+<anchor xml:id="_class_compare_tag_1a86f4370ec7c06612dc614d5ee0a80bbc"/><section>
+    <title>execute()<computeroutput>[4/5]</computeroutput></title>
+<indexterm><primary>execute</primary><secondary>CompareTag&lt; T &gt;</secondary></indexterm>
+<indexterm><primary>CompareTag&lt; T &gt;</primary><secondary>execute</secondary></indexterm>
+<para><computeroutput>void <link linkend="_class_compare_tag">CompareTag</link>&lt; int &gt;::execute ( )<computeroutput>[virtual]</computeroutput></computeroutput></para><para>
+Reimplemented from <link linkend="_class_bool_tag_1a2695d817dcbf4150f25cec21a453633a">BoolTag</link>.</para>
+</section>
+<anchor xml:id="_class_compare_tag_1a574c5229cbbc446a28fa2ef1cea813c3"/><section>
+    <title>execute()<computeroutput>[5/5]</computeroutput></title>
+<indexterm><primary>execute</primary><secondary>CompareTag&lt; T &gt;</secondary></indexterm>
+<indexterm><primary>CompareTag&lt; T &gt;</primary><secondary>execute</secondary></indexterm>
+<computeroutput>template&lt;typename <link linkend="__units_8h_1a2b350cb683584e1f7db6c78f698c161ba21f40778b7db9343a6ca75ec2c41ccce">T</link> &gt; </computeroutput><para><computeroutput>void <link linkend="_class_compare_tag">CompareTag</link>&lt; <link linkend="__units_8h_1a2b350cb683584e1f7db6c78f698c161ba21f40778b7db9343a6ca75ec2c41ccce">T</link> &gt;::execute ( )<computeroutput>[override]</computeroutput>, <computeroutput>[virtual]</computeroutput></computeroutput></para><para>
+Reimplemented from <link linkend="_class_bool_tag_1a2695d817dcbf4150f25cec21a453633a">BoolTag</link>.</para>
+<para>
+Definition at line <link linkend="__tags_8cpp_source_1l01361">1361</link> of file <link linkend="__tags_8cpp_source">Tags.cpp</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_compare_tag_a574c5229cbbc446a28fa2ef1cea813c3_cgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+</section>
+<section>
+<title>Member Data Documentation</title>
+<anchor xml:id="_class_compare_tag_1a54e47f577da225488a630333f34cf9b3"/><section>
+    <title>compType</title>
+<indexterm><primary>compType</primary><secondary>CompareTag&lt; T &gt;</secondary></indexterm>
+<indexterm><primary>CompareTag&lt; T &gt;</primary><secondary>compType</secondary></indexterm>
+<computeroutput>template&lt;typename <link linkend="__units_8h_1a2b350cb683584e1f7db6c78f698c161ba21f40778b7db9343a6ca75ec2c41ccce">T</link> &gt; </computeroutput><para><computeroutput><link linkend="__tags_8h_1afbc5396d9a88c41d6aeb522b9f06f426">CompareType</link> <link linkend="_class_compare_tag">CompareTag</link>&lt; <link linkend="__units_8h_1a2b350cb683584e1f7db6c78f698c161ba21f40778b7db9343a6ca75ec2c41ccce">T</link> &gt;::compType</computeroutput></para><para>
+Definition at line <link linkend="__tags_8h_source_1l00499">499</link> of file <link linkend="__tags_8h_source">Tags.h</link>.</para>
+</section>
+<anchor xml:id="_class_compare_tag_1a4bd1f8441e86eed46ed849b844af3050"/><section>
+    <title>listTags</title>
+<indexterm><primary>listTags</primary><secondary>CompareTag&lt; T &gt;</secondary></indexterm>
+<indexterm><primary>CompareTag&lt; T &gt;</primary><secondary>listTags</secondary></indexterm>
+<computeroutput>template&lt;typename <link linkend="__units_8h_1a2b350cb683584e1f7db6c78f698c161ba21f40778b7db9343a6ca75ec2c41ccce">T</link> &gt; </computeroutput><para><computeroutput>std::vector&lt;std::shared_ptr&lt;<link linkend="_class_tag">Tag</link>&gt; &gt; <link linkend="_class_compare_tag">CompareTag</link>&lt; <link linkend="__units_8h_1a2b350cb683584e1f7db6c78f698c161ba21f40778b7db9343a6ca75ec2c41ccce">T</link> &gt;::listTags</computeroutput></para><para>
+Definition at line <link linkend="__tags_8h_source_1l00498">498</link> of file <link linkend="__tags_8h_source">Tags.h</link>.</para>
+</section>
+<para>
+The documentation for this class was generated from the following files:</para>
+src/<link linkend="__tags_8h">Tags.h</link>src/<link linkend="__tags_8cpp">Tags.cpp</link></section>
+</section>

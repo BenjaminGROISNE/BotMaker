@@ -1,0 +1,153 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<section xmlns="http://docbook.org/ns/docbook" version="5.0" xmlns:xlink="http://www.w3.org/1999/xlink" xml:id="_class_int_tag" xml:lang="en-US">
+<title>IntTag Class Reference</title>
+<indexterm><primary>IntTag</primary></indexterm>
+<para>
+<computeroutput>#include &lt;Tags.h&gt;</computeroutput>
+</para>
+Inheritance diagram for IntTag:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_int_tag__inherit__graph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+Collaboration diagram for IntTag:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_int_tag__coll__graph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+<simplesect>
+    <title>Public Member Functions    </title>
+        <itemizedlist>
+            <listitem><para><link linkend="_class_int_tag_1a52c34a238f8e95627413beabe849c380">IntTag</link> ()</para>
+</listitem>
+            <listitem><para><link linkend="_class_int_tag_1a2f2f401803ecc95d5d59719d525fc8bc">IntTag</link> (const <link linkend="_class_int_tag">IntTag</link> &amp;toCopy)</para>
+</listitem>
+            <listitem><para><link linkend="_class_int_tag_1a32965d4bf09239dd2de7d40b6073d4ea">IntTag</link> (const std::shared_ptr&lt; <link linkend="_class_tag">Tag</link> &gt; &amp;parameter)</para>
+</listitem>
+            <listitem><para><link linkend="_class_int_tag_1ab14e9b7580f1b62cffe44dda09fc7f9c">IntTag</link> (int nb)</para>
+</listitem>
+            <listitem><para>std::shared_ptr&lt; <link linkend="_class_int_tag">IntTag</link> &gt; <link linkend="_class_int_tag_1a016a5287e36bd9c2e481a8afaaaff6bb">clone</link> ()</para>
+</listitem>
+            <listitem><para>void <link linkend="_class_int_tag_1acd1fc79dd10552857136934ba444d4d4">execute</link> () override</para>
+</listitem>
+        </itemizedlist>
+</simplesect>
+Public Member Functions inherited from <link linkend="_class_tag">Tag</link>        <itemizedlist>
+            <listitem><para><link linkend="_class_tag_1af2008705aa18e21efecb9e737b6b1a26">Tag</link> ()</para>
+</listitem>
+            <listitem><para><link linkend="_class_tag_1a5955a7ef3228749f5d264581d5c612ab">Tag</link> (const <link linkend="_class_tag">Tag</link> &amp;toCopy)</para>
+</listitem>
+            <listitem><para>std::shared_ptr&lt; <link linkend="_class_tag">Tag</link> &gt; <link linkend="_class_tag_1ae01465d32e9a52c777492048fd06bdd5">clone</link> ()</para>
+</listitem>
+        </itemizedlist>
+<simplesect>
+    <title>Public Attributes    </title>
+        <itemizedlist>
+            <listitem><para>std::shared_ptr&lt; <link linkend="_class_tag">Tag</link> &gt; <link linkend="_class_int_tag_1a456098bb5fd8acef2f27441c262a8887">intTag</link></para>
+</listitem>
+            <listitem><para>int <link linkend="_class_int_tag_1a0814d81a516e25e0e61eb0216856417c">myInt</link></para>
+</listitem>
+        </itemizedlist>
+</simplesect>
+Public Attributes inherited from <link linkend="_class_tag">Tag</link>        <itemizedlist>
+            <listitem><para>std::string <link linkend="_class_tag_1a2b252c6a602db12fcb53a67ce3e9ca1b">tagText</link></para>
+</listitem>
+            <listitem><para>int <link linkend="_class_tag_1a25aa826cd8818bcf0670164d285c3fdd">nbParents</link></para>
+</listitem>
+            <listitem><para>bool <link linkend="_class_tag_1a688d838bee273d203d6b16caaca3ed2b">doExecute</link></para>
+</listitem>
+            <listitem><para><link linkend="__tags_8h_1a7c4faef6b7c4a30990ee13030bc51880">TagType</link> <link linkend="_class_tag_1aa82f368cc2d55922ea75ba85020517c1">myType</link></para>
+</listitem>
+        </itemizedlist>
+<section>
+<title>Detailed Description</title>
+<para>
+Definition at line <link linkend="__tags_8h_source_1l00436">436</link> of file <link linkend="__tags_8h_source">Tags.h</link>.</para>
+</section>
+<section>
+<title>Constructor &amp; Destructor Documentation</title>
+<anchor xml:id="_class_int_tag_1a52c34a238f8e95627413beabe849c380"/><section>
+    <title>IntTag()<computeroutput>[1/4]</computeroutput></title>
+<indexterm><primary>IntTag</primary><secondary>IntTag</secondary></indexterm>
+<indexterm><primary>IntTag</primary><secondary>IntTag</secondary></indexterm>
+<para><computeroutput>IntTag::IntTag ( )</computeroutput></para><para>
+Definition at line <link linkend="__tags_8cpp_source_1l01235">1235</link> of file <link linkend="__tags_8cpp_source">Tags.cpp</link>.</para>
+</section>
+<anchor xml:id="_class_int_tag_1a2f2f401803ecc95d5d59719d525fc8bc"/><section>
+    <title>IntTag()<computeroutput>[2/4]</computeroutput></title>
+<indexterm><primary>IntTag</primary><secondary>IntTag</secondary></indexterm>
+<indexterm><primary>IntTag</primary><secondary>IntTag</secondary></indexterm>
+<para><computeroutput>IntTag::IntTag (const <link linkend="_class_int_tag">IntTag</link> &amp; toCopy)</computeroutput></para><para>
+Definition at line <link linkend="__tags_8cpp_source_1l00225">225</link> of file <link linkend="__tags_8cpp_source">Tags.cpp</link>.</para>
+</section>
+<anchor xml:id="_class_int_tag_1a32965d4bf09239dd2de7d40b6073d4ea"/><section>
+    <title>IntTag()<computeroutput>[3/4]</computeroutput></title>
+<indexterm><primary>IntTag</primary><secondary>IntTag</secondary></indexterm>
+<indexterm><primary>IntTag</primary><secondary>IntTag</secondary></indexterm>
+<para><computeroutput>IntTag::IntTag (const std::shared_ptr&lt; <link linkend="_class_tag">Tag</link> &gt; &amp; parameter)</computeroutput></para><para>
+Definition at line <link linkend="__tags_8cpp_source_1l01242">1242</link> of file <link linkend="__tags_8cpp_source">Tags.cpp</link>.</para>
+</section>
+<anchor xml:id="_class_int_tag_1ab14e9b7580f1b62cffe44dda09fc7f9c"/><section>
+    <title>IntTag()<computeroutput>[4/4]</computeroutput></title>
+<indexterm><primary>IntTag</primary><secondary>IntTag</secondary></indexterm>
+<indexterm><primary>IntTag</primary><secondary>IntTag</secondary></indexterm>
+<para><computeroutput>IntTag::IntTag (int nb)</computeroutput></para><para>
+Definition at line <link linkend="__tags_8cpp_source_1l01246">1246</link> of file <link linkend="__tags_8cpp_source">Tags.cpp</link>.</para>
+</section>
+</section>
+<section>
+<title>Member Function Documentation</title>
+<anchor xml:id="_class_int_tag_1a016a5287e36bd9c2e481a8afaaaff6bb"/><section>
+    <title>clone()</title>
+<indexterm><primary>clone</primary><secondary>IntTag</secondary></indexterm>
+<indexterm><primary>IntTag</primary><secondary>clone</secondary></indexterm>
+<para><computeroutput>std::shared_ptr&lt; <link linkend="_class_int_tag">IntTag</link> &gt; IntTag::clone ( )</computeroutput></para><para>
+Definition at line <link linkend="__tags_8cpp_source_1l00098">98</link> of file <link linkend="__tags_8cpp_source">Tags.cpp</link>.</para>
+</section>
+<anchor xml:id="_class_int_tag_1acd1fc79dd10552857136934ba444d4d4"/><section>
+    <title>execute()</title>
+<indexterm><primary>execute</primary><secondary>IntTag</secondary></indexterm>
+<indexterm><primary>IntTag</primary><secondary>execute</secondary></indexterm>
+<para><computeroutput>void IntTag::execute ( )<computeroutput>[override]</computeroutput>, <computeroutput>[virtual]</computeroutput></computeroutput></para><para>
+Reimplemented from <link linkend="_class_tag_1a54054f3c9db4decb422972460bbb34c3">Tag</link>.</para>
+<para>
+Definition at line <link linkend="__tags_8cpp_source_1l01256">1256</link> of file <link linkend="__tags_8cpp_source">Tags.cpp</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_int_tag_acd1fc79dd10552857136934ba444d4d4_cgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+</section>
+<section>
+<title>Member Data Documentation</title>
+<anchor xml:id="_class_int_tag_1a456098bb5fd8acef2f27441c262a8887"/><section>
+    <title>intTag</title>
+<indexterm><primary>intTag</primary><secondary>IntTag</secondary></indexterm>
+<indexterm><primary>IntTag</primary><secondary>intTag</secondary></indexterm>
+<para><computeroutput>std::shared_ptr&lt;<link linkend="_class_tag">Tag</link>&gt; IntTag::intTag</computeroutput></para><para>
+Definition at line <link linkend="__tags_8h_source_1l00442">442</link> of file <link linkend="__tags_8h_source">Tags.h</link>.</para>
+</section>
+<anchor xml:id="_class_int_tag_1a0814d81a516e25e0e61eb0216856417c"/><section>
+    <title>myInt</title>
+<indexterm><primary>myInt</primary><secondary>IntTag</secondary></indexterm>
+<indexterm><primary>IntTag</primary><secondary>myInt</secondary></indexterm>
+<para><computeroutput>int IntTag::myInt</computeroutput></para><para>
+Definition at line <link linkend="__tags_8h_source_1l00444">444</link> of file <link linkend="__tags_8h_source">Tags.h</link>.</para>
+</section>
+<para>
+The documentation for this class was generated from the following files:</para>
+src/<link linkend="__tags_8h">Tags.h</link>src/<link linkend="__tags_8cpp">Tags.cpp</link></section>
+</section>

@@ -1,0 +1,153 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<section xmlns="http://docbook.org/ns/docbook" version="5.0" xmlns:xlink="http://www.w3.org/1999/xlink" xml:id="_class_coord_tag" xml:lang="en-US">
+<title>CoordTag Class Reference</title>
+<indexterm><primary>CoordTag</primary></indexterm>
+<para>
+<computeroutput>#include &lt;Tags.h&gt;</computeroutput>
+</para>
+Inheritance diagram for CoordTag:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_coord_tag__inherit__graph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+Collaboration diagram for CoordTag:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_coord_tag__coll__graph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+<simplesect>
+    <title>Public Member Functions    </title>
+        <itemizedlist>
+            <listitem><para><link linkend="_class_coord_tag_1a9e8fc8a0c136e05597145876f5c22160">CoordTag</link> ()</para>
+</listitem>
+            <listitem><para><link linkend="_class_coord_tag_1ace866bfea641c8ed60d85978450cf9da">CoordTag</link> (const <link linkend="_class_coord_tag">CoordTag</link> &amp;toCopy)</para>
+</listitem>
+            <listitem><para><link linkend="_class_coord_tag_1a165316b5f12ce7d38e3dd10e93676834">CoordTag</link> (const std::shared_ptr&lt; <link linkend="_class_tag">Tag</link> &gt; &amp;parameters)</para>
+</listitem>
+            <listitem><para><link linkend="_class_coord_tag_1abf3490e4deaceefde96250cefee8d947">CoordTag</link> (const std::shared_ptr&lt; <link linkend="_class_tag">Tag</link> &gt; &amp;xPoint, const std::shared_ptr&lt; <link linkend="_class_tag">Tag</link> &gt; &amp;yPoint)</para>
+</listitem>
+            <listitem><para>std::shared_ptr&lt; <link linkend="_class_coord_tag">CoordTag</link> &gt; <link linkend="_class_coord_tag_1aaa9eb624bf748127688fcbec8a90e03d">clone</link> ()</para>
+</listitem>
+            <listitem><para>void <link linkend="_class_coord_tag_1a05fd30fa6bcce4b90c96f81adcc7f096">execute</link> () override</para>
+</listitem>
+        </itemizedlist>
+</simplesect>
+Public Member Functions inherited from <link linkend="_class_tag">Tag</link>        <itemizedlist>
+            <listitem><para><link linkend="_class_tag_1af2008705aa18e21efecb9e737b6b1a26">Tag</link> ()</para>
+</listitem>
+            <listitem><para><link linkend="_class_tag_1a5955a7ef3228749f5d264581d5c612ab">Tag</link> (const <link linkend="_class_tag">Tag</link> &amp;toCopy)</para>
+</listitem>
+            <listitem><para>std::shared_ptr&lt; <link linkend="_class_tag">Tag</link> &gt; <link linkend="_class_tag_1ae01465d32e9a52c777492048fd06bdd5">clone</link> ()</para>
+</listitem>
+        </itemizedlist>
+<simplesect>
+    <title>Public Attributes    </title>
+        <itemizedlist>
+            <listitem><para>std::shared_ptr&lt; <link linkend="_class_tag">Tag</link> &gt; <link linkend="_class_coord_tag_1a9fec5dbc718a7751339e0f1e18b6c90a">coordsTag</link></para>
+</listitem>
+            <listitem><para><link linkend="_struct_coord">Coord</link> <link linkend="_class_coord_tag_1a33ae3880b132e3599a4c39bbd69b6b87">myCoords</link></para>
+</listitem>
+        </itemizedlist>
+</simplesect>
+Public Attributes inherited from <link linkend="_class_tag">Tag</link>        <itemizedlist>
+            <listitem><para>std::string <link linkend="_class_tag_1a2b252c6a602db12fcb53a67ce3e9ca1b">tagText</link></para>
+</listitem>
+            <listitem><para>int <link linkend="_class_tag_1a25aa826cd8818bcf0670164d285c3fdd">nbParents</link></para>
+</listitem>
+            <listitem><para>bool <link linkend="_class_tag_1a688d838bee273d203d6b16caaca3ed2b">doExecute</link></para>
+</listitem>
+            <listitem><para><link linkend="__tags_8h_1a7c4faef6b7c4a30990ee13030bc51880">TagType</link> <link linkend="_class_tag_1aa82f368cc2d55922ea75ba85020517c1">myType</link></para>
+</listitem>
+        </itemizedlist>
+<section>
+<title>Detailed Description</title>
+<para>
+Definition at line <link linkend="__tags_8h_source_1l00516">516</link> of file <link linkend="__tags_8h_source">Tags.h</link>.</para>
+</section>
+<section>
+<title>Constructor &amp; Destructor Documentation</title>
+<anchor xml:id="_class_coord_tag_1a9e8fc8a0c136e05597145876f5c22160"/><section>
+    <title>CoordTag()<computeroutput>[1/4]</computeroutput></title>
+<indexterm><primary>CoordTag</primary><secondary>CoordTag</secondary></indexterm>
+<indexterm><primary>CoordTag</primary><secondary>CoordTag</secondary></indexterm>
+<para><computeroutput>CoordTag::CoordTag ( )</computeroutput></para><para>
+Definition at line <link linkend="__tags_8cpp_source_1l00948">948</link> of file <link linkend="__tags_8cpp_source">Tags.cpp</link>.</para>
+</section>
+<anchor xml:id="_class_coord_tag_1ace866bfea641c8ed60d85978450cf9da"/><section>
+    <title>CoordTag()<computeroutput>[2/4]</computeroutput></title>
+<indexterm><primary>CoordTag</primary><secondary>CoordTag</secondary></indexterm>
+<indexterm><primary>CoordTag</primary><secondary>CoordTag</secondary></indexterm>
+<para><computeroutput>CoordTag::CoordTag (const <link linkend="_class_coord_tag">CoordTag</link> &amp; toCopy)</computeroutput></para><para>
+Definition at line <link linkend="__tags_8cpp_source_1l00251">251</link> of file <link linkend="__tags_8cpp_source">Tags.cpp</link>.</para>
+</section>
+<anchor xml:id="_class_coord_tag_1a165316b5f12ce7d38e3dd10e93676834"/><section>
+    <title>CoordTag()<computeroutput>[3/4]</computeroutput></title>
+<indexterm><primary>CoordTag</primary><secondary>CoordTag</secondary></indexterm>
+<indexterm><primary>CoordTag</primary><secondary>CoordTag</secondary></indexterm>
+<para><computeroutput>CoordTag::CoordTag (const std::shared_ptr&lt; <link linkend="_class_tag">Tag</link> &gt; &amp; parameters)</computeroutput></para><para>
+Definition at line <link linkend="__tags_8cpp_source_1l00954">954</link> of file <link linkend="__tags_8cpp_source">Tags.cpp</link>.</para>
+</section>
+<anchor xml:id="_class_coord_tag_1abf3490e4deaceefde96250cefee8d947"/><section>
+    <title>CoordTag()<computeroutput>[4/4]</computeroutput></title>
+<indexterm><primary>CoordTag</primary><secondary>CoordTag</secondary></indexterm>
+<indexterm><primary>CoordTag</primary><secondary>CoordTag</secondary></indexterm>
+<para><computeroutput>CoordTag::CoordTag (const std::shared_ptr&lt; <link linkend="_class_tag">Tag</link> &gt; &amp; xPoint, const std::shared_ptr&lt; <link linkend="_class_tag">Tag</link> &gt; &amp; yPoint)</computeroutput></para><para>
+Definition at line <link linkend="__tags_8cpp_source_1l00959">959</link> of file <link linkend="__tags_8cpp_source">Tags.cpp</link>.</para>
+</section>
+</section>
+<section>
+<title>Member Function Documentation</title>
+<anchor xml:id="_class_coord_tag_1aaa9eb624bf748127688fcbec8a90e03d"/><section>
+    <title>clone()</title>
+<indexterm><primary>clone</primary><secondary>CoordTag</secondary></indexterm>
+<indexterm><primary>CoordTag</primary><secondary>clone</secondary></indexterm>
+<para><computeroutput>std::shared_ptr&lt; <link linkend="_class_coord_tag">CoordTag</link> &gt; CoordTag::clone ( )</computeroutput></para><para>
+Definition at line <link linkend="__tags_8cpp_source_1l00120">120</link> of file <link linkend="__tags_8cpp_source">Tags.cpp</link>.</para>
+</section>
+<anchor xml:id="_class_coord_tag_1a05fd30fa6bcce4b90c96f81adcc7f096"/><section>
+    <title>execute()</title>
+<indexterm><primary>execute</primary><secondary>CoordTag</secondary></indexterm>
+<indexterm><primary>CoordTag</primary><secondary>execute</secondary></indexterm>
+<para><computeroutput>void CoordTag::execute ( )<computeroutput>[override]</computeroutput>, <computeroutput>[virtual]</computeroutput></computeroutput></para><para>
+Reimplemented from <link linkend="_class_tag_1a54054f3c9db4decb422972460bbb34c3">Tag</link>.</para>
+<para>
+Definition at line <link linkend="__tags_8cpp_source_1l00998">998</link> of file <link linkend="__tags_8cpp_source">Tags.cpp</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_coord_tag_a05fd30fa6bcce4b90c96f81adcc7f096_cgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+</section>
+<section>
+<title>Member Data Documentation</title>
+<anchor xml:id="_class_coord_tag_1a9fec5dbc718a7751339e0f1e18b6c90a"/><section>
+    <title>coordsTag</title>
+<indexterm><primary>coordsTag</primary><secondary>CoordTag</secondary></indexterm>
+<indexterm><primary>CoordTag</primary><secondary>coordsTag</secondary></indexterm>
+<para><computeroutput>std::shared_ptr&lt;<link linkend="_class_tag">Tag</link>&gt; CoordTag::coordsTag</computeroutput></para><para>
+Definition at line <link linkend="__tags_8h_source_1l00523">523</link> of file <link linkend="__tags_8h_source">Tags.h</link>.</para>
+</section>
+<anchor xml:id="_class_coord_tag_1a33ae3880b132e3599a4c39bbd69b6b87"/><section>
+    <title>myCoords</title>
+<indexterm><primary>myCoords</primary><secondary>CoordTag</secondary></indexterm>
+<indexterm><primary>CoordTag</primary><secondary>myCoords</secondary></indexterm>
+<para><computeroutput><link linkend="_struct_coord">Coord</link> CoordTag::myCoords</computeroutput></para><para>
+Definition at line <link linkend="__tags_8h_source_1l00524">524</link> of file <link linkend="__tags_8h_source">Tags.h</link>.</para>
+</section>
+<para>
+The documentation for this class was generated from the following files:</para>
+src/<link linkend="__tags_8h">Tags.h</link>src/<link linkend="__tags_8cpp">Tags.cpp</link></section>
+</section>

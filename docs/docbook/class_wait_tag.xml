@@ -1,0 +1,162 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<section xmlns="http://docbook.org/ns/docbook" version="5.0" xmlns:xlink="http://www.w3.org/1999/xlink" xml:id="_class_wait_tag" xml:lang="en-US">
+<title>WaitTag Class Reference</title>
+<indexterm><primary>WaitTag</primary></indexterm>
+<para>
+<computeroutput>#include &lt;Tags.h&gt;</computeroutput>
+</para>
+Inheritance diagram for WaitTag:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_wait_tag__inherit__graph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+Collaboration diagram for WaitTag:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_wait_tag__coll__graph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+<simplesect>
+    <title>Public Member Functions    </title>
+        <itemizedlist>
+            <listitem><para><link linkend="_class_wait_tag_1a1057868016ac7a3388163595825cb103">WaitTag</link> ()</para>
+</listitem>
+            <listitem><para><link linkend="_class_wait_tag_1ac6588d2741e60040f07f19f6c3e0efcb">WaitTag</link> (const <link linkend="_class_wait_tag">WaitTag</link> &amp;toCopy)</para>
+</listitem>
+            <listitem><para><link linkend="_class_wait_tag_1aa7c19fd638a7849e356c4bcfa3eccc22">WaitTag</link> (const std::shared_ptr&lt; <link linkend="_class_tag">Tag</link> &gt; &amp;parameter, const <link linkend="__tags_8h_1a06411e4b1d6791157bb089cc368b11d3">TimeType</link> &amp;waitType)</para>
+</listitem>
+            <listitem><para><link linkend="_class_wait_tag_1aab42cd6a1db188a0637540df54f76c61">WaitTag</link> (int <link linkend="_class_wait_tag_1a94457cc0d72f6ae75016c98716fd29b8">time</link>, <link linkend="__tags_8h_1a06411e4b1d6791157bb089cc368b11d3">TimeType</link> waitType)</para>
+</listitem>
+            <listitem><para>std::shared_ptr&lt; <link linkend="_class_wait_tag">WaitTag</link> &gt; <link linkend="_class_wait_tag_1a9c3974df4c52f18502892cf280470842">clone</link> ()</para>
+</listitem>
+            <listitem><para>void <link linkend="_class_wait_tag_1a9f48b0bf250132d442cbaee46ff96b15">execute</link> () override</para>
+</listitem>
+        </itemizedlist>
+</simplesect>
+Public Member Functions inherited from <link linkend="_class_tag">Tag</link>        <itemizedlist>
+            <listitem><para><link linkend="_class_tag_1af2008705aa18e21efecb9e737b6b1a26">Tag</link> ()</para>
+</listitem>
+            <listitem><para><link linkend="_class_tag_1a5955a7ef3228749f5d264581d5c612ab">Tag</link> (const <link linkend="_class_tag">Tag</link> &amp;toCopy)</para>
+</listitem>
+            <listitem><para>std::shared_ptr&lt; <link linkend="_class_tag">Tag</link> &gt; <link linkend="_class_tag_1ae01465d32e9a52c777492048fd06bdd5">clone</link> ()</para>
+</listitem>
+        </itemizedlist>
+<simplesect>
+    <title>Public Attributes    </title>
+        <itemizedlist>
+            <listitem><para>std::shared_ptr&lt; <link linkend="_class_tag">Tag</link> &gt; <link linkend="_class_wait_tag_1a39cbaed686b7581a6f9d12ef35b4d0c2">timeTag</link></para>
+</listitem>
+            <listitem><para><link linkend="__tags_8h_1a06411e4b1d6791157bb089cc368b11d3">TimeType</link> <link linkend="_class_wait_tag_1acf52b98bc2b5bfbd8ba23dbcd3b3d3f0">type</link></para>
+</listitem>
+            <listitem><para>int <link linkend="_class_wait_tag_1a94457cc0d72f6ae75016c98716fd29b8">time</link></para>
+</listitem>
+        </itemizedlist>
+</simplesect>
+Public Attributes inherited from <link linkend="_class_tag">Tag</link>        <itemizedlist>
+            <listitem><para>std::string <link linkend="_class_tag_1a2b252c6a602db12fcb53a67ce3e9ca1b">tagText</link></para>
+</listitem>
+            <listitem><para>int <link linkend="_class_tag_1a25aa826cd8818bcf0670164d285c3fdd">nbParents</link></para>
+</listitem>
+            <listitem><para>bool <link linkend="_class_tag_1a688d838bee273d203d6b16caaca3ed2b">doExecute</link></para>
+</listitem>
+            <listitem><para><link linkend="__tags_8h_1a7c4faef6b7c4a30990ee13030bc51880">TagType</link> <link linkend="_class_tag_1aa82f368cc2d55922ea75ba85020517c1">myType</link></para>
+</listitem>
+        </itemizedlist>
+<section>
+<title>Detailed Description</title>
+<para>
+Definition at line <link linkend="__tags_8h_source_1l00390">390</link> of file <link linkend="__tags_8h_source">Tags.h</link>.</para>
+</section>
+<section>
+<title>Constructor &amp; Destructor Documentation</title>
+<anchor xml:id="_class_wait_tag_1a1057868016ac7a3388163595825cb103"/><section>
+    <title>WaitTag()<computeroutput>[1/4]</computeroutput></title>
+<indexterm><primary>WaitTag</primary><secondary>WaitTag</secondary></indexterm>
+<indexterm><primary>WaitTag</primary><secondary>WaitTag</secondary></indexterm>
+<para><computeroutput>WaitTag::WaitTag ( )</computeroutput></para><para>
+Definition at line <link linkend="__tags_8cpp_source_1l00517">517</link> of file <link linkend="__tags_8cpp_source">Tags.cpp</link>.</para>
+</section>
+<anchor xml:id="_class_wait_tag_1ac6588d2741e60040f07f19f6c3e0efcb"/><section>
+    <title>WaitTag()<computeroutput>[2/4]</computeroutput></title>
+<indexterm><primary>WaitTag</primary><secondary>WaitTag</secondary></indexterm>
+<indexterm><primary>WaitTag</primary><secondary>WaitTag</secondary></indexterm>
+<para><computeroutput>WaitTag::WaitTag (const <link linkend="_class_wait_tag">WaitTag</link> &amp; toCopy)</computeroutput></para><para>
+Definition at line <link linkend="__tags_8cpp_source_1l00209">209</link> of file <link linkend="__tags_8cpp_source">Tags.cpp</link>.</para>
+</section>
+<anchor xml:id="_class_wait_tag_1aa7c19fd638a7849e356c4bcfa3eccc22"/><section>
+    <title>WaitTag()<computeroutput>[3/4]</computeroutput></title>
+<indexterm><primary>WaitTag</primary><secondary>WaitTag</secondary></indexterm>
+<indexterm><primary>WaitTag</primary><secondary>WaitTag</secondary></indexterm>
+<para><computeroutput>WaitTag::WaitTag (const std::shared_ptr&lt; <link linkend="_class_tag">Tag</link> &gt; &amp; parameter, const <link linkend="__tags_8h_1a06411e4b1d6791157bb089cc368b11d3">TimeType</link> &amp; waitType)</computeroutput></para><para>
+Definition at line <link linkend="__tags_8cpp_source_1l00525">525</link> of file <link linkend="__tags_8cpp_source">Tags.cpp</link>.</para>
+</section>
+<anchor xml:id="_class_wait_tag_1aab42cd6a1db188a0637540df54f76c61"/><section>
+    <title>WaitTag()<computeroutput>[4/4]</computeroutput></title>
+<indexterm><primary>WaitTag</primary><secondary>WaitTag</secondary></indexterm>
+<indexterm><primary>WaitTag</primary><secondary>WaitTag</secondary></indexterm>
+<para><computeroutput>WaitTag::WaitTag (int time, <link linkend="__tags_8h_1a06411e4b1d6791157bb089cc368b11d3">TimeType</link> waitType)</computeroutput></para><para>
+Definition at line <link linkend="__tags_8cpp_source_1l00531">531</link> of file <link linkend="__tags_8cpp_source">Tags.cpp</link>.</para>
+</section>
+</section>
+<section>
+<title>Member Function Documentation</title>
+<anchor xml:id="_class_wait_tag_1a9c3974df4c52f18502892cf280470842"/><section>
+    <title>clone()</title>
+<indexterm><primary>clone</primary><secondary>WaitTag</secondary></indexterm>
+<indexterm><primary>WaitTag</primary><secondary>clone</secondary></indexterm>
+<para><computeroutput>std::shared_ptr&lt; <link linkend="_class_wait_tag">WaitTag</link> &gt; WaitTag::clone ( )</computeroutput></para><para>
+Definition at line <link linkend="__tags_8cpp_source_1l00085">85</link> of file <link linkend="__tags_8cpp_source">Tags.cpp</link>.</para>
+</section>
+<anchor xml:id="_class_wait_tag_1a9f48b0bf250132d442cbaee46ff96b15"/><section>
+    <title>execute()</title>
+<indexterm><primary>execute</primary><secondary>WaitTag</secondary></indexterm>
+<indexterm><primary>WaitTag</primary><secondary>execute</secondary></indexterm>
+<para><computeroutput>void WaitTag::execute ( )<computeroutput>[override]</computeroutput>, <computeroutput>[virtual]</computeroutput></computeroutput></para><para>
+Reimplemented from <link linkend="_class_tag_1a54054f3c9db4decb422972460bbb34c3">Tag</link>.</para>
+<para>
+Definition at line <link linkend="__tags_8cpp_source_1l00544">544</link> of file <link linkend="__tags_8cpp_source">Tags.cpp</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_wait_tag_a9f48b0bf250132d442cbaee46ff96b15_cgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+</section>
+<section>
+<title>Member Data Documentation</title>
+<anchor xml:id="_class_wait_tag_1a94457cc0d72f6ae75016c98716fd29b8"/><section>
+    <title>time</title>
+<indexterm><primary>time</primary><secondary>WaitTag</secondary></indexterm>
+<indexterm><primary>WaitTag</primary><secondary>time</secondary></indexterm>
+<para><computeroutput>int WaitTag::time</computeroutput></para><para>
+Definition at line <link linkend="__tags_8h_source_1l00399">399</link> of file <link linkend="__tags_8h_source">Tags.h</link>.</para>
+</section>
+<anchor xml:id="_class_wait_tag_1a39cbaed686b7581a6f9d12ef35b4d0c2"/><section>
+    <title>timeTag</title>
+<indexterm><primary>timeTag</primary><secondary>WaitTag</secondary></indexterm>
+<indexterm><primary>WaitTag</primary><secondary>timeTag</secondary></indexterm>
+<para><computeroutput>std::shared_ptr&lt;<link linkend="_class_tag">Tag</link>&gt; WaitTag::timeTag</computeroutput></para><para>
+Definition at line <link linkend="__tags_8h_source_1l00397">397</link> of file <link linkend="__tags_8h_source">Tags.h</link>.</para>
+</section>
+<anchor xml:id="_class_wait_tag_1acf52b98bc2b5bfbd8ba23dbcd3b3d3f0"/><section>
+    <title>type</title>
+<indexterm><primary>type</primary><secondary>WaitTag</secondary></indexterm>
+<indexterm><primary>WaitTag</primary><secondary>type</secondary></indexterm>
+<para><computeroutput><link linkend="__tags_8h_1a06411e4b1d6791157bb089cc368b11d3">TimeType</link> WaitTag::type</computeroutput></para><para>
+Definition at line <link linkend="__tags_8h_source_1l00398">398</link> of file <link linkend="__tags_8h_source">Tags.h</link>.</para>
+</section>
+<para>
+The documentation for this class was generated from the following files:</para>
+src/<link linkend="__tags_8h">Tags.h</link>src/<link linkend="__tags_8cpp">Tags.cpp</link></section>
+</section>

@@ -1,0 +1,601 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<section xmlns="http://docbook.org/ns/docbook" version="5.0" xmlns:xlink="http://www.w3.org/1999/xlink" xml:id="_struct_all_emulators" xml:lang="en-US">
+<title>AllEmulators Struct Reference</title>
+<indexterm><primary>AllEmulators</primary></indexterm>
+<para>
+<computeroutput>#include &lt;BotConfig.h&gt;</computeroutput>
+</para>
+Collaboration diagram for AllEmulators:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="struct_all_emulators__coll__graph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+<simplesect>
+    <title>Public Member Functions    </title>
+        <itemizedlist>
+            <listitem><para><link linkend="_struct_all_emulators_1ab3d563bbe0f37080e253c5959f1950d6">AllEmulators</link> ()</para>
+</listitem>
+            <listitem><para><link linkend="_struct_all_emulators_1a78398d5200f0679f98b8567581a1ecab">AllEmulators</link> (const std::string gamePackage, int dimX, int dimY, int dpi)</para>
+</listitem>
+            <listitem><para>void <link linkend="_struct_all_emulators_1a91313dd1ec133a3fd327014dc4c039a1">setAllInstances</link> ()</para>
+</listitem>
+            <listitem><para>void <link linkend="_struct_all_emulators_1a51b5d1493cdbc09be59b062ddb428963">fillBluestacksInstances</link> ()</para>
+</listitem>
+            <listitem><para>void <link linkend="_struct_all_emulators_1aeeb2b6e332b62d79119134f47a0382bc">fillLdPlayerInstances</link> ()</para>
+</listitem>
+            <listitem><para>void <link linkend="_struct_all_emulators_1ade387932188cdd7032e6c83eb3432a41">fillAllInstances</link> ()</para>
+</listitem>
+            <listitem><para>void <link linkend="_struct_all_emulators_1a6ae821ac9da5f8ff39251f2b6e9b74d2">showAllInstances</link> ()</para>
+</listitem>
+            <listitem><para>void <link linkend="_struct_all_emulators_1a86a17ae3ac810b92544baa8cdcb01309">showInstance</link> (int index)</para>
+</listitem>
+            <listitem><para>void <link linkend="_struct_all_emulators_1abc4961f4cb82ebbf66e464be8d9285b8">showInstance</link> (<link linkend="_class_instance">Instance</link> *inst)</para>
+</listitem>
+            <listitem><para><link linkend="_class_instance">Instance</link> * <link linkend="_struct_all_emulators_1a4866e51109e46a475c389e658350c07d">getInstance</link> (int index)</para>
+</listitem>
+            <listitem><para>bool <link linkend="_struct_all_emulators_1afdb51d890e849116f1ef02b6da56e8b3">isLdPlayerInstance</link> (int index)</para>
+</listitem>
+            <listitem><para>bool <link linkend="_struct_all_emulators_1ac38be2840e4ae476295c7f08b62caa1f">isBluestacksInstance</link> (int index)</para>
+</listitem>
+            <listitem><para>bool <link linkend="_struct_all_emulators_1ae768f71fb35c8fe9d2af993700a74dae">isBluestacksInstance</link> (<link linkend="_class_instance">Instance</link> *inst)</para>
+</listitem>
+            <listitem><para>bool <link linkend="_struct_all_emulators_1af9b4a61ff1d1a8f659b2edf234f66c70">isLdPlayerInstance</link> (<link linkend="_class_instance">Instance</link> *inst)</para>
+</listitem>
+            <listitem><para>bool <link linkend="_struct_all_emulators_1a4f1845a1b78a6e45c4d71b50c875ec76">isBluestacks</link> (<link linkend="_class_emulator">Emulator</link> *emu)</para>
+</listitem>
+            <listitem><para>bool <link linkend="_struct_all_emulators_1a9064c95026dfdf98367927093d905ee0">isLdPlayer</link> (<link linkend="_class_emulator">Emulator</link> *emu)</para>
+</listitem>
+            <listitem><para><link linkend="_class_bluestacks">Bluestacks</link> * <link linkend="_struct_all_emulators_1a28b64babcabb20883e56e61ffb067b9b">transformBluestacks</link> (<link linkend="_class_emulator">Emulator</link> *emu)</para>
+</listitem>
+            <listitem><para><link linkend="_class_l_d_player">LDPlayer</link> * <link linkend="_struct_all_emulators_1a5fc25f131d0c72ca6eb2e938e2e8df38">transformLdPlayer</link> (<link linkend="_class_emulator">Emulator</link> *emu)</para>
+</listitem>
+            <listitem><para><link linkend="_class_instance">Instance</link> * <link linkend="_struct_all_emulators_1a6ffd909ec5cb08d91a6dc09a59db58e1">getInstance</link> (std::string globalId)</para>
+</listitem>
+            <listitem><para>int <link linkend="_struct_all_emulators_1aa1df5ba4e1c2d0b4427f5d1bd3f3339c">getFavoriteInstanceIndex</link> (std::string globalId)</para>
+</listitem>
+            <listitem><para><link linkend="_class_bluestacks_instance">BluestacksInstance</link> * <link linkend="_struct_all_emulators_1acca32e960d79c1dc40a7e10666e8970d">getBluestacksInstance</link> (int index)</para>
+</listitem>
+            <listitem><para><link linkend="_class_l_d_player_instance">LDPlayerInstance</link> * <link linkend="_struct_all_emulators_1a72a9288eb9cfe2b4b45684f2581e4a95">getLDPlayerInstance</link> (int index)</para>
+</listitem>
+            <listitem><para>void <link linkend="_struct_all_emulators_1ab9091f00d35a6266cf70072a5a2ccab7">setPlayingEmulator</link> (<link linkend="_class_instance">Instance</link> *inst)</para>
+</listitem>
+            <listitem><para>void <link linkend="_struct_all_emulators_1a0311062fb8608a2e3fb224812fc84992">clearAllInstances</link> ()</para>
+</listitem>
+            <listitem><para>void <link linkend="_struct_all_emulators_1a8868b738a0cb0f65120e0f202e87b4ed">clearBluestacksInstances</link> ()</para>
+</listitem>
+            <listitem><para>void <link linkend="_struct_all_emulators_1a7eef7eaad4c371a922112e40da08e268">clearLdPlayerInstances</link> ()</para>
+</listitem>
+        </itemizedlist>
+</simplesect>
+<simplesect>
+    <title>Public Attributes    </title>
+        <itemizedlist>
+            <listitem><para>std::vector&lt; <link linkend="_class_instance">Instance</link> * &gt; <link linkend="_struct_all_emulators_1a8cbae61731971d66a68a201302ab6db8">LdPlayerInstances</link></para>
+</listitem>
+            <listitem><para>std::vector&lt; <link linkend="_class_instance">Instance</link> * &gt; <link linkend="_struct_all_emulators_1a243fca964426f25cb782f34afa465b8e">BluestackInstances</link></para>
+</listitem>
+            <listitem><para><link linkend="_class_instance">Instance</link> * <link linkend="_struct_all_emulators_1af2818835c22641cdb698ae29d41cb41c">playingInstance</link></para>
+</listitem>
+            <listitem><para><link linkend="_class_emulator">Emulator</link> * <link linkend="_struct_all_emulators_1a710e93eea46e0922c245799d60d1fb95">playingEmulator</link></para>
+</listitem>
+            <listitem><para>std::vector&lt; std::pair&lt; int, <link linkend="_class_instance">Instance</link> * &gt; &gt; <link linkend="_struct_all_emulators_1acaf72502e2a14835727f0af11c9c2e00">allInstances</link></para>
+</listitem>
+            <listitem><para><link linkend="_class_bluestacks">Bluestacks</link> <link linkend="_struct_all_emulators_1ad9665110f17cbb850ce02b9dcc2442ea">blue</link></para>
+</listitem>
+            <listitem><para><link linkend="_class_l_d_player">LDPlayer</link> <link linkend="_struct_all_emulators_1a8522baa50bd6eb248be7acc3ed4b97c9">ld</link></para>
+</listitem>
+        </itemizedlist>
+</simplesect>
+<section>
+<title>Detailed Description</title>
+<para>
+Definition at line <link linkend="__bot_config_8h_source_1l00018">18</link> of file <link linkend="__bot_config_8h_source">BotConfig.h</link>.</para>
+</section>
+<section>
+<title>Constructor &amp; Destructor Documentation</title>
+<anchor xml:id="_struct_all_emulators_1ab3d563bbe0f37080e253c5959f1950d6"/><section>
+    <title>AllEmulators()<computeroutput>[1/2]</computeroutput></title>
+<indexterm><primary>AllEmulators</primary><secondary>AllEmulators</secondary></indexterm>
+<indexterm><primary>AllEmulators</primary><secondary>AllEmulators</secondary></indexterm>
+<para><computeroutput>AllEmulators::AllEmulators ( )</computeroutput></para><para>
+Definition at line <link linkend="__bot_config_8cpp_source_1l00024">24</link> of file <link linkend="__bot_config_8cpp_source">BotConfig.cpp</link>.</para>
+</section>
+<anchor xml:id="_struct_all_emulators_1a78398d5200f0679f98b8567581a1ecab"/><section>
+    <title>AllEmulators()<computeroutput>[2/2]</computeroutput></title>
+<indexterm><primary>AllEmulators</primary><secondary>AllEmulators</secondary></indexterm>
+<indexterm><primary>AllEmulators</primary><secondary>AllEmulators</secondary></indexterm>
+<para><computeroutput>AllEmulators::AllEmulators (const std::string gamePackage, int dimX, int dimY, int dpi)</computeroutput></para><para>
+Definition at line <link linkend="__bot_config_8cpp_source_1l00033">33</link> of file <link linkend="__bot_config_8cpp_source">BotConfig.cpp</link>.</para>
+</section>
+</section>
+<section>
+<title>Member Function Documentation</title>
+<anchor xml:id="_struct_all_emulators_1a0311062fb8608a2e3fb224812fc84992"/><section>
+    <title>clearAllInstances()</title>
+<indexterm><primary>clearAllInstances</primary><secondary>AllEmulators</secondary></indexterm>
+<indexterm><primary>AllEmulators</primary><secondary>clearAllInstances</secondary></indexterm>
+<para><computeroutput>void AllEmulators::clearAllInstances ( )</computeroutput></para><para>
+Definition at line <link linkend="__bot_config_8cpp_source_1l00782">782</link> of file <link linkend="__bot_config_8cpp_source">BotConfig.cpp</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="struct_all_emulators_a0311062fb8608a2e3fb224812fc84992_cgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+Here is the caller graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="struct_all_emulators_a0311062fb8608a2e3fb224812fc84992_icgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_struct_all_emulators_1a8868b738a0cb0f65120e0f202e87b4ed"/><section>
+    <title>clearBluestacksInstances()</title>
+<indexterm><primary>clearBluestacksInstances</primary><secondary>AllEmulators</secondary></indexterm>
+<indexterm><primary>AllEmulators</primary><secondary>clearBluestacksInstances</secondary></indexterm>
+<para><computeroutput>void AllEmulators::clearBluestacksInstances ( )</computeroutput></para><para>
+Definition at line <link linkend="__bot_config_8cpp_source_1l00789">789</link> of file <link linkend="__bot_config_8cpp_source">BotConfig.cpp</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="struct_all_emulators_a8868b738a0cb0f65120e0f202e87b4ed_cgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+Here is the caller graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="struct_all_emulators_a8868b738a0cb0f65120e0f202e87b4ed_icgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_struct_all_emulators_1a7eef7eaad4c371a922112e40da08e268"/><section>
+    <title>clearLdPlayerInstances()</title>
+<indexterm><primary>clearLdPlayerInstances</primary><secondary>AllEmulators</secondary></indexterm>
+<indexterm><primary>AllEmulators</primary><secondary>clearLdPlayerInstances</secondary></indexterm>
+<para><computeroutput>void AllEmulators::clearLdPlayerInstances ( )</computeroutput></para><para>
+Definition at line <link linkend="__bot_config_8cpp_source_1l00795">795</link> of file <link linkend="__bot_config_8cpp_source">BotConfig.cpp</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="struct_all_emulators_a7eef7eaad4c371a922112e40da08e268_cgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+Here is the caller graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="struct_all_emulators_a7eef7eaad4c371a922112e40da08e268_icgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_struct_all_emulators_1ade387932188cdd7032e6c83eb3432a41"/><section>
+    <title>fillAllInstances()</title>
+<indexterm><primary>fillAllInstances</primary><secondary>AllEmulators</secondary></indexterm>
+<indexterm><primary>AllEmulators</primary><secondary>fillAllInstances</secondary></indexterm>
+<para><computeroutput>void AllEmulators::fillAllInstances ( )</computeroutput></para><para>
+Definition at line <link linkend="__bot_config_8cpp_source_1l00651">651</link> of file <link linkend="__bot_config_8cpp_source">BotConfig.cpp</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="struct_all_emulators_ade387932188cdd7032e6c83eb3432a41_cgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+Here is the caller graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="struct_all_emulators_ade387932188cdd7032e6c83eb3432a41_icgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_struct_all_emulators_1a51b5d1493cdbc09be59b062ddb428963"/><section>
+    <title>fillBluestacksInstances()</title>
+<indexterm><primary>fillBluestacksInstances</primary><secondary>AllEmulators</secondary></indexterm>
+<indexterm><primary>AllEmulators</primary><secondary>fillBluestacksInstances</secondary></indexterm>
+<para><computeroutput>void AllEmulators::fillBluestacksInstances ( )</computeroutput></para><para>
+Definition at line <link linkend="__bot_config_8cpp_source_1l00638">638</link> of file <link linkend="__bot_config_8cpp_source">BotConfig.cpp</link>.</para>
+Here is the caller graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="struct_all_emulators_a51b5d1493cdbc09be59b062ddb428963_icgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_struct_all_emulators_1aeeb2b6e332b62d79119134f47a0382bc"/><section>
+    <title>fillLdPlayerInstances()</title>
+<indexterm><primary>fillLdPlayerInstances</primary><secondary>AllEmulators</secondary></indexterm>
+<indexterm><primary>AllEmulators</primary><secondary>fillLdPlayerInstances</secondary></indexterm>
+<para><computeroutput>void AllEmulators::fillLdPlayerInstances ( )</computeroutput></para><para>
+Definition at line <link linkend="__bot_config_8cpp_source_1l00644">644</link> of file <link linkend="__bot_config_8cpp_source">BotConfig.cpp</link>.</para>
+Here is the caller graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="struct_all_emulators_aeeb2b6e332b62d79119134f47a0382bc_icgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_struct_all_emulators_1acca32e960d79c1dc40a7e10666e8970d"/><section>
+    <title>getBluestacksInstance()</title>
+<indexterm><primary>getBluestacksInstance</primary><secondary>AllEmulators</secondary></indexterm>
+<indexterm><primary>AllEmulators</primary><secondary>getBluestacksInstance</secondary></indexterm>
+<para><computeroutput><link linkend="_class_bluestacks_instance">BluestacksInstance</link> * AllEmulators::getBluestacksInstance (int index)</computeroutput></para><para>
+Definition at line <link linkend="__bot_config_8cpp_source_1l00762">762</link> of file <link linkend="__bot_config_8cpp_source">BotConfig.cpp</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="struct_all_emulators_acca32e960d79c1dc40a7e10666e8970d_cgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+Here is the caller graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="struct_all_emulators_acca32e960d79c1dc40a7e10666e8970d_icgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_struct_all_emulators_1aa1df5ba4e1c2d0b4427f5d1bd3f3339c"/><section>
+    <title>getFavoriteInstanceIndex()</title>
+<indexterm><primary>getFavoriteInstanceIndex</primary><secondary>AllEmulators</secondary></indexterm>
+<indexterm><primary>AllEmulators</primary><secondary>getFavoriteInstanceIndex</secondary></indexterm>
+<para><computeroutput>int AllEmulators::getFavoriteInstanceIndex (std::string globalId)</computeroutput></para><para>
+Definition at line <link linkend="__bot_config_8cpp_source_1l00745">745</link> of file <link linkend="__bot_config_8cpp_source">BotConfig.cpp</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="struct_all_emulators_aa1df5ba4e1c2d0b4427f5d1bd3f3339c_cgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+Here is the caller graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="struct_all_emulators_aa1df5ba4e1c2d0b4427f5d1bd3f3339c_icgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_struct_all_emulators_1a4866e51109e46a475c389e658350c07d"/><section>
+    <title>getInstance()<computeroutput>[1/2]</computeroutput></title>
+<indexterm><primary>getInstance</primary><secondary>AllEmulators</secondary></indexterm>
+<indexterm><primary>AllEmulators</primary><secondary>getInstance</secondary></indexterm>
+<para><computeroutput><link linkend="_class_instance">Instance</link> * AllEmulators::getInstance (int index)</computeroutput></para><para>
+Definition at line <link linkend="__bot_config_8cpp_source_1l00688">688</link> of file <link linkend="__bot_config_8cpp_source">BotConfig.cpp</link>.</para>
+Here is the caller graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="struct_all_emulators_a4866e51109e46a475c389e658350c07d_icgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_struct_all_emulators_1a6ffd909ec5cb08d91a6dc09a59db58e1"/><section>
+    <title>getInstance()<computeroutput>[2/2]</computeroutput></title>
+<indexterm><primary>getInstance</primary><secondary>AllEmulators</secondary></indexterm>
+<indexterm><primary>AllEmulators</primary><secondary>getInstance</secondary></indexterm>
+<para><computeroutput><link linkend="_class_instance">Instance</link> * AllEmulators::getInstance (std::string globalId)</computeroutput></para><para>
+Definition at line <link linkend="__bot_config_8cpp_source_1l00734">734</link> of file <link linkend="__bot_config_8cpp_source">BotConfig.cpp</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="struct_all_emulators_a6ffd909ec5cb08d91a6dc09a59db58e1_cgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_struct_all_emulators_1a72a9288eb9cfe2b4b45684f2581e4a95"/><section>
+    <title>getLDPlayerInstance()</title>
+<indexterm><primary>getLDPlayerInstance</primary><secondary>AllEmulators</secondary></indexterm>
+<indexterm><primary>AllEmulators</primary><secondary>getLDPlayerInstance</secondary></indexterm>
+<para><computeroutput><link linkend="_class_l_d_player_instance">LDPlayerInstance</link> * AllEmulators::getLDPlayerInstance (int index)</computeroutput></para><para>
+Definition at line <link linkend="__bot_config_8cpp_source_1l00767">767</link> of file <link linkend="__bot_config_8cpp_source">BotConfig.cpp</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="struct_all_emulators_a72a9288eb9cfe2b4b45684f2581e4a95_cgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+Here is the caller graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="struct_all_emulators_a72a9288eb9cfe2b4b45684f2581e4a95_icgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_struct_all_emulators_1a4f1845a1b78a6e45c4d71b50c875ec76"/><section>
+    <title>isBluestacks()</title>
+<indexterm><primary>isBluestacks</primary><secondary>AllEmulators</secondary></indexterm>
+<indexterm><primary>AllEmulators</primary><secondary>isBluestacks</secondary></indexterm>
+<para><computeroutput>bool AllEmulators::isBluestacks (<link linkend="_class_emulator">Emulator</link> * emu)</computeroutput></para><para>
+Definition at line <link linkend="__bot_config_8cpp_source_1l00713">713</link> of file <link linkend="__bot_config_8cpp_source">BotConfig.cpp</link>.</para>
+</section>
+<anchor xml:id="_struct_all_emulators_1ae768f71fb35c8fe9d2af993700a74dae"/><section>
+    <title>isBluestacksInstance()<computeroutput>[1/2]</computeroutput></title>
+<indexterm><primary>isBluestacksInstance</primary><secondary>AllEmulators</secondary></indexterm>
+<indexterm><primary>AllEmulators</primary><secondary>isBluestacksInstance</secondary></indexterm>
+<para><computeroutput>bool AllEmulators::isBluestacksInstance (<link linkend="_class_instance">Instance</link> * inst)</computeroutput></para><para>
+Definition at line <link linkend="__bot_config_8cpp_source_1l00756">756</link> of file <link linkend="__bot_config_8cpp_source">BotConfig.cpp</link>.</para>
+</section>
+<anchor xml:id="_struct_all_emulators_1ac38be2840e4ae476295c7f08b62caa1f"/><section>
+    <title>isBluestacksInstance()<computeroutput>[2/2]</computeroutput></title>
+<indexterm><primary>isBluestacksInstance</primary><secondary>AllEmulators</secondary></indexterm>
+<indexterm><primary>AllEmulators</primary><secondary>isBluestacksInstance</secondary></indexterm>
+<para><computeroutput>bool AllEmulators::isBluestacksInstance (int index)</computeroutput></para><para>
+Definition at line <link linkend="__bot_config_8cpp_source_1l00703">703</link> of file <link linkend="__bot_config_8cpp_source">BotConfig.cpp</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="struct_all_emulators_ac38be2840e4ae476295c7f08b62caa1f_cgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+Here is the caller graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="struct_all_emulators_ac38be2840e4ae476295c7f08b62caa1f_icgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_struct_all_emulators_1a9064c95026dfdf98367927093d905ee0"/><section>
+    <title>isLdPlayer()</title>
+<indexterm><primary>isLdPlayer</primary><secondary>AllEmulators</secondary></indexterm>
+<indexterm><primary>AllEmulators</primary><secondary>isLdPlayer</secondary></indexterm>
+<para><computeroutput>bool AllEmulators::isLdPlayer (<link linkend="_class_emulator">Emulator</link> * emu)</computeroutput></para><para>
+Definition at line <link linkend="__bot_config_8cpp_source_1l00718">718</link> of file <link linkend="__bot_config_8cpp_source">BotConfig.cpp</link>.</para>
+</section>
+<anchor xml:id="_struct_all_emulators_1af9b4a61ff1d1a8f659b2edf234f66c70"/><section>
+    <title>isLdPlayerInstance()<computeroutput>[1/2]</computeroutput></title>
+<indexterm><primary>isLdPlayerInstance</primary><secondary>AllEmulators</secondary></indexterm>
+<indexterm><primary>AllEmulators</primary><secondary>isLdPlayerInstance</secondary></indexterm>
+<para><computeroutput>bool AllEmulators::isLdPlayerInstance (<link linkend="_class_instance">Instance</link> * inst)</computeroutput></para><para>
+Definition at line <link linkend="__bot_config_8cpp_source_1l00708">708</link> of file <link linkend="__bot_config_8cpp_source">BotConfig.cpp</link>.</para>
+</section>
+<anchor xml:id="_struct_all_emulators_1afdb51d890e849116f1ef02b6da56e8b3"/><section>
+    <title>isLdPlayerInstance()<computeroutput>[2/2]</computeroutput></title>
+<indexterm><primary>isLdPlayerInstance</primary><secondary>AllEmulators</secondary></indexterm>
+<indexterm><primary>AllEmulators</primary><secondary>isLdPlayerInstance</secondary></indexterm>
+<para><computeroutput>bool AllEmulators::isLdPlayerInstance (int index)</computeroutput></para><para>
+Definition at line <link linkend="__bot_config_8cpp_source_1l00697">697</link> of file <link linkend="__bot_config_8cpp_source">BotConfig.cpp</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="struct_all_emulators_afdb51d890e849116f1ef02b6da56e8b3_cgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+Here is the caller graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="struct_all_emulators_afdb51d890e849116f1ef02b6da56e8b3_icgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_struct_all_emulators_1a91313dd1ec133a3fd327014dc4c039a1"/><section>
+    <title>setAllInstances()</title>
+<indexterm><primary>setAllInstances</primary><secondary>AllEmulators</secondary></indexterm>
+<indexterm><primary>AllEmulators</primary><secondary>setAllInstances</secondary></indexterm>
+<para><computeroutput>void AllEmulators::setAllInstances ( )</computeroutput></para><para>
+Definition at line <link linkend="__bot_config_8cpp_source_1l00632">632</link> of file <link linkend="__bot_config_8cpp_source">BotConfig.cpp</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="struct_all_emulators_a91313dd1ec133a3fd327014dc4c039a1_cgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+Here is the caller graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="struct_all_emulators_a91313dd1ec133a3fd327014dc4c039a1_icgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_struct_all_emulators_1ab9091f00d35a6266cf70072a5a2ccab7"/><section>
+    <title>setPlayingEmulator()</title>
+<indexterm><primary>setPlayingEmulator</primary><secondary>AllEmulators</secondary></indexterm>
+<indexterm><primary>AllEmulators</primary><secondary>setPlayingEmulator</secondary></indexterm>
+<para><computeroutput>void AllEmulators::setPlayingEmulator (<link linkend="_class_instance">Instance</link> * inst)</computeroutput></para><para>
+Definition at line <link linkend="__bot_config_8cpp_source_1l00772">772</link> of file <link linkend="__bot_config_8cpp_source">BotConfig.cpp</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="struct_all_emulators_ab9091f00d35a6266cf70072a5a2ccab7_cgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+Here is the caller graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="struct_all_emulators_ab9091f00d35a6266cf70072a5a2ccab7_icgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_struct_all_emulators_1a6ae821ac9da5f8ff39251f2b6e9b74d2"/><section>
+    <title>showAllInstances()</title>
+<indexterm><primary>showAllInstances</primary><secondary>AllEmulators</secondary></indexterm>
+<indexterm><primary>AllEmulators</primary><secondary>showAllInstances</secondary></indexterm>
+<para><computeroutput>void AllEmulators::showAllInstances ( )</computeroutput></para><para>
+Definition at line <link linkend="__bot_config_8cpp_source_1l00657">657</link> of file <link linkend="__bot_config_8cpp_source">BotConfig.cpp</link>.</para>
+Here is the caller graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="struct_all_emulators_a6ae821ac9da5f8ff39251f2b6e9b74d2_icgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_struct_all_emulators_1abc4961f4cb82ebbf66e464be8d9285b8"/><section>
+    <title>showInstance()<computeroutput>[1/2]</computeroutput></title>
+<indexterm><primary>showInstance</primary><secondary>AllEmulators</secondary></indexterm>
+<indexterm><primary>AllEmulators</primary><secondary>showInstance</secondary></indexterm>
+<para><computeroutput>void AllEmulators::showInstance (<link linkend="_class_instance">Instance</link> * inst)</computeroutput></para><para>
+Definition at line <link linkend="__bot_config_8cpp_source_1l00678">678</link> of file <link linkend="__bot_config_8cpp_source">BotConfig.cpp</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="struct_all_emulators_abc4961f4cb82ebbf66e464be8d9285b8_cgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_struct_all_emulators_1a86a17ae3ac810b92544baa8cdcb01309"/><section>
+    <title>showInstance()<computeroutput>[2/2]</computeroutput></title>
+<indexterm><primary>showInstance</primary><secondary>AllEmulators</secondary></indexterm>
+<indexterm><primary>AllEmulators</primary><secondary>showInstance</secondary></indexterm>
+<para><computeroutput>void AllEmulators::showInstance (int index)</computeroutput></para><para>
+Definition at line <link linkend="__bot_config_8cpp_source_1l00666">666</link> of file <link linkend="__bot_config_8cpp_source">BotConfig.cpp</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="struct_all_emulators_a86a17ae3ac810b92544baa8cdcb01309_cgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_struct_all_emulators_1a28b64babcabb20883e56e61ffb067b9b"/><section>
+    <title>transformBluestacks()</title>
+<indexterm><primary>transformBluestacks</primary><secondary>AllEmulators</secondary></indexterm>
+<indexterm><primary>AllEmulators</primary><secondary>transformBluestacks</secondary></indexterm>
+<para><computeroutput><link linkend="_class_bluestacks">Bluestacks</link> * AllEmulators::transformBluestacks (<link linkend="_class_emulator">Emulator</link> * emu)</computeroutput></para><para>
+Definition at line <link linkend="__bot_config_8cpp_source_1l00723">723</link> of file <link linkend="__bot_config_8cpp_source">BotConfig.cpp</link>.</para>
+</section>
+<anchor xml:id="_struct_all_emulators_1a5fc25f131d0c72ca6eb2e938e2e8df38"/><section>
+    <title>transformLdPlayer()</title>
+<indexterm><primary>transformLdPlayer</primary><secondary>AllEmulators</secondary></indexterm>
+<indexterm><primary>AllEmulators</primary><secondary>transformLdPlayer</secondary></indexterm>
+<para><computeroutput><link linkend="_class_l_d_player">LDPlayer</link> * AllEmulators::transformLdPlayer (<link linkend="_class_emulator">Emulator</link> * emu)</computeroutput></para><para>
+Definition at line <link linkend="__bot_config_8cpp_source_1l00728">728</link> of file <link linkend="__bot_config_8cpp_source">BotConfig.cpp</link>.</para>
+</section>
+</section>
+<section>
+<title>Member Data Documentation</title>
+<anchor xml:id="_struct_all_emulators_1acaf72502e2a14835727f0af11c9c2e00"/><section>
+    <title>allInstances</title>
+<indexterm><primary>allInstances</primary><secondary>AllEmulators</secondary></indexterm>
+<indexterm><primary>AllEmulators</primary><secondary>allInstances</secondary></indexterm>
+<para><computeroutput>std::vector&lt;std::pair&lt;int, <link linkend="_class_instance">Instance</link>*&gt; &gt; AllEmulators::allInstances</computeroutput></para><para>
+Definition at line <link linkend="__bot_config_8h_source_1l00050">50</link> of file <link linkend="__bot_config_8h_source">BotConfig.h</link>.</para>
+</section>
+<anchor xml:id="_struct_all_emulators_1ad9665110f17cbb850ce02b9dcc2442ea"/><section>
+    <title>blue</title>
+<indexterm><primary>blue</primary><secondary>AllEmulators</secondary></indexterm>
+<indexterm><primary>AllEmulators</primary><secondary>blue</secondary></indexterm>
+<para><computeroutput><link linkend="_class_bluestacks">Bluestacks</link> AllEmulators::blue</computeroutput></para><para>
+Definition at line <link linkend="__bot_config_8h_source_1l00051">51</link> of file <link linkend="__bot_config_8h_source">BotConfig.h</link>.</para>
+</section>
+<anchor xml:id="_struct_all_emulators_1a243fca964426f25cb782f34afa465b8e"/><section>
+    <title>BluestackInstances</title>
+<indexterm><primary>BluestackInstances</primary><secondary>AllEmulators</secondary></indexterm>
+<indexterm><primary>AllEmulators</primary><secondary>BluestackInstances</secondary></indexterm>
+<para><computeroutput>std::vector&lt;<link linkend="_class_instance">Instance</link>*&gt; AllEmulators::BluestackInstances</computeroutput></para><para>
+Definition at line <link linkend="__bot_config_8h_source_1l00047">47</link> of file <link linkend="__bot_config_8h_source">BotConfig.h</link>.</para>
+</section>
+<anchor xml:id="_struct_all_emulators_1a8522baa50bd6eb248be7acc3ed4b97c9"/><section>
+    <title>ld</title>
+<indexterm><primary>ld</primary><secondary>AllEmulators</secondary></indexterm>
+<indexterm><primary>AllEmulators</primary><secondary>ld</secondary></indexterm>
+<para><computeroutput><link linkend="_class_l_d_player">LDPlayer</link> AllEmulators::ld</computeroutput></para><para>
+Definition at line <link linkend="__bot_config_8h_source_1l00052">52</link> of file <link linkend="__bot_config_8h_source">BotConfig.h</link>.</para>
+</section>
+<anchor xml:id="_struct_all_emulators_1a8cbae61731971d66a68a201302ab6db8"/><section>
+    <title>LdPlayerInstances</title>
+<indexterm><primary>LdPlayerInstances</primary><secondary>AllEmulators</secondary></indexterm>
+<indexterm><primary>AllEmulators</primary><secondary>LdPlayerInstances</secondary></indexterm>
+<para><computeroutput>std::vector&lt;<link linkend="_class_instance">Instance</link>*&gt; AllEmulators::LdPlayerInstances</computeroutput></para><para>
+Definition at line <link linkend="__bot_config_8h_source_1l00046">46</link> of file <link linkend="__bot_config_8h_source">BotConfig.h</link>.</para>
+</section>
+<anchor xml:id="_struct_all_emulators_1a710e93eea46e0922c245799d60d1fb95"/><section>
+    <title>playingEmulator</title>
+<indexterm><primary>playingEmulator</primary><secondary>AllEmulators</secondary></indexterm>
+<indexterm><primary>AllEmulators</primary><secondary>playingEmulator</secondary></indexterm>
+<para><computeroutput><link linkend="_class_emulator">Emulator</link>* AllEmulators::playingEmulator</computeroutput></para><para>
+Definition at line <link linkend="__bot_config_8h_source_1l00049">49</link> of file <link linkend="__bot_config_8h_source">BotConfig.h</link>.</para>
+</section>
+<anchor xml:id="_struct_all_emulators_1af2818835c22641cdb698ae29d41cb41c"/><section>
+    <title>playingInstance</title>
+<indexterm><primary>playingInstance</primary><secondary>AllEmulators</secondary></indexterm>
+<indexterm><primary>AllEmulators</primary><secondary>playingInstance</secondary></indexterm>
+<para><computeroutput><link linkend="_class_instance">Instance</link>* AllEmulators::playingInstance</computeroutput></para><para>
+Definition at line <link linkend="__bot_config_8h_source_1l00048">48</link> of file <link linkend="__bot_config_8h_source">BotConfig.h</link>.</para>
+</section>
+<para>
+The documentation for this struct was generated from the following files:</para>
+src/<link linkend="__bot_config_8h">BotConfig.h</link>src/<link linkend="__bot_config_8cpp">BotConfig.cpp</link></section>
+</section>

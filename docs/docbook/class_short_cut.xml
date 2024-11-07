@@ -1,0 +1,106 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<section xmlns="http://docbook.org/ns/docbook" version="5.0" xmlns:xlink="http://www.w3.org/1999/xlink" xml:id="_class_short_cut" xml:lang="en-US">
+<title>ShortCut Class Reference</title>
+<indexterm><primary>ShortCut</primary></indexterm>
+<para>
+<computeroutput>#include &lt;Activity.h&gt;</computeroutput>
+</para>
+Collaboration diagram for ShortCut:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_short_cut__coll__graph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+<simplesect>
+    <title>Public Member Functions    </title>
+        <itemizedlist>
+            <listitem><para><link linkend="_class_short_cut_1a9e30dbb6cdd2a3ff9545dc29d8c849b4">ShortCut</link> ()</para>
+</listitem>
+            <listitem><para><link linkend="_class_short_cut_1a556006679992e180ef4bfc2866141b61">ShortCut</link> (char k, std::string n, std::string desc)</para>
+</listitem>
+            <listitem><para><link linkend="_class_short_cut_1abf12d9827dbaf8bcd4476f72653292de">ShortCut</link> (const <link linkend="_class_short_cut">ShortCut</link> &amp;copy)</para>
+</listitem>
+            <listitem><para>void <link linkend="_class_short_cut_1a5026e60948d728b70bad17f55ce63b75">showShortCut</link> () const</para>
+</listitem>
+        </itemizedlist>
+</simplesect>
+<simplesect>
+    <title>Public Attributes    </title>
+        <itemizedlist>
+            <listitem><para>char <link linkend="_class_short_cut_1a9cb4aafc1783cabc572a1de63b3120f4">key</link></para>
+</listitem>
+            <listitem><para>std::string <link linkend="_class_short_cut_1aa4b09467a97ff509d9c4e80212143629">string</link></para>
+</listitem>
+            <listitem><para>std::string <link linkend="_class_short_cut_1a5b1ae4cc092577100f735ff2fe885da2">description</link></para>
+</listitem>
+        </itemizedlist>
+</simplesect>
+<section>
+<title>Detailed Description</title>
+<para>
+Definition at line <link linkend="__activity_8h_source_1l00018">18</link> of file <link linkend="__activity_8h_source">Activity.h</link>.</para>
+</section>
+<section>
+<title>Constructor &amp; Destructor Documentation</title>
+<anchor xml:id="_class_short_cut_1a9e30dbb6cdd2a3ff9545dc29d8c849b4"/><section>
+    <title>ShortCut()<computeroutput>[1/3]</computeroutput></title>
+<indexterm><primary>ShortCut</primary><secondary>ShortCut</secondary></indexterm>
+<indexterm><primary>ShortCut</primary><secondary>ShortCut</secondary></indexterm>
+<para><computeroutput>ShortCut::ShortCut ( )</computeroutput></para><para>
+Definition at line <link linkend="__activity_8cpp_source_1l00030">30</link> of file <link linkend="__activity_8cpp_source">Activity.cpp</link>.</para>
+</section>
+<anchor xml:id="_class_short_cut_1a556006679992e180ef4bfc2866141b61"/><section>
+    <title>ShortCut()<computeroutput>[2/3]</computeroutput></title>
+<indexterm><primary>ShortCut</primary><secondary>ShortCut</secondary></indexterm>
+<indexterm><primary>ShortCut</primary><secondary>ShortCut</secondary></indexterm>
+<para><computeroutput>ShortCut::ShortCut (char k, std::string n, std::string desc)</computeroutput></para><para>
+Definition at line <link linkend="__activity_8cpp_source_1l00037">37</link> of file <link linkend="__activity_8cpp_source">Activity.cpp</link>.</para>
+</section>
+<anchor xml:id="_class_short_cut_1abf12d9827dbaf8bcd4476f72653292de"/><section>
+    <title>ShortCut()<computeroutput>[3/3]</computeroutput></title>
+<indexterm><primary>ShortCut</primary><secondary>ShortCut</secondary></indexterm>
+<indexterm><primary>ShortCut</primary><secondary>ShortCut</secondary></indexterm>
+<para><computeroutput>ShortCut::ShortCut (const <link linkend="_class_short_cut">ShortCut</link> &amp; copy)</computeroutput></para><para>
+Definition at line <link linkend="__activity_8cpp_source_1l00044">44</link> of file <link linkend="__activity_8cpp_source">Activity.cpp</link>.</para>
+</section>
+</section>
+<section>
+<title>Member Function Documentation</title>
+<anchor xml:id="_class_short_cut_1a5026e60948d728b70bad17f55ce63b75"/><section>
+    <title>showShortCut()</title>
+<indexterm><primary>showShortCut</primary><secondary>ShortCut</secondary></indexterm>
+<indexterm><primary>ShortCut</primary><secondary>showShortCut</secondary></indexterm>
+<para><computeroutput>void ShortCut::showShortCut ( ) const</computeroutput></para><para>
+Definition at line <link linkend="__activity_8cpp_source_1l00051">51</link> of file <link linkend="__activity_8cpp_source">Activity.cpp</link>.</para>
+</section>
+</section>
+<section>
+<title>Member Data Documentation</title>
+<anchor xml:id="_class_short_cut_1a5b1ae4cc092577100f735ff2fe885da2"/><section>
+    <title>description</title>
+<indexterm><primary>description</primary><secondary>ShortCut</secondary></indexterm>
+<indexterm><primary>ShortCut</primary><secondary>description</secondary></indexterm>
+<para><computeroutput>std::string ShortCut::description</computeroutput></para><para>
+Definition at line <link linkend="__activity_8h_source_1l00021">21</link> of file <link linkend="__activity_8h_source">Activity.h</link>.</para>
+</section>
+<anchor xml:id="_class_short_cut_1a9cb4aafc1783cabc572a1de63b3120f4"/><section>
+    <title>key</title>
+<indexterm><primary>key</primary><secondary>ShortCut</secondary></indexterm>
+<indexterm><primary>ShortCut</primary><secondary>key</secondary></indexterm>
+<para><computeroutput>char ShortCut::key</computeroutput></para><para>
+Definition at line <link linkend="__activity_8h_source_1l00020">20</link> of file <link linkend="__activity_8h_source">Activity.h</link>.</para>
+</section>
+<anchor xml:id="_class_short_cut_1aa4b09467a97ff509d9c4e80212143629"/><section>
+    <title>string</title>
+<indexterm><primary>string</primary><secondary>ShortCut</secondary></indexterm>
+<indexterm><primary>ShortCut</primary><secondary>string</secondary></indexterm>
+<para><computeroutput>std::string ShortCut::string</computeroutput></para><para>
+Definition at line <link linkend="__activity_8h_source_1l00021">21</link> of file <link linkend="__activity_8h_source">Activity.h</link>.</para>
+</section>
+<para>
+The documentation for this class was generated from the following files:</para>
+src/<link linkend="__activity_8h">Activity.h</link>src/<link linkend="__activity_8cpp">Activity.cpp</link></section>
+</section>

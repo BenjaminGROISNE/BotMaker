@@ -1,0 +1,30 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<section xmlns="http://docbook.org/ns/docbook" version="5.0" xmlns:xlink="http://www.w3.org/1999/xlink" xml:id="__w_x_manager_8h" xml:lang="en-US">
+<title>src/WXManager.h File Reference</title>
+<indexterm><primary>src/WXManager.h</primary></indexterm>
+<programlisting linenumbering="unnumbered">#include &quot;MyFrame.h&quot;<?linebreak?>#include &quot;game.h&quot;<?linebreak?>#include &lt;TlHelp32.h&gt;<?linebreak?>#include &lt;fstream&gt;<?linebreak?>#include &lt;string&gt;<?linebreak?>#include &lt;iostream&gt;<?linebreak?>#include &lt;ctime&gt;<?linebreak?>#include &lt;wtypes.h&gt;<?linebreak?>#include &quot;BotConfig.h&quot;<?linebreak?>#include &quot;LDPlayer.h&quot;<?linebreak?></programlisting>Include dependency graph for WXManager.h:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="_w_x_manager_8h__incl.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+This graph shows which files directly or indirectly include this file:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="_w_x_manager_8h__dep__incl.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+<simplesect>
+    <title>Classes    </title>
+        <itemizedlist>
+            <listitem><para>class <link linkend="_class_w_x_manager">WXManager</link></para>
+</listitem>
+        </itemizedlist>
+</simplesect>
+</section>

@@ -1,0 +1,287 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<section xmlns="http://docbook.org/ns/docbook" version="5.0" xmlns:xlink="http://www.w3.org/1999/xlink" xml:id="_class_list_tag" xml:lang="en-US">
+<title>ListTag&lt; T &gt; Class Template Reference</title>
+<indexterm><primary>ListTag&lt; T &gt;</primary></indexterm>
+<para>
+<computeroutput>#include &lt;Tags.h&gt;</computeroutput>
+</para>
+Inheritance diagram for ListTag&lt; T &gt;:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_list_tag__inherit__graph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+Collaboration diagram for ListTag&lt; T &gt;:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_list_tag__coll__graph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+<simplesect>
+    <title>Public Member Functions    </title>
+        <itemizedlist>
+            <listitem><para><link linkend="_class_list_tag_1a85a7690e4b8c627a2dda4420afc34960">ListTag</link> ()</para>
+</listitem>
+            <listitem><para><link linkend="_class_list_tag_1a1f3d6ff14e3c87709aa5761d6ef7c059">ListTag</link> (const <link linkend="_class_list_tag">ListTag</link> &amp;toCopy)</para>
+</listitem>
+            <listitem><para><link linkend="_class_list_tag_1ae4851aba38c6a1d46a312a885dec96b8">ListTag</link> (const std::vector&lt; std::shared_ptr&lt; <link linkend="_class_tag">Tag</link> &gt; &gt; &amp;parameters)</para>
+</listitem>
+            <listitem><para>std::shared_ptr&lt; <link linkend="_class_list_tag">ListTag</link> &gt; <link linkend="_class_list_tag_1addbf5b9d89f8069cc7486bf17f392660">clone</link> ()</para>
+</listitem>
+            <listitem><para>void <link linkend="_class_list_tag_1a6c6d53f00593d4a6edfe213829d82ea0">executeSimpleTag</link> (std::shared_ptr&lt; <link linkend="_class_tag">Tag</link> &gt; tag)</para>
+</listitem>
+            <listitem><para>void <link linkend="_class_list_tag_1a1aed24f27987c6c8e8d32aeb3cb4e116">execute</link> () override</para>
+</listitem>
+            <listitem><para>void <link linkend="_class_list_tag_1a9133c6418a6690851c42f2b707f2978d">executeSimpleTag</link> (std::shared_ptr&lt; <link linkend="_class_tag">Tag</link> &gt; tag)</para>
+</listitem>
+            <listitem><para>void <link linkend="_class_list_tag_1ac4a1534d0c7bbe85591dc0268635d639">executeSimpleTag</link> (std::shared_ptr&lt; <link linkend="_class_tag">Tag</link> &gt; tag)</para>
+</listitem>
+            <listitem><para>void <link linkend="_class_list_tag_1a4b3996b967d7c4ea8a44fd744ef3c054">executeSimpleTag</link> (std::shared_ptr&lt; <link linkend="_class_tag">Tag</link> &gt; tag)</para>
+</listitem>
+            <listitem><para>void <link linkend="_class_list_tag_1a295acc5454205ee47ffb6da7d06e9a8f">executeSimpleTag</link> (std::shared_ptr&lt; <link linkend="_class_tag">Tag</link> &gt; tag)</para>
+</listitem>
+            <listitem><para>void <link linkend="_class_list_tag_1ae4d69bbe6f70fb5303486e8cb901c0e4">executeSimpleTag</link> (std::shared_ptr&lt; <link linkend="_class_tag">Tag</link> &gt; tag)</para>
+</listitem>
+            <listitem><para>void <link linkend="_class_list_tag_1aaba7df0a3b99b501867a6b32d6e06281">executeSimpleTag</link> (std::shared_ptr&lt; <link linkend="_class_tag">Tag</link> &gt; tag)</para>
+</listitem>
+            <listitem><para>void <link linkend="_class_list_tag_1a13d2ab53f05b3e556994c739567374a1">executeSimpleTag</link> (std::shared_ptr&lt; <link linkend="_class_tag">Tag</link> &gt; tag)</para>
+</listitem>
+        </itemizedlist>
+</simplesect>
+Public Member Functions inherited from <link linkend="_class_tag">Tag</link>        <itemizedlist>
+            <listitem><para><link linkend="_class_tag_1af2008705aa18e21efecb9e737b6b1a26">Tag</link> ()</para>
+</listitem>
+            <listitem><para><link linkend="_class_tag_1a5955a7ef3228749f5d264581d5c612ab">Tag</link> (const <link linkend="_class_tag">Tag</link> &amp;toCopy)</para>
+</listitem>
+            <listitem><para>std::shared_ptr&lt; <link linkend="_class_tag">Tag</link> &gt; <link linkend="_class_tag_1ae01465d32e9a52c777492048fd06bdd5">clone</link> ()</para>
+</listitem>
+        </itemizedlist>
+<simplesect>
+    <title>Public Attributes    </title>
+        <itemizedlist>
+            <listitem><para>std::vector&lt; <link linkend="__units_8h_1a2b350cb683584e1f7db6c78f698c161ba21f40778b7db9343a6ca75ec2c41ccce">T</link> &gt; <link linkend="_class_list_tag_1accb8e83f38d7b837caf53d6bfc01da86">myList</link></para>
+</listitem>
+            <listitem><para>std::vector&lt; std::shared_ptr&lt; <link linkend="_class_tag">Tag</link> &gt; &gt; <link linkend="_class_list_tag_1a52c53f384e6f5ced932772417d64c75b">listTags</link></para>
+</listitem>
+        </itemizedlist>
+</simplesect>
+Public Attributes inherited from <link linkend="_class_tag">Tag</link>        <itemizedlist>
+            <listitem><para>std::string <link linkend="_class_tag_1a2b252c6a602db12fcb53a67ce3e9ca1b">tagText</link></para>
+</listitem>
+            <listitem><para>int <link linkend="_class_tag_1a25aa826cd8818bcf0670164d285c3fdd">nbParents</link></para>
+</listitem>
+            <listitem><para>bool <link linkend="_class_tag_1a688d838bee273d203d6b16caaca3ed2b">doExecute</link></para>
+</listitem>
+            <listitem><para><link linkend="__tags_8h_1a7c4faef6b7c4a30990ee13030bc51880">TagType</link> <link linkend="_class_tag_1aa82f368cc2d55922ea75ba85020517c1">myType</link></para>
+</listitem>
+        </itemizedlist>
+<section>
+<title>Detailed Description</title>
+<simplesect><title>template&lt;typename <link linkend="__units_8h_1a2b350cb683584e1f7db6c78f698c161ba21f40778b7db9343a6ca75ec2c41ccce">T</link>&gt;<?linebreak?>class ListTag&lt; T &gt;</title></simplesect>
+<para>
+Definition at line <link linkend="__tags_8h_source_1l00360">360</link> of file <link linkend="__tags_8h_source">Tags.h</link>.</para>
+</section>
+<section>
+<title>Constructor &amp; Destructor Documentation</title>
+<anchor xml:id="_class_list_tag_1a85a7690e4b8c627a2dda4420afc34960"/><section>
+    <title>ListTag()<computeroutput>[1/3]</computeroutput></title>
+<indexterm><primary>ListTag</primary><secondary>ListTag&lt; T &gt;</secondary></indexterm>
+<indexterm><primary>ListTag&lt; T &gt;</primary><secondary>ListTag</secondary></indexterm>
+<computeroutput>template&lt;typename Type &gt; </computeroutput><para><computeroutput><link linkend="_class_list_tag">ListTag</link>&lt; Type &gt;<link linkend="_class_list_tag">::ListTag</link> ( )</computeroutput></para><para>
+Definition at line <link linkend="__tags_8cpp_source_1l00794">794</link> of file <link linkend="__tags_8cpp_source">Tags.cpp</link>.</para>
+</section>
+<anchor xml:id="_class_list_tag_1a1f3d6ff14e3c87709aa5761d6ef7c059"/><section>
+    <title>ListTag()<computeroutput>[2/3]</computeroutput></title>
+<indexterm><primary>ListTag</primary><secondary>ListTag&lt; T &gt;</secondary></indexterm>
+<indexterm><primary>ListTag&lt; T &gt;</primary><secondary>ListTag</secondary></indexterm>
+<computeroutput>template&lt;typename Type &gt; </computeroutput><para><computeroutput><link linkend="_class_list_tag">ListTag</link>&lt; Type &gt;<link linkend="_class_list_tag">::ListTag</link> (const <link linkend="_class_list_tag">ListTag</link>&lt; <link linkend="__units_8h_1a2b350cb683584e1f7db6c78f698c161ba21f40778b7db9343a6ca75ec2c41ccce">T</link> &gt; &amp; toCopy)</computeroutput></para><para>
+Definition at line <link linkend="__tags_8cpp_source_1l00204">204</link> of file <link linkend="__tags_8cpp_source">Tags.cpp</link>.</para>
+</section>
+<anchor xml:id="_class_list_tag_1ae4851aba38c6a1d46a312a885dec96b8"/><section>
+    <title>ListTag()<computeroutput>[3/3]</computeroutput></title>
+<indexterm><primary>ListTag</primary><secondary>ListTag&lt; T &gt;</secondary></indexterm>
+<indexterm><primary>ListTag&lt; T &gt;</primary><secondary>ListTag</secondary></indexterm>
+<computeroutput>template&lt;typename Type &gt; </computeroutput><para><computeroutput><link linkend="_class_list_tag">ListTag</link>&lt; Type &gt;<link linkend="_class_list_tag">::ListTag</link> (const std::vector&lt; std::shared_ptr&lt; <link linkend="_class_tag">Tag</link> &gt; &gt; &amp; parameters)</computeroutput></para><para>
+Definition at line <link linkend="__tags_8cpp_source_1l00788">788</link> of file <link linkend="__tags_8cpp_source">Tags.cpp</link>.</para>
+</section>
+</section>
+<section>
+<title>Member Function Documentation</title>
+<anchor xml:id="_class_list_tag_1addbf5b9d89f8069cc7486bf17f392660"/><section>
+    <title>clone()</title>
+<indexterm><primary>clone</primary><secondary>ListTag&lt; T &gt;</secondary></indexterm>
+<indexterm><primary>ListTag&lt; T &gt;</primary><secondary>clone</secondary></indexterm>
+<computeroutput>template&lt;typename <link linkend="__units_8h_1a2b350cb683584e1f7db6c78f698c161ba21f40778b7db9343a6ca75ec2c41ccce">T</link> &gt; </computeroutput><para><computeroutput>std::shared_ptr&lt; <link linkend="_class_list_tag">ListTag</link>&lt; <link linkend="__units_8h_1a2b350cb683584e1f7db6c78f698c161ba21f40778b7db9343a6ca75ec2c41ccce">T</link> &gt; &gt; <link linkend="_class_list_tag">ListTag</link>&lt; <link linkend="__units_8h_1a2b350cb683584e1f7db6c78f698c161ba21f40778b7db9343a6ca75ec2c41ccce">T</link> &gt;::clone ( )</computeroutput></para><para>
+Definition at line <link linkend="__tags_8cpp_source_1l00081">81</link> of file <link linkend="__tags_8cpp_source">Tags.cpp</link>.</para>
+</section>
+<anchor xml:id="_class_list_tag_1a1aed24f27987c6c8e8d32aeb3cb4e116"/><section>
+    <title>execute()</title>
+<indexterm><primary>execute</primary><secondary>ListTag&lt; T &gt;</secondary></indexterm>
+<indexterm><primary>ListTag&lt; T &gt;</primary><secondary>execute</secondary></indexterm>
+<computeroutput>template&lt;typename <link linkend="__units_8h_1a2b350cb683584e1f7db6c78f698c161ba21f40778b7db9343a6ca75ec2c41ccce">T</link> &gt; </computeroutput><para><computeroutput>void <link linkend="_class_list_tag">ListTag</link>&lt; <link linkend="__units_8h_1a2b350cb683584e1f7db6c78f698c161ba21f40778b7db9343a6ca75ec2c41ccce">T</link> &gt;::execute ( )<computeroutput>[override]</computeroutput>, <computeroutput>[virtual]</computeroutput></computeroutput></para><para>
+Reimplemented from <link linkend="_class_tag_1a54054f3c9db4decb422972460bbb34c3">Tag</link>.</para>
+<para>
+Definition at line <link linkend="__tags_8cpp_source_1l00700">700</link> of file <link linkend="__tags_8cpp_source">Tags.cpp</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_list_tag_a1aed24f27987c6c8e8d32aeb3cb4e116_cgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+Here is the caller graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_list_tag_a1aed24f27987c6c8e8d32aeb3cb4e116_icgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_class_list_tag_1a9133c6418a6690851c42f2b707f2978d"/><section>
+    <title>executeSimpleTag()<computeroutput>[1/8]</computeroutput></title>
+<indexterm><primary>executeSimpleTag</primary><secondary>ListTag&lt; T &gt;</secondary></indexterm>
+<indexterm><primary>ListTag&lt; T &gt;</primary><secondary>executeSimpleTag</secondary></indexterm>
+<para><computeroutput>void <link linkend="_class_list_tag">ListTag</link>&lt; int &gt;::executeSimpleTag (std::shared_ptr&lt; <link linkend="_class_tag">Tag</link> &gt; tag)</computeroutput></para><para>
+Definition at line <link linkend="__tags_8cpp_source_1l00735">735</link> of file <link linkend="__tags_8cpp_source">Tags.cpp</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_list_tag_a9133c6418a6690851c42f2b707f2978d_cgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_class_list_tag_1ac4a1534d0c7bbe85591dc0268635d639"/><section>
+    <title>executeSimpleTag()<computeroutput>[2/8]</computeroutput></title>
+<indexterm><primary>executeSimpleTag</primary><secondary>ListTag&lt; T &gt;</secondary></indexterm>
+<indexterm><primary>ListTag&lt; T &gt;</primary><secondary>executeSimpleTag</secondary></indexterm>
+<para><computeroutput>void <link linkend="_class_list_tag">ListTag</link>&lt; float &gt;::executeSimpleTag (std::shared_ptr&lt; <link linkend="_class_tag">Tag</link> &gt; tag)</computeroutput></para><para>
+Definition at line <link linkend="__tags_8cpp_source_1l00742">742</link> of file <link linkend="__tags_8cpp_source">Tags.cpp</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_list_tag_ac4a1534d0c7bbe85591dc0268635d639_cgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_class_list_tag_1a4b3996b967d7c4ea8a44fd744ef3c054"/><section>
+    <title>executeSimpleTag()<computeroutput>[3/8]</computeroutput></title>
+<indexterm><primary>executeSimpleTag</primary><secondary>ListTag&lt; T &gt;</secondary></indexterm>
+<indexterm><primary>ListTag&lt; T &gt;</primary><secondary>executeSimpleTag</secondary></indexterm>
+<para><computeroutput>void <link linkend="_class_list_tag">ListTag</link>&lt; bool &gt;::executeSimpleTag (std::shared_ptr&lt; <link linkend="_class_tag">Tag</link> &gt; tag)</computeroutput></para><para>
+Definition at line <link linkend="__tags_8cpp_source_1l00749">749</link> of file <link linkend="__tags_8cpp_source">Tags.cpp</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_list_tag_a4b3996b967d7c4ea8a44fd744ef3c054_cgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_class_list_tag_1a295acc5454205ee47ffb6da7d06e9a8f"/><section>
+    <title>executeSimpleTag()<computeroutput>[4/8]</computeroutput></title>
+<indexterm><primary>executeSimpleTag</primary><secondary>ListTag&lt; T &gt;</secondary></indexterm>
+<indexterm><primary>ListTag&lt; T &gt;</primary><secondary>executeSimpleTag</secondary></indexterm>
+<para><computeroutput>void <link linkend="_class_list_tag">ListTag</link>&lt; std::string &gt;::executeSimpleTag (std::shared_ptr&lt; <link linkend="_class_tag">Tag</link> &gt; tag)</computeroutput></para><para>
+Definition at line <link linkend="__tags_8cpp_source_1l00757">757</link> of file <link linkend="__tags_8cpp_source">Tags.cpp</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_list_tag_a295acc5454205ee47ffb6da7d06e9a8f_cgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_class_list_tag_1ae4d69bbe6f70fb5303486e8cb901c0e4"/><section>
+    <title>executeSimpleTag()<computeroutput>[5/8]</computeroutput></title>
+<indexterm><primary>executeSimpleTag</primary><secondary>ListTag&lt; T &gt;</secondary></indexterm>
+<indexterm><primary>ListTag&lt; T &gt;</primary><secondary>executeSimpleTag</secondary></indexterm>
+<para><computeroutput>void <link linkend="_class_list_tag">ListTag</link>&lt; <link linkend="_struct_coord">Coord</link> &gt;::executeSimpleTag (std::shared_ptr&lt; <link linkend="_class_tag">Tag</link> &gt; tag)</computeroutput></para><para>
+Definition at line <link linkend="__tags_8cpp_source_1l00765">765</link> of file <link linkend="__tags_8cpp_source">Tags.cpp</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_list_tag_ae4d69bbe6f70fb5303486e8cb901c0e4_cgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_class_list_tag_1aaba7df0a3b99b501867a6b32d6e06281"/><section>
+    <title>executeSimpleTag()<computeroutput>[6/8]</computeroutput></title>
+<indexterm><primary>executeSimpleTag</primary><secondary>ListTag&lt; T &gt;</secondary></indexterm>
+<indexterm><primary>ListTag&lt; T &gt;</primary><secondary>executeSimpleTag</secondary></indexterm>
+<para><computeroutput>void <link linkend="_class_list_tag">ListTag</link>&lt; <link linkend="_struct_zone">Zone</link> &gt;::executeSimpleTag (std::shared_ptr&lt; <link linkend="_class_tag">Tag</link> &gt; tag)</computeroutput></para><para>
+Definition at line <link linkend="__tags_8cpp_source_1l00773">773</link> of file <link linkend="__tags_8cpp_source">Tags.cpp</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_list_tag_aaba7df0a3b99b501867a6b32d6e06281_cgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_class_list_tag_1a13d2ab53f05b3e556994c739567374a1"/><section>
+    <title>executeSimpleTag()<computeroutput>[7/8]</computeroutput></title>
+<indexterm><primary>executeSimpleTag</primary><secondary>ListTag&lt; T &gt;</secondary></indexterm>
+<indexterm><primary>ListTag&lt; T &gt;</primary><secondary>executeSimpleTag</secondary></indexterm>
+<para><computeroutput>void <link linkend="_class_list_tag">ListTag</link>&lt; <link linkend="__units_8h_1a224b9163917ac32fc95a60d8c1eec3aa">Direction</link> &gt;::executeSimpleTag (std::shared_ptr&lt; <link linkend="_class_tag">Tag</link> &gt; tag)</computeroutput></para><para>
+Definition at line <link linkend="__tags_8cpp_source_1l00780">780</link> of file <link linkend="__tags_8cpp_source">Tags.cpp</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_list_tag_a13d2ab53f05b3e556994c739567374a1_cgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_class_list_tag_1a6c6d53f00593d4a6edfe213829d82ea0"/><section>
+    <title>executeSimpleTag()<computeroutput>[8/8]</computeroutput></title>
+<indexterm><primary>executeSimpleTag</primary><secondary>ListTag&lt; T &gt;</secondary></indexterm>
+<indexterm><primary>ListTag&lt; T &gt;</primary><secondary>executeSimpleTag</secondary></indexterm>
+<computeroutput>template&lt;typename <link linkend="__units_8h_1a2b350cb683584e1f7db6c78f698c161ba21f40778b7db9343a6ca75ec2c41ccce">T</link> &gt; </computeroutput><para><computeroutput>void <link linkend="_class_list_tag">ListTag</link>&lt; <link linkend="__units_8h_1a2b350cb683584e1f7db6c78f698c161ba21f40778b7db9343a6ca75ec2c41ccce">T</link> &gt;::executeSimpleTag (std::shared_ptr&lt; <link linkend="_class_tag">Tag</link> &gt; tag)</computeroutput></para></section>
+</section>
+<section>
+<title>Member Data Documentation</title>
+<anchor xml:id="_class_list_tag_1a52c53f384e6f5ced932772417d64c75b"/><section>
+    <title>listTags</title>
+<indexterm><primary>listTags</primary><secondary>ListTag&lt; T &gt;</secondary></indexterm>
+<indexterm><primary>ListTag&lt; T &gt;</primary><secondary>listTags</secondary></indexterm>
+<computeroutput>template&lt;typename <link linkend="__units_8h_1a2b350cb683584e1f7db6c78f698c161ba21f40778b7db9343a6ca75ec2c41ccce">T</link> &gt; </computeroutput><para><computeroutput>std::vector&lt;std::shared_ptr&lt;<link linkend="_class_tag">Tag</link>&gt; &gt; <link linkend="_class_list_tag">ListTag</link>&lt; <link linkend="__units_8h_1a2b350cb683584e1f7db6c78f698c161ba21f40778b7db9343a6ca75ec2c41ccce">T</link> &gt;::listTags</computeroutput></para><para>
+Definition at line <link linkend="__tags_8h_source_1l00367">367</link> of file <link linkend="__tags_8h_source">Tags.h</link>.</para>
+</section>
+<anchor xml:id="_class_list_tag_1accb8e83f38d7b837caf53d6bfc01da86"/><section>
+    <title>myList</title>
+<indexterm><primary>myList</primary><secondary>ListTag&lt; T &gt;</secondary></indexterm>
+<indexterm><primary>ListTag&lt; T &gt;</primary><secondary>myList</secondary></indexterm>
+<computeroutput>template&lt;typename <link linkend="__units_8h_1a2b350cb683584e1f7db6c78f698c161ba21f40778b7db9343a6ca75ec2c41ccce">T</link> &gt; </computeroutput><para><computeroutput>std::vector&lt;<link linkend="__units_8h_1a2b350cb683584e1f7db6c78f698c161ba21f40778b7db9343a6ca75ec2c41ccce">T</link>&gt; <link linkend="_class_list_tag">ListTag</link>&lt; <link linkend="__units_8h_1a2b350cb683584e1f7db6c78f698c161ba21f40778b7db9343a6ca75ec2c41ccce">T</link> &gt;::myList</computeroutput></para><para>
+Definition at line <link linkend="__tags_8h_source_1l00366">366</link> of file <link linkend="__tags_8h_source">Tags.h</link>.</para>
+</section>
+<para>
+The documentation for this class was generated from the following files:</para>
+src/<link linkend="__tags_8h">Tags.h</link>src/<link linkend="__tags_8cpp">Tags.cpp</link></section>
+</section>

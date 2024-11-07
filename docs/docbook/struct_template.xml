@@ -1,0 +1,205 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<section xmlns="http://docbook.org/ns/docbook" version="5.0" xmlns:xlink="http://www.w3.org/1999/xlink" xml:id="_struct_template" xml:lang="en-US">
+<title>Template Struct Reference</title>
+<indexterm><primary>Template</primary></indexterm>
+<para>
+<computeroutput>#include &lt;Units.h&gt;</computeroutput>
+</para>
+Inheritance diagram for Template:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="struct_template__inherit__graph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+Collaboration diagram for Template:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="struct_template__coll__graph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+<simplesect>
+    <title>Public Member Functions    </title>
+        <itemizedlist>
+            <listitem><para><link linkend="_struct_template_1afea5166b9ca0022fe21c2ed4882c161a">Template</link> ()</para>
+</listitem>
+            <listitem><para><link linkend="_struct_template_1aa45361f10f46401fa807632d7c54d0ad">Template</link> (const std::string namemat)</para>
+</listitem>
+            <listitem><para><link linkend="_struct_template_1a8cd1cf65e92e6c7a4c39454aee48724f">Template</link> (const std::string <link linkend="_struct_template_1a7d3b343c5b1f0dce079476ecc5962985">id</link>, <link linkend="__units_8h_1a6b62789b863165c9d424a7504d4a6f61">typeMat</link> <link linkend="_struct_template_1a1ec70d2de7871cb6400bf0ac1c12e345">type</link>)</para>
+</listitem>
+            <listitem><para><link linkend="_struct_template_1aba025f01ce1f43b4fb9083b8b50087fd">Template</link> (const <link linkend="_struct_template">Template</link> &amp;other)</para>
+</listitem>
+            <listitem><para>void <link linkend="_struct_template_1a93d3c6f97592ba09d7819fda3c3296d7">setType</link> (<link linkend="__units_8h_1a6b62789b863165c9d424a7504d4a6f61">typeMat</link> <link linkend="_struct_template_1a1ec70d2de7871cb6400bf0ac1c12e345">type</link>)</para>
+</listitem>
+        </itemizedlist>
+</simplesect>
+<simplesect>
+    <title>Public Attributes    </title>
+        <itemizedlist>
+            <listitem><para><link linkend="_struct_coord">Coord</link> <link linkend="_struct_template_1a6164c425299fb5841f10e46788d9dc3e">C</link></para>
+</listitem>
+            <listitem><para>cv::Mat <link linkend="_struct_template_1a9a9825d5a96090c84020ed450751d549">mat</link></para>
+</listitem>
+            <listitem><para>cv::Mat <link linkend="_struct_template_1af95fe5a1cdb4e8d32451db2b3ad29a4c">graymat</link></para>
+</listitem>
+            <listitem><para><link linkend="__units_8h_1a6b62789b863165c9d424a7504d4a6f61">typeMat</link> <link linkend="_struct_template_1a1ec70d2de7871cb6400bf0ac1c12e345">type</link></para>
+</listitem>
+            <listitem><para>std::string <link linkend="_struct_template_1a7d3b343c5b1f0dce079476ecc5962985">id</link></para>
+</listitem>
+            <listitem><para>float <link linkend="_struct_template_1a3f0387ee18d1195f948377b0f0903e1b">score</link></para>
+</listitem>
+            <listitem><para>int <link linkend="_struct_template_1ab59f2a046fc791a75b0aba9b2ff9707d">width</link></para>
+</listitem>
+            <listitem><para>int <link linkend="_struct_template_1a1d17a59e2a5f2c2772d9fa04066f7b09">height</link></para>
+</listitem>
+        </itemizedlist>
+</simplesect>
+<section>
+<title>Detailed Description</title>
+<para>
+Definition at line <link linkend="__units_8h_source_1l00133">133</link> of file <link linkend="__units_8h_source">Units.h</link>.</para>
+</section>
+<section>
+<title>Constructor &amp; Destructor Documentation</title>
+<anchor xml:id="_struct_template_1afea5166b9ca0022fe21c2ed4882c161a"/><section>
+    <title>Template()<computeroutput>[1/4]</computeroutput></title>
+<indexterm><primary>Template</primary><secondary>Template</secondary></indexterm>
+<indexterm><primary>Template</primary><secondary>Template</secondary></indexterm>
+<para><computeroutput>Template::Template ( )<computeroutput>[inline]</computeroutput></computeroutput></para><para>
+Definition at line <link linkend="__units_8h_source_1l00140">140</link> of file <link linkend="__units_8h_source">Units.h</link>.</para>
+Here is the caller graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="struct_template_afea5166b9ca0022fe21c2ed4882c161a_icgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_struct_template_1aa45361f10f46401fa807632d7c54d0ad"/><section>
+    <title>Template()<computeroutput>[2/4]</computeroutput></title>
+<indexterm><primary>Template</primary><secondary>Template</secondary></indexterm>
+<indexterm><primary>Template</primary><secondary>Template</secondary></indexterm>
+<para><computeroutput>Template::Template (const std::string namemat)<computeroutput>[inline]</computeroutput></computeroutput></para><para>
+Definition at line <link linkend="__units_8h_source_1l00148">148</link> of file <link linkend="__units_8h_source">Units.h</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="struct_template_aa45361f10f46401fa807632d7c54d0ad_cgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_struct_template_1a8cd1cf65e92e6c7a4c39454aee48724f"/><section>
+    <title>Template()<computeroutput>[3/4]</computeroutput></title>
+<indexterm><primary>Template</primary><secondary>Template</secondary></indexterm>
+<indexterm><primary>Template</primary><secondary>Template</secondary></indexterm>
+<para><computeroutput>Template::Template (const std::string id, <link linkend="__units_8h_1a6b62789b863165c9d424a7504d4a6f61">typeMat</link> type)<computeroutput>[inline]</computeroutput></computeroutput></para><para>
+Definition at line <link linkend="__units_8h_source_1l00157">157</link> of file <link linkend="__units_8h_source">Units.h</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="struct_template_a8cd1cf65e92e6c7a4c39454aee48724f_cgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_struct_template_1aba025f01ce1f43b4fb9083b8b50087fd"/><section>
+    <title>Template()<computeroutput>[4/4]</computeroutput></title>
+<indexterm><primary>Template</primary><secondary>Template</secondary></indexterm>
+<indexterm><primary>Template</primary><secondary>Template</secondary></indexterm>
+<para><computeroutput>Template::Template (const <link linkend="_struct_template">Template</link> &amp; other)<computeroutput>[inline]</computeroutput></computeroutput></para><para>
+Definition at line <link linkend="__units_8h_source_1l00161">161</link> of file <link linkend="__units_8h_source">Units.h</link>.</para>
+</section>
+</section>
+<section>
+<title>Member Function Documentation</title>
+<anchor xml:id="_struct_template_1a93d3c6f97592ba09d7819fda3c3296d7"/><section>
+    <title>setType()</title>
+<indexterm><primary>setType</primary><secondary>Template</secondary></indexterm>
+<indexterm><primary>Template</primary><secondary>setType</secondary></indexterm>
+<para><computeroutput>void Template::setType (<link linkend="__units_8h_1a6b62789b863165c9d424a7504d4a6f61">typeMat</link> type)<computeroutput>[inline]</computeroutput></computeroutput></para><para>
+Definition at line <link linkend="__units_8h_source_1l00171">171</link> of file <link linkend="__units_8h_source">Units.h</link>.</para>
+Here is the caller graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="struct_template_a93d3c6f97592ba09d7819fda3c3296d7_icgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+</section>
+<section>
+<title>Member Data Documentation</title>
+<anchor xml:id="_struct_template_1a6164c425299fb5841f10e46788d9dc3e"/><section>
+    <title>C</title>
+<indexterm><primary>C</primary><secondary>Template</secondary></indexterm>
+<indexterm><primary>Template</primary><secondary>C</secondary></indexterm>
+<para><computeroutput><link linkend="_struct_coord">Coord</link> Template::C</computeroutput></para><para>
+Definition at line <link linkend="__units_8h_source_1l00134">134</link> of file <link linkend="__units_8h_source">Units.h</link>.</para>
+</section>
+<anchor xml:id="_struct_template_1af95fe5a1cdb4e8d32451db2b3ad29a4c"/><section>
+    <title>graymat</title>
+<indexterm><primary>graymat</primary><secondary>Template</secondary></indexterm>
+<indexterm><primary>Template</primary><secondary>graymat</secondary></indexterm>
+<para><computeroutput>cv::Mat Template::graymat</computeroutput></para><para>
+Definition at line <link linkend="__units_8h_source_1l00135">135</link> of file <link linkend="__units_8h_source">Units.h</link>.</para>
+</section>
+<anchor xml:id="_struct_template_1a1d17a59e2a5f2c2772d9fa04066f7b09"/><section>
+    <title>height</title>
+<indexterm><primary>height</primary><secondary>Template</secondary></indexterm>
+<indexterm><primary>Template</primary><secondary>height</secondary></indexterm>
+<para><computeroutput>int Template::height</computeroutput></para><para>
+Definition at line <link linkend="__units_8h_source_1l00139">139</link> of file <link linkend="__units_8h_source">Units.h</link>.</para>
+</section>
+<anchor xml:id="_struct_template_1a7d3b343c5b1f0dce079476ecc5962985"/><section>
+    <title>id</title>
+<indexterm><primary>id</primary><secondary>Template</secondary></indexterm>
+<indexterm><primary>Template</primary><secondary>id</secondary></indexterm>
+<para><computeroutput>std::string Template::id</computeroutput></para><para>
+Definition at line <link linkend="__units_8h_source_1l00137">137</link> of file <link linkend="__units_8h_source">Units.h</link>.</para>
+</section>
+<anchor xml:id="_struct_template_1a9a9825d5a96090c84020ed450751d549"/><section>
+    <title>mat</title>
+<indexterm><primary>mat</primary><secondary>Template</secondary></indexterm>
+<indexterm><primary>Template</primary><secondary>mat</secondary></indexterm>
+<para><computeroutput>cv::Mat Template::mat</computeroutput></para><para>
+Definition at line <link linkend="__units_8h_source_1l00135">135</link> of file <link linkend="__units_8h_source">Units.h</link>.</para>
+</section>
+<anchor xml:id="_struct_template_1a3f0387ee18d1195f948377b0f0903e1b"/><section>
+    <title>score</title>
+<indexterm><primary>score</primary><secondary>Template</secondary></indexterm>
+<indexterm><primary>Template</primary><secondary>score</secondary></indexterm>
+<para><computeroutput>float Template::score</computeroutput></para><para>
+Definition at line <link linkend="__units_8h_source_1l00138">138</link> of file <link linkend="__units_8h_source">Units.h</link>.</para>
+</section>
+<anchor xml:id="_struct_template_1a1ec70d2de7871cb6400bf0ac1c12e345"/><section>
+    <title>type</title>
+<indexterm><primary>type</primary><secondary>Template</secondary></indexterm>
+<indexterm><primary>Template</primary><secondary>type</secondary></indexterm>
+<para><computeroutput><link linkend="__units_8h_1a6b62789b863165c9d424a7504d4a6f61">typeMat</link> Template::type</computeroutput></para><para>
+Definition at line <link linkend="__units_8h_source_1l00136">136</link> of file <link linkend="__units_8h_source">Units.h</link>.</para>
+</section>
+<anchor xml:id="_struct_template_1ab59f2a046fc791a75b0aba9b2ff9707d"/><section>
+    <title>width</title>
+<indexterm><primary>width</primary><secondary>Template</secondary></indexterm>
+<indexterm><primary>Template</primary><secondary>width</secondary></indexterm>
+<para><computeroutput>int Template::width</computeroutput></para><para>
+Definition at line <link linkend="__units_8h_source_1l00139">139</link> of file <link linkend="__units_8h_source">Units.h</link>.</para>
+</section>
+<para>
+The documentation for this struct was generated from the following file:</para>
+src/<link linkend="__units_8h">Units.h</link></section>
+</section>

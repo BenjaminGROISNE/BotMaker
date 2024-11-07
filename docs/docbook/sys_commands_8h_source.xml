@@ -1,0 +1,63 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<section xmlns="http://docbook.org/ns/docbook" version="5.0" xmlns:xlink="http://www.w3.org/1999/xlink" xml:id="_sys_commands_8h_source" xml:lang="en-US">
+<title>sysCommands.h</title>
+<indexterm><primary>src/sysCommands.h</primary></indexterm>
+Go to the documentation of this file.<programlisting linenumbering="unnumbered"><anchor xml:id="_sys_commands_8h_source_1l00001"/>00001 <emphasis role="preprocessor">#pragma&#32;once</emphasis>
+<anchor xml:id="_sys_commands_8h_source_1l00002"/><link linkend="_sys_commands_8h_1a9f918755b601cf4bffca775992e6fb90">00002</link> <emphasis role="preprocessor">#define&#32;NOMINMAX</emphasis>
+<anchor xml:id="_sys_commands_8h_source_1l00003"/>00003 
+<anchor xml:id="_sys_commands_8h_source_1l00004"/>00004 <emphasis role="preprocessor">#include&#32;&lt;Windows.h&gt;</emphasis>
+<anchor xml:id="_sys_commands_8h_source_1l00005"/>00005 <emphasis role="preprocessor">#include&#32;&lt;iostream&gt;</emphasis>
+<anchor xml:id="_sys_commands_8h_source_1l00006"/>00006 <emphasis role="preprocessor">#include&#32;&lt;array&gt;</emphasis>
+<anchor xml:id="_sys_commands_8h_source_1l00007"/>00007 <emphasis role="preprocessor">#include&#32;&lt;memory&gt;</emphasis>
+<anchor xml:id="_sys_commands_8h_source_1l00008"/>00008 <emphasis role="preprocessor">#include&#32;&lt;ctime&gt;</emphasis>
+<anchor xml:id="_sys_commands_8h_source_1l00009"/>00009 <emphasis role="preprocessor">#include&#32;&lt;vector&gt;</emphasis>
+<anchor xml:id="_sys_commands_8h_source_1l00010"/>00010 <emphasis role="preprocessor">#include&#32;&lt;atomic&gt;</emphasis>
+<anchor xml:id="_sys_commands_8h_source_1l00011"/>00011 <emphasis role="preprocessor">#include&#32;&lt;chrono&gt;</emphasis>
+<anchor xml:id="_sys_commands_8h_source_1l00012"/>00012 <emphasis role="preprocessor">#include&#32;&lt;thread&gt;</emphasis>
+<anchor xml:id="_sys_commands_8h_source_1l00013"/>00013 <emphasis role="preprocessor">#include&#32;&lt;stdexcept&gt;</emphasis>
+<anchor xml:id="_sys_commands_8h_source_1l00014"/>00014 <emphasis role="preprocessor">#include&#32;&lt;cstdio&gt;</emphasis>
+<anchor xml:id="_sys_commands_8h_source_1l00015"/>00015 <emphasis role="preprocessor">#include&#32;&lt;cstdlib&gt;</emphasis>
+<anchor xml:id="_sys_commands_8h_source_1l00016"/>00016 <emphasis role="preprocessor">#include&#32;&lt;TlHelp32.h&gt;</emphasis>
+<anchor xml:id="_sys_commands_8h_source_1l00017"/>00017 <emphasis role="preprocessor">#include&#32;&lt;direct.h&gt;</emphasis>
+<anchor xml:id="_sys_commands_8h_source_1l00018"/>00018 <emphasis role="preprocessor">#include&#32;&lt;fstream&gt;</emphasis>
+<anchor xml:id="_sys_commands_8h_source_1l00019"/>00019 <emphasis role="preprocessor">#include&#32;&lt;Netlistmgr.h&gt;</emphasis>
+<anchor xml:id="_sys_commands_8h_source_1l00020"/>00020 <emphasis role="preprocessor">#include&#32;&lt;bitset&gt;</emphasis>
+<anchor xml:id="_sys_commands_8h_source_1l00021"/>00021 <emphasis role="preprocessor">#include&#32;&lt;string&gt;</emphasis>
+<anchor xml:id="_sys_commands_8h_source_1l00022"/>00022 <emphasis role="preprocessor">#include&#32;&lt;io.h&gt;</emphasis>
+<anchor xml:id="_sys_commands_8h_source_1l00023"/>00023 <emphasis role="preprocessor">#include&#32;&lt;filesystem&gt;</emphasis>
+<anchor xml:id="_sys_commands_8h_source_1l00024"/>00024 
+<anchor xml:id="_sys_commands_8h_source_1l00025"/>00025 std::vector&lt;std::string&gt;&#32;<link linkend="_sys_commands_8h_1a91aaa3ff9bdd4428e4117b84ba4f842d">returnAllDrivesLetter</link>();
+<anchor xml:id="_sys_commands_8h_source_1l00026"/>00026 std::string&#32;<link linkend="_sys_commands_8h_1a63a4dc40cc84e99d22ec1006c6de3631">moveAndExecute</link>(<emphasis role="keyword">const</emphasis>&#32;std::string&amp;&#32;folder,&#32;<emphasis role="keyword">const</emphasis>&#32;std::string&#32;command&#32;=&#32;<emphasis role="stringliteral">&quot;&quot;</emphasis>);
+<anchor xml:id="_sys_commands_8h_source_1l00027"/>00027 <emphasis role="keywordtype">void</emphasis>&#32;<link linkend="_sys_commands_8h_1a035d7f4f5aec963d128b02866d22bced">moveAndStartProgram</link>(<emphasis role="keyword">const</emphasis>&#32;std::string&amp;&#32;programFolder,&#32;<emphasis role="keyword">const</emphasis>&#32;std::string&amp;&#32;exeName,<emphasis role="keyword">const</emphasis>&#32;std::string&#32;args=<emphasis role="stringliteral">&quot;&quot;</emphasis>);
+<anchor xml:id="_sys_commands_8h_source_1l00028"/>00028 <emphasis role="keywordtype">void</emphasis>&#32;<link linkend="_sys_commands_8h_1aafd028efa2a38715943d7399f632d995">startProgram</link>(<emphasis role="keyword">const</emphasis>&#32;std::string&amp;&#32;programPath,&#32;<emphasis role="keyword">const</emphasis>&#32;std::string&#32;args&#32;=&#32;<emphasis role="stringliteral">&quot;&quot;</emphasis>);
+<anchor xml:id="_sys_commands_8h_source_1l00029"/>00029 <emphasis role="keywordtype">void</emphasis>&#32;<link linkend="_sys_commands_8h_1a391ed2bc0044d5f13e86859f74c94a30">killProgram</link>(<emphasis role="keyword">const</emphasis>&#32;std::string&amp;&#32;exeName,<emphasis role="keyword">const</emphasis>&#32;std::string&#32;args=<emphasis role="stringliteral">&quot;&quot;</emphasis>);
+<anchor xml:id="_sys_commands_8h_source_1l00030"/>00030 <emphasis role="keywordtype">void</emphasis>&#32;<link linkend="_sys_commands_8h_1ab7a6af6b67158612bbfb7004af5b0e23">killProgramWindow</link>(<emphasis role="keyword">const</emphasis>&#32;std::string&amp;&#32;exeName,<emphasis role="keyword">const</emphasis>&#32;std::string&amp;&#32;windowName);
+<anchor xml:id="_sys_commands_8h_source_1l00031"/>00031 std::string&#32;<link linkend="_sys_commands_8h_1a21ab47268233978aaaa4b09142d5a8de">ExpandEnvironmentVariables</link>(<emphasis role="keyword">const</emphasis>&#32;std::string&amp;&#32;inputPath);
+<anchor xml:id="_sys_commands_8h_source_1l00032"/>00032 std::string&#32;<link linkend="_sys_commands_8h_1a5e44365ba3f0d833e74130bb152e64a7">findPathFolder</link>(<emphasis role="keyword">const</emphasis>&#32;std::string&amp;&#32;folder,&#32;<emphasis role="keyword">const</emphasis>&#32;std::string&amp;&#32;namefile);
+<anchor xml:id="_sys_commands_8h_source_1l00033"/>00033 <emphasis role="keywordtype">bool</emphasis>&#32;<link linkend="_sys_commands_8h_1ae1165ac90ad1b162b2dfa0c313d95580">findFileFolder</link>(<emphasis role="keyword">const</emphasis>&#32;std::string&amp;&#32;folder,&#32;<emphasis role="keyword">const</emphasis>&#32;std::string&amp;&#32;namefile);
+<anchor xml:id="_sys_commands_8h_source_1l00034"/>00034 <emphasis role="keywordtype">void</emphasis>&#32;<link linkend="_sys_commands_8h_1a2af38e6898ff32753919342acccae2dd">writeText</link>(<emphasis role="keyword">const</emphasis>&#32;std::string&amp;&#32;text,&#32;<emphasis role="keyword">const</emphasis>&#32;std::string&amp;&#32;filename);
+<anchor xml:id="_sys_commands_8h_source_1l00035"/>00035 <emphasis role="keywordtype">bool</emphasis>&#32;<link linkend="_sys_commands_8h_1a662dd4893690567ba825a473508f47e2">pathExists</link>(<emphasis role="keyword">const</emphasis>&#32;std::string&amp;&#32;path);
+<anchor xml:id="_sys_commands_8h_source_1l00036"/>00036 std::chrono::time_point&lt;std::chrono::steady_clock&gt;&#32;<link linkend="_sys_commands_8h_1a94e134bb4a9dda947f238fa951454d35">startChrono</link>();
+<anchor xml:id="_sys_commands_8h_source_1l00037"/>00037 <emphasis role="keywordtype">long</emphasis>&#32;<emphasis role="keywordtype">int</emphasis>&#32;<link linkend="_sys_commands_8h_1adb5a1f53dc22de07426e345e0bc11bb0">endChrono</link>(<emphasis role="keyword">const</emphasis>&#32;std::chrono::time_point&lt;std::chrono::steady_clock&gt;&amp;&#32;startTime);
+<anchor xml:id="_sys_commands_8h_source_1l00038"/>00038 
+<anchor xml:id="_sys_commands_8h_source_1l00039"/>00039 <emphasis role="keywordtype">bool</emphasis>&#32;<link linkend="_sys_commands_8h_1a3499ce0cd7e4ed28b3c5461a4d3aec84">openPipe</link>(<emphasis role="keyword">const</emphasis>&#32;std::string&amp;&#32;command,&#32;FILE*&amp;&#32;pipe);
+<anchor xml:id="_sys_commands_8h_source_1l00040"/>00040 <emphasis role="keywordtype">void</emphasis>&#32;<link linkend="_sys_commands_8h_1a4771c79171a937893508dabadadbe099">closePipe</link>(FILE*&amp;&#32;pipe);
+<anchor xml:id="_sys_commands_8h_source_1l00041"/>00041 <emphasis role="keywordtype">void</emphasis>&#32;<link linkend="_sys_commands_8h_1ada88c749f0c57b9e29b885c73134e0fe">doPipe</link>(<emphasis role="keyword">const</emphasis>&#32;std::string&amp;&#32;command);
+<anchor xml:id="_sys_commands_8h_source_1l00042"/>00042 std::string&#32;<link linkend="_sys_commands_8h_1a321eb7e335377aa7182bafc8a1605032">receivePipe</link>(<emphasis role="keyword">const</emphasis>&#32;std::string&amp;&#32;command);
+<anchor xml:id="_sys_commands_8h_source_1l00043"/>00043 std::string&#32;<link linkend="_sys_commands_8h_1ae87b822d4836e699c643960104958689">doPipeNoclose</link>(<emphasis role="keyword">const</emphasis>&#32;std::string&amp;&#32;command);
+<anchor xml:id="_sys_commands_8h_source_1l00044"/>00044 <emphasis role="keywordtype">bool</emphasis>&#32;<link linkend="_sys_commands_8h_1ace2df1fb0546cd1aa8ddb634a751beeb">findPipe</link>(<emphasis role="keyword">const</emphasis>&#32;std::string&amp;&#32;command,&#32;<emphasis role="keyword">const</emphasis>&#32;std::string&amp;&#32;parameter);
+<anchor xml:id="_sys_commands_8h_source_1l00045"/>00045 <emphasis role="keywordtype">bool</emphasis>&#32;<link linkend="_sys_commands_8h_1a25d6a776c3e25f9b4bb6b52a1a61c955">findPipeTime</link>(<emphasis role="keyword">const</emphasis>&#32;std::string&amp;&#32;command,&#32;<emphasis role="keyword">const</emphasis>&#32;std::string&amp;&#32;parameter,&#32;<emphasis role="keywordtype">int</emphasis>&#32;seconds);
+<anchor xml:id="_sys_commands_8h_source_1l00046"/>00046 <emphasis role="keywordtype">bool</emphasis>&#32;<link linkend="_sys_commands_8h_1a15ee35c2a8f3a787577739154c0c62f5">findPipeTimeNoclose</link>(<emphasis role="keyword">const</emphasis>&#32;std::string&amp;&#32;command,&#32;<emphasis role="keyword">const</emphasis>&#32;std::string&amp;&#32;parameter,&#32;<emphasis role="keywordtype">int</emphasis>&#32;seconds,&#32;FILE*&amp;&#32;pipe);
+<anchor xml:id="_sys_commands_8h_source_1l00047"/>00047 <emphasis role="keywordtype">void</emphasis>&#32;<link linkend="_sys_commands_8h_1a7ba4acb23edb5c8887e844bd8fb0238a">findPathFolderRec</link>(std::filesystem::path&#32;folderpath,&#32;<emphasis role="keyword">const</emphasis>&#32;std::string&amp;&#32;namefile,&#32;std::string&amp;&#32;correctpath,&#32;<emphasis role="keywordtype">bool</emphasis>&amp;&#32;found);
+<anchor xml:id="_sys_commands_8h_source_1l00048"/>00048 std::string&#32;<link linkend="_sys_commands_8h_1a5eea3bc2d91c8bd832794fce0aa4133a">findNameFolder</link>(<emphasis role="keyword">const</emphasis>&#32;std::string&amp;&#32;folder);
+<anchor xml:id="_sys_commands_8h_source_1l00049"/>00049 std::string&#32;<link linkend="_sys_commands_8h_1a0aa9dc57d3c05f8b1a49e746c516548e">findNameAncestorFolder</link>(<emphasis role="keyword">const</emphasis>&#32;std::string&amp;&#32;folder,&#32;<emphasis role="keywordtype">int</emphasis>&#32;number);
+<anchor xml:id="_sys_commands_8h_source_1l00050"/>00050 std::string&#32;<link linkend="_sys_commands_8h_1ac352564535ada6aa3a0712c6011e58d5">getParentDirectory</link>();
+<anchor xml:id="_sys_commands_8h_source_1l00051"/>00051 <emphasis role="keywordtype">void</emphasis>&#32;<link linkend="_sys_commands_8h_1ab778b8fee9bec0c7d9cfdbeb219bcc6b">createpaths</link>(std::string&#32;rootFolder);
+<anchor xml:id="_sys_commands_8h_source_1l00052"/>00052 <emphasis role="keywordtype">void</emphasis>&#32;<link linkend="_sys_commands_8h_1a61d85a8cc16ea3d6e2e86d14beb29804">GetRelativeResolution</link>(<emphasis role="keywordtype">int</emphasis>&amp;&#32;width,&#32;<emphasis role="keywordtype">int</emphasis>&amp;&#32;height);
+<anchor xml:id="_sys_commands_8h_source_1l00053"/>00053 
+<anchor xml:id="_sys_commands_8h_source_1l00054"/>00054 <emphasis role="keywordtype">void</emphasis>&#32;<link linkend="_sys_commands_8h_1af317963d1356400fb2869053dcd47fb0">writeFilesDirectory</link>(std::filesystem::directory_iterator&#32;path,&#32;std::ofstream&amp;&#32;fileContent,&#32;std::ofstream&amp;&#32;fileDeclaration);
+<anchor xml:id="_sys_commands_8h_source_1l00055"/>00055 <emphasis role="keywordtype">void</emphasis>&#32;<link linkend="_sys_commands_8h_1aa37688072feafe1ddc3ec391b4d0e356">bringWindowToFront</link>(HWND&#32;hwnd);
+<anchor xml:id="_sys_commands_8h_source_1l00056"/>00056 
+<anchor xml:id="_sys_commands_8h_source_1l00057"/>00057 
+<anchor xml:id="_sys_commands_8h_source_1l00058"/>00058 
+</programlisting></section>

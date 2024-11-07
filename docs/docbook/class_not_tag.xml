@@ -1,0 +1,148 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<section xmlns="http://docbook.org/ns/docbook" version="5.0" xmlns:xlink="http://www.w3.org/1999/xlink" xml:id="_class_not_tag" xml:lang="en-US">
+<title>NotTag Class Reference</title>
+<indexterm><primary>NotTag</primary></indexterm>
+<para>
+<computeroutput>#include &lt;Tags.h&gt;</computeroutput>
+</para>
+Inheritance diagram for NotTag:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_not_tag__inherit__graph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+Collaboration diagram for NotTag:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_not_tag__coll__graph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+<simplesect>
+    <title>Public Member Functions    </title>
+        <itemizedlist>
+            <listitem><para><link linkend="_class_not_tag_1a9b05792aaf904d9739c0ecdfed134696">NotTag</link> ()</para>
+</listitem>
+            <listitem><para><link linkend="_class_not_tag_1a872de180a771bf24b72dda0e7c658ca9">NotTag</link> (const <link linkend="_class_not_tag">NotTag</link> &amp;toCopy)</para>
+</listitem>
+            <listitem><para><link linkend="_class_not_tag_1a9723045acdbbb89720306f2d98d9f44e">NotTag</link> (const std::shared_ptr&lt; <link linkend="_class_tag">Tag</link> &gt; &amp;parameter)</para>
+</listitem>
+            <listitem><para><link linkend="_class_not_tag_1a3d7062947f78178e7e20cc7ab790c3fc">NotTag</link> (bool b)</para>
+</listitem>
+            <listitem><para>std::shared_ptr&lt; <link linkend="_class_not_tag">NotTag</link> &gt; <link linkend="_class_not_tag_1abf49587b3dcfca85a8204580e8b2c8e2">clone</link> ()</para>
+</listitem>
+            <listitem><para>void <link linkend="_class_not_tag_1a533ae047d2883863ac8e998326a4037c">execute</link> () override</para>
+</listitem>
+        </itemizedlist>
+</simplesect>
+Public Member Functions inherited from <link linkend="_class_bool_tag">BoolTag</link>        <itemizedlist>
+            <listitem><para><link linkend="_class_bool_tag_1a59cb7cb189f83466defc5ace699357b9">BoolTag</link> ()</para>
+</listitem>
+            <listitem><para><link linkend="_class_bool_tag_1a8a9c7d5e741c4c4b9a25cd83d45f5939">BoolTag</link> (const <link linkend="_class_bool_tag">BoolTag</link> &amp;toCopy)</para>
+</listitem>
+            <listitem><para><link linkend="_class_bool_tag_1a16c918890174b92cca2db5f5c7e99f17">BoolTag</link> (const std::shared_ptr&lt; <link linkend="_class_tag">Tag</link> &gt; &amp;parameter)</para>
+</listitem>
+            <listitem><para><link linkend="_class_bool_tag_1ab834422d97f1c364878e8561d39aecfe">BoolTag</link> (bool v)</para>
+</listitem>
+            <listitem><para>std::shared_ptr&lt; <link linkend="_class_bool_tag">BoolTag</link> &gt; <link linkend="_class_bool_tag_1af6016dc8e74a29099ba9c174f4f747df">clone</link> ()</para>
+</listitem>
+        </itemizedlist>
+Public Member Functions inherited from <link linkend="_class_tag">Tag</link>        <itemizedlist>
+            <listitem><para><link linkend="_class_tag_1af2008705aa18e21efecb9e737b6b1a26">Tag</link> ()</para>
+</listitem>
+            <listitem><para><link linkend="_class_tag_1a5955a7ef3228749f5d264581d5c612ab">Tag</link> (const <link linkend="_class_tag">Tag</link> &amp;toCopy)</para>
+</listitem>
+            <listitem><para>std::shared_ptr&lt; <link linkend="_class_tag">Tag</link> &gt; <link linkend="_class_tag_1ae01465d32e9a52c777492048fd06bdd5">clone</link> ()</para>
+</listitem>
+        </itemizedlist>
+<simplesect>
+    <title>Additional Inherited Members    </title>
+Public Attributes inherited from <link linkend="_class_bool_tag">BoolTag</link>        <itemizedlist>
+            <listitem><para>std::shared_ptr&lt; <link linkend="_class_tag">Tag</link> &gt; <link linkend="_class_bool_tag_1a1f8f23c75e15979c0a5542dfab204234">boolTag</link></para>
+</listitem>
+            <listitem><para>bool <link linkend="_class_bool_tag_1a533e516d764bce21a79a433ccd0ac1e1">myBool</link></para>
+</listitem>
+        </itemizedlist>
+</simplesect>
+Public Attributes inherited from <link linkend="_class_tag">Tag</link>        <itemizedlist>
+            <listitem><para>std::string <link linkend="_class_tag_1a2b252c6a602db12fcb53a67ce3e9ca1b">tagText</link></para>
+</listitem>
+            <listitem><para>int <link linkend="_class_tag_1a25aa826cd8818bcf0670164d285c3fdd">nbParents</link></para>
+</listitem>
+            <listitem><para>bool <link linkend="_class_tag_1a688d838bee273d203d6b16caaca3ed2b">doExecute</link></para>
+</listitem>
+            <listitem><para><link linkend="__tags_8h_1a7c4faef6b7c4a30990ee13030bc51880">TagType</link> <link linkend="_class_tag_1aa82f368cc2d55922ea75ba85020517c1">myType</link></para>
+</listitem>
+        </itemizedlist>
+<section>
+<title>Detailed Description</title>
+<para>
+Definition at line <link linkend="__tags_8h_source_1l00460">460</link> of file <link linkend="__tags_8h_source">Tags.h</link>.</para>
+</section>
+<section>
+<title>Constructor &amp; Destructor Documentation</title>
+<anchor xml:id="_class_not_tag_1a9b05792aaf904d9739c0ecdfed134696"/><section>
+    <title>NotTag()<computeroutput>[1/4]</computeroutput></title>
+<indexterm><primary>NotTag</primary><secondary>NotTag</secondary></indexterm>
+<indexterm><primary>NotTag</primary><secondary>NotTag</secondary></indexterm>
+<para><computeroutput>NotTag::NotTag ( )</computeroutput></para><para>
+Definition at line <link linkend="__tags_8cpp_source_1l01098">1098</link> of file <link linkend="__tags_8cpp_source">Tags.cpp</link>.</para>
+</section>
+<anchor xml:id="_class_not_tag_1a872de180a771bf24b72dda0e7c658ca9"/><section>
+    <title>NotTag()<computeroutput>[2/4]</computeroutput></title>
+<indexterm><primary>NotTag</primary><secondary>NotTag</secondary></indexterm>
+<indexterm><primary>NotTag</primary><secondary>NotTag</secondary></indexterm>
+<para><computeroutput>NotTag::NotTag (const <link linkend="_class_not_tag">NotTag</link> &amp; toCopy)</computeroutput></para><para>
+Definition at line <link linkend="__tags_8cpp_source_1l00233">233</link> of file <link linkend="__tags_8cpp_source">Tags.cpp</link>.</para>
+</section>
+<anchor xml:id="_class_not_tag_1a9723045acdbbb89720306f2d98d9f44e"/><section>
+    <title>NotTag()<computeroutput>[3/4]</computeroutput></title>
+<indexterm><primary>NotTag</primary><secondary>NotTag</secondary></indexterm>
+<indexterm><primary>NotTag</primary><secondary>NotTag</secondary></indexterm>
+<para><computeroutput>NotTag::NotTag (const std::shared_ptr&lt; <link linkend="_class_tag">Tag</link> &gt; &amp; parameter)</computeroutput></para><para>
+Definition at line <link linkend="__tags_8cpp_source_1l01066">1066</link> of file <link linkend="__tags_8cpp_source">Tags.cpp</link>.</para>
+</section>
+<anchor xml:id="_class_not_tag_1a3d7062947f78178e7e20cc7ab790c3fc"/><section>
+    <title>NotTag()<computeroutput>[4/4]</computeroutput></title>
+<indexterm><primary>NotTag</primary><secondary>NotTag</secondary></indexterm>
+<indexterm><primary>NotTag</primary><secondary>NotTag</secondary></indexterm>
+<para><computeroutput>NotTag::NotTag (bool b)</computeroutput></para><para>
+Definition at line <link linkend="__tags_8cpp_source_1l01070">1070</link> of file <link linkend="__tags_8cpp_source">Tags.cpp</link>.</para>
+</section>
+</section>
+<section>
+<title>Member Function Documentation</title>
+<anchor xml:id="_class_not_tag_1abf49587b3dcfca85a8204580e8b2c8e2"/><section>
+    <title>clone()</title>
+<indexterm><primary>clone</primary><secondary>NotTag</secondary></indexterm>
+<indexterm><primary>NotTag</primary><secondary>clone</secondary></indexterm>
+<para><computeroutput>std::shared_ptr&lt; <link linkend="_class_not_tag">NotTag</link> &gt; NotTag::clone ( )</computeroutput></para><para>
+Definition at line <link linkend="__tags_8cpp_source_1l00105">105</link> of file <link linkend="__tags_8cpp_source">Tags.cpp</link>.</para>
+</section>
+<anchor xml:id="_class_not_tag_1a533ae047d2883863ac8e998326a4037c"/><section>
+    <title>execute()</title>
+<indexterm><primary>execute</primary><secondary>NotTag</secondary></indexterm>
+<indexterm><primary>NotTag</primary><secondary>execute</secondary></indexterm>
+<para><computeroutput>void NotTag::execute ( )<computeroutput>[override]</computeroutput>, <computeroutput>[virtual]</computeroutput></computeroutput></para><para>
+Reimplemented from <link linkend="_class_bool_tag_1a2695d817dcbf4150f25cec21a453633a">BoolTag</link>.</para>
+<para>
+Definition at line <link linkend="__tags_8cpp_source_1l01198">1198</link> of file <link linkend="__tags_8cpp_source">Tags.cpp</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_not_tag_a533ae047d2883863ac8e998326a4037c_cgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<para>
+The documentation for this class was generated from the following files:</para>
+src/<link linkend="__tags_8h">Tags.h</link>src/<link linkend="__tags_8cpp">Tags.cpp</link></section>
+</section>

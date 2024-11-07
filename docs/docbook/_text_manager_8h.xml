@@ -1,0 +1,726 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<section xmlns="http://docbook.org/ns/docbook" version="5.0" xmlns:xlink="http://www.w3.org/1999/xlink" xml:id="__text_manager_8h" xml:lang="en-US">
+<title>src/TextManager.h File Reference</title>
+<indexterm><primary>src/TextManager.h</primary></indexterm>
+<programlisting linenumbering="unnumbered">#include &lt;string&gt;<?linebreak?>#include &lt;iostream&gt;<?linebreak?>#include &lt;fstream&gt;<?linebreak?>#include &lt;vector&gt;<?linebreak?>#include &lt;algorithm&gt;<?linebreak?></programlisting>Include dependency graph for TextManager.h:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="_text_manager_8h__incl.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+This graph shows which files directly or indirectly include this file:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="_text_manager_8h__dep__incl.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+<simplesect>
+    <title>Enumerations    </title>
+        <itemizedlist>
+            <listitem><para>enum <link linkend="__text_manager_8h_1a61d23b393fdc35f2f0e30a1ed566c76d">WriteMode</link> { <link linkend="__text_manager_8h_1a61d23b393fdc35f2f0e30a1ed566c76dab39faf224e046fb4e507e73fc675cd0f">PREPEND</link>
+, <link linkend="__text_manager_8h_1a61d23b393fdc35f2f0e30a1ed566c76daf38784ef4b08f294d4a78f62181729a0">APPEND</link>
+, <link linkend="__text_manager_8h_1a61d23b393fdc35f2f0e30a1ed566c76da5d8c28daa563cffcab51f34a0bec098d">OVERWRITE</link>
+ }</para>
+</listitem>
+        </itemizedlist>
+</simplesect>
+<simplesect>
+    <title>Functions    </title>
+        <itemizedlist>
+            <listitem><para>std::string <link linkend="__text_manager_8h_1add36cc54cd9616a393a17b8961491477">getFileContent</link> (const std::string &amp;path)</para>
+</listitem>
+            <listitem><para>std::ifstream <link linkend="__text_manager_8h_1a5e4308ca14d1f4cfc2456fc26b1361a8">getIfstreamFile</link> (const std::string &amp;path)</para>
+</listitem>
+            <listitem><para>std::ofstream <link linkend="__text_manager_8h_1ab94653432c8ce86c30be348c8c30caab">getOfstreamFile</link> (const std::string &amp;path, <link linkend="__text_manager_8h_1a61d23b393fdc35f2f0e30a1ed566c76d">WriteMode</link> method=<link linkend="__text_manager_8h_1a61d23b393fdc35f2f0e30a1ed566c76dab39faf224e046fb4e507e73fc675cd0f">PREPEND</link>)</para>
+</listitem>
+            <listitem><para>void <link linkend="__text_manager_8h_1a17dcf01a80ea6a03039f6792fe0ce1ec">writeToFile</link> (const std::string &amp;path, const std::string &amp;content, <link linkend="__text_manager_8h_1a61d23b393fdc35f2f0e30a1ed566c76d">WriteMode</link> method=<link linkend="__text_manager_8h_1a61d23b393fdc35f2f0e30a1ed566c76dab39faf224e046fb4e507e73fc675cd0f">PREPEND</link>)</para>
+</listitem>
+            <listitem><para>void <link linkend="__text_manager_8h_1ae4fe8a84012650993d5d2fac420daec2">clearFile</link> (const std::string &amp;path)</para>
+</listitem>
+            <listitem><para>std::string <link linkend="__text_manager_8h_1aa61ad4367d44c1e14541c7c1c46da795">extractContent</link> (const std::string &amp;fullContent, const std::string &amp;first, const std::string &amp;last)</para>
+</listitem>
+            <listitem><para>std::string <link linkend="__text_manager_8h_1a55651a43aac6404e3e403967b3633201">extractLineContent</link> (const std::string &amp;fullContent, const std::string &amp;lineParameter, const std::string &amp;first, const std::string &amp;last)</para>
+</listitem>
+            <listitem><para>std::string <link linkend="__text_manager_8h_1a98e5aae2b6659418890caba4fad17d5e">updateContent</link> (std::string fullContent, std::string newContent, const std::string &amp;first, const std::string &amp;last)</para>
+</listitem>
+            <listitem><para>std::string <link linkend="__text_manager_8h_1af24bee60aa1d3d5b4ae3bf6ebd267ecd">getLine</link> (const std::string &amp;text, const std::string &amp;lineParameter)</para>
+</listitem>
+            <listitem><para>std::string <link linkend="__text_manager_8h_1a377407ab4c28873a8e1956ea343f9cc2">getContentBefore</link> (const std::string &amp;text, const std::string &amp;content)</para>
+</listitem>
+            <listitem><para>std::string <link linkend="__text_manager_8h_1ab5353a5a6969240c22d3f119ab322790">getContentBefore</link> (const std::string &amp;text, const size_t &amp;<link linkend="__units_8h_1a224b9163917ac32fc95a60d8c1eec3aa">Direction</link>)</para>
+</listitem>
+            <listitem><para>std::string <link linkend="__text_manager_8h_1ae9775892f92eb826a785cb5379c17faa">getContentAfter</link> (const std::string &amp;text, const size_t &amp;<link linkend="__units_8h_1a224b9163917ac32fc95a60d8c1eec3aa">Direction</link>)</para>
+</listitem>
+            <listitem><para>std::string <link linkend="__text_manager_8h_1af5bba898a2a3865d71820cbab2d26f27">getContentUntil</link> (const std::string &amp;text, const size_t &amp;<link linkend="__units_8h_1a224b9163917ac32fc95a60d8c1eec3aa">Direction</link>)</para>
+</listitem>
+            <listitem><para>std::string <link linkend="__text_manager_8h_1ae3642a08dbee1e494f977e6fe83c119e">getContentStarting</link> (const std::string &amp;text, const size_t &amp;<link linkend="__units_8h_1a224b9163917ac32fc95a60d8c1eec3aa">Direction</link>)</para>
+</listitem>
+            <listitem><para>std::string <link linkend="__text_manager_8h_1a85498cf9c4f0f7c18a2aae6a2707f245">getContentUntil</link> (const std::string &amp;text, const std::string &amp;content)</para>
+</listitem>
+            <listitem><para>std::string <link linkend="__text_manager_8h_1a6a1f72a80ddaec746c95996b16e3a1dc">getContentAfter</link> (const std::string &amp;text, const std::string &amp;content)</para>
+</listitem>
+            <listitem><para>std::string <link linkend="__text_manager_8h_1a2b5e78b03c6bedc0fa93a0c3b2dbd5b1">getContentStarting</link> (const std::string &amp;text, const std::string &amp;content)</para>
+</listitem>
+            <listitem><para>bool <link linkend="__text_manager_8h_1a856b84aae48313c32a2e29a29babd901">isPresentBefore</link> (const std::string &amp;text, const std::string &amp;before, const std::string &amp;after)</para>
+</listitem>
+            <listitem><para>int <link linkend="__text_manager_8h_1ae05a3fd36bf5fe073c1e2e46c4055ee0">countOccurrencesBefore</link> (const std::string &amp;text, const std::string &amp;before, const std::string &amp;end)</para>
+</listitem>
+            <listitem><para>std::string <link linkend="__text_manager_8h_1a73094485e8f0933e42411cfa2b197a79">getContentUntilEqual</link> (const std::string &amp;text, const std::string &amp;open, const std::string &amp;close)</para>
+</listitem>
+            <listitem><para>std::string <link linkend="__text_manager_8h_1a6c3a83e299bc5fddfc934b5cc78093d8">getContentUntilEqualUntil</link> (const std::string &amp;text, const std::string &amp;open, const std::string &amp;close, const std::string &amp;stop)</para>
+</listitem>
+            <listitem><para>std::string <link linkend="__text_manager_8h_1a98316ec2e3cf34b3091ab6ba823f486c">getContentUntilOutside</link> (const std::string &amp;text, const std::string &amp;inside, const std::string &amp;outside)</para>
+</listitem>
+            <listitem><para>std::string <link linkend="__text_manager_8h_1a3f557e0fad17d434f0d6839e590f6cfe">getContentInsideUntil</link> (const std::string &amp;text, const std::string &amp;inside, const std::string &amp;outside, const std::string &amp;stop)</para>
+</listitem>
+            <listitem><para>std::string <link linkend="__text_manager_8h_1ae0e68335c17a2ff305e151cc1d9e21cd">getContentBeforeLastOccurence</link> (const std::string &amp;text, const std::string &amp;occurence)</para>
+</listitem>
+            <listitem><para>std::string <link linkend="__text_manager_8h_1a8e4fb03d21e39e65bf90e109939b0105">reverseString</link> (const std::string &amp;text)</para>
+</listitem>
+            <listitem><para>int <link linkend="__text_manager_8h_1aaa7941b150f7dd0f8e641601c83f7159">countOccurrences</link> (const std::string &amp;text, const std::string &amp;content)</para>
+</listitem>
+            <listitem><para>size_t <link linkend="__text_manager_8h_1a2b1ac9999f39955febd8836ea56a994c">findPos</link> (const std::string &amp;text, const std::string &amp;content, const size_t startPos=size_t())</para>
+</listitem>
+            <listitem><para>bool <link linkend="__text_manager_8h_1acd5e438b43d1ea1b3fc41a8badfe635b">findContent</link> (const std::string &amp;text, const std::string &amp;content)</para>
+</listitem>
+            <listitem><para>void <link linkend="__text_manager_8h_1af28b966ccdfa1dc51f8a9aa18b62b343">printFileContent</link> (std::string path)</para>
+</listitem>
+            <listitem><para>std::string <link linkend="__text_manager_8h_1a6d7c13a554de9db4c8ebc8b3175af417">removeLastOccurence</link> (const std::string &amp;text, const std::string &amp;content)</para>
+</listitem>
+            <listitem><para>std::vector&lt; std::string &gt; <link linkend="__text_manager_8h_1a42b898aede0151587625671fa5ba1ef3">getAllLines</link> (const std::string &amp;text, const std::string &amp;lineParameter)</para>
+</listitem>
+            <listitem><para>std::string <link linkend="__text_manager_8h_1a5f4889fcc6892114ae5ea80e2fec852e">removeContent</link> (const std::string &amp;text, const std::string &amp;content)</para>
+</listitem>
+            <listitem><para>bool <link linkend="__text_manager_8h_1a4d7e873070d3addef773ee502b520f7e">to_bool</link> (std::string const &amp;s)</para>
+</listitem>
+            <listitem><para>std::string <link linkend="__text_manager_8h_1aa0db2023b135700695842f97f21f2d47">removeCharacter</link> (const std::string &amp;text, const char c)</para>
+</listitem>
+            <listitem><para>std::string <link linkend="__text_manager_8h_1ab5fd0f2c00f4d540aa147dae25e43471">removeCharacter</link> (const std::string &amp;text, const std::vector&lt; char &gt; &amp;c)</para>
+</listitem>
+        </itemizedlist>
+</simplesect>
+<section>
+<title>Enumeration Type Documentation</title>
+<anchor xml:id="__text_manager_8h_1a61d23b393fdc35f2f0e30a1ed566c76d"/><section>
+    <title>WriteMode</title>
+<indexterm><primary>WriteMode</primary><secondary>TextManager.h</secondary></indexterm>
+<indexterm><primary>TextManager.h</primary><secondary>WriteMode</secondary></indexterm>
+<para><computeroutput>enum <link linkend="__text_manager_8h_1a61d23b393fdc35f2f0e30a1ed566c76d">WriteMode</link></computeroutput></para><informaltable frame="all">
+<title>Enumerator</title>
+    <tgroup cols="2" align="left" colsep="1" rowsep="1">
+      <colspec colname='c1'/>
+      <colspec colname='c2'/>
+<tbody>
+<row><entry><indexterm><primary>PREPEND</primary><secondary>TextManager.h</secondary></indexterm>
+<indexterm><primary>TextManager.h</primary><secondary>PREPEND</secondary></indexterm>
+<anchor xml:id="__text_manager_8h_1a61d23b393fdc35f2f0e30a1ed566c76dab39faf224e046fb4e507e73fc675cd0f"/>PREPEND</entry><entry></entry></row><row><entry><indexterm><primary>APPEND</primary><secondary>TextManager.h</secondary></indexterm>
+<indexterm><primary>TextManager.h</primary><secondary>APPEND</secondary></indexterm>
+<anchor xml:id="__text_manager_8h_1a61d23b393fdc35f2f0e30a1ed566c76daf38784ef4b08f294d4a78f62181729a0"/>APPEND</entry><entry></entry></row><row><entry><indexterm><primary>OVERWRITE</primary><secondary>TextManager.h</secondary></indexterm>
+<indexterm><primary>TextManager.h</primary><secondary>OVERWRITE</secondary></indexterm>
+<anchor xml:id="__text_manager_8h_1a61d23b393fdc35f2f0e30a1ed566c76da5d8c28daa563cffcab51f34a0bec098d"/>OVERWRITE</entry><entry></entry></row>    </tbody>
+    </tgroup>
+</informaltable>
+<para>
+Definition at line <link linkend="__text_manager_8h_source_1l00008">8</link> of file <link linkend="__text_manager_8h_source">TextManager.h</link>.</para>
+</section>
+</section>
+<section>
+<title>Function Documentation</title>
+<anchor xml:id="__text_manager_8h_1ae4fe8a84012650993d5d2fac420daec2"/><section>
+    <title>clearFile()</title>
+<indexterm><primary>clearFile</primary><secondary>TextManager.h</secondary></indexterm>
+<indexterm><primary>TextManager.h</primary><secondary>clearFile</secondary></indexterm>
+<para><computeroutput>void clearFile (const std::string &amp; path)</computeroutput></para><para>
+Definition at line <link linkend="__text_manager_8cpp_source_1l00052">52</link> of file <link linkend="__text_manager_8cpp_source">TextManager.cpp</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="_text_manager_8h_ae4fe8a84012650993d5d2fac420daec2_cgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="__text_manager_8h_1aaa7941b150f7dd0f8e641601c83f7159"/><section>
+    <title>countOccurrences()</title>
+<indexterm><primary>countOccurrences</primary><secondary>TextManager.h</secondary></indexterm>
+<indexterm><primary>TextManager.h</primary><secondary>countOccurrences</secondary></indexterm>
+<para><computeroutput>int countOccurrences (const std::string &amp; text, const std::string &amp; content)</computeroutput></para><para>
+Definition at line <link linkend="__text_manager_8cpp_source_1l00258">258</link> of file <link linkend="__text_manager_8cpp_source">TextManager.cpp</link>.</para>
+Here is the caller graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="_text_manager_8h_aaa7941b150f7dd0f8e641601c83f7159_icgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="__text_manager_8h_1ae05a3fd36bf5fe073c1e2e46c4055ee0"/><section>
+    <title>countOccurrencesBefore()</title>
+<indexterm><primary>countOccurrencesBefore</primary><secondary>TextManager.h</secondary></indexterm>
+<indexterm><primary>TextManager.h</primary><secondary>countOccurrencesBefore</secondary></indexterm>
+<para><computeroutput>int countOccurrencesBefore (const std::string &amp; text, const std::string &amp; before, const std::string &amp; end)</computeroutput></para><para>
+Definition at line <link linkend="__text_manager_8cpp_source_1l00153">153</link> of file <link linkend="__text_manager_8cpp_source">TextManager.cpp</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="_text_manager_8h_ae05a3fd36bf5fe073c1e2e46c4055ee0_cgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="__text_manager_8h_1aa61ad4367d44c1e14541c7c1c46da795"/><section>
+    <title>extractContent()</title>
+<indexterm><primary>extractContent</primary><secondary>TextManager.h</secondary></indexterm>
+<indexterm><primary>TextManager.h</primary><secondary>extractContent</secondary></indexterm>
+<para><computeroutput>std::string extractContent (const std::string &amp; fullContent, const std::string &amp; first, const std::string &amp; last)</computeroutput></para><para>
+Definition at line <link linkend="__text_manager_8cpp_source_1l00064">64</link> of file <link linkend="__text_manager_8cpp_source">TextManager.cpp</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="_text_manager_8h_aa61ad4367d44c1e14541c7c1c46da795_cgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+Here is the caller graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="_text_manager_8h_aa61ad4367d44c1e14541c7c1c46da795_icgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="__text_manager_8h_1a55651a43aac6404e3e403967b3633201"/><section>
+    <title>extractLineContent()</title>
+<indexterm><primary>extractLineContent</primary><secondary>TextManager.h</secondary></indexterm>
+<indexterm><primary>TextManager.h</primary><secondary>extractLineContent</secondary></indexterm>
+<para><computeroutput>std::string extractLineContent (const std::string &amp; fullContent, const std::string &amp; lineParameter, const std::string &amp; first, const std::string &amp; last)</computeroutput></para><para>
+Definition at line <link linkend="__text_manager_8cpp_source_1l00077">77</link> of file <link linkend="__text_manager_8cpp_source">TextManager.cpp</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="_text_manager_8h_a55651a43aac6404e3e403967b3633201_cgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+Here is the caller graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="_text_manager_8h_a55651a43aac6404e3e403967b3633201_icgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="__text_manager_8h_1acd5e438b43d1ea1b3fc41a8badfe635b"/><section>
+    <title>findContent()</title>
+<indexterm><primary>findContent</primary><secondary>TextManager.h</secondary></indexterm>
+<indexterm><primary>TextManager.h</primary><secondary>findContent</secondary></indexterm>
+<para><computeroutput>bool findContent (const std::string &amp; text, const std::string &amp; content)</computeroutput></para><para>
+Definition at line <link linkend="__text_manager_8cpp_source_1l00313">313</link> of file <link linkend="__text_manager_8cpp_source">TextManager.cpp</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="_text_manager_8h_acd5e438b43d1ea1b3fc41a8badfe635b_cgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+Here is the caller graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="_text_manager_8h_acd5e438b43d1ea1b3fc41a8badfe635b_icgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="__text_manager_8h_1a2b1ac9999f39955febd8836ea56a994c"/><section>
+    <title>findPos()</title>
+<indexterm><primary>findPos</primary><secondary>TextManager.h</secondary></indexterm>
+<indexterm><primary>TextManager.h</primary><secondary>findPos</secondary></indexterm>
+<para><computeroutput>size_t findPos (const std::string &amp; text, const std::string &amp; content, const size_t startPos = <computeroutput>size_t()</computeroutput>
+)</computeroutput></para><para>
+Definition at line <link linkend="__text_manager_8cpp_source_1l00309">309</link> of file <link linkend="__text_manager_8cpp_source">TextManager.cpp</link>.</para>
+Here is the caller graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="_text_manager_8h_a2b1ac9999f39955febd8836ea56a994c_icgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="__text_manager_8h_1a42b898aede0151587625671fa5ba1ef3"/><section>
+    <title>getAllLines()</title>
+<indexterm><primary>getAllLines</primary><secondary>TextManager.h</secondary></indexterm>
+<indexterm><primary>TextManager.h</primary><secondary>getAllLines</secondary></indexterm>
+<para><computeroutput>std::vector&lt; std::string &gt; getAllLines (const std::string &amp; text, const std::string &amp; lineParameter)</computeroutput></para><para>
+Definition at line <link linkend="__text_manager_8cpp_source_1l00331">331</link> of file <link linkend="__text_manager_8cpp_source">TextManager.cpp</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="_text_manager_8h_a42b898aede0151587625671fa5ba1ef3_cgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="__text_manager_8h_1ae9775892f92eb826a785cb5379c17faa"/><section>
+    <title>getContentAfter()<computeroutput>[1/2]</computeroutput></title>
+<indexterm><primary>getContentAfter</primary><secondary>TextManager.h</secondary></indexterm>
+<indexterm><primary>TextManager.h</primary><secondary>getContentAfter</secondary></indexterm>
+<para><computeroutput>std::string getContentAfter (const std::string &amp; text, const size_t &amp; Direction)</computeroutput></para><para>
+Definition at line <link linkend="__text_manager_8cpp_source_1l00290">290</link> of file <link linkend="__text_manager_8cpp_source">TextManager.cpp</link>.</para>
+</section>
+<anchor xml:id="__text_manager_8h_1a6a1f72a80ddaec746c95996b16e3a1dc"/><section>
+    <title>getContentAfter()<computeroutput>[2/2]</computeroutput></title>
+<indexterm><primary>getContentAfter</primary><secondary>TextManager.h</secondary></indexterm>
+<indexterm><primary>TextManager.h</primary><secondary>getContentAfter</secondary></indexterm>
+<para><computeroutput>std::string getContentAfter (const std::string &amp; text, const std::string &amp; content)</computeroutput></para><para>
+Definition at line <link linkend="__text_manager_8cpp_source_1l00132">132</link> of file <link linkend="__text_manager_8cpp_source">TextManager.cpp</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="_text_manager_8h_a6a1f72a80ddaec746c95996b16e3a1dc_cgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+Here is the caller graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="_text_manager_8h_a6a1f72a80ddaec746c95996b16e3a1dc_icgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="__text_manager_8h_1ab5353a5a6969240c22d3f119ab322790"/><section>
+    <title>getContentBefore()<computeroutput>[1/2]</computeroutput></title>
+<indexterm><primary>getContentBefore</primary><secondary>TextManager.h</secondary></indexterm>
+<indexterm><primary>TextManager.h</primary><secondary>getContentBefore</secondary></indexterm>
+<para><computeroutput>std::string getContentBefore (const std::string &amp; text, const size_t &amp; Direction)</computeroutput></para><para>
+Definition at line <link linkend="__text_manager_8cpp_source_1l00274">274</link> of file <link linkend="__text_manager_8cpp_source">TextManager.cpp</link>.</para>
+</section>
+<anchor xml:id="__text_manager_8h_1a377407ab4c28873a8e1956ea343f9cc2"/><section>
+    <title>getContentBefore()<computeroutput>[2/2]</computeroutput></title>
+<indexterm><primary>getContentBefore</primary><secondary>TextManager.h</secondary></indexterm>
+<indexterm><primary>TextManager.h</primary><secondary>getContentBefore</secondary></indexterm>
+<para><computeroutput>std::string getContentBefore (const std::string &amp; text, const std::string &amp; content)</computeroutput></para><para>
+Definition at line <link linkend="__text_manager_8cpp_source_1l00118">118</link> of file <link linkend="__text_manager_8cpp_source">TextManager.cpp</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="_text_manager_8h_a377407ab4c28873a8e1956ea343f9cc2_cgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+Here is the caller graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="_text_manager_8h_a377407ab4c28873a8e1956ea343f9cc2_icgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="__text_manager_8h_1ae0e68335c17a2ff305e151cc1d9e21cd"/><section>
+    <title>getContentBeforeLastOccurence()</title>
+<indexterm><primary>getContentBeforeLastOccurence</primary><secondary>TextManager.h</secondary></indexterm>
+<indexterm><primary>TextManager.h</primary><secondary>getContentBeforeLastOccurence</secondary></indexterm>
+<para><computeroutput>std::string getContentBeforeLastOccurence (const std::string &amp; text, const std::string &amp; occurence)</computeroutput></para><para>
+Definition at line <link linkend="__text_manager_8cpp_source_1l00242">242</link> of file <link linkend="__text_manager_8cpp_source">TextManager.cpp</link>.</para>
+</section>
+<anchor xml:id="__text_manager_8h_1a3f557e0fad17d434f0d6839e590f6cfe"/><section>
+    <title>getContentInsideUntil()</title>
+<indexterm><primary>getContentInsideUntil</primary><secondary>TextManager.h</secondary></indexterm>
+<indexterm><primary>TextManager.h</primary><secondary>getContentInsideUntil</secondary></indexterm>
+<para><computeroutput>std::string getContentInsideUntil (const std::string &amp; text, const std::string &amp; inside, const std::string &amp; outside, const std::string &amp; stop)</computeroutput></para><para>
+Definition at line <link linkend="__text_manager_8cpp_source_1l00222">222</link> of file <link linkend="__text_manager_8cpp_source">TextManager.cpp</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="_text_manager_8h_a3f557e0fad17d434f0d6839e590f6cfe_cgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="__text_manager_8h_1ae3642a08dbee1e494f977e6fe83c119e"/><section>
+    <title>getContentStarting()<computeroutput>[1/2]</computeroutput></title>
+<indexterm><primary>getContentStarting</primary><secondary>TextManager.h</secondary></indexterm>
+<indexterm><primary>TextManager.h</primary><secondary>getContentStarting</secondary></indexterm>
+<para><computeroutput>std::string getContentStarting (const std::string &amp; text, const size_t &amp; Direction)</computeroutput></para><para>
+Definition at line <link linkend="__text_manager_8cpp_source_1l00302">302</link> of file <link linkend="__text_manager_8cpp_source">TextManager.cpp</link>.</para>
+</section>
+<anchor xml:id="__text_manager_8h_1a2b5e78b03c6bedc0fa93a0c3b2dbd5b1"/><section>
+    <title>getContentStarting()<computeroutput>[2/2]</computeroutput></title>
+<indexterm><primary>getContentStarting</primary><secondary>TextManager.h</secondary></indexterm>
+<indexterm><primary>TextManager.h</primary><secondary>getContentStarting</secondary></indexterm>
+<para><computeroutput>std::string getContentStarting (const std::string &amp; text, const std::string &amp; content)</computeroutput></para><para>
+Definition at line <link linkend="__text_manager_8cpp_source_1l00137">137</link> of file <link linkend="__text_manager_8cpp_source">TextManager.cpp</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="_text_manager_8h_a2b5e78b03c6bedc0fa93a0c3b2dbd5b1_cgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+Here is the caller graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="_text_manager_8h_a2b5e78b03c6bedc0fa93a0c3b2dbd5b1_icgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="__text_manager_8h_1af5bba898a2a3865d71820cbab2d26f27"/><section>
+    <title>getContentUntil()<computeroutput>[1/2]</computeroutput></title>
+<indexterm><primary>getContentUntil</primary><secondary>TextManager.h</secondary></indexterm>
+<indexterm><primary>TextManager.h</primary><secondary>getContentUntil</secondary></indexterm>
+<para><computeroutput>std::string getContentUntil (const std::string &amp; text, const size_t &amp; Direction)</computeroutput></para><para>
+Definition at line <link linkend="__text_manager_8cpp_source_1l00282">282</link> of file <link linkend="__text_manager_8cpp_source">TextManager.cpp</link>.</para>
+</section>
+<anchor xml:id="__text_manager_8h_1a85498cf9c4f0f7c18a2aae6a2707f245"/><section>
+    <title>getContentUntil()<computeroutput>[2/2]</computeroutput></title>
+<indexterm><primary>getContentUntil</primary><secondary>TextManager.h</secondary></indexterm>
+<indexterm><primary>TextManager.h</primary><secondary>getContentUntil</secondary></indexterm>
+<para><computeroutput>std::string getContentUntil (const std::string &amp; text, const std::string &amp; content)</computeroutput></para><para>
+Definition at line <link linkend="__text_manager_8cpp_source_1l00127">127</link> of file <link linkend="__text_manager_8cpp_source">TextManager.cpp</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="_text_manager_8h_a85498cf9c4f0f7c18a2aae6a2707f245_cgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+Here is the caller graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="_text_manager_8h_a85498cf9c4f0f7c18a2aae6a2707f245_icgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="__text_manager_8h_1a73094485e8f0933e42411cfa2b197a79"/><section>
+    <title>getContentUntilEqual()</title>
+<indexterm><primary>getContentUntilEqual</primary><secondary>TextManager.h</secondary></indexterm>
+<indexterm><primary>TextManager.h</primary><secondary>getContentUntilEqual</secondary></indexterm>
+<para><computeroutput>std::string getContentUntilEqual (const std::string &amp; text, const std::string &amp; open, const std::string &amp; close)</computeroutput></para><para>
+Definition at line <link linkend="__text_manager_8cpp_source_1l00163">163</link> of file <link linkend="__text_manager_8cpp_source">TextManager.cpp</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="_text_manager_8h_a73094485e8f0933e42411cfa2b197a79_cgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="__text_manager_8h_1a6c3a83e299bc5fddfc934b5cc78093d8"/><section>
+    <title>getContentUntilEqualUntil()</title>
+<indexterm><primary>getContentUntilEqualUntil</primary><secondary>TextManager.h</secondary></indexterm>
+<indexterm><primary>TextManager.h</primary><secondary>getContentUntilEqualUntil</secondary></indexterm>
+<para><computeroutput>std::string getContentUntilEqualUntil (const std::string &amp; text, const std::string &amp; open, const std::string &amp; close, const std::string &amp; stop)</computeroutput></para><para>
+Definition at line <link linkend="__text_manager_8cpp_source_1l00183">183</link> of file <link linkend="__text_manager_8cpp_source">TextManager.cpp</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="_text_manager_8h_a6c3a83e299bc5fddfc934b5cc78093d8_cgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="__text_manager_8h_1a98316ec2e3cf34b3091ab6ba823f486c"/><section>
+    <title>getContentUntilOutside()</title>
+<indexterm><primary>getContentUntilOutside</primary><secondary>TextManager.h</secondary></indexterm>
+<indexterm><primary>TextManager.h</primary><secondary>getContentUntilOutside</secondary></indexterm>
+<para><computeroutput>std::string getContentUntilOutside (const std::string &amp; text, const std::string &amp; inside, const std::string &amp; outside)</computeroutput></para><para>
+Definition at line <link linkend="__text_manager_8cpp_source_1l00202">202</link> of file <link linkend="__text_manager_8cpp_source">TextManager.cpp</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="_text_manager_8h_a98316ec2e3cf34b3091ab6ba823f486c_cgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="__text_manager_8h_1add36cc54cd9616a393a17b8961491477"/><section>
+    <title>getFileContent()</title>
+<indexterm><primary>getFileContent</primary><secondary>TextManager.h</secondary></indexterm>
+<indexterm><primary>TextManager.h</primary><secondary>getFileContent</secondary></indexterm>
+<para><computeroutput>std::string getFileContent (const std::string &amp; path)</computeroutput></para><para>
+Definition at line <link linkend="__text_manager_8cpp_source_1l00004">4</link> of file <link linkend="__text_manager_8cpp_source">TextManager.cpp</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="_text_manager_8h_add36cc54cd9616a393a17b8961491477_cgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+Here is the caller graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="_text_manager_8h_add36cc54cd9616a393a17b8961491477_icgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="__text_manager_8h_1a5e4308ca14d1f4cfc2456fc26b1361a8"/><section>
+    <title>getIfstreamFile()</title>
+<indexterm><primary>getIfstreamFile</primary><secondary>TextManager.h</secondary></indexterm>
+<indexterm><primary>TextManager.h</primary><secondary>getIfstreamFile</secondary></indexterm>
+<para><computeroutput>std::ifstream getIfstreamFile (const std::string &amp; path)</computeroutput></para><para>
+Definition at line <link linkend="__text_manager_8cpp_source_1l00020">20</link> of file <link linkend="__text_manager_8cpp_source">TextManager.cpp</link>.</para>
+Here is the caller graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="_text_manager_8h_a5e4308ca14d1f4cfc2456fc26b1361a8_icgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="__text_manager_8h_1af24bee60aa1d3d5b4ae3bf6ebd267ecd"/><section>
+    <title>getLine()</title>
+<indexterm><primary>getLine</primary><secondary>TextManager.h</secondary></indexterm>
+<indexterm><primary>TextManager.h</primary><secondary>getLine</secondary></indexterm>
+<para><computeroutput>std::string getLine (const std::string &amp; text, const std::string &amp; lineParameter)</computeroutput></para><para>
+Definition at line <link linkend="__text_manager_8cpp_source_1l00098">98</link> of file <link linkend="__text_manager_8cpp_source">TextManager.cpp</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="_text_manager_8h_af24bee60aa1d3d5b4ae3bf6ebd267ecd_cgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+Here is the caller graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="_text_manager_8h_af24bee60aa1d3d5b4ae3bf6ebd267ecd_icgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="__text_manager_8h_1ab94653432c8ce86c30be348c8c30caab"/><section>
+    <title>getOfstreamFile()</title>
+<indexterm><primary>getOfstreamFile</primary><secondary>TextManager.h</secondary></indexterm>
+<indexterm><primary>TextManager.h</primary><secondary>getOfstreamFile</secondary></indexterm>
+<para><computeroutput>std::ofstream getOfstreamFile (const std::string &amp; path, <link linkend="__text_manager_8h_1a61d23b393fdc35f2f0e30a1ed566c76d">WriteMode</link> method = <computeroutput><link linkend="__text_manager_8h_1a61d23b393fdc35f2f0e30a1ed566c76dab39faf224e046fb4e507e73fc675cd0f">PREPEND</link></computeroutput>
+)</computeroutput></para><para>
+Definition at line <link linkend="__text_manager_8cpp_source_1l00025">25</link> of file <link linkend="__text_manager_8cpp_source">TextManager.cpp</link>.</para>
+Here is the caller graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="_text_manager_8h_ab94653432c8ce86c30be348c8c30caab_icgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="__text_manager_8h_1a856b84aae48313c32a2e29a29babd901"/><section>
+    <title>isPresentBefore()</title>
+<indexterm><primary>isPresentBefore</primary><secondary>TextManager.h</secondary></indexterm>
+<indexterm><primary>TextManager.h</primary><secondary>isPresentBefore</secondary></indexterm>
+<para><computeroutput>bool isPresentBefore (const std::string &amp; text, const std::string &amp; before, const std::string &amp; after)</computeroutput></para><para>
+Definition at line <link linkend="__text_manager_8cpp_source_1l00143">143</link> of file <link linkend="__text_manager_8cpp_source">TextManager.cpp</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="_text_manager_8h_a856b84aae48313c32a2e29a29babd901_cgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="__text_manager_8h_1af28b966ccdfa1dc51f8a9aa18b62b343"/><section>
+    <title>printFileContent()</title>
+<indexterm><primary>printFileContent</primary><secondary>TextManager.h</secondary></indexterm>
+<indexterm><primary>TextManager.h</primary><secondary>printFileContent</secondary></indexterm>
+<para><computeroutput>void printFileContent (std::string path)</computeroutput></para><para>
+Definition at line <link linkend="__text_manager_8cpp_source_1l00318">318</link> of file <link linkend="__text_manager_8cpp_source">TextManager.cpp</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="_text_manager_8h_af28b966ccdfa1dc51f8a9aa18b62b343_cgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="__text_manager_8h_1aa0db2023b135700695842f97f21f2d47"/><section>
+    <title>removeCharacter()<computeroutput>[1/2]</computeroutput></title>
+<indexterm><primary>removeCharacter</primary><secondary>TextManager.h</secondary></indexterm>
+<indexterm><primary>TextManager.h</primary><secondary>removeCharacter</secondary></indexterm>
+<para><computeroutput>std::string removeCharacter (const std::string &amp; text, const char c)</computeroutput></para><para>
+Definition at line <link linkend="__text_manager_8cpp_source_1l00348">348</link> of file <link linkend="__text_manager_8cpp_source">TextManager.cpp</link>.</para>
+Here is the caller graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="_text_manager_8h_aa0db2023b135700695842f97f21f2d47_icgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="__text_manager_8h_1ab5fd0f2c00f4d540aa147dae25e43471"/><section>
+    <title>removeCharacter()<computeroutput>[2/2]</computeroutput></title>
+<indexterm><primary>removeCharacter</primary><secondary>TextManager.h</secondary></indexterm>
+<indexterm><primary>TextManager.h</primary><secondary>removeCharacter</secondary></indexterm>
+<para><computeroutput>std::string removeCharacter (const std::string &amp; text, const std::vector&lt; char &gt; &amp; c)</computeroutput></para><para>
+Definition at line <link linkend="__text_manager_8cpp_source_1l00358">358</link> of file <link linkend="__text_manager_8cpp_source">TextManager.cpp</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="_text_manager_8h_ab5fd0f2c00f4d540aa147dae25e43471_cgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="__text_manager_8h_1a5f4889fcc6892114ae5ea80e2fec852e"/><section>
+    <title>removeContent()</title>
+<indexterm><primary>removeContent</primary><secondary>TextManager.h</secondary></indexterm>
+<indexterm><primary>TextManager.h</primary><secondary>removeContent</secondary></indexterm>
+<para><computeroutput>std::string removeContent (const std::string &amp; text, const std::string &amp; content)</computeroutput></para><para>
+Definition at line <link linkend="__text_manager_8cpp_source_1l00111">111</link> of file <link linkend="__text_manager_8cpp_source">TextManager.cpp</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="_text_manager_8h_a5f4889fcc6892114ae5ea80e2fec852e_cgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="__text_manager_8h_1a6d7c13a554de9db4c8ebc8b3175af417"/><section>
+    <title>removeLastOccurence()</title>
+<indexterm><primary>removeLastOccurence</primary><secondary>TextManager.h</secondary></indexterm>
+<indexterm><primary>TextManager.h</primary><secondary>removeLastOccurence</secondary></indexterm>
+<para><computeroutput>std::string removeLastOccurence (const std::string &amp; text, const std::string &amp; content)</computeroutput></para><para>
+Definition at line <link linkend="__text_manager_8cpp_source_1l00323">323</link> of file <link linkend="__text_manager_8cpp_source">TextManager.cpp</link>.</para>
+</section>
+<anchor xml:id="__text_manager_8h_1a8e4fb03d21e39e65bf90e109939b0105"/><section>
+    <title>reverseString()</title>
+<indexterm><primary>reverseString</primary><secondary>TextManager.h</secondary></indexterm>
+<indexterm><primary>TextManager.h</primary><secondary>reverseString</secondary></indexterm>
+<para><computeroutput>std::string reverseString (const std::string &amp; text)</computeroutput></para><para>
+Definition at line <link linkend="__text_manager_8cpp_source_1l00251">251</link> of file <link linkend="__text_manager_8cpp_source">TextManager.cpp</link>.</para>
+</section>
+<anchor xml:id="__text_manager_8h_1a4d7e873070d3addef773ee502b520f7e"/><section>
+    <title>to_bool()</title>
+<indexterm><primary>to_bool</primary><secondary>TextManager.h</secondary></indexterm>
+<indexterm><primary>TextManager.h</primary><secondary>to_bool</secondary></indexterm>
+<para><computeroutput>bool to_bool (std::string const &amp; s)</computeroutput></para><para>
+Definition at line <link linkend="__text_manager_8cpp_source_1l00298">298</link> of file <link linkend="__text_manager_8cpp_source">TextManager.cpp</link>.</para>
+</section>
+<anchor xml:id="__text_manager_8h_1a98e5aae2b6659418890caba4fad17d5e"/><section>
+    <title>updateContent()</title>
+<indexterm><primary>updateContent</primary><secondary>TextManager.h</secondary></indexterm>
+<indexterm><primary>TextManager.h</primary><secondary>updateContent</secondary></indexterm>
+<para><computeroutput>std::string updateContent (std::string fullContent, std::string newContent, const std::string &amp; first, const std::string &amp; last)</computeroutput></para><para>
+Definition at line <link linkend="__text_manager_8cpp_source_1l00082">82</link> of file <link linkend="__text_manager_8cpp_source">TextManager.cpp</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="_text_manager_8h_a98e5aae2b6659418890caba4fad17d5e_cgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+Here is the caller graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="_text_manager_8h_a98e5aae2b6659418890caba4fad17d5e_icgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="__text_manager_8h_1a17dcf01a80ea6a03039f6792fe0ce1ec"/><section>
+    <title>writeToFile()</title>
+<indexterm><primary>writeToFile</primary><secondary>TextManager.h</secondary></indexterm>
+<indexterm><primary>TextManager.h</primary><secondary>writeToFile</secondary></indexterm>
+<para><computeroutput>void writeToFile (const std::string &amp; path, const std::string &amp; content, <link linkend="__text_manager_8h_1a61d23b393fdc35f2f0e30a1ed566c76d">WriteMode</link> method = <computeroutput><link linkend="__text_manager_8h_1a61d23b393fdc35f2f0e30a1ed566c76dab39faf224e046fb4e507e73fc675cd0f">PREPEND</link></computeroutput>
+)</computeroutput></para><para>
+Definition at line <link linkend="__text_manager_8cpp_source_1l00040">40</link> of file <link linkend="__text_manager_8cpp_source">TextManager.cpp</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="_text_manager_8h_a17dcf01a80ea6a03039f6792fe0ce1ec_cgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+Here is the caller graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="_text_manager_8h_a17dcf01a80ea6a03039f6792fe0ce1ec_icgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+</section>
+</section>

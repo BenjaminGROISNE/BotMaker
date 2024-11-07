@@ -1,0 +1,243 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<section xmlns="http://docbook.org/ns/docbook" version="5.0" xmlns:xlink="http://www.w3.org/1999/xlink" xml:id="_class_flow_tag" xml:lang="en-US">
+<title>FlowTag Class Reference</title>
+<indexterm><primary>FlowTag</primary></indexterm>
+<para>
+<computeroutput>#include &lt;Tags.h&gt;</computeroutput>
+</para>
+Inheritance diagram for FlowTag:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_flow_tag__inherit__graph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+Collaboration diagram for FlowTag:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_flow_tag__coll__graph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+<simplesect>
+    <title>Public Member Functions    </title>
+        <itemizedlist>
+            <listitem><para><link linkend="_class_flow_tag_1a012d94d66d6801e961a688229923ff56">FlowTag</link> ()</para>
+</listitem>
+            <listitem><para><link linkend="_class_flow_tag_1a68efd2baf60d2d06c2386f509681fd5b">FlowTag</link> (const <link linkend="_class_flow_tag">FlowTag</link> &amp;toCopy)</para>
+</listitem>
+            <listitem><para>std::shared_ptr&lt; <link linkend="_class_flow_tag">FlowTag</link> &gt; <link linkend="_class_flow_tag_1aab4741be53f0357c81cfb05f800f387e">clone</link> ()</para>
+</listitem>
+            <listitem><para>void <link linkend="_class_flow_tag_1ae6c96344984018fc5be3f56f89f2bf20">showTag</link> ()</para>
+</listitem>
+            <listitem><para>bool <link linkend="_class_flow_tag_1a31aaff76d66f8814e75a6e404c52028c">checkCondition</link> ()</para>
+</listitem>
+            <listitem><para>void <link linkend="_class_flow_tag_1a18d358b77d9233f31db5344531180e18">linkTags</link> ()</para>
+</listitem>
+        </itemizedlist>
+</simplesect>
+Public Member Functions inherited from <link linkend="_class_tag">Tag</link>        <itemizedlist>
+            <listitem><para><link linkend="_class_tag_1af2008705aa18e21efecb9e737b6b1a26">Tag</link> ()</para>
+</listitem>
+            <listitem><para><link linkend="_class_tag_1a5955a7ef3228749f5d264581d5c612ab">Tag</link> (const <link linkend="_class_tag">Tag</link> &amp;toCopy)</para>
+</listitem>
+            <listitem><para>std::shared_ptr&lt; <link linkend="_class_tag">Tag</link> &gt; <link linkend="_class_tag_1ae01465d32e9a52c777492048fd06bdd5">clone</link> ()</para>
+</listitem>
+            <listitem><para>virtual void <link linkend="_class_tag_1a54054f3c9db4decb422972460bbb34c3">execute</link> ()</para>
+</listitem>
+        </itemizedlist>
+<simplesect>
+    <title>Public Attributes    </title>
+        <itemizedlist>
+            <listitem><para>bool <link linkend="_class_flow_tag_1a958c7f40de694587c20e8e3a317d3ac9">canReboot</link></para>
+</listitem>
+            <listitem><para>bool <link linkend="_class_flow_tag_1a2deb1b495dd3cc7ba7ae270259a25656">executed</link></para>
+</listitem>
+            <listitem><para>bool <link linkend="_class_flow_tag_1a27aa7ae58c701f6292ca80c42f0ddc42">forcedExit</link></para>
+</listitem>
+            <listitem><para>bool <link linkend="_class_flow_tag_1a05c9772461f3196076558af05e4da81a">rebootLoop</link></para>
+</listitem>
+            <listitem><para>std::shared_ptr&lt; <link linkend="_class_tag">Tag</link> &gt; <link linkend="_class_flow_tag_1ac26bb1c7e6e0543a02fc8ddb007548fa">condition</link></para>
+</listitem>
+            <listitem><para><link linkend="_class_flow_tag">FlowTag</link> * <link linkend="_class_flow_tag_1a55889e6a0b482006dc3940782e892b76">previousTag</link></para>
+</listitem>
+            <listitem><para><link linkend="_class_flow_tag">FlowTag</link> * <link linkend="_class_flow_tag_1abc8bd4efabae9ac712d76869d6ae7621">parentFlowTag</link></para>
+</listitem>
+            <listitem><para>std::vector&lt; std::shared_ptr&lt; <link linkend="_class_tag">Tag</link> &gt; &gt; <link linkend="_class_flow_tag_1a0912449920ad966d78eff6f0a46c50bf">nestedTags</link></para>
+</listitem>
+            <listitem><para>std::vector&lt; <link linkend="_class_flow_tag">FlowTag</link> * &gt; <link linkend="_class_flow_tag_1acd2b7db4f8634f186244c308cc2499c7">listPreviousFlowTags</link></para>
+</listitem>
+        </itemizedlist>
+</simplesect>
+Public Attributes inherited from <link linkend="_class_tag">Tag</link>        <itemizedlist>
+            <listitem><para>std::string <link linkend="_class_tag_1a2b252c6a602db12fcb53a67ce3e9ca1b">tagText</link></para>
+</listitem>
+            <listitem><para>int <link linkend="_class_tag_1a25aa826cd8818bcf0670164d285c3fdd">nbParents</link></para>
+</listitem>
+            <listitem><para>bool <link linkend="_class_tag_1a688d838bee273d203d6b16caaca3ed2b">doExecute</link></para>
+</listitem>
+            <listitem><para><link linkend="__tags_8h_1a7c4faef6b7c4a30990ee13030bc51880">TagType</link> <link linkend="_class_tag_1aa82f368cc2d55922ea75ba85020517c1">myType</link></para>
+</listitem>
+        </itemizedlist>
+<section>
+<title>Detailed Description</title>
+<para>
+Definition at line <link linkend="__tags_8h_source_1l00119">119</link> of file <link linkend="__tags_8h_source">Tags.h</link>.</para>
+</section>
+<section>
+<title>Constructor &amp; Destructor Documentation</title>
+<anchor xml:id="_class_flow_tag_1a012d94d66d6801e961a688229923ff56"/><section>
+    <title>FlowTag()<computeroutput>[1/2]</computeroutput></title>
+<indexterm><primary>FlowTag</primary><secondary>FlowTag</secondary></indexterm>
+<indexterm><primary>FlowTag</primary><secondary>FlowTag</secondary></indexterm>
+<para><computeroutput>FlowTag::FlowTag ( )</computeroutput></para><para>
+Definition at line <link linkend="__tags_8cpp_source_1l00305">305</link> of file <link linkend="__tags_8cpp_source">Tags.cpp</link>.</para>
+</section>
+<anchor xml:id="_class_flow_tag_1a68efd2baf60d2d06c2386f509681fd5b"/><section>
+    <title>FlowTag()<computeroutput>[2/2]</computeroutput></title>
+<indexterm><primary>FlowTag</primary><secondary>FlowTag</secondary></indexterm>
+<indexterm><primary>FlowTag</primary><secondary>FlowTag</secondary></indexterm>
+<para><computeroutput>FlowTag::FlowTag (const <link linkend="_class_flow_tag">FlowTag</link> &amp; toCopy)</computeroutput></para><para>
+Definition at line <link linkend="__tags_8cpp_source_1l00134">134</link> of file <link linkend="__tags_8cpp_source">Tags.cpp</link>.</para>
+</section>
+</section>
+<section>
+<title>Member Function Documentation</title>
+<anchor xml:id="_class_flow_tag_1a31aaff76d66f8814e75a6e404c52028c"/><section>
+    <title>checkCondition()</title>
+<indexterm><primary>checkCondition</primary><secondary>FlowTag</secondary></indexterm>
+<indexterm><primary>FlowTag</primary><secondary>checkCondition</secondary></indexterm>
+<para><computeroutput>bool FlowTag::checkCondition ( )</computeroutput></para><para>
+Definition at line <link linkend="__tags_8cpp_source_1l01450">1450</link> of file <link linkend="__tags_8cpp_source">Tags.cpp</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_flow_tag_a31aaff76d66f8814e75a6e404c52028c_cgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+Here is the caller graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_flow_tag_a31aaff76d66f8814e75a6e404c52028c_icgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_class_flow_tag_1aab4741be53f0357c81cfb05f800f387e"/><section>
+    <title>clone()</title>
+<indexterm><primary>clone</primary><secondary>FlowTag</secondary></indexterm>
+<indexterm><primary>FlowTag</primary><secondary>clone</secondary></indexterm>
+<para><computeroutput>std::shared_ptr&lt; <link linkend="_class_flow_tag">FlowTag</link> &gt; FlowTag::clone ( )</computeroutput></para><para>
+Definition at line <link linkend="__tags_8cpp_source_1l00027">27</link> of file <link linkend="__tags_8cpp_source">Tags.cpp</link>.</para>
+</section>
+<anchor xml:id="_class_flow_tag_1a18d358b77d9233f31db5344531180e18"/><section>
+    <title>linkTags()</title>
+<indexterm><primary>linkTags</primary><secondary>FlowTag</secondary></indexterm>
+<indexterm><primary>FlowTag</primary><secondary>linkTags</secondary></indexterm>
+<para><computeroutput>void FlowTag::linkTags ( )</computeroutput></para><para>
+Definition at line <link linkend="__tags_8cpp_source_1l01458">1458</link> of file <link linkend="__tags_8cpp_source">Tags.cpp</link>.</para>
+Here is the caller graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_flow_tag_a18d358b77d9233f31db5344531180e18_icgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_class_flow_tag_1ae6c96344984018fc5be3f56f89f2bf20"/><section>
+    <title>showTag()</title>
+<indexterm><primary>showTag</primary><secondary>FlowTag</secondary></indexterm>
+<indexterm><primary>FlowTag</primary><secondary>showTag</secondary></indexterm>
+<para><computeroutput>void FlowTag::showTag ( )</computeroutput></para><para>
+Definition at line <link linkend="__tags_8cpp_source_1l00274">274</link> of file <link linkend="__tags_8cpp_source">Tags.cpp</link>.</para>
+Here is the caller graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_flow_tag_ae6c96344984018fc5be3f56f89f2bf20_icgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+</section>
+<section>
+<title>Member Data Documentation</title>
+<anchor xml:id="_class_flow_tag_1a958c7f40de694587c20e8e3a317d3ac9"/><section>
+    <title>canReboot</title>
+<indexterm><primary>canReboot</primary><secondary>FlowTag</secondary></indexterm>
+<indexterm><primary>FlowTag</primary><secondary>canReboot</secondary></indexterm>
+<para><computeroutput>bool FlowTag::canReboot</computeroutput></para><para>
+Definition at line <link linkend="__tags_8h_source_1l00128">128</link> of file <link linkend="__tags_8h_source">Tags.h</link>.</para>
+</section>
+<anchor xml:id="_class_flow_tag_1ac26bb1c7e6e0543a02fc8ddb007548fa"/><section>
+    <title>condition</title>
+<indexterm><primary>condition</primary><secondary>FlowTag</secondary></indexterm>
+<indexterm><primary>FlowTag</primary><secondary>condition</secondary></indexterm>
+<para><computeroutput>std::shared_ptr&lt;<link linkend="_class_tag">Tag</link>&gt; FlowTag::condition</computeroutput></para><para>
+Definition at line <link linkend="__tags_8h_source_1l00132">132</link> of file <link linkend="__tags_8h_source">Tags.h</link>.</para>
+</section>
+<anchor xml:id="_class_flow_tag_1a2deb1b495dd3cc7ba7ae270259a25656"/><section>
+    <title>executed</title>
+<indexterm><primary>executed</primary><secondary>FlowTag</secondary></indexterm>
+<indexterm><primary>FlowTag</primary><secondary>executed</secondary></indexterm>
+<para><computeroutput>bool FlowTag::executed</computeroutput></para><para>
+Definition at line <link linkend="__tags_8h_source_1l00129">129</link> of file <link linkend="__tags_8h_source">Tags.h</link>.</para>
+</section>
+<anchor xml:id="_class_flow_tag_1a27aa7ae58c701f6292ca80c42f0ddc42"/><section>
+    <title>forcedExit</title>
+<indexterm><primary>forcedExit</primary><secondary>FlowTag</secondary></indexterm>
+<indexterm><primary>FlowTag</primary><secondary>forcedExit</secondary></indexterm>
+<para><computeroutput>bool FlowTag::forcedExit</computeroutput></para><para>
+Definition at line <link linkend="__tags_8h_source_1l00130">130</link> of file <link linkend="__tags_8h_source">Tags.h</link>.</para>
+</section>
+<anchor xml:id="_class_flow_tag_1acd2b7db4f8634f186244c308cc2499c7"/><section>
+    <title>listPreviousFlowTags</title>
+<indexterm><primary>listPreviousFlowTags</primary><secondary>FlowTag</secondary></indexterm>
+<indexterm><primary>FlowTag</primary><secondary>listPreviousFlowTags</secondary></indexterm>
+<para><computeroutput>std::vector&lt;<link linkend="_class_flow_tag">FlowTag</link>*&gt; FlowTag::listPreviousFlowTags</computeroutput></para><para>
+Definition at line <link linkend="__tags_8h_source_1l00136">136</link> of file <link linkend="__tags_8h_source">Tags.h</link>.</para>
+</section>
+<anchor xml:id="_class_flow_tag_1a0912449920ad966d78eff6f0a46c50bf"/><section>
+    <title>nestedTags</title>
+<indexterm><primary>nestedTags</primary><secondary>FlowTag</secondary></indexterm>
+<indexterm><primary>FlowTag</primary><secondary>nestedTags</secondary></indexterm>
+<para><computeroutput>std::vector&lt;std::shared_ptr&lt;<link linkend="_class_tag">Tag</link>&gt; &gt; FlowTag::nestedTags</computeroutput></para><para>
+Definition at line <link linkend="__tags_8h_source_1l00135">135</link> of file <link linkend="__tags_8h_source">Tags.h</link>.</para>
+</section>
+<anchor xml:id="_class_flow_tag_1abc8bd4efabae9ac712d76869d6ae7621"/><section>
+    <title>parentFlowTag</title>
+<indexterm><primary>parentFlowTag</primary><secondary>FlowTag</secondary></indexterm>
+<indexterm><primary>FlowTag</primary><secondary>parentFlowTag</secondary></indexterm>
+<para><computeroutput><link linkend="_class_flow_tag">FlowTag</link>* FlowTag::parentFlowTag</computeroutput></para><para>
+Definition at line <link linkend="__tags_8h_source_1l00134">134</link> of file <link linkend="__tags_8h_source">Tags.h</link>.</para>
+</section>
+<anchor xml:id="_class_flow_tag_1a55889e6a0b482006dc3940782e892b76"/><section>
+    <title>previousTag</title>
+<indexterm><primary>previousTag</primary><secondary>FlowTag</secondary></indexterm>
+<indexterm><primary>FlowTag</primary><secondary>previousTag</secondary></indexterm>
+<para><computeroutput><link linkend="_class_flow_tag">FlowTag</link>* FlowTag::previousTag</computeroutput></para><para>
+Definition at line <link linkend="__tags_8h_source_1l00133">133</link> of file <link linkend="__tags_8h_source">Tags.h</link>.</para>
+</section>
+<anchor xml:id="_class_flow_tag_1a05c9772461f3196076558af05e4da81a"/><section>
+    <title>rebootLoop</title>
+<indexterm><primary>rebootLoop</primary><secondary>FlowTag</secondary></indexterm>
+<indexterm><primary>FlowTag</primary><secondary>rebootLoop</secondary></indexterm>
+<para><computeroutput>bool FlowTag::rebootLoop</computeroutput></para><para>
+Definition at line <link linkend="__tags_8h_source_1l00131">131</link> of file <link linkend="__tags_8h_source">Tags.h</link>.</para>
+</section>
+<para>
+The documentation for this class was generated from the following files:</para>
+src/<link linkend="__tags_8h">Tags.h</link>src/<link linkend="__tags_8cpp">Tags.cpp</link></section>
+</section>

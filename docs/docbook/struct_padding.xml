@@ -1,0 +1,112 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<section xmlns="http://docbook.org/ns/docbook" version="5.0" xmlns:xlink="http://www.w3.org/1999/xlink" xml:id="_struct_padding" xml:lang="en-US">
+<title>Padding Struct Reference</title>
+<indexterm><primary>Padding</primary></indexterm>
+<para>
+<computeroutput>#include &lt;fsfml.h&gt;</computeroutput>
+</para>
+Collaboration diagram for Padding:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="struct_padding__coll__graph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+<simplesect>
+    <title>Public Member Functions    </title>
+        <itemizedlist>
+            <listitem><para><link linkend="_struct_padding_1ae481a5ff9289a693c616cbc0521e3d5e">Padding</link> ()</para>
+</listitem>
+            <listitem><para><link linkend="_struct_padding_1aa55fac7bb70699c1d19cc954907f2e9e">Padding</link> (float <link linkend="_struct_padding_1a8b06487e48b7dadd997dfc39e9db6f5c">top</link>, float <link linkend="_struct_padding_1a40b396bf6d1d31d094c4d1720b8bbb69">bottom</link>, float <link linkend="_struct_padding_1adb6f0c37761fedc73285e0e6553d67ba">right</link>, float <link linkend="_struct_padding_1a3f0caf10c7d00adbf2d488474bdafa30">left</link>)</para>
+</listitem>
+            <listitem><para><link linkend="_struct_padding_1ab992be8430969fc8f876b01e8532d23f">Padding</link> (float all)</para>
+</listitem>
+            <listitem><para><link linkend="_struct_padding_1ab7610401c674fb5809fb5ccb44820593">Padding</link> (float horizontal, float vertical)</para>
+</listitem>
+        </itemizedlist>
+</simplesect>
+<simplesect>
+    <title>Public Attributes    </title>
+        <itemizedlist>
+            <listitem><para>float <link linkend="_struct_padding_1a8b06487e48b7dadd997dfc39e9db6f5c">top</link></para>
+</listitem>
+            <listitem><para>float <link linkend="_struct_padding_1adb6f0c37761fedc73285e0e6553d67ba">right</link></para>
+</listitem>
+            <listitem><para>float <link linkend="_struct_padding_1a40b396bf6d1d31d094c4d1720b8bbb69">bottom</link></para>
+</listitem>
+            <listitem><para>float <link linkend="_struct_padding_1a3f0caf10c7d00adbf2d488474bdafa30">left</link></para>
+</listitem>
+        </itemizedlist>
+</simplesect>
+<section>
+<title>Detailed Description</title>
+<para>
+Definition at line <link linkend="_fsfml_8h_source_1l00015">15</link> of file <link linkend="_fsfml_8h_source">fsfml.h</link>.</para>
+</section>
+<section>
+<title>Constructor &amp; Destructor Documentation</title>
+<anchor xml:id="_struct_padding_1ae481a5ff9289a693c616cbc0521e3d5e"/><section>
+    <title>Padding()<computeroutput>[1/4]</computeroutput></title>
+<indexterm><primary>Padding</primary><secondary>Padding</secondary></indexterm>
+<indexterm><primary>Padding</primary><secondary>Padding</secondary></indexterm>
+<para><computeroutput>Padding::Padding ( )<computeroutput>[inline]</computeroutput></computeroutput></para><para>
+Definition at line <link linkend="_fsfml_8h_source_1l00021">21</link> of file <link linkend="_fsfml_8h_source">fsfml.h</link>.</para>
+</section>
+<anchor xml:id="_struct_padding_1aa55fac7bb70699c1d19cc954907f2e9e"/><section>
+    <title>Padding()<computeroutput>[2/4]</computeroutput></title>
+<indexterm><primary>Padding</primary><secondary>Padding</secondary></indexterm>
+<indexterm><primary>Padding</primary><secondary>Padding</secondary></indexterm>
+<para><computeroutput>Padding::Padding (float top, float bottom, float right, float left)<computeroutput>[inline]</computeroutput></computeroutput></para><para>
+Definition at line <link linkend="_fsfml_8h_source_1l00024">24</link> of file <link linkend="_fsfml_8h_source">fsfml.h</link>.</para>
+</section>
+<anchor xml:id="_struct_padding_1ab992be8430969fc8f876b01e8532d23f"/><section>
+    <title>Padding()<computeroutput>[3/4]</computeroutput></title>
+<indexterm><primary>Padding</primary><secondary>Padding</secondary></indexterm>
+<indexterm><primary>Padding</primary><secondary>Padding</secondary></indexterm>
+<para><computeroutput>Padding::Padding (float all)<computeroutput>[inline]</computeroutput></computeroutput></para><para>
+Definition at line <link linkend="_fsfml_8h_source_1l00030">30</link> of file <link linkend="_fsfml_8h_source">fsfml.h</link>.</para>
+</section>
+<anchor xml:id="_struct_padding_1ab7610401c674fb5809fb5ccb44820593"/><section>
+    <title>Padding()<computeroutput>[4/4]</computeroutput></title>
+<indexterm><primary>Padding</primary><secondary>Padding</secondary></indexterm>
+<indexterm><primary>Padding</primary><secondary>Padding</secondary></indexterm>
+<para><computeroutput>Padding::Padding (float horizontal, float vertical)<computeroutput>[inline]</computeroutput></computeroutput></para><para>
+Definition at line <link linkend="_fsfml_8h_source_1l00033">33</link> of file <link linkend="_fsfml_8h_source">fsfml.h</link>.</para>
+</section>
+</section>
+<section>
+<title>Member Data Documentation</title>
+<anchor xml:id="_struct_padding_1a40b396bf6d1d31d094c4d1720b8bbb69"/><section>
+    <title>bottom</title>
+<indexterm><primary>bottom</primary><secondary>Padding</secondary></indexterm>
+<indexterm><primary>Padding</primary><secondary>bottom</secondary></indexterm>
+<para><computeroutput>float Padding::bottom</computeroutput></para><para>
+Definition at line <link linkend="_fsfml_8h_source_1l00018">18</link> of file <link linkend="_fsfml_8h_source">fsfml.h</link>.</para>
+</section>
+<anchor xml:id="_struct_padding_1a3f0caf10c7d00adbf2d488474bdafa30"/><section>
+    <title>left</title>
+<indexterm><primary>left</primary><secondary>Padding</secondary></indexterm>
+<indexterm><primary>Padding</primary><secondary>left</secondary></indexterm>
+<para><computeroutput>float Padding::left</computeroutput></para><para>
+Definition at line <link linkend="_fsfml_8h_source_1l00019">19</link> of file <link linkend="_fsfml_8h_source">fsfml.h</link>.</para>
+</section>
+<anchor xml:id="_struct_padding_1adb6f0c37761fedc73285e0e6553d67ba"/><section>
+    <title>right</title>
+<indexterm><primary>right</primary><secondary>Padding</secondary></indexterm>
+<indexterm><primary>Padding</primary><secondary>right</secondary></indexterm>
+<para><computeroutput>float Padding::right</computeroutput></para><para>
+Definition at line <link linkend="_fsfml_8h_source_1l00017">17</link> of file <link linkend="_fsfml_8h_source">fsfml.h</link>.</para>
+</section>
+<anchor xml:id="_struct_padding_1a8b06487e48b7dadd997dfc39e9db6f5c"/><section>
+    <title>top</title>
+<indexterm><primary>top</primary><secondary>Padding</secondary></indexterm>
+<indexterm><primary>Padding</primary><secondary>top</secondary></indexterm>
+<para><computeroutput>float Padding::top</computeroutput></para><para>
+Definition at line <link linkend="_fsfml_8h_source_1l00016">16</link> of file <link linkend="_fsfml_8h_source">fsfml.h</link>.</para>
+</section>
+<para>
+The documentation for this struct was generated from the following file:</para>
+src/<link linkend="_fsfml_8h">fsfml.h</link></section>
+</section>

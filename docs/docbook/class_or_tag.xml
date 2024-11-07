@@ -1,0 +1,153 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<section xmlns="http://docbook.org/ns/docbook" version="5.0" xmlns:xlink="http://www.w3.org/1999/xlink" xml:id="_class_or_tag" xml:lang="en-US">
+<title>OrTag Class Reference</title>
+<indexterm><primary>OrTag</primary></indexterm>
+<para>
+<computeroutput>#include &lt;Tags.h&gt;</computeroutput>
+</para>
+Inheritance diagram for OrTag:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_or_tag__inherit__graph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+Collaboration diagram for OrTag:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_or_tag__coll__graph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+<simplesect>
+    <title>Public Member Functions    </title>
+        <itemizedlist>
+            <listitem><para><link linkend="_class_or_tag_1abbce566252b26aba0957f80e5836e50b">OrTag</link> ()</para>
+</listitem>
+            <listitem><para><link linkend="_class_or_tag_1a9fe50511aa00da97968c3e2e1b950886">OrTag</link> (const <link linkend="_class_or_tag">OrTag</link> &amp;toCopy)</para>
+</listitem>
+            <listitem><para><link linkend="_class_or_tag_1a557754df14ebca4527227935be71e936">OrTag</link> (const std::vector&lt; std::shared_ptr&lt; <link linkend="_class_tag">Tag</link> &gt; &gt; &amp;parameters)</para>
+</listitem>
+            <listitem><para>std::shared_ptr&lt; <link linkend="_class_or_tag">OrTag</link> &gt; <link linkend="_class_or_tag_1a98d9b116152758f98e4c62195f60e1a6">clone</link> ()</para>
+</listitem>
+            <listitem><para>void <link linkend="_class_or_tag_1a09018c07d9e941c9dcdd1681fb35f396">execute</link> () override</para>
+</listitem>
+        </itemizedlist>
+</simplesect>
+Public Member Functions inherited from <link linkend="_class_bool_tag">BoolTag</link>        <itemizedlist>
+            <listitem><para><link linkend="_class_bool_tag_1a59cb7cb189f83466defc5ace699357b9">BoolTag</link> ()</para>
+</listitem>
+            <listitem><para><link linkend="_class_bool_tag_1a8a9c7d5e741c4c4b9a25cd83d45f5939">BoolTag</link> (const <link linkend="_class_bool_tag">BoolTag</link> &amp;toCopy)</para>
+</listitem>
+            <listitem><para><link linkend="_class_bool_tag_1a16c918890174b92cca2db5f5c7e99f17">BoolTag</link> (const std::shared_ptr&lt; <link linkend="_class_tag">Tag</link> &gt; &amp;parameter)</para>
+</listitem>
+            <listitem><para><link linkend="_class_bool_tag_1ab834422d97f1c364878e8561d39aecfe">BoolTag</link> (bool v)</para>
+</listitem>
+            <listitem><para>std::shared_ptr&lt; <link linkend="_class_bool_tag">BoolTag</link> &gt; <link linkend="_class_bool_tag_1af6016dc8e74a29099ba9c174f4f747df">clone</link> ()</para>
+</listitem>
+        </itemizedlist>
+Public Member Functions inherited from <link linkend="_class_tag">Tag</link>        <itemizedlist>
+            <listitem><para><link linkend="_class_tag_1af2008705aa18e21efecb9e737b6b1a26">Tag</link> ()</para>
+</listitem>
+            <listitem><para><link linkend="_class_tag_1a5955a7ef3228749f5d264581d5c612ab">Tag</link> (const <link linkend="_class_tag">Tag</link> &amp;toCopy)</para>
+</listitem>
+            <listitem><para>std::shared_ptr&lt; <link linkend="_class_tag">Tag</link> &gt; <link linkend="_class_tag_1ae01465d32e9a52c777492048fd06bdd5">clone</link> ()</para>
+</listitem>
+        </itemizedlist>
+<simplesect>
+    <title>Public Attributes    </title>
+        <itemizedlist>
+            <listitem><para>std::vector&lt; std::shared_ptr&lt; <link linkend="_class_tag">Tag</link> &gt; &gt; <link linkend="_class_or_tag_1a2d87eb30873b58b3a3d660634762b88d">listTags</link></para>
+</listitem>
+        </itemizedlist>
+</simplesect>
+Public Attributes inherited from <link linkend="_class_bool_tag">BoolTag</link>        <itemizedlist>
+            <listitem><para>std::shared_ptr&lt; <link linkend="_class_tag">Tag</link> &gt; <link linkend="_class_bool_tag_1a1f8f23c75e15979c0a5542dfab204234">boolTag</link></para>
+</listitem>
+            <listitem><para>bool <link linkend="_class_bool_tag_1a533e516d764bce21a79a433ccd0ac1e1">myBool</link></para>
+</listitem>
+        </itemizedlist>
+Public Attributes inherited from <link linkend="_class_tag">Tag</link>        <itemizedlist>
+            <listitem><para>std::string <link linkend="_class_tag_1a2b252c6a602db12fcb53a67ce3e9ca1b">tagText</link></para>
+</listitem>
+            <listitem><para>int <link linkend="_class_tag_1a25aa826cd8818bcf0670164d285c3fdd">nbParents</link></para>
+</listitem>
+            <listitem><para>bool <link linkend="_class_tag_1a688d838bee273d203d6b16caaca3ed2b">doExecute</link></para>
+</listitem>
+            <listitem><para><link linkend="__tags_8h_1a7c4faef6b7c4a30990ee13030bc51880">TagType</link> <link linkend="_class_tag_1aa82f368cc2d55922ea75ba85020517c1">myType</link></para>
+</listitem>
+        </itemizedlist>
+<section>
+<title>Detailed Description</title>
+<para>
+Definition at line <link linkend="__tags_8h_source_1l00480">480</link> of file <link linkend="__tags_8h_source">Tags.h</link>.</para>
+</section>
+<section>
+<title>Constructor &amp; Destructor Documentation</title>
+<anchor xml:id="_class_or_tag_1abbce566252b26aba0957f80e5836e50b"/><section>
+    <title>OrTag()<computeroutput>[1/3]</computeroutput></title>
+<indexterm><primary>OrTag</primary><secondary>OrTag</secondary></indexterm>
+<indexterm><primary>OrTag</primary><secondary>OrTag</secondary></indexterm>
+<para><computeroutput>OrTag::OrTag ( )</computeroutput></para><para>
+Definition at line <link linkend="__tags_8cpp_source_1l01024">1024</link> of file <link linkend="__tags_8cpp_source">Tags.cpp</link>.</para>
+</section>
+<anchor xml:id="_class_or_tag_1a9fe50511aa00da97968c3e2e1b950886"/><section>
+    <title>OrTag()<computeroutput>[2/3]</computeroutput></title>
+<indexterm><primary>OrTag</primary><secondary>OrTag</secondary></indexterm>
+<indexterm><primary>OrTag</primary><secondary>OrTag</secondary></indexterm>
+<para><computeroutput>OrTag::OrTag (const <link linkend="_class_or_tag">OrTag</link> &amp; toCopy)</computeroutput></para><para>
+Definition at line <link linkend="__tags_8cpp_source_1l00240">240</link> of file <link linkend="__tags_8cpp_source">Tags.cpp</link>.</para>
+</section>
+<anchor xml:id="_class_or_tag_1a557754df14ebca4527227935be71e936"/><section>
+    <title>OrTag()<computeroutput>[3/3]</computeroutput></title>
+<indexterm><primary>OrTag</primary><secondary>OrTag</secondary></indexterm>
+<indexterm><primary>OrTag</primary><secondary>OrTag</secondary></indexterm>
+<para><computeroutput>OrTag::OrTag (const std::vector&lt; std::shared_ptr&lt; <link linkend="_class_tag">Tag</link> &gt; &gt; &amp; parameters)</computeroutput></para><para>
+Definition at line <link linkend="__tags_8cpp_source_1l01081">1081</link> of file <link linkend="__tags_8cpp_source">Tags.cpp</link>.</para>
+</section>
+</section>
+<section>
+<title>Member Function Documentation</title>
+<anchor xml:id="_class_or_tag_1a98d9b116152758f98e4c62195f60e1a6"/><section>
+    <title>clone()</title>
+<indexterm><primary>clone</primary><secondary>OrTag</secondary></indexterm>
+<indexterm><primary>OrTag</primary><secondary>clone</secondary></indexterm>
+<para><computeroutput>std::shared_ptr&lt; <link linkend="_class_or_tag">OrTag</link> &gt; OrTag::clone ( )</computeroutput></para><para>
+Definition at line <link linkend="__tags_8cpp_source_1l00112">112</link> of file <link linkend="__tags_8cpp_source">Tags.cpp</link>.</para>
+</section>
+<anchor xml:id="_class_or_tag_1a09018c07d9e941c9dcdd1681fb35f396"/><section>
+    <title>execute()</title>
+<indexterm><primary>execute</primary><secondary>OrTag</secondary></indexterm>
+<indexterm><primary>OrTag</primary><secondary>execute</secondary></indexterm>
+<para><computeroutput>void OrTag::execute ( )<computeroutput>[override]</computeroutput>, <computeroutput>[virtual]</computeroutput></computeroutput></para><para>
+Reimplemented from <link linkend="_class_bool_tag_1a2695d817dcbf4150f25cec21a453633a">BoolTag</link>.</para>
+<para>
+Definition at line <link linkend="__tags_8cpp_source_1l01086">1086</link> of file <link linkend="__tags_8cpp_source">Tags.cpp</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_or_tag_a09018c07d9e941c9dcdd1681fb35f396_cgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+</section>
+<section>
+<title>Member Data Documentation</title>
+<anchor xml:id="_class_or_tag_1a2d87eb30873b58b3a3d660634762b88d"/><section>
+    <title>listTags</title>
+<indexterm><primary>listTags</primary><secondary>OrTag</secondary></indexterm>
+<indexterm><primary>OrTag</primary><secondary>listTags</secondary></indexterm>
+<para><computeroutput>std::vector&lt;std::shared_ptr&lt;<link linkend="_class_tag">Tag</link>&gt; &gt; OrTag::listTags</computeroutput></para><para>
+Definition at line <link linkend="__tags_8h_source_1l00485">485</link> of file <link linkend="__tags_8h_source">Tags.h</link>.</para>
+</section>
+<para>
+The documentation for this class was generated from the following files:</para>
+src/<link linkend="__tags_8h">Tags.h</link>src/<link linkend="__tags_8cpp">Tags.cpp</link></section>
+</section>

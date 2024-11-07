@@ -1,0 +1,31 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<section xmlns="http://docbook.org/ns/docbook" version="5.0" xmlns:xlink="http://www.w3.org/1999/xlink" xml:id="__activity_8h_source" xml:lang="en-US">
+<title>Activity.h</title>
+<indexterm><primary>src/Activity.h</primary></indexterm>
+Go to the documentation of this file.<programlisting linenumbering="unnumbered"><anchor xml:id="__activity_8h_source_1l00001"/>00001 <emphasis role="preprocessor">#pragma&#32;once</emphasis>
+<anchor xml:id="__activity_8h_source_1l00002"/>00002 <emphasis role="preprocessor">#include&#32;&quot;<link linkend="__interactions_8h">Interactions.h</link>&quot;</emphasis>
+<anchor xml:id="__activity_8h_source_1l00003"/>00003 
+<anchor xml:id="__activity_8h_source_1l00004"/>00004 
+<anchor xml:id="__activity_8h_source_1l00005"/><link linkend="_class_activity">00005</link> <emphasis role="keyword">class&#32;</emphasis><link linkend="_class_activity">Activity</link>&#32;:<emphasis role="keyword">public</emphasis>&#32;<link linkend="_class_interactions">Interactions</link>{
+<anchor xml:id="__activity_8h_source_1l00006"/>00006 <emphasis role="keyword">public</emphasis>:
+<anchor xml:id="__activity_8h_source_1l00007"/><link linkend="_class_activity_1a2c34efd0d28b0050ebb2de872cc599b9">00007</link> &#32;&#32;&#32;&#32;<emphasis role="keywordtype">bool</emphasis>&#32;<link linkend="_class_activity_1a2c34efd0d28b0050ebb2de872cc599b9">activate</link>;
+<anchor xml:id="__activity_8h_source_1l00008"/><link linkend="_class_activity_1af06ae7d076732a672fa9b77618fc88f6">00008</link> &#32;&#32;&#32;&#32;<emphasis role="keywordtype">bool</emphasis>&#32;<link linkend="_class_activity_1af06ae7d076732a672fa9b77618fc88f6">automatic</link>;
+<anchor xml:id="__activity_8h_source_1l00009"/><link linkend="_class_activity_1ac0caaaba639076d9395e813fb73fda9f">00009</link> &#32;&#32;&#32;&#32;std::string&#32;<link linkend="_class_activity_1ac0caaaba639076d9395e813fb73fda9f">name</link>;
+<anchor xml:id="__activity_8h_source_1l00010"/><link linkend="_class_activity_1a897b5ab9c841d3db47e9ebf626abfb6e">00010</link> &#32;&#32;&#32;&#32;<emphasis role="keyword">virtual</emphasis>&#32;<emphasis role="keywordtype">bool</emphasis>&#32;<link linkend="_class_activity_1a897b5ab9c841d3db47e9ebf626abfb6e">doActivity</link>()&#32;{&#32;<emphasis role="keywordflow">return</emphasis>&#32;<emphasis role="keyword">false</emphasis>;&#32;};
+<anchor xml:id="__activity_8h_source_1l00011"/><link linkend="_class_activity_1a603d61b2d4ba494a8c34893558663e1a">00011</link> &#32;&#32;&#32;&#32;<emphasis role="keywordtype">char</emphasis>&#32;<link linkend="_class_activity_1a603d61b2d4ba494a8c34893558663e1a">key</link>;
+<anchor xml:id="__activity_8h_source_1l00012"/>00012 &#32;&#32;&#32;&#32;<link linkend="_class_activity_1abb0e3ce8f97431b704d2685547cc4fac">Activity</link>();
+<anchor xml:id="__activity_8h_source_1l00013"/>00013 &#32;&#32;&#32;&#32;<link linkend="_class_activity_1abb0e3ce8f97431b704d2685547cc4fac">Activity</link>(<emphasis role="keywordtype">bool</emphasis>&#32;act,&#32;std::string&#32;n,&#32;<emphasis role="keywordtype">char</emphasis>&#32;k);
+<anchor xml:id="__activity_8h_source_1l00014"/>00014 &#32;&#32;&#32;&#32;<link linkend="_class_activity_1abb0e3ce8f97431b704d2685547cc4fac">Activity</link>(<emphasis role="keyword">const</emphasis>&#32;<link linkend="_class_activity">Activity</link>&amp;&#32;copy);
+<anchor xml:id="__activity_8h_source_1l00015"/>00015 &#32;&#32;&#32;&#32;<emphasis role="keywordtype">void</emphasis>&#32;<link linkend="_class_activity_1ac31e10fb45decd1f678b014c7298f314">showActivity</link>()<emphasis role="keyword">const</emphasis>;
+<anchor xml:id="__activity_8h_source_1l00016"/>00016 };
+<anchor xml:id="__activity_8h_source_1l00017"/>00017 
+<anchor xml:id="__activity_8h_source_1l00018"/><link linkend="_class_short_cut">00018</link> <emphasis role="keyword">class&#32;</emphasis><link linkend="_class_short_cut">ShortCut</link>&#32;{
+<anchor xml:id="__activity_8h_source_1l00019"/>00019 <emphasis role="keyword">public</emphasis>:
+<anchor xml:id="__activity_8h_source_1l00020"/><link linkend="_class_short_cut_1a9cb4aafc1783cabc572a1de63b3120f4">00020</link> &#32;&#32;&#32;&#32;<emphasis role="keywordtype">char</emphasis>&#32;<link linkend="_class_short_cut_1a9cb4aafc1783cabc572a1de63b3120f4">key</link>;
+<anchor xml:id="__activity_8h_source_1l00021"/><link linkend="_class_short_cut_1a5b1ae4cc092577100f735ff2fe885da2">00021</link> &#32;&#32;&#32;&#32;std::string&#32;<link linkend="_class_short_cut_1aa4b09467a97ff509d9c4e80212143629">string</link>,&#32;<link linkend="_class_short_cut_1a5b1ae4cc092577100f735ff2fe885da2">description</link>;
+<anchor xml:id="__activity_8h_source_1l00022"/>00022 &#32;&#32;&#32;&#32;<link linkend="_class_short_cut_1a9e30dbb6cdd2a3ff9545dc29d8c849b4">ShortCut</link>();
+<anchor xml:id="__activity_8h_source_1l00023"/>00023 &#32;&#32;&#32;&#32;<link linkend="_class_short_cut_1a9e30dbb6cdd2a3ff9545dc29d8c849b4">ShortCut</link>(<emphasis role="keywordtype">char</emphasis>&#32;k,&#32;std::string&#32;n,&#32;std::string&#32;desc);
+<anchor xml:id="__activity_8h_source_1l00024"/>00024 &#32;&#32;&#32;&#32;<link linkend="_class_short_cut_1a9e30dbb6cdd2a3ff9545dc29d8c849b4">ShortCut</link>(<emphasis role="keyword">const</emphasis>&#32;<link linkend="_class_short_cut">ShortCut</link>&amp;&#32;copy);
+<anchor xml:id="__activity_8h_source_1l00025"/>00025 &#32;&#32;&#32;&#32;<emphasis role="keywordtype">void</emphasis>&#32;<link linkend="_class_short_cut_1a5026e60948d728b70bad17f55ce63b75">showShortCut</link>()<emphasis role="keyword">const</emphasis>;
+<anchor xml:id="__activity_8h_source_1l00026"/>00026 };
+</programlisting></section>

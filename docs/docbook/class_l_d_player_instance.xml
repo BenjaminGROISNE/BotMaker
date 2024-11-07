@@ -1,0 +1,164 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<section xmlns="http://docbook.org/ns/docbook" version="5.0" xmlns:xlink="http://www.w3.org/1999/xlink" xml:id="_class_l_d_player_instance" xml:lang="en-US">
+<title>LDPlayerInstance Class Reference</title>
+<indexterm><primary>LDPlayerInstance</primary></indexterm>
+<para>
+<computeroutput>#include &lt;LDPlayerInstance.h&gt;</computeroutput>
+</para>
+Inheritance diagram for LDPlayerInstance:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_l_d_player_instance__inherit__graph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+Collaboration diagram for LDPlayerInstance:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_l_d_player_instance__coll__graph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+<simplesect>
+    <title>Public Member Functions    </title>
+        <itemizedlist>
+            <listitem><para><link linkend="_class_l_d_player_instance_1a9384378727ff07e74f5e9a1a84cec8d6">LDPlayerInstance</link> ()</para>
+</listitem>
+            <listitem><para><link linkend="_class_l_d_player_instance_1ad75199d7640f5143dee1db06a697cd90">LDPlayerInstance</link> (std::string <link linkend="_class_instance_1a71e6b641e231bdfcfb4f255c6b9e58af">instanceName</link>)</para>
+</listitem>
+            <listitem><para>void <link linkend="_class_l_d_player_instance_1a9e740865e7059e32565a3ee86863b843">showInstance</link> () override</para>
+</listitem>
+            <listitem><para>void <link linkend="_class_l_d_player_instance_1aa242849ad43bed3a3075794bee9ea908">setGlobalId</link> () override</para>
+</listitem>
+        </itemizedlist>
+</simplesect>
+Public Member Functions inherited from <link linkend="_class_instance">Instance</link>        <itemizedlist>
+            <listitem><para><link linkend="_class_instance_1a399506c7e75ab9ab78fbc34a25932bbd">Instance</link> ()</para>
+</listitem>
+            <listitem><para><link linkend="_class_instance_1ae3ab7cf90005ff7a4c64600e8d938ea8">Instance</link> (std::string <link linkend="_class_instance_1a71e6b641e231bdfcfb4f255c6b9e58af">instanceName</link>)</para>
+</listitem>
+            <listitem><para>virtual std::string <link linkend="_class_instance_1abb8d03ac04893774e93ea06e85338d39">getAdbKey</link> ()</para>
+</listitem>
+            <listitem><para>const std::string <link linkend="_class_instance_1a951c978f2d8b94264ada22b2f881469b">getGlobalId</link> ()</para>
+</listitem>
+            <listitem><para>virtual <link linkend="__instance_8h_1a5b026f4903e92a7e60dda754b5028227">EmulatorType</link> <link linkend="_class_instance_1aaf12301a5aae7020e73e68fbc8cc8e72">getType</link> ()</para>
+</listitem>
+            <listitem><para>virtual void <link linkend="_class_instance_1ad2e6d56fd99a364888b0e2aafb37d610">setLaunch</link> (bool b)</para>
+</listitem>
+        </itemizedlist>
+<simplesect>
+    <title>Public Attributes    </title>
+        <itemizedlist>
+            <listitem><para>std::string <link linkend="_class_l_d_player_instance_1a5b69e14ed9eebd8b6aaafd403647842f">packageInfoFileName</link></para>
+</listitem>
+            <listitem><para>std::string <link linkend="_class_l_d_player_instance_1a6ceacb3c1904d3adf78e7be2b5cc32a6">engineName</link></para>
+</listitem>
+            <listitem><para>int <link linkend="_class_l_d_player_instance_1a54bd4852604077a154ae55bb00b4d185">ldId</link></para>
+</listitem>
+        </itemizedlist>
+</simplesect>
+Public Attributes inherited from <link linkend="_class_instance">Instance</link>        <itemizedlist>
+            <listitem><para>std::string <link linkend="_class_instance_1a71e6b641e231bdfcfb4f255c6b9e58af">instanceName</link></para>
+</listitem>
+            <listitem><para>std::string <link linkend="_class_instance_1ad66900da1ca18b45bae2e46c04a4cdda">instanceFolder</link></para>
+</listitem>
+            <listitem><para>std::string <link linkend="_class_instance_1a1f72388531ddb773750fc7503c134a26">adbKey</link></para>
+</listitem>
+            <listitem><para>std::string <link linkend="_class_instance_1adbf9914982dfc15b3542b57eee68574d">instanceId</link></para>
+</listitem>
+            <listitem><para><link linkend="__instance_8h_1a5b026f4903e92a7e60dda754b5028227">EmulatorType</link> <link linkend="_class_instance_1ac8eb7fd97639a6d93161bcd7a4e07317">myType</link></para>
+</listitem>
+            <listitem><para>bool <link linkend="_class_instance_1ae597325ce3bc6efdd8d0811c6b54c0c6">launch</link></para>
+</listitem>
+            <listitem><para>int <link linkend="_class_instance_1afac2cbff1e241735f914ee0b95a04ea5">dpi</link></para>
+</listitem>
+            <listitem><para>int <link linkend="_class_instance_1ae9cb37b80e1b2586ea1136552f5471c7">width</link></para>
+</listitem>
+            <listitem><para>int <link linkend="_class_instance_1a5780eba6a75b91039e627799f07637ee">height</link></para>
+</listitem>
+            <listitem><para>bool <link linkend="_class_instance_1a163202c6c66861f51cb2b0bffff2993d">hasGame</link></para>
+</listitem>
+        </itemizedlist>
+<section>
+<title>Detailed Description</title>
+<para>
+Definition at line <link linkend="__l_d_player_instance_8h_source_1l00004">4</link> of file <link linkend="__l_d_player_instance_8h_source">LDPlayerInstance.h</link>.</para>
+</section>
+<section>
+<title>Constructor &amp; Destructor Documentation</title>
+<anchor xml:id="_class_l_d_player_instance_1a9384378727ff07e74f5e9a1a84cec8d6"/><section>
+    <title>LDPlayerInstance()<computeroutput>[1/2]</computeroutput></title>
+<indexterm><primary>LDPlayerInstance</primary><secondary>LDPlayerInstance</secondary></indexterm>
+<indexterm><primary>LDPlayerInstance</primary><secondary>LDPlayerInstance</secondary></indexterm>
+<para><computeroutput>LDPlayerInstance::LDPlayerInstance ( )</computeroutput></para><para>
+Definition at line <link linkend="__l_d_player_instance_8cpp_source_1l00003">3</link> of file <link linkend="__l_d_player_instance_8cpp_source">LDPlayerInstance.cpp</link>.</para>
+</section>
+<anchor xml:id="_class_l_d_player_instance_1ad75199d7640f5143dee1db06a697cd90"/><section>
+    <title>LDPlayerInstance()<computeroutput>[2/2]</computeroutput></title>
+<indexterm><primary>LDPlayerInstance</primary><secondary>LDPlayerInstance</secondary></indexterm>
+<indexterm><primary>LDPlayerInstance</primary><secondary>LDPlayerInstance</secondary></indexterm>
+<para><computeroutput>LDPlayerInstance::LDPlayerInstance (std::string instanceName)</computeroutput></para><para>
+Definition at line <link linkend="__l_d_player_instance_8cpp_source_1l00010">10</link> of file <link linkend="__l_d_player_instance_8cpp_source">LDPlayerInstance.cpp</link>.</para>
+</section>
+</section>
+<section>
+<title>Member Function Documentation</title>
+<anchor xml:id="_class_l_d_player_instance_1aa242849ad43bed3a3075794bee9ea908"/><section>
+    <title>setGlobalId()</title>
+<indexterm><primary>setGlobalId</primary><secondary>LDPlayerInstance</secondary></indexterm>
+<indexterm><primary>LDPlayerInstance</primary><secondary>setGlobalId</secondary></indexterm>
+<para><computeroutput>void LDPlayerInstance::setGlobalId ( )<computeroutput>[override]</computeroutput>, <computeroutput>[virtual]</computeroutput></computeroutput></para><para>
+Implements <link linkend="_class_instance_1a841c6a04ef8649dc6008d75c8ccbf97d">Instance</link>.</para>
+<para>
+Definition at line <link linkend="__l_d_player_instance_8cpp_source_1l00030">30</link> of file <link linkend="__l_d_player_instance_8cpp_source">LDPlayerInstance.cpp</link>.</para>
+Here is the caller graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_l_d_player_instance_aa242849ad43bed3a3075794bee9ea908_icgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_class_l_d_player_instance_1a9e740865e7059e32565a3ee86863b843"/><section>
+    <title>showInstance()</title>
+<indexterm><primary>showInstance</primary><secondary>LDPlayerInstance</secondary></indexterm>
+<indexterm><primary>LDPlayerInstance</primary><secondary>showInstance</secondary></indexterm>
+<para><computeroutput>void LDPlayerInstance::showInstance ( )<computeroutput>[override]</computeroutput>, <computeroutput>[virtual]</computeroutput></computeroutput></para><para>
+Implements <link linkend="_class_instance_1a789f80bb6165405145c9b61da092b1d3">Instance</link>.</para>
+<para>
+Definition at line <link linkend="__l_d_player_instance_8cpp_source_1l00015">15</link> of file <link linkend="__l_d_player_instance_8cpp_source">LDPlayerInstance.cpp</link>.</para>
+</section>
+</section>
+<section>
+<title>Member Data Documentation</title>
+<anchor xml:id="_class_l_d_player_instance_1a6ceacb3c1904d3adf78e7be2b5cc32a6"/><section>
+    <title>engineName</title>
+<indexterm><primary>engineName</primary><secondary>LDPlayerInstance</secondary></indexterm>
+<indexterm><primary>LDPlayerInstance</primary><secondary>engineName</secondary></indexterm>
+<para><computeroutput>std::string LDPlayerInstance::engineName</computeroutput></para><para>
+Definition at line <link linkend="__l_d_player_instance_8h_source_1l00011">11</link> of file <link linkend="__l_d_player_instance_8h_source">LDPlayerInstance.h</link>.</para>
+</section>
+<anchor xml:id="_class_l_d_player_instance_1a54bd4852604077a154ae55bb00b4d185"/><section>
+    <title>ldId</title>
+<indexterm><primary>ldId</primary><secondary>LDPlayerInstance</secondary></indexterm>
+<indexterm><primary>LDPlayerInstance</primary><secondary>ldId</secondary></indexterm>
+<para><computeroutput>int LDPlayerInstance::ldId</computeroutput></para><para>
+Definition at line <link linkend="__l_d_player_instance_8h_source_1l00012">12</link> of file <link linkend="__l_d_player_instance_8h_source">LDPlayerInstance.h</link>.</para>
+</section>
+<anchor xml:id="_class_l_d_player_instance_1a5b69e14ed9eebd8b6aaafd403647842f"/><section>
+    <title>packageInfoFileName</title>
+<indexterm><primary>packageInfoFileName</primary><secondary>LDPlayerInstance</secondary></indexterm>
+<indexterm><primary>LDPlayerInstance</primary><secondary>packageInfoFileName</secondary></indexterm>
+<para><computeroutput>std::string LDPlayerInstance::packageInfoFileName</computeroutput></para><para>
+Definition at line <link linkend="__l_d_player_instance_8h_source_1l00010">10</link> of file <link linkend="__l_d_player_instance_8h_source">LDPlayerInstance.h</link>.</para>
+</section>
+<para>
+The documentation for this class was generated from the following files:</para>
+src/<link linkend="__l_d_player_instance_8h">LDPlayerInstance.h</link>src/<link linkend="__l_d_player_instance_8cpp">LDPlayerInstance.cpp</link></section>
+</section>

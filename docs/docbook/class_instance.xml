@@ -1,0 +1,241 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<section xmlns="http://docbook.org/ns/docbook" version="5.0" xmlns:xlink="http://www.w3.org/1999/xlink" xml:id="_class_instance" xml:lang="en-US">
+<title>Instance Class Reference</title>
+<indexterm><primary>Instance</primary></indexterm>
+<para>
+<computeroutput>#include &lt;Instance.h&gt;</computeroutput>
+</para>
+Inheritance diagram for Instance:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_instance__inherit__graph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+Collaboration diagram for Instance:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_instance__coll__graph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+<simplesect>
+    <title>Public Member Functions    </title>
+        <itemizedlist>
+            <listitem><para><link linkend="_class_instance_1a399506c7e75ab9ab78fbc34a25932bbd">Instance</link> ()</para>
+</listitem>
+            <listitem><para><link linkend="_class_instance_1ae3ab7cf90005ff7a4c64600e8d938ea8">Instance</link> (std::string <link linkend="_class_instance_1a71e6b641e231bdfcfb4f255c6b9e58af">instanceName</link>)</para>
+</listitem>
+            <listitem><para>virtual std::string <link linkend="_class_instance_1abb8d03ac04893774e93ea06e85338d39">getAdbKey</link> ()</para>
+</listitem>
+            <listitem><para>const std::string <link linkend="_class_instance_1a951c978f2d8b94264ada22b2f881469b">getGlobalId</link> ()</para>
+</listitem>
+            <listitem><para>virtual void <link linkend="_class_instance_1a841c6a04ef8649dc6008d75c8ccbf97d">setGlobalId</link> ()=0</para>
+</listitem>
+            <listitem><para>virtual <link linkend="__instance_8h_1a5b026f4903e92a7e60dda754b5028227">EmulatorType</link> <link linkend="_class_instance_1aaf12301a5aae7020e73e68fbc8cc8e72">getType</link> ()</para>
+</listitem>
+            <listitem><para>virtual void <link linkend="_class_instance_1ad2e6d56fd99a364888b0e2aafb37d610">setLaunch</link> (bool b)</para>
+</listitem>
+            <listitem><para>virtual void <link linkend="_class_instance_1a789f80bb6165405145c9b61da092b1d3">showInstance</link> ()=0</para>
+</listitem>
+        </itemizedlist>
+</simplesect>
+<simplesect>
+    <title>Public Attributes    </title>
+        <itemizedlist>
+            <listitem><para>std::string <link linkend="_class_instance_1a71e6b641e231bdfcfb4f255c6b9e58af">instanceName</link></para>
+</listitem>
+            <listitem><para>std::string <link linkend="_class_instance_1ad66900da1ca18b45bae2e46c04a4cdda">instanceFolder</link></para>
+</listitem>
+            <listitem><para>std::string <link linkend="_class_instance_1a1f72388531ddb773750fc7503c134a26">adbKey</link></para>
+</listitem>
+            <listitem><para>std::string <link linkend="_class_instance_1adbf9914982dfc15b3542b57eee68574d">instanceId</link></para>
+</listitem>
+            <listitem><para><link linkend="__instance_8h_1a5b026f4903e92a7e60dda754b5028227">EmulatorType</link> <link linkend="_class_instance_1ac8eb7fd97639a6d93161bcd7a4e07317">myType</link></para>
+</listitem>
+            <listitem><para>bool <link linkend="_class_instance_1ae597325ce3bc6efdd8d0811c6b54c0c6">launch</link></para>
+</listitem>
+            <listitem><para>int <link linkend="_class_instance_1afac2cbff1e241735f914ee0b95a04ea5">dpi</link></para>
+</listitem>
+            <listitem><para>int <link linkend="_class_instance_1ae9cb37b80e1b2586ea1136552f5471c7">width</link></para>
+</listitem>
+            <listitem><para>int <link linkend="_class_instance_1a5780eba6a75b91039e627799f07637ee">height</link></para>
+</listitem>
+            <listitem><para>bool <link linkend="_class_instance_1a163202c6c66861f51cb2b0bffff2993d">hasGame</link></para>
+</listitem>
+        </itemizedlist>
+</simplesect>
+<section>
+<title>Detailed Description</title>
+<para>
+Definition at line <link linkend="__instance_8h_source_1l00013">13</link> of file <link linkend="__instance_8h_source">Instance.h</link>.</para>
+</section>
+<section>
+<title>Constructor &amp; Destructor Documentation</title>
+<anchor xml:id="_class_instance_1a399506c7e75ab9ab78fbc34a25932bbd"/><section>
+    <title>Instance()<computeroutput>[1/2]</computeroutput></title>
+<indexterm><primary>Instance</primary><secondary>Instance</secondary></indexterm>
+<indexterm><primary>Instance</primary><secondary>Instance</secondary></indexterm>
+<para><computeroutput>Instance::Instance ( )</computeroutput></para><para>
+Definition at line <link linkend="__instance_8cpp_source_1l00003">3</link> of file <link linkend="__instance_8cpp_source">Instance.cpp</link>.</para>
+</section>
+<anchor xml:id="_class_instance_1ae3ab7cf90005ff7a4c64600e8d938ea8"/><section>
+    <title>Instance()<computeroutput>[2/2]</computeroutput></title>
+<indexterm><primary>Instance</primary><secondary>Instance</secondary></indexterm>
+<indexterm><primary>Instance</primary><secondary>Instance</secondary></indexterm>
+<para><computeroutput>Instance::Instance (std::string instanceName)</computeroutput></para><para>
+Definition at line <link linkend="__instance_8cpp_source_1l00016">16</link> of file <link linkend="__instance_8cpp_source">Instance.cpp</link>.</para>
+</section>
+</section>
+<section>
+<title>Member Function Documentation</title>
+<anchor xml:id="_class_instance_1abb8d03ac04893774e93ea06e85338d39"/><section>
+    <title>getAdbKey()</title>
+<indexterm><primary>getAdbKey</primary><secondary>Instance</secondary></indexterm>
+<indexterm><primary>Instance</primary><secondary>getAdbKey</secondary></indexterm>
+<para><computeroutput>std::string Instance::getAdbKey ( )<computeroutput>[virtual]</computeroutput></computeroutput></para><para>
+Definition at line <link linkend="__instance_8cpp_source_1l00021">21</link> of file <link linkend="__instance_8cpp_source">Instance.cpp</link>.</para>
+Here is the caller graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_instance_abb8d03ac04893774e93ea06e85338d39_icgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_class_instance_1a951c978f2d8b94264ada22b2f881469b"/><section>
+    <title>getGlobalId()</title>
+<indexterm><primary>getGlobalId</primary><secondary>Instance</secondary></indexterm>
+<indexterm><primary>Instance</primary><secondary>getGlobalId</secondary></indexterm>
+<para><computeroutput>const std::string Instance::getGlobalId ( )</computeroutput></para><para>
+Definition at line <link linkend="__instance_8cpp_source_1l00026">26</link> of file <link linkend="__instance_8cpp_source">Instance.cpp</link>.</para>
+Here is the caller graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_instance_a951c978f2d8b94264ada22b2f881469b_icgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_class_instance_1aaf12301a5aae7020e73e68fbc8cc8e72"/><section>
+    <title>getType()</title>
+<indexterm><primary>getType</primary><secondary>Instance</secondary></indexterm>
+<indexterm><primary>Instance</primary><secondary>getType</secondary></indexterm>
+<para><computeroutput><link linkend="__instance_8h_1a5b026f4903e92a7e60dda754b5028227">EmulatorType</link> Instance::getType ( )<computeroutput>[virtual]</computeroutput></computeroutput></para><para>
+Definition at line <link linkend="__instance_8cpp_source_1l00031">31</link> of file <link linkend="__instance_8cpp_source">Instance.cpp</link>.</para>
+</section>
+<anchor xml:id="_class_instance_1a841c6a04ef8649dc6008d75c8ccbf97d"/><section>
+    <title>setGlobalId()</title>
+<indexterm><primary>setGlobalId</primary><secondary>Instance</secondary></indexterm>
+<indexterm><primary>Instance</primary><secondary>setGlobalId</secondary></indexterm>
+<para><computeroutput>virtual void Instance::setGlobalId ( )<computeroutput>[pure virtual]</computeroutput></computeroutput></para><para>
+Implemented in <link linkend="_class_bluestacks_instance_1ab125fa47188d48bf7c09502c0992f60a">BluestacksInstance</link>, and <link linkend="_class_l_d_player_instance_1aa242849ad43bed3a3075794bee9ea908">LDPlayerInstance</link>.</para>
+</section>
+<anchor xml:id="_class_instance_1ad2e6d56fd99a364888b0e2aafb37d610"/><section>
+    <title>setLaunch()</title>
+<indexterm><primary>setLaunch</primary><secondary>Instance</secondary></indexterm>
+<indexterm><primary>Instance</primary><secondary>setLaunch</secondary></indexterm>
+<para><computeroutput>void Instance::setLaunch (bool b)<computeroutput>[virtual]</computeroutput></computeroutput></para><para>
+Definition at line <link linkend="__instance_8cpp_source_1l00036">36</link> of file <link linkend="__instance_8cpp_source">Instance.cpp</link>.</para>
+</section>
+<anchor xml:id="_class_instance_1a789f80bb6165405145c9b61da092b1d3"/><section>
+    <title>showInstance()</title>
+<indexterm><primary>showInstance</primary><secondary>Instance</secondary></indexterm>
+<indexterm><primary>Instance</primary><secondary>showInstance</secondary></indexterm>
+<para><computeroutput>virtual void Instance::showInstance ( )<computeroutput>[pure virtual]</computeroutput></computeroutput></para><para>
+Implemented in <link linkend="_class_bluestacks_instance_1a0185c5b9566d057bdd69c6e58617a5f2">BluestacksInstance</link>, and <link linkend="_class_l_d_player_instance_1a9e740865e7059e32565a3ee86863b843">LDPlayerInstance</link>.</para>
+Here is the caller graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_instance_a789f80bb6165405145c9b61da092b1d3_icgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+</section>
+<section>
+<title>Member Data Documentation</title>
+<anchor xml:id="_class_instance_1a1f72388531ddb773750fc7503c134a26"/><section>
+    <title>adbKey</title>
+<indexterm><primary>adbKey</primary><secondary>Instance</secondary></indexterm>
+<indexterm><primary>Instance</primary><secondary>adbKey</secondary></indexterm>
+<para><computeroutput>std::string Instance::adbKey</computeroutput></para><para>
+Definition at line <link linkend="__instance_8h_source_1l00025">25</link> of file <link linkend="__instance_8h_source">Instance.h</link>.</para>
+</section>
+<anchor xml:id="_class_instance_1afac2cbff1e241735f914ee0b95a04ea5"/><section>
+    <title>dpi</title>
+<indexterm><primary>dpi</primary><secondary>Instance</secondary></indexterm>
+<indexterm><primary>Instance</primary><secondary>dpi</secondary></indexterm>
+<para><computeroutput>int Instance::dpi</computeroutput></para><para>
+Definition at line <link linkend="__instance_8h_source_1l00029">29</link> of file <link linkend="__instance_8h_source">Instance.h</link>.</para>
+</section>
+<anchor xml:id="_class_instance_1a163202c6c66861f51cb2b0bffff2993d"/><section>
+    <title>hasGame</title>
+<indexterm><primary>hasGame</primary><secondary>Instance</secondary></indexterm>
+<indexterm><primary>Instance</primary><secondary>hasGame</secondary></indexterm>
+<para><computeroutput>bool Instance::hasGame</computeroutput></para><para>
+Definition at line <link linkend="__instance_8h_source_1l00032">32</link> of file <link linkend="__instance_8h_source">Instance.h</link>.</para>
+</section>
+<anchor xml:id="_class_instance_1a5780eba6a75b91039e627799f07637ee"/><section>
+    <title>height</title>
+<indexterm><primary>height</primary><secondary>Instance</secondary></indexterm>
+<indexterm><primary>Instance</primary><secondary>height</secondary></indexterm>
+<para><computeroutput>int Instance::height</computeroutput></para><para>
+Definition at line <link linkend="__instance_8h_source_1l00031">31</link> of file <link linkend="__instance_8h_source">Instance.h</link>.</para>
+</section>
+<anchor xml:id="_class_instance_1ad66900da1ca18b45bae2e46c04a4cdda"/><section>
+    <title>instanceFolder</title>
+<indexterm><primary>instanceFolder</primary><secondary>Instance</secondary></indexterm>
+<indexterm><primary>Instance</primary><secondary>instanceFolder</secondary></indexterm>
+<para><computeroutput>std::string Instance::instanceFolder</computeroutput></para><para>
+Definition at line <link linkend="__instance_8h_source_1l00024">24</link> of file <link linkend="__instance_8h_source">Instance.h</link>.</para>
+</section>
+<anchor xml:id="_class_instance_1adbf9914982dfc15b3542b57eee68574d"/><section>
+    <title>instanceId</title>
+<indexterm><primary>instanceId</primary><secondary>Instance</secondary></indexterm>
+<indexterm><primary>Instance</primary><secondary>instanceId</secondary></indexterm>
+<para><computeroutput>std::string Instance::instanceId</computeroutput></para><para>
+Definition at line <link linkend="__instance_8h_source_1l00026">26</link> of file <link linkend="__instance_8h_source">Instance.h</link>.</para>
+</section>
+<anchor xml:id="_class_instance_1a71e6b641e231bdfcfb4f255c6b9e58af"/><section>
+    <title>instanceName</title>
+<indexterm><primary>instanceName</primary><secondary>Instance</secondary></indexterm>
+<indexterm><primary>Instance</primary><secondary>instanceName</secondary></indexterm>
+<para><computeroutput>std::string Instance::instanceName</computeroutput></para><para>
+Definition at line <link linkend="__instance_8h_source_1l00023">23</link> of file <link linkend="__instance_8h_source">Instance.h</link>.</para>
+</section>
+<anchor xml:id="_class_instance_1ae597325ce3bc6efdd8d0811c6b54c0c6"/><section>
+    <title>launch</title>
+<indexterm><primary>launch</primary><secondary>Instance</secondary></indexterm>
+<indexterm><primary>Instance</primary><secondary>launch</secondary></indexterm>
+<para><computeroutput>bool Instance::launch</computeroutput></para><para>
+Definition at line <link linkend="__instance_8h_source_1l00028">28</link> of file <link linkend="__instance_8h_source">Instance.h</link>.</para>
+</section>
+<anchor xml:id="_class_instance_1ac8eb7fd97639a6d93161bcd7a4e07317"/><section>
+    <title>myType</title>
+<indexterm><primary>myType</primary><secondary>Instance</secondary></indexterm>
+<indexterm><primary>Instance</primary><secondary>myType</secondary></indexterm>
+<para><computeroutput><link linkend="__instance_8h_1a5b026f4903e92a7e60dda754b5028227">EmulatorType</link> Instance::myType</computeroutput></para><para>
+Definition at line <link linkend="__instance_8h_source_1l00027">27</link> of file <link linkend="__instance_8h_source">Instance.h</link>.</para>
+</section>
+<anchor xml:id="_class_instance_1ae9cb37b80e1b2586ea1136552f5471c7"/><section>
+    <title>width</title>
+<indexterm><primary>width</primary><secondary>Instance</secondary></indexterm>
+<indexterm><primary>Instance</primary><secondary>width</secondary></indexterm>
+<para><computeroutput>int Instance::width</computeroutput></para><para>
+Definition at line <link linkend="__instance_8h_source_1l00030">30</link> of file <link linkend="__instance_8h_source">Instance.h</link>.</para>
+</section>
+<para>
+The documentation for this class was generated from the following files:</para>
+src/<link linkend="__instance_8h">Instance.h</link>src/<link linkend="__instance_8cpp">Instance.cpp</link></section>
+</section>

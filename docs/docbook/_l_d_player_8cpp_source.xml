@@ -1,0 +1,307 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<section xmlns="http://docbook.org/ns/docbook" version="5.0" xmlns:xlink="http://www.w3.org/1999/xlink" xml:id="__l_d_player_8cpp_source" xml:lang="en-US">
+<title>LDPlayer.cpp</title>
+<indexterm><primary>src/LDPlayer.cpp</primary></indexterm>
+Go to the documentation of this file.<programlisting linenumbering="unnumbered"><anchor xml:id="__l_d_player_8cpp_source_1l00001"/>00001 <emphasis role="preprocessor">#include&#32;&quot;<link linkend="__l_d_player_8h">LDPlayer.h</link>&quot;</emphasis>
+<anchor xml:id="__l_d_player_8cpp_source_1l00002"/>00002 
+<anchor xml:id="__l_d_player_8cpp_source_1l00003"/><link linkend="_class_l_d_player_1a634d2fbfa52b487d449bc74deed85b03">00003</link> <link linkend="_class_l_d_player_1a634d2fbfa52b487d449bc74deed85b03">LDPlayer::LDPlayer</link>():<link linkend="_class_emulator">Emulator</link>()
+<anchor xml:id="__l_d_player_8cpp_source_1l00004"/>00004 {
+<anchor xml:id="__l_d_player_8cpp_source_1l00005"/>00005 &#32;&#32;&#32;&#32;<link linkend="_class_l_d_player_1ad145e5887943748b5c1e8d6e9c5c3b70">allEngines</link>.clear();
+<anchor xml:id="__l_d_player_8cpp_source_1l00006"/>00006 &#32;&#32;&#32;&#32;<link linkend="_class_l_d_player_1a9e4eb565c0d0a1b3bf887a5d2af1964b">vmsFolder</link>.clear();
+<anchor xml:id="__l_d_player_8cpp_source_1l00007"/>00007 &#32;&#32;&#32;&#32;<link linkend="_class_l_d_player_1aac7170bb4b860334bca99388d3f2a3f4">ldPlayerFolder</link>.clear();
+<anchor xml:id="__l_d_player_8cpp_source_1l00008"/>00008 &#32;&#32;&#32;&#32;<link linkend="_class_l_d_player_1a847b6294b865cb602b8c667a8bb1e827">formalEngineName</link>&#32;=&#32;<emphasis role="stringliteral">&quot;leidian&quot;</emphasis>;
+<anchor xml:id="__l_d_player_8cpp_source_1l00009"/>00009 &#32;&#32;&#32;&#32;<link linkend="_class_emulator_1aaf64827b34747c72854e2ffa0507f37c">emulatorName</link>&#32;=&#32;<emphasis role="stringliteral">&quot;LDPlayer&quot;</emphasis>;
+<anchor xml:id="__l_d_player_8cpp_source_1l00010"/>00010 &#32;&#32;&#32;&#32;<link linkend="_class_emulator_1ae0bf469fc768b1aa831911f0f3bba8dd">executableName</link>&#32;=&#32;<emphasis role="stringliteral">&quot;ldconsole.exe&quot;</emphasis>;
+<anchor xml:id="__l_d_player_8cpp_source_1l00011"/>00011 &#32;&#32;&#32;&#32;<link linkend="_class_emulator_1a6433f757edc9bf813dedef6f68f73b9f">playingInstance</link>&#32;=&#32;<emphasis role="keyword">nullptr</emphasis>;
+<anchor xml:id="__l_d_player_8cpp_source_1l00012"/>00012 &#32;&#32;&#32;&#32;<link linkend="_class_emulator_1a76ffe6e8b9a6f9336ac33d3fe4a34083">myType</link>&#32;=&#32;<link linkend="__instance_8h_1a5b026f4903e92a7e60dda754b5028227a53795d6d02157dd72ace4b527453288b">LDPLAYER</link>;
+<anchor xml:id="__l_d_player_8cpp_source_1l00013"/>00013 &#32;&#32;&#32;&#32;<link linkend="_class_emulator_1a3c7b1df3adc7ba81a9fa76ce1662fa06">reqDimX</link>&#32;=&#32;0;
+<anchor xml:id="__l_d_player_8cpp_source_1l00014"/>00014 &#32;&#32;&#32;&#32;<link linkend="_class_emulator_1a4db78de463890def4e2296b9da9c0bfb">reqDimY</link>&#32;=&#32;0;
+<anchor xml:id="__l_d_player_8cpp_source_1l00015"/>00015 }
+<anchor xml:id="__l_d_player_8cpp_source_1l00016"/><link linkend="_class_l_d_player_1aeb688ae7ffeffc5c890aa52b577c4fb8">00016</link> <link linkend="_class_l_d_player_1a634d2fbfa52b487d449bc74deed85b03">LDPlayer::LDPlayer</link>(std::string&#32;gamePackage,&#32;<emphasis role="keywordtype">int</emphasis>&#32;reqDimX,&#32;<emphasis role="keywordtype">int</emphasis>&#32;reqDimY,<emphasis role="keywordtype">int</emphasis>&#32;dpi):&#32;<link linkend="_class_l_d_player">LDPlayer</link>()
+<anchor xml:id="__l_d_player_8cpp_source_1l00017"/>00017 {
+<anchor xml:id="__l_d_player_8cpp_source_1l00018"/>00018 &#32;&#32;&#32;&#32;this-&gt;gamePackage&#32;=&#32;<link linkend="_class_emulator_1a9a0bbebd40eee57823b313153b1c8cb5">gamePackage</link>;
+<anchor xml:id="__l_d_player_8cpp_source_1l00019"/>00019 &#32;&#32;&#32;&#32;this-&gt;reqDimX&#32;=&#32;<link linkend="_class_emulator_1a3c7b1df3adc7ba81a9fa76ce1662fa06">reqDimX</link>;
+<anchor xml:id="__l_d_player_8cpp_source_1l00020"/>00020 &#32;&#32;&#32;&#32;this-&gt;reqDimY&#32;=&#32;<link linkend="_class_emulator_1a4db78de463890def4e2296b9da9c0bfb">reqDimY</link>;
+<anchor xml:id="__l_d_player_8cpp_source_1l00021"/>00021 &#32;&#32;&#32;&#32;this-&gt;<link linkend="_class_emulator_1a99712a1a614fdbca45b8be35747e5f88">reqDpi</link>&#32;=&#32;dpi;
+<anchor xml:id="__l_d_player_8cpp_source_1l00022"/>00022 
+<anchor xml:id="__l_d_player_8cpp_source_1l00023"/>00023 }
+<anchor xml:id="__l_d_player_8cpp_source_1l00024"/>00024 
+<anchor xml:id="__l_d_player_8cpp_source_1l00025"/><link linkend="_class_l_d_player_1aeab4fb9ed71c15ae40bb85e7c99a9b51">00025</link> <emphasis role="keywordtype">void</emphasis>&#32;<link linkend="_class_l_d_player_1aeab4fb9ed71c15ae40bb85e7c99a9b51">LDPlayer::startEmulator</link>()
+<anchor xml:id="__l_d_player_8cpp_source_1l00026"/>00026 {
+<anchor xml:id="__l_d_player_8cpp_source_1l00027"/>00027 &#32;&#32;&#32;&#32;std::string&#32;args&#32;=&#32;<link linkend="_class_emulator_1ae0bf469fc768b1aa831911f0f3bba8dd">executableName</link>&#32;+&#32;<emphasis role="stringliteral">&quot;&#32;launch&#32;--index&#32;0&quot;</emphasis>;
+<anchor xml:id="__l_d_player_8cpp_source_1l00028"/>00028 &#32;&#32;&#32;&#32;<link linkend="_sys_commands_8cpp_1a40529d2008c5ec34a2251615ad504e28">moveAndExecute</link>(<link linkend="_class_l_d_player_1aac7170bb4b860334bca99388d3f2a3f4">ldPlayerFolder</link>,&#32;args);
+<anchor xml:id="__l_d_player_8cpp_source_1l00029"/>00029 }
+<anchor xml:id="__l_d_player_8cpp_source_1l00030"/>00030 
+<anchor xml:id="__l_d_player_8cpp_source_1l00031"/><link linkend="_class_l_d_player_1aed135e9f726d03ab77cc86533892576e">00031</link> <emphasis role="keywordtype">void</emphasis>&#32;<link linkend="_class_l_d_player_1aed135e9f726d03ab77cc86533892576e">LDPlayer::startInstance</link>(<link linkend="_class_instance">Instance</link>*&#32;inst)
+<anchor xml:id="__l_d_player_8cpp_source_1l00032"/>00032 {
+<anchor xml:id="__l_d_player_8cpp_source_1l00033"/>00033 &#32;&#32;&#32;&#32;<link linkend="_class_l_d_player_instance">LDPlayerInstance</link>*&#32;newInst&#32;=&#32;<link linkend="_class_l_d_player_1aa85461ad56f19bcf3620c16d6781f640">transformInstance</link>(inst);
+<anchor xml:id="__l_d_player_8cpp_source_1l00034"/>00034 &#32;&#32;&#32;&#32;std::string&#32;args=&#32;<link linkend="_class_emulator_1ae0bf469fc768b1aa831911f0f3bba8dd">executableName</link>+<emphasis role="stringliteral">&quot;&#32;launch&#32;--index&#32;&quot;</emphasis>&#32;+&#32;std::to_string(newInst-&gt;<link linkend="_class_l_d_player_instance_1a54bd4852604077a154ae55bb00b4d185">ldId</link>);
+<anchor xml:id="__l_d_player_8cpp_source_1l00035"/>00035 &#32;&#32;&#32;&#32;<link linkend="_sys_commands_8cpp_1a40529d2008c5ec34a2251615ad504e28">moveAndExecute</link>(<link linkend="_class_l_d_player_1aac7170bb4b860334bca99388d3f2a3f4">ldPlayerFolder</link>,&#32;args);
+<anchor xml:id="__l_d_player_8cpp_source_1l00036"/>00036 }
+<anchor xml:id="__l_d_player_8cpp_source_1l00037"/>00037 
+<anchor xml:id="__l_d_player_8cpp_source_1l00038"/><link linkend="_class_l_d_player_1afa13194be778166f9b0d70e8b6ddf0fb">00038</link> <emphasis role="keywordtype">void</emphasis>&#32;<link linkend="_class_l_d_player_1afa13194be778166f9b0d70e8b6ddf0fb">LDPlayer::stopInstance</link>(<link linkend="_class_instance">Instance</link>*&#32;inst)
+<anchor xml:id="__l_d_player_8cpp_source_1l00039"/>00039 {
+<anchor xml:id="__l_d_player_8cpp_source_1l00040"/>00040 &#32;&#32;&#32;&#32;<link linkend="_class_l_d_player_instance">LDPlayerInstance</link>*&#32;newInst&#32;=&#32;<link linkend="_class_l_d_player_1aa85461ad56f19bcf3620c16d6781f640">transformInstance</link>(inst);
+<anchor xml:id="__l_d_player_8cpp_source_1l00041"/>00041 &#32;&#32;&#32;&#32;std::string&#32;args=<link linkend="_class_emulator_1ae0bf469fc768b1aa831911f0f3bba8dd">executableName</link>+<emphasis role="stringliteral">&quot;&#32;quit&#32;--index&#32;&quot;</emphasis>&#32;+&#32;std::to_string(newInst-&gt;<link linkend="_class_l_d_player_instance_1a54bd4852604077a154ae55bb00b4d185">ldId</link>);
+<anchor xml:id="__l_d_player_8cpp_source_1l00042"/>00042 &#32;&#32;&#32;&#32;<link linkend="_sys_commands_8cpp_1a40529d2008c5ec34a2251615ad504e28">moveAndExecute</link>(<link linkend="_class_l_d_player_1aac7170bb4b860334bca99388d3f2a3f4">ldPlayerFolder</link>,&#32;args);
+<anchor xml:id="__l_d_player_8cpp_source_1l00043"/>00043 }
+<anchor xml:id="__l_d_player_8cpp_source_1l00044"/>00044 
+<anchor xml:id="__l_d_player_8cpp_source_1l00045"/><link linkend="_class_l_d_player_1ab0d7597d7241cfc905136d72d3ce01bd">00045</link> <emphasis role="keywordtype">void</emphasis>&#32;<link linkend="_class_l_d_player_1ab0d7597d7241cfc905136d72d3ce01bd">LDPlayer::stopEmulator</link>()
+<anchor xml:id="__l_d_player_8cpp_source_1l00046"/>00046 {
+<anchor xml:id="__l_d_player_8cpp_source_1l00047"/>00047 &#32;&#32;&#32;&#32;std::string&#32;args&#32;=&#32;<link linkend="_class_emulator_1ae0bf469fc768b1aa831911f0f3bba8dd">executableName</link>&#32;+&#32;<emphasis role="stringliteral">&quot;&#32;quitall&quot;</emphasis>;
+<anchor xml:id="__l_d_player_8cpp_source_1l00048"/>00048 &#32;&#32;&#32;&#32;<link linkend="_sys_commands_8cpp_1a40529d2008c5ec34a2251615ad504e28">moveAndExecute</link>(<link linkend="_class_l_d_player_1aac7170bb4b860334bca99388d3f2a3f4">ldPlayerFolder</link>,&#32;args);
+<anchor xml:id="__l_d_player_8cpp_source_1l00049"/>00049 }
+<anchor xml:id="__l_d_player_8cpp_source_1l00050"/>00050 
+<anchor xml:id="__l_d_player_8cpp_source_1l00051"/><link linkend="_class_l_d_player_1a99b2174bd6a896874fe39023faa4e88c">00051</link> <emphasis role="keywordtype">bool</emphasis>&#32;<link linkend="_class_l_d_player_1a99b2174bd6a896874fe39023faa4e88c">LDPlayer::searchEmulator</link>()
+<anchor xml:id="__l_d_player_8cpp_source_1l00052"/>00052 {
+<anchor xml:id="__l_d_player_8cpp_source_1l00053"/>00053 &#32;&#32;&#32;&#32;std::vector&lt;std::string&gt;allDiskLetters&#32;=&#32;<link linkend="_sys_commands_8cpp_1a91aaa3ff9bdd4428e4117b84ba4f842d">returnAllDrivesLetter</link>();
+<anchor xml:id="__l_d_player_8cpp_source_1l00054"/>00054 &#32;&#32;&#32;&#32;std::cout&#32;&lt;&lt;&#32;<emphasis role="stringliteral">&quot;\nAll&#32;disks&#32;found:\n&quot;</emphasis>;
+<anchor xml:id="__l_d_player_8cpp_source_1l00055"/>00055 &#32;&#32;&#32;&#32;<emphasis role="keywordflow">for</emphasis>&#32;(std::string&#32;letter&#32;:&#32;allDiskLetters)&#32;{
+<anchor xml:id="__l_d_player_8cpp_source_1l00056"/>00056 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;std::cout&#32;&lt;&lt;&#32;letter&#32;&lt;&lt;&#32;<emphasis role="stringliteral">&quot;\n&quot;</emphasis>;
+<anchor xml:id="__l_d_player_8cpp_source_1l00057"/>00057 &#32;&#32;&#32;&#32;}
+<anchor xml:id="__l_d_player_8cpp_source_1l00058"/>00058 &#32;&#32;&#32;&#32;<emphasis role="keywordflow">if</emphasis>&#32;(<link linkend="_class_emulator_1ace0e4b2197a81fe90b00c4bb4986ce4c">searchEmulatorAllDrives</link>(<link linkend="_class_l_d_player_1aac7170bb4b860334bca99388d3f2a3f4">ldPlayerFolder</link>,&#32;allDiskLetters)){
+<anchor xml:id="__l_d_player_8cpp_source_1l00059"/>00059 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;std::cout&#32;&lt;&lt;&#32;<emphasis role="stringliteral">&quot;============================================================================================\n&quot;</emphasis>;
+<anchor xml:id="__l_d_player_8cpp_source_1l00060"/>00060 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;std::cout&#32;&lt;&lt;&#32;<emphasis role="stringliteral">&quot;END&#32;OF&#32;SEARCH\n\n&quot;</emphasis>;
+<anchor xml:id="__l_d_player_8cpp_source_1l00061"/>00061 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;std::cout&#32;&lt;&lt;&#32;<link linkend="_class_emulator_1aaf64827b34747c72854e2ffa0507f37c">emulatorName</link>&lt;&lt;<emphasis role="stringliteral">&quot;&#32;Found&#32;at&#32;&quot;</emphasis>&lt;&lt;<link linkend="_class_l_d_player_1aac7170bb4b860334bca99388d3f2a3f4">ldPlayerFolder</link>&#32;&lt;&lt;&#32;<emphasis role="stringliteral">&quot;\n\n&quot;</emphasis>;
+<anchor xml:id="__l_d_player_8cpp_source_1l00062"/>00062 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<link linkend="_class_l_d_player_1a0c546f98352f25c612d1dda1819c5131">setSubFolders</link>();
+<anchor xml:id="__l_d_player_8cpp_source_1l00063"/>00063 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<link linkend="_class_emulator_1ac9479705b6bbc1003055bc1e7786989f">isInstalled</link>&#32;=&#32;<emphasis role="keyword">true</emphasis>;
+<anchor xml:id="__l_d_player_8cpp_source_1l00064"/>00064 &#32;&#32;&#32;&#32;}
+<anchor xml:id="__l_d_player_8cpp_source_1l00065"/>00065 &#32;&#32;&#32;&#32;<emphasis role="keywordflow">else</emphasis>&#32;{
+<anchor xml:id="__l_d_player_8cpp_source_1l00066"/>00066 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;std::cout&#32;&lt;&lt;&#32;<link linkend="_class_emulator_1aaf64827b34747c72854e2ffa0507f37c">emulatorName</link>&#32;&lt;&lt;&#32;<emphasis role="stringliteral">&quot;Not&#32;installed&#32;\n&quot;</emphasis>;
+<anchor xml:id="__l_d_player_8cpp_source_1l00067"/>00067 &#32;&#32;&#32;&#32;}
+<anchor xml:id="__l_d_player_8cpp_source_1l00068"/>00068 &#32;&#32;&#32;&#32;<emphasis role="keywordflow">return</emphasis>&#32;<link linkend="_class_emulator_1ac9479705b6bbc1003055bc1e7786989f">isInstalled</link>;
+<anchor xml:id="__l_d_player_8cpp_source_1l00069"/>00069 }
+<anchor xml:id="__l_d_player_8cpp_source_1l00070"/>00070 
+<anchor xml:id="__l_d_player_8cpp_source_1l00071"/>00071 
+<anchor xml:id="__l_d_player_8cpp_source_1l00072"/><link linkend="_class_l_d_player_1aaf175fa762019c1c22ef205892d196ea">00072</link> <emphasis role="keywordtype">void</emphasis>&#32;<link linkend="_class_l_d_player_1aaf175fa762019c1c22ef205892d196ea">LDPlayer::searchAllInstances</link>()
+<anchor xml:id="__l_d_player_8cpp_source_1l00073"/>00073 {
+<anchor xml:id="__l_d_player_8cpp_source_1l00074"/>00074 &#32;&#32;&#32;&#32;<link linkend="_class_emulator_1a5f038d5e47930bf433ab365fbbaa7ae2">nbInstances</link>&#32;=&#32;0;
+<anchor xml:id="__l_d_player_8cpp_source_1l00075"/>00075 &#32;&#32;&#32;&#32;<emphasis role="keywordflow">while</emphasis>&#32;(<emphasis role="keyword">true</emphasis>)&#32;{
+<anchor xml:id="__l_d_player_8cpp_source_1l00076"/>00076 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;std::string&#32;engineName&#32;=&#32;<link linkend="_class_l_d_player_1a847b6294b865cb602b8c667a8bb1e827">formalEngineName</link>&#32;+&#32;std::to_string(<link linkend="_class_emulator_1a5f038d5e47930bf433ab365fbbaa7ae2">nbInstances</link>);
+<anchor xml:id="__l_d_player_8cpp_source_1l00077"/>00077 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;std::string&#32;folder&#32;=&#32;<link linkend="_class_l_d_player_1a9e4eb565c0d0a1b3bf887a5d2af1964b">vmsFolder</link>&#32;+&#32;<emphasis role="stringliteral">&quot;\\&quot;</emphasis>+engineName;
+<anchor xml:id="__l_d_player_8cpp_source_1l00078"/>00078 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">if</emphasis>&#32;(<link linkend="_sys_commands_8cpp_1a662dd4893690567ba825a473508f47e2">pathExists</link>(folder))&#32;{
+<anchor xml:id="__l_d_player_8cpp_source_1l00079"/>00079 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;++<link linkend="_class_emulator_1a5f038d5e47930bf433ab365fbbaa7ae2">nbInstances</link>;
+<anchor xml:id="__l_d_player_8cpp_source_1l00080"/>00080 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<link linkend="_class_l_d_player_1ad145e5887943748b5c1e8d6e9c5c3b70">allEngines</link>.push_back(engineName);
+<anchor xml:id="__l_d_player_8cpp_source_1l00081"/>00081 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;}
+<anchor xml:id="__l_d_player_8cpp_source_1l00082"/>00082 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">else</emphasis>&#32;<emphasis role="keywordflow">break</emphasis>;
+<anchor xml:id="__l_d_player_8cpp_source_1l00083"/>00083 &#32;&#32;&#32;&#32;}
+<anchor xml:id="__l_d_player_8cpp_source_1l00084"/>00084 }
+<anchor xml:id="__l_d_player_8cpp_source_1l00085"/>00085 
+<anchor xml:id="__l_d_player_8cpp_source_1l00086"/><link linkend="_class_l_d_player_1af652c272f07898fcabf0df740fbacefa">00086</link> <emphasis role="keywordtype">bool</emphasis>&#32;<link linkend="_class_l_d_player_1af652c272f07898fcabf0df740fbacefa">LDPlayer::initEmulator</link>(<emphasis role="keywordtype">bool</emphasis>&#32;searchFiles)
+<anchor xml:id="__l_d_player_8cpp_source_1l00087"/>00087 {
+<anchor xml:id="__l_d_player_8cpp_source_1l00088"/>00088 &#32;&#32;&#32;&#32;<emphasis role="keywordflow">if</emphasis>&#32;(searchFiles)&#32;{
+<anchor xml:id="__l_d_player_8cpp_source_1l00089"/>00089 &#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">return</emphasis>&#32;<link linkend="_class_l_d_player_1a99b2174bd6a896874fe39023faa4e88c">searchEmulator</link>();
+<anchor xml:id="__l_d_player_8cpp_source_1l00090"/>00090 &#32;&#32;&#32;&#32;}
+<anchor xml:id="__l_d_player_8cpp_source_1l00091"/>00091 &#32;&#32;&#32;&#32;<emphasis role="keywordflow">return</emphasis>&#32;<emphasis role="keyword">true</emphasis>;
+<anchor xml:id="__l_d_player_8cpp_source_1l00092"/>00092 }
+<anchor xml:id="__l_d_player_8cpp_source_1l00093"/>00093 
+<anchor xml:id="__l_d_player_8cpp_source_1l00094"/><link linkend="_class_l_d_player_1a5a7ed2dad62f72bc13993da3d50f385e">00094</link> <emphasis role="keywordtype">void</emphasis>&#32;<link linkend="_class_l_d_player_1a5a7ed2dad62f72bc13993da3d50f385e">LDPlayer::initInstances</link>()&#32;{
+<anchor xml:id="__l_d_player_8cpp_source_1l00095"/>00095 &#32;&#32;&#32;&#32;<link linkend="_class_l_d_player_1aaf175fa762019c1c22ef205892d196ea">searchAllInstances</link>();
+<anchor xml:id="__l_d_player_8cpp_source_1l00096"/>00096 &#32;&#32;&#32;&#32;<link linkend="_class_l_d_player_1a0f72cc2becd0739ee469eca4088c4f2a">searchAllInstancesConfig</link>();
+<anchor xml:id="__l_d_player_8cpp_source_1l00097"/>00097 &#32;&#32;&#32;&#32;<link linkend="_class_l_d_player_1a06ec722fa75c1be28d1ebb785050771e">setListPlayableInstances</link>();
+<anchor xml:id="__l_d_player_8cpp_source_1l00098"/>00098 }
+<anchor xml:id="__l_d_player_8cpp_source_1l00099"/>00099 
+<anchor xml:id="__l_d_player_8cpp_source_1l00100"/><link linkend="_class_l_d_player_1aa4d08272c0957b3f9ccd69bee91d39ac">00100</link> <emphasis role="keywordtype">bool</emphasis>&#32;<link linkend="_class_l_d_player_1aa4d08272c0957b3f9ccd69bee91d39ac">LDPlayer::init</link>(<emphasis role="keywordtype">bool</emphasis>&#32;searchFiles)
+<anchor xml:id="__l_d_player_8cpp_source_1l00101"/>00101 {
+<anchor xml:id="__l_d_player_8cpp_source_1l00102"/>00102 &#32;&#32;&#32;&#32;<emphasis role="keywordflow">if</emphasis>(!<link linkend="_class_l_d_player_1af652c272f07898fcabf0df740fbacefa">initEmulator</link>(searchFiles))<emphasis role="keywordflow">return</emphasis>&#32;<emphasis role="keyword">false</emphasis>;
+<anchor xml:id="__l_d_player_8cpp_source_1l00103"/>00103 &#32;&#32;&#32;&#32;<link linkend="_class_l_d_player_1a5a7ed2dad62f72bc13993da3d50f385e">initInstances</link>();
+<anchor xml:id="__l_d_player_8cpp_source_1l00104"/>00104 &#32;&#32;&#32;&#32;<emphasis role="keywordflow">return</emphasis>&#32;<emphasis role="keyword">true</emphasis>;
+<anchor xml:id="__l_d_player_8cpp_source_1l00105"/>00105 }
+<anchor xml:id="__l_d_player_8cpp_source_1l00106"/>00106 
+<anchor xml:id="__l_d_player_8cpp_source_1l00107"/><link linkend="_class_l_d_player_1a06ec722fa75c1be28d1ebb785050771e">00107</link> <emphasis role="keywordtype">void</emphasis>&#32;<link linkend="_class_l_d_player_1a06ec722fa75c1be28d1ebb785050771e">LDPlayer::setListPlayableInstances</link>()
+<anchor xml:id="__l_d_player_8cpp_source_1l00108"/>00108 {
+<anchor xml:id="__l_d_player_8cpp_source_1l00109"/>00109 &#32;&#32;&#32;&#32;<emphasis role="keywordflow">for</emphasis>&#32;(<link linkend="_class_instance">Instance</link>*&#32;instance&#32;:&#32;<link linkend="_class_emulator_1a619a936779444867c815d5c443d663e6">getListInstances</link>())&#32;{
+<anchor xml:id="__l_d_player_8cpp_source_1l00110"/>00110 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">if</emphasis>&#32;(<link linkend="_class_l_d_player_1afdff9653762ee40295fd344ae3ab637a">hasGame</link>(instance))&#32;{
+<anchor xml:id="__l_d_player_8cpp_source_1l00111"/>00111 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<link linkend="_class_emulator_1a4c0372049844947502d84334e7c0c7c1">getListPlayableInstances</link>().push_back(instance);
+<anchor xml:id="__l_d_player_8cpp_source_1l00112"/>00112 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;}
+<anchor xml:id="__l_d_player_8cpp_source_1l00113"/>00113 &#32;&#32;&#32;&#32;}
+<anchor xml:id="__l_d_player_8cpp_source_1l00114"/>00114 }
+<anchor xml:id="__l_d_player_8cpp_source_1l00115"/>00115 
+<anchor xml:id="__l_d_player_8cpp_source_1l00116"/><link linkend="_class_l_d_player_1aa85461ad56f19bcf3620c16d6781f640">00116</link> <link linkend="_class_l_d_player_instance">LDPlayerInstance</link>*&#32;<link linkend="_class_l_d_player_1aa85461ad56f19bcf3620c16d6781f640">LDPlayer::transformInstance</link>(<link linkend="_class_instance">Instance</link>*&#32;inst)
+<anchor xml:id="__l_d_player_8cpp_source_1l00117"/>00117 {
+<anchor xml:id="__l_d_player_8cpp_source_1l00118"/>00118 &#32;&#32;&#32;&#32;<emphasis role="keywordflow">return</emphasis>&#32;<emphasis role="keyword">dynamic_cast&lt;</emphasis><link linkend="_class_l_d_player_instance">LDPlayerInstance</link>*<emphasis role="keyword">&gt;</emphasis>(inst);
+<anchor xml:id="__l_d_player_8cpp_source_1l00119"/>00119 }
+<anchor xml:id="__l_d_player_8cpp_source_1l00120"/>00120 
+<anchor xml:id="__l_d_player_8cpp_source_1l00121"/><link linkend="_class_l_d_player_1a0c546f98352f25c612d1dda1819c5131">00121</link> <emphasis role="keywordtype">void</emphasis>&#32;<link linkend="_class_l_d_player_1a0c546f98352f25c612d1dda1819c5131">LDPlayer::setSubFolders</link>()
+<anchor xml:id="__l_d_player_8cpp_source_1l00122"/>00122 {
+<anchor xml:id="__l_d_player_8cpp_source_1l00123"/>00123 &#32;&#32;&#32;&#32;<link linkend="_class_l_d_player_1a9e4eb565c0d0a1b3bf887a5d2af1964b">vmsFolder</link>&#32;=&#32;<link linkend="_class_l_d_player_1aac7170bb4b860334bca99388d3f2a3f4">ldPlayerFolder</link>&#32;+&#32;<emphasis role="stringliteral">&quot;\\vms&quot;</emphasis>;
+<anchor xml:id="__l_d_player_8cpp_source_1l00124"/>00124 &#32;&#32;&#32;&#32;<link linkend="_class_l_d_player_1af3752c9db69d22b1a35b341c879f7e8f">configFolder</link>&#32;=&#32;<link linkend="_class_l_d_player_1a9e4eb565c0d0a1b3bf887a5d2af1964b">vmsFolder</link>&#32;+&#32;<emphasis role="stringliteral">&quot;\\config&quot;</emphasis>;
+<anchor xml:id="__l_d_player_8cpp_source_1l00125"/>00125 }
+<anchor xml:id="__l_d_player_8cpp_source_1l00126"/>00126 
+<anchor xml:id="__l_d_player_8cpp_source_1l00127"/><link linkend="_class_l_d_player_1a6a75a0ed7816421e0154ce60c91697b1">00127</link> <emphasis role="keywordtype">bool</emphasis>&#32;<link linkend="_class_l_d_player_1a6a75a0ed7816421e0154ce60c91697b1">LDPlayer::selectedPlayingInstance</link>()
+<anchor xml:id="__l_d_player_8cpp_source_1l00128"/>00128 {
+<anchor xml:id="__l_d_player_8cpp_source_1l00129"/>00129 &#32;&#32;&#32;&#32;<emphasis role="keywordflow">return</emphasis>&#32;<link linkend="_class_emulator_1a6433f757edc9bf813dedef6f68f73b9f">playingInstance</link>!=<emphasis role="keyword">nullptr</emphasis>;
+<anchor xml:id="__l_d_player_8cpp_source_1l00130"/>00130 }
+<anchor xml:id="__l_d_player_8cpp_source_1l00131"/>00131 
+<anchor xml:id="__l_d_player_8cpp_source_1l00132"/><link linkend="_class_l_d_player_1aed9eaafd453b9fcdea05322cf052e743">00132</link> <emphasis role="keywordtype">void</emphasis>&#32;<link linkend="_class_l_d_player_1aed9eaafd453b9fcdea05322cf052e743">LDPlayer::receiveFolders</link>(std::string&#32;ldPlayerFolder)
+<anchor xml:id="__l_d_player_8cpp_source_1l00133"/>00133 {
+<anchor xml:id="__l_d_player_8cpp_source_1l00134"/>00134 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;this-&gt;ldPlayerFolder&#32;=&#32;<link linkend="_class_l_d_player_1aac7170bb4b860334bca99388d3f2a3f4">ldPlayerFolder</link>;
+<anchor xml:id="__l_d_player_8cpp_source_1l00135"/>00135 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<link linkend="_class_l_d_player_1a0c546f98352f25c612d1dda1819c5131">setSubFolders</link>();
+<anchor xml:id="__l_d_player_8cpp_source_1l00136"/>00136 }
+<anchor xml:id="__l_d_player_8cpp_source_1l00137"/>00137 
+<anchor xml:id="__l_d_player_8cpp_source_1l00138"/><link linkend="_class_l_d_player_1a2fac3905b9911e0cfec1eaf6a7c1e16b">00138</link> <emphasis role="keywordtype">bool</emphasis>&#32;<link linkend="_class_l_d_player_1a2fac3905b9911e0cfec1eaf6a7c1e16b">LDPlayer::isInstanceRunning</link>(<link linkend="_class_instance">Instance</link>*&#32;inst)
+<anchor xml:id="__l_d_player_8cpp_source_1l00139"/>00139 {
+<anchor xml:id="__l_d_player_8cpp_source_1l00140"/>00140 &#32;&#32;&#32;&#32;<link linkend="_class_l_d_player_instance">LDPlayerInstance</link>*&#32;newInst&#32;=&#32;<link linkend="_class_l_d_player_1aa85461ad56f19bcf3620c16d6781f640">transformInstance</link>(inst);
+<anchor xml:id="__l_d_player_8cpp_source_1l00141"/>00141 &#32;&#32;&#32;&#32;std::string&#32;args&#32;=&#32;<link linkend="_class_emulator_1ae0bf469fc768b1aa831911f0f3bba8dd">executableName</link>&#32;+&#32;<emphasis role="stringliteral">&quot;&#32;isrunning&#32;--index&#32;&quot;</emphasis>&#32;+&#32;std::to_string(newInst-&gt;<link linkend="_class_l_d_player_instance_1a54bd4852604077a154ae55bb00b4d185">ldId</link>);
+<anchor xml:id="__l_d_player_8cpp_source_1l00142"/>00142 &#32;&#32;&#32;&#32;std::string&#32;result=<link linkend="_sys_commands_8cpp_1a40529d2008c5ec34a2251615ad504e28">moveAndExecute</link>(<link linkend="_class_l_d_player_1aac7170bb4b860334bca99388d3f2a3f4">ldPlayerFolder</link>,&#32;args);
+<anchor xml:id="__l_d_player_8cpp_source_1l00143"/>00143 &#32;&#32;&#32;&#32;<emphasis role="keywordflow">return</emphasis>&#32;<link linkend="__text_manager_8cpp_1acd5e438b43d1ea1b3fc41a8badfe635b">findContent</link>(result,&#32;<emphasis role="stringliteral">&quot;running&quot;</emphasis>);
+<anchor xml:id="__l_d_player_8cpp_source_1l00144"/>00144 }
+<anchor xml:id="__l_d_player_8cpp_source_1l00145"/>00145 
+<anchor xml:id="__l_d_player_8cpp_source_1l00146"/><link linkend="_class_l_d_player_1aa5b8b4522bae77a46c194f161dc7d7bd">00146</link> <emphasis role="keywordtype">void</emphasis>&#32;<link linkend="_class_l_d_player_1aa5b8b4522bae77a46c194f161dc7d7bd">LDPlayer::clearAllInstances</link>()
+<anchor xml:id="__l_d_player_8cpp_source_1l00147"/>00147 {
+<anchor xml:id="__l_d_player_8cpp_source_1l00148"/>00148 &#32;&#32;&#32;&#32;<link linkend="_class_emulator_1a767c9d69943a0cd76a5c63f2cc25b234">Emulator::clearAllInstances</link>();
+<anchor xml:id="__l_d_player_8cpp_source_1l00149"/>00149 &#32;&#32;&#32;&#32;<link linkend="_class_l_d_player_1ad145e5887943748b5c1e8d6e9c5c3b70">allEngines</link>.clear();
+<anchor xml:id="__l_d_player_8cpp_source_1l00150"/>00150 }
+<anchor xml:id="__l_d_player_8cpp_source_1l00151"/>00151 
+<anchor xml:id="__l_d_player_8cpp_source_1l00152"/><link linkend="_class_l_d_player_1ab07272ab6eb144734e3101719314b730">00152</link> std::string&#32;<link linkend="_class_l_d_player_1ab07272ab6eb144734e3101719314b730">LDPlayer::getPlayingInstanceAdbKey</link>()
+<anchor xml:id="__l_d_player_8cpp_source_1l00153"/>00153 {
+<anchor xml:id="__l_d_player_8cpp_source_1l00154"/>00154 &#32;&#32;&#32;&#32;<emphasis role="keywordflow">if</emphasis>&#32;(<link linkend="_class_l_d_player_1a6a75a0ed7816421e0154ce60c91697b1">selectedPlayingInstance</link>())&#32;{
+<anchor xml:id="__l_d_player_8cpp_source_1l00155"/>00155 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">return</emphasis>&#32;<link linkend="_class_emulator_1a6433f757edc9bf813dedef6f68f73b9f">playingInstance</link>-&gt;<link linkend="_class_instance_1abb8d03ac04893774e93ea06e85338d39">getAdbKey</link>();
+<anchor xml:id="__l_d_player_8cpp_source_1l00156"/>00156 &#32;&#32;&#32;&#32;}
+<anchor xml:id="__l_d_player_8cpp_source_1l00157"/>00157 &#32;&#32;&#32;&#32;<emphasis role="keywordflow">return</emphasis>&#32;std::string();
+<anchor xml:id="__l_d_player_8cpp_source_1l00158"/>00158 }
+<anchor xml:id="__l_d_player_8cpp_source_1l00159"/>00159 
+<anchor xml:id="__l_d_player_8cpp_source_1l00160"/><link linkend="_class_l_d_player_1ac7f410ba33d1ae1f0ee568c4eab53e25">00160</link> <emphasis role="keywordtype">void</emphasis>&#32;<link linkend="_class_l_d_player_1ac7f410ba33d1ae1f0ee568c4eab53e25">LDPlayer::waitForInstance</link>(<link linkend="_class_instance">Instance</link>*&#32;inst)
+<anchor xml:id="__l_d_player_8cpp_source_1l00161"/>00161 {
+<anchor xml:id="__l_d_player_8cpp_source_1l00162"/>00162 &#32;&#32;&#32;&#32;<emphasis role="keywordflow">if</emphasis>&#32;(inst&#32;!=&#32;<emphasis role="keyword">nullptr</emphasis>)&#32;{
+<anchor xml:id="__l_d_player_8cpp_source_1l00163"/>00163 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;std::cout&#32;&lt;&lt;&#32;<emphasis role="stringliteral">&quot;Waiting&#32;for&#32;device&#32;to&#32;be&#32;Loaded\n&quot;</emphasis>;
+<anchor xml:id="__l_d_player_8cpp_source_1l00164"/>00164 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">while</emphasis>&#32;(!<link linkend="_fadb_8cpp_1a79516629b1f513025235d35602e6b1bc">isDeviceConnected</link>(inst-&gt;<link linkend="_class_instance_1abb8d03ac04893774e93ea06e85338d39">getAdbKey</link>()))&#32;{
+<anchor xml:id="__l_d_player_8cpp_source_1l00165"/>00165 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<link linkend="_fadb_8cpp_1a4bcd6ce7d04c38f8c4ff908d1fc50f86">reconnect</link>();
+<anchor xml:id="__l_d_player_8cpp_source_1l00166"/>00166 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;}
+<anchor xml:id="__l_d_player_8cpp_source_1l00167"/>00167 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<link linkend="_fadb_8cpp_1a8a395fe7bffcb7ecdfa451b5b7d8a764">waitForDevice</link>(inst-&gt;<link linkend="_class_instance_1abb8d03ac04893774e93ea06e85338d39">getAdbKey</link>());
+<anchor xml:id="__l_d_player_8cpp_source_1l00168"/>00168 &#32;&#32;&#32;&#32;}
+<anchor xml:id="__l_d_player_8cpp_source_1l00169"/>00169 }
+<anchor xml:id="__l_d_player_8cpp_source_1l00170"/>00170 
+<anchor xml:id="__l_d_player_8cpp_source_1l00171"/><link linkend="_class_l_d_player_1afe81895e1d9f5f1afc09a3bb98448f85">00171</link> <emphasis role="keywordtype">bool</emphasis>&#32;<link linkend="_class_l_d_player_1afe81895e1d9f5f1afc09a3bb98448f85">LDPlayer::isInstanceLoaded</link>(<link linkend="_class_instance">Instance</link>*&#32;inst)
+<anchor xml:id="__l_d_player_8cpp_source_1l00172"/>00172 {
+<anchor xml:id="__l_d_player_8cpp_source_1l00173"/>00173 &#32;&#32;&#32;&#32;<emphasis role="keywordflow">return</emphasis>&#32;<emphasis role="keyword">false</emphasis>;
+<anchor xml:id="__l_d_player_8cpp_source_1l00174"/>00174 }
+<anchor xml:id="__l_d_player_8cpp_source_1l00175"/>00175 
+<anchor xml:id="__l_d_player_8cpp_source_1l00176"/><link linkend="_class_l_d_player_1ac69dba82c1997ba163498c9c711104c2">00176</link> <emphasis role="keywordtype">bool</emphasis>&#32;<link linkend="_class_l_d_player_1ac69dba82c1997ba163498c9c711104c2">LDPlayer::startPlayingInstance</link>()
+<anchor xml:id="__l_d_player_8cpp_source_1l00177"/>00177 {
+<anchor xml:id="__l_d_player_8cpp_source_1l00178"/>00178 &#32;&#32;&#32;&#32;<emphasis role="keywordflow">if</emphasis>&#32;(<link linkend="_class_l_d_player_1a6a75a0ed7816421e0154ce60c91697b1">selectedPlayingInstance</link>())&#32;{
+<anchor xml:id="__l_d_player_8cpp_source_1l00179"/>00179 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<link linkend="_class_l_d_player_1aed135e9f726d03ab77cc86533892576e">startInstance</link>(<link linkend="_class_emulator_1a6433f757edc9bf813dedef6f68f73b9f">playingInstance</link>);
+<anchor xml:id="__l_d_player_8cpp_source_1l00180"/>00180 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">return</emphasis>&#32;<emphasis role="keyword">true</emphasis>;
+<anchor xml:id="__l_d_player_8cpp_source_1l00181"/>00181 &#32;&#32;&#32;&#32;}
+<anchor xml:id="__l_d_player_8cpp_source_1l00182"/>00182 &#32;&#32;&#32;&#32;<emphasis role="keywordflow">return</emphasis>&#32;<emphasis role="keyword">false</emphasis>;
+<anchor xml:id="__l_d_player_8cpp_source_1l00183"/>00183 }
+<anchor xml:id="__l_d_player_8cpp_source_1l00184"/>00184 
+<anchor xml:id="__l_d_player_8cpp_source_1l00185"/><link linkend="_class_l_d_player_1a7faa435639a0bc0b6168ec43a451abbd">00185</link> <emphasis role="keywordtype">void</emphasis>&#32;<link linkend="_class_l_d_player_1a7faa435639a0bc0b6168ec43a451abbd">LDPlayer::getAdbKey</link>(<link linkend="_class_instance">Instance</link>*&#32;inst)
+<anchor xml:id="__l_d_player_8cpp_source_1l00186"/>00186 {
+<anchor xml:id="__l_d_player_8cpp_source_1l00187"/>00187 &#32;&#32;&#32;&#32;<emphasis role="keywordflow">if</emphasis>&#32;(<link linkend="_class_l_d_player_instance">LDPlayerInstance</link>*&#32;newInst&#32;=&#32;<link linkend="_class_l_d_player_1aa85461ad56f19bcf3620c16d6781f640">transformInstance</link>(inst))&#32;{
+<anchor xml:id="__l_d_player_8cpp_source_1l00188"/>00188 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;newInst-&gt;adbKey&#32;=&#32;<emphasis role="stringliteral">&quot;emulator-&quot;</emphasis>&#32;+&#32;std::to_string(5554&#32;+&#32;2&#32;*&#32;newInst-&gt;ldId);
+<anchor xml:id="__l_d_player_8cpp_source_1l00189"/>00189 &#32;&#32;&#32;&#32;}
+<anchor xml:id="__l_d_player_8cpp_source_1l00190"/>00190 }
+<anchor xml:id="__l_d_player_8cpp_source_1l00191"/>00191 
+<anchor xml:id="__l_d_player_8cpp_source_1l00192"/><link linkend="_class_l_d_player_1ae531fb07962ccef1e326f231c520ae28">00192</link> <emphasis role="keywordtype">void</emphasis>&#32;<link linkend="_class_l_d_player_1ae531fb07962ccef1e326f231c520ae28">LDPlayer::searchInstanceConfig</link>(std::string&#32;engineName)
+<anchor xml:id="__l_d_player_8cpp_source_1l00193"/>00193 {
+<anchor xml:id="__l_d_player_8cpp_source_1l00194"/>00194 &#32;&#32;&#32;&#32;std::string&#32;file=&#32;<link linkend="_class_l_d_player_1af3752c9db69d22b1a35b341c879f7e8f">configFolder</link>&#32;+&#32;<emphasis role="stringliteral">&quot;\\&quot;</emphasis>&#32;+&#32;engineName;
+<anchor xml:id="__l_d_player_8cpp_source_1l00195"/>00195 &#32;&#32;&#32;&#32;<link linkend="_class_l_d_player_instance">LDPlayerInstance</link>*&#32;newInstance=<emphasis role="keyword">new</emphasis>&#32;<link linkend="_class_l_d_player_instance">LDPlayerInstance</link>;
+<anchor xml:id="__l_d_player_8cpp_source_1l00196"/>00196 &#32;&#32;&#32;&#32;std::string&#32;configText&#32;=&#32;<link linkend="__text_manager_8cpp_1add36cc54cd9616a393a17b8961491477">getFileContent</link>(file);
+<anchor xml:id="__l_d_player_8cpp_source_1l00197"/>00197 &#32;&#32;&#32;&#32;std::string&#32;instanceNameParameter&#32;=&#32;<emphasis role="stringliteral">&quot;\&quot;statusSettings.playerName\&quot;:&#32;&quot;</emphasis>;
+<anchor xml:id="__l_d_player_8cpp_source_1l00198"/>00198 &#32;&#32;&#32;&#32;std::string&#32;resolutionParameter&#32;=&#32;<emphasis role="stringliteral">&quot;\&quot;advancedSettings.resolution\&quot;:&#32;{&quot;</emphasis>;
+<anchor xml:id="__l_d_player_8cpp_source_1l00199"/>00199 &#32;&#32;&#32;&#32;std::string&#32;instanceWidthParameter&#32;=&#32;<emphasis role="stringliteral">&quot;\&quot;width\&quot;:&#32;&quot;</emphasis>;
+<anchor xml:id="__l_d_player_8cpp_source_1l00200"/>00200 &#32;&#32;&#32;&#32;std::string&#32;instanceHeightParameter&#32;=&#32;<emphasis role="stringliteral">&quot;\&quot;height\&quot;:&#32;&quot;</emphasis>;
+<anchor xml:id="__l_d_player_8cpp_source_1l00201"/>00201 &#32;&#32;&#32;&#32;std::string&#32;instanceDpiParameter&#32;=&#32;<emphasis role="stringliteral">&quot;\&quot;advancedSettings.resolutionDpi\&quot;:&#32;&quot;</emphasis>;
+<anchor xml:id="__l_d_player_8cpp_source_1l00202"/>00202 &#32;&#32;&#32;&#32;newInstance-&gt;<link linkend="_class_instance_1a71e6b641e231bdfcfb4f255c6b9e58af">instanceName</link>&#32;=&#32;<link linkend="__text_manager_8cpp_1a55651a43aac6404e3e403967b3633201">extractLineContent</link>(configText,&#32;instanceNameParameter,<emphasis role="stringliteral">&quot;:&#32;\&quot;&quot;</emphasis>,&#32;<emphasis role="stringliteral">&quot;\&quot;&quot;</emphasis>);
+<anchor xml:id="__l_d_player_8cpp_source_1l00203"/>00203 &#32;&#32;&#32;&#32;newInstance-&gt;<link linkend="_class_instance_1afac2cbff1e241735f914ee0b95a04ea5">dpi</link>&#32;=&#32;stoi(<link linkend="__text_manager_8cpp_1a55651a43aac6404e3e403967b3633201">extractLineContent</link>(configText,&#32;instanceDpiParameter,&#32;instanceDpiParameter,&#32;<emphasis role="stringliteral">&quot;,&quot;</emphasis>));
+<anchor xml:id="__l_d_player_8cpp_source_1l00204"/>00204 &#32;&#32;&#32;&#32;std::string&#32;resolution&#32;=&#32;<link linkend="__text_manager_8cpp_1aa61ad4367d44c1e14541c7c1c46da795">extractContent</link>(configText,&#32;resolutionParameter,&#32;<emphasis role="stringliteral">&quot;}&quot;</emphasis>);
+<anchor xml:id="__l_d_player_8cpp_source_1l00205"/>00205 &#32;&#32;&#32;&#32;newInstance-&gt;<link linkend="_class_instance_1ae9cb37b80e1b2586ea1136552f5471c7">width</link>=&#32;stoi(<link linkend="__text_manager_8cpp_1a55651a43aac6404e3e403967b3633201">extractLineContent</link>(resolution,&#32;instanceWidthParameter,&#32;<emphasis role="stringliteral">&quot;:&#32;&quot;</emphasis>,&#32;<emphasis role="stringliteral">&quot;,&quot;</emphasis>));
+<anchor xml:id="__l_d_player_8cpp_source_1l00206"/>00206 &#32;&#32;&#32;&#32;std::string&#32;heightline&#32;=&#32;<link linkend="__text_manager_8cpp_1a6a1f72a80ddaec746c95996b16e3a1dc">getContentAfter</link>(resolution,&#32;instanceHeightParameter);
+<anchor xml:id="__l_d_player_8cpp_source_1l00207"/>00207 &#32;&#32;&#32;&#32;newInstance-&gt;<link linkend="_class_instance_1a5780eba6a75b91039e627799f07637ee">height</link>&#32;=&#32;stoi(<link linkend="__text_manager_8cpp_1a377407ab4c28873a8e1956ea343f9cc2">getContentBefore</link>(heightline,&#32;<emphasis role="stringliteral">&quot;\n&quot;</emphasis>));
+<anchor xml:id="__l_d_player_8cpp_source_1l00208"/>00208 &#32;&#32;&#32;&#32;newInstance-&gt;<link linkend="_class_l_d_player_instance_1a54bd4852604077a154ae55bb00b4d185">ldId</link>&#32;=&#32;stoi(<link linkend="__text_manager_8cpp_1aa61ad4367d44c1e14541c7c1c46da795">extractContent</link>(engineName,&#32;<link linkend="_class_l_d_player_1a847b6294b865cb602b8c667a8bb1e827">formalEngineName</link>,&#32;<emphasis role="stringliteral">&quot;.config&quot;</emphasis>));
+<anchor xml:id="__l_d_player_8cpp_source_1l00209"/>00209 &#32;&#32;&#32;&#32;newInstance-&gt;<link linkend="_class_l_d_player_instance_1a6ceacb3c1904d3adf78e7be2b5cc32a6">engineName</link>&#32;=&#32;<link linkend="__text_manager_8cpp_1a377407ab4c28873a8e1956ea343f9cc2">getContentBefore</link>(engineName,<emphasis role="stringliteral">&quot;.config&quot;</emphasis>);
+<anchor xml:id="__l_d_player_8cpp_source_1l00210"/>00210 &#32;&#32;&#32;&#32;newInstance-&gt;<link linkend="_class_l_d_player_instance_1aa242849ad43bed3a3075794bee9ea908">setGlobalId</link>();
+<anchor xml:id="__l_d_player_8cpp_source_1l00211"/>00211 &#32;&#32;&#32;&#32;newInstance-&gt;<link linkend="_class_instance_1ad66900da1ca18b45bae2e46c04a4cdda">instanceFolder</link>&#32;=&#32;<link linkend="_class_l_d_player_1a9e4eb565c0d0a1b3bf887a5d2af1964b">vmsFolder</link>&#32;+&#32;<emphasis role="stringliteral">&quot;\\&quot;</emphasis>&#32;+&#32;newInstance-&gt;<link linkend="_class_l_d_player_instance_1a6ceacb3c1904d3adf78e7be2b5cc32a6">engineName</link>&#32;+&#32;<emphasis role="stringliteral">&quot;\\&quot;</emphasis>;
+<anchor xml:id="__l_d_player_8cpp_source_1l00212"/>00212 &#32;&#32;&#32;&#32;<link linkend="_class_l_d_player_1afdff9653762ee40295fd344ae3ab637a">hasGame</link>(newInstance);
+<anchor xml:id="__l_d_player_8cpp_source_1l00213"/>00213 &#32;&#32;&#32;&#32;<link linkend="_class_l_d_player_1a7faa435639a0bc0b6168ec43a451abbd">getAdbKey</link>(newInstance);
+<anchor xml:id="__l_d_player_8cpp_source_1l00214"/>00214 &#32;&#32;&#32;&#32;<link linkend="_class_emulator_1a9e0d57ef011e166cb389060f814abfa1">addInstance</link>(newInstance);
+<anchor xml:id="__l_d_player_8cpp_source_1l00215"/>00215 }
+<anchor xml:id="__l_d_player_8cpp_source_1l00216"/>00216 
+<anchor xml:id="__l_d_player_8cpp_source_1l00217"/><link linkend="_class_l_d_player_1a0f72cc2becd0739ee469eca4088c4f2a">00217</link> <emphasis role="keywordtype">void</emphasis>&#32;<link linkend="_class_l_d_player_1a0f72cc2becd0739ee469eca4088c4f2a">LDPlayer::searchAllInstancesConfig</link>()
+<anchor xml:id="__l_d_player_8cpp_source_1l00218"/>00218 {
+<anchor xml:id="__l_d_player_8cpp_source_1l00219"/>00219 &#32;&#32;&#32;&#32;<emphasis role="keywordflow">for</emphasis>&#32;(<emphasis role="keyword">const</emphasis>&#32;std::string&amp;&#32;engine&#32;:&#32;<link linkend="_class_l_d_player_1ad145e5887943748b5c1e8d6e9c5c3b70">allEngines</link>)&#32;{
+<anchor xml:id="__l_d_player_8cpp_source_1l00220"/>00220 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;std::string&#32;engineFileName&#32;=&#32;engine&#32;+&#32;<emphasis role="stringliteral">&quot;.config&quot;</emphasis>;
+<anchor xml:id="__l_d_player_8cpp_source_1l00221"/>00221 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<link linkend="_class_l_d_player_1ae531fb07962ccef1e326f231c520ae28">searchInstanceConfig</link>(engineFileName);
+<anchor xml:id="__l_d_player_8cpp_source_1l00222"/>00222 &#32;&#32;&#32;&#32;}
+<anchor xml:id="__l_d_player_8cpp_source_1l00223"/>00223 }
+<anchor xml:id="__l_d_player_8cpp_source_1l00224"/>00224 
+<anchor xml:id="__l_d_player_8cpp_source_1l00225"/><link linkend="_class_l_d_player_1a89852c8289be577bffcedfa52270dd50">00225</link> <emphasis role="keywordtype">void</emphasis>&#32;<link linkend="_class_l_d_player_1a89852c8289be577bffcedfa52270dd50">LDPlayer::showInstance</link>(<link linkend="_class_instance">Instance</link>*&#32;inst)
+<anchor xml:id="__l_d_player_8cpp_source_1l00226"/>00226 {
+<anchor xml:id="__l_d_player_8cpp_source_1l00227"/>00227 &#32;&#32;&#32;&#32;<emphasis role="keywordflow">if</emphasis>&#32;(<link linkend="_class_l_d_player_instance">LDPlayerInstance</link>*&#32;ldInst&#32;=&#32;<link linkend="_class_l_d_player_1aa85461ad56f19bcf3620c16d6781f640">transformInstance</link>(inst))&#32;{
+<anchor xml:id="__l_d_player_8cpp_source_1l00228"/>00228 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;ldInst-&gt;showInstance();
+<anchor xml:id="__l_d_player_8cpp_source_1l00229"/>00229 &#32;&#32;&#32;&#32;}
+<anchor xml:id="__l_d_player_8cpp_source_1l00230"/>00230 }
+<anchor xml:id="__l_d_player_8cpp_source_1l00231"/>00231 
+<anchor xml:id="__l_d_player_8cpp_source_1l00232"/><link linkend="_class_l_d_player_1a9c76cbcf2494aac40b078978d1163a3e">00232</link> <emphasis role="keywordtype">void</emphasis>&#32;<link linkend="_class_l_d_player_1a9c76cbcf2494aac40b078978d1163a3e">LDPlayer::showAllInstances</link>()
+<anchor xml:id="__l_d_player_8cpp_source_1l00233"/>00233 {
+<anchor xml:id="__l_d_player_8cpp_source_1l00234"/>00234 &#32;&#32;&#32;&#32;std::cout&#32;&lt;&lt;&#32;<emphasis role="stringliteral">&quot;\n\nList&#32;Of&#32;All&#32;LDPlayer&#32;instances:\n\n&quot;</emphasis>;
+<anchor xml:id="__l_d_player_8cpp_source_1l00235"/>00235 &#32;&#32;&#32;&#32;<emphasis role="keywordflow">for</emphasis>&#32;(<link linkend="_class_instance">Instance</link>*&#32;instance&#32;:&#32;<link linkend="_class_emulator_1a619a936779444867c815d5c443d663e6">getListInstances</link>())&#32;{
+<anchor xml:id="__l_d_player_8cpp_source_1l00236"/>00236 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<link linkend="_class_l_d_player_1a89852c8289be577bffcedfa52270dd50">showInstance</link>(instance);
+<anchor xml:id="__l_d_player_8cpp_source_1l00237"/>00237 &#32;&#32;&#32;&#32;}
+<anchor xml:id="__l_d_player_8cpp_source_1l00238"/>00238 }
+<anchor xml:id="__l_d_player_8cpp_source_1l00239"/>00239 
+<anchor xml:id="__l_d_player_8cpp_source_1l00240"/><link linkend="_class_l_d_player_1abaa2bab3427a665327d3e4861ecbe325">00240</link> <emphasis role="keywordtype">void</emphasis>&#32;<link linkend="_class_l_d_player_1abaa2bab3427a665327d3e4861ecbe325">LDPlayer::showAllPlayableInstances</link>()
+<anchor xml:id="__l_d_player_8cpp_source_1l00241"/>00241 {
+<anchor xml:id="__l_d_player_8cpp_source_1l00242"/>00242 &#32;&#32;&#32;&#32;std::cout&#32;&lt;&lt;&#32;<emphasis role="stringliteral">&quot;\n\nList&#32;Of&#32;All&#32;LDPlayer&#32;instances&#32;that&#32;have&#32;&quot;</emphasis>+&#32;<link linkend="_class_emulator_1a9a0bbebd40eee57823b313153b1c8cb5">gamePackage</link>+<emphasis role="stringliteral">&quot;&#32;installed:\n\n&quot;</emphasis>;
+<anchor xml:id="__l_d_player_8cpp_source_1l00243"/>00243 &#32;&#32;&#32;&#32;<emphasis role="keywordflow">for</emphasis>&#32;(<link linkend="_class_instance">Instance</link>*&#32;instance&#32;:&#32;<link linkend="_class_emulator_1a4c0372049844947502d84334e7c0c7c1">getListPlayableInstances</link>())&#32;{
+<anchor xml:id="__l_d_player_8cpp_source_1l00244"/>00244 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<link linkend="_class_l_d_player_1a89852c8289be577bffcedfa52270dd50">showInstance</link>(instance);
+<anchor xml:id="__l_d_player_8cpp_source_1l00245"/>00245 &#32;&#32;&#32;&#32;}
+<anchor xml:id="__l_d_player_8cpp_source_1l00246"/>00246 }
+<anchor xml:id="__l_d_player_8cpp_source_1l00247"/>00247 
+<anchor xml:id="__l_d_player_8cpp_source_1l00248"/><link linkend="_class_l_d_player_1adbb21d959364d3b54d3981e73f24b0ac">00248</link> std::string&#32;<link linkend="_class_l_d_player_1adbb21d959364d3b54d3981e73f24b0ac">LDPlayer::getConfigFile</link>(<link linkend="_class_instance">Instance</link>*&#32;inst)
+<anchor xml:id="__l_d_player_8cpp_source_1l00249"/>00249 {
+<anchor xml:id="__l_d_player_8cpp_source_1l00250"/>00250 &#32;&#32;&#32;&#32;<link linkend="_class_l_d_player_instance">LDPlayerInstance</link>*&#32;newInst&#32;=&#32;<link linkend="_class_l_d_player_1aa85461ad56f19bcf3620c16d6781f640">transformInstance</link>(inst);
+<anchor xml:id="__l_d_player_8cpp_source_1l00251"/>00251 &#32;&#32;&#32;&#32;<emphasis role="keywordflow">return</emphasis>&#32;<link linkend="_class_l_d_player_1af3752c9db69d22b1a35b341c879f7e8f">configFolder</link>&#32;+&#32;<emphasis role="stringliteral">&quot;\\&quot;</emphasis>&#32;+&#32;<link linkend="_class_l_d_player_1a847b6294b865cb602b8c667a8bb1e827">formalEngineName</link>+std::to_string(newInst-&gt;<link linkend="_class_l_d_player_instance_1a54bd4852604077a154ae55bb00b4d185">ldId</link>)+<emphasis role="stringliteral">&quot;.config&quot;</emphasis>;
+<anchor xml:id="__l_d_player_8cpp_source_1l00252"/>00252 }
+<anchor xml:id="__l_d_player_8cpp_source_1l00253"/>00253 
+<anchor xml:id="__l_d_player_8cpp_source_1l00254"/><link linkend="_class_l_d_player_1afdff9653762ee40295fd344ae3ab637a">00254</link> <emphasis role="keywordtype">bool</emphasis>&#32;<link linkend="_class_l_d_player_1afdff9653762ee40295fd344ae3ab637a">LDPlayer::hasGame</link>(<link linkend="_class_instance">Instance</link>*&#32;inst)
+<anchor xml:id="__l_d_player_8cpp_source_1l00255"/>00255 {
+<anchor xml:id="__l_d_player_8cpp_source_1l00256"/>00256 &#32;&#32;&#32;
+<anchor xml:id="__l_d_player_8cpp_source_1l00257"/>00257 &#32;&#32;&#32;&#32;<emphasis role="keywordflow">if</emphasis>&#32;(<link linkend="_class_l_d_player_instance">LDPlayerInstance</link>*&#32;newInst&#32;=&#32;<link linkend="_class_l_d_player_1aa85461ad56f19bcf3620c16d6781f640">transformInstance</link>(inst))&#32;{
+<anchor xml:id="__l_d_player_8cpp_source_1l00258"/>00258 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;std::string&#32;reportText&#32;=&#32;<link linkend="__text_manager_8cpp_1add36cc54cd9616a393a17b8961491477">getFileContent</link>(inst-&gt;<link linkend="_class_instance_1ad66900da1ca18b45bae2e46c04a4cdda">instanceFolder</link>&#32;+&#32;newInst-&gt;packageInfoFileName);
+<anchor xml:id="__l_d_player_8cpp_source_1l00259"/>00259 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">if</emphasis>&#32;(<link linkend="__text_manager_8cpp_1acd5e438b43d1ea1b3fc41a8badfe635b">findContent</link>(reportText,&#32;<link linkend="_class_emulator_1a9a0bbebd40eee57823b313153b1c8cb5">gamePackage</link>))&#32;{
+<anchor xml:id="__l_d_player_8cpp_source_1l00260"/>00260 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;newInst-&gt;hasGame&#32;=&#32;<emphasis role="keyword">true</emphasis>;
+<anchor xml:id="__l_d_player_8cpp_source_1l00261"/>00261 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;}
+<anchor xml:id="__l_d_player_8cpp_source_1l00262"/>00262 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">else</emphasis>&#32;newInst-&gt;hasGame&#32;=&#32;<emphasis role="keyword">false</emphasis>;
+<anchor xml:id="__l_d_player_8cpp_source_1l00263"/>00263 &#32;&#32;&#32;&#32;}
+<anchor xml:id="__l_d_player_8cpp_source_1l00264"/>00264 &#32;&#32;&#32;&#32;<emphasis role="keywordflow">return</emphasis>&#32;inst-&gt;<link linkend="_class_instance_1a163202c6c66861f51cb2b0bffff2993d">hasGame</link>;
+<anchor xml:id="__l_d_player_8cpp_source_1l00265"/>00265 }
+<anchor xml:id="__l_d_player_8cpp_source_1l00266"/>00266 
+<anchor xml:id="__l_d_player_8cpp_source_1l00267"/><link linkend="_class_l_d_player_1a999bed21c40edaa171f48ed5fdd4e022">00267</link> <emphasis role="keywordtype">void</emphasis>&#32;<link linkend="_class_l_d_player_1a999bed21c40edaa171f48ed5fdd4e022">LDPlayer::setRequiredDimensions</link>(<link linkend="_class_instance">Instance</link>*&#32;inst)&#32;{
+<anchor xml:id="__l_d_player_8cpp_source_1l00268"/>00268 &#32;&#32;&#32;&#32;<emphasis role="keywordflow">if</emphasis>&#32;(<link linkend="_class_l_d_player_1a2fac3905b9911e0cfec1eaf6a7c1e16b">isInstanceRunning</link>(inst))&#32;{
+<anchor xml:id="__l_d_player_8cpp_source_1l00269"/>00269 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;std::cout&#32;&lt;&lt;&#32;<emphasis role="stringliteral">&quot;Stopping&#32;instance&#32;&quot;</emphasis>&#32;&lt;&lt;&#32;inst-&gt;<link linkend="_class_instance_1a71e6b641e231bdfcfb4f255c6b9e58af">instanceName</link>&#32;&lt;&lt;&#32;<emphasis role="stringliteral">&quot;&#32;to&#32;change&#32;its&#32;resolution\n&quot;</emphasis>;
+<anchor xml:id="__l_d_player_8cpp_source_1l00270"/>00270 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<link linkend="_class_l_d_player_1afa13194be778166f9b0d70e8b6ddf0fb">stopInstance</link>(inst);
+<anchor xml:id="__l_d_player_8cpp_source_1l00271"/>00271 &#32;&#32;&#32;&#32;}
+<anchor xml:id="__l_d_player_8cpp_source_1l00272"/>00272 
+<anchor xml:id="__l_d_player_8cpp_source_1l00273"/>00273 &#32;&#32;&#32;&#32;<link linkend="_class_l_d_player_instance">LDPlayerInstance</link>*&#32;newInst&#32;=&#32;<link linkend="_class_l_d_player_1aa85461ad56f19bcf3620c16d6781f640">transformInstance</link>(inst);
+<anchor xml:id="__l_d_player_8cpp_source_1l00274"/>00274 &#32;&#32;&#32;&#32;std::string&#32;command&#32;=&#32;<emphasis role="stringliteral">&quot;ldconsole.exe&#32;modify&#32;--index&#32;&quot;</emphasis>&#32;+&#32;std::to_string(newInst-&gt;<link linkend="_class_l_d_player_instance_1a54bd4852604077a154ae55bb00b4d185">ldId</link>)&#32;+&#32;<emphasis role="stringliteral">&quot;&#32;--resolution&#32;&quot;</emphasis>&#32;+&#32;std::to_string(<link linkend="_class_emulator_1a3c7b1df3adc7ba81a9fa76ce1662fa06">reqDimX</link>)&#32;+&#32;<emphasis role="stringliteral">&quot;,&quot;</emphasis>&#32;+&#32;std::to_string(<link linkend="_class_emulator_1a4db78de463890def4e2296b9da9c0bfb">reqDimY</link>)+<emphasis role="stringliteral">&quot;,&quot;</emphasis>+std::to_string(<link linkend="_class_emulator_1a99712a1a614fdbca45b8be35747e5f88">reqDpi</link>);
+<anchor xml:id="__l_d_player_8cpp_source_1l00275"/>00275 &#32;&#32;&#32;&#32;<link linkend="_sys_commands_8cpp_1a40529d2008c5ec34a2251615ad504e28">moveAndExecute</link>(<link linkend="_class_l_d_player_1aac7170bb4b860334bca99388d3f2a3f4">ldPlayerFolder</link>,&#32;command);
+<anchor xml:id="__l_d_player_8cpp_source_1l00276"/>00276 }
+<anchor xml:id="__l_d_player_8cpp_source_1l00277"/>00277 
+<anchor xml:id="__l_d_player_8cpp_source_1l00278"/>00278 
+<anchor xml:id="__l_d_player_8cpp_source_1l00279"/><link linkend="_class_l_d_player_1afd9b51341bf5b7b0a2d23777744c97b3">00279</link> <emphasis role="keywordtype">bool</emphasis>&#32;<link linkend="_class_l_d_player_1afd9b51341bf5b7b0a2d23777744c97b3">LDPlayer::adbActivated</link>(<link linkend="_class_instance">Instance</link>*&#32;inst)
+<anchor xml:id="__l_d_player_8cpp_source_1l00280"/>00280 {
+<anchor xml:id="__l_d_player_8cpp_source_1l00281"/>00281 &#32;&#32;&#32;&#32;<emphasis role="keywordflow">if</emphasis>&#32;(<link linkend="_class_l_d_player_instance">LDPlayerInstance</link>*&#32;newInst&#32;=&#32;<link linkend="_class_l_d_player_1aa85461ad56f19bcf3620c16d6781f640">transformInstance</link>(inst))&#32;{
+<anchor xml:id="__l_d_player_8cpp_source_1l00282"/>00282 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;std::string&#32;file=<link linkend="_class_l_d_player_1adbb21d959364d3b54d3981e73f24b0ac">getConfigFile</link>(inst);
+<anchor xml:id="__l_d_player_8cpp_source_1l00283"/>00283 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;std::string&#32;configText&#32;=&#32;<link linkend="__text_manager_8cpp_1add36cc54cd9616a393a17b8961491477">getFileContent</link>(file);
+<anchor xml:id="__l_d_player_8cpp_source_1l00284"/>00284 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;std::string&#32;adbParameter&#32;=&#32;<emphasis role="stringliteral">&quot;\&quot;basicSettings.adbDebug\&quot;:&#32;&quot;</emphasis>;
+<anchor xml:id="__l_d_player_8cpp_source_1l00285"/>00285 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;std::string&#32;adbValue&#32;=&#32;<link linkend="__text_manager_8cpp_1a55651a43aac6404e3e403967b3633201">extractLineContent</link>(configText,&#32;adbParameter,&#32;<emphasis role="stringliteral">&quot;:&#32;&quot;</emphasis>,&#32;<emphasis role="stringliteral">&quot;,&quot;</emphasis>);
+<anchor xml:id="__l_d_player_8cpp_source_1l00286"/>00286 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">return</emphasis>&#32;adbValue&#32;==&#32;<emphasis role="stringliteral">&quot;2&quot;</emphasis>;
+<anchor xml:id="__l_d_player_8cpp_source_1l00287"/>00287 &#32;&#32;&#32;&#32;}
+<anchor xml:id="__l_d_player_8cpp_source_1l00288"/>00288 &#32;&#32;&#32;&#32;<emphasis role="keywordflow">return</emphasis>&#32;<emphasis role="keyword">false</emphasis>;
+<anchor xml:id="__l_d_player_8cpp_source_1l00289"/>00289 }
+<anchor xml:id="__l_d_player_8cpp_source_1l00290"/>00290 
+<anchor xml:id="__l_d_player_8cpp_source_1l00291"/><link linkend="_class_l_d_player_1a71ae4d3ffde14a03452c76942db55e6e">00291</link> <emphasis role="keywordtype">void</emphasis>&#32;<link linkend="_class_l_d_player_1a71ae4d3ffde14a03452c76942db55e6e">LDPlayer::activateAdb</link>(<link linkend="_class_instance">Instance</link>*&#32;inst)
+<anchor xml:id="__l_d_player_8cpp_source_1l00292"/>00292 {
+<anchor xml:id="__l_d_player_8cpp_source_1l00293"/>00293 &#32;&#32;&#32;&#32;<emphasis role="keywordflow">if</emphasis>&#32;(<link linkend="_class_l_d_player_1a2fac3905b9911e0cfec1eaf6a7c1e16b">isInstanceRunning</link>(inst))<link linkend="_class_l_d_player_1afa13194be778166f9b0d70e8b6ddf0fb">stopInstance</link>(inst);
+<anchor xml:id="__l_d_player_8cpp_source_1l00294"/>00294 &#32;&#32;&#32;&#32;<emphasis role="keywordflow">if</emphasis>&#32;(<link linkend="_class_l_d_player_instance">LDPlayerInstance</link>*&#32;newInst&#32;=&#32;<link linkend="_class_l_d_player_1aa85461ad56f19bcf3620c16d6781f640">transformInstance</link>(inst))&#32;{
+<anchor xml:id="__l_d_player_8cpp_source_1l00295"/>00295 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;std::string&#32;file&#32;=&#32;<link linkend="_class_l_d_player_1adbb21d959364d3b54d3981e73f24b0ac">getConfigFile</link>(inst);
+<anchor xml:id="__l_d_player_8cpp_source_1l00296"/>00296 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;std::string&#32;configText&#32;=&#32;<link linkend="__text_manager_8cpp_1add36cc54cd9616a393a17b8961491477">getFileContent</link>(file);
+<anchor xml:id="__l_d_player_8cpp_source_1l00297"/>00297 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;std::string&#32;adbParameter&#32;=&#32;<emphasis role="stringliteral">&quot;\&quot;basicSettings.adbDebug\&quot;:&#32;&quot;</emphasis>;
+<anchor xml:id="__l_d_player_8cpp_source_1l00298"/>00298 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;std::string&#32;adbValue&#32;=&#32;<emphasis role="stringliteral">&quot;2&quot;</emphasis>;&#32;&#32;
+<anchor xml:id="__l_d_player_8cpp_source_1l00299"/>00299 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;std::string&#32;newText=<link linkend="__text_manager_8cpp_1a98e5aae2b6659418890caba4fad17d5e">updateContent</link>(configText,&#32;adbValue,&#32;adbParameter,<emphasis role="stringliteral">&quot;,&quot;</emphasis>);
+<anchor xml:id="__l_d_player_8cpp_source_1l00300"/>00300 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<link linkend="__text_manager_8cpp_1ab55140c566370b105b9bf81756293fa5">writeToFile</link>(file,&#32;newText,<link linkend="__text_manager_8h_1a61d23b393fdc35f2f0e30a1ed566c76da5d8c28daa563cffcab51f34a0bec098d">OVERWRITE</link>);
+<anchor xml:id="__l_d_player_8cpp_source_1l00301"/>00301 &#32;&#32;&#32;&#32;}
+<anchor xml:id="__l_d_player_8cpp_source_1l00302"/>00302 }
+</programlisting></section>

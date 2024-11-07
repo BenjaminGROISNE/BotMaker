@@ -1,0 +1,133 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<section xmlns="http://docbook.org/ns/docbook" version="5.0" xmlns:xlink="http://www.w3.org/1999/xlink" xml:id="_struct_popup" xml:lang="en-US">
+<title>Popup Struct Reference</title>
+<indexterm><primary>Popup</primary></indexterm>
+<para>
+<computeroutput>#include &lt;Units.h&gt;</computeroutput>
+</para>
+Inheritance diagram for Popup:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="struct_popup__inherit__graph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+Collaboration diagram for Popup:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="struct_popup__coll__graph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+<simplesect>
+    <title>Public Member Functions    </title>
+        <itemizedlist>
+            <listitem><para><link linkend="_struct_popup_1a670d35e480ac48024204994fedc9b056">Popup</link> ()</para>
+</listitem>
+            <listitem><para><link linkend="_struct_popup_1a8fc8f7ebc17f484b6bbaac0385a42881">Popup</link> (<link linkend="_struct_template">Template</link> <link linkend="__units_8h_1a2b350cb683584e1f7db6c78f698c161ba21f40778b7db9343a6ca75ec2c41ccce">T</link>)</para>
+</listitem>
+            <listitem><para><link linkend="_struct_popup_1acc40028889de1cf3c5be72961518f836">Popup</link> (std::string pop)</para>
+</listitem>
+            <listitem><para><link linkend="_struct_popup_1abebbe22133e908b6f514fbe69f56c868">Popup</link> (std::string pop, <link linkend="__units_8h_1adc6e5733fc3c22f0a7b2914188c49c90">state</link> c)</para>
+</listitem>
+            <listitem><para><link linkend="_struct_popup_1aadd115828f6dd6e9e0a90d9dadc255b9">Popup</link> (std::string pop, <link linkend="__units_8h_1adc6e5733fc3c22f0a7b2914188c49c90">state</link> c, <link linkend="__units_8h_1a6b62789b863165c9d424a7504d4a6f61">typeMat</link> t)</para>
+</listitem>
+        </itemizedlist>
+</simplesect>
+Public Member Functions inherited from <link linkend="_struct_template">Template</link>        <itemizedlist>
+            <listitem><para><link linkend="_struct_template_1afea5166b9ca0022fe21c2ed4882c161a">Template</link> ()</para>
+</listitem>
+            <listitem><para><link linkend="_struct_template_1aa45361f10f46401fa807632d7c54d0ad">Template</link> (const std::string namemat)</para>
+</listitem>
+            <listitem><para><link linkend="_struct_template_1a8cd1cf65e92e6c7a4c39454aee48724f">Template</link> (const std::string <link linkend="_struct_template_1a7d3b343c5b1f0dce079476ecc5962985">id</link>, <link linkend="__units_8h_1a6b62789b863165c9d424a7504d4a6f61">typeMat</link> <link linkend="_struct_template_1a1ec70d2de7871cb6400bf0ac1c12e345">type</link>)</para>
+</listitem>
+            <listitem><para><link linkend="_struct_template_1aba025f01ce1f43b4fb9083b8b50087fd">Template</link> (const <link linkend="_struct_template">Template</link> &amp;other)</para>
+</listitem>
+            <listitem><para>void <link linkend="_struct_template_1a93d3c6f97592ba09d7819fda3c3296d7">setType</link> (<link linkend="__units_8h_1a6b62789b863165c9d424a7504d4a6f61">typeMat</link> <link linkend="_struct_template_1a1ec70d2de7871cb6400bf0ac1c12e345">type</link>)</para>
+</listitem>
+        </itemizedlist>
+<simplesect>
+    <title>Public Attributes    </title>
+        <itemizedlist>
+            <listitem><para><link linkend="__units_8h_1adc6e5733fc3c22f0a7b2914188c49c90">state</link> <link linkend="_struct_popup_1aa5c6a7a2c3666da615d8f89537f899df">action</link></para>
+</listitem>
+        </itemizedlist>
+</simplesect>
+Public Attributes inherited from <link linkend="_struct_template">Template</link>        <itemizedlist>
+            <listitem><para><link linkend="_struct_coord">Coord</link> <link linkend="_struct_template_1a6164c425299fb5841f10e46788d9dc3e">C</link></para>
+</listitem>
+            <listitem><para>cv::Mat <link linkend="_struct_template_1a9a9825d5a96090c84020ed450751d549">mat</link></para>
+</listitem>
+            <listitem><para>cv::Mat <link linkend="_struct_template_1af95fe5a1cdb4e8d32451db2b3ad29a4c">graymat</link></para>
+</listitem>
+            <listitem><para><link linkend="__units_8h_1a6b62789b863165c9d424a7504d4a6f61">typeMat</link> <link linkend="_struct_template_1a1ec70d2de7871cb6400bf0ac1c12e345">type</link></para>
+</listitem>
+            <listitem><para>std::string <link linkend="_struct_template_1a7d3b343c5b1f0dce079476ecc5962985">id</link></para>
+</listitem>
+            <listitem><para>float <link linkend="_struct_template_1a3f0387ee18d1195f948377b0f0903e1b">score</link></para>
+</listitem>
+            <listitem><para>int <link linkend="_struct_template_1ab59f2a046fc791a75b0aba9b2ff9707d">width</link></para>
+</listitem>
+            <listitem><para>int <link linkend="_struct_template_1a1d17a59e2a5f2c2772d9fa04066f7b09">height</link></para>
+</listitem>
+        </itemizedlist>
+<section>
+<title>Detailed Description</title>
+<para>
+Definition at line <link linkend="__units_8h_source_1l00221">221</link> of file <link linkend="__units_8h_source">Units.h</link>.</para>
+</section>
+<section>
+<title>Constructor &amp; Destructor Documentation</title>
+<anchor xml:id="_struct_popup_1a670d35e480ac48024204994fedc9b056"/><section>
+    <title>Popup()<computeroutput>[1/5]</computeroutput></title>
+<indexterm><primary>Popup</primary><secondary>Popup</secondary></indexterm>
+<indexterm><primary>Popup</primary><secondary>Popup</secondary></indexterm>
+<para><computeroutput>Popup::Popup ( )<computeroutput>[inline]</computeroutput></computeroutput></para><para>
+Definition at line <link linkend="__units_8h_source_1l00223">223</link> of file <link linkend="__units_8h_source">Units.h</link>.</para>
+</section>
+<anchor xml:id="_struct_popup_1a8fc8f7ebc17f484b6bbaac0385a42881"/><section>
+    <title>Popup()<computeroutput>[2/5]</computeroutput></title>
+<indexterm><primary>Popup</primary><secondary>Popup</secondary></indexterm>
+<indexterm><primary>Popup</primary><secondary>Popup</secondary></indexterm>
+<para><computeroutput>Popup::Popup (<link linkend="_struct_template">Template</link> T)<computeroutput>[inline]</computeroutput></computeroutput></para><para>
+Definition at line <link linkend="__units_8h_source_1l00226">226</link> of file <link linkend="__units_8h_source">Units.h</link>.</para>
+</section>
+<anchor xml:id="_struct_popup_1acc40028889de1cf3c5be72961518f836"/><section>
+    <title>Popup()<computeroutput>[3/5]</computeroutput></title>
+<indexterm><primary>Popup</primary><secondary>Popup</secondary></indexterm>
+<indexterm><primary>Popup</primary><secondary>Popup</secondary></indexterm>
+<para><computeroutput>Popup::Popup (std::string pop)<computeroutput>[inline]</computeroutput></computeroutput></para><para>
+Definition at line <link linkend="__units_8h_source_1l00229">229</link> of file <link linkend="__units_8h_source">Units.h</link>.</para>
+</section>
+<anchor xml:id="_struct_popup_1abebbe22133e908b6f514fbe69f56c868"/><section>
+    <title>Popup()<computeroutput>[4/5]</computeroutput></title>
+<indexterm><primary>Popup</primary><secondary>Popup</secondary></indexterm>
+<indexterm><primary>Popup</primary><secondary>Popup</secondary></indexterm>
+<para><computeroutput>Popup::Popup (std::string pop, <link linkend="__units_8h_1adc6e5733fc3c22f0a7b2914188c49c90">state</link> c)<computeroutput>[inline]</computeroutput></computeroutput></para><para>
+Definition at line <link linkend="__units_8h_source_1l00232">232</link> of file <link linkend="__units_8h_source">Units.h</link>.</para>
+</section>
+<anchor xml:id="_struct_popup_1aadd115828f6dd6e9e0a90d9dadc255b9"/><section>
+    <title>Popup()<computeroutput>[5/5]</computeroutput></title>
+<indexterm><primary>Popup</primary><secondary>Popup</secondary></indexterm>
+<indexterm><primary>Popup</primary><secondary>Popup</secondary></indexterm>
+<para><computeroutput>Popup::Popup (std::string pop, <link linkend="__units_8h_1adc6e5733fc3c22f0a7b2914188c49c90">state</link> c, <link linkend="__units_8h_1a6b62789b863165c9d424a7504d4a6f61">typeMat</link> t)<computeroutput>[inline]</computeroutput></computeroutput></para><para>
+Definition at line <link linkend="__units_8h_source_1l00235">235</link> of file <link linkend="__units_8h_source">Units.h</link>.</para>
+</section>
+</section>
+<section>
+<title>Member Data Documentation</title>
+<anchor xml:id="_struct_popup_1aa5c6a7a2c3666da615d8f89537f899df"/><section>
+    <title>action</title>
+<indexterm><primary>action</primary><secondary>Popup</secondary></indexterm>
+<indexterm><primary>Popup</primary><secondary>action</secondary></indexterm>
+<para><computeroutput><link linkend="__units_8h_1adc6e5733fc3c22f0a7b2914188c49c90">state</link> Popup::action</computeroutput></para><para>
+Definition at line <link linkend="__units_8h_source_1l00222">222</link> of file <link linkend="__units_8h_source">Units.h</link>.</para>
+</section>
+<para>
+The documentation for this struct was generated from the following file:</para>
+src/<link linkend="__units_8h">Units.h</link></section>
+</section>

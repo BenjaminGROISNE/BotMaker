@@ -1,0 +1,1387 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<section xmlns="http://docbook.org/ns/docbook" version="5.0" xmlns:xlink="http://www.w3.org/1999/xlink" xml:id="_class_flow_tag_panel" xml:lang="en-US">
+<title>FlowTagPanel Class Reference</title>
+<indexterm><primary>FlowTagPanel</primary></indexterm>
+<para>
+<computeroutput>#include &lt;TagPanel.h&gt;</computeroutput>
+</para>
+Inheritance diagram for FlowTagPanel:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_flow_tag_panel__inherit__graph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+Collaboration diagram for FlowTagPanel:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_flow_tag_panel__coll__graph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+<simplesect>
+    <title>Public Member Functions    </title>
+        <itemizedlist>
+            <listitem><para><link linkend="_class_flow_tag_panel_1a3dcc68ef4b7679830e857baa8847d09a">FlowTagPanel</link> (bool topConstructor=true)</para>
+</listitem>
+            <listitem><para><link linkend="_class_flow_tag_panel_1a370665455a3991702bf8f6c5d9c95272">FlowTagPanel</link> (wxWindow *parentWindow, bool topConstructor=true)</para>
+</listitem>
+            <listitem><para><link linkend="_class_flow_tag_panel_1ad022a384de848b36e615014a9f727755">FlowTagPanel</link> (const <link linkend="_class_flow_tag_panel">FlowTagPanel</link> &amp;toCopy, bool topConstructor=true)</para>
+</listitem>
+            <listitem><para><link linkend="_class_flow_tag_panel">FlowTagPanel</link> * <link linkend="_class_flow_tag_panel_1a39e04805c0a27303a05e72d44a531aa4">clone</link> () override</para>
+</listitem>
+            <listitem><para><link linkend="_class_flow_tag_panel_1a4057aa51063dc198ca7f1497ecfdf9bd">~FlowTagPanel</link> ()</para>
+</listitem>
+            <listitem><para>void <link linkend="_class_flow_tag_panel_1a8168f4dc819be19de5886ca6fa509b03">initChildrenSizer</link> ()</para>
+</listitem>
+            <listitem><para>void <link linkend="_class_flow_tag_panel_1a0e1305928f680ed7efb08d17d951d814">cloneChildren</link> (const <link linkend="_class_flow_tag_panel">FlowTagPanel</link> *toCopy)</para>
+</listitem>
+            <listitem><para>void <link linkend="_class_flow_tag_panel_1a92c626fbe9ab70ee75813edec7e323ba">addComponents</link> (<link linkend="_class_tag_panel">TagPanel</link> *tag) override</para>
+</listitem>
+            <listitem><para>void <link linkend="_class_flow_tag_panel_1a24aede4ad59f41a079d4c38e26955d55">addChild</link> (<link linkend="_class_tag_panel">TagPanel</link> *childrenTag)</para>
+</listitem>
+            <listitem><para>void <link linkend="_class_flow_tag_panel_1abf730289f88b08402ed5d924d362814c">switchFlowTagVisibility</link> (wxMouseEvent &amp;evt)</para>
+</listitem>
+            <listitem><para>void <link linkend="_class_flow_tag_panel_1af98215cc2497f7ef7d8e4ed00e94ca33">insertChild</link> (<link linkend="_class_tag_panel">TagPanel</link> *target, <link linkend="_class_tag_panel">TagPanel</link> *newPanel, <link linkend="__tag_panel_8h_1a443e25f6957db75e312dbd0fb43d5a6e">AddPosition</link> pos)</para>
+</listitem>
+            <listitem><para>void <link linkend="_class_flow_tag_panel_1a38bade8b3e467e730e739bce386b5ea0">insertChild</link> (<link linkend="_class_tag_panel">TagPanel</link> *newPanel, int index)</para>
+</listitem>
+            <listitem><para>void <link linkend="_class_flow_tag_panel_1a1e44ca3ceb2df81762129896dbdb7b62">swapChildren</link> (<link linkend="_class_tag_panel">TagPanel</link> *panel1, <link linkend="_class_tag_panel">TagPanel</link> *panel2)</para>
+</listitem>
+            <listitem><para>bool <link linkend="_class_flow_tag_panel_1aa81a6c6c05a02665ceef5ee70dfe8552">containsChild</link> (<link linkend="_class_tag_panel">TagPanel</link> *panel)</para>
+</listitem>
+            <listitem><para>void <link linkend="_class_flow_tag_panel_1a8c328c48878111ffebcc91b7b37a8b77">addChildren</link> (std::vector&lt; <link linkend="_class_tag_panel">TagPanel</link> * &gt; childrenTag)</para>
+</listitem>
+            <listitem><para>void <link linkend="_class_flow_tag_panel_1aaeeb052f14fc5e6aa2be1f124e82b694">addTagAndSize</link> (std::vector&lt; <link linkend="_class_tag_panel">TagPanel</link> * &gt; childrenTag)</para>
+</listitem>
+            <listitem><para>int <link linkend="_class_flow_tag_panel_1a93b947ffb6b2dc6c2f359490158b7b90">getTagHeight</link> () override</para>
+</listitem>
+            <listitem><para>void <link linkend="_class_flow_tag_panel_1a94ca55612cbf5a6300712ffaee243c9b">addHider</link> ()</para>
+</listitem>
+            <listitem><para>void <link linkend="_class_flow_tag_panel_1a6a2ba7ef0cfdae4b333371b8704a0612">setTagLine</link> () override</para>
+</listitem>
+            <listitem><para>void <link linkend="_class_flow_tag_panel_1a6c9860496ffc71764f9cfa629d090703">updateInsertRect</link> () override</para>
+</listitem>
+            <listitem><para>void <link linkend="_class_flow_tag_panel_1a76162eeee3010c06151bae79e421f87e">setPanelColor</link> () override</para>
+</listitem>
+            <listitem><para>void <link linkend="_class_flow_tag_panel_1abdf6ba578faa620f2aaa4aa5cc4852d6">setTagName</link> () override</para>
+</listitem>
+            <listitem><para>void <link linkend="_class_flow_tag_panel_1ac485ea3365ed7d46576190699c2ffca2">initSizers</link> () override</para>
+</listitem>
+            <listitem><para>void <link linkend="_class_flow_tag_panel_1a4e3b68f463d8374b7222c6bd28f47b7e">detachPanel</link> (<link linkend="_class_tag_panel">TagPanel</link> *panel)</para>
+</listitem>
+            <listitem><para>void <link linkend="_class_flow_tag_panel_1ab7a16f3ed1f06f7d060aeb086fd8d683">setInsertPoint</link> (<link linkend="__tag_panel_8h_1a369abf422adc1247d0d7bc295bf34014">HoverPosition</link> hovPos) override</para>
+</listitem>
+            <listitem><para>void <link linkend="_class_flow_tag_panel_1a482b23630874fb9f414c9b029501aadd">updateLayout</link> ()</para>
+</listitem>
+            <listitem><para>void <link linkend="_class_flow_tag_panel_1a1822bbc91daca9379e090f363e870d40">hideChildren</link> ()</para>
+</listitem>
+            <listitem><para>void <link linkend="_class_flow_tag_panel_1a4c02b86a1776b70cdd14afd50de4736b">showChildren</link> ()</para>
+</listitem>
+            <listitem><para>void <link linkend="_class_flow_tag_panel_1a63038ffcf254ad71b547d31456a0fd2f">hideEmptyPanel</link> ()</para>
+</listitem>
+            <listitem><para>void <link linkend="_class_flow_tag_panel_1ad1a55f7e5c1eb22bed92049643bb75b9">showEmptyPanel</link> ()</para>
+</listitem>
+            <listitem><para>void <link linkend="_class_flow_tag_panel_1ab190cd6aefb44611ef4b382c315da514">initEmptyPanel</link> ()</para>
+</listitem>
+            <listitem><para>void <link linkend="_class_flow_tag_panel_1aa69c21d11b4824c7d7955a6c35f33564">addCondition</link> ()</para>
+</listitem>
+            <listitem><para>bool <link linkend="_class_flow_tag_panel_1a3ed9948e56d17d5b28c2c8708a90bea2">isEmpty</link> ()</para>
+</listitem>
+            <listitem><para>wxSizerItem * <link linkend="_class_flow_tag_panel_1a63d586b3a818bf85f3cfa56048c697e5">getBottomSpacer</link> ()</para>
+</listitem>
+            <listitem><para>void <link linkend="_class_flow_tag_panel_1af4ba2dd032b93523943e53dfd873fd8e">addBottomSpacer</link> ()</para>
+</listitem>
+            <listitem><para>void <link linkend="_class_flow_tag_panel_1ae49c859a41f499bd84be65ee29f36f73">RemoveTagPanel</link> (<link linkend="_class_tag_panel">TagPanel</link> *childPanel)</para>
+</listitem>
+            <listitem><para>void <link linkend="_class_flow_tag_panel_1ae4f118933196a60a71cfa6b4b9b69894">setChildrenVisibility</link> (bool <link linkend="__units_8h_1adc6e5733fc3c22f0a7b2914188c49c90">state</link>)</para>
+</listitem>
+            <listitem><para>int <link linkend="_class_flow_tag_panel_1aaa4b6f8ffb98f825f255cdd2017fc17a">getIndex</link> (wxSizerItem *item)</para>
+</listitem>
+            <listitem><para>int <link linkend="_class_flow_tag_panel_1aff934a06834390a1d0b16c4d77740ecd">getIndex</link> (<link linkend="_class_tag_panel">TagPanel</link> *panel)</para>
+</listitem>
+            <listitem><para>int <link linkend="_class_flow_tag_panel_1a8b4daa4a979fd8a3eecba10b92bb46e7">getNbParents</link> ()</para>
+</listitem>
+            <listitem><para>bool <link linkend="_class_flow_tag_panel_1a38a7e2167532623906ae82c0b92728c2">childrenVisible</link> ()</para>
+</listitem>
+            <listitem><para>wxButton * <link linkend="_class_flow_tag_panel_1acf474cc277820301384f9b1d84f1c9d0">getHider</link> ()</para>
+</listitem>
+            <listitem><para>wxBoxSizer * <link linkend="_class_flow_tag_panel_1a7e277f4afc1adee6e2a94f6980d83e80">getChildrenSizer</link> ()</para>
+</listitem>
+            <listitem><para><link linkend="_class_empty_panel">EmptyPanel</link> * <link linkend="_class_flow_tag_panel_1aa7e87378e7647a40099818265a65f21a">getEmptyTagPanel</link> ()</para>
+</listitem>
+            <listitem><para>wxwxSizerItemListNode * <link linkend="_class_flow_tag_panel_1a5745b7ba56040b00437ad0766fc82717">getTagNode</link> (<link linkend="_class_tag_panel">TagPanel</link> *panel)</para>
+</listitem>
+            <listitem><para><link linkend="_class_tag_panel">TagPanel</link> * <link linkend="_class_flow_tag_panel_1acf35f1a7b55da94f68329142af1a1e69">getPreviousTagChild</link> (<link linkend="_class_tag_panel">TagPanel</link> *panel)</para>
+</listitem>
+            <listitem><para><link linkend="_class_tag_panel">TagPanel</link> * <link linkend="_class_flow_tag_panel_1a5c91aa7b2cc4211630bad8682a469b2e">getNodeToTag</link> (wxwxSizerItemListNode *node)</para>
+</listitem>
+            <listitem><para><link linkend="_class_tag_panel">TagPanel</link> * <link linkend="_class_flow_tag_panel_1ad2a7dd8c2e809653b29f53a54e9088bc">getNextTagChild</link> (<link linkend="_class_tag_panel">TagPanel</link> *panel)</para>
+</listitem>
+            <listitem><para><link linkend="_class_tag_panel">TagPanel</link> * <link linkend="_class_flow_tag_panel_1a94ad251f2137de78a0c8b8fd75d81d7f">getFirstTag</link> ()</para>
+</listitem>
+            <listitem><para><link linkend="_class_tag_panel">TagPanel</link> * <link linkend="_class_flow_tag_panel_1ae00ff43656f4b31fa667c69d74317e59">getLastTag</link> ()</para>
+</listitem>
+            <listitem><para>bool <link linkend="_class_flow_tag_panel_1aa8d5b418c6c046a0c53cb67a8d793308">isLastTagChild</link> (<link linkend="_class_tag_panel">TagPanel</link> *panel)</para>
+</listitem>
+            <listitem><para>bool <link linkend="_class_flow_tag_panel_1abef0b2e00620e86ebbe17b017aab8e99">isFirstTagChild</link> (<link linkend="_class_tag_panel">TagPanel</link> *panel)</para>
+</listitem>
+            <listitem><para>int <link linkend="_class_flow_tag_panel_1a06db100e4343fc75a9e947a24c8575fe">getNbChildren</link> ()</para>
+</listitem>
+            <listitem><para>wxSizerItem * <link linkend="_class_flow_tag_panel_1a292d74fbfba61f5c7df90789a9eb31e2">getSizerItem</link> (<link linkend="_class_tag_panel">TagPanel</link> *panel)</para>
+</listitem>
+            <listitem><para>bool <link linkend="_class_flow_tag_panel_1a77dc30ba98e8e84f02f23ef9af057e4d">isMinimized</link> () const</para>
+</listitem>
+            <listitem><para>std::vector&lt; <link linkend="_class_tag_panel">TagPanel</link> * &gt; <link linkend="_class_flow_tag_panel_1a908b8a9b0319c8c60588dff9296e9baf">getChildrenTags</link> () const</para>
+</listitem>
+        </itemizedlist>
+</simplesect>
+Public Member Functions inherited from <link linkend="_class_tag_panel">TagPanel</link>        <itemizedlist>
+            <listitem><para><link linkend="_class_tag_panel_1a20eb7700df1a0fc1a51352b36a6e5a22">TagPanel</link> (bool topConstructor=true)</para>
+</listitem>
+            <listitem><para><link linkend="_class_tag_panel_1a947de417b587805f538e91916ca1cc5d">TagPanel</link> (wxWindow *parentWindow, bool topConstructor=true)</para>
+</listitem>
+            <listitem><para><link linkend="_class_tag_panel_1a25ab1432ace7974c4abc496f51223942">TagPanel</link> (const <link linkend="_class_tag_panel">TagPanel</link> &amp;toCopy, bool topConstructor=true)</para>
+</listitem>
+            <listitem><para>void <link linkend="_class_tag_panel_1adea8840b3b43bfee7f8e090a71dd708c">setTagNameCustom</link> (const std::string &amp;name)</para>
+</listitem>
+            <listitem><para>virtual void <link linkend="_class_tag_panel_1a746b3898803ea72e2a7500d7ed73d9ce">setColors</link> ()</para>
+</listitem>
+            <listitem><para>void <link linkend="_class_tag_panel_1af74a61159813873c529dbcb17a371a05">initLineSizer</link> ()</para>
+</listitem>
+            <listitem><para>virtual void <link linkend="_class_tag_panel_1ae24d607788ed14f2fc8b6a88ff9b7602">initTagSizer</link> ()</para>
+</listitem>
+            <listitem><para>void <link linkend="_class_tag_panel_1a5d57b2c271078562ca65bf9d0f9c656e">DrawBordersEvent</link> (wxPaintEvent &amp;<link linkend="_paths_8cpp_1a93114eafe7b571802c6787926ec00d93">event</link>)</para>
+</listitem>
+            <listitem><para>void <link linkend="_class_tag_panel_1a72db5ac659ea9dc41b2a236bd5ff0a12">OnHoverPaint</link> (wxPaintEvent &amp;<link linkend="_paths_8cpp_1a93114eafe7b571802c6787926ec00d93">event</link>)</para>
+</listitem>
+            <listitem><para>void <link linkend="_class_tag_panel_1a01e839de7aa3bedbe9a7bc1f152a02f8">setStaticTagName</link> ()</para>
+</listitem>
+            <listitem><para><link linkend="_class_tag_panel">TagPanel</link> * <link linkend="_class_tag_panel_1a20a4cc67dc3ecd4538cb8af3c9668421">getPreviousTag</link> ()</para>
+</listitem>
+            <listitem><para><link linkend="_class_tag_panel">TagPanel</link> * <link linkend="_class_tag_panel_1aefc411bf7be4bd7fd05b3e8a48a6671f">getNextTag</link> ()</para>
+</listitem>
+            <listitem><para>wxBoxSizer * <link linkend="_class_tag_panel_1a7f15f662ac35f7d7b2b96c8d4dae0949">getLineSizer</link> ()</para>
+</listitem>
+            <listitem><para>virtual void <link linkend="_class_tag_panel_1af2926b62ee8940d7aa87591255623814">addTagName</link> ()</para>
+</listitem>
+            <listitem><para>void <link linkend="_class_tag_panel_1a99231e365be781b584996e68197621b9">setTagSizer</link> ()</para>
+</listitem>
+            <listitem><para>void <link linkend="_class_tag_panel_1a752cdf34c8cc8cc25ecc944683dff46b">setTagNameColor</link> ()</para>
+</listitem>
+            <listitem><para>void <link linkend="_class_tag_panel_1aaa6f2d383b2380c7c103b5019bd05782">addMover</link> ()</para>
+</listitem>
+            <listitem><para>bool <link linkend="_class_tag_panel_1a9a11954167303954710c12832b39fbf4">isLastTag</link> ()</para>
+</listitem>
+            <listitem><para>bool <link linkend="_class_tag_panel_1aa16fddf213851034cb33b775ea653efc">isFirstTag</link> ()</para>
+</listitem>
+            <listitem><para>void <link linkend="_class_tag_panel_1a4ddfadd1d39efac7f0123146fc9f8233">OnMoveUpClick</link> (wxMouseEvent &amp;evt)</para>
+</listitem>
+            <listitem><para>void <link linkend="_class_tag_panel_1a716d475b11d29d74392f4b0b581f7a45">OnDuplicateClick</link> (wxMouseEvent &amp;evt)</para>
+</listitem>
+            <listitem><para>void <link linkend="_class_tag_panel_1a33ffecd8625bc7e0783d208d8d18daf7">OnMoveDownClick</link> (wxMouseEvent &amp;evt)</para>
+</listitem>
+            <listitem><para>virtual void <link linkend="_class_tag_panel_1ab2f6c36e777443dcffd1cff986027790">initDeletePanel</link> ()</para>
+</listitem>
+            <listitem><para>void <link linkend="_class_tag_panel_1a92b74a6332f46423e1509044989a4a0a">OnDeleteButtonClick</link> (wxMouseEvent &amp;evt)</para>
+</listitem>
+            <listitem><para>void <link linkend="_class_tag_panel_1a370e5a7a79772ae4775f24de35506582">setPaintEvents</link> ()</para>
+</listitem>
+            <listitem><para>std::shared_ptr&lt; <link linkend="_class_tag">Tag</link> &gt; <link linkend="_class_tag_panel_1acf04179a1277e790a613902b33513a77">getTag</link> () const</para>
+</listitem>
+            <listitem><para>void <link linkend="_class_tag_panel_1aa2808a9ecda8c8181a49b4460e046395">setTag</link> (std::shared_ptr&lt; <link linkend="_class_tag">Tag</link> &gt; tag)</para>
+</listitem>
+            <listitem><para>void <link linkend="_class_tag_panel_1a5a896e5052102ac83010bc155bfd49aa">initDetailsPanel</link> (wxPanel *parentPanel)</para>
+</listitem>
+            <listitem><para>void <link linkend="_class_tag_panel_1a66d61d27a1bc39bf48ec00fd0f09dfd8">initDetailsTagName</link> ()</para>
+</listitem>
+            <listitem><para>void <link linkend="_class_tag_panel_1a43c96ffa9523c002fb96126500209ce8">SetLineFont</link> (wxButton *button, int <link linkend="_class_tag_panel_1aadc6b7d84d378ff8db4682080627030f">policeSize</link>=15)</para>
+</listitem>
+            <listitem><para>void <link linkend="_class_tag_panel_1a53d2a3068096670c08f249b1c2f6e798">SetLineFont</link> (wxStaticText *button, int <link linkend="_class_tag_panel_1aadc6b7d84d378ff8db4682080627030f">policeSize</link>=15)</para>
+</listitem>
+            <listitem><para>void <link linkend="_class_tag_panel_1af7c491223a887d2ce97353157adc9110">OnInsert</link> (wxPaintEvent &amp;evt)</para>
+</listitem>
+            <listitem><para>void <link linkend="_class_tag_panel_1a82ceff512bd6bf6302d782ea908c9ef9">linkToPanel</link> (wxBoxSizer *gridSizer)</para>
+</listitem>
+            <listitem><para>virtual void <link linkend="_class_tag_panel_1aa1a12f478359b6549c0d9c1c90f331b8">createDetailsPanel</link> (<link linkend="_class_tag_panel">TagPanel</link> *tag, wxPanel *parentPanel, wxBoxSizer *gridSizer)</para>
+</listitem>
+            <listitem><para>wxBoxSizer * <link linkend="_class_tag_panel_1a0c29f16235ad971cfa466f5e852cbcd8">getDetailsSizer</link> ()</para>
+</listitem>
+            <listitem><para>wxPanel * <link linkend="_class_tag_panel_1abc3125dfcc3694efea652a2232a6b23e">getDetailsPanel</link> ()</para>
+</listitem>
+            <listitem><para>wxColour <link linkend="_class_tag_panel_1a2968cbcc5c04e34a50085877ddb53f65">getPanelColour</link> ()</para>
+</listitem>
+            <listitem><para>wxBoxSizer * <link linkend="_class_tag_panel_1a98044cff891ada484ee4c845e878735b">getTagSizer</link> ()</para>
+</listitem>
+            <listitem><para><link linkend="_class_tag_panel">TagPanel</link> * <link linkend="_class_tag_panel_1af3b5b6fc2b16171af7cab7b0d79d9ed7">getParentTag</link> ()</para>
+</listitem>
+            <listitem><para>wxPoint <link linkend="_class_tag_panel_1aaaf019a2cc75cfb1014a0b9fd366e7f7">getInsertPoint</link> ()</para>
+</listitem>
+            <listitem><para>wxButton * <link linkend="_class_tag_panel_1a3987f5a00ba29cb8f5c1e7d09474f819">getCloneButton</link> () const</para>
+</listitem>
+            <listitem><para>wxButton * <link linkend="_class_tag_panel_1ad32a3e47413abc0b1f2252b7ce530b3d">getCutButton</link> () const</para>
+</listitem>
+        </itemizedlist>
+<simplesect>
+    <title>Protected Attributes    </title>
+        <itemizedlist>
+            <listitem><para>wxSizerItem * <link linkend="_class_flow_tag_panel_1a023570c0ce18045ff6d02e7edcd83df6">bottomSpacer</link></para>
+</listitem>
+            <listitem><para><link linkend="_class_empty_panel">EmptyPanel</link> * <link linkend="_class_flow_tag_panel_1a449e6c46847cf6ff4849c43603e576a3">emptyTagPanel</link></para>
+</listitem>
+            <listitem><para>int <link linkend="_class_flow_tag_panel_1a29d6875da55a05e85043eafb6d4e9e0f">nbFlowParents</link></para>
+</listitem>
+            <listitem><para>wxBoxSizer * <link linkend="_class_flow_tag_panel_1aeb64852326aa4019061f0ba333276b6f">childrenSizer</link></para>
+</listitem>
+            <listitem><para>wxButton * <link linkend="_class_flow_tag_panel_1a168025a358c496c0b7916c64ca718d0c">hider</link></para>
+</listitem>
+        </itemizedlist>
+</simplesect>
+Protected Attributes inherited from <link linkend="_class_tag_panel">TagPanel</link>        <itemizedlist>
+            <listitem><para>wxButton * <link linkend="_class_tag_panel_1a81aca1816f6fc0985077fc5f461046e2">cloneButton</link></para>
+</listitem>
+            <listitem><para>wxButton * <link linkend="_class_tag_panel_1a227cddc11db1954dde6b5e3c49591e7a">cutButton</link></para>
+</listitem>
+            <listitem><para>wxButton * <link linkend="_class_tag_panel_1a569386f1f3226d5aa452cbbba46b1ffa">moveUpButton</link></para>
+</listitem>
+            <listitem><para>wxButton * <link linkend="_class_tag_panel_1a7972e5db29975326c850a2dae622eda6">moveDownButton</link></para>
+</listitem>
+            <listitem><para>wxButton * <link linkend="_class_tag_panel_1a481229251b8e6ee6d44ce1b5abd94c1b">deleteButton</link></para>
+</listitem>
+            <listitem><para>wxPoint <link linkend="_class_tag_panel_1ac08e1909ad79173fead54cf2e6c7be61">insertPoint</link></para>
+</listitem>
+            <listitem><para>wxSize <link linkend="_class_tag_panel_1ac6667f655542d928b04f273ba453e7c9">insertRect</link></para>
+</listitem>
+            <listitem><para>wxColour <link linkend="_class_tag_panel_1a0de4005aceb4d6809ec88ffb899f6d17">panelColor</link></para>
+</listitem>
+            <listitem><para>wxColour <link linkend="_class_tag_panel_1a23f2d5d739a33e4f3e4c26e1ee160d46">tagNameColor</link></para>
+</listitem>
+            <listitem><para>wxString <link linkend="_class_tag_panel_1a5dd671ef158b702eb9b17b88fe6c79b6">tagName</link></para>
+</listitem>
+            <listitem><para>int <link linkend="_class_tag_panel_1aadc6b7d84d378ff8db4682080627030f">policeSize</link></para>
+</listitem>
+            <listitem><para>wxBoxSizer * <link linkend="_class_tag_panel_1a0fb4a6bb2fdc47ce21e30a61784b804a">lineSizer</link></para>
+</listitem>
+            <listitem><para>wxBoxSizer * <link linkend="_class_tag_panel_1a480b452569c046bfc03e86a2be72a8eb">tagSizer</link></para>
+</listitem>
+            <listitem><para>wxStaticText * <link linkend="_class_tag_panel_1a0decd0f2236551f78024b107a5ed2e5f">staticTagName</link></para>
+</listitem>
+            <listitem><para>wxStaticText * <link linkend="_class_tag_panel_1a8d05f326ee6854342a0a5cf06228c527">staticDetailsName</link></para>
+</listitem>
+            <listitem><para>wxBoxSizer * <link linkend="_class_tag_panel_1acb5613b513abd882b94dd79981f15e5b">detailsSizer</link></para>
+</listitem>
+            <listitem><para>wxPanel * <link linkend="_class_tag_panel_1afa29a560070ac453fadae46f052cc53f">detailsPanel</link></para>
+</listitem>
+            <listitem><para>std::shared_ptr&lt; <link linkend="_class_tag">Tag</link> &gt; <link linkend="_class_tag_panel_1a5c983b7b476010dc908bdea5b3ce954a">myTag</link></para>
+</listitem>
+        </itemizedlist>
+<simplesect>
+    <title>Additional Inherited Members    </title>
+Static Public Member Functions inherited from <link linkend="_class_tag_panel">TagPanel</link>        <itemizedlist>
+            <listitem><para>static int <link linkend="_class_tag_panel_1a975da9b33d0c94992472b291df4aadbe">getIndexOf</link> (wxSizer *sizer, wxSizerItem *item)</para>
+</listitem>
+            <listitem><para>static void <link linkend="_class_tag_panel_1a4fcedad553eb65983ba7a8da2d5895f3">init</link> (<link linkend="_class_tag_panel">TagPanel</link> *tag)</para>
+</listitem>
+            <listitem><para>static bool <link linkend="_class_tag_panel_1a556f0c05ac13e1c9c9f9ea39cd5041f8">isTagPanel</link> (wxWindow *window)</para>
+</listitem>
+            <listitem><para>static <link linkend="_class_tag_panel">TagPanel</link> * <link linkend="_class_tag_panel_1af656776798692c730135d692c6a48a62">getTagPanel</link> (wxWindow *window)</para>
+</listitem>
+        </itemizedlist>
+</simplesect>
+Public Attributes inherited from <link linkend="_class_tag_panel">TagPanel</link>        <itemizedlist>
+            <listitem><para><link linkend="__tag_panel_8h_1a369abf422adc1247d0d7bc295bf34014">HoverPosition</link> <link linkend="_class_tag_panel_1ae51a14087a4b11aa65b79bca524a2dc9">previousHover</link></para>
+</listitem>
+            <listitem><para>bool <link linkend="_class_tag_panel_1a57f33df8ee51553bbb6a1f4b4f727d82">isInserting</link></para>
+</listitem>
+            <listitem><para>bool <link linkend="_class_tag_panel_1ab9e4fd9beea1943bb1fb664bf4b0f876">isHovering</link></para>
+</listitem>
+        </itemizedlist>
+<section>
+<title>Detailed Description</title>
+<para>
+Definition at line <link linkend="__tag_panel_8h_source_1l00111">111</link> of file <link linkend="__tag_panel_8h_source">TagPanel.h</link>.</para>
+</section>
+<section>
+<title>Constructor &amp; Destructor Documentation</title>
+<anchor xml:id="_class_flow_tag_panel_1a3dcc68ef4b7679830e857baa8847d09a"/><section>
+    <title>FlowTagPanel()<computeroutput>[1/3]</computeroutput></title>
+<indexterm><primary>FlowTagPanel</primary><secondary>FlowTagPanel</secondary></indexterm>
+<indexterm><primary>FlowTagPanel</primary><secondary>FlowTagPanel</secondary></indexterm>
+<para><computeroutput>FlowTagPanel::FlowTagPanel (bool topConstructor = <computeroutput>true</computeroutput>
+)</computeroutput></para><para>
+Definition at line <link linkend="__tag_panel_8cpp_source_1l00033">33</link> of file <link linkend="__tag_panel_8cpp_source">TagPanel.cpp</link>.</para>
+Here is the caller graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_flow_tag_panel_a3dcc68ef4b7679830e857baa8847d09a_icgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_class_flow_tag_panel_1a370665455a3991702bf8f6c5d9c95272"/><section>
+    <title>FlowTagPanel()<computeroutput>[2/3]</computeroutput></title>
+<indexterm><primary>FlowTagPanel</primary><secondary>FlowTagPanel</secondary></indexterm>
+<indexterm><primary>FlowTagPanel</primary><secondary>FlowTagPanel</secondary></indexterm>
+<para><computeroutput>FlowTagPanel::FlowTagPanel (wxWindow * parentWindow, bool topConstructor = <computeroutput>true</computeroutput>
+)</computeroutput></para><para>
+Definition at line <link linkend="__tag_panel_8cpp_source_1l00034">34</link> of file <link linkend="__tag_panel_8cpp_source">TagPanel.cpp</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_flow_tag_panel_a370665455a3991702bf8f6c5d9c95272_cgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_class_flow_tag_panel_1ad022a384de848b36e615014a9f727755"/><section>
+    <title>FlowTagPanel()<computeroutput>[3/3]</computeroutput></title>
+<indexterm><primary>FlowTagPanel</primary><secondary>FlowTagPanel</secondary></indexterm>
+<indexterm><primary>FlowTagPanel</primary><secondary>FlowTagPanel</secondary></indexterm>
+<para><computeroutput>FlowTagPanel::FlowTagPanel (const <link linkend="_class_flow_tag_panel">FlowTagPanel</link> &amp; toCopy, bool topConstructor = <computeroutput>true</computeroutput>
+)</computeroutput></para><para>
+Definition at line <link linkend="__tag_panel_8cpp_source_1l00043">43</link> of file <link linkend="__tag_panel_8cpp_source">TagPanel.cpp</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_flow_tag_panel_ad022a384de848b36e615014a9f727755_cgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_class_flow_tag_panel_1a4057aa51063dc198ca7f1497ecfdf9bd"/><section>
+    <title>~FlowTagPanel()</title>
+<indexterm><primary>~FlowTagPanel</primary><secondary>FlowTagPanel</secondary></indexterm>
+<indexterm><primary>FlowTagPanel</primary><secondary>~FlowTagPanel</secondary></indexterm>
+<para><computeroutput>FlowTagPanel::~FlowTagPanel ( )</computeroutput></para><para>
+Definition at line <link linkend="__tag_panel_8cpp_source_1l00108">108</link> of file <link linkend="__tag_panel_8cpp_source">TagPanel.cpp</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_flow_tag_panel_a4057aa51063dc198ca7f1497ecfdf9bd_cgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+</section>
+<section>
+<title>Member Function Documentation</title>
+<anchor xml:id="_class_flow_tag_panel_1af4ba2dd032b93523943e53dfd873fd8e"/><section>
+    <title>addBottomSpacer()</title>
+<indexterm><primary>addBottomSpacer</primary><secondary>FlowTagPanel</secondary></indexterm>
+<indexterm><primary>FlowTagPanel</primary><secondary>addBottomSpacer</secondary></indexterm>
+<para><computeroutput>void FlowTagPanel::addBottomSpacer ( )</computeroutput></para><para>
+Definition at line <link linkend="__tag_panel_8cpp_source_1l00942">942</link> of file <link linkend="__tag_panel_8cpp_source">TagPanel.cpp</link>.</para>
+Here is the caller graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_flow_tag_panel_af4ba2dd032b93523943e53dfd873fd8e_icgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_class_flow_tag_panel_1a24aede4ad59f41a079d4c38e26955d55"/><section>
+    <title>addChild()</title>
+<indexterm><primary>addChild</primary><secondary>FlowTagPanel</secondary></indexterm>
+<indexterm><primary>FlowTagPanel</primary><secondary>addChild</secondary></indexterm>
+<para><computeroutput>void FlowTagPanel::addChild (<link linkend="_class_tag_panel">TagPanel</link> * childrenTag)</computeroutput></para><para>
+Definition at line <link linkend="__tag_panel_8cpp_source_1l01041">1041</link> of file <link linkend="__tag_panel_8cpp_source">TagPanel.cpp</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_flow_tag_panel_a24aede4ad59f41a079d4c38e26955d55_cgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+Here is the caller graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_flow_tag_panel_a24aede4ad59f41a079d4c38e26955d55_icgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_class_flow_tag_panel_1a8c328c48878111ffebcc91b7b37a8b77"/><section>
+    <title>addChildren()</title>
+<indexterm><primary>addChildren</primary><secondary>FlowTagPanel</secondary></indexterm>
+<indexterm><primary>FlowTagPanel</primary><secondary>addChildren</secondary></indexterm>
+<para><computeroutput>void FlowTagPanel::addChildren (std::vector&lt; <link linkend="_class_tag_panel">TagPanel</link> * &gt; childrenTag)</computeroutput></para><para>
+Definition at line <link linkend="__tag_panel_8cpp_source_1l01111">1111</link> of file <link linkend="__tag_panel_8cpp_source">TagPanel.cpp</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_flow_tag_panel_a8c328c48878111ffebcc91b7b37a8b77_cgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+Here is the caller graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_flow_tag_panel_a8c328c48878111ffebcc91b7b37a8b77_icgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_class_flow_tag_panel_1a92c626fbe9ab70ee75813edec7e323ba"/><section>
+    <title>addComponents()</title>
+<indexterm><primary>addComponents</primary><secondary>FlowTagPanel</secondary></indexterm>
+<indexterm><primary>FlowTagPanel</primary><secondary>addComponents</secondary></indexterm>
+<para><computeroutput>void FlowTagPanel::addComponents (<link linkend="_class_tag_panel">TagPanel</link> * tag)<computeroutput>[override]</computeroutput>, <computeroutput>[virtual]</computeroutput></computeroutput></para><para>
+Reimplemented from <link linkend="_class_tag_panel_1a75a1eb94084fc21b1e50322a1c385733">TagPanel</link>.</para>
+<para>
+Definition at line <link linkend="__tag_panel_8cpp_source_1l00846">846</link> of file <link linkend="__tag_panel_8cpp_source">TagPanel.cpp</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_flow_tag_panel_a92c626fbe9ab70ee75813edec7e323ba_cgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_class_flow_tag_panel_1aa69c21d11b4824c7d7955a6c35f33564"/><section>
+    <title>addCondition()</title>
+<indexterm><primary>addCondition</primary><secondary>FlowTagPanel</secondary></indexterm>
+<indexterm><primary>FlowTagPanel</primary><secondary>addCondition</secondary></indexterm>
+<para><computeroutput>void FlowTagPanel::addCondition ( )</computeroutput></para><para>
+Definition at line <link linkend="__tag_panel_8cpp_source_1l00919">919</link> of file <link linkend="__tag_panel_8cpp_source">TagPanel.cpp</link>.</para>
+Here is the caller graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_flow_tag_panel_aa69c21d11b4824c7d7955a6c35f33564_icgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_class_flow_tag_panel_1a94ca55612cbf5a6300712ffaee243c9b"/><section>
+    <title>addHider()</title>
+<indexterm><primary>addHider</primary><secondary>FlowTagPanel</secondary></indexterm>
+<indexterm><primary>FlowTagPanel</primary><secondary>addHider</secondary></indexterm>
+<para><computeroutput>void FlowTagPanel::addHider ( )</computeroutput></para><para>
+Definition at line <link linkend="__tag_panel_8cpp_source_1l00909">909</link> of file <link linkend="__tag_panel_8cpp_source">TagPanel.cpp</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_flow_tag_panel_a94ca55612cbf5a6300712ffaee243c9b_cgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+Here is the caller graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_flow_tag_panel_a94ca55612cbf5a6300712ffaee243c9b_icgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_class_flow_tag_panel_1aaeeb052f14fc5e6aa2be1f124e82b694"/><section>
+    <title>addTagAndSize()</title>
+<indexterm><primary>addTagAndSize</primary><secondary>FlowTagPanel</secondary></indexterm>
+<indexterm><primary>FlowTagPanel</primary><secondary>addTagAndSize</secondary></indexterm>
+<para><computeroutput>void FlowTagPanel::addTagAndSize (std::vector&lt; <link linkend="_class_tag_panel">TagPanel</link> * &gt; childrenTag)</computeroutput></para><para>
+Definition at line <link linkend="__tag_panel_8cpp_source_1l01118">1118</link> of file <link linkend="__tag_panel_8cpp_source">TagPanel.cpp</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_flow_tag_panel_aaeeb052f14fc5e6aa2be1f124e82b694_cgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_class_flow_tag_panel_1a38a7e2167532623906ae82c0b92728c2"/><section>
+    <title>childrenVisible()</title>
+<indexterm><primary>childrenVisible</primary><secondary>FlowTagPanel</secondary></indexterm>
+<indexterm><primary>FlowTagPanel</primary><secondary>childrenVisible</secondary></indexterm>
+<para><computeroutput>bool FlowTagPanel::childrenVisible ( )</computeroutput></para><para>
+Definition at line <link linkend="__tag_panel_8cpp_source_1l00699">699</link> of file <link linkend="__tag_panel_8cpp_source">TagPanel.cpp</link>.</para>
+Here is the caller graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_flow_tag_panel_a38a7e2167532623906ae82c0b92728c2_icgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_class_flow_tag_panel_1a39e04805c0a27303a05e72d44a531aa4"/><section>
+    <title>clone()</title>
+<indexterm><primary>clone</primary><secondary>FlowTagPanel</secondary></indexterm>
+<indexterm><primary>FlowTagPanel</primary><secondary>clone</secondary></indexterm>
+<para><computeroutput><link linkend="_class_flow_tag_panel">FlowTagPanel</link> * FlowTagPanel::clone ( )<computeroutput>[override]</computeroutput>, <computeroutput>[virtual]</computeroutput></computeroutput></para><para>
+Reimplemented from <link linkend="_class_tag_panel_1a22c1748896f9b2a20dfb610b76216029">TagPanel</link>.</para>
+<para>
+Reimplemented in <link linkend="_class_if_tag_panel_1a275fc196fc3c8d12e847331234e4eb6a">IfTagPanel</link>, <link linkend="_class_loop_tag_panel_1a9aef891de5b23170ad57778c6a7c670b">LoopTagPanel</link>, and <link linkend="_class_main_tag_panel_1a149128cca7c6b0acbb6c2ccba5c280b7">MainTagPanel</link>.</para>
+<para>
+Definition at line <link linkend="__tag_panel_8cpp_source_1l00312">312</link> of file <link linkend="__tag_panel_8cpp_source">TagPanel.cpp</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_flow_tag_panel_a39e04805c0a27303a05e72d44a531aa4_cgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_class_flow_tag_panel_1a0e1305928f680ed7efb08d17d951d814"/><section>
+    <title>cloneChildren()</title>
+<indexterm><primary>cloneChildren</primary><secondary>FlowTagPanel</secondary></indexterm>
+<indexterm><primary>FlowTagPanel</primary><secondary>cloneChildren</secondary></indexterm>
+<para><computeroutput>void FlowTagPanel::cloneChildren (const <link linkend="_class_flow_tag_panel">FlowTagPanel</link> * toCopy)</computeroutput></para><para>
+Definition at line <link linkend="__tag_panel_8cpp_source_1l00831">831</link> of file <link linkend="__tag_panel_8cpp_source">TagPanel.cpp</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_flow_tag_panel_a0e1305928f680ed7efb08d17d951d814_cgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+Here is the caller graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_flow_tag_panel_a0e1305928f680ed7efb08d17d951d814_icgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_class_flow_tag_panel_1aa81a6c6c05a02665ceef5ee70dfe8552"/><section>
+    <title>containsChild()</title>
+<indexterm><primary>containsChild</primary><secondary>FlowTagPanel</secondary></indexterm>
+<indexterm><primary>FlowTagPanel</primary><secondary>containsChild</secondary></indexterm>
+<para><computeroutput>bool FlowTagPanel::containsChild (<link linkend="_class_tag_panel">TagPanel</link> * panel)</computeroutput></para><para>
+Definition at line <link linkend="__tag_panel_8cpp_source_1l01106">1106</link> of file <link linkend="__tag_panel_8cpp_source">TagPanel.cpp</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_flow_tag_panel_aa81a6c6c05a02665ceef5ee70dfe8552_cgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+Here is the caller graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_flow_tag_panel_aa81a6c6c05a02665ceef5ee70dfe8552_icgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_class_flow_tag_panel_1a4e3b68f463d8374b7222c6bd28f47b7e"/><section>
+    <title>detachPanel()</title>
+<indexterm><primary>detachPanel</primary><secondary>FlowTagPanel</secondary></indexterm>
+<indexterm><primary>FlowTagPanel</primary><secondary>detachPanel</secondary></indexterm>
+<para><computeroutput>void FlowTagPanel::detachPanel (<link linkend="_class_tag_panel">TagPanel</link> * panel)</computeroutput></para><para>
+Definition at line <link linkend="__tag_panel_8cpp_source_1l00555">555</link> of file <link linkend="__tag_panel_8cpp_source">TagPanel.cpp</link>.</para>
+Here is the caller graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_flow_tag_panel_a4e3b68f463d8374b7222c6bd28f47b7e_icgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_class_flow_tag_panel_1a63d586b3a818bf85f3cfa56048c697e5"/><section>
+    <title>getBottomSpacer()</title>
+<indexterm><primary>getBottomSpacer</primary><secondary>FlowTagPanel</secondary></indexterm>
+<indexterm><primary>FlowTagPanel</primary><secondary>getBottomSpacer</secondary></indexterm>
+<para><computeroutput>wxSizerItem * FlowTagPanel::getBottomSpacer ( )</computeroutput></para><para>
+Definition at line <link linkend="__tag_panel_8cpp_source_1l00937">937</link> of file <link linkend="__tag_panel_8cpp_source">TagPanel.cpp</link>.</para>
+Here is the caller graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_flow_tag_panel_a63d586b3a818bf85f3cfa56048c697e5_icgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_class_flow_tag_panel_1a7e277f4afc1adee6e2a94f6980d83e80"/><section>
+    <title>getChildrenSizer()</title>
+<indexterm><primary>getChildrenSizer</primary><secondary>FlowTagPanel</secondary></indexterm>
+<indexterm><primary>FlowTagPanel</primary><secondary>getChildrenSizer</secondary></indexterm>
+<para><computeroutput>wxBoxSizer * FlowTagPanel::getChildrenSizer ( )</computeroutput></para><para>
+Definition at line <link linkend="__tag_panel_8cpp_source_1l00952">952</link> of file <link linkend="__tag_panel_8cpp_source">TagPanel.cpp</link>.</para>
+</section>
+<anchor xml:id="_class_flow_tag_panel_1a908b8a9b0319c8c60588dff9296e9baf"/><section>
+    <title>getChildrenTags()</title>
+<indexterm><primary>getChildrenTags</primary><secondary>FlowTagPanel</secondary></indexterm>
+<indexterm><primary>FlowTagPanel</primary><secondary>getChildrenTags</secondary></indexterm>
+<para><computeroutput>std::vector&lt; <link linkend="_class_tag_panel">TagPanel</link> * &gt; FlowTagPanel::getChildrenTags ( ) const</computeroutput></para><para>
+Definition at line <link linkend="__tag_panel_8cpp_source_1l01125">1125</link> of file <link linkend="__tag_panel_8cpp_source">TagPanel.cpp</link>.</para>
+Here is the caller graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_flow_tag_panel_a908b8a9b0319c8c60588dff9296e9baf_icgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_class_flow_tag_panel_1aa7e87378e7647a40099818265a65f21a"/><section>
+    <title>getEmptyTagPanel()</title>
+<indexterm><primary>getEmptyTagPanel</primary><secondary>FlowTagPanel</secondary></indexterm>
+<indexterm><primary>FlowTagPanel</primary><secondary>getEmptyTagPanel</secondary></indexterm>
+<para><computeroutput><link linkend="_class_empty_panel">EmptyPanel</link> * FlowTagPanel::getEmptyTagPanel ( )</computeroutput></para><para>
+Definition at line <link linkend="__tag_panel_8cpp_source_1l00960">960</link> of file <link linkend="__tag_panel_8cpp_source">TagPanel.cpp</link>.</para>
+Here is the caller graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_flow_tag_panel_aa7e87378e7647a40099818265a65f21a_icgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_class_flow_tag_panel_1a94ad251f2137de78a0c8b8fd75d81d7f"/><section>
+    <title>getFirstTag()</title>
+<indexterm><primary>getFirstTag</primary><secondary>FlowTagPanel</secondary></indexterm>
+<indexterm><primary>FlowTagPanel</primary><secondary>getFirstTag</secondary></indexterm>
+<para><computeroutput><link linkend="_class_tag_panel">TagPanel</link> * FlowTagPanel::getFirstTag ( )</computeroutput></para><para>
+Definition at line <link linkend="__tag_panel_8cpp_source_1l00989">989</link> of file <link linkend="__tag_panel_8cpp_source">TagPanel.cpp</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_flow_tag_panel_a94ad251f2137de78a0c8b8fd75d81d7f_cgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+Here is the caller graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_flow_tag_panel_a94ad251f2137de78a0c8b8fd75d81d7f_icgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_class_flow_tag_panel_1acf474cc277820301384f9b1d84f1c9d0"/><section>
+    <title>getHider()</title>
+<indexterm><primary>getHider</primary><secondary>FlowTagPanel</secondary></indexterm>
+<indexterm><primary>FlowTagPanel</primary><secondary>getHider</secondary></indexterm>
+<para><computeroutput>wxButton * FlowTagPanel::getHider ( )</computeroutput></para><para>
+Definition at line <link linkend="__tag_panel_8cpp_source_1l00704">704</link> of file <link linkend="__tag_panel_8cpp_source">TagPanel.cpp</link>.</para>
+</section>
+<anchor xml:id="_class_flow_tag_panel_1aff934a06834390a1d0b16c4d77740ecd"/><section>
+    <title>getIndex()<computeroutput>[1/2]</computeroutput></title>
+<indexterm><primary>getIndex</primary><secondary>FlowTagPanel</secondary></indexterm>
+<indexterm><primary>FlowTagPanel</primary><secondary>getIndex</secondary></indexterm>
+<para><computeroutput>int FlowTagPanel::getIndex (<link linkend="_class_tag_panel">TagPanel</link> * panel)</computeroutput></para><para>
+Definition at line <link linkend="__tag_panel_8cpp_source_1l00682">682</link> of file <link linkend="__tag_panel_8cpp_source">TagPanel.cpp</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_flow_tag_panel_aff934a06834390a1d0b16c4d77740ecd_cgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_class_flow_tag_panel_1aaa4b6f8ffb98f825f255cdd2017fc17a"/><section>
+    <title>getIndex()<computeroutput>[2/2]</computeroutput></title>
+<indexterm><primary>getIndex</primary><secondary>FlowTagPanel</secondary></indexterm>
+<indexterm><primary>FlowTagPanel</primary><secondary>getIndex</secondary></indexterm>
+<para><computeroutput>int FlowTagPanel::getIndex (wxSizerItem * item)</computeroutput></para><para>
+Definition at line <link linkend="__tag_panel_8cpp_source_1l00656">656</link> of file <link linkend="__tag_panel_8cpp_source">TagPanel.cpp</link>.</para>
+Here is the caller graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_flow_tag_panel_aaa4b6f8ffb98f825f255cdd2017fc17a_icgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_class_flow_tag_panel_1ae00ff43656f4b31fa667c69d74317e59"/><section>
+    <title>getLastTag()</title>
+<indexterm><primary>getLastTag</primary><secondary>FlowTagPanel</secondary></indexterm>
+<indexterm><primary>FlowTagPanel</primary><secondary>getLastTag</secondary></indexterm>
+<para><computeroutput><link linkend="_class_tag_panel">TagPanel</link> * FlowTagPanel::getLastTag ( )</computeroutput></para><para>
+Definition at line <link linkend="__tag_panel_8cpp_source_1l00999">999</link> of file <link linkend="__tag_panel_8cpp_source">TagPanel.cpp</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_flow_tag_panel_ae00ff43656f4b31fa667c69d74317e59_cgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+Here is the caller graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_flow_tag_panel_ae00ff43656f4b31fa667c69d74317e59_icgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_class_flow_tag_panel_1a06db100e4343fc75a9e947a24c8575fe"/><section>
+    <title>getNbChildren()</title>
+<indexterm><primary>getNbChildren</primary><secondary>FlowTagPanel</secondary></indexterm>
+<indexterm><primary>FlowTagPanel</primary><secondary>getNbChildren</secondary></indexterm>
+<para><computeroutput>int FlowTagPanel::getNbChildren ( )</computeroutput></para><para>
+Definition at line <link linkend="__tag_panel_8cpp_source_1l01021">1021</link> of file <link linkend="__tag_panel_8cpp_source">TagPanel.cpp</link>.</para>
+</section>
+<anchor xml:id="_class_flow_tag_panel_1a8b4daa4a979fd8a3eecba10b92bb46e7"/><section>
+    <title>getNbParents()</title>
+<indexterm><primary>getNbParents</primary><secondary>FlowTagPanel</secondary></indexterm>
+<indexterm><primary>FlowTagPanel</primary><secondary>getNbParents</secondary></indexterm>
+<para><computeroutput>int FlowTagPanel::getNbParents ( )</computeroutput></para><para>
+Definition at line <link linkend="__tag_panel_8cpp_source_1l00694">694</link> of file <link linkend="__tag_panel_8cpp_source">TagPanel.cpp</link>.</para>
+</section>
+<anchor xml:id="_class_flow_tag_panel_1ad2a7dd8c2e809653b29f53a54e9088bc"/><section>
+    <title>getNextTagChild()</title>
+<indexterm><primary>getNextTagChild</primary><secondary>FlowTagPanel</secondary></indexterm>
+<indexterm><primary>FlowTagPanel</primary><secondary>getNextTagChild</secondary></indexterm>
+<para><computeroutput><link linkend="_class_tag_panel">TagPanel</link> * FlowTagPanel::getNextTagChild (<link linkend="_class_tag_panel">TagPanel</link> * panel)</computeroutput></para><para>
+Definition at line <link linkend="__tag_panel_8cpp_source_1l00983">983</link> of file <link linkend="__tag_panel_8cpp_source">TagPanel.cpp</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_flow_tag_panel_ad2a7dd8c2e809653b29f53a54e9088bc_cgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_class_flow_tag_panel_1a5c91aa7b2cc4211630bad8682a469b2e"/><section>
+    <title>getNodeToTag()</title>
+<indexterm><primary>getNodeToTag</primary><secondary>FlowTagPanel</secondary></indexterm>
+<indexterm><primary>FlowTagPanel</primary><secondary>getNodeToTag</secondary></indexterm>
+<para><computeroutput><link linkend="_class_tag_panel">TagPanel</link> * FlowTagPanel::getNodeToTag (wxwxSizerItemListNode * node)</computeroutput></para><para>
+Definition at line <link linkend="__tag_panel_8cpp_source_1l00977">977</link> of file <link linkend="__tag_panel_8cpp_source">TagPanel.cpp</link>.</para>
+Here is the caller graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_flow_tag_panel_a5c91aa7b2cc4211630bad8682a469b2e_icgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_class_flow_tag_panel_1acf35f1a7b55da94f68329142af1a1e69"/><section>
+    <title>getPreviousTagChild()</title>
+<indexterm><primary>getPreviousTagChild</primary><secondary>FlowTagPanel</secondary></indexterm>
+<indexterm><primary>FlowTagPanel</primary><secondary>getPreviousTagChild</secondary></indexterm>
+<para><computeroutput><link linkend="_class_tag_panel">TagPanel</link> * FlowTagPanel::getPreviousTagChild (<link linkend="_class_tag_panel">TagPanel</link> * panel)</computeroutput></para><para>
+Definition at line <link linkend="__tag_panel_8cpp_source_1l00971">971</link> of file <link linkend="__tag_panel_8cpp_source">TagPanel.cpp</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_flow_tag_panel_acf35f1a7b55da94f68329142af1a1e69_cgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_class_flow_tag_panel_1a292d74fbfba61f5c7df90789a9eb31e2"/><section>
+    <title>getSizerItem()</title>
+<indexterm><primary>getSizerItem</primary><secondary>FlowTagPanel</secondary></indexterm>
+<indexterm><primary>FlowTagPanel</primary><secondary>getSizerItem</secondary></indexterm>
+<para><computeroutput>wxSizerItem * FlowTagPanel::getSizerItem (<link linkend="_class_tag_panel">TagPanel</link> * panel)</computeroutput></para><para>
+Definition at line <link linkend="__tag_panel_8cpp_source_1l01027">1027</link> of file <link linkend="__tag_panel_8cpp_source">TagPanel.cpp</link>.</para>
+Here is the caller graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_flow_tag_panel_a292d74fbfba61f5c7df90789a9eb31e2_icgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_class_flow_tag_panel_1a93b947ffb6b2dc6c2f359490158b7b90"/><section>
+    <title>getTagHeight()</title>
+<indexterm><primary>getTagHeight</primary><secondary>FlowTagPanel</secondary></indexterm>
+<indexterm><primary>FlowTagPanel</primary><secondary>getTagHeight</secondary></indexterm>
+<para><computeroutput>int FlowTagPanel::getTagHeight ( )<computeroutput>[override]</computeroutput>, <computeroutput>[virtual]</computeroutput></computeroutput></para><para>
+Reimplemented from <link linkend="_class_tag_panel_1aa533ce0568d728140272752a071e133a">TagPanel</link>.</para>
+<para>
+Definition at line <link linkend="__tag_panel_8cpp_source_1l00120">120</link> of file <link linkend="__tag_panel_8cpp_source">TagPanel.cpp</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_flow_tag_panel_a93b947ffb6b2dc6c2f359490158b7b90_cgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_class_flow_tag_panel_1a5745b7ba56040b00437ad0766fc82717"/><section>
+    <title>getTagNode()</title>
+<indexterm><primary>getTagNode</primary><secondary>FlowTagPanel</secondary></indexterm>
+<indexterm><primary>FlowTagPanel</primary><secondary>getTagNode</secondary></indexterm>
+<para><computeroutput>wxwxSizerItemListNode * FlowTagPanel::getTagNode (<link linkend="_class_tag_panel">TagPanel</link> * panel)</computeroutput></para><para>
+Definition at line <link linkend="__tag_panel_8cpp_source_1l00965">965</link> of file <link linkend="__tag_panel_8cpp_source">TagPanel.cpp</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_flow_tag_panel_a5745b7ba56040b00437ad0766fc82717_cgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+Here is the caller graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_flow_tag_panel_a5745b7ba56040b00437ad0766fc82717_icgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_class_flow_tag_panel_1a1822bbc91daca9379e090f363e870d40"/><section>
+    <title>hideChildren()</title>
+<indexterm><primary>hideChildren</primary><secondary>FlowTagPanel</secondary></indexterm>
+<indexterm><primary>FlowTagPanel</primary><secondary>hideChildren</secondary></indexterm>
+<para><computeroutput>void FlowTagPanel::hideChildren ( )</computeroutput></para><para>
+Definition at line <link linkend="__tag_panel_8cpp_source_1l00572">572</link> of file <link linkend="__tag_panel_8cpp_source">TagPanel.cpp</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_flow_tag_panel_a1822bbc91daca9379e090f363e870d40_cgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+Here is the caller graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_flow_tag_panel_a1822bbc91daca9379e090f363e870d40_icgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_class_flow_tag_panel_1a63038ffcf254ad71b547d31456a0fd2f"/><section>
+    <title>hideEmptyPanel()</title>
+<indexterm><primary>hideEmptyPanel</primary><secondary>FlowTagPanel</secondary></indexterm>
+<indexterm><primary>FlowTagPanel</primary><secondary>hideEmptyPanel</secondary></indexterm>
+<para><computeroutput>void FlowTagPanel::hideEmptyPanel ( )</computeroutput></para><para>
+Definition at line <link linkend="__tag_panel_8cpp_source_1l00588">588</link> of file <link linkend="__tag_panel_8cpp_source">TagPanel.cpp</link>.</para>
+Here is the caller graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_flow_tag_panel_a63038ffcf254ad71b547d31456a0fd2f_icgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_class_flow_tag_panel_1a8168f4dc819be19de5886ca6fa509b03"/><section>
+    <title>initChildrenSizer()</title>
+<indexterm><primary>initChildrenSizer</primary><secondary>FlowTagPanel</secondary></indexterm>
+<indexterm><primary>FlowTagPanel</primary><secondary>initChildrenSizer</secondary></indexterm>
+<para><computeroutput>void FlowTagPanel::initChildrenSizer ( )</computeroutput></para><para>
+Definition at line <link linkend="__tag_panel_8cpp_source_1l00825">825</link> of file <link linkend="__tag_panel_8cpp_source">TagPanel.cpp</link>.</para>
+Here is the caller graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_flow_tag_panel_a8168f4dc819be19de5886ca6fa509b03_icgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_class_flow_tag_panel_1ab190cd6aefb44611ef4b382c315da514"/><section>
+    <title>initEmptyPanel()</title>
+<indexterm><primary>initEmptyPanel</primary><secondary>FlowTagPanel</secondary></indexterm>
+<indexterm><primary>FlowTagPanel</primary><secondary>initEmptyPanel</secondary></indexterm>
+<para><computeroutput>void FlowTagPanel::initEmptyPanel ( )</computeroutput></para><para>
+Definition at line <link linkend="__tag_panel_8cpp_source_1l00601">601</link> of file <link linkend="__tag_panel_8cpp_source">TagPanel.cpp</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_flow_tag_panel_ab190cd6aefb44611ef4b382c315da514_cgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+Here is the caller graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_flow_tag_panel_ab190cd6aefb44611ef4b382c315da514_icgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_class_flow_tag_panel_1ac485ea3365ed7d46576190699c2ffca2"/><section>
+    <title>initSizers()</title>
+<indexterm><primary>initSizers</primary><secondary>FlowTagPanel</secondary></indexterm>
+<indexterm><primary>FlowTagPanel</primary><secondary>initSizers</secondary></indexterm>
+<para><computeroutput>void FlowTagPanel::initSizers ( )<computeroutput>[override]</computeroutput>, <computeroutput>[virtual]</computeroutput></computeroutput></para><para>
+Reimplemented from <link linkend="_class_tag_panel_1a2974706b1d2a79806571fbebd1f7d56b">TagPanel</link>.</para>
+<para>
+Definition at line <link linkend="__tag_panel_8cpp_source_1l00546">546</link> of file <link linkend="__tag_panel_8cpp_source">TagPanel.cpp</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_flow_tag_panel_ac485ea3365ed7d46576190699c2ffca2_cgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_class_flow_tag_panel_1a38bade8b3e467e730e739bce386b5ea0"/><section>
+    <title>insertChild()<computeroutput>[1/2]</computeroutput></title>
+<indexterm><primary>insertChild</primary><secondary>FlowTagPanel</secondary></indexterm>
+<indexterm><primary>FlowTagPanel</primary><secondary>insertChild</secondary></indexterm>
+<para><computeroutput>void FlowTagPanel::insertChild (<link linkend="_class_tag_panel">TagPanel</link> * newPanel, int index)</computeroutput></para><para>
+Definition at line <link linkend="__tag_panel_8cpp_source_1l01087">1087</link> of file <link linkend="__tag_panel_8cpp_source">TagPanel.cpp</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_flow_tag_panel_a38bade8b3e467e730e739bce386b5ea0_cgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_class_flow_tag_panel_1af98215cc2497f7ef7d8e4ed00e94ca33"/><section>
+    <title>insertChild()<computeroutput>[2/2]</computeroutput></title>
+<indexterm><primary>insertChild</primary><secondary>FlowTagPanel</secondary></indexterm>
+<indexterm><primary>FlowTagPanel</primary><secondary>insertChild</secondary></indexterm>
+<para><computeroutput>void FlowTagPanel::insertChild (<link linkend="_class_tag_panel">TagPanel</link> * target, <link linkend="_class_tag_panel">TagPanel</link> * newPanel, <link linkend="__tag_panel_8h_1a443e25f6957db75e312dbd0fb43d5a6e">AddPosition</link> pos)</computeroutput></para><para>
+Definition at line <link linkend="__tag_panel_8cpp_source_1l01069">1069</link> of file <link linkend="__tag_panel_8cpp_source">TagPanel.cpp</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_flow_tag_panel_af98215cc2497f7ef7d8e4ed00e94ca33_cgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+Here is the caller graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_flow_tag_panel_af98215cc2497f7ef7d8e4ed00e94ca33_icgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_class_flow_tag_panel_1a3ed9948e56d17d5b28c2c8708a90bea2"/><section>
+    <title>isEmpty()</title>
+<indexterm><primary>isEmpty</primary><secondary>FlowTagPanel</secondary></indexterm>
+<indexterm><primary>FlowTagPanel</primary><secondary>isEmpty</secondary></indexterm>
+<para><computeroutput>bool FlowTagPanel::isEmpty ( )</computeroutput></para><para>
+Definition at line <link linkend="__tag_panel_8cpp_source_1l00925">925</link> of file <link linkend="__tag_panel_8cpp_source">TagPanel.cpp</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_flow_tag_panel_a3ed9948e56d17d5b28c2c8708a90bea2_cgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+Here is the caller graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_flow_tag_panel_a3ed9948e56d17d5b28c2c8708a90bea2_icgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_class_flow_tag_panel_1abef0b2e00620e86ebbe17b017aab8e99"/><section>
+    <title>isFirstTagChild()</title>
+<indexterm><primary>isFirstTagChild</primary><secondary>FlowTagPanel</secondary></indexterm>
+<indexterm><primary>FlowTagPanel</primary><secondary>isFirstTagChild</secondary></indexterm>
+<para><computeroutput>bool FlowTagPanel::isFirstTagChild (<link linkend="_class_tag_panel">TagPanel</link> * panel)</computeroutput></para><para>
+Definition at line <link linkend="__tag_panel_8cpp_source_1l01016">1016</link> of file <link linkend="__tag_panel_8cpp_source">TagPanel.cpp</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_flow_tag_panel_abef0b2e00620e86ebbe17b017aab8e99_cgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_class_flow_tag_panel_1aa8d5b418c6c046a0c53cb67a8d793308"/><section>
+    <title>isLastTagChild()</title>
+<indexterm><primary>isLastTagChild</primary><secondary>FlowTagPanel</secondary></indexterm>
+<indexterm><primary>FlowTagPanel</primary><secondary>isLastTagChild</secondary></indexterm>
+<para><computeroutput>bool FlowTagPanel::isLastTagChild (<link linkend="_class_tag_panel">TagPanel</link> * panel)</computeroutput></para><para>
+Definition at line <link linkend="__tag_panel_8cpp_source_1l01009">1009</link> of file <link linkend="__tag_panel_8cpp_source">TagPanel.cpp</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_flow_tag_panel_aa8d5b418c6c046a0c53cb67a8d793308_cgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_class_flow_tag_panel_1a77dc30ba98e8e84f02f23ef9af057e4d"/><section>
+    <title>isMinimized()</title>
+<indexterm><primary>isMinimized</primary><secondary>FlowTagPanel</secondary></indexterm>
+<indexterm><primary>FlowTagPanel</primary><secondary>isMinimized</secondary></indexterm>
+<para><computeroutput>bool FlowTagPanel::isMinimized ( ) const</computeroutput></para><para>
+Definition at line <link linkend="__tag_panel_8cpp_source_1l01036">1036</link> of file <link linkend="__tag_panel_8cpp_source">TagPanel.cpp</link>.</para>
+Here is the caller graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_flow_tag_panel_a77dc30ba98e8e84f02f23ef9af057e4d_icgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_class_flow_tag_panel_1ae49c859a41f499bd84be65ee29f36f73"/><section>
+    <title>RemoveTagPanel()</title>
+<indexterm><primary>RemoveTagPanel</primary><secondary>FlowTagPanel</secondary></indexterm>
+<indexterm><primary>FlowTagPanel</primary><secondary>RemoveTagPanel</secondary></indexterm>
+<para><computeroutput>void FlowTagPanel::RemoveTagPanel (<link linkend="_class_tag_panel">TagPanel</link> * childPanel)</computeroutput></para><para>
+Definition at line <link linkend="__tag_panel_8cpp_source_1l00634">634</link> of file <link linkend="__tag_panel_8cpp_source">TagPanel.cpp</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_flow_tag_panel_ae49c859a41f499bd84be65ee29f36f73_cgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_class_flow_tag_panel_1ae4f118933196a60a71cfa6b4b9b69894"/><section>
+    <title>setChildrenVisibility()</title>
+<indexterm><primary>setChildrenVisibility</primary><secondary>FlowTagPanel</secondary></indexterm>
+<indexterm><primary>FlowTagPanel</primary><secondary>setChildrenVisibility</secondary></indexterm>
+<para><computeroutput>void FlowTagPanel::setChildrenVisibility (bool state)</computeroutput></para><para>
+Definition at line <link linkend="__tag_panel_8cpp_source_1l00640">640</link> of file <link linkend="__tag_panel_8cpp_source">TagPanel.cpp</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_flow_tag_panel_ae4f118933196a60a71cfa6b4b9b69894_cgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+Here is the caller graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_flow_tag_panel_ae4f118933196a60a71cfa6b4b9b69894_icgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_class_flow_tag_panel_1ab7a16f3ed1f06f7d060aeb086fd8d683"/><section>
+    <title>setInsertPoint()</title>
+<indexterm><primary>setInsertPoint</primary><secondary>FlowTagPanel</secondary></indexterm>
+<indexterm><primary>FlowTagPanel</primary><secondary>setInsertPoint</secondary></indexterm>
+<para><computeroutput>void FlowTagPanel::setInsertPoint (<link linkend="__tag_panel_8h_1a369abf422adc1247d0d7bc295bf34014">HoverPosition</link> hovPos)<computeroutput>[override]</computeroutput>, <computeroutput>[virtual]</computeroutput></computeroutput></para><para>
+Reimplemented from <link linkend="_class_tag_panel_1a861fccff4a41bbcb235d9d898f0ef17d">TagPanel</link>.</para>
+<para>
+Definition at line <link linkend="__tag_panel_8cpp_source_1l00412">412</link> of file <link linkend="__tag_panel_8cpp_source">TagPanel.cpp</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_flow_tag_panel_ab7a16f3ed1f06f7d060aeb086fd8d683_cgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_class_flow_tag_panel_1a76162eeee3010c06151bae79e421f87e"/><section>
+    <title>setPanelColor()</title>
+<indexterm><primary>setPanelColor</primary><secondary>FlowTagPanel</secondary></indexterm>
+<indexterm><primary>FlowTagPanel</primary><secondary>setPanelColor</secondary></indexterm>
+<para><computeroutput>void FlowTagPanel::setPanelColor ( )<computeroutput>[override]</computeroutput>, <computeroutput>[virtual]</computeroutput></computeroutput></para><para>
+Reimplemented from <link linkend="_class_tag_panel_1a5edee5cee34656fe89fec14f26af0f80">TagPanel</link>.</para>
+<para>
+Reimplemented in <link linkend="_class_if_tag_panel_1aa1154b083f5a1492358620996cd215e4">IfTagPanel</link>, <link linkend="_class_loop_tag_panel_1ad92c15e604570adffa87bf827ec7a116">LoopTagPanel</link>, and <link linkend="_class_main_tag_panel_1aac0341b624d24a316f4b8939cbae76f6">MainTagPanel</link>.</para>
+<para>
+Definition at line <link linkend="__tag_panel_8cpp_source_1l00804">804</link> of file <link linkend="__tag_panel_8cpp_source">TagPanel.cpp</link>.</para>
+</section>
+<anchor xml:id="_class_flow_tag_panel_1a6a2ba7ef0cfdae4b333371b8704a0612"/><section>
+    <title>setTagLine()</title>
+<indexterm><primary>setTagLine</primary><secondary>FlowTagPanel</secondary></indexterm>
+<indexterm><primary>FlowTagPanel</primary><secondary>setTagLine</secondary></indexterm>
+<para><computeroutput>void FlowTagPanel::setTagLine ( )<computeroutput>[override]</computeroutput>, <computeroutput>[virtual]</computeroutput></computeroutput></para><para>
+Reimplemented from <link linkend="_class_tag_panel_1a6e53bfa1e9893d31775867a4f0c7c749">TagPanel</link>.</para>
+<para>
+Reimplemented in <link linkend="_class_if_tag_panel_1a0eecad5e847dada1e8dfbceb5e1e6121">IfTagPanel</link>, <link linkend="_class_loop_tag_panel_1a199ec8f84860272037a7d2a25051a0a3">LoopTagPanel</link>, and <link linkend="_class_main_tag_panel_1ae0748c8b3939b1533b7ae12a9316ca78">MainTagPanel</link>.</para>
+<para>
+Definition at line <link linkend="__tag_panel_8cpp_source_1l00871">871</link> of file <link linkend="__tag_panel_8cpp_source">TagPanel.cpp</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_flow_tag_panel_a6a2ba7ef0cfdae4b333371b8704a0612_cgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_class_flow_tag_panel_1abdf6ba578faa620f2aaa4aa5cc4852d6"/><section>
+    <title>setTagName()</title>
+<indexterm><primary>setTagName</primary><secondary>FlowTagPanel</secondary></indexterm>
+<indexterm><primary>FlowTagPanel</primary><secondary>setTagName</secondary></indexterm>
+<para><computeroutput>void FlowTagPanel::setTagName ( )<computeroutput>[override]</computeroutput>, <computeroutput>[virtual]</computeroutput></computeroutput></para><para>
+Reimplemented from <link linkend="_class_tag_panel_1aa65c4779bd09af4389b2ca49e6ea4136">TagPanel</link>.</para>
+<para>
+Reimplemented in <link linkend="_class_if_tag_panel_1af46a3cf26077d0dfdab1cd946fff6085">IfTagPanel</link>, <link linkend="_class_loop_tag_panel_1a88144a4a6c13cb1e407e9b6b68935137">LoopTagPanel</link>, and <link linkend="_class_main_tag_panel_1a776aca2e2bcf8c5653f3d088366e5681">MainTagPanel</link>.</para>
+<para>
+Definition at line <link linkend="__tag_panel_8cpp_source_1l00498">498</link> of file <link linkend="__tag_panel_8cpp_source">TagPanel.cpp</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_flow_tag_panel_abdf6ba578faa620f2aaa4aa5cc4852d6_cgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_class_flow_tag_panel_1a4c02b86a1776b70cdd14afd50de4736b"/><section>
+    <title>showChildren()</title>
+<indexterm><primary>showChildren</primary><secondary>FlowTagPanel</secondary></indexterm>
+<indexterm><primary>FlowTagPanel</primary><secondary>showChildren</secondary></indexterm>
+<para><computeroutput>void FlowTagPanel::showChildren ( )</computeroutput></para><para>
+Definition at line <link linkend="__tag_panel_8cpp_source_1l00580">580</link> of file <link linkend="__tag_panel_8cpp_source">TagPanel.cpp</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_flow_tag_panel_a4c02b86a1776b70cdd14afd50de4736b_cgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+Here is the caller graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_flow_tag_panel_a4c02b86a1776b70cdd14afd50de4736b_icgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_class_flow_tag_panel_1ad1a55f7e5c1eb22bed92049643bb75b9"/><section>
+    <title>showEmptyPanel()</title>
+<indexterm><primary>showEmptyPanel</primary><secondary>FlowTagPanel</secondary></indexterm>
+<indexterm><primary>FlowTagPanel</primary><secondary>showEmptyPanel</secondary></indexterm>
+<para><computeroutput>void FlowTagPanel::showEmptyPanel ( )</computeroutput></para><para>
+Definition at line <link linkend="__tag_panel_8cpp_source_1l00593">593</link> of file <link linkend="__tag_panel_8cpp_source">TagPanel.cpp</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_flow_tag_panel_ad1a55f7e5c1eb22bed92049643bb75b9_cgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+Here is the caller graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_flow_tag_panel_ad1a55f7e5c1eb22bed92049643bb75b9_icgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_class_flow_tag_panel_1a1e44ca3ceb2df81762129896dbdb7b62"/><section>
+    <title>swapChildren()</title>
+<indexterm><primary>swapChildren</primary><secondary>FlowTagPanel</secondary></indexterm>
+<indexterm><primary>FlowTagPanel</primary><secondary>swapChildren</secondary></indexterm>
+<para><computeroutput>void FlowTagPanel::swapChildren (<link linkend="_class_tag_panel">TagPanel</link> * panel1, <link linkend="_class_tag_panel">TagPanel</link> * panel2)</computeroutput></para><para>
+Definition at line <link linkend="__tag_panel_8cpp_source_1l01096">1096</link> of file <link linkend="__tag_panel_8cpp_source">TagPanel.cpp</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_flow_tag_panel_a1e44ca3ceb2df81762129896dbdb7b62_cgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_class_flow_tag_panel_1abf730289f88b08402ed5d924d362814c"/><section>
+    <title>switchFlowTagVisibility()</title>
+<indexterm><primary>switchFlowTagVisibility</primary><secondary>FlowTagPanel</secondary></indexterm>
+<indexterm><primary>FlowTagPanel</primary><secondary>switchFlowTagVisibility</secondary></indexterm>
+<para><computeroutput>void FlowTagPanel::switchFlowTagVisibility (wxMouseEvent &amp; evt)</computeroutput></para><para>
+Definition at line <link linkend="__tag_panel_8cpp_source_1l01050">1050</link> of file <link linkend="__tag_panel_8cpp_source">TagPanel.cpp</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_flow_tag_panel_abf730289f88b08402ed5d924d362814c_cgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+Here is the caller graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_flow_tag_panel_abf730289f88b08402ed5d924d362814c_icgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_class_flow_tag_panel_1a6c9860496ffc71764f9cfa629d090703"/><section>
+    <title>updateInsertRect()</title>
+<indexterm><primary>updateInsertRect</primary><secondary>FlowTagPanel</secondary></indexterm>
+<indexterm><primary>FlowTagPanel</primary><secondary>updateInsertRect</secondary></indexterm>
+<para><computeroutput>void FlowTagPanel::updateInsertRect ( )<computeroutput>[override]</computeroutput>, <computeroutput>[virtual]</computeroutput></computeroutput></para><para>
+Reimplemented from <link linkend="_class_tag_panel_1af925f36858bbc30c39bd4716f64822d3">TagPanel</link>.</para>
+<para>
+Definition at line <link linkend="__tag_panel_8cpp_source_1l00457">457</link> of file <link linkend="__tag_panel_8cpp_source">TagPanel.cpp</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_flow_tag_panel_a6c9860496ffc71764f9cfa629d090703_cgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_class_flow_tag_panel_1a482b23630874fb9f414c9b029501aadd"/><section>
+    <title>updateLayout()</title>
+<indexterm><primary>updateLayout</primary><secondary>FlowTagPanel</secondary></indexterm>
+<indexterm><primary>FlowTagPanel</primary><secondary>updateLayout</secondary></indexterm>
+<para><computeroutput>void FlowTagPanel::updateLayout ( )</computeroutput></para><para>
+Definition at line <link linkend="__tag_panel_8cpp_source_1l00560">560</link> of file <link linkend="__tag_panel_8cpp_source">TagPanel.cpp</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_flow_tag_panel_a482b23630874fb9f414c9b029501aadd_cgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+Here is the caller graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_flow_tag_panel_a482b23630874fb9f414c9b029501aadd_icgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+</section>
+<section>
+<title>Member Data Documentation</title>
+<anchor xml:id="_class_flow_tag_panel_1a023570c0ce18045ff6d02e7edcd83df6"/><section>
+    <title>bottomSpacer</title>
+<indexterm><primary>bottomSpacer</primary><secondary>FlowTagPanel</secondary></indexterm>
+<indexterm><primary>FlowTagPanel</primary><secondary>bottomSpacer</secondary></indexterm>
+<para><computeroutput>wxSizerItem* FlowTagPanel::bottomSpacer<computeroutput>[protected]</computeroutput></computeroutput></para><para>
+Definition at line <link linkend="__tag_panel_8h_source_1l00171">171</link> of file <link linkend="__tag_panel_8h_source">TagPanel.h</link>.</para>
+</section>
+<anchor xml:id="_class_flow_tag_panel_1aeb64852326aa4019061f0ba333276b6f"/><section>
+    <title>childrenSizer</title>
+<indexterm><primary>childrenSizer</primary><secondary>FlowTagPanel</secondary></indexterm>
+<indexterm><primary>FlowTagPanel</primary><secondary>childrenSizer</secondary></indexterm>
+<para><computeroutput>wxBoxSizer* FlowTagPanel::childrenSizer<computeroutput>[protected]</computeroutput></computeroutput></para><para>
+Definition at line <link linkend="__tag_panel_8h_source_1l00174">174</link> of file <link linkend="__tag_panel_8h_source">TagPanel.h</link>.</para>
+</section>
+<anchor xml:id="_class_flow_tag_panel_1a449e6c46847cf6ff4849c43603e576a3"/><section>
+    <title>emptyTagPanel</title>
+<indexterm><primary>emptyTagPanel</primary><secondary>FlowTagPanel</secondary></indexterm>
+<indexterm><primary>FlowTagPanel</primary><secondary>emptyTagPanel</secondary></indexterm>
+<para><computeroutput><link linkend="_class_empty_panel">EmptyPanel</link>* FlowTagPanel::emptyTagPanel<computeroutput>[protected]</computeroutput></computeroutput></para><para>
+Definition at line <link linkend="__tag_panel_8h_source_1l00172">172</link> of file <link linkend="__tag_panel_8h_source">TagPanel.h</link>.</para>
+</section>
+<anchor xml:id="_class_flow_tag_panel_1a168025a358c496c0b7916c64ca718d0c"/><section>
+    <title>hider</title>
+<indexterm><primary>hider</primary><secondary>FlowTagPanel</secondary></indexterm>
+<indexterm><primary>FlowTagPanel</primary><secondary>hider</secondary></indexterm>
+<para><computeroutput>wxButton* FlowTagPanel::hider<computeroutput>[protected]</computeroutput></computeroutput></para><para>
+Definition at line <link linkend="__tag_panel_8h_source_1l00175">175</link> of file <link linkend="__tag_panel_8h_source">TagPanel.h</link>.</para>
+</section>
+<anchor xml:id="_class_flow_tag_panel_1a29d6875da55a05e85043eafb6d4e9e0f"/><section>
+    <title>nbFlowParents</title>
+<indexterm><primary>nbFlowParents</primary><secondary>FlowTagPanel</secondary></indexterm>
+<indexterm><primary>FlowTagPanel</primary><secondary>nbFlowParents</secondary></indexterm>
+<para><computeroutput>int FlowTagPanel::nbFlowParents<computeroutput>[protected]</computeroutput></computeroutput></para><para>
+Definition at line <link linkend="__tag_panel_8h_source_1l00173">173</link> of file <link linkend="__tag_panel_8h_source">TagPanel.h</link>.</para>
+</section>
+<para>
+The documentation for this class was generated from the following files:</para>
+src/<link linkend="__tag_panel_8h">TagPanel.h</link>src/<link linkend="__tag_panel_8cpp">TagPanel.cpp</link></section>
+</section>

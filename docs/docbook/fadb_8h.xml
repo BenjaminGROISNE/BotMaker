@@ -1,0 +1,803 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<section xmlns="http://docbook.org/ns/docbook" version="5.0" xmlns:xlink="http://www.w3.org/1999/xlink" xml:id="_fadb_8h" xml:lang="en-US">
+<title>src/fadb.h File Reference</title>
+<indexterm><primary>src/fadb.h</primary></indexterm>
+<programlisting linenumbering="unnumbered">#include &lt;Windows.h&gt;<?linebreak?>#include &lt;iostream&gt;<?linebreak?>#include &lt;array&gt;<?linebreak?>#include &lt;memory&gt;<?linebreak?>#include &lt;ctime&gt;<?linebreak?>#include &lt;filesystem&gt;<?linebreak?>#include &lt;atomic&gt;<?linebreak?>#include &lt;chrono&gt;<?linebreak?>#include &lt;thread&gt;<?linebreak?>#include &lt;stdexcept&gt;<?linebreak?>#include &lt;cstdio&gt;<?linebreak?>#include &quot;sysCommands.h&quot;<?linebreak?>#include &quot;TextManager.h&quot;<?linebreak?></programlisting>Include dependency graph for fadb.h:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="fadb_8h__incl.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+This graph shows which files directly or indirectly include this file:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="fadb_8h__dep__incl.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+<simplesect>
+    <title>Macros    </title>
+        <itemizedlist>
+            <listitem><para>#define <link linkend="_fadb_8h_1a9f918755b601cf4bffca775992e6fb90">NOMINMAX</link></para>
+</listitem>
+        </itemizedlist>
+</simplesect>
+<simplesect>
+    <title>Functions    </title>
+        <itemizedlist>
+            <listitem><para>std::string <link linkend="_fadb_8h_1ad3822cd2dc601b43749f59a44d767bee">runAdbLocalhostShell</link> (const std::string &amp;command, const std::string adbId=&quot;&quot;)</para>
+</listitem>
+            <listitem><para>std::string <link linkend="_fadb_8h_1a8f4460f06001ab04100eb0546c72b7be">runAdbLocalhost</link> (const std::string &amp;command, const std::string adbId=&quot;&quot;)</para>
+</listitem>
+            <listitem><para>std::string <link linkend="_fadb_8h_1a383ae5fedc9f597a03c74c729a2eb740">runAdb</link> (const std::string &amp;command)</para>
+</listitem>
+            <listitem><para>void <link linkend="_fadb_8h_1a29c7d6e6504d4e0eacca338baf2a8f00">input</link> (const std::string &amp;inputcmd, const std::string adbId=&quot;&quot;)</para>
+</listitem>
+            <listitem><para>void <link linkend="_fadb_8h_1a9db0b8f0962c92eb36d47fbadc76127c">waitForDevice</link> (const std::string adbId=&quot;&quot;)</para>
+</listitem>
+            <listitem><para>void <link linkend="_fadb_8h_1aafa611640c7e3df8ed87bc67b758d20e">touch</link> (int x, int y, const std::string adbId=&quot;&quot;)</para>
+</listitem>
+            <listitem><para>void <link linkend="_fadb_8h_1a6f2cf4e46e0f432b83e36bab01a263a0">swipe</link> (int x1, int y1, int x2, int y2, int delayMilliseconds, const std::string adbId=&quot;&quot;)</para>
+</listitem>
+            <listitem><para>void <link linkend="_fadb_8h_1ae8ef111a46d1f404996aead63a802009">getEmulatorDimensions</link> (int &amp;DIMX, int &amp;DIMY, const std::string adbId=&quot;&quot;)</para>
+</listitem>
+            <listitem><para>void <link linkend="_fadb_8h_1af531d2478e26aa5b8c2564dfba19db28">launchPackage</link> (std::string namepckg, const std::string adbId=&quot;&quot;)</para>
+</listitem>
+            <listitem><para>int <link linkend="_fadb_8h_1ae46c4b3a829d6455411f7b096b7ba6c1">getPidLogcat</link> (const std::string adbId=&quot;&quot;)</para>
+</listitem>
+            <listitem><para>void <link linkend="_fadb_8h_1abf896c6504985dafea73f29f0903a03e">quitPackage</link> (std::string namepckg, const std::string adbId=&quot;&quot;)</para>
+</listitem>
+            <listitem><para>void <link linkend="_fadb_8h_1ab387d74ad6ad02b314a85218e879be71">adbHome</link> (const std::string adbId=&quot;&quot;)</para>
+</listitem>
+            <listitem><para>void <link linkend="_fadb_8h_1a45b70e04a8d4d061726c2654ac694a18">adbBack</link> (const std::string adbId=&quot;&quot;)</para>
+</listitem>
+            <listitem><para>void <link linkend="_fadb_8h_1a1e55aff2513b6d11f27810eafb7f5748">adbMenu</link> (const std::string adbId=&quot;&quot;)</para>
+</listitem>
+            <listitem><para>std::string <link linkend="_fadb_8h_1a7e4823979e9efbb71575a23ed2b20bed">devices</link> ()</para>
+</listitem>
+            <listitem><para>bool <link linkend="_fadb_8h_1ab02e8d1680f01e6c22f041b51cd99357">isDeviceConnected</link> (const std::string adbId=&quot;&quot;)</para>
+</listitem>
+            <listitem><para>void <link linkend="_fadb_8h_1a4bcd6ce7d04c38f8c4ff908d1fc50f86">reconnect</link> ()</para>
+</listitem>
+            <listitem><para>void <link linkend="_fadb_8h_1a581b7b188a852f31975516f81efcc954">startServer</link> ()</para>
+</listitem>
+            <listitem><para>void <link linkend="_fadb_8h_1af853fce1046d877dd07d3c66a6fa9417">takeScreenshot</link> (const std::string &amp;filename, const std::string adbId=&quot;&quot;)</para>
+</listitem>
+            <listitem><para>void <link linkend="_fadb_8h_1ad419bd16908b4011edfd4deefcf6b443">screenshot</link> (const std::string adbId=&quot;&quot;)</para>
+</listitem>
+            <listitem><para>void <link linkend="_fadb_8h_1a8e3d1ab823fab9acfc89b7d2ecd12f66">connectLocalhost</link> (const std::string adbId=&quot;&quot;)</para>
+</listitem>
+            <listitem><para>void <link linkend="_fadb_8h_1a27d07e0a562ce0845e9a20b1f562e189">disconnectLocalhost</link> (const std::string adbId=&quot;&quot;)</para>
+</listitem>
+            <listitem><para>void <link linkend="_fadb_8h_1a4d12faa376bb54b70522a2c34d0c5ddc">setResolution</link> (int x, int y, int dpi, const std::string adbId=&quot;&quot;)</para>
+</listitem>
+            <listitem><para>void <link linkend="_fadb_8h_1a4bf0b4cfcc899e6a2011d2048fce05b6">killAdb</link> ()</para>
+</listitem>
+            <listitem><para>int <link linkend="_fadb_8h_1afac6bf69979499e54aaec7a4afbf4a8b">getPid</link> (const std::string &amp;processn, const std::string adbId=&quot;&quot;)</para>
+</listitem>
+            <listitem><para>std::vector&lt; int &gt; <link linkend="_fadb_8h_1a0b045ae16b6287a19a47f92ab494a3ed">getMultPid</link> (const std::string &amp;process, const std::string adbId=&quot;&quot;)</para>
+</listitem>
+            <listitem><para>void <link linkend="_fadb_8h_1a0a495307fd94d5711f298a34b95cda7d">killPid</link> (int pid, const std::string adbId=&quot;&quot;)</para>
+</listitem>
+            <listitem><para>void <link linkend="_fadb_8h_1a645280c89b58a20579725dd88ef60240">killLogcat</link> (const std::string adbId=&quot;&quot;)</para>
+</listitem>
+            <listitem><para>bool <link linkend="_fadb_8h_1a6791639e7e6cb7c370b8e94d551b9182">packageRunning</link> (std::string package, const std::string adbId=&quot;&quot;)</para>
+</listitem>
+            <listitem><para>bool <link linkend="_fadb_8h_1a40246ab2b8ae11b09707895fff46b0a9">onPackage</link> (std::string package, const std::string adbId=&quot;&quot;)</para>
+</listitem>
+            <listitem><para>std::string <link linkend="_fadb_8h_1a9bd83fc86c8336fb7aa2824fdb994cba">currentFocus</link> (const std::string adbId=&quot;&quot;)</para>
+</listitem>
+        </itemizedlist>
+</simplesect>
+<section>
+<title>Macro Definition Documentation</title>
+<anchor xml:id="_fadb_8h_1a9f918755b601cf4bffca775992e6fb90"/><section>
+    <title>NOMINMAX</title>
+<indexterm><primary>NOMINMAX</primary><secondary>fadb.h</secondary></indexterm>
+<indexterm><primary>fadb.h</primary><secondary>NOMINMAX</secondary></indexterm>
+<para><computeroutput>#define NOMINMAX</computeroutput></para><para>
+Definition at line <link linkend="_fadb_8h_source_1l00004">4</link> of file <link linkend="_fadb_8h_source">fadb.h</link>.</para>
+</section>
+</section>
+<section>
+<title>Function Documentation</title>
+<anchor xml:id="_fadb_8h_1a45b70e04a8d4d061726c2654ac694a18"/><section>
+    <title>adbBack()</title>
+<indexterm><primary>adbBack</primary><secondary>fadb.h</secondary></indexterm>
+<indexterm><primary>fadb.h</primary><secondary>adbBack</secondary></indexterm>
+<para><computeroutput>void adbBack (const std::string adbId = <computeroutput>&quot;&quot;</computeroutput>
+)</computeroutput></para><para>
+Definition at line <link linkend="_fadb_8cpp_source_1l00079">79</link> of file <link linkend="_fadb_8cpp_source">fadb.cpp</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="fadb_8h_a45b70e04a8d4d061726c2654ac694a18_cgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_fadb_8h_1ab387d74ad6ad02b314a85218e879be71"/><section>
+    <title>adbHome()</title>
+<indexterm><primary>adbHome</primary><secondary>fadb.h</secondary></indexterm>
+<indexterm><primary>fadb.h</primary><secondary>adbHome</secondary></indexterm>
+<para><computeroutput>void adbHome (const std::string adbId = <computeroutput>&quot;&quot;</computeroutput>
+)</computeroutput></para><para>
+Definition at line <link linkend="_fadb_8cpp_source_1l00076">76</link> of file <link linkend="_fadb_8cpp_source">fadb.cpp</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="fadb_8h_ab387d74ad6ad02b314a85218e879be71_cgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_fadb_8h_1a1e55aff2513b6d11f27810eafb7f5748"/><section>
+    <title>adbMenu()</title>
+<indexterm><primary>adbMenu</primary><secondary>fadb.h</secondary></indexterm>
+<indexterm><primary>fadb.h</primary><secondary>adbMenu</secondary></indexterm>
+<para><computeroutput>void adbMenu (const std::string adbId = <computeroutput>&quot;&quot;</computeroutput>
+)</computeroutput></para><para>
+Definition at line <link linkend="_fadb_8cpp_source_1l00082">82</link> of file <link linkend="_fadb_8cpp_source">fadb.cpp</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="fadb_8h_a1e55aff2513b6d11f27810eafb7f5748_cgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_fadb_8h_1a8e3d1ab823fab9acfc89b7d2ecd12f66"/><section>
+    <title>connectLocalhost()</title>
+<indexterm><primary>connectLocalhost</primary><secondary>fadb.h</secondary></indexterm>
+<indexterm><primary>fadb.h</primary><secondary>connectLocalhost</secondary></indexterm>
+<para><computeroutput>void connectLocalhost (const std::string adbId = <computeroutput>&quot;&quot;</computeroutput>
+)</computeroutput></para><para>
+Definition at line <link linkend="_fadb_8cpp_source_1l00113">113</link> of file <link linkend="_fadb_8cpp_source">fadb.cpp</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="fadb_8h_a8e3d1ab823fab9acfc89b7d2ecd12f66_cgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_fadb_8h_1a9bd83fc86c8336fb7aa2824fdb994cba"/><section>
+    <title>currentFocus()</title>
+<indexterm><primary>currentFocus</primary><secondary>fadb.h</secondary></indexterm>
+<indexterm><primary>fadb.h</primary><secondary>currentFocus</secondary></indexterm>
+<para><computeroutput>std::string currentFocus (const std::string adbId = <computeroutput>&quot;&quot;</computeroutput>
+)</computeroutput></para><para>
+Definition at line <link linkend="_fadb_8cpp_source_1l00166">166</link> of file <link linkend="_fadb_8cpp_source">fadb.cpp</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="fadb_8h_a9bd83fc86c8336fb7aa2824fdb994cba_cgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+Here is the caller graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="fadb_8h_a9bd83fc86c8336fb7aa2824fdb994cba_icgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_fadb_8h_1a7e4823979e9efbb71575a23ed2b20bed"/><section>
+    <title>devices()</title>
+<indexterm><primary>devices</primary><secondary>fadb.h</secondary></indexterm>
+<indexterm><primary>fadb.h</primary><secondary>devices</secondary></indexterm>
+<para><computeroutput>std::string devices ( )</computeroutput></para><para>
+Definition at line <link linkend="_fadb_8cpp_source_1l00093">93</link> of file <link linkend="_fadb_8cpp_source">fadb.cpp</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="fadb_8h_a7e4823979e9efbb71575a23ed2b20bed_cgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+Here is the caller graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="fadb_8h_a7e4823979e9efbb71575a23ed2b20bed_icgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_fadb_8h_1a27d07e0a562ce0845e9a20b1f562e189"/><section>
+    <title>disconnectLocalhost()</title>
+<indexterm><primary>disconnectLocalhost</primary><secondary>fadb.h</secondary></indexterm>
+<indexterm><primary>fadb.h</primary><secondary>disconnectLocalhost</secondary></indexterm>
+<para><computeroutput>void disconnectLocalhost (const std::string adbId = <computeroutput>&quot;&quot;</computeroutput>
+)</computeroutput></para><para>
+Definition at line <link linkend="_fadb_8cpp_source_1l00119">119</link> of file <link linkend="_fadb_8cpp_source">fadb.cpp</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="fadb_8h_a27d07e0a562ce0845e9a20b1f562e189_cgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_fadb_8h_1ae8ef111a46d1f404996aead63a802009"/><section>
+    <title>getEmulatorDimensions()</title>
+<indexterm><primary>getEmulatorDimensions</primary><secondary>fadb.h</secondary></indexterm>
+<indexterm><primary>fadb.h</primary><secondary>getEmulatorDimensions</secondary></indexterm>
+<para><computeroutput>void getEmulatorDimensions (int &amp; DIMX, int &amp; DIMY, const std::string adbId = <computeroutput>&quot;&quot;</computeroutput>
+)</computeroutput></para><para>
+Definition at line <link linkend="_fadb_8cpp_source_1l00054">54</link> of file <link linkend="_fadb_8cpp_source">fadb.cpp</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="fadb_8h_ae8ef111a46d1f404996aead63a802009_cgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_fadb_8h_1a0b045ae16b6287a19a47f92ab494a3ed"/><section>
+    <title>getMultPid()</title>
+<indexterm><primary>getMultPid</primary><secondary>fadb.h</secondary></indexterm>
+<indexterm><primary>fadb.h</primary><secondary>getMultPid</secondary></indexterm>
+<para><computeroutput>std::vector&lt; int &gt; getMultPid (const std::string &amp; process, const std::string adbId = <computeroutput>&quot;&quot;</computeroutput>
+)</computeroutput></para><para>
+Definition at line <link linkend="_fadb_8cpp_source_1l00144">144</link> of file <link linkend="_fadb_8cpp_source">fadb.cpp</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="fadb_8h_a0b045ae16b6287a19a47f92ab494a3ed_cgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+Here is the caller graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="fadb_8h_a0b045ae16b6287a19a47f92ab494a3ed_icgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_fadb_8h_1afac6bf69979499e54aaec7a4afbf4a8b"/><section>
+    <title>getPid()</title>
+<indexterm><primary>getPid</primary><secondary>fadb.h</secondary></indexterm>
+<indexterm><primary>fadb.h</primary><secondary>getPid</secondary></indexterm>
+<para><computeroutput>int getPid (const std::string &amp; processn, const std::string adbId = <computeroutput>&quot;&quot;</computeroutput>
+)</computeroutput></para><para>
+Definition at line <link linkend="_fadb_8cpp_source_1l00136">136</link> of file <link linkend="_fadb_8cpp_source">fadb.cpp</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="fadb_8h_afac6bf69979499e54aaec7a4afbf4a8b_cgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+Here is the caller graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="fadb_8h_afac6bf69979499e54aaec7a4afbf4a8b_icgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_fadb_8h_1ae46c4b3a829d6455411f7b096b7ba6c1"/><section>
+    <title>getPidLogcat()</title>
+<indexterm><primary>getPidLogcat</primary><secondary>fadb.h</secondary></indexterm>
+<indexterm><primary>fadb.h</primary><secondary>getPidLogcat</secondary></indexterm>
+<para><computeroutput>int getPidLogcat (const std::string adbId = <computeroutput>&quot;&quot;</computeroutput>
+)</computeroutput></para><para>
+Definition at line <link linkend="_fadb_8cpp_source_1l00030">30</link> of file <link linkend="_fadb_8cpp_source">fadb.cpp</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="fadb_8h_ae46c4b3a829d6455411f7b096b7ba6c1_cgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_fadb_8h_1a29c7d6e6504d4e0eacca338baf2a8f00"/><section>
+    <title>input()</title>
+<indexterm><primary>input</primary><secondary>fadb.h</secondary></indexterm>
+<indexterm><primary>fadb.h</primary><secondary>input</secondary></indexterm>
+<para><computeroutput>void input (const std::string &amp; inputcmd, const std::string adbId = <computeroutput>&quot;&quot;</computeroutput>
+)</computeroutput></para><para>
+Definition at line <link linkend="_fadb_8cpp_source_1l00003">3</link> of file <link linkend="_fadb_8cpp_source">fadb.cpp</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="fadb_8h_a29c7d6e6504d4e0eacca338baf2a8f00_cgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+Here is the caller graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="fadb_8h_a29c7d6e6504d4e0eacca338baf2a8f00_icgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_fadb_8h_1ab02e8d1680f01e6c22f041b51cd99357"/><section>
+    <title>isDeviceConnected()</title>
+<indexterm><primary>isDeviceConnected</primary><secondary>fadb.h</secondary></indexterm>
+<indexterm><primary>fadb.h</primary><secondary>isDeviceConnected</secondary></indexterm>
+<para><computeroutput>bool isDeviceConnected (const std::string adbId = <computeroutput>&quot;&quot;</computeroutput>
+)</computeroutput></para><para>
+Definition at line <link linkend="_fadb_8cpp_source_1l00097">97</link> of file <link linkend="_fadb_8cpp_source">fadb.cpp</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="fadb_8h_ab02e8d1680f01e6c22f041b51cd99357_cgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+Here is the caller graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="fadb_8h_ab02e8d1680f01e6c22f041b51cd99357_icgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_fadb_8h_1a4bf0b4cfcc899e6a2011d2048fce05b6"/><section>
+    <title>killAdb()</title>
+<indexterm><primary>killAdb</primary><secondary>fadb.h</secondary></indexterm>
+<indexterm><primary>fadb.h</primary><secondary>killAdb</secondary></indexterm>
+<para><computeroutput>void killAdb ( )</computeroutput></para><para>
+Definition at line <link linkend="_fadb_8cpp_source_1l00132">132</link> of file <link linkend="_fadb_8cpp_source">fadb.cpp</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="fadb_8h_a4bf0b4cfcc899e6a2011d2048fce05b6_cgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_fadb_8h_1a645280c89b58a20579725dd88ef60240"/><section>
+    <title>killLogcat()</title>
+<indexterm><primary>killLogcat</primary><secondary>fadb.h</secondary></indexterm>
+<indexterm><primary>fadb.h</primary><secondary>killLogcat</secondary></indexterm>
+<para><computeroutput>void killLogcat (const std::string adbId = <computeroutput>&quot;&quot;</computeroutput>
+)</computeroutput></para><para>
+Definition at line <link linkend="_fadb_8cpp_source_1l00177">177</link> of file <link linkend="_fadb_8cpp_source">fadb.cpp</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="fadb_8h_a645280c89b58a20579725dd88ef60240_cgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_fadb_8h_1a0a495307fd94d5711f298a34b95cda7d"/><section>
+    <title>killPid()</title>
+<indexterm><primary>killPid</primary><secondary>fadb.h</secondary></indexterm>
+<indexterm><primary>fadb.h</primary><secondary>killPid</secondary></indexterm>
+<para><computeroutput>void killPid (int pid, const std::string adbId = <computeroutput>&quot;&quot;</computeroutput>
+)</computeroutput></para><para>
+Definition at line <link linkend="_fadb_8cpp_source_1l00172">172</link> of file <link linkend="_fadb_8cpp_source">fadb.cpp</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="fadb_8h_a0a495307fd94d5711f298a34b95cda7d_cgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+Here is the caller graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="fadb_8h_a0a495307fd94d5711f298a34b95cda7d_icgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_fadb_8h_1af531d2478e26aa5b8c2564dfba19db28"/><section>
+    <title>launchPackage()</title>
+<indexterm><primary>launchPackage</primary><secondary>fadb.h</secondary></indexterm>
+<indexterm><primary>fadb.h</primary><secondary>launchPackage</secondary></indexterm>
+<para><computeroutput>void launchPackage (std::string namepckg, const std::string adbId = <computeroutput>&quot;&quot;</computeroutput>
+)</computeroutput></para><para>
+Definition at line <link linkend="_fadb_8cpp_source_1l00068">68</link> of file <link linkend="_fadb_8cpp_source">fadb.cpp</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="fadb_8h_af531d2478e26aa5b8c2564dfba19db28_cgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+Here is the caller graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="fadb_8h_af531d2478e26aa5b8c2564dfba19db28_icgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_fadb_8h_1a40246ab2b8ae11b09707895fff46b0a9"/><section>
+    <title>onPackage()</title>
+<indexterm><primary>onPackage</primary><secondary>fadb.h</secondary></indexterm>
+<indexterm><primary>fadb.h</primary><secondary>onPackage</secondary></indexterm>
+<para><computeroutput>bool onPackage (std::string package, const std::string adbId = <computeroutput>&quot;&quot;</computeroutput>
+)</computeroutput></para><para>
+Definition at line <link linkend="_fadb_8cpp_source_1l00195">195</link> of file <link linkend="_fadb_8cpp_source">fadb.cpp</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="fadb_8h_a40246ab2b8ae11b09707895fff46b0a9_cgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+Here is the caller graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="fadb_8h_a40246ab2b8ae11b09707895fff46b0a9_icgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_fadb_8h_1a6791639e7e6cb7c370b8e94d551b9182"/><section>
+    <title>packageRunning()</title>
+<indexterm><primary>packageRunning</primary><secondary>fadb.h</secondary></indexterm>
+<indexterm><primary>fadb.h</primary><secondary>packageRunning</secondary></indexterm>
+<para><computeroutput>bool packageRunning (std::string package, const std::string adbId = <computeroutput>&quot;&quot;</computeroutput>
+)</computeroutput></para><para>
+Definition at line <link linkend="_fadb_8cpp_source_1l00187">187</link> of file <link linkend="_fadb_8cpp_source">fadb.cpp</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="fadb_8h_a6791639e7e6cb7c370b8e94d551b9182_cgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_fadb_8h_1abf896c6504985dafea73f29f0903a03e"/><section>
+    <title>quitPackage()</title>
+<indexterm><primary>quitPackage</primary><secondary>fadb.h</secondary></indexterm>
+<indexterm><primary>fadb.h</primary><secondary>quitPackage</secondary></indexterm>
+<para><computeroutput>void quitPackage (std::string namepckg, const std::string adbId = <computeroutput>&quot;&quot;</computeroutput>
+)</computeroutput></para><para>
+Definition at line <link linkend="_fadb_8cpp_source_1l00071">71</link> of file <link linkend="_fadb_8cpp_source">fadb.cpp</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="fadb_8h_abf896c6504985dafea73f29f0903a03e_cgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+Here is the caller graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="fadb_8h_abf896c6504985dafea73f29f0903a03e_icgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_fadb_8h_1a4bcd6ce7d04c38f8c4ff908d1fc50f86"/><section>
+    <title>reconnect()</title>
+<indexterm><primary>reconnect</primary><secondary>fadb.h</secondary></indexterm>
+<indexterm><primary>fadb.h</primary><secondary>reconnect</secondary></indexterm>
+<para><computeroutput>void reconnect ( )</computeroutput></para><para>
+Definition at line <link linkend="_fadb_8cpp_source_1l00103">103</link> of file <link linkend="_fadb_8cpp_source">fadb.cpp</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="fadb_8h_a4bcd6ce7d04c38f8c4ff908d1fc50f86_cgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+Here is the caller graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="fadb_8h_a4bcd6ce7d04c38f8c4ff908d1fc50f86_icgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_fadb_8h_1a383ae5fedc9f597a03c74c729a2eb740"/><section>
+    <title>runAdb()</title>
+<indexterm><primary>runAdb</primary><secondary>fadb.h</secondary></indexterm>
+<indexterm><primary>fadb.h</primary><secondary>runAdb</secondary></indexterm>
+<para><computeroutput>std::string runAdb (const std::string &amp; command)</computeroutput></para><para>
+Definition at line <link linkend="_fadb_8cpp_source_1l00048">48</link> of file <link linkend="_fadb_8cpp_source">fadb.cpp</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="fadb_8h_a383ae5fedc9f597a03c74c729a2eb740_cgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+Here is the caller graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="fadb_8h_a383ae5fedc9f597a03c74c729a2eb740_icgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_fadb_8h_1a8f4460f06001ab04100eb0546c72b7be"/><section>
+    <title>runAdbLocalhost()</title>
+<indexterm><primary>runAdbLocalhost</primary><secondary>fadb.h</secondary></indexterm>
+<indexterm><primary>fadb.h</primary><secondary>runAdbLocalhost</secondary></indexterm>
+<para><computeroutput>std::string runAdbLocalhost (const std::string &amp; command, const std::string adbId = <computeroutput>&quot;&quot;</computeroutput>
+)</computeroutput></para><para>
+Definition at line <link linkend="_fadb_8cpp_source_1l00040">40</link> of file <link linkend="_fadb_8cpp_source">fadb.cpp</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="fadb_8h_a8f4460f06001ab04100eb0546c72b7be_cgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+Here is the caller graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="fadb_8h_a8f4460f06001ab04100eb0546c72b7be_icgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_fadb_8h_1ad3822cd2dc601b43749f59a44d767bee"/><section>
+    <title>runAdbLocalhostShell()</title>
+<indexterm><primary>runAdbLocalhostShell</primary><secondary>fadb.h</secondary></indexterm>
+<indexterm><primary>fadb.h</primary><secondary>runAdbLocalhostShell</secondary></indexterm>
+<para><computeroutput>std::string runAdbLocalhostShell (const std::string &amp; command, const std::string adbId = <computeroutput>&quot;&quot;</computeroutput>
+)</computeroutput></para><para>
+Definition at line <link linkend="_fadb_8cpp_source_1l00034">34</link> of file <link linkend="_fadb_8cpp_source">fadb.cpp</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="fadb_8h_ad3822cd2dc601b43749f59a44d767bee_cgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+Here is the caller graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="fadb_8h_ad3822cd2dc601b43749f59a44d767bee_icgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_fadb_8h_1ad419bd16908b4011edfd4deefcf6b443"/><section>
+    <title>screenshot()</title>
+<indexterm><primary>screenshot</primary><secondary>fadb.h</secondary></indexterm>
+<indexterm><primary>fadb.h</primary><secondary>screenshot</secondary></indexterm>
+<para><computeroutput>void screenshot (const std::string adbId = <computeroutput>&quot;&quot;</computeroutput>
+)</computeroutput></para><para>
+Definition at line <link linkend="_fadb_8cpp_source_1l00090">90</link> of file <link linkend="_fadb_8cpp_source">fadb.cpp</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="fadb_8h_ad419bd16908b4011edfd4deefcf6b443_cgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+Here is the caller graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="fadb_8h_ad419bd16908b4011edfd4deefcf6b443_icgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_fadb_8h_1a4d12faa376bb54b70522a2c34d0c5ddc"/><section>
+    <title>setResolution()</title>
+<indexterm><primary>setResolution</primary><secondary>fadb.h</secondary></indexterm>
+<indexterm><primary>fadb.h</primary><secondary>setResolution</secondary></indexterm>
+<para><computeroutput>void setResolution (int x, int y, int dpi, const std::string adbId = <computeroutput>&quot;&quot;</computeroutput>
+)</computeroutput></para><para>
+Definition at line <link linkend="_fadb_8cpp_source_1l00123">123</link> of file <link linkend="_fadb_8cpp_source">fadb.cpp</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="fadb_8h_a4d12faa376bb54b70522a2c34d0c5ddc_cgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_fadb_8h_1a581b7b188a852f31975516f81efcc954"/><section>
+    <title>startServer()</title>
+<indexterm><primary>startServer</primary><secondary>fadb.h</secondary></indexterm>
+<indexterm><primary>fadb.h</primary><secondary>startServer</secondary></indexterm>
+<para><computeroutput>void startServer ( )</computeroutput></para><para>
+Definition at line <link linkend="_fadb_8cpp_source_1l00108">108</link> of file <link linkend="_fadb_8cpp_source">fadb.cpp</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="fadb_8h_a581b7b188a852f31975516f81efcc954_cgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_fadb_8h_1a6f2cf4e46e0f432b83e36bab01a263a0"/><section>
+    <title>swipe()</title>
+<indexterm><primary>swipe</primary><secondary>fadb.h</secondary></indexterm>
+<indexterm><primary>fadb.h</primary><secondary>swipe</secondary></indexterm>
+<para><computeroutput>void swipe (int x1, int y1, int x2, int y2, int delayMilliseconds, const std::string adbId = <computeroutput>&quot;&quot;</computeroutput>
+)</computeroutput></para><para>
+Definition at line <link linkend="_fadb_8cpp_source_1l00020">20</link> of file <link linkend="_fadb_8cpp_source">fadb.cpp</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="fadb_8h_a6f2cf4e46e0f432b83e36bab01a263a0_cgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+Here is the caller graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="fadb_8h_a6f2cf4e46e0f432b83e36bab01a263a0_icgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_fadb_8h_1af853fce1046d877dd07d3c66a6fa9417"/><section>
+    <title>takeScreenshot()</title>
+<indexterm><primary>takeScreenshot</primary><secondary>fadb.h</secondary></indexterm>
+<indexterm><primary>fadb.h</primary><secondary>takeScreenshot</secondary></indexterm>
+<para><computeroutput>void takeScreenshot (const std::string &amp; filename, const std::string adbId = <computeroutput>&quot;&quot;</computeroutput>
+)</computeroutput></para><para>
+Definition at line <link linkend="_fadb_8cpp_source_1l00085">85</link> of file <link linkend="_fadb_8cpp_source">fadb.cpp</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="fadb_8h_af853fce1046d877dd07d3c66a6fa9417_cgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+Here is the caller graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="fadb_8h_af853fce1046d877dd07d3c66a6fa9417_icgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_fadb_8h_1aafa611640c7e3df8ed87bc67b758d20e"/><section>
+    <title>touch()</title>
+<indexterm><primary>touch</primary><secondary>fadb.h</secondary></indexterm>
+<indexterm><primary>fadb.h</primary><secondary>touch</secondary></indexterm>
+<para><computeroutput>void touch (int x, int y, const std::string adbId = <computeroutput>&quot;&quot;</computeroutput>
+)</computeroutput></para><para>
+Definition at line <link linkend="_fadb_8cpp_source_1l00012">12</link> of file <link linkend="_fadb_8cpp_source">fadb.cpp</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="fadb_8h_aafa611640c7e3df8ed87bc67b758d20e_cgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+Here is the caller graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="fadb_8h_aafa611640c7e3df8ed87bc67b758d20e_icgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_fadb_8h_1a9db0b8f0962c92eb36d47fbadc76127c"/><section>
+    <title>waitForDevice()</title>
+<indexterm><primary>waitForDevice</primary><secondary>fadb.h</secondary></indexterm>
+<indexterm><primary>fadb.h</primary><secondary>waitForDevice</secondary></indexterm>
+<para><computeroutput>void waitForDevice (const std::string adbId = <computeroutput>&quot;&quot;</computeroutput>
+)</computeroutput></para><para>
+Definition at line <link linkend="_fadb_8cpp_source_1l00007">7</link> of file <link linkend="_fadb_8cpp_source">fadb.cpp</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="fadb_8h_a9db0b8f0962c92eb36d47fbadc76127c_cgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+Here is the caller graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="fadb_8h_a9db0b8f0962c92eb36d47fbadc76127c_icgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+</section>
+</section>

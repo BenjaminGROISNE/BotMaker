@@ -1,0 +1,322 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<section xmlns="http://docbook.org/ns/docbook" version="5.0" xmlns:xlink="http://www.w3.org/1999/xlink" xml:id="_struct_element" xml:lang="en-US">
+<title>Element Struct Reference</title>
+<indexterm><primary>Element</primary></indexterm>
+<para>
+<computeroutput>#include &lt;fsfml.h&gt;</computeroutput>
+</para>
+Collaboration diagram for Element:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="struct_element__coll__graph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+<simplesect>
+    <title>Public Member Functions    </title>
+        <itemizedlist>
+            <listitem><para><link linkend="_struct_element_1ab0d0e20be9a36ae676202db753faeec9">Element</link> ()</para>
+</listitem>
+            <listitem><para><link linkend="_struct_element_1a77c528069aae3036ece67c4af1b18806">Element</link> (sf::Sprite <link linkend="_struct_element_1a3f9e10790e44b0caa7d3ccf4e55c4991">sprite</link>)</para>
+</listitem>
+            <listitem><para><link linkend="_struct_element_1a0930389fa76579ad78383cc183912a3b">Element</link> (sf::Sprite &amp;<link linkend="_struct_element_1a3f9e10790e44b0caa7d3ccf4e55c4991">sprite</link>, bool <link linkend="_struct_element_1a12f28baa8d624425d068e3b9d44db90b">canInteract</link>, bool visible)</para>
+</listitem>
+            <listitem><para>void <link linkend="_struct_element_1a13831c432cd2b4ce1e54e37467e37906">setLabel</link> (const std::string &amp;<link linkend="_struct_element_1a2e3029a6dec4d74046ce1e4efe72d5f7">label</link>)</para>
+</listitem>
+            <listitem><para>void <link linkend="_struct_element_1a5df40a1ac2e9e8f5aa782f1dd40830d4">setVisible</link> (bool visible)</para>
+</listitem>
+            <listitem><para>void <link linkend="_struct_element_1ad621349d5ffddeadf8fb063d233d373a">setInteract</link> (bool interact)</para>
+</listitem>
+            <listitem><para>void <link linkend="_struct_element_1abba05f5f0d6ef3724f8434403da02886">setSprite</link> (sf::Sprite <link linkend="_struct_element_1a3f9e10790e44b0caa7d3ccf4e55c4991">sprite</link>)</para>
+</listitem>
+            <listitem><para>void <link linkend="_struct_element_1a40f17d5f017c9c43f204fc5d92010485">setSize</link> ()</para>
+</listitem>
+            <listitem><para>void <link linkend="_struct_element_1ab0a841dcde36a4cae2aba77c2572368d">setState</link> (<link linkend="_fsfml_8h_1aa46074d34fe2d6631c6bd9dc74633657">ButtonState</link> <link linkend="_struct_element_1ac74ec73c08cf0d02ee02fe5b19c0788f">bstate</link>)</para>
+</listitem>
+            <listitem><para>void <link linkend="_struct_element_1aa94441b1818c1267cb015bdb1db0b157">setPadding</link> (<link linkend="_struct_padding">Padding</link> <link linkend="_struct_element_1a85efb99b24ecb836bdd02bae5bb15e09">padding</link>)</para>
+</listitem>
+            <listitem><para>void <link linkend="_struct_element_1aad9020ce3c7e4ff6c368f445484ade56">setPadding</link> (float top, float bottom, float right, float left)</para>
+</listitem>
+            <listitem><para>void <link linkend="_struct_element_1aa450f12678b2d78c76fa31f59e627da9">setPadding</link> (float vertical, float horizontal)</para>
+</listitem>
+            <listitem><para>void <link linkend="_struct_element_1afb65b315f0c1ce49bcaa10aec825fc45">setArea</link> ()</para>
+</listitem>
+        </itemizedlist>
+</simplesect>
+<simplesect>
+    <title>Public Attributes    </title>
+        <itemizedlist>
+            <listitem><para>sf::Sprite <link linkend="_struct_element_1a3f9e10790e44b0caa7d3ccf4e55c4991">sprite</link></para>
+</listitem>
+            <listitem><para>bool <link linkend="_struct_element_1a12f28baa8d624425d068e3b9d44db90b">canInteract</link></para>
+</listitem>
+            <listitem><para>bool <link linkend="_struct_element_1a07e1e91123c32209a98fc7530e55a541">isVisible</link></para>
+</listitem>
+            <listitem><para>std::string <link linkend="_struct_element_1a2e3029a6dec4d74046ce1e4efe72d5f7">label</link></para>
+</listitem>
+            <listitem><para>sf::Vector2f <link linkend="_struct_element_1a02fd6a48c84dfae610dff4a7f1088bff">topLeft</link></para>
+</listitem>
+            <listitem><para>sf::Vector2f <link linkend="_struct_element_1a5596f3c7392501833919c2e353702f42">bottomRight</link></para>
+</listitem>
+            <listitem><para>float <link linkend="_struct_element_1a74179c56b3b79fa82bee05f7a9993060">width</link></para>
+</listitem>
+            <listitem><para>float <link linkend="_struct_element_1a686fea7b6d5ba92a4a653eeb25f03ed1">height</link></para>
+</listitem>
+            <listitem><para><link linkend="_fsfml_8h_1aa46074d34fe2d6631c6bd9dc74633657">ButtonState</link> <link linkend="_struct_element_1ac74ec73c08cf0d02ee02fe5b19c0788f">bstate</link></para>
+</listitem>
+            <listitem><para><link linkend="_struct_padding">Padding</link> <link linkend="_struct_element_1a85efb99b24ecb836bdd02bae5bb15e09">padding</link></para>
+</listitem>
+        </itemizedlist>
+</simplesect>
+<section>
+<title>Detailed Description</title>
+<para>
+Definition at line <link linkend="_fsfml_8h_source_1l00039">39</link> of file <link linkend="_fsfml_8h_source">fsfml.h</link>.</para>
+</section>
+<section>
+<title>Constructor &amp; Destructor Documentation</title>
+<anchor xml:id="_struct_element_1ab0d0e20be9a36ae676202db753faeec9"/><section>
+    <title>Element()<computeroutput>[1/3]</computeroutput></title>
+<indexterm><primary>Element</primary><secondary>Element</secondary></indexterm>
+<indexterm><primary>Element</primary><secondary>Element</secondary></indexterm>
+<para><computeroutput>Element::Element ( )<computeroutput>[inline]</computeroutput></computeroutput></para><para>
+Definition at line <link linkend="_fsfml_8h_source_1l00048">48</link> of file <link linkend="_fsfml_8h_source">fsfml.h</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="struct_element_ab0d0e20be9a36ae676202db753faeec9_cgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_struct_element_1a77c528069aae3036ece67c4af1b18806"/><section>
+    <title>Element()<computeroutput>[2/3]</computeroutput></title>
+<indexterm><primary>Element</primary><secondary>Element</secondary></indexterm>
+<indexterm><primary>Element</primary><secondary>Element</secondary></indexterm>
+<para><computeroutput>Element::Element (sf::Sprite sprite)<computeroutput>[inline]</computeroutput></computeroutput></para><para>
+Definition at line <link linkend="_fsfml_8h_source_1l00058">58</link> of file <link linkend="_fsfml_8h_source">fsfml.h</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="struct_element_a77c528069aae3036ece67c4af1b18806_cgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_struct_element_1a0930389fa76579ad78383cc183912a3b"/><section>
+    <title>Element()<computeroutput>[3/3]</computeroutput></title>
+<indexterm><primary>Element</primary><secondary>Element</secondary></indexterm>
+<indexterm><primary>Element</primary><secondary>Element</secondary></indexterm>
+<para><computeroutput>Element::Element (sf::Sprite &amp; sprite, bool canInteract, bool visible)<computeroutput>[inline]</computeroutput></computeroutput></para><para>
+Definition at line <link linkend="_fsfml_8h_source_1l00068">68</link> of file <link linkend="_fsfml_8h_source">fsfml.h</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="struct_element_a0930389fa76579ad78383cc183912a3b_cgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+</section>
+<section>
+<title>Member Function Documentation</title>
+<anchor xml:id="_struct_element_1afb65b315f0c1ce49bcaa10aec825fc45"/><section>
+    <title>setArea()</title>
+<indexterm><primary>setArea</primary><secondary>Element</secondary></indexterm>
+<indexterm><primary>Element</primary><secondary>setArea</secondary></indexterm>
+<para><computeroutput>void Element::setArea ( )<computeroutput>[inline]</computeroutput></computeroutput></para><para>
+Definition at line <link linkend="_fsfml_8h_source_1l00108">108</link> of file <link linkend="_fsfml_8h_source">fsfml.h</link>.</para>
+Here is the caller graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="struct_element_afb65b315f0c1ce49bcaa10aec825fc45_icgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_struct_element_1ad621349d5ffddeadf8fb063d233d373a"/><section>
+    <title>setInteract()</title>
+<indexterm><primary>setInteract</primary><secondary>Element</secondary></indexterm>
+<indexterm><primary>Element</primary><secondary>setInteract</secondary></indexterm>
+<para><computeroutput>void Element::setInteract (bool interact)<computeroutput>[inline]</computeroutput></computeroutput></para><para>
+Definition at line <link linkend="_fsfml_8h_source_1l00085">85</link> of file <link linkend="_fsfml_8h_source">fsfml.h</link>.</para>
+</section>
+<anchor xml:id="_struct_element_1a13831c432cd2b4ce1e54e37467e37906"/><section>
+    <title>setLabel()</title>
+<indexterm><primary>setLabel</primary><secondary>Element</secondary></indexterm>
+<indexterm><primary>Element</primary><secondary>setLabel</secondary></indexterm>
+<para><computeroutput>void Element::setLabel (const std::string &amp; label)<computeroutput>[inline]</computeroutput></computeroutput></para><para>
+Definition at line <link linkend="_fsfml_8h_source_1l00079">79</link> of file <link linkend="_fsfml_8h_source">fsfml.h</link>.</para>
+</section>
+<anchor xml:id="_struct_element_1aad9020ce3c7e4ff6c368f445484ade56"/><section>
+    <title>setPadding()<computeroutput>[1/3]</computeroutput></title>
+<indexterm><primary>setPadding</primary><secondary>Element</secondary></indexterm>
+<indexterm><primary>Element</primary><secondary>setPadding</secondary></indexterm>
+<para><computeroutput>void Element::setPadding (float top, float bottom, float right, float left)<computeroutput>[inline]</computeroutput></computeroutput></para><para>
+Definition at line <link linkend="_fsfml_8h_source_1l00102">102</link> of file <link linkend="_fsfml_8h_source">fsfml.h</link>.</para>
+</section>
+<anchor xml:id="_struct_element_1aa450f12678b2d78c76fa31f59e627da9"/><section>
+    <title>setPadding()<computeroutput>[2/3]</computeroutput></title>
+<indexterm><primary>setPadding</primary><secondary>Element</secondary></indexterm>
+<indexterm><primary>Element</primary><secondary>setPadding</secondary></indexterm>
+<para><computeroutput>void Element::setPadding (float vertical, float horizontal)<computeroutput>[inline]</computeroutput></computeroutput></para><para>
+Definition at line <link linkend="_fsfml_8h_source_1l00105">105</link> of file <link linkend="_fsfml_8h_source">fsfml.h</link>.</para>
+</section>
+<anchor xml:id="_struct_element_1aa94441b1818c1267cb015bdb1db0b157"/><section>
+    <title>setPadding()<computeroutput>[3/3]</computeroutput></title>
+<indexterm><primary>setPadding</primary><secondary>Element</secondary></indexterm>
+<indexterm><primary>Element</primary><secondary>setPadding</secondary></indexterm>
+<para><computeroutput>void Element::setPadding (<link linkend="_struct_padding">Padding</link> padding)<computeroutput>[inline]</computeroutput></computeroutput></para><para>
+Definition at line <link linkend="_fsfml_8h_source_1l00099">99</link> of file <link linkend="_fsfml_8h_source">fsfml.h</link>.</para>
+Here is the caller graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="struct_element_aa94441b1818c1267cb015bdb1db0b157_icgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_struct_element_1a40f17d5f017c9c43f204fc5d92010485"/><section>
+    <title>setSize()</title>
+<indexterm><primary>setSize</primary><secondary>Element</secondary></indexterm>
+<indexterm><primary>Element</primary><secondary>setSize</secondary></indexterm>
+<para><computeroutput>void Element::setSize ( )<computeroutput>[inline]</computeroutput></computeroutput></para><para>
+Definition at line <link linkend="_fsfml_8h_source_1l00091">91</link> of file <link linkend="_fsfml_8h_source">fsfml.h</link>.</para>
+Here is the caller graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="struct_element_a40f17d5f017c9c43f204fc5d92010485_icgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_struct_element_1abba05f5f0d6ef3724f8434403da02886"/><section>
+    <title>setSprite()</title>
+<indexterm><primary>setSprite</primary><secondary>Element</secondary></indexterm>
+<indexterm><primary>Element</primary><secondary>setSprite</secondary></indexterm>
+<para><computeroutput>void Element::setSprite (sf::Sprite sprite)<computeroutput>[inline]</computeroutput></computeroutput></para><para>
+Definition at line <link linkend="_fsfml_8h_source_1l00088">88</link> of file <link linkend="_fsfml_8h_source">fsfml.h</link>.</para>
+</section>
+<anchor xml:id="_struct_element_1ab0a841dcde36a4cae2aba77c2572368d"/><section>
+    <title>setState()</title>
+<indexterm><primary>setState</primary><secondary>Element</secondary></indexterm>
+<indexterm><primary>Element</primary><secondary>setState</secondary></indexterm>
+<para><computeroutput>void Element::setState (<link linkend="_fsfml_8h_1aa46074d34fe2d6631c6bd9dc74633657">ButtonState</link> bstate)<computeroutput>[inline]</computeroutput></computeroutput></para><para>
+Definition at line <link linkend="_fsfml_8h_source_1l00096">96</link> of file <link linkend="_fsfml_8h_source">fsfml.h</link>.</para>
+Here is the caller graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="struct_element_ab0a841dcde36a4cae2aba77c2572368d_icgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_struct_element_1a5df40a1ac2e9e8f5aa782f1dd40830d4"/><section>
+    <title>setVisible()</title>
+<indexterm><primary>setVisible</primary><secondary>Element</secondary></indexterm>
+<indexterm><primary>Element</primary><secondary>setVisible</secondary></indexterm>
+<para><computeroutput>void Element::setVisible (bool visible)<computeroutput>[inline]</computeroutput></computeroutput></para><para>
+Definition at line <link linkend="_fsfml_8h_source_1l00082">82</link> of file <link linkend="_fsfml_8h_source">fsfml.h</link>.</para>
+Here is the caller graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="struct_element_a5df40a1ac2e9e8f5aa782f1dd40830d4_icgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+</section>
+<section>
+<title>Member Data Documentation</title>
+<anchor xml:id="_struct_element_1a5596f3c7392501833919c2e353702f42"/><section>
+    <title>bottomRight</title>
+<indexterm><primary>bottomRight</primary><secondary>Element</secondary></indexterm>
+<indexterm><primary>Element</primary><secondary>bottomRight</secondary></indexterm>
+<para><computeroutput>sf::Vector2f Element::bottomRight</computeroutput></para><para>
+Definition at line <link linkend="_fsfml_8h_source_1l00044">44</link> of file <link linkend="_fsfml_8h_source">fsfml.h</link>.</para>
+</section>
+<anchor xml:id="_struct_element_1ac74ec73c08cf0d02ee02fe5b19c0788f"/><section>
+    <title>bstate</title>
+<indexterm><primary>bstate</primary><secondary>Element</secondary></indexterm>
+<indexterm><primary>Element</primary><secondary>bstate</secondary></indexterm>
+<para><computeroutput><link linkend="_fsfml_8h_1aa46074d34fe2d6631c6bd9dc74633657">ButtonState</link> Element::bstate</computeroutput></para><para>
+Definition at line <link linkend="_fsfml_8h_source_1l00046">46</link> of file <link linkend="_fsfml_8h_source">fsfml.h</link>.</para>
+</section>
+<anchor xml:id="_struct_element_1a12f28baa8d624425d068e3b9d44db90b"/><section>
+    <title>canInteract</title>
+<indexterm><primary>canInteract</primary><secondary>Element</secondary></indexterm>
+<indexterm><primary>Element</primary><secondary>canInteract</secondary></indexterm>
+<para><computeroutput>bool Element::canInteract</computeroutput></para><para>
+Definition at line <link linkend="_fsfml_8h_source_1l00041">41</link> of file <link linkend="_fsfml_8h_source">fsfml.h</link>.</para>
+</section>
+<anchor xml:id="_struct_element_1a686fea7b6d5ba92a4a653eeb25f03ed1"/><section>
+    <title>height</title>
+<indexterm><primary>height</primary><secondary>Element</secondary></indexterm>
+<indexterm><primary>Element</primary><secondary>height</secondary></indexterm>
+<para><computeroutput>float Element::height</computeroutput></para><para>
+Definition at line <link linkend="_fsfml_8h_source_1l00045">45</link> of file <link linkend="_fsfml_8h_source">fsfml.h</link>.</para>
+</section>
+<anchor xml:id="_struct_element_1a07e1e91123c32209a98fc7530e55a541"/><section>
+    <title>isVisible</title>
+<indexterm><primary>isVisible</primary><secondary>Element</secondary></indexterm>
+<indexterm><primary>Element</primary><secondary>isVisible</secondary></indexterm>
+<para><computeroutput>bool Element::isVisible</computeroutput></para><para>
+Definition at line <link linkend="_fsfml_8h_source_1l00042">42</link> of file <link linkend="_fsfml_8h_source">fsfml.h</link>.</para>
+</section>
+<anchor xml:id="_struct_element_1a2e3029a6dec4d74046ce1e4efe72d5f7"/><section>
+    <title>label</title>
+<indexterm><primary>label</primary><secondary>Element</secondary></indexterm>
+<indexterm><primary>Element</primary><secondary>label</secondary></indexterm>
+<para><computeroutput>std::string Element::label</computeroutput></para><para>
+Definition at line <link linkend="_fsfml_8h_source_1l00043">43</link> of file <link linkend="_fsfml_8h_source">fsfml.h</link>.</para>
+</section>
+<anchor xml:id="_struct_element_1a85efb99b24ecb836bdd02bae5bb15e09"/><section>
+    <title>padding</title>
+<indexterm><primary>padding</primary><secondary>Element</secondary></indexterm>
+<indexterm><primary>Element</primary><secondary>padding</secondary></indexterm>
+<para><computeroutput><link linkend="_struct_padding">Padding</link> Element::padding</computeroutput></para><para>
+Definition at line <link linkend="_fsfml_8h_source_1l00047">47</link> of file <link linkend="_fsfml_8h_source">fsfml.h</link>.</para>
+</section>
+<anchor xml:id="_struct_element_1a3f9e10790e44b0caa7d3ccf4e55c4991"/><section>
+    <title>sprite</title>
+<indexterm><primary>sprite</primary><secondary>Element</secondary></indexterm>
+<indexterm><primary>Element</primary><secondary>sprite</secondary></indexterm>
+<para><computeroutput>sf::Sprite Element::sprite</computeroutput></para><para>
+Definition at line <link linkend="_fsfml_8h_source_1l00040">40</link> of file <link linkend="_fsfml_8h_source">fsfml.h</link>.</para>
+</section>
+<anchor xml:id="_struct_element_1a02fd6a48c84dfae610dff4a7f1088bff"/><section>
+    <title>topLeft</title>
+<indexterm><primary>topLeft</primary><secondary>Element</secondary></indexterm>
+<indexterm><primary>Element</primary><secondary>topLeft</secondary></indexterm>
+<para><computeroutput>sf::Vector2f Element::topLeft</computeroutput></para><para>
+Definition at line <link linkend="_fsfml_8h_source_1l00044">44</link> of file <link linkend="_fsfml_8h_source">fsfml.h</link>.</para>
+</section>
+<anchor xml:id="_struct_element_1a74179c56b3b79fa82bee05f7a9993060"/><section>
+    <title>width</title>
+<indexterm><primary>width</primary><secondary>Element</secondary></indexterm>
+<indexterm><primary>Element</primary><secondary>width</secondary></indexterm>
+<para><computeroutput>float Element::width</computeroutput></para><para>
+Definition at line <link linkend="_fsfml_8h_source_1l00045">45</link> of file <link linkend="_fsfml_8h_source">fsfml.h</link>.</para>
+</section>
+<para>
+The documentation for this struct was generated from the following file:</para>
+src/<link linkend="_fsfml_8h">fsfml.h</link></section>
+</section>

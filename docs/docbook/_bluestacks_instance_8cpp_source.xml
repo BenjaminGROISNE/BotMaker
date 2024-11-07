@@ -1,0 +1,33 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<section xmlns="http://docbook.org/ns/docbook" version="5.0" xmlns:xlink="http://www.w3.org/1999/xlink" xml:id="__bluestacks_instance_8cpp_source" xml:lang="en-US">
+<title>BluestacksInstance.cpp</title>
+<indexterm><primary>src/BluestacksInstance.cpp</primary></indexterm>
+Go to the documentation of this file.<programlisting linenumbering="unnumbered"><anchor xml:id="__bluestacks_instance_8cpp_source_1l00001"/>00001 <emphasis role="preprocessor">#include&#32;&quot;<link linkend="__bluestacks_instance_8h">BluestacksInstance.h</link>&quot;</emphasis>
+<anchor xml:id="__bluestacks_instance_8cpp_source_1l00002"/>00002 
+<anchor xml:id="__bluestacks_instance_8cpp_source_1l00003"/><link linkend="_class_bluestacks_instance_1ae0073bf8dd69ee4c7ab4df820a18ef5a">00003</link> <link linkend="_class_bluestacks_instance_1ae0073bf8dd69ee4c7ab4df820a18ef5a">BluestacksInstance::BluestacksInstance</link>()&#32;:&#32;<link linkend="_class_instance">Instance</link>()
+<anchor xml:id="__bluestacks_instance_8cpp_source_1l00004"/>00004 {
+<anchor xml:id="__bluestacks_instance_8cpp_source_1l00005"/>00005 &#32;&#32;&#32;&#32;<link linkend="_class_bluestacks_instance_1a1dcc0c6ec94fbe1a73689d76e12ad8d7">instancePath</link>.clear();
+<anchor xml:id="__bluestacks_instance_8cpp_source_1l00006"/>00006 &#32;&#32;&#32;&#32;<link linkend="_class_bluestacks_instance_1aad717d238b89a314d38e0ace7a77628c">engineName</link>.clear();
+<anchor xml:id="__bluestacks_instance_8cpp_source_1l00007"/>00007 &#32;&#32;&#32;&#32;<link linkend="_class_bluestacks_instance_1a0574efb3a1123877a4c7b5979f650ae6">bootTime</link>&#32;=&#32;0;
+<anchor xml:id="__bluestacks_instance_8cpp_source_1l00008"/>00008 &#32;&#32;&#32;&#32;<link linkend="_class_instance_1ac8eb7fd97639a6d93161bcd7a4e07317">myType</link>&#32;=<link linkend="__instance_8h_1a5b026f4903e92a7e60dda754b5028227ac4edceeef1542a89fdcf6eb2aa687221">BLUESTACKS</link>;
+<anchor xml:id="__bluestacks_instance_8cpp_source_1l00009"/>00009 }
+<anchor xml:id="__bluestacks_instance_8cpp_source_1l00010"/>00010 
+<anchor xml:id="__bluestacks_instance_8cpp_source_1l00011"/><link linkend="_class_bluestacks_instance_1a0185c5b9566d057bdd69c6e58617a5f2">00011</link> <emphasis role="keywordtype">void</emphasis>&#32;<link linkend="_class_bluestacks_instance_1a0185c5b9566d057bdd69c6e58617a5f2">BluestacksInstance::showInstance</link>()
+<anchor xml:id="__bluestacks_instance_8cpp_source_1l00012"/>00012 {
+<anchor xml:id="__bluestacks_instance_8cpp_source_1l00013"/>00013 &#32;&#32;&#32;&#32;std::cout&#32;&lt;&lt;&#32;<emphasis role="stringliteral">&quot;&#32;&#32;Instance&#32;Name:&#32;&quot;</emphasis>&#32;&lt;&lt;&#32;<link linkend="_class_instance_1a71e6b641e231bdfcfb4f255c6b9e58af">instanceName</link>&#32;&lt;&lt;&#32;std::endl;
+<anchor xml:id="__bluestacks_instance_8cpp_source_1l00014"/>00014 &#32;&#32;&#32;&#32;std::cout&#32;&lt;&lt;&#32;<emphasis role="stringliteral">&quot;&#32;&#32;Instance&#32;Path:&#32;&quot;</emphasis>&#32;&lt;&lt;&#32;<link linkend="_class_bluestacks_instance_1a1dcc0c6ec94fbe1a73689d76e12ad8d7">instancePath</link>&#32;&lt;&lt;&#32;std::endl;
+<anchor xml:id="__bluestacks_instance_8cpp_source_1l00015"/>00015 &#32;&#32;&#32;&#32;std::cout&#32;&lt;&lt;&#32;<emphasis role="stringliteral">&quot;&#32;&#32;Instance&#32;Id:&#32;&quot;</emphasis>&#32;&lt;&lt;&#32;<emphasis role="keywordtype">id</emphasis>&#32;&lt;&lt;&#32;std::endl;
+<anchor xml:id="__bluestacks_instance_8cpp_source_1l00016"/>00016 &#32;&#32;&#32;&#32;std::cout&#32;&lt;&lt;&#32;<emphasis role="stringliteral">&quot;&#32;&#32;Instance&#32;Engine:&#32;&quot;</emphasis>&#32;&lt;&lt;&#32;<link linkend="_class_bluestacks_instance_1aad717d238b89a314d38e0ace7a77628c">engineName</link>&#32;&lt;&lt;&#32;std::endl;
+<anchor xml:id="__bluestacks_instance_8cpp_source_1l00017"/>00017 &#32;&#32;&#32;&#32;std::cout&#32;&lt;&lt;&#32;<emphasis role="stringliteral">&quot;&#32;&#32;Instance&#32;Boot&#32;Time:&#32;&quot;</emphasis>&#32;&lt;&lt;&#32;<link linkend="_class_bluestacks_instance_1a0574efb3a1123877a4c7b5979f650ae6">bootTime</link>&#32;&lt;&lt;&#32;std::endl;
+<anchor xml:id="__bluestacks_instance_8cpp_source_1l00018"/>00018 &#32;&#32;&#32;&#32;std::cout&#32;&lt;&lt;&#32;<emphasis role="stringliteral">&quot;&#32;&#32;Instance&#32;DPI:&#32;&quot;</emphasis>&#32;&lt;&lt;&#32;<link linkend="_class_instance_1afac2cbff1e241735f914ee0b95a04ea5">dpi</link>&#32;&lt;&lt;&#32;std::endl;
+<anchor xml:id="__bluestacks_instance_8cpp_source_1l00019"/>00019 &#32;&#32;&#32;&#32;std::cout&#32;&lt;&lt;&#32;<emphasis role="stringliteral">&quot;&#32;&#32;Instance&#32;Width:&#32;&quot;</emphasis>&#32;&lt;&lt;&#32;<link linkend="_class_instance_1ae9cb37b80e1b2586ea1136552f5471c7">width</link>&#32;&lt;&lt;&#32;std::endl;
+<anchor xml:id="__bluestacks_instance_8cpp_source_1l00020"/>00020 &#32;&#32;&#32;&#32;std::cout&#32;&lt;&lt;&#32;<emphasis role="stringliteral">&quot;&#32;&#32;Instance&#32;Height:&#32;&quot;</emphasis>&#32;&lt;&lt;&#32;<link linkend="_class_instance_1a5780eba6a75b91039e627799f07637ee">height</link>&#32;&lt;&lt;&#32;std::endl;
+<anchor xml:id="__bluestacks_instance_8cpp_source_1l00021"/>00021 &#32;&#32;&#32;&#32;std::cout&#32;&lt;&lt;&#32;<emphasis role="stringliteral">&quot;&#32;&#32;Instance&#32;Has&#32;Game:&#32;&quot;</emphasis>&#32;&lt;&lt;&#32;<link linkend="_class_instance_1a163202c6c66861f51cb2b0bffff2993d">hasGame</link>&#32;&lt;&lt;&#32;std::endl;
+<anchor xml:id="__bluestacks_instance_8cpp_source_1l00022"/>00022 &#32;&#32;&#32;&#32;std::cout&#32;&lt;&lt;&#32;<emphasis role="stringliteral">&quot;&#32;&#32;Instance&#32;Type:&#32;Bluestacks&quot;</emphasis>&#32;&lt;&lt;&#32;std::endl;
+<anchor xml:id="__bluestacks_instance_8cpp_source_1l00023"/>00023 }
+<anchor xml:id="__bluestacks_instance_8cpp_source_1l00024"/>00024 
+<anchor xml:id="__bluestacks_instance_8cpp_source_1l00025"/><link linkend="_class_bluestacks_instance_1ab125fa47188d48bf7c09502c0992f60a">00025</link> <emphasis role="keywordtype">void</emphasis>&#32;<link linkend="_class_bluestacks_instance_1ab125fa47188d48bf7c09502c0992f60a">BluestacksInstance::setGlobalId</link>()
+<anchor xml:id="__bluestacks_instance_8cpp_source_1l00026"/>00026 {
+<anchor xml:id="__bluestacks_instance_8cpp_source_1l00027"/>00027 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<link linkend="_class_instance_1adbf9914982dfc15b3542b57eee68574d">instanceId</link>&#32;=&#32;<link linkend="_class_bluestacks_instance_1af36829c2efd8e8a4112be3051f21f909">id</link>;
+<anchor xml:id="__bluestacks_instance_8cpp_source_1l00028"/>00028 }
+</programlisting></section>

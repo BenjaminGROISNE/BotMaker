@@ -1,0 +1,76 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<section xmlns="http://docbook.org/ns/docbook" version="5.0" xmlns:xlink="http://www.w3.org/1999/xlink" xml:id="_fsfml_8h" xml:lang="en-US">
+<title>src/fsfml.h File Reference</title>
+<indexterm><primary>src/fsfml.h</primary></indexterm>
+<programlisting linenumbering="unnumbered">#include &lt;SFML/Graphics.hpp&gt;<?linebreak?>#include &lt;SFML/System.hpp&gt;<?linebreak?>#include &lt;SFML/Window.hpp&gt;<?linebreak?>#include &lt;SFML/Config.hpp&gt;<?linebreak?>#include &lt;SFML/Main.hpp&gt;<?linebreak?>#include &lt;SFML/Network.hpp&gt;<?linebreak?>#include &lt;iostream&gt;<?linebreak?>#include &quot;sysCommands.h&quot;<?linebreak?></programlisting>Include dependency graph for fsfml.h:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="fsfml_8h__incl.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+This graph shows which files directly or indirectly include this file:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="fsfml_8h__dep__incl.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+<simplesect>
+    <title>Classes    </title>
+        <itemizedlist>
+            <listitem><para>struct <link linkend="_struct_padding">Padding</link></para>
+</listitem>
+            <listitem><para>struct <link linkend="_struct_element">Element</link></para>
+</listitem>
+            <listitem><para>struct <link linkend="_struct_line">Line</link></para>
+</listitem>
+            <listitem><para>struct <link linkend="_struct_panel">Panel</link></para>
+</listitem>
+            <listitem><para>class <link linkend="_classfsfml">fsfml</link></para>
+</listitem>
+        </itemizedlist>
+</simplesect>
+<simplesect>
+    <title>Enumerations    </title>
+        <itemizedlist>
+            <listitem><para>enum <link linkend="_fsfml_8h_1aa46074d34fe2d6631c6bd9dc74633657">ButtonState</link> { <link linkend="_fsfml_8h_1aa46074d34fe2d6631c6bd9dc74633657a5ecbcf0afce98b042f35ec71ba03fa4b">Normal</link>
+, <link linkend="_fsfml_8h_1aa46074d34fe2d6631c6bd9dc74633657a9f75a89264a07aa9f4f461d546626bc8">Hover</link>
+, <link linkend="_fsfml_8h_1aa46074d34fe2d6631c6bd9dc74633657a05f4abb2322aa023aba9570c327aff25">Pressed</link>
+, <link linkend="_fsfml_8h_1aa46074d34fe2d6631c6bd9dc74633657abfafa17aa2a0d3a8d62bd3c78e3a7610">Clicked</link>
+ }</para>
+</listitem>
+        </itemizedlist>
+</simplesect>
+<section>
+<title>Enumeration Type Documentation</title>
+<anchor xml:id="_fsfml_8h_1aa46074d34fe2d6631c6bd9dc74633657"/><section>
+    <title>ButtonState</title>
+<indexterm><primary>ButtonState</primary><secondary>fsfml.h</secondary></indexterm>
+<indexterm><primary>fsfml.h</primary><secondary>ButtonState</secondary></indexterm>
+<para><computeroutput>enum <link linkend="_fsfml_8h_1aa46074d34fe2d6631c6bd9dc74633657">ButtonState</link></computeroutput></para><informaltable frame="all">
+<title>Enumerator</title>
+    <tgroup cols="2" align="left" colsep="1" rowsep="1">
+      <colspec colname='c1'/>
+      <colspec colname='c2'/>
+<tbody>
+<row><entry><indexterm><primary>Normal</primary><secondary>fsfml.h</secondary></indexterm>
+<indexterm><primary>fsfml.h</primary><secondary>Normal</secondary></indexterm>
+<anchor xml:id="_fsfml_8h_1aa46074d34fe2d6631c6bd9dc74633657a5ecbcf0afce98b042f35ec71ba03fa4b"/>Normal</entry><entry></entry></row><row><entry><indexterm><primary>Hover</primary><secondary>fsfml.h</secondary></indexterm>
+<indexterm><primary>fsfml.h</primary><secondary>Hover</secondary></indexterm>
+<anchor xml:id="_fsfml_8h_1aa46074d34fe2d6631c6bd9dc74633657a9f75a89264a07aa9f4f461d546626bc8"/>Hover</entry><entry></entry></row><row><entry><indexterm><primary>Pressed</primary><secondary>fsfml.h</secondary></indexterm>
+<indexterm><primary>fsfml.h</primary><secondary>Pressed</secondary></indexterm>
+<anchor xml:id="_fsfml_8h_1aa46074d34fe2d6631c6bd9dc74633657a05f4abb2322aa023aba9570c327aff25"/>Pressed</entry><entry></entry></row><row><entry><indexterm><primary>Clicked</primary><secondary>fsfml.h</secondary></indexterm>
+<indexterm><primary>fsfml.h</primary><secondary>Clicked</secondary></indexterm>
+<anchor xml:id="_fsfml_8h_1aa46074d34fe2d6631c6bd9dc74633657abfafa17aa2a0d3a8d62bd3c78e3a7610"/>Clicked</entry><entry></entry></row>    </tbody>
+    </tgroup>
+</informaltable>
+<para>
+Definition at line <link linkend="_fsfml_8h_source_1l00013">13</link> of file <link linkend="_fsfml_8h_source">fsfml.h</link>.</para>
+</section>
+</section>
+</section>

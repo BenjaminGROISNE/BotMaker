@@ -1,0 +1,71 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<section xmlns="http://docbook.org/ns/docbook" version="5.0" xmlns:xlink="http://www.w3.org/1999/xlink" xml:id="__instance_8h" xml:lang="en-US">
+<title>src/Instance.h File Reference</title>
+<indexterm><primary>src/Instance.h</primary></indexterm>
+<programlisting linenumbering="unnumbered">#include &lt;string&gt;<?linebreak?>#include &lt;iostream&gt;<?linebreak?></programlisting>Include dependency graph for Instance.h:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="_instance_8h__incl.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+This graph shows which files directly or indirectly include this file:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="_instance_8h__dep__incl.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+<simplesect>
+    <title>Classes    </title>
+        <itemizedlist>
+            <listitem><para>class <link linkend="_class_instance">Instance</link></para>
+</listitem>
+        </itemizedlist>
+</simplesect>
+<simplesect>
+    <title>Enumerations    </title>
+        <itemizedlist>
+            <listitem><para>enum <link linkend="__instance_8h_1a5b026f4903e92a7e60dda754b5028227">EmulatorType</link> { <?linebreak?><link linkend="__instance_8h_1a5b026f4903e92a7e60dda754b5028227ac4edceeef1542a89fdcf6eb2aa687221">BLUESTACKS</link>
+, <link linkend="__instance_8h_1a5b026f4903e92a7e60dda754b5028227a53795d6d02157dd72ace4b527453288b">LDPLAYER</link>
+, <link linkend="__instance_8h_1a5b026f4903e92a7e60dda754b5028227a7aba2c17c871cceec254a5f5a99ad344">NOX</link>
+, <link linkend="__instance_8h_1a5b026f4903e92a7e60dda754b5028227a821ffcd514021736e7b2d30a6d21bf22">MEMU</link>
+, <?linebreak?><link linkend="__instance_8h_1a5b026f4903e92a7e60dda754b5028227adbf1dee1b8cd7ea3c82661943c7b74f4">OTHER</link>
+ }</para>
+</listitem>
+        </itemizedlist>
+</simplesect>
+<section>
+<title>Enumeration Type Documentation</title>
+<anchor xml:id="__instance_8h_1a5b026f4903e92a7e60dda754b5028227"/><section>
+    <title>EmulatorType</title>
+<indexterm><primary>EmulatorType</primary><secondary>Instance.h</secondary></indexterm>
+<indexterm><primary>Instance.h</primary><secondary>EmulatorType</secondary></indexterm>
+<para><computeroutput>enum <link linkend="__instance_8h_1a5b026f4903e92a7e60dda754b5028227">EmulatorType</link></computeroutput></para><informaltable frame="all">
+<title>Enumerator</title>
+    <tgroup cols="2" align="left" colsep="1" rowsep="1">
+      <colspec colname='c1'/>
+      <colspec colname='c2'/>
+<tbody>
+<row><entry><indexterm><primary>BLUESTACKS</primary><secondary>Instance.h</secondary></indexterm>
+<indexterm><primary>Instance.h</primary><secondary>BLUESTACKS</secondary></indexterm>
+<anchor xml:id="__instance_8h_1a5b026f4903e92a7e60dda754b5028227ac4edceeef1542a89fdcf6eb2aa687221"/>BLUESTACKS</entry><entry></entry></row><row><entry><indexterm><primary>LDPLAYER</primary><secondary>Instance.h</secondary></indexterm>
+<indexterm><primary>Instance.h</primary><secondary>LDPLAYER</secondary></indexterm>
+<anchor xml:id="__instance_8h_1a5b026f4903e92a7e60dda754b5028227a53795d6d02157dd72ace4b527453288b"/>LDPLAYER</entry><entry></entry></row><row><entry><indexterm><primary>NOX</primary><secondary>Instance.h</secondary></indexterm>
+<indexterm><primary>Instance.h</primary><secondary>NOX</secondary></indexterm>
+<anchor xml:id="__instance_8h_1a5b026f4903e92a7e60dda754b5028227a7aba2c17c871cceec254a5f5a99ad344"/>NOX</entry><entry></entry></row><row><entry><indexterm><primary>MEMU</primary><secondary>Instance.h</secondary></indexterm>
+<indexterm><primary>Instance.h</primary><secondary>MEMU</secondary></indexterm>
+<anchor xml:id="__instance_8h_1a5b026f4903e92a7e60dda754b5028227a821ffcd514021736e7b2d30a6d21bf22"/>MEMU</entry><entry></entry></row><row><entry><indexterm><primary>OTHER</primary><secondary>Instance.h</secondary></indexterm>
+<indexterm><primary>Instance.h</primary><secondary>OTHER</secondary></indexterm>
+<anchor xml:id="__instance_8h_1a5b026f4903e92a7e60dda754b5028227adbf1dee1b8cd7ea3c82661943c7b74f4"/>OTHER</entry><entry></entry></row>    </tbody>
+    </tgroup>
+</informaltable>
+<para>
+Definition at line <link linkend="__instance_8h_source_1l00004">4</link> of file <link linkend="__instance_8h_source">Instance.h</link>.</para>
+</section>
+</section>
+</section>

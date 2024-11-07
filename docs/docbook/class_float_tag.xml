@@ -1,0 +1,153 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<section xmlns="http://docbook.org/ns/docbook" version="5.0" xmlns:xlink="http://www.w3.org/1999/xlink" xml:id="_class_float_tag" xml:lang="en-US">
+<title>FloatTag Class Reference</title>
+<indexterm><primary>FloatTag</primary></indexterm>
+<para>
+<computeroutput>#include &lt;Tags.h&gt;</computeroutput>
+</para>
+Inheritance diagram for FloatTag:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_float_tag__inherit__graph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+Collaboration diagram for FloatTag:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_float_tag__coll__graph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+<simplesect>
+    <title>Public Member Functions    </title>
+        <itemizedlist>
+            <listitem><para><link linkend="_class_float_tag_1a9ef595e09fb18e394522b30ad88b9c5e">FloatTag</link> ()</para>
+</listitem>
+            <listitem><para><link linkend="_class_float_tag_1a38893b2d53228489da140a8f9823c160">FloatTag</link> (const <link linkend="_class_float_tag">FloatTag</link> &amp;toCopy)</para>
+</listitem>
+            <listitem><para><link linkend="_class_float_tag_1ae801bdd9a3c6852ebfb9bfd6f325ad1e">FloatTag</link> (const std::shared_ptr&lt; <link linkend="_class_tag">Tag</link> &gt; &amp;parameter)</para>
+</listitem>
+            <listitem><para><link linkend="_class_float_tag_1a0ce9f971d0fa6ba5191a4013acbd8eb7">FloatTag</link> (float nb)</para>
+</listitem>
+            <listitem><para>std::shared_ptr&lt; <link linkend="_class_float_tag">FloatTag</link> &gt; <link linkend="_class_float_tag_1a868aa391943c55dce1f9ab9f7c2f990b">clone</link> ()</para>
+</listitem>
+            <listitem><para>void <link linkend="_class_float_tag_1ab2c4b5b9179aa27b9a1815821cd10c06">execute</link> () override</para>
+</listitem>
+        </itemizedlist>
+</simplesect>
+Public Member Functions inherited from <link linkend="_class_tag">Tag</link>        <itemizedlist>
+            <listitem><para><link linkend="_class_tag_1af2008705aa18e21efecb9e737b6b1a26">Tag</link> ()</para>
+</listitem>
+            <listitem><para><link linkend="_class_tag_1a5955a7ef3228749f5d264581d5c612ab">Tag</link> (const <link linkend="_class_tag">Tag</link> &amp;toCopy)</para>
+</listitem>
+            <listitem><para>std::shared_ptr&lt; <link linkend="_class_tag">Tag</link> &gt; <link linkend="_class_tag_1ae01465d32e9a52c777492048fd06bdd5">clone</link> ()</para>
+</listitem>
+        </itemizedlist>
+<simplesect>
+    <title>Public Attributes    </title>
+        <itemizedlist>
+            <listitem><para>std::shared_ptr&lt; <link linkend="_class_tag">Tag</link> &gt; <link linkend="_class_float_tag_1a1f6fd4ef0903aea7b85bf173201be4c9">floatTag</link></para>
+</listitem>
+            <listitem><para>float <link linkend="_class_float_tag_1a167593e261f788638cbfd6b1cbaad449">myFloat</link></para>
+</listitem>
+        </itemizedlist>
+</simplesect>
+Public Attributes inherited from <link linkend="_class_tag">Tag</link>        <itemizedlist>
+            <listitem><para>std::string <link linkend="_class_tag_1a2b252c6a602db12fcb53a67ce3e9ca1b">tagText</link></para>
+</listitem>
+            <listitem><para>int <link linkend="_class_tag_1a25aa826cd8818bcf0670164d285c3fdd">nbParents</link></para>
+</listitem>
+            <listitem><para>bool <link linkend="_class_tag_1a688d838bee273d203d6b16caaca3ed2b">doExecute</link></para>
+</listitem>
+            <listitem><para><link linkend="__tags_8h_1a7c4faef6b7c4a30990ee13030bc51880">TagType</link> <link linkend="_class_tag_1aa82f368cc2d55922ea75ba85020517c1">myType</link></para>
+</listitem>
+        </itemizedlist>
+<section>
+<title>Detailed Description</title>
+<para>
+Definition at line <link linkend="__tags_8h_source_1l00448">448</link> of file <link linkend="__tags_8h_source">Tags.h</link>.</para>
+</section>
+<section>
+<title>Constructor &amp; Destructor Documentation</title>
+<anchor xml:id="_class_float_tag_1a9ef595e09fb18e394522b30ad88b9c5e"/><section>
+    <title>FloatTag()<computeroutput>[1/4]</computeroutput></title>
+<indexterm><primary>FloatTag</primary><secondary>FloatTag</secondary></indexterm>
+<indexterm><primary>FloatTag</primary><secondary>FloatTag</secondary></indexterm>
+<para><computeroutput>FloatTag::FloatTag ( )</computeroutput></para><para>
+Definition at line <link linkend="__tags_8cpp_source_1l01203">1203</link> of file <link linkend="__tags_8cpp_source">Tags.cpp</link>.</para>
+</section>
+<anchor xml:id="_class_float_tag_1a38893b2d53228489da140a8f9823c160"/><section>
+    <title>FloatTag()<computeroutput>[2/4]</computeroutput></title>
+<indexterm><primary>FloatTag</primary><secondary>FloatTag</secondary></indexterm>
+<indexterm><primary>FloatTag</primary><secondary>FloatTag</secondary></indexterm>
+<para><computeroutput>FloatTag::FloatTag (const <link linkend="_class_float_tag">FloatTag</link> &amp; toCopy)</computeroutput></para><para>
+Definition at line <link linkend="__tags_8cpp_source_1l00229">229</link> of file <link linkend="__tags_8cpp_source">Tags.cpp</link>.</para>
+</section>
+<anchor xml:id="_class_float_tag_1ae801bdd9a3c6852ebfb9bfd6f325ad1e"/><section>
+    <title>FloatTag()<computeroutput>[3/4]</computeroutput></title>
+<indexterm><primary>FloatTag</primary><secondary>FloatTag</secondary></indexterm>
+<indexterm><primary>FloatTag</primary><secondary>FloatTag</secondary></indexterm>
+<para><computeroutput>FloatTag::FloatTag (const std::shared_ptr&lt; <link linkend="_class_tag">Tag</link> &gt; &amp; parameter)</computeroutput></para><para>
+Definition at line <link linkend="__tags_8cpp_source_1l01210">1210</link> of file <link linkend="__tags_8cpp_source">Tags.cpp</link>.</para>
+</section>
+<anchor xml:id="_class_float_tag_1a0ce9f971d0fa6ba5191a4013acbd8eb7"/><section>
+    <title>FloatTag()<computeroutput>[4/4]</computeroutput></title>
+<indexterm><primary>FloatTag</primary><secondary>FloatTag</secondary></indexterm>
+<indexterm><primary>FloatTag</primary><secondary>FloatTag</secondary></indexterm>
+<para><computeroutput>FloatTag::FloatTag (float nb)</computeroutput></para><para>
+Definition at line <link linkend="__tags_8cpp_source_1l01214">1214</link> of file <link linkend="__tags_8cpp_source">Tags.cpp</link>.</para>
+</section>
+</section>
+<section>
+<title>Member Function Documentation</title>
+<anchor xml:id="_class_float_tag_1a868aa391943c55dce1f9ab9f7c2f990b"/><section>
+    <title>clone()</title>
+<indexterm><primary>clone</primary><secondary>FloatTag</secondary></indexterm>
+<indexterm><primary>FloatTag</primary><secondary>clone</secondary></indexterm>
+<para><computeroutput>std::shared_ptr&lt; <link linkend="_class_float_tag">FloatTag</link> &gt; FloatTag::clone ( )</computeroutput></para><para>
+Definition at line <link linkend="__tags_8cpp_source_1l00102">102</link> of file <link linkend="__tags_8cpp_source">Tags.cpp</link>.</para>
+</section>
+<anchor xml:id="_class_float_tag_1ab2c4b5b9179aa27b9a1815821cd10c06"/><section>
+    <title>execute()</title>
+<indexterm><primary>execute</primary><secondary>FloatTag</secondary></indexterm>
+<indexterm><primary>FloatTag</primary><secondary>execute</secondary></indexterm>
+<para><computeroutput>void FloatTag::execute ( )<computeroutput>[override]</computeroutput>, <computeroutput>[virtual]</computeroutput></computeroutput></para><para>
+Reimplemented from <link linkend="_class_tag_1a54054f3c9db4decb422972460bbb34c3">Tag</link>.</para>
+<para>
+Definition at line <link linkend="__tags_8cpp_source_1l01224">1224</link> of file <link linkend="__tags_8cpp_source">Tags.cpp</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_float_tag_ab2c4b5b9179aa27b9a1815821cd10c06_cgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+</section>
+<section>
+<title>Member Data Documentation</title>
+<anchor xml:id="_class_float_tag_1a1f6fd4ef0903aea7b85bf173201be4c9"/><section>
+    <title>floatTag</title>
+<indexterm><primary>floatTag</primary><secondary>FloatTag</secondary></indexterm>
+<indexterm><primary>FloatTag</primary><secondary>floatTag</secondary></indexterm>
+<para><computeroutput>std::shared_ptr&lt;<link linkend="_class_tag">Tag</link>&gt; FloatTag::floatTag</computeroutput></para><para>
+Definition at line <link linkend="__tags_8h_source_1l00454">454</link> of file <link linkend="__tags_8h_source">Tags.h</link>.</para>
+</section>
+<anchor xml:id="_class_float_tag_1a167593e261f788638cbfd6b1cbaad449"/><section>
+    <title>myFloat</title>
+<indexterm><primary>myFloat</primary><secondary>FloatTag</secondary></indexterm>
+<indexterm><primary>FloatTag</primary><secondary>myFloat</secondary></indexterm>
+<para><computeroutput>float FloatTag::myFloat</computeroutput></para><para>
+Definition at line <link linkend="__tags_8h_source_1l00456">456</link> of file <link linkend="__tags_8h_source">Tags.h</link>.</para>
+</section>
+<para>
+The documentation for this class was generated from the following files:</para>
+src/<link linkend="__tags_8h">Tags.h</link>src/<link linkend="__tags_8cpp">Tags.cpp</link></section>
+</section>

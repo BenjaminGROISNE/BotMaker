@@ -1,0 +1,652 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<section xmlns="http://docbook.org/ns/docbook" version="5.0" xmlns:xlink="http://www.w3.org/1999/xlink" xml:id="__tags_8cpp" xml:lang="en-US">
+<title>src/Tags.cpp File Reference</title>
+<indexterm><primary>src/Tags.cpp</primary></indexterm>
+<programlisting linenumbering="unnumbered">#include &quot;tags.h&quot;<?linebreak?></programlisting>Include dependency graph for Tags.cpp:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="_tags_8cpp__incl.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+<simplesect>
+    <title>Functions    </title>
+        <itemizedlist>
+            <listitem><para>std::shared_ptr&lt; <link linkend="_class_wait_tag">WaitTag</link> &gt; <link linkend="__tags_8cpp_1ad138ff74a272c695accc2d09d39dc05f">getWaitTag</link> (std::shared_ptr&lt; <link linkend="_class_tag">Tag</link> &gt; tag)</para>
+</listitem>
+            <listitem><para>template&lt;typename <link linkend="__units_8h_1a2b350cb683584e1f7db6c78f698c161ba21f40778b7db9343a6ca75ec2c41ccce">T</link> &gt; </para><para>std::shared_ptr&lt; <link linkend="_class_load_tag">LoadTag</link>&lt; <link linkend="__units_8h_1a2b350cb683584e1f7db6c78f698c161ba21f40778b7db9343a6ca75ec2c41ccce">T</link> &gt; &gt; <link linkend="__tags_8cpp_1aad17b0d48f011d5869f82adb31915669">getLoadTag</link> (std::shared_ptr&lt; <link linkend="_class_tag">Tag</link> &gt; tag)</para>
+</listitem>
+            <listitem><para>template&lt;typename <link linkend="__units_8h_1a2b350cb683584e1f7db6c78f698c161ba21f40778b7db9343a6ca75ec2c41ccce">T</link> &gt; </para><para>std::vector&lt; <link linkend="__units_8h_1a2b350cb683584e1f7db6c78f698c161ba21f40778b7db9343a6ca75ec2c41ccce">T</link> &gt; <link linkend="__tags_8cpp_1a663afb00e3e4be1f6f395904d5ed7dea">executeList</link> (std::vector&lt; std::shared_ptr&lt; <link linkend="_class_tag">Tag</link> &gt; &gt;listTags)</para>
+</listitem>
+            <listitem><para>template&lt;typename <link linkend="__units_8h_1a2b350cb683584e1f7db6c78f698c161ba21f40778b7db9343a6ca75ec2c41ccce">T</link> &gt; </para><para>std::shared_ptr&lt; <link linkend="_class_list_tag">ListTag</link>&lt; <link linkend="__units_8h_1a2b350cb683584e1f7db6c78f698c161ba21f40778b7db9343a6ca75ec2c41ccce">T</link> &gt; &gt; <link linkend="__tags_8cpp_1ab30d3866e4109a758188a1aeb012ea01">getListTag</link> (std::shared_ptr&lt; <link linkend="_class_tag">Tag</link> &gt; tag)</para>
+</listitem>
+            <listitem><para>std::shared_ptr&lt; <link linkend="_class_string_tag">StringTag</link> &gt; <link linkend="__tags_8cpp_1a6d2d78e110de0d5def95ebf64150ef48">getStringTag</link> (std::shared_ptr&lt; <link linkend="_class_tag">Tag</link> &gt; tag)</para>
+</listitem>
+            <listitem><para>std::string <link linkend="__tags_8cpp_1a4bab8267d7e817b59ed55ad288131821">executeString</link> (const std::shared_ptr&lt; <link linkend="_class_tag">Tag</link> &gt; &amp;parameter)</para>
+</listitem>
+            <listitem><para>std::shared_ptr&lt; <link linkend="_class_direction_tag">DirectionTag</link> &gt; <link linkend="__tags_8cpp_1a51e57c878c8df7f38ce915b45d3dc451">getDirectionTag</link> (std::shared_ptr&lt; <link linkend="_class_tag">Tag</link> &gt; tag)</para>
+</listitem>
+            <listitem><para><link linkend="__units_8h_1a224b9163917ac32fc95a60d8c1eec3aa">Direction</link> <link linkend="__tags_8cpp_1adb0c764ef1f20ef3d860516a5040b43a">executeDirection</link> (const std::shared_ptr&lt; <link linkend="_class_tag">Tag</link> &gt; &amp;parameter)</para>
+</listitem>
+            <listitem><para>std::shared_ptr&lt; <link linkend="_class_zone_tag">ZoneTag</link> &gt; <link linkend="__tags_8cpp_1a87514b166197bc785f979c9b79214abb">getZoneTag</link> (std::shared_ptr&lt; <link linkend="_class_tag">Tag</link> &gt; tag)</para>
+</listitem>
+            <listitem><para>std::shared_ptr&lt; <link linkend="_class_flow_tag">FlowTag</link> &gt; <link linkend="__tags_8cpp_1a2a49ee7ef9d60abe24ab727b3df6ec9e">getFlowTag</link> (std::shared_ptr&lt; <link linkend="_class_tag">Tag</link> &gt; tag)</para>
+</listitem>
+            <listitem><para><link linkend="_struct_zone">Zone</link> <link linkend="__tags_8cpp_1af880453da2451d42d582407678414cca">executeZone</link> (const std::shared_ptr&lt; <link linkend="_class_tag">Tag</link> &gt; &amp;nestedTag)</para>
+</listitem>
+            <listitem><para><link linkend="_struct_zone">Zone</link> <link linkend="__tags_8cpp_1a50b5a098d92d9488b24f241307659676">executeZone</link> (std::vector&lt; std::shared_ptr&lt; <link linkend="_class_tag">Tag</link> &gt; &gt; nestedTags)</para>
+</listitem>
+            <listitem><para>std::shared_ptr&lt; <link linkend="_class_coord_tag">CoordTag</link> &gt; <link linkend="__tags_8cpp_1aa6a6d33b38f91d7bc097749918417cfe">getCoordTag</link> (std::shared_ptr&lt; <link linkend="_class_tag">Tag</link> &gt; tag)</para>
+</listitem>
+            <listitem><para><link linkend="_struct_coord">Coord</link> <link linkend="__tags_8cpp_1acc7a7317843e349ecdffda47724bf380">executeCoord</link> (const std::shared_ptr&lt; <link linkend="_class_tag">Tag</link> &gt; &amp;tag1)</para>
+</listitem>
+            <listitem><para>std::shared_ptr&lt; <link linkend="_class_and_tag">AndTag</link> &gt; <link linkend="__tags_8cpp_1af91452b821388e3a5bd807713149302e">getAndTag</link> (std::shared_ptr&lt; <link linkend="_class_tag">Tag</link> &gt; tag)</para>
+</listitem>
+            <listitem><para>std::shared_ptr&lt; <link linkend="_class_not_tag">NotTag</link> &gt; <link linkend="__tags_8cpp_1a805b34d208faf3a3fac1a282754b792b">getNotTag</link> (std::shared_ptr&lt; <link linkend="_class_tag">Tag</link> &gt; tag)</para>
+</listitem>
+            <listitem><para>std::shared_ptr&lt; <link linkend="_class_or_tag">OrTag</link> &gt; <link linkend="__tags_8cpp_1ad21823e37708103e71e5792016193442">getOrTag</link> (std::shared_ptr&lt; <link linkend="_class_tag">Tag</link> &gt; tag)</para>
+</listitem>
+            <listitem><para>bool <link linkend="__tags_8cpp_1a760d219c228224543b5e154be938a6c2">executeBool</link> (const std::shared_ptr&lt; <link linkend="_class_tag">Tag</link> &gt; &amp;parameter)</para>
+</listitem>
+            <listitem><para>int <link linkend="__tags_8cpp_1af21ab8bf49b3e2e38e00d6cadb1e4871">executeInt</link> (const std::shared_ptr&lt; <link linkend="_class_tag">Tag</link> &gt; &amp;myTag)</para>
+</listitem>
+            <listitem><para>float <link linkend="__tags_8cpp_1ac1dada7a37a3c93abfa74f5d178e096d">executeFloat</link> (const std::shared_ptr&lt; <link linkend="_class_tag">Tag</link> &gt; &amp;parameter)</para>
+</listitem>
+            <listitem><para>std::shared_ptr&lt; <link linkend="_class_float_tag">FloatTag</link> &gt; <link linkend="__tags_8cpp_1a348690c518cc923ed88d56c2d18f6f7d">getFloatTag</link> (std::shared_ptr&lt; <link linkend="_class_tag">Tag</link> &gt; tag)</para>
+</listitem>
+            <listitem><para>std::shared_ptr&lt; <link linkend="_class_int_tag">IntTag</link> &gt; <link linkend="__tags_8cpp_1ad39e58dec05b3a0be440334312e1b0a8">getIntTag</link> (std::shared_ptr&lt; <link linkend="_class_tag">Tag</link> &gt; tag)</para>
+</listitem>
+            <listitem><para>template&lt;typename <link linkend="__units_8h_1a2b350cb683584e1f7db6c78f698c161ba21f40778b7db9343a6ca75ec2c41ccce">T</link> &gt; </para><para>std::shared_ptr&lt; <link linkend="_class_compare_tag">CompareTag</link>&lt; <link linkend="__units_8h_1a2b350cb683584e1f7db6c78f698c161ba21f40778b7db9343a6ca75ec2c41ccce">T</link> &gt; &gt; <link linkend="__tags_8cpp_1a084ac86e8860745ecc3d46c0a0ec9043">getCompareTag</link> (std::shared_ptr&lt; <link linkend="_class_tag">Tag</link> &gt; tag)</para>
+</listitem>
+            <listitem><para>template&lt;typename <link linkend="__units_8h_1a2b350cb683584e1f7db6c78f698c161ba21f40778b7db9343a6ca75ec2c41ccce">T</link> &gt; </para><para>bool <link linkend="__tags_8cpp_1a792e47ada60bb52ce250927b0efb74c4">CompareGreater</link> (std::vector&lt; <link linkend="__units_8h_1a2b350cb683584e1f7db6c78f698c161ba21f40778b7db9343a6ca75ec2c41ccce">T</link> &gt; list)</para>
+</listitem>
+            <listitem><para>template&lt;typename <link linkend="__units_8h_1a2b350cb683584e1f7db6c78f698c161ba21f40778b7db9343a6ca75ec2c41ccce">T</link> &gt; </para><para>bool <link linkend="__tags_8cpp_1a49a0e8b3086ffc59f2451f94c03829d1">CompareLesser</link> (std::vector&lt; <link linkend="__units_8h_1a2b350cb683584e1f7db6c78f698c161ba21f40778b7db9343a6ca75ec2c41ccce">T</link> &gt; list)</para>
+</listitem>
+            <listitem><para>template&lt;typename <link linkend="__units_8h_1a2b350cb683584e1f7db6c78f698c161ba21f40778b7db9343a6ca75ec2c41ccce">T</link> &gt; </para><para>bool <link linkend="__tags_8cpp_1a5fc4414245c3881d1ecb4b99a4fd5372">CompareGreaterEqual</link> (std::vector&lt; <link linkend="__units_8h_1a2b350cb683584e1f7db6c78f698c161ba21f40778b7db9343a6ca75ec2c41ccce">T</link> &gt; list)</para>
+</listitem>
+            <listitem><para>template&lt;typename <link linkend="__units_8h_1a2b350cb683584e1f7db6c78f698c161ba21f40778b7db9343a6ca75ec2c41ccce">T</link> &gt; </para><para>bool <link linkend="__tags_8cpp_1a9237a95f66c330e02ca6c88a5feaf1a5">CompareLesserEqual</link> (std::vector&lt; <link linkend="__units_8h_1a2b350cb683584e1f7db6c78f698c161ba21f40778b7db9343a6ca75ec2c41ccce">T</link> &gt; list)</para>
+</listitem>
+            <listitem><para>template&lt;typename <link linkend="__units_8h_1a2b350cb683584e1f7db6c78f698c161ba21f40778b7db9343a6ca75ec2c41ccce">T</link> &gt; </para><para>bool <link linkend="__tags_8cpp_1a1a411d1722b51c457e83ada36c19db4c">CompareEqual</link> (std::vector&lt; <link linkend="__units_8h_1a2b350cb683584e1f7db6c78f698c161ba21f40778b7db9343a6ca75ec2c41ccce">T</link> &gt; list)</para>
+</listitem>
+            <listitem><para>template&lt;typename <link linkend="__units_8h_1a2b350cb683584e1f7db6c78f698c161ba21f40778b7db9343a6ca75ec2c41ccce">T</link> &gt; </para><para>bool <link linkend="__tags_8cpp_1a6746bcba912a8cf5e050126c1c63d4a8">CompareNotEqual</link> (std::vector&lt; <link linkend="__units_8h_1a2b350cb683584e1f7db6c78f698c161ba21f40778b7db9343a6ca75ec2c41ccce">T</link> &gt; list)</para>
+</listitem>
+            <listitem><para>std::shared_ptr&lt; <link linkend="_class_bool_tag">BoolTag</link> &gt; <link linkend="__tags_8cpp_1ada36a59d6eb45b5f395f63dcebd48b61">getBoolTag</link> (std::shared_ptr&lt; <link linkend="_class_tag">Tag</link> &gt; tag)</para>
+</listitem>
+            <listitem><para>bool <link linkend="__tags_8cpp_1a05a9bbf205db6d22539e7643dacf4036">sameTagsType</link> (std::vector&lt; std::shared_ptr&lt; <link linkend="_class_tag">Tag</link> &gt; &gt; tags)</para>
+</listitem>
+            <listitem><para>std::string <link linkend="__tags_8cpp_1ad05fc0cffadc5a4fad1c4bea39546bb8">getDirection</link> (<link linkend="__units_8h_1a224b9163917ac32fc95a60d8c1eec3aa">Direction</link> d)</para>
+</listitem>
+            <listitem><para><link linkend="__units_8h_1a224b9163917ac32fc95a60d8c1eec3aa">Direction</link> <link linkend="__tags_8cpp_1a851e1fc086da436b23ab4e5baf444590">getDirection</link> (std::string d)</para>
+</listitem>
+        </itemizedlist>
+</simplesect>
+<section>
+<title>Function Documentation</title>
+<anchor xml:id="__tags_8cpp_1a1a411d1722b51c457e83ada36c19db4c"/><section>
+    <title>CompareEqual()</title>
+<indexterm><primary>CompareEqual</primary><secondary>Tags.cpp</secondary></indexterm>
+<indexterm><primary>Tags.cpp</primary><secondary>CompareEqual</secondary></indexterm>
+<computeroutput>template&lt;typename <link linkend="__units_8h_1a2b350cb683584e1f7db6c78f698c161ba21f40778b7db9343a6ca75ec2c41ccce">T</link> &gt; </computeroutput><para><computeroutput>bool CompareEqual (std::vector&lt; <link linkend="__units_8h_1a2b350cb683584e1f7db6c78f698c161ba21f40778b7db9343a6ca75ec2c41ccce">T</link> &gt; list)</computeroutput></para><para>
+Definition at line <link linkend="__tags_8cpp_source_1l01333">1333</link> of file <link linkend="__tags_8cpp_source">Tags.cpp</link>.</para>
+Here is the caller graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="_tags_8cpp_a1a411d1722b51c457e83ada36c19db4c_icgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="__tags_8cpp_1a792e47ada60bb52ce250927b0efb74c4"/><section>
+    <title>CompareGreater()</title>
+<indexterm><primary>CompareGreater</primary><secondary>Tags.cpp</secondary></indexterm>
+<indexterm><primary>Tags.cpp</primary><secondary>CompareGreater</secondary></indexterm>
+<computeroutput>template&lt;typename <link linkend="__units_8h_1a2b350cb683584e1f7db6c78f698c161ba21f40778b7db9343a6ca75ec2c41ccce">T</link> &gt; </computeroutput><para><computeroutput>bool CompareGreater (std::vector&lt; <link linkend="__units_8h_1a2b350cb683584e1f7db6c78f698c161ba21f40778b7db9343a6ca75ec2c41ccce">T</link> &gt; list)</computeroutput></para><para>
+Definition at line <link linkend="__tags_8cpp_source_1l01277">1277</link> of file <link linkend="__tags_8cpp_source">Tags.cpp</link>.</para>
+Here is the caller graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="_tags_8cpp_a792e47ada60bb52ce250927b0efb74c4_icgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="__tags_8cpp_1a5fc4414245c3881d1ecb4b99a4fd5372"/><section>
+    <title>CompareGreaterEqual()</title>
+<indexterm><primary>CompareGreaterEqual</primary><secondary>Tags.cpp</secondary></indexterm>
+<indexterm><primary>Tags.cpp</primary><secondary>CompareGreaterEqual</secondary></indexterm>
+<computeroutput>template&lt;typename <link linkend="__units_8h_1a2b350cb683584e1f7db6c78f698c161ba21f40778b7db9343a6ca75ec2c41ccce">T</link> &gt; </computeroutput><para><computeroutput>bool CompareGreaterEqual (std::vector&lt; <link linkend="__units_8h_1a2b350cb683584e1f7db6c78f698c161ba21f40778b7db9343a6ca75ec2c41ccce">T</link> &gt; list)</computeroutput></para><para>
+Definition at line <link linkend="__tags_8cpp_source_1l01305">1305</link> of file <link linkend="__tags_8cpp_source">Tags.cpp</link>.</para>
+Here is the caller graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="_tags_8cpp_a5fc4414245c3881d1ecb4b99a4fd5372_icgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="__tags_8cpp_1a49a0e8b3086ffc59f2451f94c03829d1"/><section>
+    <title>CompareLesser()</title>
+<indexterm><primary>CompareLesser</primary><secondary>Tags.cpp</secondary></indexterm>
+<indexterm><primary>Tags.cpp</primary><secondary>CompareLesser</secondary></indexterm>
+<computeroutput>template&lt;typename <link linkend="__units_8h_1a2b350cb683584e1f7db6c78f698c161ba21f40778b7db9343a6ca75ec2c41ccce">T</link> &gt; </computeroutput><para><computeroutput>bool CompareLesser (std::vector&lt; <link linkend="__units_8h_1a2b350cb683584e1f7db6c78f698c161ba21f40778b7db9343a6ca75ec2c41ccce">T</link> &gt; list)</computeroutput></para><para>
+Definition at line <link linkend="__tags_8cpp_source_1l01291">1291</link> of file <link linkend="__tags_8cpp_source">Tags.cpp</link>.</para>
+Here is the caller graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="_tags_8cpp_a49a0e8b3086ffc59f2451f94c03829d1_icgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="__tags_8cpp_1a9237a95f66c330e02ca6c88a5feaf1a5"/><section>
+    <title>CompareLesserEqual()</title>
+<indexterm><primary>CompareLesserEqual</primary><secondary>Tags.cpp</secondary></indexterm>
+<indexterm><primary>Tags.cpp</primary><secondary>CompareLesserEqual</secondary></indexterm>
+<computeroutput>template&lt;typename <link linkend="__units_8h_1a2b350cb683584e1f7db6c78f698c161ba21f40778b7db9343a6ca75ec2c41ccce">T</link> &gt; </computeroutput><para><computeroutput>bool CompareLesserEqual (std::vector&lt; <link linkend="__units_8h_1a2b350cb683584e1f7db6c78f698c161ba21f40778b7db9343a6ca75ec2c41ccce">T</link> &gt; list)</computeroutput></para><para>
+Definition at line <link linkend="__tags_8cpp_source_1l01319">1319</link> of file <link linkend="__tags_8cpp_source">Tags.cpp</link>.</para>
+Here is the caller graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="_tags_8cpp_a9237a95f66c330e02ca6c88a5feaf1a5_icgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="__tags_8cpp_1a6746bcba912a8cf5e050126c1c63d4a8"/><section>
+    <title>CompareNotEqual()</title>
+<indexterm><primary>CompareNotEqual</primary><secondary>Tags.cpp</secondary></indexterm>
+<indexterm><primary>Tags.cpp</primary><secondary>CompareNotEqual</secondary></indexterm>
+<computeroutput>template&lt;typename <link linkend="__units_8h_1a2b350cb683584e1f7db6c78f698c161ba21f40778b7db9343a6ca75ec2c41ccce">T</link> &gt; </computeroutput><para><computeroutput>bool CompareNotEqual (std::vector&lt; <link linkend="__units_8h_1a2b350cb683584e1f7db6c78f698c161ba21f40778b7db9343a6ca75ec2c41ccce">T</link> &gt; list)</computeroutput></para><para>
+Definition at line <link linkend="__tags_8cpp_source_1l01347">1347</link> of file <link linkend="__tags_8cpp_source">Tags.cpp</link>.</para>
+Here is the caller graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="_tags_8cpp_a6746bcba912a8cf5e050126c1c63d4a8_icgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="__tags_8cpp_1a760d219c228224543b5e154be938a6c2"/><section>
+    <title>executeBool()</title>
+<indexterm><primary>executeBool</primary><secondary>Tags.cpp</secondary></indexterm>
+<indexterm><primary>Tags.cpp</primary><secondary>executeBool</secondary></indexterm>
+<para><computeroutput>bool executeBool (const std::shared_ptr&lt; <link linkend="_class_tag">Tag</link> &gt; &amp; parameter)</computeroutput></para><para>
+Definition at line <link linkend="__tags_8cpp_source_1l01104">1104</link> of file <link linkend="__tags_8cpp_source">Tags.cpp</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="_tags_8cpp_a760d219c228224543b5e154be938a6c2_cgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+Here is the caller graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="_tags_8cpp_a760d219c228224543b5e154be938a6c2_icgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="__tags_8cpp_1acc7a7317843e349ecdffda47724bf380"/><section>
+    <title>executeCoord()</title>
+<indexterm><primary>executeCoord</primary><secondary>Tags.cpp</secondary></indexterm>
+<indexterm><primary>Tags.cpp</primary><secondary>executeCoord</secondary></indexterm>
+<para><computeroutput><link linkend="_struct_coord">Coord</link> executeCoord (const std::shared_ptr&lt; <link linkend="_class_tag">Tag</link> &gt; &amp; tag1)</computeroutput></para><para>
+Definition at line <link linkend="__tags_8cpp_source_1l00970">970</link> of file <link linkend="__tags_8cpp_source">Tags.cpp</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="_tags_8cpp_acc7a7317843e349ecdffda47724bf380_cgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+Here is the caller graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="_tags_8cpp_acc7a7317843e349ecdffda47724bf380_icgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="__tags_8cpp_1adb0c764ef1f20ef3d860516a5040b43a"/><section>
+    <title>executeDirection()</title>
+<indexterm><primary>executeDirection</primary><secondary>Tags.cpp</secondary></indexterm>
+<indexterm><primary>Tags.cpp</primary><secondary>executeDirection</secondary></indexterm>
+<para><computeroutput><link linkend="__units_8h_1a224b9163917ac32fc95a60d8c1eec3aa">Direction</link> executeDirection (const std::shared_ptr&lt; <link linkend="_class_tag">Tag</link> &gt; &amp; parameter)</computeroutput></para><para>
+Definition at line <link linkend="__tags_8cpp_source_1l00870">870</link> of file <link linkend="__tags_8cpp_source">Tags.cpp</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="_tags_8cpp_adb0c764ef1f20ef3d860516a5040b43a_cgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+Here is the caller graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="_tags_8cpp_adb0c764ef1f20ef3d860516a5040b43a_icgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="__tags_8cpp_1ac1dada7a37a3c93abfa74f5d178e096d"/><section>
+    <title>executeFloat()</title>
+<indexterm><primary>executeFloat</primary><secondary>Tags.cpp</secondary></indexterm>
+<indexterm><primary>Tags.cpp</primary><secondary>executeFloat</secondary></indexterm>
+<para><computeroutput>float executeFloat (const std::shared_ptr&lt; <link linkend="_class_tag">Tag</link> &gt; &amp; parameter)</computeroutput></para><para>
+Definition at line <link linkend="__tags_8cpp_source_1l01178">1178</link> of file <link linkend="__tags_8cpp_source">Tags.cpp</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="_tags_8cpp_ac1dada7a37a3c93abfa74f5d178e096d_cgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+Here is the caller graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="_tags_8cpp_ac1dada7a37a3c93abfa74f5d178e096d_icgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="__tags_8cpp_1af21ab8bf49b3e2e38e00d6cadb1e4871"/><section>
+    <title>executeInt()</title>
+<indexterm><primary>executeInt</primary><secondary>Tags.cpp</secondary></indexterm>
+<indexterm><primary>Tags.cpp</primary><secondary>executeInt</secondary></indexterm>
+<para><computeroutput>int executeInt (const std::shared_ptr&lt; <link linkend="_class_tag">Tag</link> &gt; &amp; myTag)</computeroutput></para><para>
+Definition at line <link linkend="__tags_8cpp_source_1l01158">1158</link> of file <link linkend="__tags_8cpp_source">Tags.cpp</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="_tags_8cpp_af21ab8bf49b3e2e38e00d6cadb1e4871_cgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+Here is the caller graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="_tags_8cpp_af21ab8bf49b3e2e38e00d6cadb1e4871_icgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="__tags_8cpp_1a663afb00e3e4be1f6f395904d5ed7dea"/><section>
+    <title>executeList()</title>
+<indexterm><primary>executeList</primary><secondary>Tags.cpp</secondary></indexterm>
+<indexterm><primary>Tags.cpp</primary><secondary>executeList</secondary></indexterm>
+<computeroutput>template&lt;typename <link linkend="__units_8h_1a2b350cb683584e1f7db6c78f698c161ba21f40778b7db9343a6ca75ec2c41ccce">T</link> &gt; </computeroutput><para><computeroutput>std::vector&lt; <link linkend="__units_8h_1a2b350cb683584e1f7db6c78f698c161ba21f40778b7db9343a6ca75ec2c41ccce">T</link> &gt; executeList (std::vector&lt; std::shared_ptr&lt; <link linkend="_class_tag">Tag</link> &gt; &gt; listTags)</computeroutput></para><para>
+Definition at line <link linkend="__tags_8cpp_source_1l00621">621</link> of file <link linkend="__tags_8cpp_source">Tags.cpp</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="_tags_8cpp_a663afb00e3e4be1f6f395904d5ed7dea_cgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+Here is the caller graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="_tags_8cpp_a663afb00e3e4be1f6f395904d5ed7dea_icgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="__tags_8cpp_1a4bab8267d7e817b59ed55ad288131821"/><section>
+    <title>executeString()</title>
+<indexterm><primary>executeString</primary><secondary>Tags.cpp</secondary></indexterm>
+<indexterm><primary>Tags.cpp</primary><secondary>executeString</secondary></indexterm>
+<para><computeroutput>std::string executeString (const std::shared_ptr&lt; <link linkend="_class_tag">Tag</link> &gt; &amp; parameter)</computeroutput></para><para>
+Definition at line <link linkend="__tags_8cpp_source_1l00811">811</link> of file <link linkend="__tags_8cpp_source">Tags.cpp</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="_tags_8cpp_a4bab8267d7e817b59ed55ad288131821_cgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+Here is the caller graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="_tags_8cpp_a4bab8267d7e817b59ed55ad288131821_icgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="__tags_8cpp_1af880453da2451d42d582407678414cca"/><section>
+    <title>executeZone()<computeroutput>[1/2]</computeroutput></title>
+<indexterm><primary>executeZone</primary><secondary>Tags.cpp</secondary></indexterm>
+<indexterm><primary>Tags.cpp</primary><secondary>executeZone</secondary></indexterm>
+<para><computeroutput><link linkend="_struct_zone">Zone</link> executeZone (const std::shared_ptr&lt; <link linkend="_class_tag">Tag</link> &gt; &amp; nestedTag)</computeroutput></para><para>
+Definition at line <link linkend="__tags_8cpp_source_1l00910">910</link> of file <link linkend="__tags_8cpp_source">Tags.cpp</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="_tags_8cpp_af880453da2451d42d582407678414cca_cgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+Here is the caller graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="_tags_8cpp_af880453da2451d42d582407678414cca_icgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="__tags_8cpp_1a50b5a098d92d9488b24f241307659676"/><section>
+    <title>executeZone()<computeroutput>[2/2]</computeroutput></title>
+<indexterm><primary>executeZone</primary><secondary>Tags.cpp</secondary></indexterm>
+<indexterm><primary>Tags.cpp</primary><secondary>executeZone</secondary></indexterm>
+<para><computeroutput><link linkend="_struct_zone">Zone</link> executeZone (std::vector&lt; std::shared_ptr&lt; <link linkend="_class_tag">Tag</link> &gt; &gt; nestedTags)</computeroutput></para><para>
+Definition at line <link linkend="__tags_8cpp_source_1l00926">926</link> of file <link linkend="__tags_8cpp_source">Tags.cpp</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="_tags_8cpp_a50b5a098d92d9488b24f241307659676_cgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="__tags_8cpp_1af91452b821388e3a5bd807713149302e"/><section>
+    <title>getAndTag()</title>
+<indexterm><primary>getAndTag</primary><secondary>Tags.cpp</secondary></indexterm>
+<indexterm><primary>Tags.cpp</primary><secondary>getAndTag</secondary></indexterm>
+<para><computeroutput>std::shared_ptr&lt; <link linkend="_class_and_tag">AndTag</link> &gt; getAndTag (std::shared_ptr&lt; <link linkend="_class_tag">Tag</link> &gt; tag)</computeroutput></para><para>
+Definition at line <link linkend="__tags_8cpp_source_1l01043">1043</link> of file <link linkend="__tags_8cpp_source">Tags.cpp</link>.</para>
+Here is the caller graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="_tags_8cpp_af91452b821388e3a5bd807713149302e_icgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="__tags_8cpp_1ada36a59d6eb45b5f395f63dcebd48b61"/><section>
+    <title>getBoolTag()</title>
+<indexterm><primary>getBoolTag</primary><secondary>Tags.cpp</secondary></indexterm>
+<indexterm><primary>Tags.cpp</primary><secondary>getBoolTag</secondary></indexterm>
+<para><computeroutput>std::shared_ptr&lt; <link linkend="_class_bool_tag">BoolTag</link> &gt; getBoolTag (std::shared_ptr&lt; <link linkend="_class_tag">Tag</link> &gt; tag)</computeroutput></para><para>
+Definition at line <link linkend="__tags_8cpp_source_1l01491">1491</link> of file <link linkend="__tags_8cpp_source">Tags.cpp</link>.</para>
+Here is the caller graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="_tags_8cpp_ada36a59d6eb45b5f395f63dcebd48b61_icgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="__tags_8cpp_1a084ac86e8860745ecc3d46c0a0ec9043"/><section>
+    <title>getCompareTag()</title>
+<indexterm><primary>getCompareTag</primary><secondary>Tags.cpp</secondary></indexterm>
+<indexterm><primary>Tags.cpp</primary><secondary>getCompareTag</secondary></indexterm>
+<computeroutput>template&lt;typename <link linkend="__units_8h_1a2b350cb683584e1f7db6c78f698c161ba21f40778b7db9343a6ca75ec2c41ccce">T</link> &gt; </computeroutput><para><computeroutput>std::shared_ptr&lt; <link linkend="_class_compare_tag">CompareTag</link>&lt; <link linkend="__units_8h_1a2b350cb683584e1f7db6c78f698c161ba21f40778b7db9343a6ca75ec2c41ccce">T</link> &gt; &gt; getCompareTag (std::shared_ptr&lt; <link linkend="_class_tag">Tag</link> &gt; tag)</computeroutput></para><para>
+Definition at line <link linkend="__tags_8cpp_source_1l01271">1271</link> of file <link linkend="__tags_8cpp_source">Tags.cpp</link>.</para>
+Here is the caller graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="_tags_8cpp_a084ac86e8860745ecc3d46c0a0ec9043_icgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="__tags_8cpp_1aa6a6d33b38f91d7bc097749918417cfe"/><section>
+    <title>getCoordTag()</title>
+<indexterm><primary>getCoordTag</primary><secondary>Tags.cpp</secondary></indexterm>
+<indexterm><primary>Tags.cpp</primary><secondary>getCoordTag</secondary></indexterm>
+<para><computeroutput>std::shared_ptr&lt; <link linkend="_class_coord_tag">CoordTag</link> &gt; getCoordTag (std::shared_ptr&lt; <link linkend="_class_tag">Tag</link> &gt; tag)</computeroutput></para><para>
+Definition at line <link linkend="__tags_8cpp_source_1l00963">963</link> of file <link linkend="__tags_8cpp_source">Tags.cpp</link>.</para>
+Here is the caller graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="_tags_8cpp_aa6a6d33b38f91d7bc097749918417cfe_icgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="__tags_8cpp_1ad05fc0cffadc5a4fad1c4bea39546bb8"/><section>
+    <title>getDirection()<computeroutput>[1/2]</computeroutput></title>
+<indexterm><primary>getDirection</primary><secondary>Tags.cpp</secondary></indexterm>
+<indexterm><primary>Tags.cpp</primary><secondary>getDirection</secondary></indexterm>
+<para><computeroutput>std::string getDirection (<link linkend="__units_8h_1a224b9163917ac32fc95a60d8c1eec3aa">Direction</link> d)</computeroutput></para><para>
+Definition at line <link linkend="__tags_8cpp_source_1l01559">1559</link> of file <link linkend="__tags_8cpp_source">Tags.cpp</link>.</para>
+Here is the caller graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="_tags_8cpp_ad05fc0cffadc5a4fad1c4bea39546bb8_icgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="__tags_8cpp_1a851e1fc086da436b23ab4e5baf444590"/><section>
+    <title>getDirection()<computeroutput>[2/2]</computeroutput></title>
+<indexterm><primary>getDirection</primary><secondary>Tags.cpp</secondary></indexterm>
+<indexterm><primary>Tags.cpp</primary><secondary>getDirection</secondary></indexterm>
+<para><computeroutput><link linkend="__units_8h_1a224b9163917ac32fc95a60d8c1eec3aa">Direction</link> getDirection (std::string d)</computeroutput></para><para>
+Definition at line <link linkend="__tags_8cpp_source_1l01590">1590</link> of file <link linkend="__tags_8cpp_source">Tags.cpp</link>.</para>
+</section>
+<anchor xml:id="__tags_8cpp_1a51e57c878c8df7f38ce915b45d3dc451"/><section>
+    <title>getDirectionTag()</title>
+<indexterm><primary>getDirectionTag</primary><secondary>Tags.cpp</secondary></indexterm>
+<indexterm><primary>Tags.cpp</primary><secondary>getDirectionTag</secondary></indexterm>
+<para><computeroutput>std::shared_ptr&lt; <link linkend="_class_direction_tag">DirectionTag</link> &gt; getDirectionTag (std::shared_ptr&lt; <link linkend="_class_tag">Tag</link> &gt; tag)</computeroutput></para><para>
+Definition at line <link linkend="__tags_8cpp_source_1l00866">866</link> of file <link linkend="__tags_8cpp_source">Tags.cpp</link>.</para>
+Here is the caller graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="_tags_8cpp_a51e57c878c8df7f38ce915b45d3dc451_icgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="__tags_8cpp_1a348690c518cc923ed88d56c2d18f6f7d"/><section>
+    <title>getFloatTag()</title>
+<indexterm><primary>getFloatTag</primary><secondary>Tags.cpp</secondary></indexterm>
+<indexterm><primary>Tags.cpp</primary><secondary>getFloatTag</secondary></indexterm>
+<para><computeroutput>std::shared_ptr&lt; <link linkend="_class_float_tag">FloatTag</link> &gt; getFloatTag (std::shared_ptr&lt; <link linkend="_class_tag">Tag</link> &gt; tag)</computeroutput></para><para>
+Definition at line <link linkend="__tags_8cpp_source_1l01219">1219</link> of file <link linkend="__tags_8cpp_source">Tags.cpp</link>.</para>
+Here is the caller graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="_tags_8cpp_a348690c518cc923ed88d56c2d18f6f7d_icgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="__tags_8cpp_1a2a49ee7ef9d60abe24ab727b3df6ec9e"/><section>
+    <title>getFlowTag()</title>
+<indexterm><primary>getFlowTag</primary><secondary>Tags.cpp</secondary></indexterm>
+<indexterm><primary>Tags.cpp</primary><secondary>getFlowTag</secondary></indexterm>
+<para><computeroutput>std::shared_ptr&lt; <link linkend="_class_flow_tag">FlowTag</link> &gt; getFlowTag (std::shared_ptr&lt; <link linkend="_class_tag">Tag</link> &gt; tag)</computeroutput></para><para>
+Definition at line <link linkend="__tags_8cpp_source_1l00905">905</link> of file <link linkend="__tags_8cpp_source">Tags.cpp</link>.</para>
+</section>
+<anchor xml:id="__tags_8cpp_1ad39e58dec05b3a0be440334312e1b0a8"/><section>
+    <title>getIntTag()</title>
+<indexterm><primary>getIntTag</primary><secondary>Tags.cpp</secondary></indexterm>
+<indexterm><primary>Tags.cpp</primary><secondary>getIntTag</secondary></indexterm>
+<para><computeroutput>std::shared_ptr&lt; <link linkend="_class_int_tag">IntTag</link> &gt; getIntTag (std::shared_ptr&lt; <link linkend="_class_tag">Tag</link> &gt; tag)</computeroutput></para><para>
+Definition at line <link linkend="__tags_8cpp_source_1l01251">1251</link> of file <link linkend="__tags_8cpp_source">Tags.cpp</link>.</para>
+Here is the caller graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="_tags_8cpp_ad39e58dec05b3a0be440334312e1b0a8_icgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="__tags_8cpp_1ab30d3866e4109a758188a1aeb012ea01"/><section>
+    <title>getListTag()</title>
+<indexterm><primary>getListTag</primary><secondary>Tags.cpp</secondary></indexterm>
+<indexterm><primary>Tags.cpp</primary><secondary>getListTag</secondary></indexterm>
+<computeroutput>template&lt;typename <link linkend="__units_8h_1a2b350cb683584e1f7db6c78f698c161ba21f40778b7db9343a6ca75ec2c41ccce">T</link> &gt; </computeroutput><para><computeroutput>std::shared_ptr&lt; <link linkend="_class_list_tag">ListTag</link>&lt; <link linkend="__units_8h_1a2b350cb683584e1f7db6c78f698c161ba21f40778b7db9343a6ca75ec2c41ccce">T</link> &gt; &gt; getListTag (std::shared_ptr&lt; <link linkend="_class_tag">Tag</link> &gt; tag)</computeroutput></para><para>
+Definition at line <link linkend="__tags_8cpp_source_1l00695">695</link> of file <link linkend="__tags_8cpp_source">Tags.cpp</link>.</para>
+Here is the caller graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="_tags_8cpp_ab30d3866e4109a758188a1aeb012ea01_icgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="__tags_8cpp_1aad17b0d48f011d5869f82adb31915669"/><section>
+    <title>getLoadTag()</title>
+<indexterm><primary>getLoadTag</primary><secondary>Tags.cpp</secondary></indexterm>
+<indexterm><primary>Tags.cpp</primary><secondary>getLoadTag</secondary></indexterm>
+<computeroutput>template&lt;typename <link linkend="__units_8h_1a2b350cb683584e1f7db6c78f698c161ba21f40778b7db9343a6ca75ec2c41ccce">T</link> &gt; </computeroutput><para><computeroutput>std::shared_ptr&lt; <link linkend="_class_load_tag">LoadTag</link>&lt; <link linkend="__units_8h_1a2b350cb683584e1f7db6c78f698c161ba21f40778b7db9343a6ca75ec2c41ccce">T</link> &gt; &gt; getLoadTag (std::shared_ptr&lt; <link linkend="_class_tag">Tag</link> &gt; tag)</computeroutput></para><para>
+Definition at line <link linkend="__tags_8cpp_source_1l00564">564</link> of file <link linkend="__tags_8cpp_source">Tags.cpp</link>.</para>
+Here is the caller graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="_tags_8cpp_aad17b0d48f011d5869f82adb31915669_icgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="__tags_8cpp_1a805b34d208faf3a3fac1a282754b792b"/><section>
+    <title>getNotTag()</title>
+<indexterm><primary>getNotTag</primary><secondary>Tags.cpp</secondary></indexterm>
+<indexterm><primary>Tags.cpp</primary><secondary>getNotTag</secondary></indexterm>
+<para><computeroutput>std::shared_ptr&lt; <link linkend="_class_not_tag">NotTag</link> &gt; getNotTag (std::shared_ptr&lt; <link linkend="_class_tag">Tag</link> &gt; tag)</computeroutput></para><para>
+Definition at line <link linkend="__tags_8cpp_source_1l01061">1061</link> of file <link linkend="__tags_8cpp_source">Tags.cpp</link>.</para>
+Here is the caller graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="_tags_8cpp_a805b34d208faf3a3fac1a282754b792b_icgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="__tags_8cpp_1ad21823e37708103e71e5792016193442"/><section>
+    <title>getOrTag()</title>
+<indexterm><primary>getOrTag</primary><secondary>Tags.cpp</secondary></indexterm>
+<indexterm><primary>Tags.cpp</primary><secondary>getOrTag</secondary></indexterm>
+<para><computeroutput>std::shared_ptr&lt; <link linkend="_class_or_tag">OrTag</link> &gt; getOrTag (std::shared_ptr&lt; <link linkend="_class_tag">Tag</link> &gt; tag)</computeroutput></para><para>
+Definition at line <link linkend="__tags_8cpp_source_1l01076">1076</link> of file <link linkend="__tags_8cpp_source">Tags.cpp</link>.</para>
+Here is the caller graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="_tags_8cpp_ad21823e37708103e71e5792016193442_icgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="__tags_8cpp_1a6d2d78e110de0d5def95ebf64150ef48"/><section>
+    <title>getStringTag()</title>
+<indexterm><primary>getStringTag</primary><secondary>Tags.cpp</secondary></indexterm>
+<indexterm><primary>Tags.cpp</primary><secondary>getStringTag</secondary></indexterm>
+<para><computeroutput>std::shared_ptr&lt; <link linkend="_class_string_tag">StringTag</link> &gt; getStringTag (std::shared_ptr&lt; <link linkend="_class_tag">Tag</link> &gt; tag)</computeroutput></para><para>
+Definition at line <link linkend="__tags_8cpp_source_1l00806">806</link> of file <link linkend="__tags_8cpp_source">Tags.cpp</link>.</para>
+Here is the caller graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="_tags_8cpp_a6d2d78e110de0d5def95ebf64150ef48_icgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="__tags_8cpp_1ad138ff74a272c695accc2d09d39dc05f"/><section>
+    <title>getWaitTag()</title>
+<indexterm><primary>getWaitTag</primary><secondary>Tags.cpp</secondary></indexterm>
+<indexterm><primary>Tags.cpp</primary><secondary>getWaitTag</secondary></indexterm>
+<para><computeroutput>std::shared_ptr&lt; <link linkend="_class_wait_tag">WaitTag</link> &gt; getWaitTag (std::shared_ptr&lt; <link linkend="_class_tag">Tag</link> &gt; tag)</computeroutput></para><para>
+Definition at line <link linkend="__tags_8cpp_source_1l00539">539</link> of file <link linkend="__tags_8cpp_source">Tags.cpp</link>.</para>
+</section>
+<anchor xml:id="__tags_8cpp_1a87514b166197bc785f979c9b79214abb"/><section>
+    <title>getZoneTag()</title>
+<indexterm><primary>getZoneTag</primary><secondary>Tags.cpp</secondary></indexterm>
+<indexterm><primary>Tags.cpp</primary><secondary>getZoneTag</secondary></indexterm>
+<para><computeroutput>std::shared_ptr&lt; <link linkend="_class_zone_tag">ZoneTag</link> &gt; getZoneTag (std::shared_ptr&lt; <link linkend="_class_tag">Tag</link> &gt; tag)</computeroutput></para><para>
+Definition at line <link linkend="__tags_8cpp_source_1l00900">900</link> of file <link linkend="__tags_8cpp_source">Tags.cpp</link>.</para>
+Here is the caller graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="_tags_8cpp_a87514b166197bc785f979c9b79214abb_icgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="__tags_8cpp_1a05a9bbf205db6d22539e7643dacf4036"/><section>
+    <title>sameTagsType()</title>
+<indexterm><primary>sameTagsType</primary><secondary>Tags.cpp</secondary></indexterm>
+<indexterm><primary>Tags.cpp</primary><secondary>sameTagsType</secondary></indexterm>
+<para><computeroutput>bool sameTagsType (std::vector&lt; std::shared_ptr&lt; <link linkend="_class_tag">Tag</link> &gt; &gt; tags)</computeroutput></para><para>
+Definition at line <link linkend="__tags_8cpp_source_1l01509">1509</link> of file <link linkend="__tags_8cpp_source">Tags.cpp</link>.</para>
+</section>
+</section>
+</section>

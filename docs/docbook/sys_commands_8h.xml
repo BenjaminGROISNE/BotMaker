@@ -1,0 +1,574 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<section xmlns="http://docbook.org/ns/docbook" version="5.0" xmlns:xlink="http://www.w3.org/1999/xlink" xml:id="_sys_commands_8h" xml:lang="en-US">
+<title>src/sysCommands.h File Reference</title>
+<indexterm><primary>src/sysCommands.h</primary></indexterm>
+<programlisting linenumbering="unnumbered">#include &lt;Windows.h&gt;<?linebreak?>#include &lt;iostream&gt;<?linebreak?>#include &lt;array&gt;<?linebreak?>#include &lt;memory&gt;<?linebreak?>#include &lt;ctime&gt;<?linebreak?>#include &lt;vector&gt;<?linebreak?>#include &lt;atomic&gt;<?linebreak?>#include &lt;chrono&gt;<?linebreak?>#include &lt;thread&gt;<?linebreak?>#include &lt;stdexcept&gt;<?linebreak?>#include &lt;cstdio&gt;<?linebreak?>#include &lt;cstdlib&gt;<?linebreak?>#include &lt;TlHelp32.h&gt;<?linebreak?>#include &lt;direct.h&gt;<?linebreak?>#include &lt;fstream&gt;<?linebreak?>#include &lt;Netlistmgr.h&gt;<?linebreak?>#include &lt;bitset&gt;<?linebreak?>#include &lt;string&gt;<?linebreak?>#include &lt;io.h&gt;<?linebreak?>#include &lt;filesystem&gt;<?linebreak?></programlisting>Include dependency graph for sysCommands.h:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="sys_commands_8h__incl.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+This graph shows which files directly or indirectly include this file:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="sys_commands_8h__dep__incl.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+<simplesect>
+    <title>Macros    </title>
+        <itemizedlist>
+            <listitem><para>#define <link linkend="_sys_commands_8h_1a9f918755b601cf4bffca775992e6fb90">NOMINMAX</link></para>
+</listitem>
+        </itemizedlist>
+</simplesect>
+<simplesect>
+    <title>Functions    </title>
+        <itemizedlist>
+            <listitem><para>std::vector&lt; std::string &gt; <link linkend="_sys_commands_8h_1a91aaa3ff9bdd4428e4117b84ba4f842d">returnAllDrivesLetter</link> ()</para>
+</listitem>
+            <listitem><para>std::string <link linkend="_sys_commands_8h_1a63a4dc40cc84e99d22ec1006c6de3631">moveAndExecute</link> (const std::string &amp;folder, const std::string command=&quot;&quot;)</para>
+</listitem>
+            <listitem><para>void <link linkend="_sys_commands_8h_1a035d7f4f5aec963d128b02866d22bced">moveAndStartProgram</link> (const std::string &amp;programFolder, const std::string &amp;exeName, const std::string args=&quot;&quot;)</para>
+</listitem>
+            <listitem><para>void <link linkend="_sys_commands_8h_1aafd028efa2a38715943d7399f632d995">startProgram</link> (const std::string &amp;programPath, const std::string args=&quot;&quot;)</para>
+</listitem>
+            <listitem><para>void <link linkend="_sys_commands_8h_1a391ed2bc0044d5f13e86859f74c94a30">killProgram</link> (const std::string &amp;exeName, const std::string args=&quot;&quot;)</para>
+</listitem>
+            <listitem><para>void <link linkend="_sys_commands_8h_1ab7a6af6b67158612bbfb7004af5b0e23">killProgramWindow</link> (const std::string &amp;exeName, const std::string &amp;windowName)</para>
+</listitem>
+            <listitem><para>std::string <link linkend="_sys_commands_8h_1a21ab47268233978aaaa4b09142d5a8de">ExpandEnvironmentVariables</link> (const std::string &amp;inputPath)</para>
+</listitem>
+            <listitem><para>std::string <link linkend="_sys_commands_8h_1a5e44365ba3f0d833e74130bb152e64a7">findPathFolder</link> (const std::string &amp;folder, const std::string &amp;namefile)</para>
+</listitem>
+            <listitem><para>bool <link linkend="_sys_commands_8h_1ae1165ac90ad1b162b2dfa0c313d95580">findFileFolder</link> (const std::string &amp;folder, const std::string &amp;namefile)</para>
+</listitem>
+            <listitem><para>void <link linkend="_sys_commands_8h_1a2af38e6898ff32753919342acccae2dd">writeText</link> (const std::string &amp;text, const std::string &amp;filename)</para>
+</listitem>
+            <listitem><para>bool <link linkend="_sys_commands_8h_1a662dd4893690567ba825a473508f47e2">pathExists</link> (const std::string &amp;path)</para>
+</listitem>
+            <listitem><para>std::chrono::time_point&lt; std::chrono::steady_clock &gt; <link linkend="_sys_commands_8h_1a94e134bb4a9dda947f238fa951454d35">startChrono</link> ()</para>
+</listitem>
+            <listitem><para>long int <link linkend="_sys_commands_8h_1adb5a1f53dc22de07426e345e0bc11bb0">endChrono</link> (const std::chrono::time_point&lt; std::chrono::steady_clock &gt; &amp;startTime)</para>
+</listitem>
+            <listitem><para>bool <link linkend="_sys_commands_8h_1a3499ce0cd7e4ed28b3c5461a4d3aec84">openPipe</link> (const std::string &amp;command, FILE *&amp;pipe)</para>
+</listitem>
+            <listitem><para>void <link linkend="_sys_commands_8h_1a4771c79171a937893508dabadadbe099">closePipe</link> (FILE *&amp;pipe)</para>
+</listitem>
+            <listitem><para>void <link linkend="_sys_commands_8h_1ada88c749f0c57b9e29b885c73134e0fe">doPipe</link> (const std::string &amp;command)</para>
+</listitem>
+            <listitem><para>std::string <link linkend="_sys_commands_8h_1a321eb7e335377aa7182bafc8a1605032">receivePipe</link> (const std::string &amp;command)</para>
+</listitem>
+            <listitem><para>std::string <link linkend="_sys_commands_8h_1ae87b822d4836e699c643960104958689">doPipeNoclose</link> (const std::string &amp;command)</para>
+</listitem>
+            <listitem><para>bool <link linkend="_sys_commands_8h_1ace2df1fb0546cd1aa8ddb634a751beeb">findPipe</link> (const std::string &amp;command, const std::string &amp;parameter)</para>
+</listitem>
+            <listitem><para>bool <link linkend="_sys_commands_8h_1a25d6a776c3e25f9b4bb6b52a1a61c955">findPipeTime</link> (const std::string &amp;command, const std::string &amp;parameter, int seconds)</para>
+</listitem>
+            <listitem><para>bool <link linkend="_sys_commands_8h_1a15ee35c2a8f3a787577739154c0c62f5">findPipeTimeNoclose</link> (const std::string &amp;command, const std::string &amp;parameter, int seconds, FILE *&amp;pipe)</para>
+</listitem>
+            <listitem><para>void <link linkend="_sys_commands_8h_1a7ba4acb23edb5c8887e844bd8fb0238a">findPathFolderRec</link> (std::filesystem::path folderpath, const std::string &amp;namefile, std::string &amp;correctpath, bool &amp;found)</para>
+</listitem>
+            <listitem><para>std::string <link linkend="_sys_commands_8h_1a5eea3bc2d91c8bd832794fce0aa4133a">findNameFolder</link> (const std::string &amp;folder)</para>
+</listitem>
+            <listitem><para>std::string <link linkend="_sys_commands_8h_1a0aa9dc57d3c05f8b1a49e746c516548e">findNameAncestorFolder</link> (const std::string &amp;folder, int number)</para>
+</listitem>
+            <listitem><para>std::string <link linkend="_sys_commands_8h_1ac352564535ada6aa3a0712c6011e58d5">getParentDirectory</link> ()</para>
+</listitem>
+            <listitem><para>void <link linkend="_sys_commands_8h_1ab778b8fee9bec0c7d9cfdbeb219bcc6b">createpaths</link> (std::string rootFolder)</para>
+</listitem>
+            <listitem><para>void <link linkend="_sys_commands_8h_1a61d85a8cc16ea3d6e2e86d14beb29804">GetRelativeResolution</link> (int &amp;width, int &amp;height)</para>
+</listitem>
+            <listitem><para>void <link linkend="_sys_commands_8h_1af317963d1356400fb2869053dcd47fb0">writeFilesDirectory</link> (std::filesystem::directory_iterator path, std::ofstream &amp;fileContent, std::ofstream &amp;fileDeclaration)</para>
+</listitem>
+            <listitem><para>void <link linkend="_sys_commands_8h_1aa37688072feafe1ddc3ec391b4d0e356">bringWindowToFront</link> (HWND hwnd)</para>
+</listitem>
+        </itemizedlist>
+</simplesect>
+<section>
+<title>Macro Definition Documentation</title>
+<anchor xml:id="_sys_commands_8h_1a9f918755b601cf4bffca775992e6fb90"/><section>
+    <title>NOMINMAX</title>
+<indexterm><primary>NOMINMAX</primary><secondary>sysCommands.h</secondary></indexterm>
+<indexterm><primary>sysCommands.h</primary><secondary>NOMINMAX</secondary></indexterm>
+<para><computeroutput>#define NOMINMAX</computeroutput></para><para>
+Definition at line <link linkend="_sys_commands_8h_source_1l00002">2</link> of file <link linkend="_sys_commands_8h_source">sysCommands.h</link>.</para>
+</section>
+</section>
+<section>
+<title>Function Documentation</title>
+<anchor xml:id="_sys_commands_8h_1aa37688072feafe1ddc3ec391b4d0e356"/><section>
+    <title>bringWindowToFront()</title>
+<indexterm><primary>bringWindowToFront</primary><secondary>sysCommands.h</secondary></indexterm>
+<indexterm><primary>sysCommands.h</primary><secondary>bringWindowToFront</secondary></indexterm>
+<para><computeroutput>void bringWindowToFront (HWND hwnd)</computeroutput></para><para>
+Definition at line <link linkend="_sys_commands_8cpp_source_1l00363">363</link> of file <link linkend="_sys_commands_8cpp_source">sysCommands.cpp</link>.</para>
+</section>
+<anchor xml:id="_sys_commands_8h_1a4771c79171a937893508dabadadbe099"/><section>
+    <title>closePipe()</title>
+<indexterm><primary>closePipe</primary><secondary>sysCommands.h</secondary></indexterm>
+<indexterm><primary>sysCommands.h</primary><secondary>closePipe</secondary></indexterm>
+<para><computeroutput>void closePipe (FILE *&amp; pipe)</computeroutput></para><para>
+Definition at line <link linkend="_sys_commands_8cpp_source_1l00239">239</link> of file <link linkend="_sys_commands_8cpp_source">sysCommands.cpp</link>.</para>
+Here is the caller graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="sys_commands_8h_a4771c79171a937893508dabadadbe099_icgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_sys_commands_8h_1ab778b8fee9bec0c7d9cfdbeb219bcc6b"/><section>
+    <title>createpaths()</title>
+<indexterm><primary>createpaths</primary><secondary>sysCommands.h</secondary></indexterm>
+<indexterm><primary>sysCommands.h</primary><secondary>createpaths</secondary></indexterm>
+<para><computeroutput>void createpaths (std::string rootFolder)</computeroutput></para><para>
+Definition at line <link linkend="_sys_commands_8cpp_source_1l00184">184</link> of file <link linkend="_sys_commands_8cpp_source">sysCommands.cpp</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="sys_commands_8h_ab778b8fee9bec0c7d9cfdbeb219bcc6b_cgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+Here is the caller graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="sys_commands_8h_ab778b8fee9bec0c7d9cfdbeb219bcc6b_icgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_sys_commands_8h_1ada88c749f0c57b9e29b885c73134e0fe"/><section>
+    <title>doPipe()</title>
+<indexterm><primary>doPipe</primary><secondary>sysCommands.h</secondary></indexterm>
+<indexterm><primary>sysCommands.h</primary><secondary>doPipe</secondary></indexterm>
+<para><computeroutput>void doPipe (const std::string &amp; command)</computeroutput></para><para>
+Definition at line <link linkend="_sys_commands_8cpp_source_1l00244">244</link> of file <link linkend="_sys_commands_8cpp_source">sysCommands.cpp</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="sys_commands_8h_ada88c749f0c57b9e29b885c73134e0fe_cgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+Here is the caller graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="sys_commands_8h_ada88c749f0c57b9e29b885c73134e0fe_icgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_sys_commands_8h_1ae87b822d4836e699c643960104958689"/><section>
+    <title>doPipeNoclose()</title>
+<indexterm><primary>doPipeNoclose</primary><secondary>sysCommands.h</secondary></indexterm>
+<indexterm><primary>sysCommands.h</primary><secondary>doPipeNoclose</secondary></indexterm>
+<para><computeroutput>std::string doPipeNoclose (const std::string &amp; command)</computeroutput></para><para>
+Definition at line <link linkend="_sys_commands_8cpp_source_1l00267">267</link> of file <link linkend="_sys_commands_8cpp_source">sysCommands.cpp</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="sys_commands_8h_ae87b822d4836e699c643960104958689_cgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_sys_commands_8h_1adb5a1f53dc22de07426e345e0bc11bb0"/><section>
+    <title>endChrono()</title>
+<indexterm><primary>endChrono</primary><secondary>sysCommands.h</secondary></indexterm>
+<indexterm><primary>sysCommands.h</primary><secondary>endChrono</secondary></indexterm>
+<para><computeroutput>long int endChrono (const std::chrono::time_point&lt; std::chrono::steady_clock &gt; &amp; startTime)</computeroutput></para><para>
+Definition at line <link linkend="_sys_commands_8cpp_source_1l00099">99</link> of file <link linkend="_sys_commands_8cpp_source">sysCommands.cpp</link>.</para>
+</section>
+<anchor xml:id="_sys_commands_8h_1a21ab47268233978aaaa4b09142d5a8de"/><section>
+    <title>ExpandEnvironmentVariables()</title>
+<indexterm><primary>ExpandEnvironmentVariables</primary><secondary>sysCommands.h</secondary></indexterm>
+<indexterm><primary>sysCommands.h</primary><secondary>ExpandEnvironmentVariables</secondary></indexterm>
+<para><computeroutput>std::string ExpandEnvironmentVariables (const std::string &amp; inputPath)</computeroutput></para><para>
+Definition at line <link linkend="_sys_commands_8cpp_source_1l00279">279</link> of file <link linkend="_sys_commands_8cpp_source">sysCommands.cpp</link>.</para>
+</section>
+<anchor xml:id="_sys_commands_8h_1ae1165ac90ad1b162b2dfa0c313d95580"/><section>
+    <title>findFileFolder()</title>
+<indexterm><primary>findFileFolder</primary><secondary>sysCommands.h</secondary></indexterm>
+<indexterm><primary>sysCommands.h</primary><secondary>findFileFolder</secondary></indexterm>
+<para><computeroutput>bool findFileFolder (const std::string &amp; folder, const std::string &amp; namefile)</computeroutput></para><para>
+Definition at line <link linkend="_sys_commands_8cpp_source_1l00205">205</link> of file <link linkend="_sys_commands_8cpp_source">sysCommands.cpp</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="sys_commands_8h_ae1165ac90ad1b162b2dfa0c313d95580_cgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_sys_commands_8h_1a0aa9dc57d3c05f8b1a49e746c516548e"/><section>
+    <title>findNameAncestorFolder()</title>
+<indexterm><primary>findNameAncestorFolder</primary><secondary>sysCommands.h</secondary></indexterm>
+<indexterm><primary>sysCommands.h</primary><secondary>findNameAncestorFolder</secondary></indexterm>
+<para><computeroutput>std::string findNameAncestorFolder (const std::string &amp; folder, int number)</computeroutput></para><para>
+Definition at line <link linkend="_sys_commands_8cpp_source_1l00353">353</link> of file <link linkend="_sys_commands_8cpp_source">sysCommands.cpp</link>.</para>
+</section>
+<anchor xml:id="_sys_commands_8h_1a5eea3bc2d91c8bd832794fce0aa4133a"/><section>
+    <title>findNameFolder()</title>
+<indexterm><primary>findNameFolder</primary><secondary>sysCommands.h</secondary></indexterm>
+<indexterm><primary>sysCommands.h</primary><secondary>findNameFolder</secondary></indexterm>
+<para><computeroutput>std::string findNameFolder (const std::string &amp; folder)</computeroutput></para><para>
+Definition at line <link linkend="_sys_commands_8cpp_source_1l00347">347</link> of file <link linkend="_sys_commands_8cpp_source">sysCommands.cpp</link>.</para>
+</section>
+<anchor xml:id="_sys_commands_8h_1a5e44365ba3f0d833e74130bb152e64a7"/><section>
+    <title>findPathFolder()</title>
+<indexterm><primary>findPathFolder</primary><secondary>sysCommands.h</secondary></indexterm>
+<indexterm><primary>sysCommands.h</primary><secondary>findPathFolder</secondary></indexterm>
+<para><computeroutput>std::string findPathFolder (const std::string &amp; folder, const std::string &amp; namefile)</computeroutput></para><para>
+Definition at line <link linkend="_sys_commands_8cpp_source_1l00195">195</link> of file <link linkend="_sys_commands_8cpp_source">sysCommands.cpp</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="sys_commands_8h_a5e44365ba3f0d833e74130bb152e64a7_cgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+Here is the caller graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="sys_commands_8h_a5e44365ba3f0d833e74130bb152e64a7_icgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_sys_commands_8h_1a7ba4acb23edb5c8887e844bd8fb0238a"/><section>
+    <title>findPathFolderRec()</title>
+<indexterm><primary>findPathFolderRec</primary><secondary>sysCommands.h</secondary></indexterm>
+<indexterm><primary>sysCommands.h</primary><secondary>findPathFolderRec</secondary></indexterm>
+<para><computeroutput>void findPathFolderRec (std::filesystem::path folderpath, const std::string &amp; namefile, std::string &amp; correctpath, bool &amp; found)</computeroutput></para><para>
+Definition at line <link linkend="_sys_commands_8cpp_source_1l00308">308</link> of file <link linkend="_sys_commands_8cpp_source">sysCommands.cpp</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="sys_commands_8h_a7ba4acb23edb5c8887e844bd8fb0238a_cgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+Here is the caller graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="sys_commands_8h_a7ba4acb23edb5c8887e844bd8fb0238a_icgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_sys_commands_8h_1ace2df1fb0546cd1aa8ddb634a751beeb"/><section>
+    <title>findPipe()</title>
+<indexterm><primary>findPipe</primary><secondary>sysCommands.h</secondary></indexterm>
+<indexterm><primary>sysCommands.h</primary><secondary>findPipe</secondary></indexterm>
+<para><computeroutput>bool findPipe (const std::string &amp; command, const std::string &amp; parameter)</computeroutput></para><para>
+Definition at line <link linkend="_sys_commands_8cpp_source_1l00049">49</link> of file <link linkend="_sys_commands_8cpp_source">sysCommands.cpp</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="sys_commands_8h_ace2df1fb0546cd1aa8ddb634a751beeb_cgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_sys_commands_8h_1a25d6a776c3e25f9b4bb6b52a1a61c955"/><section>
+    <title>findPipeTime()</title>
+<indexterm><primary>findPipeTime</primary><secondary>sysCommands.h</secondary></indexterm>
+<indexterm><primary>sysCommands.h</primary><secondary>findPipeTime</secondary></indexterm>
+<para><computeroutput>bool findPipeTime (const std::string &amp; command, const std::string &amp; parameter, int seconds)</computeroutput></para><para>
+Definition at line <link linkend="_sys_commands_8cpp_source_1l00066">66</link> of file <link linkend="_sys_commands_8cpp_source">sysCommands.cpp</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="sys_commands_8h_a25d6a776c3e25f9b4bb6b52a1a61c955_cgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_sys_commands_8h_1a15ee35c2a8f3a787577739154c0c62f5"/><section>
+    <title>findPipeTimeNoclose()</title>
+<indexterm><primary>findPipeTimeNoclose</primary><secondary>sysCommands.h</secondary></indexterm>
+<indexterm><primary>sysCommands.h</primary><secondary>findPipeTimeNoclose</secondary></indexterm>
+<para><computeroutput>bool findPipeTimeNoclose (const std::string &amp; command, const std::string &amp; parameter, int seconds, FILE *&amp; pipe)</computeroutput></para><para>
+Definition at line <link linkend="_sys_commands_8cpp_source_1l00105">105</link> of file <link linkend="_sys_commands_8cpp_source">sysCommands.cpp</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="sys_commands_8h_a15ee35c2a8f3a787577739154c0c62f5_cgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_sys_commands_8h_1ac352564535ada6aa3a0712c6011e58d5"/><section>
+    <title>getParentDirectory()</title>
+<indexterm><primary>getParentDirectory</primary><secondary>sysCommands.h</secondary></indexterm>
+<indexterm><primary>sysCommands.h</primary><secondary>getParentDirectory</secondary></indexterm>
+<para><computeroutput>std::string getParentDirectory ( )</computeroutput></para><para>
+Definition at line <link linkend="_sys_commands_8cpp_source_1l00137">137</link> of file <link linkend="_sys_commands_8cpp_source">sysCommands.cpp</link>.</para>
+</section>
+<anchor xml:id="_sys_commands_8h_1a61d85a8cc16ea3d6e2e86d14beb29804"/><section>
+    <title>GetRelativeResolution()</title>
+<indexterm><primary>GetRelativeResolution</primary><secondary>sysCommands.h</secondary></indexterm>
+<indexterm><primary>sysCommands.h</primary><secondary>GetRelativeResolution</secondary></indexterm>
+<para><computeroutput>void GetRelativeResolution (int &amp; width, int &amp; height)</computeroutput></para><para>
+Definition at line <link linkend="_sys_commands_8cpp_source_1l00299">299</link> of file <link linkend="_sys_commands_8cpp_source">sysCommands.cpp</link>.</para>
+Here is the caller graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="sys_commands_8h_a61d85a8cc16ea3d6e2e86d14beb29804_icgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_sys_commands_8h_1a391ed2bc0044d5f13e86859f74c94a30"/><section>
+    <title>killProgram()</title>
+<indexterm><primary>killProgram</primary><secondary>sysCommands.h</secondary></indexterm>
+<indexterm><primary>sysCommands.h</primary><secondary>killProgram</secondary></indexterm>
+<para><computeroutput>void killProgram (const std::string &amp; exeName, const std::string args = <computeroutput>&quot;&quot;</computeroutput>
+)</computeroutput></para><para>
+Definition at line <link linkend="_sys_commands_8cpp_source_1l00020">20</link> of file <link linkend="_sys_commands_8cpp_source">sysCommands.cpp</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="sys_commands_8h_a391ed2bc0044d5f13e86859f74c94a30_cgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+Here is the caller graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="sys_commands_8h_a391ed2bc0044d5f13e86859f74c94a30_icgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_sys_commands_8h_1ab7a6af6b67158612bbfb7004af5b0e23"/><section>
+    <title>killProgramWindow()</title>
+<indexterm><primary>killProgramWindow</primary><secondary>sysCommands.h</secondary></indexterm>
+<indexterm><primary>sysCommands.h</primary><secondary>killProgramWindow</secondary></indexterm>
+<para><computeroutput>void killProgramWindow (const std::string &amp; exeName, const std::string &amp; windowName)</computeroutput></para><para>
+Definition at line <link linkend="_sys_commands_8cpp_source_1l00025">25</link> of file <link linkend="_sys_commands_8cpp_source">sysCommands.cpp</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="sys_commands_8h_ab7a6af6b67158612bbfb7004af5b0e23_cgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_sys_commands_8h_1a63a4dc40cc84e99d22ec1006c6de3631"/><section>
+    <title>moveAndExecute()</title>
+<indexterm><primary>moveAndExecute</primary><secondary>sysCommands.h</secondary></indexterm>
+<indexterm><primary>sysCommands.h</primary><secondary>moveAndExecute</secondary></indexterm>
+<para><computeroutput>std::string moveAndExecute (const std::string &amp; folder, const std::string command = <computeroutput>&quot;&quot;</computeroutput>
+)</computeroutput></para><para>
+Definition at line <link linkend="_sys_commands_8cpp_source_1l00004">4</link> of file <link linkend="_sys_commands_8cpp_source">sysCommands.cpp</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="sys_commands_8h_a63a4dc40cc84e99d22ec1006c6de3631_cgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+Here is the caller graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="sys_commands_8h_a63a4dc40cc84e99d22ec1006c6de3631_icgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_sys_commands_8h_1a035d7f4f5aec963d128b02866d22bced"/><section>
+    <title>moveAndStartProgram()</title>
+<indexterm><primary>moveAndStartProgram</primary><secondary>sysCommands.h</secondary></indexterm>
+<indexterm><primary>sysCommands.h</primary><secondary>moveAndStartProgram</secondary></indexterm>
+<para><computeroutput>void moveAndStartProgram (const std::string &amp; programFolder, const std::string &amp; exeName, const std::string args = <computeroutput>&quot;&quot;</computeroutput>
+)</computeroutput></para><para>
+Definition at line <link linkend="_sys_commands_8cpp_source_1l00009">9</link> of file <link linkend="_sys_commands_8cpp_source">sysCommands.cpp</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="sys_commands_8h_a035d7f4f5aec963d128b02866d22bced_cgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_sys_commands_8h_1a3499ce0cd7e4ed28b3c5461a4d3aec84"/><section>
+    <title>openPipe()</title>
+<indexterm><primary>openPipe</primary><secondary>sysCommands.h</secondary></indexterm>
+<indexterm><primary>sysCommands.h</primary><secondary>openPipe</secondary></indexterm>
+<para><computeroutput>bool openPipe (const std::string &amp; command, FILE *&amp; pipe)</computeroutput></para><para>
+Definition at line <link linkend="_sys_commands_8cpp_source_1l00228">228</link> of file <link linkend="_sys_commands_8cpp_source">sysCommands.cpp</link>.</para>
+Here is the caller graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="sys_commands_8h_a3499ce0cd7e4ed28b3c5461a4d3aec84_icgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_sys_commands_8h_1a662dd4893690567ba825a473508f47e2"/><section>
+    <title>pathExists()</title>
+<indexterm><primary>pathExists</primary><secondary>sysCommands.h</secondary></indexterm>
+<indexterm><primary>sysCommands.h</primary><secondary>pathExists</secondary></indexterm>
+<para><computeroutput>bool pathExists (const std::string &amp; path)</computeroutput></para><para>
+Definition at line <link linkend="_sys_commands_8cpp_source_1l00222">222</link> of file <link linkend="_sys_commands_8cpp_source">sysCommands.cpp</link>.</para>
+Here is the caller graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="sys_commands_8h_a662dd4893690567ba825a473508f47e2_icgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_sys_commands_8h_1a321eb7e335377aa7182bafc8a1605032"/><section>
+    <title>receivePipe()</title>
+<indexterm><primary>receivePipe</primary><secondary>sysCommands.h</secondary></indexterm>
+<indexterm><primary>sysCommands.h</primary><secondary>receivePipe</secondary></indexterm>
+<para><computeroutput>std::string receivePipe (const std::string &amp; command)</computeroutput></para><para>
+Definition at line <link linkend="_sys_commands_8cpp_source_1l00251">251</link> of file <link linkend="_sys_commands_8cpp_source">sysCommands.cpp</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="sys_commands_8h_a321eb7e335377aa7182bafc8a1605032_cgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+Here is the caller graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="sys_commands_8h_a321eb7e335377aa7182bafc8a1605032_icgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_sys_commands_8h_1a91aaa3ff9bdd4428e4117b84ba4f842d"/><section>
+    <title>returnAllDrivesLetter()</title>
+<indexterm><primary>returnAllDrivesLetter</primary><secondary>sysCommands.h</secondary></indexterm>
+<indexterm><primary>sysCommands.h</primary><secondary>returnAllDrivesLetter</secondary></indexterm>
+<para><computeroutput>std::vector&lt; std::string &gt; returnAllDrivesLetter ( )</computeroutput></para><para>
+Definition at line <link linkend="_sys_commands_8cpp_source_1l00031">31</link> of file <link linkend="_sys_commands_8cpp_source">sysCommands.cpp</link>.</para>
+Here is the caller graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="sys_commands_8h_a91aaa3ff9bdd4428e4117b84ba4f842d_icgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_sys_commands_8h_1a94e134bb4a9dda947f238fa951454d35"/><section>
+    <title>startChrono()</title>
+<indexterm><primary>startChrono</primary><secondary>sysCommands.h</secondary></indexterm>
+<indexterm><primary>sysCommands.h</primary><secondary>startChrono</secondary></indexterm>
+<para><computeroutput>std::chrono::time_point&lt; std::chrono::steady_clock &gt; startChrono ( )</computeroutput></para><para>
+Definition at line <link linkend="_sys_commands_8cpp_source_1l00095">95</link> of file <link linkend="_sys_commands_8cpp_source">sysCommands.cpp</link>.</para>
+</section>
+<anchor xml:id="_sys_commands_8h_1aafd028efa2a38715943d7399f632d995"/><section>
+    <title>startProgram()</title>
+<indexterm><primary>startProgram</primary><secondary>sysCommands.h</secondary></indexterm>
+<indexterm><primary>sysCommands.h</primary><secondary>startProgram</secondary></indexterm>
+<para><computeroutput>void startProgram (const std::string &amp; programPath, const std::string args = <computeroutput>&quot;&quot;</computeroutput>
+)</computeroutput></para><para>
+Definition at line <link linkend="_sys_commands_8cpp_source_1l00014">14</link> of file <link linkend="_sys_commands_8cpp_source">sysCommands.cpp</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="sys_commands_8h_aafd028efa2a38715943d7399f632d995_cgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_sys_commands_8h_1af317963d1356400fb2869053dcd47fb0"/><section>
+    <title>writeFilesDirectory()</title>
+<indexterm><primary>writeFilesDirectory</primary><secondary>sysCommands.h</secondary></indexterm>
+<indexterm><primary>sysCommands.h</primary><secondary>writeFilesDirectory</secondary></indexterm>
+<para><computeroutput>void writeFilesDirectory (std::filesystem::directory_iterator path, std::ofstream &amp; fileContent, std::ofstream &amp; fileDeclaration)</computeroutput></para><para>
+Definition at line <link linkend="_sys_commands_8cpp_source_1l00142">142</link> of file <link linkend="_sys_commands_8cpp_source">sysCommands.cpp</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="sys_commands_8h_af317963d1356400fb2869053dcd47fb0_cgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+Here is the caller graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="sys_commands_8h_af317963d1356400fb2869053dcd47fb0_icgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_sys_commands_8h_1a2af38e6898ff32753919342acccae2dd"/><section>
+    <title>writeText()</title>
+<indexterm><primary>writeText</primary><secondary>sysCommands.h</secondary></indexterm>
+<indexterm><primary>sysCommands.h</primary><secondary>writeText</secondary></indexterm>
+<para><computeroutput>void writeText (const std::string &amp; text, const std::string &amp; filename)</computeroutput></para><para>
+Definition at line <link linkend="_sys_commands_8cpp_source_1l00214">214</link> of file <link linkend="_sys_commands_8cpp_source">sysCommands.cpp</link>.</para>
+</section>
+</section>
+</section>

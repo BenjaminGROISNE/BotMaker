@@ -1,0 +1,1145 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<section xmlns="http://docbook.org/ns/docbook" version="5.0" xmlns:xlink="http://www.w3.org/1999/xlink" xml:id="__tag_panel_8cpp_source" xml:lang="en-US">
+<title>TagPanel.cpp</title>
+<indexterm><primary>src/TagPanel.cpp</primary></indexterm>
+Go to the documentation of this file.<programlisting linenumbering="unnumbered"><anchor xml:id="__tag_panel_8cpp_source_1l00001"/>00001 <emphasis role="preprocessor">#include&#32;&quot;<link linkend="__tag_panel_8h">TagPanel.h</link>&quot;</emphasis>
+<anchor xml:id="__tag_panel_8cpp_source_1l00002"/>00002 
+<anchor xml:id="__tag_panel_8cpp_source_1l00003"/>00003 
+<anchor xml:id="__tag_panel_8cpp_source_1l00004"/><link linkend="_class_tag_panel_1a20eb7700df1a0fc1a51352b36a6e5a22">00004</link> <link linkend="_class_tag_panel_1a20eb7700df1a0fc1a51352b36a6e5a22">TagPanel::TagPanel</link>(<emphasis role="keywordtype">bool</emphasis>&#32;topConstructor)&#32;:wxPanel()
+<anchor xml:id="__tag_panel_8cpp_source_1l00005"/>00005 {
+<anchor xml:id="__tag_panel_8cpp_source_1l00006"/>00006 
+<anchor xml:id="__tag_panel_8cpp_source_1l00007"/>00007 }
+<anchor xml:id="__tag_panel_8cpp_source_1l00008"/>00008 
+<anchor xml:id="__tag_panel_8cpp_source_1l00009"/><link linkend="_class_tag_panel_1a947de417b587805f538e91916ca1cc5d">00009</link> <link linkend="_class_tag_panel_1a20eb7700df1a0fc1a51352b36a6e5a22">TagPanel::TagPanel</link>(wxWindow*&#32;parentWindow,&#32;<emphasis role="keywordtype">bool</emphasis>&#32;topConstructor)&#32;:wxPanel(parentWindow)
+<anchor xml:id="__tag_panel_8cpp_source_1l00010"/>00010 {
+<anchor xml:id="__tag_panel_8cpp_source_1l00011"/>00011 &#32;&#32;&#32;&#32;<link linkend="_class_tag_panel_1a57f33df8ee51553bbb6a1f4b4f727d82">isInserting</link>&#32;=&#32;<emphasis role="keyword">false</emphasis>;
+<anchor xml:id="__tag_panel_8cpp_source_1l00012"/>00012 &#32;&#32;&#32;&#32;<link linkend="_class_tag_panel_1ab9e4fd9beea1943bb1fb664bf4b0f876">isHovering</link>&#32;=&#32;<emphasis role="keyword">false</emphasis>;
+<anchor xml:id="__tag_panel_8cpp_source_1l00013"/>00013 &#32;&#32;&#32;&#32;<emphasis role="keywordflow">if</emphasis>&#32;(topConstructor)&#32;{
+<anchor xml:id="__tag_panel_8cpp_source_1l00014"/>00014 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<link linkend="_class_tag_panel_1a4fcedad553eb65983ba7a8da2d5895f3">init</link>(<emphasis role="keyword">this</emphasis>);
+<anchor xml:id="__tag_panel_8cpp_source_1l00015"/>00015 &#32;&#32;&#32;&#32;}
+<anchor xml:id="__tag_panel_8cpp_source_1l00016"/>00016 }
+<anchor xml:id="__tag_panel_8cpp_source_1l00017"/>00017 
+<anchor xml:id="__tag_panel_8cpp_source_1l00018"/><link linkend="_class_tag_panel_1a25ab1432ace7974c4abc496f51223942">00018</link> <link linkend="_class_tag_panel_1a20eb7700df1a0fc1a51352b36a6e5a22">TagPanel::TagPanel</link>(<emphasis role="keyword">const</emphasis>&#32;<link linkend="_class_tag_panel">TagPanel</link>&amp;&#32;toCopy,&#32;<emphasis role="keywordtype">bool</emphasis>&#32;topConstructor):<link linkend="_class_tag_panel">TagPanel</link>(toCopy.GetParent(),&#32;topConstructor){
+<anchor xml:id="__tag_panel_8cpp_source_1l00019"/>00019 &#32;&#32;&#32;&#32;<emphasis role="keywordflow">if</emphasis>(toCopy.<link linkend="_class_tag_panel_1a5c983b7b476010dc908bdea5b3ce954a">myTag</link>)<link linkend="_class_tag_panel_1a5c983b7b476010dc908bdea5b3ce954a">myTag</link>&#32;=&#32;toCopy.<link linkend="_class_tag_panel_1a5c983b7b476010dc908bdea5b3ce954a">myTag</link>-&gt;clone();
+<anchor xml:id="__tag_panel_8cpp_source_1l00020"/>00020 &#32;&#32;&#32;&#32;<link linkend="_class_tag_panel_1a57f33df8ee51553bbb6a1f4b4f727d82">isInserting</link>&#32;=&#32;toCopy.<link linkend="_class_tag_panel_1a57f33df8ee51553bbb6a1f4b4f727d82">isInserting</link>;
+<anchor xml:id="__tag_panel_8cpp_source_1l00021"/>00021 &#32;&#32;&#32;&#32;<link linkend="_class_tag_panel_1ab9e4fd9beea1943bb1fb664bf4b0f876">isHovering</link>&#32;=&#32;toCopy.<link linkend="_class_tag_panel_1ab9e4fd9beea1943bb1fb664bf4b0f876">isHovering</link>;
+<anchor xml:id="__tag_panel_8cpp_source_1l00022"/>00022 &#32;&#32;&#32;&#32;<link linkend="_class_tag_panel_1ae51a14087a4b11aa65b79bca524a2dc9">previousHover</link>&#32;=&#32;toCopy.<link linkend="_class_tag_panel_1ae51a14087a4b11aa65b79bca524a2dc9">previousHover</link>;
+<anchor xml:id="__tag_panel_8cpp_source_1l00023"/>00023 &#32;&#32;&#32;&#32;<link linkend="_class_tag_panel_1ac08e1909ad79173fead54cf2e6c7be61">insertPoint</link>&#32;=&#32;toCopy.<link linkend="_class_tag_panel_1ac08e1909ad79173fead54cf2e6c7be61">insertPoint</link>;
+<anchor xml:id="__tag_panel_8cpp_source_1l00024"/>00024 &#32;&#32;&#32;&#32;<link linkend="_class_tag_panel_1ac6667f655542d928b04f273ba453e7c9">insertRect</link>&#32;=&#32;toCopy.<link linkend="_class_tag_panel_1ac6667f655542d928b04f273ba453e7c9">insertRect</link>;
+<anchor xml:id="__tag_panel_8cpp_source_1l00025"/>00025 
+<anchor xml:id="__tag_panel_8cpp_source_1l00026"/>00026 }
+<anchor xml:id="__tag_panel_8cpp_source_1l00027"/>00027 
+<anchor xml:id="__tag_panel_8cpp_source_1l00028"/>00028 
+<anchor xml:id="__tag_panel_8cpp_source_1l00029"/>00029 
+<anchor xml:id="__tag_panel_8cpp_source_1l00030"/>00030 
+<anchor xml:id="__tag_panel_8cpp_source_1l00031"/>00031 
+<anchor xml:id="__tag_panel_8cpp_source_1l00032"/>00032 
+<anchor xml:id="__tag_panel_8cpp_source_1l00033"/><link linkend="_class_flow_tag_panel_1a3dcc68ef4b7679830e857baa8847d09a">00033</link> <link linkend="_class_flow_tag_panel_1a3dcc68ef4b7679830e857baa8847d09a">FlowTagPanel::FlowTagPanel</link>(<emphasis role="keywordtype">bool</emphasis>&#32;topConstructor)&#32;:<link linkend="_class_tag_panel">TagPanel</link>(false)&#32;{}
+<anchor xml:id="__tag_panel_8cpp_source_1l00034"/><link linkend="_class_flow_tag_panel_1a370665455a3991702bf8f6c5d9c95272">00034</link> <link linkend="_class_flow_tag_panel_1a3dcc68ef4b7679830e857baa8847d09a">FlowTagPanel::FlowTagPanel</link>(wxWindow*&#32;parentWindow,&#32;<emphasis role="keywordtype">bool</emphasis>&#32;topConstructor)&#32;:<link linkend="_class_tag_panel">TagPanel</link>(parentWindow,&#32;false)&#32;{
+<anchor xml:id="__tag_panel_8cpp_source_1l00035"/>00035 &#32;&#32;&#32;&#32;<emphasis role="keyword">auto</emphasis>&#32;parent&#32;=&#32;<link linkend="__tag_panel_8h_1ac84ea9bcdca185eee33778fb780fc7db">getFlowTagPanel</link>(parentWindow);
+<anchor xml:id="__tag_panel_8cpp_source_1l00036"/>00036 &#32;&#32;&#32;&#32;childrenShown&#32;=&#32;<emphasis role="keyword">true</emphasis>;
+<anchor xml:id="__tag_panel_8cpp_source_1l00037"/>00037 &#32;&#32;&#32;&#32;<emphasis role="keywordflow">if</emphasis>&#32;(parent)<link linkend="_class_flow_tag_panel_1a29d6875da55a05e85043eafb6d4e9e0f">nbFlowParents</link>&#32;=&#32;parent-&gt;nbFlowParents+1;
+<anchor xml:id="__tag_panel_8cpp_source_1l00038"/>00038 &#32;&#32;&#32;&#32;<emphasis role="keywordflow">if</emphasis>&#32;(topConstructor)&#32;{
+<anchor xml:id="__tag_panel_8cpp_source_1l00039"/>00039 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<link linkend="_class_tag_panel_1a4fcedad553eb65983ba7a8da2d5895f3">init</link>(<emphasis role="keyword">this</emphasis>);
+<anchor xml:id="__tag_panel_8cpp_source_1l00040"/>00040 &#32;&#32;&#32;&#32;}
+<anchor xml:id="__tag_panel_8cpp_source_1l00041"/>00041 }
+<anchor xml:id="__tag_panel_8cpp_source_1l00042"/>00042 
+<anchor xml:id="__tag_panel_8cpp_source_1l00043"/><link linkend="_class_flow_tag_panel_1ad022a384de848b36e615014a9f727755">00043</link> <link linkend="_class_flow_tag_panel_1a3dcc68ef4b7679830e857baa8847d09a">FlowTagPanel::FlowTagPanel</link>(<emphasis role="keyword">const</emphasis>&#32;<link linkend="_class_flow_tag_panel">FlowTagPanel</link>&amp;&#32;toCopy,&#32;<emphasis role="keywordtype">bool</emphasis>&#32;topConstructor):<link linkend="_class_tag_panel">TagPanel</link>(toCopy,&#32;topConstructor)&#32;{
+<anchor xml:id="__tag_panel_8cpp_source_1l00044"/>00044 
+<anchor xml:id="__tag_panel_8cpp_source_1l00045"/>00045 &#32;&#32;&#32;&#32;<emphasis role="keyword">auto</emphasis>&#32;parent&#32;=&#32;<link linkend="__tag_panel_8h_1ac84ea9bcdca185eee33778fb780fc7db">getFlowTagPanel</link>(toCopy.GetParent());
+<anchor xml:id="__tag_panel_8cpp_source_1l00046"/>00046 &#32;&#32;&#32;&#32;childrenShown&#32;=&#32;<emphasis role="keyword">true</emphasis>;
+<anchor xml:id="__tag_panel_8cpp_source_1l00047"/>00047 &#32;&#32;&#32;&#32;<emphasis role="keywordflow">if</emphasis>&#32;(parent)<link linkend="_class_flow_tag_panel_1a29d6875da55a05e85043eafb6d4e9e0f">nbFlowParents</link>&#32;=&#32;parent-&gt;nbFlowParents&#32;+&#32;1;
+<anchor xml:id="__tag_panel_8cpp_source_1l00048"/>00048 &#32;&#32;&#32;&#32;<emphasis role="keywordflow">if</emphasis>&#32;(topConstructor)&#32;{
+<anchor xml:id="__tag_panel_8cpp_source_1l00049"/>00049 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<link linkend="_class_tag_panel_1a4fcedad553eb65983ba7a8da2d5895f3">init</link>(<emphasis role="keyword">this</emphasis>);
+<anchor xml:id="__tag_panel_8cpp_source_1l00050"/>00050 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<link linkend="_class_flow_tag_panel_1a0e1305928f680ed7efb08d17d951d814">cloneChildren</link>(&amp;toCopy);
+<anchor xml:id="__tag_panel_8cpp_source_1l00051"/>00051 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<link linkend="_class_flow_tag_panel_1a482b23630874fb9f414c9b029501aadd">updateLayout</link>();
+<anchor xml:id="__tag_panel_8cpp_source_1l00052"/>00052 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;Layout();
+<anchor xml:id="__tag_panel_8cpp_source_1l00053"/>00053 &#32;&#32;&#32;&#32;}
+<anchor xml:id="__tag_panel_8cpp_source_1l00054"/>00054 }
+<anchor xml:id="__tag_panel_8cpp_source_1l00055"/>00055 
+<anchor xml:id="__tag_panel_8cpp_source_1l00056"/><link linkend="_class_bool_tag_panel_1aa99e3e9917820818ad864ac21b7bde53">00056</link> <link linkend="_class_bool_tag_panel_1a12a134be4ff2d9444aaf1cd3b61eb08c">BoolTagPanel::BoolTagPanel</link>(<emphasis role="keyword">const</emphasis>&#32;<link linkend="_class_bool_tag_panel">BoolTagPanel</link>&amp;&#32;toCopy)&#32;:<link linkend="_class_tag_panel">TagPanel</link>(toCopy,false)&#32;{
+<anchor xml:id="__tag_panel_8cpp_source_1l00057"/>00057 &#32;&#32;&#32;&#32;<link linkend="_class_tag_panel_1a4fcedad553eb65983ba7a8da2d5895f3">init</link>(<emphasis role="keyword">this</emphasis>);
+<anchor xml:id="__tag_panel_8cpp_source_1l00058"/>00058 }
+<anchor xml:id="__tag_panel_8cpp_source_1l00059"/>00059 
+<anchor xml:id="__tag_panel_8cpp_source_1l00060"/><link linkend="_class_empty_panel_1afd82e6977b149132c2d01b79bab9a668">00060</link> <link linkend="_class_empty_panel_1a0baae08fda35c8d8565e7fe6dc8846ca">EmptyPanel::EmptyPanel</link>(<emphasis role="keyword">const</emphasis>&#32;<link linkend="_class_empty_panel">EmptyPanel</link>&amp;&#32;toCopy)&#32;:<link linkend="_class_tag_panel">TagPanel</link>(toCopy,&#32;false)&#32;{
+<anchor xml:id="__tag_panel_8cpp_source_1l00061"/>00061 &#32;&#32;&#32;&#32;<link linkend="_class_tag_panel_1a4fcedad553eb65983ba7a8da2d5895f3">init</link>(<emphasis role="keyword">this</emphasis>);
+<anchor xml:id="__tag_panel_8cpp_source_1l00062"/>00062 }
+<anchor xml:id="__tag_panel_8cpp_source_1l00063"/>00063 
+<anchor xml:id="__tag_panel_8cpp_source_1l00064"/><link linkend="_class_if_tag_panel_1ae771ebf0ecffe9a2bf16f02999ef469e">00064</link> <link linkend="_class_if_tag_panel_1a622e1c9b8393a4c17deaf299a082747d">IfTagPanel::IfTagPanel</link>(<emphasis role="keyword">const</emphasis>&#32;<link linkend="_class_if_tag_panel">IfTagPanel</link>&amp;&#32;toCopy)&#32;:<link linkend="_class_flow_tag_panel">FlowTagPanel</link>(toCopy,false)&#32;{
+<anchor xml:id="__tag_panel_8cpp_source_1l00065"/>00065 &#32;&#32;&#32;&#32;<link linkend="_class_tag_panel_1a4fcedad553eb65983ba7a8da2d5895f3">init</link>(<emphasis role="keyword">this</emphasis>);
+<anchor xml:id="__tag_panel_8cpp_source_1l00066"/>00066 &#32;&#32;&#32;&#32;<link linkend="_class_flow_tag_panel_1a0e1305928f680ed7efb08d17d951d814">cloneChildren</link>(&amp;toCopy);
+<anchor xml:id="__tag_panel_8cpp_source_1l00067"/>00067 &#32;&#32;&#32;&#32;<link linkend="_class_flow_tag_panel_1a482b23630874fb9f414c9b029501aadd">updateLayout</link>();
+<anchor xml:id="__tag_panel_8cpp_source_1l00068"/>00068 &#32;&#32;&#32;&#32;Layout();
+<anchor xml:id="__tag_panel_8cpp_source_1l00069"/>00069 }
+<anchor xml:id="__tag_panel_8cpp_source_1l00070"/><link linkend="_class_loop_tag_panel_1a16b4c63d3e9be7b20a4ef02091f0a993">00070</link> <link linkend="_class_loop_tag_panel_1a0f070886befcb3cef1d5b1984b95d985">LoopTagPanel::LoopTagPanel</link>(<emphasis role="keyword">const</emphasis>&#32;<link linkend="_class_loop_tag_panel">LoopTagPanel</link>&amp;&#32;toCopy)&#32;:<link linkend="_class_flow_tag_panel">FlowTagPanel</link>(toCopy,false)&#32;{
+<anchor xml:id="__tag_panel_8cpp_source_1l00071"/>00071 
+<anchor xml:id="__tag_panel_8cpp_source_1l00072"/>00072 &#32;&#32;&#32;&#32;<link linkend="_class_tag_panel_1a4fcedad553eb65983ba7a8da2d5895f3">init</link>(<emphasis role="keyword">this</emphasis>);
+<anchor xml:id="__tag_panel_8cpp_source_1l00073"/>00073 &#32;&#32;&#32;&#32;<link linkend="_class_flow_tag_panel_1a0e1305928f680ed7efb08d17d951d814">cloneChildren</link>(&amp;toCopy);
+<anchor xml:id="__tag_panel_8cpp_source_1l00074"/>00074 &#32;&#32;&#32;&#32;<link linkend="_class_flow_tag_panel_1a482b23630874fb9f414c9b029501aadd">updateLayout</link>();
+<anchor xml:id="__tag_panel_8cpp_source_1l00075"/>00075 &#32;&#32;&#32;&#32;Layout();
+<anchor xml:id="__tag_panel_8cpp_source_1l00076"/>00076 }
+<anchor xml:id="__tag_panel_8cpp_source_1l00077"/>00077 
+<anchor xml:id="__tag_panel_8cpp_source_1l00078"/>00078 
+<anchor xml:id="__tag_panel_8cpp_source_1l00079"/>00079 
+<anchor xml:id="__tag_panel_8cpp_source_1l00080"/><link linkend="_class_main_tag_panel_1a4f3a46dfa9341454e960a68e1cbb9202">00080</link> <link linkend="_class_main_tag_panel_1a4f3a46dfa9341454e960a68e1cbb9202">MainTagPanel::MainTagPanel</link>(wxWindow*&#32;window):<link linkend="_class_flow_tag_panel">FlowTagPanel</link>(window,false)
+<anchor xml:id="__tag_panel_8cpp_source_1l00081"/>00081 {
+<anchor xml:id="__tag_panel_8cpp_source_1l00082"/>00082 &#32;&#32;&#32;&#32;<link linkend="_class_tag_panel_1a4fcedad553eb65983ba7a8da2d5895f3">init</link>(<emphasis role="keyword">this</emphasis>);
+<anchor xml:id="__tag_panel_8cpp_source_1l00083"/>00083 }
+<anchor xml:id="__tag_panel_8cpp_source_1l00084"/>00084 
+<anchor xml:id="__tag_panel_8cpp_source_1l00085"/><link linkend="_class_loop_tag_panel_1a0f070886befcb3cef1d5b1984b95d985">00085</link> <link linkend="_class_loop_tag_panel_1a0f070886befcb3cef1d5b1984b95d985">LoopTagPanel::LoopTagPanel</link>()&#32;:<link linkend="_class_flow_tag_panel">FlowTagPanel</link>(false)
+<anchor xml:id="__tag_panel_8cpp_source_1l00086"/>00086 {
+<anchor xml:id="__tag_panel_8cpp_source_1l00087"/>00087 }
+<anchor xml:id="__tag_panel_8cpp_source_1l00088"/>00088 
+<anchor xml:id="__tag_panel_8cpp_source_1l00089"/><link linkend="_class_loop_tag_panel_1a422521db77f7c14d17aed86df163d1dc">00089</link> <link linkend="_class_loop_tag_panel_1a0f070886befcb3cef1d5b1984b95d985">LoopTagPanel::LoopTagPanel</link>(wxWindow*&#32;parentWindow)&#32;:<link linkend="_class_flow_tag_panel">FlowTagPanel</link>(parentWindow,false)
+<anchor xml:id="__tag_panel_8cpp_source_1l00090"/>00090 {
+<anchor xml:id="__tag_panel_8cpp_source_1l00091"/>00091 &#32;&#32;&#32;&#32;<link linkend="_class_tag_panel_1a4fcedad553eb65983ba7a8da2d5895f3">init</link>(<emphasis role="keyword">this</emphasis>);
+<anchor xml:id="__tag_panel_8cpp_source_1l00092"/>00092 }
+<anchor xml:id="__tag_panel_8cpp_source_1l00093"/>00093 
+<anchor xml:id="__tag_panel_8cpp_source_1l00094"/><link linkend="_class_if_tag_panel_1a622e1c9b8393a4c17deaf299a082747d">00094</link> <link linkend="_class_if_tag_panel_1a622e1c9b8393a4c17deaf299a082747d">IfTagPanel::IfTagPanel</link>(wxWindow*&#32;parentWindow)&#32;:<link linkend="_class_flow_tag_panel">FlowTagPanel</link>(parentWindow,&#32;false)
+<anchor xml:id="__tag_panel_8cpp_source_1l00095"/>00095 {
+<anchor xml:id="__tag_panel_8cpp_source_1l00096"/>00096 &#32;&#32;&#32;&#32;<link linkend="_class_tag_panel_1a4fcedad553eb65983ba7a8da2d5895f3">init</link>(<emphasis role="keyword">this</emphasis>);
+<anchor xml:id="__tag_panel_8cpp_source_1l00097"/>00097 }
+<anchor xml:id="__tag_panel_8cpp_source_1l00098"/><link linkend="_class_bool_tag_panel_1a12a134be4ff2d9444aaf1cd3b61eb08c">00098</link> <link linkend="_class_bool_tag_panel_1a12a134be4ff2d9444aaf1cd3b61eb08c">BoolTagPanel::BoolTagPanel</link>(wxWindow*&#32;parentWindow)&#32;:<link linkend="_class_tag_panel">TagPanel</link>(parentWindow,&#32;false)
+<anchor xml:id="__tag_panel_8cpp_source_1l00099"/>00099 {
+<anchor xml:id="__tag_panel_8cpp_source_1l00100"/>00100 &#32;&#32;&#32;&#32;<link linkend="_class_tag_panel_1a4fcedad553eb65983ba7a8da2d5895f3">init</link>(<emphasis role="keyword">this</emphasis>);
+<anchor xml:id="__tag_panel_8cpp_source_1l00101"/>00101 }
+<anchor xml:id="__tag_panel_8cpp_source_1l00102"/>00102 
+<anchor xml:id="__tag_panel_8cpp_source_1l00103"/><link linkend="_class_empty_panel_1a0baae08fda35c8d8565e7fe6dc8846ca">00103</link> <link linkend="_class_empty_panel_1a0baae08fda35c8d8565e7fe6dc8846ca">EmptyPanel::EmptyPanel</link>(wxWindow*&#32;parentWindow)&#32;:<link linkend="_class_tag_panel">TagPanel</link>(parentWindow,&#32;false)
+<anchor xml:id="__tag_panel_8cpp_source_1l00104"/>00104 {
+<anchor xml:id="__tag_panel_8cpp_source_1l00105"/>00105 &#32;&#32;&#32;&#32;<link linkend="_class_tag_panel_1a4fcedad553eb65983ba7a8da2d5895f3">init</link>(<emphasis role="keyword">this</emphasis>);
+<anchor xml:id="__tag_panel_8cpp_source_1l00106"/>00106 }
+<anchor xml:id="__tag_panel_8cpp_source_1l00107"/>00107 
+<anchor xml:id="__tag_panel_8cpp_source_1l00108"/><link linkend="_class_flow_tag_panel_1a4057aa51063dc198ca7f1497ecfdf9bd">00108</link> <link linkend="_class_flow_tag_panel_1a4057aa51063dc198ca7f1497ecfdf9bd">FlowTagPanel::~FlowTagPanel</link>()&#32;
+<anchor xml:id="__tag_panel_8cpp_source_1l00109"/>00109 {
+<anchor xml:id="__tag_panel_8cpp_source_1l00110"/>00110 &#32;&#32;&#32;&#32;<emphasis role="keywordflow">for</emphasis>&#32;(<link linkend="_class_tag_panel">TagPanel</link>*&#32;panel&#32;:&#32;<link linkend="_class_flow_tag_panel_1a908b8a9b0319c8c60588dff9296e9baf">getChildrenTags</link>())&#32;{
+<anchor xml:id="__tag_panel_8cpp_source_1l00111"/>00111 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keyword">delete</emphasis>&#32;panel;
+<anchor xml:id="__tag_panel_8cpp_source_1l00112"/>00112 &#32;&#32;&#32;&#32;}
+<anchor xml:id="__tag_panel_8cpp_source_1l00113"/>00113 }
+<anchor xml:id="__tag_panel_8cpp_source_1l00114"/>00114 
+<anchor xml:id="__tag_panel_8cpp_source_1l00115"/><link linkend="_class_tag_panel_1aa533ce0568d728140272752a071e133a">00115</link> <emphasis role="keywordtype">int</emphasis>&#32;<link linkend="_class_tag_panel_1aa533ce0568d728140272752a071e133a">TagPanel::getTagHeight</link>()
+<anchor xml:id="__tag_panel_8cpp_source_1l00116"/>00116 {
+<anchor xml:id="__tag_panel_8cpp_source_1l00117"/>00117 &#32;&#32;&#32;&#32;<emphasis role="keywordflow">return</emphasis>&#32;GetMinHeight();
+<anchor xml:id="__tag_panel_8cpp_source_1l00118"/>00118 }
+<anchor xml:id="__tag_panel_8cpp_source_1l00119"/>00119 
+<anchor xml:id="__tag_panel_8cpp_source_1l00120"/><link linkend="_class_flow_tag_panel_1a93b947ffb6b2dc6c2f359490158b7b90">00120</link> <emphasis role="keywordtype">int</emphasis>&#32;<link linkend="_class_flow_tag_panel_1a93b947ffb6b2dc6c2f359490158b7b90">FlowTagPanel::getTagHeight</link>()
+<anchor xml:id="__tag_panel_8cpp_source_1l00121"/>00121 {
+<anchor xml:id="__tag_panel_8cpp_source_1l00122"/>00122 &#32;&#32;&#32;&#32;<emphasis role="keywordtype">int</emphasis>&#32;height&#32;=&#32;0;
+<anchor xml:id="__tag_panel_8cpp_source_1l00123"/>00123 &#32;&#32;&#32;&#32;<emphasis role="keywordflow">for</emphasis>&#32;(<link linkend="_class_tag_panel">TagPanel</link>*&#32;panel&#32;:&#32;<link linkend="_class_flow_tag_panel_1a908b8a9b0319c8c60588dff9296e9baf">getChildrenTags</link>())&#32;{
+<anchor xml:id="__tag_panel_8cpp_source_1l00124"/>00124 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;height&#32;+=&#32;panel-&gt;getTagHeight();
+<anchor xml:id="__tag_panel_8cpp_source_1l00125"/>00125 &#32;&#32;&#32;&#32;}
+<anchor xml:id="__tag_panel_8cpp_source_1l00126"/>00126 &#32;&#32;&#32;&#32;height&#32;+=&#32;GetSize().GetHeight();
+<anchor xml:id="__tag_panel_8cpp_source_1l00127"/>00127 &#32;&#32;&#32;&#32;<emphasis role="keywordflow">return</emphasis>&#32;height;
+<anchor xml:id="__tag_panel_8cpp_source_1l00128"/>00128 }
+<anchor xml:id="__tag_panel_8cpp_source_1l00129"/>00129 
+<anchor xml:id="__tag_panel_8cpp_source_1l00130"/>00130 
+<anchor xml:id="__tag_panel_8cpp_source_1l00131"/><link linkend="_class_tag_panel_1a746b3898803ea72e2a7500d7ed73d9ce">00131</link> <emphasis role="keywordtype">void</emphasis>&#32;<link linkend="_class_tag_panel_1a746b3898803ea72e2a7500d7ed73d9ce">TagPanel::setColors</link>()
+<anchor xml:id="__tag_panel_8cpp_source_1l00132"/>00132 {
+<anchor xml:id="__tag_panel_8cpp_source_1l00133"/>00133 &#32;&#32;&#32;&#32;<link linkend="_class_tag_panel_1a5edee5cee34656fe89fec14f26af0f80">setPanelColor</link>();
+<anchor xml:id="__tag_panel_8cpp_source_1l00134"/>00134 &#32;&#32;&#32;&#32;<link linkend="_class_tag_panel_1a752cdf34c8cc8cc25ecc944683dff46b">setTagNameColor</link>();
+<anchor xml:id="__tag_panel_8cpp_source_1l00135"/>00135 }
+<anchor xml:id="__tag_panel_8cpp_source_1l00136"/>00136 
+<anchor xml:id="__tag_panel_8cpp_source_1l00137"/><link linkend="_class_tag_panel_1a752cdf34c8cc8cc25ecc944683dff46b">00137</link> <emphasis role="keywordtype">void</emphasis>&#32;<link linkend="_class_tag_panel_1a752cdf34c8cc8cc25ecc944683dff46b">TagPanel::setTagNameColor</link>()
+<anchor xml:id="__tag_panel_8cpp_source_1l00138"/>00138 {
+<anchor xml:id="__tag_panel_8cpp_source_1l00139"/>00139 &#32;&#32;&#32;&#32;<link linkend="_class_tag_panel_1a23f2d5d739a33e4f3e4c26e1ee160d46">tagNameColor</link>&#32;=&#32;wxColour(<link linkend="_class_tag_panel_1a0de4005aceb4d6809ec88ffb899f6d17">panelColor</link>.Red(),&#32;255&#32;-&#32;<link linkend="_class_tag_panel_1a0de4005aceb4d6809ec88ffb899f6d17">panelColor</link>.Green(),&#32;255&#32;-&#32;<link linkend="_class_tag_panel_1a0de4005aceb4d6809ec88ffb899f6d17">panelColor</link>.Blue());
+<anchor xml:id="__tag_panel_8cpp_source_1l00140"/>00140 }
+<anchor xml:id="__tag_panel_8cpp_source_1l00141"/>00141 
+<anchor xml:id="__tag_panel_8cpp_source_1l00142"/><link linkend="_class_tag_panel_1aaa6f2d383b2380c7c103b5019bd05782">00142</link> <emphasis role="keywordtype">void</emphasis>&#32;<link linkend="_class_tag_panel_1aaa6f2d383b2380c7c103b5019bd05782">TagPanel::addMover</link>()
+<anchor xml:id="__tag_panel_8cpp_source_1l00143"/>00143 {
+<anchor xml:id="__tag_panel_8cpp_source_1l00144"/>00144 &#32;&#32;&#32;&#32;<link linkend="_class_tag_panel_1a569386f1f3226d5aa452cbbba46b1ffa">moveUpButton</link>&#32;=&#32;<emphasis role="keyword">new</emphasis>&#32;wxButton(<emphasis role="keyword">this</emphasis>,&#32;wxID_ANY,&#32;<emphasis role="stringliteral">&quot;^&quot;</emphasis>);
+<anchor xml:id="__tag_panel_8cpp_source_1l00145"/>00145 &#32;&#32;&#32;&#32;<link linkend="_class_tag_panel_1a7972e5db29975326c850a2dae622eda6">moveDownButton</link>&#32;=&#32;<emphasis role="keyword">new</emphasis>&#32;wxButton(<emphasis role="keyword">this</emphasis>,&#32;wxID_ANY,&#32;<emphasis role="stringliteral">&quot;v&quot;</emphasis>);
+<anchor xml:id="__tag_panel_8cpp_source_1l00146"/>00146 &#32;&#32;&#32;&#32;<link linkend="_class_tag_panel_1a81aca1816f6fc0985077fc5f461046e2">cloneButton</link>&#32;=&#32;<emphasis role="keyword">new</emphasis>&#32;wxButton(<emphasis role="keyword">this</emphasis>,&#32;wxID_ANY,&#32;<emphasis role="stringliteral">&quot;D&quot;</emphasis>);
+<anchor xml:id="__tag_panel_8cpp_source_1l00147"/>00147 &#32;&#32;&#32;&#32;<link linkend="_class_tag_panel_1a227cddc11db1954dde6b5e3c49591e7a">cutButton</link>&#32;=&#32;<emphasis role="keyword">new</emphasis>&#32;wxButton(<emphasis role="keyword">this</emphasis>,&#32;wxID_ANY,&#32;<emphasis role="stringliteral">&quot;M&quot;</emphasis>);
+<anchor xml:id="__tag_panel_8cpp_source_1l00148"/>00148 &#32;&#32;&#32;&#32;<emphasis role="keyword">auto</emphasis>&#32;flags&#32;=&#32;wxSizerFlags().Border(wxLEFT&#32;|&#32;wxRIGHT,&#32;7).Expand().Border();
+<anchor xml:id="__tag_panel_8cpp_source_1l00149"/>00149 &#32;&#32;&#32;&#32;<link linkend="_class_tag_panel_1a43c96ffa9523c002fb96126500209ce8">SetLineFont</link>(<link linkend="_class_tag_panel_1a569386f1f3226d5aa452cbbba46b1ffa">moveUpButton</link>);
+<anchor xml:id="__tag_panel_8cpp_source_1l00150"/>00150 &#32;&#32;&#32;&#32;<link linkend="_class_tag_panel_1a43c96ffa9523c002fb96126500209ce8">SetLineFont</link>(<link linkend="_class_tag_panel_1a7972e5db29975326c850a2dae622eda6">moveDownButton</link>);
+<anchor xml:id="__tag_panel_8cpp_source_1l00151"/>00151 &#32;&#32;&#32;&#32;<link linkend="_class_tag_panel_1a43c96ffa9523c002fb96126500209ce8">SetLineFont</link>(<link linkend="_class_tag_panel_1a81aca1816f6fc0985077fc5f461046e2">cloneButton</link>);
+<anchor xml:id="__tag_panel_8cpp_source_1l00152"/>00152 &#32;&#32;&#32;&#32;<link linkend="_class_tag_panel_1a43c96ffa9523c002fb96126500209ce8">SetLineFont</link>(<link linkend="_class_tag_panel_1a227cddc11db1954dde6b5e3c49591e7a">cutButton</link>);
+<anchor xml:id="__tag_panel_8cpp_source_1l00153"/>00153 &#32;&#32;&#32;&#32;wxSize&#32;upSize&#32;=&#32;<link linkend="_class_tag_panel_1a569386f1f3226d5aa452cbbba46b1ffa">moveUpButton</link>-&gt;GetTextExtent(<link linkend="_class_tag_panel_1a569386f1f3226d5aa452cbbba46b1ffa">moveUpButton</link>-&gt;GetLabelText());
+<anchor xml:id="__tag_panel_8cpp_source_1l00154"/>00154 &#32;&#32;&#32;&#32;wxSize&#32;downSize&#32;=&#32;<link linkend="_class_tag_panel_1a7972e5db29975326c850a2dae622eda6">moveDownButton</link>-&gt;GetTextExtent(<link linkend="_class_tag_panel_1a7972e5db29975326c850a2dae622eda6">moveDownButton</link>-&gt;GetLabelText());
+<anchor xml:id="__tag_panel_8cpp_source_1l00155"/>00155 &#32;&#32;&#32;&#32;<link linkend="_class_tag_panel_1a569386f1f3226d5aa452cbbba46b1ffa">moveUpButton</link>-&gt;SetSizeHints(wxSize(upSize.x*2,upSize.y));
+<anchor xml:id="__tag_panel_8cpp_source_1l00156"/>00156 &#32;&#32;&#32;&#32;<link linkend="_class_tag_panel_1a7972e5db29975326c850a2dae622eda6">moveDownButton</link>-&gt;SetSizeHints(wxSize(downSize.x&#32;*&#32;2,&#32;downSize.y));
+<anchor xml:id="__tag_panel_8cpp_source_1l00157"/>00157 &#32;&#32;&#32;&#32;wxSize&#32;dupSize&#32;=&#32;<link linkend="_class_tag_panel_1a81aca1816f6fc0985077fc5f461046e2">cloneButton</link>-&gt;GetTextExtent(<link linkend="_class_tag_panel_1a81aca1816f6fc0985077fc5f461046e2">cloneButton</link>-&gt;GetLabelText());
+<anchor xml:id="__tag_panel_8cpp_source_1l00158"/>00158 &#32;&#32;&#32;&#32;wxSize&#32;cutPasteSize&#32;=&#32;<link linkend="_class_tag_panel_1a227cddc11db1954dde6b5e3c49591e7a">cutButton</link>-&gt;GetTextExtent(<link linkend="_class_tag_panel_1a227cddc11db1954dde6b5e3c49591e7a">cutButton</link>-&gt;GetLabelText());
+<anchor xml:id="__tag_panel_8cpp_source_1l00159"/>00159 &#32;&#32;&#32;&#32;<link linkend="_class_tag_panel_1a81aca1816f6fc0985077fc5f461046e2">cloneButton</link>-&gt;SetSizeHints(wxSize(upSize.x&#32;*&#32;2,&#32;upSize.y));
+<anchor xml:id="__tag_panel_8cpp_source_1l00160"/>00160 &#32;&#32;&#32;&#32;<link linkend="_class_tag_panel_1a227cddc11db1954dde6b5e3c49591e7a">cutButton</link>-&gt;SetSizeHints(wxSize(downSize.x&#32;*&#32;2,&#32;downSize.y));
+<anchor xml:id="__tag_panel_8cpp_source_1l00161"/>00161 
+<anchor xml:id="__tag_panel_8cpp_source_1l00162"/>00162 &#32;&#32;&#32;&#32;<link linkend="_class_tag_panel_1a569386f1f3226d5aa452cbbba46b1ffa">moveUpButton</link>-&gt;Bind(wxEVT_LEFT_DOWN,&#32;&amp;<link linkend="_class_tag_panel_1a4ddfadd1d39efac7f0123146fc9f8233">TagPanel::OnMoveUpClick</link>,&#32;<emphasis role="keyword">this</emphasis>);
+<anchor xml:id="__tag_panel_8cpp_source_1l00163"/>00163 &#32;&#32;&#32;&#32;<link linkend="_class_tag_panel_1a7972e5db29975326c850a2dae622eda6">moveDownButton</link>-&gt;Bind(wxEVT_LEFT_DOWN,&#32;&amp;<link linkend="_class_tag_panel_1a33ffecd8625bc7e0783d208d8d18daf7">TagPanel::OnMoveDownClick</link>,&#32;<emphasis role="keyword">this</emphasis>);
+<anchor xml:id="__tag_panel_8cpp_source_1l00164"/>00164 &#32;&#32;&#32;&#32;<link linkend="_class_tag_panel_1a0fb4a6bb2fdc47ce21e30a61784b804a">lineSizer</link>-&gt;Add(<link linkend="_class_tag_panel_1a81aca1816f6fc0985077fc5f461046e2">cloneButton</link>,&#32;flags);
+<anchor xml:id="__tag_panel_8cpp_source_1l00165"/>00165 &#32;&#32;&#32;&#32;<link linkend="_class_tag_panel_1a0fb4a6bb2fdc47ce21e30a61784b804a">lineSizer</link>-&gt;Add(<link linkend="_class_tag_panel_1a227cddc11db1954dde6b5e3c49591e7a">cutButton</link>,&#32;flags);
+<anchor xml:id="__tag_panel_8cpp_source_1l00166"/>00166 &#32;&#32;&#32;&#32;<link linkend="_class_tag_panel_1a0fb4a6bb2fdc47ce21e30a61784b804a">lineSizer</link>-&gt;Add(<link linkend="_class_tag_panel_1a569386f1f3226d5aa452cbbba46b1ffa">moveUpButton</link>,&#32;flags);
+<anchor xml:id="__tag_panel_8cpp_source_1l00167"/>00167 &#32;&#32;&#32;&#32;<link linkend="_class_tag_panel_1a0fb4a6bb2fdc47ce21e30a61784b804a">lineSizer</link>-&gt;Add(<link linkend="_class_tag_panel_1a7972e5db29975326c850a2dae622eda6">moveDownButton</link>,&#32;flags);
+<anchor xml:id="__tag_panel_8cpp_source_1l00168"/>00168 
+<anchor xml:id="__tag_panel_8cpp_source_1l00169"/>00169 }
+<anchor xml:id="__tag_panel_8cpp_source_1l00170"/>00170 
+<anchor xml:id="__tag_panel_8cpp_source_1l00171"/><link linkend="_class_tag_panel_1a9a11954167303954710c12832b39fbf4">00171</link> <emphasis role="keywordtype">bool</emphasis>&#32;<link linkend="_class_tag_panel_1a9a11954167303954710c12832b39fbf4">TagPanel::isLastTag</link>()
+<anchor xml:id="__tag_panel_8cpp_source_1l00172"/>00172 {
+<anchor xml:id="__tag_panel_8cpp_source_1l00173"/>00173 &#32;&#32;&#32;&#32;<emphasis role="keyword">auto</emphasis>&#32;parent&#32;=&#32;<link linkend="__tag_panel_8h_1a2f4c4fdbb29d8e8fadcbbd9673b3c370">GetParentTag</link>(<emphasis role="keyword">this</emphasis>);
+<anchor xml:id="__tag_panel_8cpp_source_1l00174"/>00174 &#32;&#32;&#32;&#32;<emphasis role="keywordflow">if</emphasis>&#32;(parent)&#32;{
+<anchor xml:id="__tag_panel_8cpp_source_1l00175"/>00175 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">return</emphasis>&#32;parent-&gt;isLastTagChild(<emphasis role="keyword">this</emphasis>);
+<anchor xml:id="__tag_panel_8cpp_source_1l00176"/>00176 &#32;&#32;&#32;&#32;}
+<anchor xml:id="__tag_panel_8cpp_source_1l00177"/>00177 &#32;&#32;&#32;&#32;<emphasis role="keywordflow">else</emphasis>&#32;<emphasis role="keywordflow">return</emphasis>&#32;<emphasis role="keyword">false</emphasis>;
+<anchor xml:id="__tag_panel_8cpp_source_1l00178"/>00178 }
+<anchor xml:id="__tag_panel_8cpp_source_1l00179"/>00179 
+<anchor xml:id="__tag_panel_8cpp_source_1l00180"/><link linkend="_class_tag_panel_1aa16fddf213851034cb33b775ea653efc">00180</link> <emphasis role="keywordtype">bool</emphasis>&#32;<link linkend="_class_tag_panel_1aa16fddf213851034cb33b775ea653efc">TagPanel::isFirstTag</link>()
+<anchor xml:id="__tag_panel_8cpp_source_1l00181"/>00181 {
+<anchor xml:id="__tag_panel_8cpp_source_1l00182"/>00182 &#32;&#32;&#32;&#32;<emphasis role="keyword">auto</emphasis>&#32;parent&#32;=&#32;<link linkend="__tag_panel_8h_1a2f4c4fdbb29d8e8fadcbbd9673b3c370">GetParentTag</link>(<emphasis role="keyword">this</emphasis>);
+<anchor xml:id="__tag_panel_8cpp_source_1l00183"/>00183 &#32;&#32;&#32;&#32;<emphasis role="keywordflow">if</emphasis>&#32;(parent)&#32;{
+<anchor xml:id="__tag_panel_8cpp_source_1l00184"/>00184 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">return</emphasis>&#32;parent-&gt;isFirstTagChild(<emphasis role="keyword">this</emphasis>);
+<anchor xml:id="__tag_panel_8cpp_source_1l00185"/>00185 &#32;&#32;&#32;&#32;}
+<anchor xml:id="__tag_panel_8cpp_source_1l00186"/>00186 &#32;&#32;&#32;&#32;<emphasis role="keywordflow">else</emphasis>&#32;<emphasis role="keywordflow">return</emphasis>&#32;<emphasis role="keyword">false</emphasis>;
+<anchor xml:id="__tag_panel_8cpp_source_1l00187"/>00187 }
+<anchor xml:id="__tag_panel_8cpp_source_1l00188"/>00188 
+<anchor xml:id="__tag_panel_8cpp_source_1l00189"/><link linkend="_class_tag_panel_1a4ddfadd1d39efac7f0123146fc9f8233">00189</link> <emphasis role="keywordtype">void</emphasis>&#32;<link linkend="_class_tag_panel_1a4ddfadd1d39efac7f0123146fc9f8233">TagPanel::OnMoveUpClick</link>(wxMouseEvent&amp;&#32;evt)
+<anchor xml:id="__tag_panel_8cpp_source_1l00190"/>00190 {
+<anchor xml:id="__tag_panel_8cpp_source_1l00191"/>00191 &#32;&#32;&#32;&#32;<emphasis role="keyword">auto</emphasis>&#32;parent&#32;=&#32;<link linkend="__tag_panel_8h_1a2f4c4fdbb29d8e8fadcbbd9673b3c370">GetParentTag</link>(<emphasis role="keyword">this</emphasis>);
+<anchor xml:id="__tag_panel_8cpp_source_1l00192"/>00192 &#32;&#32;&#32;&#32;<emphasis role="keywordflow">if</emphasis>&#32;(parent)&#32;{
+<anchor xml:id="__tag_panel_8cpp_source_1l00193"/>00193 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">if</emphasis>&#32;(<link linkend="_class_tag_panel_1aa16fddf213851034cb33b775ea653efc">isFirstTag</link>())&#32;{
+<anchor xml:id="__tag_panel_8cpp_source_1l00194"/>00194 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keyword">auto</emphasis>&#32;GrandParent&#32;=&#32;<link linkend="__tag_panel_8h_1a2f4c4fdbb29d8e8fadcbbd9673b3c370">GetParentTag</link>(parent);
+<anchor xml:id="__tag_panel_8cpp_source_1l00195"/>00195 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">if</emphasis>&#32;(GrandParent)&#32;{
+<anchor xml:id="__tag_panel_8cpp_source_1l00196"/>00196 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;parent-&gt;detachPanel(<emphasis role="keyword">this</emphasis>);
+<anchor xml:id="__tag_panel_8cpp_source_1l00197"/>00197 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;Reparent(GrandParent);
+<anchor xml:id="__tag_panel_8cpp_source_1l00198"/>00198 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;GrandParent-&gt;insertChild(parent,&#32;<emphasis role="keyword">this</emphasis>,&#32;<link linkend="__tag_panel_8h_1a443e25f6957db75e312dbd0fb43d5a6eaaad01162f441b9162610e81352541694">ABOVE</link>);
+<anchor xml:id="__tag_panel_8cpp_source_1l00199"/>00199 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">if</emphasis>&#32;(parent-&gt;isEmpty())&#32;{
+<anchor xml:id="__tag_panel_8cpp_source_1l00200"/>00200 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;parent-&gt;showEmptyPanel();
+<anchor xml:id="__tag_panel_8cpp_source_1l00201"/>00201 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;}
+<anchor xml:id="__tag_panel_8cpp_source_1l00202"/>00202 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;GrandParent-&gt;updateLayout();
+<anchor xml:id="__tag_panel_8cpp_source_1l00203"/>00203 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;GrandParent-&gt;Layout();
+<anchor xml:id="__tag_panel_8cpp_source_1l00204"/>00204 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;
+<anchor xml:id="__tag_panel_8cpp_source_1l00205"/>00205 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;}
+<anchor xml:id="__tag_panel_8cpp_source_1l00206"/>00206 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;}
+<anchor xml:id="__tag_panel_8cpp_source_1l00207"/>00207 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">else</emphasis>&#32;{
+<anchor xml:id="__tag_panel_8cpp_source_1l00208"/>00208 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keyword">auto</emphasis>&#32;previousTag&#32;=&#32;<link linkend="_class_tag_panel_1a20a4cc67dc3ecd4538cb8af3c9668421">getPreviousTag</link>();
+<anchor xml:id="__tag_panel_8cpp_source_1l00209"/>00209 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">if</emphasis>&#32;(previousTag)&#32;{
+<anchor xml:id="__tag_panel_8cpp_source_1l00210"/>00210 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;parent-&gt;swapChildren(previousTag,&#32;<emphasis role="keyword">this</emphasis>);
+<anchor xml:id="__tag_panel_8cpp_source_1l00211"/>00211 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;}
+<anchor xml:id="__tag_panel_8cpp_source_1l00212"/>00212 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;parent-&gt;updateLayout();
+<anchor xml:id="__tag_panel_8cpp_source_1l00213"/>00213 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;}
+<anchor xml:id="__tag_panel_8cpp_source_1l00214"/>00214 &#32;&#32;&#32;&#32;}
+<anchor xml:id="__tag_panel_8cpp_source_1l00215"/>00215 }
+<anchor xml:id="__tag_panel_8cpp_source_1l00216"/>00216 
+<anchor xml:id="__tag_panel_8cpp_source_1l00217"/><link linkend="_class_tag_panel_1a716d475b11d29d74392f4b0b581f7a45">00217</link> <emphasis role="keywordtype">void</emphasis>&#32;<link linkend="_class_tag_panel_1a716d475b11d29d74392f4b0b581f7a45">TagPanel::OnDuplicateClick</link>(wxMouseEvent&amp;&#32;evt)&#32;{
+<anchor xml:id="__tag_panel_8cpp_source_1l00218"/>00218 &#32;&#32;&#32;&#32;<emphasis role="keyword">auto</emphasis>&#32;parent&#32;=&#32;<link linkend="__tag_panel_8h_1a2f4c4fdbb29d8e8fadcbbd9673b3c370">GetParentTag</link>(<emphasis role="keyword">this</emphasis>);
+<anchor xml:id="__tag_panel_8cpp_source_1l00219"/>00219 &#32;&#32;&#32;&#32;<emphasis role="keywordflow">if</emphasis>&#32;(parent)&#32;{
+<anchor xml:id="__tag_panel_8cpp_source_1l00220"/>00220 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;parent-&gt;insertChild(<emphasis role="keyword">this</emphasis>,&#32;<link linkend="_class_tag_panel_1a22c1748896f9b2a20dfb610b76216029">clone</link>(),&#32;<link linkend="__tag_panel_8h_1a443e25f6957db75e312dbd0fb43d5a6eab5726a81978ba2a47fcea5ef4fb8fbf4">UNDER</link>);
+<anchor xml:id="__tag_panel_8cpp_source_1l00221"/>00221 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;parent-&gt;updateLayout();
+<anchor xml:id="__tag_panel_8cpp_source_1l00222"/>00222 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;parent-&gt;Layout();
+<anchor xml:id="__tag_panel_8cpp_source_1l00223"/>00223 &#32;&#32;&#32;&#32;}
+<anchor xml:id="__tag_panel_8cpp_source_1l00224"/>00224 }
+<anchor xml:id="__tag_panel_8cpp_source_1l00225"/>00225 
+<anchor xml:id="__tag_panel_8cpp_source_1l00226"/><link linkend="_class_tag_panel_1a33ffecd8625bc7e0783d208d8d18daf7">00226</link> <emphasis role="keywordtype">void</emphasis>&#32;<link linkend="_class_tag_panel_1a33ffecd8625bc7e0783d208d8d18daf7">TagPanel::OnMoveDownClick</link>(wxMouseEvent&amp;&#32;evt)
+<anchor xml:id="__tag_panel_8cpp_source_1l00227"/>00227 {
+<anchor xml:id="__tag_panel_8cpp_source_1l00228"/>00228 &#32;&#32;&#32;&#32;<emphasis role="keyword">auto</emphasis>&#32;parent&#32;=&#32;<link linkend="__tag_panel_8h_1a2f4c4fdbb29d8e8fadcbbd9673b3c370">GetParentTag</link>(<emphasis role="keyword">this</emphasis>);
+<anchor xml:id="__tag_panel_8cpp_source_1l00229"/>00229 &#32;&#32;&#32;&#32;
+<anchor xml:id="__tag_panel_8cpp_source_1l00230"/>00230 &#32;&#32;&#32;&#32;<emphasis role="keywordflow">if</emphasis>&#32;(parent)&#32;{
+<anchor xml:id="__tag_panel_8cpp_source_1l00231"/>00231 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">if</emphasis>&#32;(<link linkend="_class_tag_panel_1a9a11954167303954710c12832b39fbf4">isLastTag</link>())&#32;{
+<anchor xml:id="__tag_panel_8cpp_source_1l00232"/>00232 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keyword">auto</emphasis>&#32;GrandParent&#32;=&#32;<link linkend="__tag_panel_8h_1a2f4c4fdbb29d8e8fadcbbd9673b3c370">GetParentTag</link>(parent);
+<anchor xml:id="__tag_panel_8cpp_source_1l00233"/>00233 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">if</emphasis>&#32;(GrandParent)&#32;{
+<anchor xml:id="__tag_panel_8cpp_source_1l00234"/>00234 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;parent-&gt;detachPanel(<emphasis role="keyword">this</emphasis>);
+<anchor xml:id="__tag_panel_8cpp_source_1l00235"/>00235 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;Reparent(GrandParent);
+<anchor xml:id="__tag_panel_8cpp_source_1l00236"/>00236 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;GrandParent-&gt;insertChild(parent,&#32;<emphasis role="keyword">this</emphasis>,&#32;<link linkend="__tag_panel_8h_1a443e25f6957db75e312dbd0fb43d5a6eab5726a81978ba2a47fcea5ef4fb8fbf4">UNDER</link>);
+<anchor xml:id="__tag_panel_8cpp_source_1l00237"/>00237 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">if</emphasis>&#32;(parent-&gt;isEmpty())&#32;{
+<anchor xml:id="__tag_panel_8cpp_source_1l00238"/>00238 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;parent-&gt;showEmptyPanel();
+<anchor xml:id="__tag_panel_8cpp_source_1l00239"/>00239 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;}
+<anchor xml:id="__tag_panel_8cpp_source_1l00240"/>00240 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;GrandParent-&gt;updateLayout();
+<anchor xml:id="__tag_panel_8cpp_source_1l00241"/>00241 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;GrandParent-&gt;Layout();
+<anchor xml:id="__tag_panel_8cpp_source_1l00242"/>00242 
+<anchor xml:id="__tag_panel_8cpp_source_1l00243"/>00243 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;}
+<anchor xml:id="__tag_panel_8cpp_source_1l00244"/>00244 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;}
+<anchor xml:id="__tag_panel_8cpp_source_1l00245"/>00245 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">else</emphasis>&#32;{
+<anchor xml:id="__tag_panel_8cpp_source_1l00246"/>00246 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keyword">auto</emphasis>&#32;nextTag&#32;=&#32;<link linkend="_class_tag_panel_1aefc411bf7be4bd7fd05b3e8a48a6671f">getNextTag</link>();
+<anchor xml:id="__tag_panel_8cpp_source_1l00247"/>00247 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">if</emphasis>&#32;(nextTag)&#32;{
+<anchor xml:id="__tag_panel_8cpp_source_1l00248"/>00248 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;parent-&gt;swapChildren(<emphasis role="keyword">this</emphasis>,&#32;nextTag);
+<anchor xml:id="__tag_panel_8cpp_source_1l00249"/>00249 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;}
+<anchor xml:id="__tag_panel_8cpp_source_1l00250"/>00250 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;parent-&gt;updateLayout();
+<anchor xml:id="__tag_panel_8cpp_source_1l00251"/>00251 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;}
+<anchor xml:id="__tag_panel_8cpp_source_1l00252"/>00252 &#32;&#32;&#32;&#32;}
+<anchor xml:id="__tag_panel_8cpp_source_1l00253"/>00253 }
+<anchor xml:id="__tag_panel_8cpp_source_1l00254"/>00254 
+<anchor xml:id="__tag_panel_8cpp_source_1l00255"/>00255 
+<anchor xml:id="__tag_panel_8cpp_source_1l00256"/>00256 
+<anchor xml:id="__tag_panel_8cpp_source_1l00257"/>00257 
+<anchor xml:id="__tag_panel_8cpp_source_1l00258"/><link linkend="_class_tag_panel_1a370e5a7a79772ae4775f24de35506582">00258</link> <emphasis role="keywordtype">void</emphasis>&#32;<link linkend="_class_tag_panel_1a370e5a7a79772ae4775f24de35506582">TagPanel::setPaintEvents</link>()
+<anchor xml:id="__tag_panel_8cpp_source_1l00259"/>00259 {
+<anchor xml:id="__tag_panel_8cpp_source_1l00260"/>00260 &#32;&#32;&#32;&#32;Bind(wxEVT_PAINT,&#32;&amp;<link linkend="_class_tag_panel_1a5d57b2c271078562ca65bf9d0f9c656e">TagPanel::DrawBordersEvent</link>,&#32;<emphasis role="keyword">this</emphasis>);
+<anchor xml:id="__tag_panel_8cpp_source_1l00261"/>00261 &#32;&#32;&#32;&#32;Bind(wxEVT_PAINT,&#32;&amp;<link linkend="_class_tag_panel_1a72db5ac659ea9dc41b2a236bd5ff0a12">TagPanel::OnHoverPaint</link>,&#32;<emphasis role="keyword">this</emphasis>);
+<anchor xml:id="__tag_panel_8cpp_source_1l00262"/>00262 &#32;&#32;&#32;&#32;Bind(wxEVT_PAINT,&#32;&amp;<link linkend="_class_tag_panel_1af7c491223a887d2ce97353157adc9110">TagPanel::OnInsert</link>,&#32;<emphasis role="keyword">this</emphasis>);
+<anchor xml:id="__tag_panel_8cpp_source_1l00263"/>00263 }
+<anchor xml:id="__tag_panel_8cpp_source_1l00264"/>00264 
+<anchor xml:id="__tag_panel_8cpp_source_1l00265"/><link linkend="_class_tag_panel_1a556f0c05ac13e1c9c9f9ea39cd5041f8">00265</link> <emphasis role="keywordtype">bool</emphasis>&#32;<link linkend="_class_tag_panel_1a556f0c05ac13e1c9c9f9ea39cd5041f8">TagPanel::isTagPanel</link>(wxWindow*&#32;window)
+<anchor xml:id="__tag_panel_8cpp_source_1l00266"/>00266 {
+<anchor xml:id="__tag_panel_8cpp_source_1l00267"/>00267 &#32;&#32;&#32;&#32;<emphasis role="keywordflow">return</emphasis>&#32;<emphasis role="keyword">dynamic_cast&lt;</emphasis><link linkend="_class_tag_panel">TagPanel</link>*<emphasis role="keyword">&gt;</emphasis>(window)&#32;!=&#32;<emphasis role="keyword">nullptr</emphasis>;
+<anchor xml:id="__tag_panel_8cpp_source_1l00268"/>00268 }
+<anchor xml:id="__tag_panel_8cpp_source_1l00269"/>00269 
+<anchor xml:id="__tag_panel_8cpp_source_1l00270"/><link linkend="_class_tag_panel_1a20a4cc67dc3ecd4538cb8af3c9668421">00270</link> <link linkend="_class_tag_panel">TagPanel</link>*&#32;<link linkend="_class_tag_panel_1a20a4cc67dc3ecd4538cb8af3c9668421">TagPanel::getPreviousTag</link>()
+<anchor xml:id="__tag_panel_8cpp_source_1l00271"/>00271 {
+<anchor xml:id="__tag_panel_8cpp_source_1l00272"/>00272 &#32;&#32;&#32;&#32;<emphasis role="keyword">auto</emphasis>&#32;parent&#32;=&#32;<link linkend="__tag_panel_8h_1a2f4c4fdbb29d8e8fadcbbd9673b3c370">GetParentTag</link>(<emphasis role="keyword">this</emphasis>);
+<anchor xml:id="__tag_panel_8cpp_source_1l00273"/>00273 &#32;&#32;&#32;&#32;<link linkend="_class_tag_panel">TagPanel</link>*&#32;prev&#32;=&#32;<emphasis role="keyword">nullptr</emphasis>;
+<anchor xml:id="__tag_panel_8cpp_source_1l00274"/>00274 &#32;&#32;&#32;&#32;<emphasis role="keywordflow">if</emphasis>&#32;(parent)&#32;{
+<anchor xml:id="__tag_panel_8cpp_source_1l00275"/>00275 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;prev&#32;=&#32;parent-&gt;getPreviousTagChild(<emphasis role="keyword">this</emphasis>);
+<anchor xml:id="__tag_panel_8cpp_source_1l00276"/>00276 &#32;&#32;&#32;&#32;}
+<anchor xml:id="__tag_panel_8cpp_source_1l00277"/>00277 &#32;&#32;&#32;&#32;<emphasis role="keywordflow">return</emphasis>&#32;prev;
+<anchor xml:id="__tag_panel_8cpp_source_1l00278"/>00278 }
+<anchor xml:id="__tag_panel_8cpp_source_1l00279"/>00279 
+<anchor xml:id="__tag_panel_8cpp_source_1l00280"/><link linkend="_class_tag_panel_1aefc411bf7be4bd7fd05b3e8a48a6671f">00280</link> <link linkend="_class_tag_panel">TagPanel</link>*&#32;<link linkend="_class_tag_panel_1aefc411bf7be4bd7fd05b3e8a48a6671f">TagPanel::getNextTag</link>()
+<anchor xml:id="__tag_panel_8cpp_source_1l00281"/>00281 {
+<anchor xml:id="__tag_panel_8cpp_source_1l00282"/>00282 &#32;&#32;&#32;&#32;<emphasis role="keyword">auto</emphasis>&#32;parent&#32;=&#32;<link linkend="__tag_panel_8h_1a2f4c4fdbb29d8e8fadcbbd9673b3c370">GetParentTag</link>(<emphasis role="keyword">this</emphasis>);
+<anchor xml:id="__tag_panel_8cpp_source_1l00283"/>00283 &#32;&#32;&#32;&#32;<link linkend="_class_tag_panel">TagPanel</link>*&#32;next=<emphasis role="keyword">nullptr</emphasis>;
+<anchor xml:id="__tag_panel_8cpp_source_1l00284"/>00284 &#32;&#32;&#32;&#32;<emphasis role="keywordflow">if</emphasis>&#32;(parent)&#32;{
+<anchor xml:id="__tag_panel_8cpp_source_1l00285"/>00285 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;next&#32;=&#32;parent-&gt;getNextTagChild(<emphasis role="keyword">this</emphasis>);
+<anchor xml:id="__tag_panel_8cpp_source_1l00286"/>00286 &#32;&#32;&#32;&#32;}
+<anchor xml:id="__tag_panel_8cpp_source_1l00287"/>00287 &#32;&#32;&#32;&#32;<emphasis role="keywordflow">return</emphasis>&#32;next;
+<anchor xml:id="__tag_panel_8cpp_source_1l00288"/>00288 }
+<anchor xml:id="__tag_panel_8cpp_source_1l00289"/>00289 
+<anchor xml:id="__tag_panel_8cpp_source_1l00290"/><link linkend="_class_tag_panel_1acf04179a1277e790a613902b33513a77">00290</link> std::shared_ptr&lt;Tag&gt;&#32;<link linkend="_class_tag_panel_1acf04179a1277e790a613902b33513a77">TagPanel::getTag</link>()<emphasis role="keyword">const</emphasis>
+<anchor xml:id="__tag_panel_8cpp_source_1l00291"/>00291 <emphasis role="keyword"></emphasis>{
+<anchor xml:id="__tag_panel_8cpp_source_1l00292"/>00292 &#32;&#32;&#32;&#32;<emphasis role="keywordflow">return</emphasis>&#32;<link linkend="_class_tag_panel_1a5c983b7b476010dc908bdea5b3ce954a">myTag</link>;
+<anchor xml:id="__tag_panel_8cpp_source_1l00293"/>00293 }
+<anchor xml:id="__tag_panel_8cpp_source_1l00294"/>00294 
+<anchor xml:id="__tag_panel_8cpp_source_1l00295"/><link linkend="_class_tag_panel_1aa2808a9ecda8c8181a49b4460e046395">00295</link> <emphasis role="keywordtype">void</emphasis>&#32;<link linkend="_class_tag_panel_1aa2808a9ecda8c8181a49b4460e046395">TagPanel::setTag</link>(std::shared_ptr&lt;Tag&gt;&#32;tag)
+<anchor xml:id="__tag_panel_8cpp_source_1l00296"/>00296 {
+<anchor xml:id="__tag_panel_8cpp_source_1l00297"/>00297 &#32;&#32;&#32;&#32;<link linkend="_class_tag_panel_1a5c983b7b476010dc908bdea5b3ce954a">myTag</link>&#32;=tag;
+<anchor xml:id="__tag_panel_8cpp_source_1l00298"/>00298 }
+<anchor xml:id="__tag_panel_8cpp_source_1l00299"/>00299 
+<anchor xml:id="__tag_panel_8cpp_source_1l00300"/><link linkend="_class_tag_panel_1a5a896e5052102ac83010bc155bfd49aa">00300</link> <emphasis role="keywordtype">void</emphasis>&#32;<link linkend="_class_tag_panel_1a5a896e5052102ac83010bc155bfd49aa">TagPanel::initDetailsPanel</link>(wxPanel*&#32;parentPanel)&#32;{
+<anchor xml:id="__tag_panel_8cpp_source_1l00301"/>00301 &#32;&#32;&#32;&#32;<link linkend="_class_tag_panel_1acb5613b513abd882b94dd79981f15e5b">detailsSizer</link>&#32;=&#32;<emphasis role="keyword">new</emphasis>&#32;wxBoxSizer(wxVERTICAL);
+<anchor xml:id="__tag_panel_8cpp_source_1l00302"/>00302 &#32;&#32;&#32;&#32;<link linkend="_class_tag_panel_1afa29a560070ac453fadae46f052cc53f">detailsPanel</link>&#32;=&#32;<emphasis role="keyword">new</emphasis>&#32;wxPanel(parentPanel);
+<anchor xml:id="__tag_panel_8cpp_source_1l00303"/>00303 &#32;&#32;&#32;&#32;<link linkend="_class_tag_panel_1afa29a560070ac453fadae46f052cc53f">detailsPanel</link>-&gt;SetBackgroundColour(<link linkend="_class_tag_panel_1a0de4005aceb4d6809ec88ffb899f6d17">panelColor</link>);
+<anchor xml:id="__tag_panel_8cpp_source_1l00304"/>00304 }
+<anchor xml:id="__tag_panel_8cpp_source_1l00305"/>00305 
+<anchor xml:id="__tag_panel_8cpp_source_1l00306"/><link linkend="_class_tag_panel_1a22c1748896f9b2a20dfb610b76216029">00306</link> <link linkend="_class_tag_panel">TagPanel</link>*&#32;<link linkend="_class_tag_panel_1a22c1748896f9b2a20dfb610b76216029">TagPanel::clone</link>()&#32;{
+<anchor xml:id="__tag_panel_8cpp_source_1l00307"/>00307 &#32;&#32;&#32;&#32;<emphasis role="keywordflow">return</emphasis>&#32;<emphasis role="keyword">new</emphasis>&#32;<link linkend="_class_tag_panel_1a20eb7700df1a0fc1a51352b36a6e5a22">TagPanel</link>(*<emphasis role="keyword">this</emphasis>);
+<anchor xml:id="__tag_panel_8cpp_source_1l00308"/>00308 }
+<anchor xml:id="__tag_panel_8cpp_source_1l00309"/><link linkend="_class_empty_panel_1a4c29bf1566d56b29a69a7e9ea1fe70d9">00309</link> <link linkend="_class_empty_panel">EmptyPanel</link>*&#32;<link linkend="_class_empty_panel_1a4c29bf1566d56b29a69a7e9ea1fe70d9">EmptyPanel::clone</link>()&#32;{
+<anchor xml:id="__tag_panel_8cpp_source_1l00310"/>00310 &#32;&#32;&#32;&#32;<emphasis role="keywordflow">return</emphasis>&#32;<emphasis role="keyword">new</emphasis>&#32;<link linkend="_class_empty_panel_1a0baae08fda35c8d8565e7fe6dc8846ca">EmptyPanel</link>(*<emphasis role="keyword">this</emphasis>);
+<anchor xml:id="__tag_panel_8cpp_source_1l00311"/>00311 }
+<anchor xml:id="__tag_panel_8cpp_source_1l00312"/><link linkend="_class_flow_tag_panel_1a39e04805c0a27303a05e72d44a531aa4">00312</link> <link linkend="_class_flow_tag_panel">FlowTagPanel</link>*&#32;<link linkend="_class_flow_tag_panel_1a39e04805c0a27303a05e72d44a531aa4">FlowTagPanel::clone</link>()&#32;{
+<anchor xml:id="__tag_panel_8cpp_source_1l00313"/>00313 &#32;&#32;&#32;&#32;<emphasis role="keywordflow">return</emphasis>&#32;<emphasis role="keyword">new</emphasis>&#32;<link linkend="_class_flow_tag_panel_1a3dcc68ef4b7679830e857baa8847d09a">FlowTagPanel</link>(*<emphasis role="keyword">this</emphasis>);
+<anchor xml:id="__tag_panel_8cpp_source_1l00314"/>00314 }
+<anchor xml:id="__tag_panel_8cpp_source_1l00315"/>00315 
+<anchor xml:id="__tag_panel_8cpp_source_1l00316"/><link linkend="_class_bool_tag_panel_1ae57699d163de0572b9f78f7661a0baff">00316</link> <link linkend="_class_bool_tag_panel">BoolTagPanel</link>*&#32;<link linkend="_class_bool_tag_panel_1ae57699d163de0572b9f78f7661a0baff">BoolTagPanel::clone</link>()&#32;{
+<anchor xml:id="__tag_panel_8cpp_source_1l00317"/>00317 &#32;&#32;&#32;&#32;<emphasis role="keywordflow">return</emphasis>&#32;<emphasis role="keyword">new</emphasis>&#32;<link linkend="_class_bool_tag_panel_1a12a134be4ff2d9444aaf1cd3b61eb08c">BoolTagPanel</link>(*<emphasis role="keyword">this</emphasis>);
+<anchor xml:id="__tag_panel_8cpp_source_1l00318"/>00318 }
+<anchor xml:id="__tag_panel_8cpp_source_1l00319"/><link linkend="_class_if_tag_panel_1a275fc196fc3c8d12e847331234e4eb6a">00319</link> <link linkend="_class_if_tag_panel">IfTagPanel</link>*&#32;<link linkend="_class_if_tag_panel_1a275fc196fc3c8d12e847331234e4eb6a">IfTagPanel::clone</link>()&#32;{
+<anchor xml:id="__tag_panel_8cpp_source_1l00320"/>00320 &#32;&#32;&#32;&#32;<emphasis role="keywordflow">return</emphasis>&#32;<emphasis role="keyword">new</emphasis>&#32;<link linkend="_class_if_tag_panel_1a622e1c9b8393a4c17deaf299a082747d">IfTagPanel</link>(*<emphasis role="keyword">this</emphasis>);
+<anchor xml:id="__tag_panel_8cpp_source_1l00321"/>00321 }
+<anchor xml:id="__tag_panel_8cpp_source_1l00322"/>00322 
+<anchor xml:id="__tag_panel_8cpp_source_1l00323"/><link linkend="_class_loop_tag_panel_1a9aef891de5b23170ad57778c6a7c670b">00323</link> <link linkend="_class_loop_tag_panel">LoopTagPanel</link>*&#32;<link linkend="_class_loop_tag_panel_1a9aef891de5b23170ad57778c6a7c670b">LoopTagPanel::clone</link>()&#32;{
+<anchor xml:id="__tag_panel_8cpp_source_1l00324"/>00324 &#32;&#32;&#32;&#32;<emphasis role="keywordflow">return</emphasis>&#32;<emphasis role="keyword">new</emphasis>&#32;<link linkend="_class_loop_tag_panel_1a0f070886befcb3cef1d5b1984b95d985">LoopTagPanel</link>(*<emphasis role="keyword">this</emphasis>);
+<anchor xml:id="__tag_panel_8cpp_source_1l00325"/>00325 }
+<anchor xml:id="__tag_panel_8cpp_source_1l00326"/><link linkend="_class_main_tag_panel_1a149128cca7c6b0acbb6c2ccba5c280b7">00326</link> <link linkend="_class_main_tag_panel">MainTagPanel</link>*&#32;<link linkend="_class_main_tag_panel_1a149128cca7c6b0acbb6c2ccba5c280b7">MainTagPanel::clone</link>()&#32;{
+<anchor xml:id="__tag_panel_8cpp_source_1l00327"/>00327 &#32;&#32;&#32;&#32;<emphasis role="keywordflow">return</emphasis>&#32;<emphasis role="keyword">new</emphasis>&#32;<link linkend="_class_main_tag_panel_1a4f3a46dfa9341454e960a68e1cbb9202">MainTagPanel</link>(*<emphasis role="keyword">this</emphasis>);
+<anchor xml:id="__tag_panel_8cpp_source_1l00328"/>00328 }
+<anchor xml:id="__tag_panel_8cpp_source_1l00329"/>00329 
+<anchor xml:id="__tag_panel_8cpp_source_1l00330"/>00330 
+<anchor xml:id="__tag_panel_8cpp_source_1l00331"/>00331 
+<anchor xml:id="__tag_panel_8cpp_source_1l00332"/>00332 
+<anchor xml:id="__tag_panel_8cpp_source_1l00333"/>00333 
+<anchor xml:id="__tag_panel_8cpp_source_1l00334"/><link linkend="_class_tag_panel_1a66d61d27a1bc39bf48ec00fd0f09dfd8">00334</link> <emphasis role="keywordtype">void</emphasis>&#32;<link linkend="_class_tag_panel_1a66d61d27a1bc39bf48ec00fd0f09dfd8">TagPanel::initDetailsTagName</link>()&#32;{
+<anchor xml:id="__tag_panel_8cpp_source_1l00335"/>00335 &#32;&#32;&#32;&#32;wxBoxSizer*&#32;nameDetails&#32;=&#32;<emphasis role="keyword">new</emphasis>&#32;wxBoxSizer(wxHORIZONTAL);
+<anchor xml:id="__tag_panel_8cpp_source_1l00336"/>00336 &#32;&#32;&#32;&#32;<emphasis role="keyword">auto</emphasis>&#32;label&#32;=&#32;<emphasis role="keyword">new</emphasis>&#32;wxStaticText(<link linkend="_class_tag_panel_1afa29a560070ac453fadae46f052cc53f">detailsPanel</link>,&#32;wxID_ANY,&#32;<emphasis role="stringliteral">&quot;Tag:&quot;</emphasis>);
+<anchor xml:id="__tag_panel_8cpp_source_1l00337"/>00337 &#32;&#32;&#32;&#32;<link linkend="_class_tag_panel_1a43c96ffa9523c002fb96126500209ce8">SetLineFont</link>(label,&#32;11);
+<anchor xml:id="__tag_panel_8cpp_source_1l00338"/>00338 &#32;&#32;&#32;&#32;label-&gt;SetForegroundColour(<link linkend="_class_tag_panel_1a23f2d5d739a33e4f3e4c26e1ee160d46">tagNameColor</link>);
+<anchor xml:id="__tag_panel_8cpp_source_1l00339"/>00339 &#32;&#32;&#32;&#32;<link linkend="_class_tag_panel_1a8d05f326ee6854342a0a5cf06228c527">staticDetailsName</link>&#32;=&#32;<emphasis role="keyword">new</emphasis>&#32;wxStaticText(<link linkend="_class_tag_panel_1afa29a560070ac453fadae46f052cc53f">detailsPanel</link>,&#32;wxID_ANY,&#32;<link linkend="_class_tag_panel_1a5dd671ef158b702eb9b17b88fe6c79b6">tagName</link>);
+<anchor xml:id="__tag_panel_8cpp_source_1l00340"/>00340 &#32;&#32;&#32;&#32;<link linkend="_class_tag_panel_1a43c96ffa9523c002fb96126500209ce8">SetLineFont</link>(<link linkend="_class_tag_panel_1a8d05f326ee6854342a0a5cf06228c527">staticDetailsName</link>);
+<anchor xml:id="__tag_panel_8cpp_source_1l00341"/>00341 &#32;&#32;&#32;&#32;<link linkend="_class_tag_panel_1a8d05f326ee6854342a0a5cf06228c527">staticDetailsName</link>-&gt;SetForegroundColour(<link linkend="_class_tag_panel_1a23f2d5d739a33e4f3e4c26e1ee160d46">tagNameColor</link>);
+<anchor xml:id="__tag_panel_8cpp_source_1l00342"/>00342 &#32;&#32;&#32;&#32;nameDetails-&gt;Add(label);
+<anchor xml:id="__tag_panel_8cpp_source_1l00343"/>00343 &#32;&#32;&#32;&#32;nameDetails-&gt;Add(<link linkend="_class_tag_panel_1a8d05f326ee6854342a0a5cf06228c527">staticDetailsName</link>,wxSizerFlags().Border(wxLEFT));
+<anchor xml:id="__tag_panel_8cpp_source_1l00344"/>00344 &#32;&#32;&#32;&#32;<link linkend="_class_tag_panel_1acb5613b513abd882b94dd79981f15e5b">detailsSizer</link>-&gt;Add(nameDetails,&#32;wxSizerFlags().Border().Expand());
+<anchor xml:id="__tag_panel_8cpp_source_1l00345"/>00345 }
+<anchor xml:id="__tag_panel_8cpp_source_1l00346"/>00346 
+<anchor xml:id="__tag_panel_8cpp_source_1l00347"/><link linkend="_class_tag_panel_1a43c96ffa9523c002fb96126500209ce8">00347</link> <emphasis role="keywordtype">void</emphasis>&#32;<link linkend="_class_tag_panel_1a43c96ffa9523c002fb96126500209ce8">TagPanel::SetLineFont</link>(wxButton*&#32;button,&#32;<emphasis role="keywordtype">int</emphasis>&#32;policeSize)&#32;{
+<anchor xml:id="__tag_panel_8cpp_source_1l00348"/>00348 &#32;&#32;&#32;&#32;button-&gt;SetFont(wxFont(<link linkend="_class_tag_panel_1aadc6b7d84d378ff8db4682080627030f">policeSize</link>,&#32;wxFONTFAMILY_DEFAULT,&#32;wxFONTSTYLE_NORMAL,&#32;wxFONTWEIGHT_BOLD));
+<anchor xml:id="__tag_panel_8cpp_source_1l00349"/>00349 }
+<anchor xml:id="__tag_panel_8cpp_source_1l00350"/>00350 
+<anchor xml:id="__tag_panel_8cpp_source_1l00351"/><link linkend="_class_tag_panel_1a53d2a3068096670c08f249b1c2f6e798">00351</link> <emphasis role="keywordtype">void</emphasis>&#32;<link linkend="_class_tag_panel_1a43c96ffa9523c002fb96126500209ce8">TagPanel::SetLineFont</link>(wxStaticText*&#32;text,&#32;<emphasis role="keywordtype">int</emphasis>&#32;policeSize)&#32;{
+<anchor xml:id="__tag_panel_8cpp_source_1l00352"/>00352 &#32;&#32;&#32;&#32;text-&gt;SetFont(wxFont(<link linkend="_class_tag_panel_1aadc6b7d84d378ff8db4682080627030f">policeSize</link>,&#32;wxFONTFAMILY_DEFAULT,&#32;wxFONTSTYLE_NORMAL,&#32;wxFONTWEIGHT_BOLD));
+<anchor xml:id="__tag_panel_8cpp_source_1l00353"/>00353 }
+<anchor xml:id="__tag_panel_8cpp_source_1l00354"/>00354 
+<anchor xml:id="__tag_panel_8cpp_source_1l00355"/>00355 
+<anchor xml:id="__tag_panel_8cpp_source_1l00356"/>00356 
+<anchor xml:id="__tag_panel_8cpp_source_1l00357"/><link linkend="_class_tag_panel_1a82ceff512bd6bf6302d782ea908c9ef9">00357</link> <emphasis role="keywordtype">void</emphasis>&#32;<link linkend="_class_tag_panel_1a82ceff512bd6bf6302d782ea908c9ef9">TagPanel::linkToPanel</link>(wxBoxSizer*&#32;gridSizer)&#32;{
+<anchor xml:id="__tag_panel_8cpp_source_1l00358"/>00358 &#32;&#32;&#32;&#32;<link linkend="_class_tag_panel_1afa29a560070ac453fadae46f052cc53f">detailsPanel</link>-&gt;SetSizer(<link linkend="_class_tag_panel_1acb5613b513abd882b94dd79981f15e5b">detailsSizer</link>);
+<anchor xml:id="__tag_panel_8cpp_source_1l00359"/>00359 &#32;&#32;&#32;&#32;gridSizer-&gt;Add(<link linkend="_class_tag_panel_1afa29a560070ac453fadae46f052cc53f">detailsPanel</link>,&#32;wxSizerFlags().Expand().Proportion(1).Border());
+<anchor xml:id="__tag_panel_8cpp_source_1l00360"/>00360 }
+<anchor xml:id="__tag_panel_8cpp_source_1l00361"/>00361 
+<anchor xml:id="__tag_panel_8cpp_source_1l00362"/><link linkend="_class_tag_panel_1aa1a12f478359b6549c0d9c1c90f331b8">00362</link> <emphasis role="keywordtype">void</emphasis>&#32;<link linkend="_class_tag_panel_1aa1a12f478359b6549c0d9c1c90f331b8">TagPanel::createDetailsPanel</link>(<link linkend="_class_tag_panel">TagPanel</link>*&#32;tag,wxPanel*&#32;parentPanel,&#32;wxBoxSizer*&#32;gridSizer)
+<anchor xml:id="__tag_panel_8cpp_source_1l00363"/>00363 {
+<anchor xml:id="__tag_panel_8cpp_source_1l00364"/>00364 &#32;&#32;&#32;&#32;tag-&gt;<link linkend="_class_tag_panel_1a5a896e5052102ac83010bc155bfd49aa">initDetailsPanel</link>(parentPanel);
+<anchor xml:id="__tag_panel_8cpp_source_1l00365"/>00365 &#32;&#32;&#32;&#32;tag-&gt;<link linkend="_class_tag_panel_1a66d61d27a1bc39bf48ec00fd0f09dfd8">initDetailsTagName</link>();
+<anchor xml:id="__tag_panel_8cpp_source_1l00366"/>00366 &#32;&#32;&#32;&#32;tag-&gt;<link linkend="_class_tag_panel_1a82ceff512bd6bf6302d782ea908c9ef9">linkToPanel</link>(gridSizer);
+<anchor xml:id="__tag_panel_8cpp_source_1l00367"/>00367 }
+<anchor xml:id="__tag_panel_8cpp_source_1l00368"/>00368 
+<anchor xml:id="__tag_panel_8cpp_source_1l00369"/><link linkend="_class_tag_panel_1a0c29f16235ad971cfa466f5e852cbcd8">00369</link> wxBoxSizer*&#32;<link linkend="_class_tag_panel_1a0c29f16235ad971cfa466f5e852cbcd8">TagPanel::getDetailsSizer</link>()
+<anchor xml:id="__tag_panel_8cpp_source_1l00370"/>00370 {
+<anchor xml:id="__tag_panel_8cpp_source_1l00371"/>00371 &#32;&#32;&#32;&#32;<emphasis role="keywordflow">return</emphasis>&#32;<link linkend="_class_tag_panel_1acb5613b513abd882b94dd79981f15e5b">detailsSizer</link>;
+<anchor xml:id="__tag_panel_8cpp_source_1l00372"/>00372 }
+<anchor xml:id="__tag_panel_8cpp_source_1l00373"/>00373 
+<anchor xml:id="__tag_panel_8cpp_source_1l00374"/><link linkend="_class_tag_panel_1abc3125dfcc3694efea652a2232a6b23e">00374</link> wxPanel*&#32;<link linkend="_class_tag_panel_1abc3125dfcc3694efea652a2232a6b23e">TagPanel::getDetailsPanel</link>()
+<anchor xml:id="__tag_panel_8cpp_source_1l00375"/>00375 {
+<anchor xml:id="__tag_panel_8cpp_source_1l00376"/>00376 &#32;&#32;&#32;&#32;<emphasis role="keywordflow">return</emphasis>&#32;<link linkend="_class_tag_panel_1afa29a560070ac453fadae46f052cc53f">detailsPanel</link>;
+<anchor xml:id="__tag_panel_8cpp_source_1l00377"/>00377 }
+<anchor xml:id="__tag_panel_8cpp_source_1l00378"/>00378 
+<anchor xml:id="__tag_panel_8cpp_source_1l00379"/><link linkend="_class_tag_panel_1a2968cbcc5c04e34a50085877ddb53f65">00379</link> wxColour&#32;<link linkend="_class_tag_panel_1a2968cbcc5c04e34a50085877ddb53f65">TagPanel::getPanelColour</link>()
+<anchor xml:id="__tag_panel_8cpp_source_1l00380"/>00380 {
+<anchor xml:id="__tag_panel_8cpp_source_1l00381"/>00381 &#32;&#32;&#32;&#32;<emphasis role="keywordflow">return</emphasis>&#32;<link linkend="_class_tag_panel_1a0de4005aceb4d6809ec88ffb899f6d17">panelColor</link>;
+<anchor xml:id="__tag_panel_8cpp_source_1l00382"/>00382 }
+<anchor xml:id="__tag_panel_8cpp_source_1l00383"/>00383 
+<anchor xml:id="__tag_panel_8cpp_source_1l00384"/><link linkend="_class_tag_panel_1a98044cff891ada484ee4c845e878735b">00384</link> wxBoxSizer*&#32;<link linkend="_class_tag_panel_1a98044cff891ada484ee4c845e878735b">TagPanel::getTagSizer</link>()
+<anchor xml:id="__tag_panel_8cpp_source_1l00385"/>00385 {
+<anchor xml:id="__tag_panel_8cpp_source_1l00386"/>00386 &#32;&#32;&#32;&#32;<emphasis role="keywordflow">return</emphasis>&#32;<link linkend="_class_tag_panel_1a480b452569c046bfc03e86a2be72a8eb">tagSizer</link>;
+<anchor xml:id="__tag_panel_8cpp_source_1l00387"/>00387 }
+<anchor xml:id="__tag_panel_8cpp_source_1l00388"/>00388 
+<anchor xml:id="__tag_panel_8cpp_source_1l00389"/><link linkend="_class_tag_panel_1af3b5b6fc2b16171af7cab7b0d79d9ed7">00389</link> <link linkend="_class_tag_panel">TagPanel</link>*&#32;<link linkend="_class_tag_panel_1af3b5b6fc2b16171af7cab7b0d79d9ed7">TagPanel::getParentTag</link>()
+<anchor xml:id="__tag_panel_8cpp_source_1l00390"/>00390 {
+<anchor xml:id="__tag_panel_8cpp_source_1l00391"/>00391 &#32;&#32;&#32;&#32;<emphasis role="keywordflow">return</emphasis>&#32;<emphasis role="keyword">dynamic_cast&lt;</emphasis><link linkend="_class_flow_tag_panel">FlowTagPanel</link>*<emphasis role="keyword">&gt;</emphasis>(GetParent());
+<anchor xml:id="__tag_panel_8cpp_source_1l00392"/>00392 }
+<anchor xml:id="__tag_panel_8cpp_source_1l00393"/>00393 
+<anchor xml:id="__tag_panel_8cpp_source_1l00394"/><link linkend="_class_tag_panel_1af656776798692c730135d692c6a48a62">00394</link> <link linkend="_class_tag_panel">TagPanel</link>*&#32;<link linkend="_class_tag_panel_1af656776798692c730135d692c6a48a62">TagPanel::getTagPanel</link>(wxWindow*&#32;window)
+<anchor xml:id="__tag_panel_8cpp_source_1l00395"/>00395 {
+<anchor xml:id="__tag_panel_8cpp_source_1l00396"/>00396 &#32;&#32;&#32;&#32;<emphasis role="keywordflow">return</emphasis>&#32;<emphasis role="keyword">dynamic_cast&lt;</emphasis><link linkend="_class_tag_panel">TagPanel</link>*<emphasis role="keyword">&gt;</emphasis>(window);
+<anchor xml:id="__tag_panel_8cpp_source_1l00397"/>00397 }
+<anchor xml:id="__tag_panel_8cpp_source_1l00398"/>00398 
+<anchor xml:id="__tag_panel_8cpp_source_1l00399"/><link linkend="_class_tag_panel_1a861fccff4a41bbcb235d9d898f0ef17d">00399</link> <emphasis role="keywordtype">void</emphasis>&#32;<link linkend="_class_tag_panel_1a861fccff4a41bbcb235d9d898f0ef17d">TagPanel::setInsertPoint</link>(<link linkend="__tag_panel_8h_1a369abf422adc1247d0d7bc295bf34014">HoverPosition</link>&#32;hovPos)
+<anchor xml:id="__tag_panel_8cpp_source_1l00400"/>00400 {
+<anchor xml:id="__tag_panel_8cpp_source_1l00401"/>00401 &#32;&#32;&#32;&#32;<emphasis role="keywordflow">switch</emphasis>&#32;(hovPos)&#32;{
+<anchor xml:id="__tag_panel_8cpp_source_1l00402"/>00402 &#32;&#32;&#32;&#32;<emphasis role="keywordflow">case</emphasis>&#32;<link linkend="__tag_panel_8h_1a369abf422adc1247d0d7bc295bf34014ae53ae292e2c382ba015842834af7573d">TOPHOVER</link>:
+<anchor xml:id="__tag_panel_8cpp_source_1l00403"/>00403 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<link linkend="_class_tag_panel_1ac08e1909ad79173fead54cf2e6c7be61">insertPoint</link>&#32;=&#32;wxPoint(0,&#32;0);
+<anchor xml:id="__tag_panel_8cpp_source_1l00404"/>00404 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">break</emphasis>;
+<anchor xml:id="__tag_panel_8cpp_source_1l00405"/>00405 &#32;&#32;&#32;&#32;<emphasis role="keywordflow">case</emphasis>&#32;<link linkend="__tag_panel_8h_1a369abf422adc1247d0d7bc295bf34014afc898622b38d2238adbc9c7cdc5f97a8">BOTTOMHOVER</link>:
+<anchor xml:id="__tag_panel_8cpp_source_1l00406"/>00406 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<link linkend="_class_tag_panel_1ac08e1909ad79173fead54cf2e6c7be61">insertPoint</link>&#32;=&#32;wxPoint(0,&#32;2*GetSize().GetHeight()/3);
+<anchor xml:id="__tag_panel_8cpp_source_1l00407"/>00407 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">break</emphasis>;
+<anchor xml:id="__tag_panel_8cpp_source_1l00408"/>00408 &#32;&#32;&#32;&#32;}
+<anchor xml:id="__tag_panel_8cpp_source_1l00409"/>00409 &#32;&#32;&#32;&#32;<link linkend="_class_tag_panel_1ae51a14087a4b11aa65b79bca524a2dc9">previousHover</link>&#32;=&#32;hovPos;
+<anchor xml:id="__tag_panel_8cpp_source_1l00410"/>00410 }
+<anchor xml:id="__tag_panel_8cpp_source_1l00411"/>00411 
+<anchor xml:id="__tag_panel_8cpp_source_1l00412"/><link linkend="_class_flow_tag_panel_1ab7a16f3ed1f06f7d060aeb086fd8d683">00412</link> <emphasis role="keywordtype">void</emphasis>&#32;<link linkend="_class_flow_tag_panel_1ab7a16f3ed1f06f7d060aeb086fd8d683">FlowTagPanel::setInsertPoint</link>(<link linkend="__tag_panel_8h_1a369abf422adc1247d0d7bc295bf34014">HoverPosition</link>&#32;hovPos)
+<anchor xml:id="__tag_panel_8cpp_source_1l00413"/>00413 {
+<anchor xml:id="__tag_panel_8cpp_source_1l00414"/>00414 &#32;&#32;&#32;&#32;wxSize&#32;tagLineSize&#32;=&#32;<link linkend="_class_tag_panel_1a7f15f662ac35f7d7b2b96c8d4dae0949">getLineSizer</link>()-&gt;GetSize();
+<anchor xml:id="__tag_panel_8cpp_source_1l00415"/>00415 &#32;&#32;&#32;&#32;<emphasis role="keyword">auto</emphasis>&#32;<link linkend="_class_flow_tag_panel_1a023570c0ce18045ff6d02e7edcd83df6">bottomSpacer</link>&#32;=&#32;<link linkend="_class_flow_tag_panel_1a63d586b3a818bf85f3cfa56048c697e5">getBottomSpacer</link>();
+<anchor xml:id="__tag_panel_8cpp_source_1l00416"/>00416 &#32;&#32;&#32;&#32;wxSize&#32;bottomSize;
+<anchor xml:id="__tag_panel_8cpp_source_1l00417"/>00417 &#32;&#32;&#32;&#32;<emphasis role="keywordflow">if</emphasis>&#32;(!<link linkend="_class_flow_tag_panel_1a77dc30ba98e8e84f02f23ef9af057e4d">isMinimized</link>())&#32;{
+<anchor xml:id="__tag_panel_8cpp_source_1l00418"/>00418 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;bottomSize&#32;=&#32;<link linkend="_class_flow_tag_panel_1a63d586b3a818bf85f3cfa56048c697e5">getBottomSpacer</link>()-&gt;GetSize();
+<anchor xml:id="__tag_panel_8cpp_source_1l00419"/>00419 &#32;&#32;&#32;&#32;}
+<anchor xml:id="__tag_panel_8cpp_source_1l00420"/>00420 &#32;&#32;&#32;&#32;<emphasis role="keywordtype">int</emphasis>&#32;bottomHeight&#32;=&#32;bottomSize.y;
+<anchor xml:id="__tag_panel_8cpp_source_1l00421"/>00421 &#32;&#32;&#32;&#32;<emphasis role="keywordtype">int</emphasis>&#32;lineHeight&#32;=&#32;tagLineSize.y;
+<anchor xml:id="__tag_panel_8cpp_source_1l00422"/>00422 &#32;&#32;&#32;&#32;<emphasis role="keywordflow">switch</emphasis>&#32;(hovPos)&#32;{
+<anchor xml:id="__tag_panel_8cpp_source_1l00423"/>00423 &#32;&#32;&#32;&#32;<emphasis role="keywordflow">case</emphasis>&#32;<link linkend="__tag_panel_8h_1a369abf422adc1247d0d7bc295bf34014ae53ae292e2c382ba015842834af7573d">TOPHOVER</link>:
+<anchor xml:id="__tag_panel_8cpp_source_1l00424"/>00424 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<link linkend="_class_tag_panel_1ac08e1909ad79173fead54cf2e6c7be61">insertPoint</link>&#32;=&#32;wxPoint(0,&#32;0);
+<anchor xml:id="__tag_panel_8cpp_source_1l00425"/>00425 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">break</emphasis>;
+<anchor xml:id="__tag_panel_8cpp_source_1l00426"/>00426 &#32;&#32;&#32;&#32;<emphasis role="keywordflow">case</emphasis>&#32;<link linkend="__tag_panel_8h_1a369abf422adc1247d0d7bc295bf34014a426b1d3c399e8ef6f1a5e6e29798593d">MIDTOPHOVER</link>:
+<anchor xml:id="__tag_panel_8cpp_source_1l00427"/>00427 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<link linkend="_class_tag_panel_1ac08e1909ad79173fead54cf2e6c7be61">insertPoint</link>&#32;=&#32;wxPoint(0,&#32;2*lineHeight/3);
+<anchor xml:id="__tag_panel_8cpp_source_1l00428"/>00428 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">break</emphasis>;
+<anchor xml:id="__tag_panel_8cpp_source_1l00429"/>00429 &#32;&#32;&#32;&#32;<emphasis role="keywordflow">case</emphasis>&#32;<link linkend="__tag_panel_8h_1a369abf422adc1247d0d7bc295bf34014aa21f59c48bbee6108c6aee1231bdfa16">MIDBOTHOVER</link>:
+<anchor xml:id="__tag_panel_8cpp_source_1l00430"/>00430 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<link linkend="_class_tag_panel_1ac08e1909ad79173fead54cf2e6c7be61">insertPoint</link>=&#32;wxPoint(0,&#32;GetSize().GetHeight()&#32;-&#32;bottomHeight);
+<anchor xml:id="__tag_panel_8cpp_source_1l00431"/>00431 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">break</emphasis>;
+<anchor xml:id="__tag_panel_8cpp_source_1l00432"/>00432 &#32;&#32;&#32;&#32;<emphasis role="keywordflow">case</emphasis>&#32;<link linkend="__tag_panel_8h_1a369abf422adc1247d0d7bc295bf34014afc898622b38d2238adbc9c7cdc5f97a8">BOTTOMHOVER</link>:
+<anchor xml:id="__tag_panel_8cpp_source_1l00433"/>00433 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<link linkend="_class_tag_panel_1ac08e1909ad79173fead54cf2e6c7be61">insertPoint</link>&#32;=&#32;wxPoint(0,&#32;GetSize().GetHeight()&#32;-&#32;bottomHeight/3);
+<anchor xml:id="__tag_panel_8cpp_source_1l00434"/>00434 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">break</emphasis>;
+<anchor xml:id="__tag_panel_8cpp_source_1l00435"/>00435 &#32;&#32;&#32;&#32;}
+<anchor xml:id="__tag_panel_8cpp_source_1l00436"/>00436 &#32;&#32;&#32;&#32;<link linkend="_class_tag_panel_1ae51a14087a4b11aa65b79bca524a2dc9">previousHover</link>&#32;=&#32;hovPos;
+<anchor xml:id="__tag_panel_8cpp_source_1l00437"/>00437 }
+<anchor xml:id="__tag_panel_8cpp_source_1l00438"/>00438 
+<anchor xml:id="__tag_panel_8cpp_source_1l00439"/><link linkend="_class_tag_panel_1af925f36858bbc30c39bd4716f64822d3">00439</link> <emphasis role="keywordtype">void</emphasis>&#32;<link linkend="_class_tag_panel_1af925f36858bbc30c39bd4716f64822d3">TagPanel::updateInsertRect</link>()
+<anchor xml:id="__tag_panel_8cpp_source_1l00440"/>00440 {
+<anchor xml:id="__tag_panel_8cpp_source_1l00441"/>00441 &#32;&#32;&#32;&#32;<link linkend="_class_tag_panel_1ac6667f655542d928b04f273ba453e7c9">insertRect</link>&#32;=&#32;wxSize(GetSize().x,&#32;(GetSize().y&#32;/&#32;3)+1);
+<anchor xml:id="__tag_panel_8cpp_source_1l00442"/>00442 }
+<anchor xml:id="__tag_panel_8cpp_source_1l00443"/><link linkend="_class_tag_panel_1aaaf019a2cc75cfb1014a0b9fd366e7f7">00443</link> wxPoint&#32;<link linkend="_class_tag_panel_1aaaf019a2cc75cfb1014a0b9fd366e7f7">TagPanel::getInsertPoint</link>()
+<anchor xml:id="__tag_panel_8cpp_source_1l00444"/>00444 {
+<anchor xml:id="__tag_panel_8cpp_source_1l00445"/>00445 &#32;&#32;&#32;&#32;<emphasis role="keywordflow">return</emphasis>&#32;<link linkend="_class_tag_panel_1ac08e1909ad79173fead54cf2e6c7be61">insertPoint</link>;
+<anchor xml:id="__tag_panel_8cpp_source_1l00446"/>00446 }
+<anchor xml:id="__tag_panel_8cpp_source_1l00447"/>00447 
+<anchor xml:id="__tag_panel_8cpp_source_1l00448"/><link linkend="_class_tag_panel_1a3987f5a00ba29cb8f5c1e7d09474f819">00448</link> wxButton*&#32;<link linkend="_class_tag_panel_1a3987f5a00ba29cb8f5c1e7d09474f819">TagPanel::getCloneButton</link>()<emphasis role="keyword">const&#32;</emphasis>{
+<anchor xml:id="__tag_panel_8cpp_source_1l00449"/>00449 &#32;&#32;&#32;&#32;<emphasis role="keywordflow">return</emphasis>&#32;<link linkend="_class_tag_panel_1a81aca1816f6fc0985077fc5f461046e2">cloneButton</link>;
+<anchor xml:id="__tag_panel_8cpp_source_1l00450"/>00450 }
+<anchor xml:id="__tag_panel_8cpp_source_1l00451"/>00451 
+<anchor xml:id="__tag_panel_8cpp_source_1l00452"/><link linkend="_class_tag_panel_1ad32a3e47413abc0b1f2252b7ce530b3d">00452</link> wxButton*&#32;<link linkend="_class_tag_panel_1ad32a3e47413abc0b1f2252b7ce530b3d">TagPanel::getCutButton</link>()<emphasis role="keyword">&#32;const</emphasis>
+<anchor xml:id="__tag_panel_8cpp_source_1l00453"/>00453 <emphasis role="keyword"></emphasis>{
+<anchor xml:id="__tag_panel_8cpp_source_1l00454"/>00454 &#32;&#32;&#32;&#32;<emphasis role="keywordflow">return</emphasis>&#32;<link linkend="_class_tag_panel_1a227cddc11db1954dde6b5e3c49591e7a">cutButton</link>;
+<anchor xml:id="__tag_panel_8cpp_source_1l00455"/>00455 }
+<anchor xml:id="__tag_panel_8cpp_source_1l00456"/>00456 
+<anchor xml:id="__tag_panel_8cpp_source_1l00457"/><link linkend="_class_flow_tag_panel_1a6c9860496ffc71764f9cfa629d090703">00457</link> <emphasis role="keywordtype">void</emphasis>&#32;<link linkend="_class_flow_tag_panel_1a6c9860496ffc71764f9cfa629d090703">FlowTagPanel::updateInsertRect</link>()
+<anchor xml:id="__tag_panel_8cpp_source_1l00458"/>00458 {
+<anchor xml:id="__tag_panel_8cpp_source_1l00459"/>00459 &#32;&#32;&#32;&#32;wxSize&#32;tagLineSize&#32;=&#32;<link linkend="_class_tag_panel_1a7f15f662ac35f7d7b2b96c8d4dae0949">getLineSizer</link>()-&gt;GetSize();
+<anchor xml:id="__tag_panel_8cpp_source_1l00460"/>00460 &#32;&#32;&#32;&#32;<emphasis role="keywordtype">int</emphasis>&#32;lineHeight&#32;=&#32;tagLineSize.y;
+<anchor xml:id="__tag_panel_8cpp_source_1l00461"/>00461 &#32;&#32;&#32;&#32;<emphasis role="keywordtype">int</emphasis>&#32;hoverHeight&#32;=&#32;lineHeight&#32;/&#32;3;
+<anchor xml:id="__tag_panel_8cpp_source_1l00462"/>00462 &#32;&#32;&#32;&#32;<link linkend="_class_tag_panel_1ac6667f655542d928b04f273ba453e7c9">insertRect</link>&#32;=&#32;wxSize(GetSize().x,&#32;hoverHeight+1);
+<anchor xml:id="__tag_panel_8cpp_source_1l00463"/>00463 }
+<anchor xml:id="__tag_panel_8cpp_source_1l00464"/>00464 
+<anchor xml:id="__tag_panel_8cpp_source_1l00465"/>00465 
+<anchor xml:id="__tag_panel_8cpp_source_1l00466"/><link linkend="__tag_panel_8cpp_1ac84ea9bcdca185eee33778fb780fc7db">00466</link> <link linkend="_class_flow_tag_panel">FlowTagPanel</link>*&#32;<link linkend="__tag_panel_8cpp_1ac84ea9bcdca185eee33778fb780fc7db">getFlowTagPanel</link>(wxWindow*&#32;window)
+<anchor xml:id="__tag_panel_8cpp_source_1l00467"/>00467 {
+<anchor xml:id="__tag_panel_8cpp_source_1l00468"/>00468 &#32;&#32;&#32;&#32;<emphasis role="keywordflow">return</emphasis>&#32;<emphasis role="keyword">dynamic_cast&lt;</emphasis><link linkend="_class_flow_tag_panel">FlowTagPanel</link>*<emphasis role="keyword">&gt;</emphasis>(window);
+<anchor xml:id="__tag_panel_8cpp_source_1l00469"/>00469 }
+<anchor xml:id="__tag_panel_8cpp_source_1l00470"/>00470 
+<anchor xml:id="__tag_panel_8cpp_source_1l00471"/>00471 
+<anchor xml:id="__tag_panel_8cpp_source_1l00472"/>00472 
+<anchor xml:id="__tag_panel_8cpp_source_1l00473"/><link linkend="__tag_panel_8cpp_1a7db16203b3dfc4224c16f8ed5b4d41ef">00473</link> <link linkend="_class_main_tag_panel">MainTagPanel</link>*&#32;<link linkend="__tag_panel_8cpp_1a7db16203b3dfc4224c16f8ed5b4d41ef">getMainTagPanel</link>(<link linkend="_class_tag_panel">TagPanel</link>*&#32;window)
+<anchor xml:id="__tag_panel_8cpp_source_1l00474"/>00474 {
+<anchor xml:id="__tag_panel_8cpp_source_1l00475"/>00475 &#32;&#32;&#32;&#32;<emphasis role="keywordflow">return</emphasis>&#32;<emphasis role="keyword">dynamic_cast&lt;</emphasis><link linkend="_class_main_tag_panel">MainTagPanel</link>*<emphasis role="keyword">&gt;</emphasis>(window);
+<anchor xml:id="__tag_panel_8cpp_source_1l00476"/>00476 }
+<anchor xml:id="__tag_panel_8cpp_source_1l00477"/>00477 
+<anchor xml:id="__tag_panel_8cpp_source_1l00478"/>00478 
+<anchor xml:id="__tag_panel_8cpp_source_1l00479"/><link linkend="_class_tag_panel_1a4fcedad553eb65983ba7a8da2d5895f3">00479</link> <emphasis role="keywordtype">void</emphasis>&#32;<link linkend="_class_tag_panel_1a4fcedad553eb65983ba7a8da2d5895f3">TagPanel::init</link>(<link linkend="_class_tag_panel">TagPanel</link>*&#32;tag)
+<anchor xml:id="__tag_panel_8cpp_source_1l00480"/>00480 {
+<anchor xml:id="__tag_panel_8cpp_source_1l00481"/>00481 &#32;&#32;&#32;&#32;tag-&gt;Hide();
+<anchor xml:id="__tag_panel_8cpp_source_1l00482"/>00482 &#32;&#32;&#32;&#32;tag-&gt;<link linkend="_class_tag_panel_1a2974706b1d2a79806571fbebd1f7d56b">initSizers</link>();
+<anchor xml:id="__tag_panel_8cpp_source_1l00483"/>00483 &#32;&#32;&#32;&#32;tag-&gt;<link linkend="_class_tag_panel_1aa65c4779bd09af4389b2ca49e6ea4136">setTagName</link>();
+<anchor xml:id="__tag_panel_8cpp_source_1l00484"/>00484 &#32;&#32;&#32;&#32;tag-&gt;<link linkend="_class_tag_panel_1a746b3898803ea72e2a7500d7ed73d9ce">setColors</link>();
+<anchor xml:id="__tag_panel_8cpp_source_1l00485"/>00485 &#32;&#32;&#32;&#32;tag-&gt;<link linkend="_class_tag_panel_1a370e5a7a79772ae4775f24de35506582">setPaintEvents</link>();
+<anchor xml:id="__tag_panel_8cpp_source_1l00486"/>00486 &#32;&#32;&#32;&#32;tag-&gt;<link linkend="_class_tag_panel_1a75a1eb94084fc21b1e50322a1c385733">addComponents</link>(tag);
+<anchor xml:id="__tag_panel_8cpp_source_1l00487"/>00487 &#32;&#32;&#32;&#32;tag-&gt;Show();
+<anchor xml:id="__tag_panel_8cpp_source_1l00488"/>00488 }
+<anchor xml:id="__tag_panel_8cpp_source_1l00489"/>00489 
+<anchor xml:id="__tag_panel_8cpp_source_1l00490"/><link linkend="_class_tag_panel_1adea8840b3b43bfee7f8e090a71dd708c">00490</link> <emphasis role="keywordtype">void</emphasis>&#32;<link linkend="_class_tag_panel_1adea8840b3b43bfee7f8e090a71dd708c">TagPanel::setTagNameCustom</link>(<emphasis role="keyword">const</emphasis>&#32;std::string&amp;&#32;name)
+<anchor xml:id="__tag_panel_8cpp_source_1l00491"/>00491 {
+<anchor xml:id="__tag_panel_8cpp_source_1l00492"/>00492 &#32;&#32;&#32;&#32;<link linkend="_class_tag_panel_1a5dd671ef158b702eb9b17b88fe6c79b6">tagName</link>&#32;=&#32;name;
+<anchor xml:id="__tag_panel_8cpp_source_1l00493"/>00493 }
+<anchor xml:id="__tag_panel_8cpp_source_1l00494"/>00494 
+<anchor xml:id="__tag_panel_8cpp_source_1l00495"/>00495 
+<anchor xml:id="__tag_panel_8cpp_source_1l00496"/>00496 
+<anchor xml:id="__tag_panel_8cpp_source_1l00497"/>00497 
+<anchor xml:id="__tag_panel_8cpp_source_1l00498"/><link linkend="_class_flow_tag_panel_1abdf6ba578faa620f2aaa4aa5cc4852d6">00498</link> <emphasis role="keywordtype">void</emphasis>&#32;<link linkend="_class_flow_tag_panel_1abdf6ba578faa620f2aaa4aa5cc4852d6">FlowTagPanel::setTagName</link>()
+<anchor xml:id="__tag_panel_8cpp_source_1l00499"/>00499 {
+<anchor xml:id="__tag_panel_8cpp_source_1l00500"/>00500 &#32;&#32;&#32;&#32;<link linkend="_class_tag_panel_1adea8840b3b43bfee7f8e090a71dd708c">setTagNameCustom</link>(<emphasis role="stringliteral">&quot;FlowTag&quot;</emphasis>);
+<anchor xml:id="__tag_panel_8cpp_source_1l00501"/>00501 }
+<anchor xml:id="__tag_panel_8cpp_source_1l00502"/>00502 
+<anchor xml:id="__tag_panel_8cpp_source_1l00503"/><link linkend="_class_tag_panel_1aa65c4779bd09af4389b2ca49e6ea4136">00503</link> <emphasis role="keywordtype">void</emphasis>&#32;<link linkend="_class_tag_panel_1aa65c4779bd09af4389b2ca49e6ea4136">TagPanel::setTagName</link>()
+<anchor xml:id="__tag_panel_8cpp_source_1l00504"/>00504 {
+<anchor xml:id="__tag_panel_8cpp_source_1l00505"/>00505 &#32;&#32;&#32;&#32;<link linkend="_class_tag_panel_1adea8840b3b43bfee7f8e090a71dd708c">setTagNameCustom</link>(<emphasis role="stringliteral">&quot;Tag&quot;</emphasis>);
+<anchor xml:id="__tag_panel_8cpp_source_1l00506"/>00506 }
+<anchor xml:id="__tag_panel_8cpp_source_1l00507"/>00507 
+<anchor xml:id="__tag_panel_8cpp_source_1l00508"/><link linkend="_class_empty_panel_1a42308a52fd1da5920bfbcaaab7dad69b">00508</link> <emphasis role="keywordtype">void</emphasis>&#32;<link linkend="_class_empty_panel_1a42308a52fd1da5920bfbcaaab7dad69b">EmptyPanel::setTagName</link>()
+<anchor xml:id="__tag_panel_8cpp_source_1l00509"/>00509 {
+<anchor xml:id="__tag_panel_8cpp_source_1l00510"/>00510 &#32;&#32;&#32;&#32;<link linkend="_class_tag_panel_1adea8840b3b43bfee7f8e090a71dd708c">setTagNameCustom</link>(<emphasis role="stringliteral">&quot;Empty&quot;</emphasis>);
+<anchor xml:id="__tag_panel_8cpp_source_1l00511"/>00511 }
+<anchor xml:id="__tag_panel_8cpp_source_1l00512"/><link linkend="_class_if_tag_panel_1af46a3cf26077d0dfdab1cd946fff6085">00512</link> <emphasis role="keywordtype">void</emphasis>&#32;<link linkend="_class_if_tag_panel_1af46a3cf26077d0dfdab1cd946fff6085">IfTagPanel::setTagName</link>()
+<anchor xml:id="__tag_panel_8cpp_source_1l00513"/>00513 {
+<anchor xml:id="__tag_panel_8cpp_source_1l00514"/>00514 &#32;&#32;&#32;&#32;<link linkend="_class_tag_panel_1adea8840b3b43bfee7f8e090a71dd708c">setTagNameCustom</link>(<emphasis role="stringliteral">&quot;IF&quot;</emphasis>);
+<anchor xml:id="__tag_panel_8cpp_source_1l00515"/>00515 }
+<anchor xml:id="__tag_panel_8cpp_source_1l00516"/>00516 
+<anchor xml:id="__tag_panel_8cpp_source_1l00517"/><link linkend="_class_bool_tag_panel_1af673aae426f3d51edca047c7031d6846">00517</link> <emphasis role="keywordtype">void</emphasis>&#32;<link linkend="_class_bool_tag_panel_1af673aae426f3d51edca047c7031d6846">BoolTagPanel::setTagName</link>()
+<anchor xml:id="__tag_panel_8cpp_source_1l00518"/>00518 {
+<anchor xml:id="__tag_panel_8cpp_source_1l00519"/>00519 &#32;&#32;&#32;&#32;<link linkend="_class_tag_panel_1adea8840b3b43bfee7f8e090a71dd708c">setTagNameCustom</link>(<emphasis role="stringliteral">&quot;Bool&quot;</emphasis>);
+<anchor xml:id="__tag_panel_8cpp_source_1l00520"/>00520 }
+<anchor xml:id="__tag_panel_8cpp_source_1l00521"/>00521 
+<anchor xml:id="__tag_panel_8cpp_source_1l00522"/>00522 
+<anchor xml:id="__tag_panel_8cpp_source_1l00523"/><link linkend="_class_loop_tag_panel_1a88144a4a6c13cb1e407e9b6b68935137">00523</link> <emphasis role="keywordtype">void</emphasis>&#32;<link linkend="_class_loop_tag_panel_1a88144a4a6c13cb1e407e9b6b68935137">LoopTagPanel::setTagName</link>()
+<anchor xml:id="__tag_panel_8cpp_source_1l00524"/>00524 {
+<anchor xml:id="__tag_panel_8cpp_source_1l00525"/>00525 &#32;&#32;&#32;&#32;<link linkend="_class_tag_panel_1adea8840b3b43bfee7f8e090a71dd708c">setTagNameCustom</link>(<emphasis role="stringliteral">&quot;Loop&quot;</emphasis>);
+<anchor xml:id="__tag_panel_8cpp_source_1l00526"/>00526 }
+<anchor xml:id="__tag_panel_8cpp_source_1l00527"/>00527 
+<anchor xml:id="__tag_panel_8cpp_source_1l00528"/>00528 
+<anchor xml:id="__tag_panel_8cpp_source_1l00529"/>00529 
+<anchor xml:id="__tag_panel_8cpp_source_1l00530"/>00530 
+<anchor xml:id="__tag_panel_8cpp_source_1l00531"/>00531 
+<anchor xml:id="__tag_panel_8cpp_source_1l00532"/>00532 
+<anchor xml:id="__tag_panel_8cpp_source_1l00533"/><link linkend="_class_main_tag_panel_1a776aca2e2bcf8c5653f3d088366e5681">00533</link> <emphasis role="keywordtype">void</emphasis>&#32;<link linkend="_class_main_tag_panel_1a776aca2e2bcf8c5653f3d088366e5681">MainTagPanel::setTagName</link>()
+<anchor xml:id="__tag_panel_8cpp_source_1l00534"/>00534 {
+<anchor xml:id="__tag_panel_8cpp_source_1l00535"/>00535 &#32;&#32;&#32;&#32;<link linkend="_class_tag_panel_1adea8840b3b43bfee7f8e090a71dd708c">setTagNameCustom</link>(<emphasis role="stringliteral">&quot;Main&quot;</emphasis>);
+<anchor xml:id="__tag_panel_8cpp_source_1l00536"/>00536 }
+<anchor xml:id="__tag_panel_8cpp_source_1l00537"/>00537 
+<anchor xml:id="__tag_panel_8cpp_source_1l00538"/>00538 
+<anchor xml:id="__tag_panel_8cpp_source_1l00539"/><link linkend="_class_tag_panel_1a2974706b1d2a79806571fbebd1f7d56b">00539</link> <emphasis role="keywordtype">void</emphasis>&#32;<link linkend="_class_tag_panel_1a2974706b1d2a79806571fbebd1f7d56b">TagPanel::initSizers</link>()
+<anchor xml:id="__tag_panel_8cpp_source_1l00540"/>00540 {
+<anchor xml:id="__tag_panel_8cpp_source_1l00541"/>00541 &#32;&#32;&#32;&#32;<link linkend="_class_tag_panel_1ae24d607788ed14f2fc8b6a88ff9b7602">initTagSizer</link>();
+<anchor xml:id="__tag_panel_8cpp_source_1l00542"/>00542 &#32;&#32;&#32;&#32;<link linkend="_class_tag_panel_1af74a61159813873c529dbcb17a371a05">initLineSizer</link>();
+<anchor xml:id="__tag_panel_8cpp_source_1l00543"/>00543 &#32;&#32;&#32;&#32;<link linkend="_class_tag_panel_1a99231e365be781b584996e68197621b9">setTagSizer</link>();
+<anchor xml:id="__tag_panel_8cpp_source_1l00544"/>00544 }
+<anchor xml:id="__tag_panel_8cpp_source_1l00545"/>00545 
+<anchor xml:id="__tag_panel_8cpp_source_1l00546"/><link linkend="_class_flow_tag_panel_1ac485ea3365ed7d46576190699c2ffca2">00546</link> <emphasis role="keywordtype">void</emphasis>&#32;<link linkend="_class_flow_tag_panel_1ac485ea3365ed7d46576190699c2ffca2">FlowTagPanel::initSizers</link>()
+<anchor xml:id="__tag_panel_8cpp_source_1l00547"/>00547 {
+<anchor xml:id="__tag_panel_8cpp_source_1l00548"/>00548 &#32;&#32;&#32;&#32;<link linkend="_class_tag_panel_1ae24d607788ed14f2fc8b6a88ff9b7602">initTagSizer</link>();
+<anchor xml:id="__tag_panel_8cpp_source_1l00549"/>00549 &#32;&#32;&#32;&#32;<link linkend="_class_tag_panel_1af74a61159813873c529dbcb17a371a05">initLineSizer</link>();
+<anchor xml:id="__tag_panel_8cpp_source_1l00550"/>00550 &#32;&#32;&#32;&#32;<link linkend="_class_flow_tag_panel_1a8168f4dc819be19de5886ca6fa509b03">initChildrenSizer</link>();
+<anchor xml:id="__tag_panel_8cpp_source_1l00551"/>00551 &#32;&#32;&#32;&#32;<link linkend="_class_flow_tag_panel_1af4ba2dd032b93523943e53dfd873fd8e">addBottomSpacer</link>();
+<anchor xml:id="__tag_panel_8cpp_source_1l00552"/>00552 &#32;&#32;&#32;&#32;<link linkend="_class_tag_panel_1a99231e365be781b584996e68197621b9">setTagSizer</link>();
+<anchor xml:id="__tag_panel_8cpp_source_1l00553"/>00553 }
+<anchor xml:id="__tag_panel_8cpp_source_1l00554"/>00554 
+<anchor xml:id="__tag_panel_8cpp_source_1l00555"/><link linkend="_class_flow_tag_panel_1a4e3b68f463d8374b7222c6bd28f47b7e">00555</link> <emphasis role="keywordtype">void</emphasis>&#32;<link linkend="_class_flow_tag_panel_1a4e3b68f463d8374b7222c6bd28f47b7e">FlowTagPanel::detachPanel</link>(<link linkend="_class_tag_panel">TagPanel</link>*&#32;panel)
+<anchor xml:id="__tag_panel_8cpp_source_1l00556"/>00556 {
+<anchor xml:id="__tag_panel_8cpp_source_1l00557"/>00557 &#32;&#32;&#32;&#32;<emphasis role="keywordtype">bool</emphasis>&#32;k=<link linkend="_class_flow_tag_panel_1aeb64852326aa4019061f0ba333276b6f">childrenSizer</link>-&gt;Detach(panel);
+<anchor xml:id="__tag_panel_8cpp_source_1l00558"/>00558 }
+<anchor xml:id="__tag_panel_8cpp_source_1l00559"/>00559 
+<anchor xml:id="__tag_panel_8cpp_source_1l00560"/><link linkend="_class_flow_tag_panel_1a482b23630874fb9f414c9b029501aadd">00560</link> <emphasis role="keywordtype">void</emphasis>&#32;<link linkend="_class_flow_tag_panel_1a482b23630874fb9f414c9b029501aadd">FlowTagPanel::updateLayout</link>()&#32;{<emphasis role="comment">//Goes&#32;to&#32;MainPanel&#32;to&#32;resize&#32;everything,&#32;might&#32;fail&#32;if&#32;the&#32;structure&#32;of&#32;a&#32;panelTag&#32;changes</emphasis>
+<anchor xml:id="__tag_panel_8cpp_source_1l00561"/>00561 &#32;&#32;&#32;&#32;<link linkend="_class_flow_tag_panel">FlowTagPanel</link>*&#32;parent&#32;=&#32;<link linkend="__tag_panel_8h_1a2f4c4fdbb29d8e8fadcbbd9673b3c370">GetParentTag</link>(<emphasis role="keyword">this</emphasis>);
+<anchor xml:id="__tag_panel_8cpp_source_1l00562"/>00562 &#32;&#32;&#32;&#32;<emphasis role="keywordflow">if</emphasis>&#32;(parent)&#32;{
+<anchor xml:id="__tag_panel_8cpp_source_1l00563"/>00563 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;parent-&gt;<link linkend="_class_flow_tag_panel_1a482b23630874fb9f414c9b029501aadd">updateLayout</link>();
+<anchor xml:id="__tag_panel_8cpp_source_1l00564"/>00564 &#32;&#32;&#32;&#32;}
+<anchor xml:id="__tag_panel_8cpp_source_1l00565"/>00565 &#32;&#32;&#32;&#32;<emphasis role="keywordflow">else</emphasis>&#32;{
+<anchor xml:id="__tag_panel_8cpp_source_1l00566"/>00566 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keyword">auto</emphasis>&#32;programWindow&#32;=&#32;GetParent();
+<anchor xml:id="__tag_panel_8cpp_source_1l00567"/>00567 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">if</emphasis>&#32;(programWindow)programWindow-&gt;SetVirtualSize(programWindow-&gt;GetBestVirtualSize());
+<anchor xml:id="__tag_panel_8cpp_source_1l00568"/>00568 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;Layout();
+<anchor xml:id="__tag_panel_8cpp_source_1l00569"/>00569 &#32;&#32;&#32;&#32;}
+<anchor xml:id="__tag_panel_8cpp_source_1l00570"/>00570 }
+<anchor xml:id="__tag_panel_8cpp_source_1l00571"/>00571 
+<anchor xml:id="__tag_panel_8cpp_source_1l00572"/><link linkend="_class_flow_tag_panel_1a1822bbc91daca9379e090f363e870d40">00572</link> <emphasis role="keywordtype">void</emphasis>&#32;<link linkend="_class_flow_tag_panel_1a1822bbc91daca9379e090f363e870d40">FlowTagPanel::hideChildren</link>()
+<anchor xml:id="__tag_panel_8cpp_source_1l00573"/>00573 {
+<anchor xml:id="__tag_panel_8cpp_source_1l00574"/>00574 &#32;&#32;&#32;&#32;<emphasis role="keywordflow">for</emphasis>&#32;(<link linkend="_class_tag_panel">TagPanel</link>*&#32;m&#32;:&#32;<link linkend="_class_flow_tag_panel_1a908b8a9b0319c8c60588dff9296e9baf">getChildrenTags</link>())&#32;{
+<anchor xml:id="__tag_panel_8cpp_source_1l00575"/>00575 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">if</emphasis>&#32;(m)m-&gt;Hide();
+<anchor xml:id="__tag_panel_8cpp_source_1l00576"/>00576 &#32;&#32;&#32;&#32;}
+<anchor xml:id="__tag_panel_8cpp_source_1l00577"/>00577 &#32;&#32;&#32;&#32;<link linkend="_class_tag_panel_1a480b452569c046bfc03e86a2be72a8eb">tagSizer</link>-&gt;Detach(<link linkend="_class_tag_panel_1a975da9b33d0c94992472b291df4aadbe">getIndexOf</link>(<link linkend="_class_tag_panel_1a480b452569c046bfc03e86a2be72a8eb">tagSizer</link>,&#32;<link linkend="_class_flow_tag_panel_1a023570c0ce18045ff6d02e7edcd83df6">bottomSpacer</link>));
+<anchor xml:id="__tag_panel_8cpp_source_1l00578"/>00578 }
+<anchor xml:id="__tag_panel_8cpp_source_1l00579"/>00579 &#32;
+<anchor xml:id="__tag_panel_8cpp_source_1l00580"/><link linkend="_class_flow_tag_panel_1a4c02b86a1776b70cdd14afd50de4736b">00580</link> <emphasis role="keywordtype">void</emphasis>&#32;<link linkend="_class_flow_tag_panel_1a4c02b86a1776b70cdd14afd50de4736b">FlowTagPanel::showChildren</link>()
+<anchor xml:id="__tag_panel_8cpp_source_1l00581"/>00581 {
+<anchor xml:id="__tag_panel_8cpp_source_1l00582"/>00582 &#32;&#32;&#32;&#32;<emphasis role="keywordflow">for</emphasis>&#32;(<link linkend="_class_tag_panel">TagPanel</link>*&#32;m&#32;:&#32;<link linkend="_class_flow_tag_panel_1a908b8a9b0319c8c60588dff9296e9baf">getChildrenTags</link>())&#32;{
+<anchor xml:id="__tag_panel_8cpp_source_1l00583"/>00583 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">if</emphasis>(m)m-&gt;Show();
+<anchor xml:id="__tag_panel_8cpp_source_1l00584"/>00584 &#32;&#32;&#32;&#32;}
+<anchor xml:id="__tag_panel_8cpp_source_1l00585"/>00585 &#32;&#32;&#32;&#32;<link linkend="_class_flow_tag_panel_1a023570c0ce18045ff6d02e7edcd83df6">bottomSpacer</link>=<link linkend="_class_tag_panel_1a480b452569c046bfc03e86a2be72a8eb">tagSizer</link>-&gt;AddSpacer(leftBorder);
+<anchor xml:id="__tag_panel_8cpp_source_1l00586"/>00586 }
+<anchor xml:id="__tag_panel_8cpp_source_1l00587"/>00587 
+<anchor xml:id="__tag_panel_8cpp_source_1l00588"/><link linkend="_class_flow_tag_panel_1a63038ffcf254ad71b547d31456a0fd2f">00588</link> <emphasis role="keywordtype">void</emphasis>&#32;<link linkend="_class_flow_tag_panel_1a63038ffcf254ad71b547d31456a0fd2f">FlowTagPanel::hideEmptyPanel</link>()
+<anchor xml:id="__tag_panel_8cpp_source_1l00589"/>00589 {
+<anchor xml:id="__tag_panel_8cpp_source_1l00590"/>00590 &#32;&#32;&#32;&#32;<link linkend="_class_flow_tag_panel_1a449e6c46847cf6ff4849c43603e576a3">emptyTagPanel</link>-&gt;Hide();
+<anchor xml:id="__tag_panel_8cpp_source_1l00591"/>00591 &#32;&#32;&#32;&#32;<link linkend="_class_flow_tag_panel_1aeb64852326aa4019061f0ba333276b6f">childrenSizer</link>-&gt;Detach(<link linkend="_class_flow_tag_panel_1a449e6c46847cf6ff4849c43603e576a3">emptyTagPanel</link>);
+<anchor xml:id="__tag_panel_8cpp_source_1l00592"/>00592 }
+<anchor xml:id="__tag_panel_8cpp_source_1l00593"/><link linkend="_class_flow_tag_panel_1ad1a55f7e5c1eb22bed92049643bb75b9">00593</link> <emphasis role="keywordtype">void</emphasis>&#32;<link linkend="_class_flow_tag_panel_1ad1a55f7e5c1eb22bed92049643bb75b9">FlowTagPanel::showEmptyPanel</link>()
+<anchor xml:id="__tag_panel_8cpp_source_1l00594"/>00594 {
+<anchor xml:id="__tag_panel_8cpp_source_1l00595"/>00595 &#32;&#32;&#32;&#32;<emphasis role="keywordflow">if</emphasis>&#32;(<link linkend="_class_flow_tag_panel_1a449e6c46847cf6ff4849c43603e576a3">emptyTagPanel</link>)&#32;{
+<anchor xml:id="__tag_panel_8cpp_source_1l00596"/>00596 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<link linkend="_class_flow_tag_panel_1a24aede4ad59f41a079d4c38e26955d55">addChild</link>(<link linkend="_class_flow_tag_panel_1a449e6c46847cf6ff4849c43603e576a3">emptyTagPanel</link>);
+<anchor xml:id="__tag_panel_8cpp_source_1l00597"/>00597 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<link linkend="_class_flow_tag_panel_1a449e6c46847cf6ff4849c43603e576a3">emptyTagPanel</link>-&gt;Show();
+<anchor xml:id="__tag_panel_8cpp_source_1l00598"/>00598 &#32;&#32;&#32;&#32;}
+<anchor xml:id="__tag_panel_8cpp_source_1l00599"/>00599 }
+<anchor xml:id="__tag_panel_8cpp_source_1l00600"/>00600 
+<anchor xml:id="__tag_panel_8cpp_source_1l00601"/><link linkend="_class_flow_tag_panel_1ab190cd6aefb44611ef4b382c315da514">00601</link> <emphasis role="keywordtype">void</emphasis>&#32;<link linkend="_class_flow_tag_panel_1ab190cd6aefb44611ef4b382c315da514">FlowTagPanel::initEmptyPanel</link>()
+<anchor xml:id="__tag_panel_8cpp_source_1l00602"/>00602 {
+<anchor xml:id="__tag_panel_8cpp_source_1l00603"/>00603 &#32;&#32;&#32;&#32;<link linkend="_class_flow_tag_panel_1a449e6c46847cf6ff4849c43603e576a3">emptyTagPanel</link>&#32;=&#32;<emphasis role="keyword">new</emphasis>&#32;<link linkend="_class_empty_panel">EmptyPanel</link>(<emphasis role="keyword">this</emphasis>);
+<anchor xml:id="__tag_panel_8cpp_source_1l00604"/>00604 &#32;&#32;&#32;&#32;<link linkend="_class_flow_tag_panel_1a24aede4ad59f41a079d4c38e26955d55">addChild</link>(<link linkend="_class_flow_tag_panel_1a449e6c46847cf6ff4849c43603e576a3">emptyTagPanel</link>);
+<anchor xml:id="__tag_panel_8cpp_source_1l00605"/>00605 }
+<anchor xml:id="__tag_panel_8cpp_source_1l00606"/>00606 
+<anchor xml:id="__tag_panel_8cpp_source_1l00607"/><link linkend="_class_tag_panel_1ab2f6c36e777443dcffd1cff986027790">00607</link> <emphasis role="keywordtype">void</emphasis>&#32;<link linkend="_class_tag_panel_1ab2f6c36e777443dcffd1cff986027790">TagPanel::initDeletePanel</link>()
+<anchor xml:id="__tag_panel_8cpp_source_1l00608"/>00608 {
+<anchor xml:id="__tag_panel_8cpp_source_1l00609"/>00609 &#32;&#32;&#32;&#32;<link linkend="_class_tag_panel_1a481229251b8e6ee6d44ce1b5abd94c1b">deleteButton</link>&#32;=&#32;<emphasis role="keyword">new</emphasis>&#32;wxButton(<emphasis role="keyword">this</emphasis>,&#32;wxID_ANY,&#32;<emphasis role="stringliteral">&quot;X&quot;</emphasis>);
+<anchor xml:id="__tag_panel_8cpp_source_1l00610"/>00610 &#32;&#32;&#32;&#32;<link linkend="_class_tag_panel_1a43c96ffa9523c002fb96126500209ce8">SetLineFont</link>(<link linkend="_class_tag_panel_1a481229251b8e6ee6d44ce1b5abd94c1b">deleteButton</link>,13);
+<anchor xml:id="__tag_panel_8cpp_source_1l00611"/>00611 &#32;&#32;&#32;&#32;<link linkend="_class_tag_panel_1a481229251b8e6ee6d44ce1b5abd94c1b">deleteButton</link>-&gt;SetForegroundColour(wxColour(255,&#32;255,&#32;255));
+<anchor xml:id="__tag_panel_8cpp_source_1l00612"/>00612 &#32;&#32;&#32;&#32;<link linkend="_class_tag_panel_1a481229251b8e6ee6d44ce1b5abd94c1b">deleteButton</link>-&gt;SetBackgroundColour(wxColour(255,&#32;0,&#32;0));
+<anchor xml:id="__tag_panel_8cpp_source_1l00613"/>00613 &#32;&#32;&#32;&#32;wxSize&#32;textSize&#32;=&#32;<link linkend="_class_tag_panel_1a481229251b8e6ee6d44ce1b5abd94c1b">deleteButton</link>-&gt;GetTextExtent(<link linkend="_class_tag_panel_1a481229251b8e6ee6d44ce1b5abd94c1b">deleteButton</link>-&gt;GetLabel());
+<anchor xml:id="__tag_panel_8cpp_source_1l00614"/>00614 &#32;&#32;&#32;&#32;<link linkend="_class_tag_panel_1a481229251b8e6ee6d44ce1b5abd94c1b">deleteButton</link>-&gt;SetSizeHints(wxSize(textSize.GetWidth()*2.5,&#32;textSize.GetHeight()));
+<anchor xml:id="__tag_panel_8cpp_source_1l00615"/>00615 &#32;&#32;&#32;&#32;<link linkend="_class_tag_panel_1a0fb4a6bb2fdc47ce21e30a61784b804a">lineSizer</link>-&gt;Add(<link linkend="_class_tag_panel_1a481229251b8e6ee6d44ce1b5abd94c1b">deleteButton</link>,&#32;wxSizerFlags().Expand().Border());
+<anchor xml:id="__tag_panel_8cpp_source_1l00616"/>00616 &#32;&#32;&#32;&#32;<link linkend="_class_tag_panel_1a481229251b8e6ee6d44ce1b5abd94c1b">deleteButton</link>-&gt;Bind(wxEVT_LEFT_DOWN,&#32;&amp;<link linkend="_class_tag_panel_1a92b74a6332f46423e1509044989a4a0a">TagPanel::OnDeleteButtonClick</link>,&#32;<emphasis role="keyword">this</emphasis>);
+<anchor xml:id="__tag_panel_8cpp_source_1l00617"/>00617 }
+<anchor xml:id="__tag_panel_8cpp_source_1l00618"/>00618 
+<anchor xml:id="__tag_panel_8cpp_source_1l00619"/><link linkend="_class_tag_panel_1a92b74a6332f46423e1509044989a4a0a">00619</link> <emphasis role="keywordtype">void</emphasis>&#32;<link linkend="_class_tag_panel_1a92b74a6332f46423e1509044989a4a0a">TagPanel::OnDeleteButtonClick</link>(wxMouseEvent&amp;&#32;evt)&#32;{
+<anchor xml:id="__tag_panel_8cpp_source_1l00620"/>00620 &#32;&#32;&#32;&#32;<emphasis role="keyword">auto</emphasis>&#32;parent&#32;=&#32;<link linkend="__tag_panel_8h_1a2f4c4fdbb29d8e8fadcbbd9673b3c370">GetParentTag</link>(<emphasis role="keyword">this</emphasis>);
+<anchor xml:id="__tag_panel_8cpp_source_1l00621"/>00621 &#32;&#32;&#32;&#32;<emphasis role="keywordflow">if</emphasis>&#32;(parent)&#32;{
+<anchor xml:id="__tag_panel_8cpp_source_1l00622"/>00622 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;parent-&gt;getChildrenSizer()-&gt;Detach(<emphasis role="keyword">this</emphasis>);
+<anchor xml:id="__tag_panel_8cpp_source_1l00623"/>00623 &#32;&#32;&#32;&#32;}
+<anchor xml:id="__tag_panel_8cpp_source_1l00624"/>00624 &#32;&#32;&#32;&#32;Destroy();
+<anchor xml:id="__tag_panel_8cpp_source_1l00625"/>00625 &#32;&#32;&#32;&#32;<emphasis role="keywordflow">if</emphasis>&#32;(parent)&#32;{
+<anchor xml:id="__tag_panel_8cpp_source_1l00626"/>00626 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">if</emphasis>&#32;(parent-&gt;isEmpty())&#32;{
+<anchor xml:id="__tag_panel_8cpp_source_1l00627"/>00627 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;parent-&gt;showEmptyPanel();
+<anchor xml:id="__tag_panel_8cpp_source_1l00628"/>00628 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;}
+<anchor xml:id="__tag_panel_8cpp_source_1l00629"/>00629 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;parent-&gt;Layout();
+<anchor xml:id="__tag_panel_8cpp_source_1l00630"/>00630 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;parent-&gt;updateLayout();
+<anchor xml:id="__tag_panel_8cpp_source_1l00631"/>00631 &#32;&#32;&#32;&#32;}
+<anchor xml:id="__tag_panel_8cpp_source_1l00632"/>00632 }
+<anchor xml:id="__tag_panel_8cpp_source_1l00633"/>00633 
+<anchor xml:id="__tag_panel_8cpp_source_1l00634"/><link linkend="_class_flow_tag_panel_1ae49c859a41f499bd84be65ee29f36f73">00634</link> <emphasis role="keywordtype">void</emphasis>&#32;<link linkend="_class_flow_tag_panel_1ae49c859a41f499bd84be65ee29f36f73">FlowTagPanel::RemoveTagPanel</link>(<link linkend="_class_tag_panel">TagPanel</link>*&#32;childPanel)&#32;{
+<anchor xml:id="__tag_panel_8cpp_source_1l00635"/>00635 &#32;&#32;&#32;&#32;<emphasis role="keywordflow">if</emphasis>(<link linkend="_class_flow_tag_panel_1aa81a6c6c05a02665ceef5ee70dfe8552">containsChild</link>(childPanel))RemoveChild(childPanel);
+<anchor xml:id="__tag_panel_8cpp_source_1l00636"/>00636 &#32;&#32;&#32;&#32;<emphasis role="keywordtype">int</emphasis>&#32;index&#32;=&#32;<link linkend="_class_flow_tag_panel_1aaa4b6f8ffb98f825f255cdd2017fc17a">getIndex</link>(childPanel);
+<anchor xml:id="__tag_panel_8cpp_source_1l00637"/>00637 &#32;&#32;&#32;&#32;<emphasis role="keywordflow">if</emphasis>(index&gt;=0)<link linkend="_class_flow_tag_panel_1aeb64852326aa4019061f0ba333276b6f">childrenSizer</link>-&gt;Remove(index);
+<anchor xml:id="__tag_panel_8cpp_source_1l00638"/>00638 }
+<anchor xml:id="__tag_panel_8cpp_source_1l00639"/>00639 
+<anchor xml:id="__tag_panel_8cpp_source_1l00640"/><link linkend="_class_flow_tag_panel_1ae4f118933196a60a71cfa6b4b9b69894">00640</link> <emphasis role="keywordtype">void</emphasis>&#32;<link linkend="_class_flow_tag_panel_1ae4f118933196a60a71cfa6b4b9b69894">FlowTagPanel::setChildrenVisibility</link>(<emphasis role="keywordtype">bool</emphasis>&#32;<link linkend="__units_8h_1adc6e5733fc3c22f0a7b2914188c49c90">state</link>)
+<anchor xml:id="__tag_panel_8cpp_source_1l00641"/>00641 {
+<anchor xml:id="__tag_panel_8cpp_source_1l00642"/>00642 &#32;&#32;&#32;&#32;<emphasis role="keywordflow">switch</emphasis>&#32;(<link linkend="__units_8h_1adc6e5733fc3c22f0a7b2914188c49c90">state</link>)&#32;{
+<anchor xml:id="__tag_panel_8cpp_source_1l00643"/>00643 &#32;&#32;&#32;&#32;<emphasis role="keywordflow">case</emphasis>&#32;<emphasis role="keyword">false</emphasis>:
+<anchor xml:id="__tag_panel_8cpp_source_1l00644"/>00644 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<link linkend="_class_flow_tag_panel_1a1822bbc91daca9379e090f363e870d40">hideChildren</link>();
+<anchor xml:id="__tag_panel_8cpp_source_1l00645"/>00645 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<link linkend="_class_flow_tag_panel_1a168025a358c496c0b7916c64ca718d0c">hider</link>-&gt;SetLabelText(<emphasis role="stringliteral">&quot;+&quot;</emphasis>);
+<anchor xml:id="__tag_panel_8cpp_source_1l00646"/>00646 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;childrenShown&#32;=&#32;<emphasis role="keyword">false</emphasis>;
+<anchor xml:id="__tag_panel_8cpp_source_1l00647"/>00647 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">break</emphasis>;
+<anchor xml:id="__tag_panel_8cpp_source_1l00648"/>00648 &#32;&#32;&#32;&#32;<emphasis role="keywordflow">case</emphasis>&#32;<emphasis role="keyword">true</emphasis>:
+<anchor xml:id="__tag_panel_8cpp_source_1l00649"/>00649 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<link linkend="_class_flow_tag_panel_1a4c02b86a1776b70cdd14afd50de4736b">showChildren</link>();
+<anchor xml:id="__tag_panel_8cpp_source_1l00650"/>00650 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<link linkend="_class_flow_tag_panel_1a168025a358c496c0b7916c64ca718d0c">hider</link>-&gt;SetLabelText(<emphasis role="stringliteral">&quot;-&quot;</emphasis>);
+<anchor xml:id="__tag_panel_8cpp_source_1l00651"/>00651 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;childrenShown&#32;=&#32;<emphasis role="keyword">true</emphasis>;
+<anchor xml:id="__tag_panel_8cpp_source_1l00652"/>00652 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">break</emphasis>;
+<anchor xml:id="__tag_panel_8cpp_source_1l00653"/>00653 &#32;&#32;&#32;&#32;}
+<anchor xml:id="__tag_panel_8cpp_source_1l00654"/>00654 }
+<anchor xml:id="__tag_panel_8cpp_source_1l00655"/>00655 
+<anchor xml:id="__tag_panel_8cpp_source_1l00656"/><link linkend="_class_flow_tag_panel_1aaa4b6f8ffb98f825f255cdd2017fc17a">00656</link> <emphasis role="keywordtype">int</emphasis>&#32;<link linkend="_class_flow_tag_panel_1aaa4b6f8ffb98f825f255cdd2017fc17a">FlowTagPanel::getIndex</link>(wxSizerItem*&#32;item)
+<anchor xml:id="__tag_panel_8cpp_source_1l00657"/>00657 {
+<anchor xml:id="__tag_panel_8cpp_source_1l00658"/>00658 &#32;&#32;&#32;&#32;<emphasis role="keywordflow">if</emphasis>&#32;(item)&#32;{
+<anchor xml:id="__tag_panel_8cpp_source_1l00659"/>00659 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keyword">auto</emphasis>&#32;listChildren&#32;=&#32;<link linkend="_class_flow_tag_panel_1aeb64852326aa4019061f0ba333276b6f">childrenSizer</link>-&gt;GetChildren();
+<anchor xml:id="__tag_panel_8cpp_source_1l00660"/>00660 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">for</emphasis>&#32;(<emphasis role="keyword">auto</emphasis>&#32;it&#32;:&#32;listChildren)&#32;{
+<anchor xml:id="__tag_panel_8cpp_source_1l00661"/>00661 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">if</emphasis>&#32;(it&#32;==&#32;item)&#32;{
+<anchor xml:id="__tag_panel_8cpp_source_1l00662"/>00662 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">return</emphasis>&#32;listChildren.IndexOf(it);
+<anchor xml:id="__tag_panel_8cpp_source_1l00663"/>00663 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;}
+<anchor xml:id="__tag_panel_8cpp_source_1l00664"/>00664 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;}
+<anchor xml:id="__tag_panel_8cpp_source_1l00665"/>00665 &#32;&#32;&#32;&#32;}
+<anchor xml:id="__tag_panel_8cpp_source_1l00666"/>00666 &#32;&#32;&#32;&#32;<emphasis role="keywordflow">return</emphasis>&#32;-1;
+<anchor xml:id="__tag_panel_8cpp_source_1l00667"/>00667 }
+<anchor xml:id="__tag_panel_8cpp_source_1l00668"/>00668 
+<anchor xml:id="__tag_panel_8cpp_source_1l00669"/><link linkend="_class_tag_panel_1a975da9b33d0c94992472b291df4aadbe">00669</link> <emphasis role="keywordtype">int</emphasis>&#32;<link linkend="_class_tag_panel_1a975da9b33d0c94992472b291df4aadbe">TagPanel::getIndexOf</link>(wxSizer*&#32;sizer,wxSizerItem*&#32;item)
+<anchor xml:id="__tag_panel_8cpp_source_1l00670"/>00670 {
+<anchor xml:id="__tag_panel_8cpp_source_1l00671"/>00671 &#32;&#32;&#32;&#32;<emphasis role="keywordflow">if</emphasis>&#32;(item)&#32;{
+<anchor xml:id="__tag_panel_8cpp_source_1l00672"/>00672 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keyword">auto</emphasis>&amp;&#32;listChildren&#32;=&#32;sizer-&gt;GetChildren();
+<anchor xml:id="__tag_panel_8cpp_source_1l00673"/>00673 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">for</emphasis>&#32;(<emphasis role="keyword">auto</emphasis>&#32;it&#32;:&#32;listChildren)&#32;{
+<anchor xml:id="__tag_panel_8cpp_source_1l00674"/>00674 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">if</emphasis>&#32;(it&#32;==&#32;item)&#32;{
+<anchor xml:id="__tag_panel_8cpp_source_1l00675"/>00675 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">return</emphasis>&#32;listChildren.IndexOf(it);
+<anchor xml:id="__tag_panel_8cpp_source_1l00676"/>00676 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;}
+<anchor xml:id="__tag_panel_8cpp_source_1l00677"/>00677 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;}
+<anchor xml:id="__tag_panel_8cpp_source_1l00678"/>00678 &#32;&#32;&#32;&#32;}
+<anchor xml:id="__tag_panel_8cpp_source_1l00679"/>00679 &#32;&#32;&#32;&#32;<emphasis role="keywordflow">return</emphasis>&#32;-1;
+<anchor xml:id="__tag_panel_8cpp_source_1l00680"/>00680 }
+<anchor xml:id="__tag_panel_8cpp_source_1l00681"/>00681 
+<anchor xml:id="__tag_panel_8cpp_source_1l00682"/><link linkend="_class_flow_tag_panel_1aff934a06834390a1d0b16c4d77740ecd">00682</link> <emphasis role="keywordtype">int</emphasis>&#32;<link linkend="_class_flow_tag_panel_1aaa4b6f8ffb98f825f255cdd2017fc17a">FlowTagPanel::getIndex</link>(<link linkend="_class_tag_panel">TagPanel</link>*&#32;panel)
+<anchor xml:id="__tag_panel_8cpp_source_1l00683"/>00683 {
+<anchor xml:id="__tag_panel_8cpp_source_1l00684"/>00684 &#32;&#32;&#32;&#32;<emphasis role="keywordflow">if</emphasis>&#32;(panel)&#32;{
+<anchor xml:id="__tag_panel_8cpp_source_1l00685"/>00685 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;wxSizerItem*&#32;item=<link linkend="_class_flow_tag_panel_1a292d74fbfba61f5c7df90789a9eb31e2">getSizerItem</link>(panel);
+<anchor xml:id="__tag_panel_8cpp_source_1l00686"/>00686 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">if</emphasis>&#32;(item)&#32;{
+<anchor xml:id="__tag_panel_8cpp_source_1l00687"/>00687 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">return</emphasis>&#32;<link linkend="_class_flow_tag_panel_1aeb64852326aa4019061f0ba333276b6f">childrenSizer</link>-&gt;GetChildren().IndexOf(item);
+<anchor xml:id="__tag_panel_8cpp_source_1l00688"/>00688 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;}
+<anchor xml:id="__tag_panel_8cpp_source_1l00689"/>00689 &#32;&#32;&#32;&#32;}
+<anchor xml:id="__tag_panel_8cpp_source_1l00690"/>00690 &#32;&#32;&#32;&#32;<emphasis role="keywordflow">return</emphasis>&#32;-1;
+<anchor xml:id="__tag_panel_8cpp_source_1l00691"/>00691 }
+<anchor xml:id="__tag_panel_8cpp_source_1l00692"/>00692 
+<anchor xml:id="__tag_panel_8cpp_source_1l00693"/>00693 
+<anchor xml:id="__tag_panel_8cpp_source_1l00694"/><link linkend="_class_flow_tag_panel_1a8b4daa4a979fd8a3eecba10b92bb46e7">00694</link> <emphasis role="keywordtype">int</emphasis>&#32;<link linkend="_class_flow_tag_panel_1a8b4daa4a979fd8a3eecba10b92bb46e7">FlowTagPanel::getNbParents</link>()
+<anchor xml:id="__tag_panel_8cpp_source_1l00695"/>00695 {
+<anchor xml:id="__tag_panel_8cpp_source_1l00696"/>00696 &#32;&#32;&#32;&#32;<emphasis role="keywordflow">return</emphasis>&#32;<link linkend="_class_flow_tag_panel_1a29d6875da55a05e85043eafb6d4e9e0f">nbFlowParents</link>;
+<anchor xml:id="__tag_panel_8cpp_source_1l00697"/>00697 }
+<anchor xml:id="__tag_panel_8cpp_source_1l00698"/>00698 
+<anchor xml:id="__tag_panel_8cpp_source_1l00699"/><link linkend="_class_flow_tag_panel_1a38a7e2167532623906ae82c0b92728c2">00699</link> <emphasis role="keywordtype">bool</emphasis>&#32;<link linkend="_class_flow_tag_panel_1a38a7e2167532623906ae82c0b92728c2">FlowTagPanel::childrenVisible</link>()
+<anchor xml:id="__tag_panel_8cpp_source_1l00700"/>00700 {
+<anchor xml:id="__tag_panel_8cpp_source_1l00701"/>00701 &#32;&#32;&#32;&#32;<emphasis role="keywordflow">return</emphasis>&#32;childrenShown;
+<anchor xml:id="__tag_panel_8cpp_source_1l00702"/>00702 }
+<anchor xml:id="__tag_panel_8cpp_source_1l00703"/>00703 
+<anchor xml:id="__tag_panel_8cpp_source_1l00704"/><link linkend="_class_flow_tag_panel_1acf474cc277820301384f9b1d84f1c9d0">00704</link> wxButton*&#32;<link linkend="_class_flow_tag_panel_1acf474cc277820301384f9b1d84f1c9d0">FlowTagPanel::getHider</link>()
+<anchor xml:id="__tag_panel_8cpp_source_1l00705"/>00705 {
+<anchor xml:id="__tag_panel_8cpp_source_1l00706"/>00706 &#32;&#32;&#32;&#32;<emphasis role="keywordflow">return</emphasis>&#32;<link linkend="_class_flow_tag_panel_1a168025a358c496c0b7916c64ca718d0c">hider</link>;
+<anchor xml:id="__tag_panel_8cpp_source_1l00707"/>00707 }
+<anchor xml:id="__tag_panel_8cpp_source_1l00708"/>00708 
+<anchor xml:id="__tag_panel_8cpp_source_1l00709"/>00709 
+<anchor xml:id="__tag_panel_8cpp_source_1l00710"/>00710 
+<anchor xml:id="__tag_panel_8cpp_source_1l00711"/>00711 
+<anchor xml:id="__tag_panel_8cpp_source_1l00712"/><link linkend="_class_tag_panel_1a5d57b2c271078562ca65bf9d0f9c656e">00712</link> <emphasis role="keywordtype">void</emphasis>&#32;<link linkend="_class_tag_panel_1a5d57b2c271078562ca65bf9d0f9c656e">TagPanel::DrawBordersEvent</link>(wxPaintEvent&amp;&#32;<link linkend="_paths_8cpp_1a93114eafe7b571802c6787926ec00d93">event</link>)&#32;{
+<anchor xml:id="__tag_panel_8cpp_source_1l00713"/>00713 &#32;&#32;&#32;&#32;wxPaintDC&#32;dc(<emphasis role="keyword">this</emphasis>);
+<anchor xml:id="__tag_panel_8cpp_source_1l00714"/>00714 &#32;&#32;&#32;&#32;dc.SetPen(wxPen(wxColour(0,&#32;0,&#32;0),&#32;1));
+<anchor xml:id="__tag_panel_8cpp_source_1l00715"/>00715 &#32;&#32;&#32;&#32;dc.SetBrush(*wxTRANSPARENT_BRUSH);
+<anchor xml:id="__tag_panel_8cpp_source_1l00716"/>00716 &#32;&#32;&#32;&#32;wxSize&#32;size&#32;=&#32;GetSize();
+<anchor xml:id="__tag_panel_8cpp_source_1l00717"/>00717 &#32;&#32;&#32;&#32;dc.DrawRectangle(wxPoint(0,&#32;0),&#32;size);
+<anchor xml:id="__tag_panel_8cpp_source_1l00718"/>00718 &#32;&#32;&#32;&#32;<emphasis role="keyword">event</emphasis>.Skip();
+<anchor xml:id="__tag_panel_8cpp_source_1l00719"/>00719 }
+<anchor xml:id="__tag_panel_8cpp_source_1l00720"/><link linkend="_class_tag_panel_1a72db5ac659ea9dc41b2a236bd5ff0a12">00720</link> <emphasis role="keywordtype">void</emphasis>&#32;<link linkend="_class_tag_panel_1a72db5ac659ea9dc41b2a236bd5ff0a12">TagPanel::OnHoverPaint</link>(wxPaintEvent&amp;&#32;<link linkend="_paths_8cpp_1a93114eafe7b571802c6787926ec00d93">event</link>)&#32;{
+<anchor xml:id="__tag_panel_8cpp_source_1l00721"/>00721 
+<anchor xml:id="__tag_panel_8cpp_source_1l00722"/>00722 &#32;&#32;&#32;&#32;<emphasis role="keywordflow">if</emphasis>&#32;(<link linkend="_class_tag_panel_1ab9e4fd9beea1943bb1fb664bf4b0f876">isHovering</link>&amp;&amp;!<link linkend="_class_tag_panel_1a57f33df8ee51553bbb6a1f4b4f727d82">isInserting</link>)&#32;{
+<anchor xml:id="__tag_panel_8cpp_source_1l00723"/>00723 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;wxPaintDC&#32;dc(<emphasis role="keyword">this</emphasis>);
+<anchor xml:id="__tag_panel_8cpp_source_1l00724"/>00724 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordtype">int</emphasis>&#32;red&#32;=&#32;<link linkend="_class_tag_panel_1a2968cbcc5c04e34a50085877ddb53f65">getPanelColour</link>().Red()*0.7;
+<anchor xml:id="__tag_panel_8cpp_source_1l00725"/>00725 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordtype">int</emphasis>&#32;green&#32;=&#32;<link linkend="_class_tag_panel_1a2968cbcc5c04e34a50085877ddb53f65">getPanelColour</link>().Green()*0.7;
+<anchor xml:id="__tag_panel_8cpp_source_1l00726"/>00726 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordtype">int</emphasis>&#32;blue&#32;=&#32;<link linkend="_class_tag_panel_1a2968cbcc5c04e34a50085877ddb53f65">getPanelColour</link>().Blue()*0.7;
+<anchor xml:id="__tag_panel_8cpp_source_1l00727"/>00727 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;wxColour&#32;HoverColor&#32;=&#32;wxColour(red,&#32;green,&#32;blue);
+<anchor xml:id="__tag_panel_8cpp_source_1l00728"/>00728 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;dc.SetPen(wxPen(HoverColor));
+<anchor xml:id="__tag_panel_8cpp_source_1l00729"/>00729 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;dc.SetBrush(wxBrush(HoverColor));
+<anchor xml:id="__tag_panel_8cpp_source_1l00730"/>00730 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;dc.DrawRectangle(wxPoint(0,&#32;0),&#32;GetSize());
+<anchor xml:id="__tag_panel_8cpp_source_1l00731"/>00731 &#32;&#32;&#32;&#32;}
+<anchor xml:id="__tag_panel_8cpp_source_1l00732"/>00732 &#32;&#32;&#32;&#32;<emphasis role="keyword">event</emphasis>.Skip();
+<anchor xml:id="__tag_panel_8cpp_source_1l00733"/>00733 }
+<anchor xml:id="__tag_panel_8cpp_source_1l00734"/><link linkend="_class_tag_panel_1af7c491223a887d2ce97353157adc9110">00734</link> <emphasis role="keywordtype">void</emphasis>&#32;<link linkend="_class_tag_panel_1af7c491223a887d2ce97353157adc9110">TagPanel::OnInsert</link>(wxPaintEvent&amp;&#32;evt)
+<anchor xml:id="__tag_panel_8cpp_source_1l00735"/>00735 {
+<anchor xml:id="__tag_panel_8cpp_source_1l00736"/>00736 &#32;&#32;&#32;&#32;<emphasis role="keywordflow">if</emphasis>&#32;(<link linkend="_class_tag_panel_1a57f33df8ee51553bbb6a1f4b4f727d82">isInserting</link>)&#32;{
+<anchor xml:id="__tag_panel_8cpp_source_1l00737"/>00737 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;wxPaintDC&#32;dc(<emphasis role="keyword">this</emphasis>);
+<anchor xml:id="__tag_panel_8cpp_source_1l00738"/>00738 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;wxColour&#32;grayColour(150,&#32;150,&#32;150);
+<anchor xml:id="__tag_panel_8cpp_source_1l00739"/>00739 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;dc.SetPen(wxPen(grayColour));
+<anchor xml:id="__tag_panel_8cpp_source_1l00740"/>00740 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;dc.SetBrush(wxBrush(grayColour));
+<anchor xml:id="__tag_panel_8cpp_source_1l00741"/>00741 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<link linkend="_class_tag_panel_1af925f36858bbc30c39bd4716f64822d3">updateInsertRect</link>();
+<anchor xml:id="__tag_panel_8cpp_source_1l00742"/>00742 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;dc.DrawRectangle(<link linkend="_class_tag_panel_1ac08e1909ad79173fead54cf2e6c7be61">insertPoint</link>,&#32;<link linkend="_class_tag_panel_1ac6667f655542d928b04f273ba453e7c9">insertRect</link>);
+<anchor xml:id="__tag_panel_8cpp_source_1l00743"/>00743 &#32;&#32;&#32;&#32;}
+<anchor xml:id="__tag_panel_8cpp_source_1l00744"/>00744 &#32;&#32;&#32;&#32;evt.Skip();
+<anchor xml:id="__tag_panel_8cpp_source_1l00745"/>00745 }
+<anchor xml:id="__tag_panel_8cpp_source_1l00746"/>00746 
+<anchor xml:id="__tag_panel_8cpp_source_1l00747"/>00747 
+<anchor xml:id="__tag_panel_8cpp_source_1l00748"/><link linkend="_class_tag_panel_1a01e839de7aa3bedbe9a7bc1f152a02f8">00748</link> <emphasis role="keywordtype">void</emphasis>&#32;<link linkend="_class_tag_panel_1a01e839de7aa3bedbe9a7bc1f152a02f8">TagPanel::setStaticTagName</link>()
+<anchor xml:id="__tag_panel_8cpp_source_1l00749"/>00749 {
+<anchor xml:id="__tag_panel_8cpp_source_1l00750"/>00750 &#32;&#32;&#32;&#32;<link linkend="_class_tag_panel_1aadc6b7d84d378ff8db4682080627030f">policeSize</link>&#32;=&#32;13;
+<anchor xml:id="__tag_panel_8cpp_source_1l00751"/>00751 &#32;&#32;&#32;&#32;<link linkend="_class_tag_panel_1a0decd0f2236551f78024b107a5ed2e5f">staticTagName</link>&#32;=&#32;<emphasis role="keyword">new</emphasis>&#32;wxStaticText(<emphasis role="keyword">this</emphasis>,&#32;wxID_ANY,<link linkend="_class_tag_panel_1a5dd671ef158b702eb9b17b88fe6c79b6">tagName</link>);
+<anchor xml:id="__tag_panel_8cpp_source_1l00752"/>00752 &#32;&#32;&#32;&#32;wxFont&#32;font(<link linkend="_class_tag_panel_1aadc6b7d84d378ff8db4682080627030f">policeSize</link>,&#32;wxFONTFAMILY_DEFAULT,&#32;wxFONTSTYLE_NORMAL,&#32;wxFONTWEIGHT_EXTRAHEAVY);
+<anchor xml:id="__tag_panel_8cpp_source_1l00753"/>00753 &#32;&#32;&#32;&#32;<link linkend="_class_tag_panel_1a0decd0f2236551f78024b107a5ed2e5f">staticTagName</link>-&gt;SetFont(font);
+<anchor xml:id="__tag_panel_8cpp_source_1l00754"/>00754 &#32;&#32;&#32;&#32;<link linkend="_class_tag_panel_1a0decd0f2236551f78024b107a5ed2e5f">staticTagName</link>-&gt;SetForegroundColour(<link linkend="_class_tag_panel_1a23f2d5d739a33e4f3e4c26e1ee160d46">tagNameColor</link>);
+<anchor xml:id="__tag_panel_8cpp_source_1l00755"/>00755 &#32;&#32;&#32;&#32;<link linkend="_class_tag_panel_1af2926b62ee8940d7aa87591255623814">addTagName</link>();
+<anchor xml:id="__tag_panel_8cpp_source_1l00756"/>00756 }
+<anchor xml:id="__tag_panel_8cpp_source_1l00757"/>00757 
+<anchor xml:id="__tag_panel_8cpp_source_1l00758"/><link linkend="_class_tag_panel_1af2926b62ee8940d7aa87591255623814">00758</link> <emphasis role="keywordtype">void</emphasis>&#32;<link linkend="_class_tag_panel_1af2926b62ee8940d7aa87591255623814">TagPanel::addTagName</link>()
+<anchor xml:id="__tag_panel_8cpp_source_1l00759"/>00759 {
+<anchor xml:id="__tag_panel_8cpp_source_1l00760"/>00760 &#32;&#32;&#32;&#32;<link linkend="_class_tag_panel_1a0fb4a6bb2fdc47ce21e30a61784b804a">lineSizer</link>-&gt;Add(<link linkend="_class_tag_panel_1a0decd0f2236551f78024b107a5ed2e5f">staticTagName</link>,&#32;wxSizerFlags().Expand().Border(wxALL,7));
+<anchor xml:id="__tag_panel_8cpp_source_1l00761"/>00761 }
+<anchor xml:id="__tag_panel_8cpp_source_1l00762"/>00762 
+<anchor xml:id="__tag_panel_8cpp_source_1l00763"/><link linkend="_class_tag_panel_1a5edee5cee34656fe89fec14f26af0f80">00763</link> <emphasis role="keywordtype">void</emphasis>&#32;<link linkend="_class_tag_panel_1a5edee5cee34656fe89fec14f26af0f80">TagPanel::setPanelColor</link>()
+<anchor xml:id="__tag_panel_8cpp_source_1l00764"/>00764 {
+<anchor xml:id="__tag_panel_8cpp_source_1l00765"/>00765 &#32;&#32;&#32;&#32;<link linkend="_class_tag_panel_1a0de4005aceb4d6809ec88ffb899f6d17">panelColor</link>&#32;=&#32;wxColour(200,200,200);
+<anchor xml:id="__tag_panel_8cpp_source_1l00766"/>00766 &#32;&#32;&#32;&#32;SetBackgroundColour(<link linkend="_class_tag_panel_1a0de4005aceb4d6809ec88ffb899f6d17">panelColor</link>);
+<anchor xml:id="__tag_panel_8cpp_source_1l00767"/>00767 &#32;&#32;&#32;&#32;this-&gt;SetBackgroundColour(<link linkend="_class_tag_panel_1a0de4005aceb4d6809ec88ffb899f6d17">panelColor</link>);
+<anchor xml:id="__tag_panel_8cpp_source_1l00768"/>00768 }
+<anchor xml:id="__tag_panel_8cpp_source_1l00769"/><link linkend="_class_empty_panel_1a7dc87873614abbe988f37b4b8482a5b2">00769</link> <emphasis role="keywordtype">void</emphasis>&#32;<link linkend="_class_empty_panel_1a7dc87873614abbe988f37b4b8482a5b2">EmptyPanel::setPanelColor</link>()
+<anchor xml:id="__tag_panel_8cpp_source_1l00770"/>00770 {
+<anchor xml:id="__tag_panel_8cpp_source_1l00771"/>00771 &#32;&#32;&#32;&#32;<link linkend="_class_tag_panel_1a0de4005aceb4d6809ec88ffb899f6d17">panelColor</link>&#32;=&#32;wxColour(255,&#32;255,&#32;255);
+<anchor xml:id="__tag_panel_8cpp_source_1l00772"/>00772 &#32;&#32;&#32;&#32;SetBackgroundColour(<link linkend="_class_tag_panel_1a0de4005aceb4d6809ec88ffb899f6d17">panelColor</link>);
+<anchor xml:id="__tag_panel_8cpp_source_1l00773"/>00773 &#32;&#32;&#32;&#32;this-&gt;SetBackgroundColour(<link linkend="_class_tag_panel_1a0de4005aceb4d6809ec88ffb899f6d17">panelColor</link>);
+<anchor xml:id="__tag_panel_8cpp_source_1l00774"/>00774 }
+<anchor xml:id="__tag_panel_8cpp_source_1l00775"/>00775 
+<anchor xml:id="__tag_panel_8cpp_source_1l00776"/><link linkend="_class_loop_tag_panel_1ad92c15e604570adffa87bf827ec7a116">00776</link> <emphasis role="keywordtype">void</emphasis>&#32;<link linkend="_class_loop_tag_panel_1ad92c15e604570adffa87bf827ec7a116">LoopTagPanel::setPanelColor</link>()
+<anchor xml:id="__tag_panel_8cpp_source_1l00777"/>00777 {
+<anchor xml:id="__tag_panel_8cpp_source_1l00778"/>00778 &#32;&#32;&#32;&#32;<link linkend="_class_tag_panel_1a0de4005aceb4d6809ec88ffb899f6d17">panelColor</link>&#32;=&#32;wxColour(255,&#32;255,&#32;0);
+<anchor xml:id="__tag_panel_8cpp_source_1l00779"/>00779 &#32;&#32;&#32;&#32;SetBackgroundColour(<link linkend="_class_tag_panel_1a0de4005aceb4d6809ec88ffb899f6d17">panelColor</link>);
+<anchor xml:id="__tag_panel_8cpp_source_1l00780"/>00780 &#32;&#32;&#32;&#32;this-&gt;SetBackgroundColour(<link linkend="_class_tag_panel_1a0de4005aceb4d6809ec88ffb899f6d17">panelColor</link>);
+<anchor xml:id="__tag_panel_8cpp_source_1l00781"/>00781 }
+<anchor xml:id="__tag_panel_8cpp_source_1l00782"/>00782 
+<anchor xml:id="__tag_panel_8cpp_source_1l00783"/><link linkend="_class_main_tag_panel_1aac0341b624d24a316f4b8939cbae76f6">00783</link> <emphasis role="keywordtype">void</emphasis>&#32;<link linkend="_class_main_tag_panel_1aac0341b624d24a316f4b8939cbae76f6">MainTagPanel::setPanelColor</link>()
+<anchor xml:id="__tag_panel_8cpp_source_1l00784"/>00784 {
+<anchor xml:id="__tag_panel_8cpp_source_1l00785"/>00785 &#32;&#32;&#32;&#32;<link linkend="_class_tag_panel_1a0de4005aceb4d6809ec88ffb899f6d17">panelColor</link>&#32;=&#32;wxColour(30,&#32;30,&#32;30);
+<anchor xml:id="__tag_panel_8cpp_source_1l00786"/>00786 &#32;&#32;&#32;&#32;SetBackgroundColour(<link linkend="_class_tag_panel_1a0de4005aceb4d6809ec88ffb899f6d17">panelColor</link>);
+<anchor xml:id="__tag_panel_8cpp_source_1l00787"/>00787 &#32;&#32;&#32;&#32;this-&gt;SetBackgroundColour(<link linkend="_class_tag_panel_1a0de4005aceb4d6809ec88ffb899f6d17">panelColor</link>);
+<anchor xml:id="__tag_panel_8cpp_source_1l00788"/>00788 }
+<anchor xml:id="__tag_panel_8cpp_source_1l00789"/><link linkend="_class_if_tag_panel_1aa1154b083f5a1492358620996cd215e4">00789</link> <emphasis role="keywordtype">void</emphasis>&#32;<link linkend="_class_if_tag_panel_1aa1154b083f5a1492358620996cd215e4">IfTagPanel::setPanelColor</link>()
+<anchor xml:id="__tag_panel_8cpp_source_1l00790"/>00790 {
+<anchor xml:id="__tag_panel_8cpp_source_1l00791"/>00791 &#32;&#32;&#32;&#32;<link linkend="_class_tag_panel_1a0de4005aceb4d6809ec88ffb899f6d17">panelColor</link>&#32;=&#32;wxColour(150,&#32;255,&#32;100);
+<anchor xml:id="__tag_panel_8cpp_source_1l00792"/>00792 &#32;&#32;&#32;&#32;SetBackgroundColour(<link linkend="_class_tag_panel_1a0de4005aceb4d6809ec88ffb899f6d17">panelColor</link>);
+<anchor xml:id="__tag_panel_8cpp_source_1l00793"/>00793 &#32;&#32;&#32;&#32;this-&gt;SetBackgroundColour(<link linkend="_class_tag_panel_1a0de4005aceb4d6809ec88ffb899f6d17">panelColor</link>);
+<anchor xml:id="__tag_panel_8cpp_source_1l00794"/>00794 }
+<anchor xml:id="__tag_panel_8cpp_source_1l00795"/>00795 
+<anchor xml:id="__tag_panel_8cpp_source_1l00796"/><link linkend="_class_bool_tag_panel_1a80329102b57ab9a2db08539bfbe7bf10">00796</link> <emphasis role="keywordtype">void</emphasis>&#32;<link linkend="_class_bool_tag_panel_1a80329102b57ab9a2db08539bfbe7bf10">BoolTagPanel::setPanelColor</link>()
+<anchor xml:id="__tag_panel_8cpp_source_1l00797"/>00797 {
+<anchor xml:id="__tag_panel_8cpp_source_1l00798"/>00798 &#32;&#32;&#32;&#32;<link linkend="_class_tag_panel_1a0de4005aceb4d6809ec88ffb899f6d17">panelColor</link>&#32;=&#32;wxColour(50,&#32;50,&#32;230);
+<anchor xml:id="__tag_panel_8cpp_source_1l00799"/>00799 &#32;&#32;&#32;&#32;SetBackgroundColour(<link linkend="_class_tag_panel_1a0de4005aceb4d6809ec88ffb899f6d17">panelColor</link>);
+<anchor xml:id="__tag_panel_8cpp_source_1l00800"/>00800 &#32;&#32;&#32;&#32;this-&gt;SetBackgroundColour(<link linkend="_class_tag_panel_1a0de4005aceb4d6809ec88ffb899f6d17">panelColor</link>);
+<anchor xml:id="__tag_panel_8cpp_source_1l00801"/>00801 }
+<anchor xml:id="__tag_panel_8cpp_source_1l00802"/>00802 
+<anchor xml:id="__tag_panel_8cpp_source_1l00803"/>00803 
+<anchor xml:id="__tag_panel_8cpp_source_1l00804"/><link linkend="_class_flow_tag_panel_1a76162eeee3010c06151bae79e421f87e">00804</link> <emphasis role="keywordtype">void</emphasis>&#32;<link linkend="_class_flow_tag_panel_1a76162eeee3010c06151bae79e421f87e">FlowTagPanel::setPanelColor</link>()
+<anchor xml:id="__tag_panel_8cpp_source_1l00805"/>00805 {
+<anchor xml:id="__tag_panel_8cpp_source_1l00806"/>00806 &#32;&#32;&#32;&#32;<emphasis role="keywordtype">int</emphasis>&#32;r&#32;=&#32;rand()&#32;%&#32;255;
+<anchor xml:id="__tag_panel_8cpp_source_1l00807"/>00807 &#32;&#32;&#32;&#32;<emphasis role="keywordtype">int</emphasis>&#32;g&#32;=&#32;r&#32;+&#32;255&#32;/&#32;2;
+<anchor xml:id="__tag_panel_8cpp_source_1l00808"/>00808 &#32;&#32;&#32;&#32;<link linkend="_class_tag_panel_1a0de4005aceb4d6809ec88ffb899f6d17">panelColor</link>&#32;=&#32;wxColour(r,&#32;g,&#32;rand()&#32;%&#32;255);
+<anchor xml:id="__tag_panel_8cpp_source_1l00809"/>00809 &#32;&#32;&#32;&#32;SetBackgroundColour(<link linkend="_class_tag_panel_1a0de4005aceb4d6809ec88ffb899f6d17">panelColor</link>);
+<anchor xml:id="__tag_panel_8cpp_source_1l00810"/>00810 &#32;&#32;&#32;&#32;this-&gt;SetBackgroundColour(<link linkend="_class_tag_panel_1a0de4005aceb4d6809ec88ffb899f6d17">panelColor</link>);
+<anchor xml:id="__tag_panel_8cpp_source_1l00811"/>00811 }
+<anchor xml:id="__tag_panel_8cpp_source_1l00812"/>00812 
+<anchor xml:id="__tag_panel_8cpp_source_1l00813"/><link linkend="_class_tag_panel_1ae24d607788ed14f2fc8b6a88ff9b7602">00813</link> <emphasis role="keywordtype">void</emphasis>&#32;<link linkend="_class_tag_panel_1ae24d607788ed14f2fc8b6a88ff9b7602">TagPanel::initTagSizer</link>()
+<anchor xml:id="__tag_panel_8cpp_source_1l00814"/>00814 {
+<anchor xml:id="__tag_panel_8cpp_source_1l00815"/>00815 &#32;&#32;&#32;&#32;<link linkend="_class_tag_panel_1a480b452569c046bfc03e86a2be72a8eb">tagSizer</link>&#32;=&#32;<emphasis role="keyword">new</emphasis>&#32;wxBoxSizer(wxVERTICAL);
+<anchor xml:id="__tag_panel_8cpp_source_1l00816"/>00816 }
+<anchor xml:id="__tag_panel_8cpp_source_1l00817"/>00817 
+<anchor xml:id="__tag_panel_8cpp_source_1l00818"/><link linkend="_class_tag_panel_1af74a61159813873c529dbcb17a371a05">00818</link> <emphasis role="keywordtype">void</emphasis>&#32;<link linkend="_class_tag_panel_1af74a61159813873c529dbcb17a371a05">TagPanel::initLineSizer</link>()
+<anchor xml:id="__tag_panel_8cpp_source_1l00819"/>00819 {
+<anchor xml:id="__tag_panel_8cpp_source_1l00820"/>00820 &#32;&#32;&#32;&#32;<link linkend="_class_tag_panel_1a0fb4a6bb2fdc47ce21e30a61784b804a">lineSizer</link>&#32;=&#32;<emphasis role="keyword">new</emphasis>&#32;wxBoxSizer(wxHORIZONTAL);
+<anchor xml:id="__tag_panel_8cpp_source_1l00821"/>00821 &#32;&#32;&#32;&#32;<link linkend="_class_tag_panel_1a480b452569c046bfc03e86a2be72a8eb">tagSizer</link>-&gt;Add(<link linkend="_class_tag_panel_1a0fb4a6bb2fdc47ce21e30a61784b804a">lineSizer</link>,&#32;wxSizerFlags().Expand());
+<anchor xml:id="__tag_panel_8cpp_source_1l00822"/>00822 }
+<anchor xml:id="__tag_panel_8cpp_source_1l00823"/>00823 
+<anchor xml:id="__tag_panel_8cpp_source_1l00824"/>00824 
+<anchor xml:id="__tag_panel_8cpp_source_1l00825"/><link linkend="_class_flow_tag_panel_1a8168f4dc819be19de5886ca6fa509b03">00825</link> <emphasis role="keywordtype">void</emphasis>&#32;<link linkend="_class_flow_tag_panel_1a8168f4dc819be19de5886ca6fa509b03">FlowTagPanel::initChildrenSizer</link>()
+<anchor xml:id="__tag_panel_8cpp_source_1l00826"/>00826 {
+<anchor xml:id="__tag_panel_8cpp_source_1l00827"/>00827 &#32;&#32;&#32;&#32;<link linkend="_class_flow_tag_panel_1aeb64852326aa4019061f0ba333276b6f">childrenSizer</link>&#32;=&#32;<emphasis role="keyword">new</emphasis>&#32;wxBoxSizer(wxVERTICAL);
+<anchor xml:id="__tag_panel_8cpp_source_1l00828"/>00828 &#32;&#32;&#32;&#32;<emphasis role="keywordflow">if</emphasis>&#32;(<link linkend="_class_tag_panel_1a480b452569c046bfc03e86a2be72a8eb">tagSizer</link>)<link linkend="_class_tag_panel_1a480b452569c046bfc03e86a2be72a8eb">tagSizer</link>-&gt;Add(<link linkend="_class_flow_tag_panel_1aeb64852326aa4019061f0ba333276b6f">childrenSizer</link>,&#32;wxSizerFlags().Expand());
+<anchor xml:id="__tag_panel_8cpp_source_1l00829"/>00829 }
+<anchor xml:id="__tag_panel_8cpp_source_1l00830"/>00830 
+<anchor xml:id="__tag_panel_8cpp_source_1l00831"/><link linkend="_class_flow_tag_panel_1a0e1305928f680ed7efb08d17d951d814">00831</link> <emphasis role="keywordtype">void</emphasis>&#32;<link linkend="_class_flow_tag_panel_1a0e1305928f680ed7efb08d17d951d814">FlowTagPanel::cloneChildren</link>(<emphasis role="keyword">const</emphasis>&#32;<link linkend="_class_flow_tag_panel">FlowTagPanel</link>*&#32;toCopy)&#32;{
+<anchor xml:id="__tag_panel_8cpp_source_1l00832"/>00832 &#32;&#32;&#32;&#32;<emphasis role="keywordflow">for</emphasis>&#32;(<link linkend="_class_tag_panel">TagPanel</link>*&#32;panel&#32;:&#32;toCopy-&gt;<link linkend="_class_flow_tag_panel_1a908b8a9b0319c8c60588dff9296e9baf">getChildrenTags</link>())&#32;{
+<anchor xml:id="__tag_panel_8cpp_source_1l00833"/>00833 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">if</emphasis>&#32;(panel&#32;!=&#32;toCopy-&gt;<link linkend="_class_flow_tag_panel_1a449e6c46847cf6ff4849c43603e576a3">emptyTagPanel</link>)&#32;{
+<anchor xml:id="__tag_panel_8cpp_source_1l00834"/>00834 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<link linkend="_class_tag_panel">TagPanel</link>*&#32;copy&#32;=&#32;panel-&gt;<link linkend="_class_tag_panel_1a22c1748896f9b2a20dfb610b76216029">clone</link>();
+<anchor xml:id="__tag_panel_8cpp_source_1l00835"/>00835 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;copy-&gt;Reparent(<emphasis role="keyword">this</emphasis>);
+<anchor xml:id="__tag_panel_8cpp_source_1l00836"/>00836 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<link linkend="_class_flow_tag_panel_1a24aede4ad59f41a079d4c38e26955d55">addChild</link>(copy);
+<anchor xml:id="__tag_panel_8cpp_source_1l00837"/>00837 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;}
+<anchor xml:id="__tag_panel_8cpp_source_1l00838"/>00838 &#32;&#32;&#32;&#32;}
+<anchor xml:id="__tag_panel_8cpp_source_1l00839"/>00839 }
+<anchor xml:id="__tag_panel_8cpp_source_1l00840"/>00840 
+<anchor xml:id="__tag_panel_8cpp_source_1l00841"/><link linkend="_class_tag_panel_1a75a1eb94084fc21b1e50322a1c385733">00841</link> <emphasis role="keywordtype">void</emphasis>&#32;<link linkend="_class_tag_panel_1a75a1eb94084fc21b1e50322a1c385733">TagPanel::addComponents</link>(<link linkend="_class_tag_panel">TagPanel</link>*&#32;tag)
+<anchor xml:id="__tag_panel_8cpp_source_1l00842"/>00842 {
+<anchor xml:id="__tag_panel_8cpp_source_1l00843"/>00843 &#32;&#32;&#32;&#32;tag-&gt;<link linkend="_class_tag_panel_1a6e53bfa1e9893d31775867a4f0c7c749">setTagLine</link>();
+<anchor xml:id="__tag_panel_8cpp_source_1l00844"/>00844 }
+<anchor xml:id="__tag_panel_8cpp_source_1l00845"/>00845 
+<anchor xml:id="__tag_panel_8cpp_source_1l00846"/><link linkend="_class_flow_tag_panel_1a92c626fbe9ab70ee75813edec7e323ba">00846</link> <emphasis role="keywordtype">void</emphasis>&#32;<link linkend="_class_flow_tag_panel_1a92c626fbe9ab70ee75813edec7e323ba">FlowTagPanel::addComponents</link>(<link linkend="_class_tag_panel">TagPanel</link>*&#32;tag)
+<anchor xml:id="__tag_panel_8cpp_source_1l00847"/>00847 {
+<anchor xml:id="__tag_panel_8cpp_source_1l00848"/>00848 &#32;&#32;&#32;&#32;tag-&gt;<link linkend="_class_tag_panel_1a6e53bfa1e9893d31775867a4f0c7c749">setTagLine</link>();
+<anchor xml:id="__tag_panel_8cpp_source_1l00849"/>00849 &#32;&#32;&#32;&#32;<link linkend="_class_flow_tag_panel_1ab190cd6aefb44611ef4b382c315da514">initEmptyPanel</link>();
+<anchor xml:id="__tag_panel_8cpp_source_1l00850"/>00850 }
+<anchor xml:id="__tag_panel_8cpp_source_1l00851"/>00851 
+<anchor xml:id="__tag_panel_8cpp_source_1l00852"/><link linkend="_class_tag_panel_1a6e53bfa1e9893d31775867a4f0c7c749">00852</link> <emphasis role="keywordtype">void</emphasis>&#32;<link linkend="_class_tag_panel_1a6e53bfa1e9893d31775867a4f0c7c749">TagPanel::setTagLine</link>()
+<anchor xml:id="__tag_panel_8cpp_source_1l00853"/>00853 {
+<anchor xml:id="__tag_panel_8cpp_source_1l00854"/>00854 &#32;&#32;&#32;&#32;<link linkend="_class_tag_panel_1a01e839de7aa3bedbe9a7bc1f152a02f8">setStaticTagName</link>();
+<anchor xml:id="__tag_panel_8cpp_source_1l00855"/>00855 &#32;&#32;&#32;&#32;<link linkend="_class_tag_panel_1a0fb4a6bb2fdc47ce21e30a61784b804a">lineSizer</link>-&gt;AddStretchSpacer();
+<anchor xml:id="__tag_panel_8cpp_source_1l00856"/>00856 &#32;&#32;&#32;&#32;<link linkend="_class_tag_panel_1aaa6f2d383b2380c7c103b5019bd05782">addMover</link>();
+<anchor xml:id="__tag_panel_8cpp_source_1l00857"/>00857 &#32;&#32;&#32;&#32;<link linkend="_class_tag_panel_1ab2f6c36e777443dcffd1cff986027790">initDeletePanel</link>();
+<anchor xml:id="__tag_panel_8cpp_source_1l00858"/>00858 }
+<anchor xml:id="__tag_panel_8cpp_source_1l00859"/><link linkend="_class_bool_tag_panel_1a978fadc45204eff86c5053fda3bde0b7">00859</link> <emphasis role="keywordtype">void</emphasis>&#32;<link linkend="_class_bool_tag_panel_1a978fadc45204eff86c5053fda3bde0b7">BoolTagPanel::setTagLine</link>()
+<anchor xml:id="__tag_panel_8cpp_source_1l00860"/>00860 {
+<anchor xml:id="__tag_panel_8cpp_source_1l00861"/>00861 &#32;&#32;&#32;&#32;<link linkend="_class_tag_panel_1a01e839de7aa3bedbe9a7bc1f152a02f8">setStaticTagName</link>();
+<anchor xml:id="__tag_panel_8cpp_source_1l00862"/>00862 &#32;&#32;&#32;&#32;<link linkend="_class_tag_panel_1a0fb4a6bb2fdc47ce21e30a61784b804a">lineSizer</link>-&gt;AddStretchSpacer();
+<anchor xml:id="__tag_panel_8cpp_source_1l00863"/>00863 &#32;&#32;&#32;&#32;<link linkend="_class_tag_panel_1aaa6f2d383b2380c7c103b5019bd05782">addMover</link>();
+<anchor xml:id="__tag_panel_8cpp_source_1l00864"/>00864 &#32;&#32;&#32;&#32;<link linkend="_class_tag_panel_1ab2f6c36e777443dcffd1cff986027790">initDeletePanel</link>();
+<anchor xml:id="__tag_panel_8cpp_source_1l00865"/>00865 }
+<anchor xml:id="__tag_panel_8cpp_source_1l00866"/><link linkend="_class_empty_panel_1add5bcab802489294327b7043cd6b7aee">00866</link> <emphasis role="keywordtype">void</emphasis>&#32;<link linkend="_class_empty_panel_1add5bcab802489294327b7043cd6b7aee">EmptyPanel::setTagLine</link>()
+<anchor xml:id="__tag_panel_8cpp_source_1l00867"/>00867 {
+<anchor xml:id="__tag_panel_8cpp_source_1l00868"/>00868 &#32;&#32;&#32;&#32;<link linkend="_class_tag_panel_1a01e839de7aa3bedbe9a7bc1f152a02f8">setStaticTagName</link>();
+<anchor xml:id="__tag_panel_8cpp_source_1l00869"/>00869 }
+<anchor xml:id="__tag_panel_8cpp_source_1l00870"/>00870 
+<anchor xml:id="__tag_panel_8cpp_source_1l00871"/><link linkend="_class_flow_tag_panel_1a6a2ba7ef0cfdae4b333371b8704a0612">00871</link> <emphasis role="keywordtype">void</emphasis>&#32;<link linkend="_class_flow_tag_panel_1a6a2ba7ef0cfdae4b333371b8704a0612">FlowTagPanel::setTagLine</link>()
+<anchor xml:id="__tag_panel_8cpp_source_1l00872"/>00872 {
+<anchor xml:id="__tag_panel_8cpp_source_1l00873"/>00873 &#32;&#32;&#32;&#32;<link linkend="_class_tag_panel_1a01e839de7aa3bedbe9a7bc1f152a02f8">setStaticTagName</link>();
+<anchor xml:id="__tag_panel_8cpp_source_1l00874"/>00874 &#32;&#32;&#32;&#32;<link linkend="_class_tag_panel_1a0fb4a6bb2fdc47ce21e30a61784b804a">lineSizer</link>-&gt;AddStretchSpacer();
+<anchor xml:id="__tag_panel_8cpp_source_1l00875"/>00875 &#32;&#32;&#32;&#32;<link linkend="_class_tag_panel_1aaa6f2d383b2380c7c103b5019bd05782">addMover</link>();
+<anchor xml:id="__tag_panel_8cpp_source_1l00876"/>00876 &#32;&#32;&#32;&#32;<link linkend="_class_tag_panel_1ab2f6c36e777443dcffd1cff986027790">initDeletePanel</link>();
+<anchor xml:id="__tag_panel_8cpp_source_1l00877"/>00877 &#32;&#32;&#32;&#32;<link linkend="_class_flow_tag_panel_1a94ca55612cbf5a6300712ffaee243c9b">addHider</link>();
+<anchor xml:id="__tag_panel_8cpp_source_1l00878"/>00878 }
+<anchor xml:id="__tag_panel_8cpp_source_1l00879"/>00879 
+<anchor xml:id="__tag_panel_8cpp_source_1l00880"/><link linkend="_class_if_tag_panel_1a0eecad5e847dada1e8dfbceb5e1e6121">00880</link> <emphasis role="keywordtype">void</emphasis>&#32;<link linkend="_class_if_tag_panel_1a0eecad5e847dada1e8dfbceb5e1e6121">IfTagPanel::setTagLine</link>()
+<anchor xml:id="__tag_panel_8cpp_source_1l00881"/>00881 {
+<anchor xml:id="__tag_panel_8cpp_source_1l00882"/>00882 &#32;&#32;&#32;&#32;<link linkend="_class_tag_panel_1a01e839de7aa3bedbe9a7bc1f152a02f8">setStaticTagName</link>();
+<anchor xml:id="__tag_panel_8cpp_source_1l00883"/>00883 &#32;&#32;&#32;&#32;<link linkend="_class_flow_tag_panel_1aa69c21d11b4824c7d7955a6c35f33564">addCondition</link>();
+<anchor xml:id="__tag_panel_8cpp_source_1l00884"/>00884 &#32;&#32;&#32;&#32;<link linkend="_class_tag_panel_1a0fb4a6bb2fdc47ce21e30a61784b804a">lineSizer</link>-&gt;AddStretchSpacer();
+<anchor xml:id="__tag_panel_8cpp_source_1l00885"/>00885 &#32;&#32;&#32;&#32;<link linkend="_class_tag_panel_1aaa6f2d383b2380c7c103b5019bd05782">addMover</link>();
+<anchor xml:id="__tag_panel_8cpp_source_1l00886"/>00886 &#32;&#32;&#32;&#32;<link linkend="_class_tag_panel_1ab2f6c36e777443dcffd1cff986027790">initDeletePanel</link>();
+<anchor xml:id="__tag_panel_8cpp_source_1l00887"/>00887 &#32;&#32;&#32;&#32;<link linkend="_class_flow_tag_panel_1a94ca55612cbf5a6300712ffaee243c9b">addHider</link>();
+<anchor xml:id="__tag_panel_8cpp_source_1l00888"/>00888 }
+<anchor xml:id="__tag_panel_8cpp_source_1l00889"/>00889 
+<anchor xml:id="__tag_panel_8cpp_source_1l00890"/>00890 
+<anchor xml:id="__tag_panel_8cpp_source_1l00891"/><link linkend="_class_loop_tag_panel_1a199ec8f84860272037a7d2a25051a0a3">00891</link> <emphasis role="keywordtype">void</emphasis>&#32;<link linkend="_class_loop_tag_panel_1a199ec8f84860272037a7d2a25051a0a3">LoopTagPanel::setTagLine</link>()
+<anchor xml:id="__tag_panel_8cpp_source_1l00892"/>00892 {
+<anchor xml:id="__tag_panel_8cpp_source_1l00893"/>00893 &#32;&#32;&#32;&#32;<link linkend="_class_tag_panel_1a01e839de7aa3bedbe9a7bc1f152a02f8">setStaticTagName</link>();
+<anchor xml:id="__tag_panel_8cpp_source_1l00894"/>00894 &#32;&#32;&#32;&#32;<link linkend="_class_flow_tag_panel_1aa69c21d11b4824c7d7955a6c35f33564">addCondition</link>();
+<anchor xml:id="__tag_panel_8cpp_source_1l00895"/>00895 &#32;&#32;&#32;&#32;<link linkend="_class_tag_panel_1a0fb4a6bb2fdc47ce21e30a61784b804a">lineSizer</link>-&gt;AddStretchSpacer();
+<anchor xml:id="__tag_panel_8cpp_source_1l00896"/>00896 &#32;&#32;&#32;&#32;<link linkend="_class_tag_panel_1aaa6f2d383b2380c7c103b5019bd05782">addMover</link>();
+<anchor xml:id="__tag_panel_8cpp_source_1l00897"/>00897 &#32;&#32;&#32;&#32;<link linkend="_class_tag_panel_1ab2f6c36e777443dcffd1cff986027790">initDeletePanel</link>();
+<anchor xml:id="__tag_panel_8cpp_source_1l00898"/>00898 &#32;&#32;&#32;&#32;<link linkend="_class_flow_tag_panel_1a94ca55612cbf5a6300712ffaee243c9b">addHider</link>();
+<anchor xml:id="__tag_panel_8cpp_source_1l00899"/>00899 
+<anchor xml:id="__tag_panel_8cpp_source_1l00900"/>00900 }
+<anchor xml:id="__tag_panel_8cpp_source_1l00901"/><link linkend="_class_main_tag_panel_1ae0748c8b3939b1533b7ae12a9316ca78">00901</link> <emphasis role="keywordtype">void</emphasis>&#32;<link linkend="_class_main_tag_panel_1ae0748c8b3939b1533b7ae12a9316ca78">MainTagPanel::setTagLine</link>()
+<anchor xml:id="__tag_panel_8cpp_source_1l00902"/>00902 {
+<anchor xml:id="__tag_panel_8cpp_source_1l00903"/>00903 &#32;&#32;&#32;&#32;<link linkend="_class_tag_panel_1a01e839de7aa3bedbe9a7bc1f152a02f8">setStaticTagName</link>();
+<anchor xml:id="__tag_panel_8cpp_source_1l00904"/>00904 &#32;&#32;&#32;&#32;<link linkend="_class_tag_panel_1a0fb4a6bb2fdc47ce21e30a61784b804a">lineSizer</link>-&gt;AddStretchSpacer();
+<anchor xml:id="__tag_panel_8cpp_source_1l00905"/>00905 &#32;&#32;&#32;&#32;<link linkend="_class_flow_tag_panel_1a94ca55612cbf5a6300712ffaee243c9b">addHider</link>();
+<anchor xml:id="__tag_panel_8cpp_source_1l00906"/>00906 }
+<anchor xml:id="__tag_panel_8cpp_source_1l00907"/>00907 
+<anchor xml:id="__tag_panel_8cpp_source_1l00908"/>00908 
+<anchor xml:id="__tag_panel_8cpp_source_1l00909"/><link linkend="_class_flow_tag_panel_1a94ca55612cbf5a6300712ffaee243c9b">00909</link> <emphasis role="keywordtype">void</emphasis>&#32;<link linkend="_class_flow_tag_panel_1a94ca55612cbf5a6300712ffaee243c9b">FlowTagPanel::addHider</link>()&#32;{
+<anchor xml:id="__tag_panel_8cpp_source_1l00910"/>00910 &#32;&#32;&#32;&#32;<link linkend="_class_flow_tag_panel_1a168025a358c496c0b7916c64ca718d0c">hider</link>&#32;=&#32;<emphasis role="keyword">new</emphasis>&#32;wxButton(<emphasis role="keyword">this</emphasis>,&#32;wxID_ANY,&#32;<emphasis role="stringliteral">&quot;-&quot;</emphasis>);
+<anchor xml:id="__tag_panel_8cpp_source_1l00911"/>00911 &#32;&#32;&#32;&#32;<link linkend="_class_tag_panel_1a43c96ffa9523c002fb96126500209ce8">SetLineFont</link>(<link linkend="_class_flow_tag_panel_1a168025a358c496c0b7916c64ca718d0c">hider</link>,18);
+<anchor xml:id="__tag_panel_8cpp_source_1l00912"/>00912 &#32;&#32;&#32;&#32;wxSize&#32;textSize&#32;=&#32;<link linkend="_class_flow_tag_panel_1a168025a358c496c0b7916c64ca718d0c">hider</link>-&gt;GetTextExtent(<link linkend="_class_flow_tag_panel_1a168025a358c496c0b7916c64ca718d0c">hider</link>-&gt;GetLabel());
+<anchor xml:id="__tag_panel_8cpp_source_1l00913"/>00913 &#32;&#32;&#32;&#32;<link linkend="_class_flow_tag_panel_1a168025a358c496c0b7916c64ca718d0c">hider</link>-&gt;SetSizeHints(wxSize(textSize.GetWidth()*3,&#32;textSize.GetHeight()));
+<anchor xml:id="__tag_panel_8cpp_source_1l00914"/>00914 &#32;&#32;&#32;&#32;<link linkend="_class_tag_panel_1a0fb4a6bb2fdc47ce21e30a61784b804a">lineSizer</link>-&gt;Add(<link linkend="_class_flow_tag_panel_1a168025a358c496c0b7916c64ca718d0c">hider</link>,wxSizerFlags().Expand());
+<anchor xml:id="__tag_panel_8cpp_source_1l00915"/>00915 &#32;&#32;&#32;&#32;<link linkend="_class_flow_tag_panel_1a168025a358c496c0b7916c64ca718d0c">hider</link>-&gt;Bind(wxEVT_LEFT_DOWN,&#32;&amp;<link linkend="_class_flow_tag_panel_1abf730289f88b08402ed5d924d362814c">FlowTagPanel::switchFlowTagVisibility</link>,&#32;<emphasis role="keyword">this</emphasis>);
+<anchor xml:id="__tag_panel_8cpp_source_1l00916"/>00916 }
+<anchor xml:id="__tag_panel_8cpp_source_1l00917"/>00917 
+<anchor xml:id="__tag_panel_8cpp_source_1l00918"/>00918 
+<anchor xml:id="__tag_panel_8cpp_source_1l00919"/><link linkend="_class_flow_tag_panel_1aa69c21d11b4824c7d7955a6c35f33564">00919</link> <emphasis role="keywordtype">void</emphasis>&#32;<link linkend="_class_flow_tag_panel_1aa69c21d11b4824c7d7955a6c35f33564">FlowTagPanel::addCondition</link>()
+<anchor xml:id="__tag_panel_8cpp_source_1l00920"/>00920 {
+<anchor xml:id="__tag_panel_8cpp_source_1l00921"/>00921 &#32;&#32;&#32;&#32;wxButton*&#32;conditionButton&#32;=&#32;<emphasis role="keyword">new</emphasis>&#32;wxButton(<emphasis role="keyword">this</emphasis>,&#32;wxID_ANY,&#32;<emphasis role="stringliteral">&quot;CONDITION&quot;</emphasis>);
+<anchor xml:id="__tag_panel_8cpp_source_1l00922"/>00922 &#32;&#32;&#32;&#32;<link linkend="_class_tag_panel_1a0fb4a6bb2fdc47ce21e30a61784b804a">lineSizer</link>-&gt;Add(conditionButton,&#32;wxSizerFlags().Expand());
+<anchor xml:id="__tag_panel_8cpp_source_1l00923"/>00923 }
+<anchor xml:id="__tag_panel_8cpp_source_1l00924"/>00924 
+<anchor xml:id="__tag_panel_8cpp_source_1l00925"/><link linkend="_class_flow_tag_panel_1a3ed9948e56d17d5b28c2c8708a90bea2">00925</link> <emphasis role="keywordtype">bool</emphasis>&#32;<link linkend="_class_flow_tag_panel_1a3ed9948e56d17d5b28c2c8708a90bea2">FlowTagPanel::isEmpty</link>()
+<anchor xml:id="__tag_panel_8cpp_source_1l00926"/>00926 {
+<anchor xml:id="__tag_panel_8cpp_source_1l00927"/>00927 &#32;&#32;&#32;&#32;<emphasis role="keyword">auto</emphasis>&#32;listChildren&#32;=&#32;<link linkend="_class_flow_tag_panel_1a908b8a9b0319c8c60588dff9296e9baf">getChildrenTags</link>();
+<anchor xml:id="__tag_panel_8cpp_source_1l00928"/>00928 &#32;&#32;&#32;&#32;<emphasis role="keywordtype">int</emphasis>&#32;size&#32;=&#32;listChildren.size();
+<anchor xml:id="__tag_panel_8cpp_source_1l00929"/>00929 &#32;&#32;&#32;&#32;<emphasis role="keywordflow">if</emphasis>&#32;(size&#32;==&#32;0)<emphasis role="keywordflow">return</emphasis>&#32;<emphasis role="keyword">true</emphasis>;
+<anchor xml:id="__tag_panel_8cpp_source_1l00930"/>00930 &#32;&#32;&#32;&#32;<emphasis role="keywordflow">else</emphasis>&#32;<emphasis role="keywordflow">if</emphasis>&#32;(size&#32;==&#32;1)&#32;{
+<anchor xml:id="__tag_panel_8cpp_source_1l00931"/>00931 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">if</emphasis>&#32;(listChildren.front()&#32;==&#32;<link linkend="_class_flow_tag_panel_1a449e6c46847cf6ff4849c43603e576a3">emptyTagPanel</link>)<emphasis role="keywordflow">return</emphasis>&#32;<emphasis role="keyword">true</emphasis>;
+<anchor xml:id="__tag_panel_8cpp_source_1l00932"/>00932 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">else</emphasis>&#32;<emphasis role="keywordflow">return</emphasis>&#32;<emphasis role="keyword">false</emphasis>;
+<anchor xml:id="__tag_panel_8cpp_source_1l00933"/>00933 &#32;&#32;&#32;&#32;}
+<anchor xml:id="__tag_panel_8cpp_source_1l00934"/>00934 &#32;&#32;&#32;&#32;<emphasis role="keywordflow">return</emphasis>&#32;<emphasis role="keyword">false</emphasis>;
+<anchor xml:id="__tag_panel_8cpp_source_1l00935"/>00935 }
+<anchor xml:id="__tag_panel_8cpp_source_1l00936"/>00936 
+<anchor xml:id="__tag_panel_8cpp_source_1l00937"/><link linkend="_class_flow_tag_panel_1a63d586b3a818bf85f3cfa56048c697e5">00937</link> wxSizerItem*&#32;<link linkend="_class_flow_tag_panel_1a63d586b3a818bf85f3cfa56048c697e5">FlowTagPanel::getBottomSpacer</link>()
+<anchor xml:id="__tag_panel_8cpp_source_1l00938"/>00938 {
+<anchor xml:id="__tag_panel_8cpp_source_1l00939"/>00939 &#32;&#32;&#32;&#32;<emphasis role="keywordflow">return</emphasis>&#32;<link linkend="_class_flow_tag_panel_1a023570c0ce18045ff6d02e7edcd83df6">bottomSpacer</link>;
+<anchor xml:id="__tag_panel_8cpp_source_1l00940"/>00940 }
+<anchor xml:id="__tag_panel_8cpp_source_1l00941"/>00941 
+<anchor xml:id="__tag_panel_8cpp_source_1l00942"/><link linkend="_class_flow_tag_panel_1af4ba2dd032b93523943e53dfd873fd8e">00942</link> <emphasis role="keywordtype">void</emphasis>&#32;<link linkend="_class_flow_tag_panel_1af4ba2dd032b93523943e53dfd873fd8e">FlowTagPanel::addBottomSpacer</link>()
+<anchor xml:id="__tag_panel_8cpp_source_1l00943"/>00943 {
+<anchor xml:id="__tag_panel_8cpp_source_1l00944"/>00944 &#32;&#32;&#32;&#32;<link linkend="_class_flow_tag_panel_1a023570c0ce18045ff6d02e7edcd83df6">bottomSpacer</link>&#32;=&#32;<link linkend="_class_tag_panel_1a480b452569c046bfc03e86a2be72a8eb">tagSizer</link>-&gt;AddSpacer(leftBorder);
+<anchor xml:id="__tag_panel_8cpp_source_1l00945"/>00945 }
+<anchor xml:id="__tag_panel_8cpp_source_1l00946"/>00946 
+<anchor xml:id="__tag_panel_8cpp_source_1l00947"/><link linkend="_class_tag_panel_1a99231e365be781b584996e68197621b9">00947</link> <emphasis role="keywordtype">void</emphasis>&#32;<link linkend="_class_tag_panel_1a99231e365be781b584996e68197621b9">TagPanel::setTagSizer</link>()
+<anchor xml:id="__tag_panel_8cpp_source_1l00948"/>00948 {
+<anchor xml:id="__tag_panel_8cpp_source_1l00949"/>00949 &#32;&#32;&#32;&#32;SetSizer(<link linkend="_class_tag_panel_1a480b452569c046bfc03e86a2be72a8eb">tagSizer</link>);
+<anchor xml:id="__tag_panel_8cpp_source_1l00950"/>00950 }
+<anchor xml:id="__tag_panel_8cpp_source_1l00951"/>00951 
+<anchor xml:id="__tag_panel_8cpp_source_1l00952"/><link linkend="_class_flow_tag_panel_1a7e277f4afc1adee6e2a94f6980d83e80">00952</link> wxBoxSizer*&#32;<link linkend="_class_flow_tag_panel_1a7e277f4afc1adee6e2a94f6980d83e80">FlowTagPanel::getChildrenSizer</link>()
+<anchor xml:id="__tag_panel_8cpp_source_1l00953"/>00953 {
+<anchor xml:id="__tag_panel_8cpp_source_1l00954"/>00954 &#32;&#32;&#32;&#32;<emphasis role="keywordflow">return</emphasis>&#32;<link linkend="_class_flow_tag_panel_1aeb64852326aa4019061f0ba333276b6f">childrenSizer</link>;
+<anchor xml:id="__tag_panel_8cpp_source_1l00955"/>00955 }
+<anchor xml:id="__tag_panel_8cpp_source_1l00956"/><link linkend="_class_tag_panel_1a7f15f662ac35f7d7b2b96c8d4dae0949">00956</link> wxBoxSizer*&#32;<link linkend="_class_tag_panel_1a7f15f662ac35f7d7b2b96c8d4dae0949">TagPanel::getLineSizer</link>()
+<anchor xml:id="__tag_panel_8cpp_source_1l00957"/>00957 {
+<anchor xml:id="__tag_panel_8cpp_source_1l00958"/>00958 &#32;&#32;&#32;&#32;<emphasis role="keywordflow">return</emphasis>&#32;<link linkend="_class_tag_panel_1a0fb4a6bb2fdc47ce21e30a61784b804a">lineSizer</link>;
+<anchor xml:id="__tag_panel_8cpp_source_1l00959"/>00959 }
+<anchor xml:id="__tag_panel_8cpp_source_1l00960"/><link linkend="_class_flow_tag_panel_1aa7e87378e7647a40099818265a65f21a">00960</link> <link linkend="_class_empty_panel">EmptyPanel</link>*&#32;<link linkend="_class_flow_tag_panel_1aa7e87378e7647a40099818265a65f21a">FlowTagPanel::getEmptyTagPanel</link>()
+<anchor xml:id="__tag_panel_8cpp_source_1l00961"/>00961 {
+<anchor xml:id="__tag_panel_8cpp_source_1l00962"/>00962 &#32;&#32;&#32;&#32;<emphasis role="keywordflow">return</emphasis>&#32;<link linkend="_class_flow_tag_panel_1a449e6c46847cf6ff4849c43603e576a3">emptyTagPanel</link>;
+<anchor xml:id="__tag_panel_8cpp_source_1l00963"/>00963 }
+<anchor xml:id="__tag_panel_8cpp_source_1l00964"/>00964 
+<anchor xml:id="__tag_panel_8cpp_source_1l00965"/><link linkend="_class_flow_tag_panel_1a5745b7ba56040b00437ad0766fc82717">00965</link> wxwxSizerItemListNode*&#32;<link linkend="_class_flow_tag_panel_1a5745b7ba56040b00437ad0766fc82717">FlowTagPanel::getTagNode</link>(<link linkend="_class_tag_panel">TagPanel</link>*&#32;panel)
+<anchor xml:id="__tag_panel_8cpp_source_1l00966"/>00966 {
+<anchor xml:id="__tag_panel_8cpp_source_1l00967"/>00967 &#32;&#32;&#32;&#32;<emphasis role="keywordflow">if</emphasis>&#32;(!panel)<emphasis role="keywordflow">return</emphasis>&#32;<emphasis role="keyword">nullptr</emphasis>;
+<anchor xml:id="__tag_panel_8cpp_source_1l00968"/>00968 &#32;&#32;&#32;&#32;<emphasis role="keywordflow">return</emphasis>&#32;<link linkend="_class_flow_tag_panel_1aeb64852326aa4019061f0ba333276b6f">childrenSizer</link>-&gt;GetChildren().Find(<link linkend="_class_flow_tag_panel_1a292d74fbfba61f5c7df90789a9eb31e2">getSizerItem</link>(panel));
+<anchor xml:id="__tag_panel_8cpp_source_1l00969"/>00969 }
+<anchor xml:id="__tag_panel_8cpp_source_1l00970"/>00970 
+<anchor xml:id="__tag_panel_8cpp_source_1l00971"/><link linkend="_class_flow_tag_panel_1acf35f1a7b55da94f68329142af1a1e69">00971</link> <link linkend="_class_tag_panel">TagPanel</link>*&#32;<link linkend="_class_flow_tag_panel_1acf35f1a7b55da94f68329142af1a1e69">FlowTagPanel::getPreviousTagChild</link>(<link linkend="_class_tag_panel">TagPanel</link>*&#32;panel)
+<anchor xml:id="__tag_panel_8cpp_source_1l00972"/>00972 {
+<anchor xml:id="__tag_panel_8cpp_source_1l00973"/>00973 &#32;&#32;&#32;&#32;<emphasis role="keywordflow">if</emphasis>&#32;(!panel)<emphasis role="keywordflow">return</emphasis>&#32;<emphasis role="keyword">nullptr</emphasis>;
+<anchor xml:id="__tag_panel_8cpp_source_1l00974"/>00974 &#32;&#32;&#32;&#32;<emphasis role="keywordflow">return</emphasis>&#32;<link linkend="_class_flow_tag_panel_1a5c91aa7b2cc4211630bad8682a469b2e">getNodeToTag</link>(<link linkend="_class_flow_tag_panel_1a5745b7ba56040b00437ad0766fc82717">getTagNode</link>(panel)-&gt;GetPrevious());
+<anchor xml:id="__tag_panel_8cpp_source_1l00975"/>00975 }
+<anchor xml:id="__tag_panel_8cpp_source_1l00976"/>00976 
+<anchor xml:id="__tag_panel_8cpp_source_1l00977"/><link linkend="_class_flow_tag_panel_1a5c91aa7b2cc4211630bad8682a469b2e">00977</link> <link linkend="_class_tag_panel">TagPanel</link>*&#32;<link linkend="_class_flow_tag_panel_1a5c91aa7b2cc4211630bad8682a469b2e">FlowTagPanel::getNodeToTag</link>(wxwxSizerItemListNode*&#32;node)
+<anchor xml:id="__tag_panel_8cpp_source_1l00978"/>00978 {
+<anchor xml:id="__tag_panel_8cpp_source_1l00979"/>00979 &#32;&#32;&#32;&#32;<emphasis role="keywordflow">if</emphasis>&#32;(!node)<emphasis role="keywordflow">return</emphasis>&#32;<emphasis role="keyword">nullptr</emphasis>;
+<anchor xml:id="__tag_panel_8cpp_source_1l00980"/>00980 &#32;&#32;&#32;&#32;<emphasis role="keywordflow">return</emphasis>&#32;<emphasis role="keyword">dynamic_cast&lt;</emphasis><link linkend="_class_tag_panel">TagPanel</link>*<emphasis role="keyword">&gt;</emphasis>(node-&gt;GetData()-&gt;GetWindow());
+<anchor xml:id="__tag_panel_8cpp_source_1l00981"/>00981 }
+<anchor xml:id="__tag_panel_8cpp_source_1l00982"/>00982 
+<anchor xml:id="__tag_panel_8cpp_source_1l00983"/><link linkend="_class_flow_tag_panel_1ad2a7dd8c2e809653b29f53a54e9088bc">00983</link> <link linkend="_class_tag_panel">TagPanel</link>*&#32;<link linkend="_class_flow_tag_panel_1ad2a7dd8c2e809653b29f53a54e9088bc">FlowTagPanel::getNextTagChild</link>(<link linkend="_class_tag_panel">TagPanel</link>*&#32;panel)
+<anchor xml:id="__tag_panel_8cpp_source_1l00984"/>00984 {
+<anchor xml:id="__tag_panel_8cpp_source_1l00985"/>00985 &#32;&#32;&#32;&#32;<emphasis role="keywordflow">if</emphasis>&#32;(!panel)<emphasis role="keywordflow">return</emphasis>&#32;<emphasis role="keyword">nullptr</emphasis>;
+<anchor xml:id="__tag_panel_8cpp_source_1l00986"/>00986 &#32;&#32;&#32;&#32;<emphasis role="keywordflow">return</emphasis>&#32;<link linkend="_class_flow_tag_panel_1a5c91aa7b2cc4211630bad8682a469b2e">getNodeToTag</link>(<link linkend="_class_flow_tag_panel_1a5745b7ba56040b00437ad0766fc82717">getTagNode</link>(panel)-&gt;GetNext());
+<anchor xml:id="__tag_panel_8cpp_source_1l00987"/>00987 }
+<anchor xml:id="__tag_panel_8cpp_source_1l00988"/>00988 
+<anchor xml:id="__tag_panel_8cpp_source_1l00989"/><link linkend="_class_flow_tag_panel_1a94ad251f2137de78a0c8b8fd75d81d7f">00989</link> <link linkend="_class_tag_panel">TagPanel</link>*&#32;<link linkend="_class_flow_tag_panel_1a94ad251f2137de78a0c8b8fd75d81d7f">FlowTagPanel::getFirstTag</link>()
+<anchor xml:id="__tag_panel_8cpp_source_1l00990"/>00990 {
+<anchor xml:id="__tag_panel_8cpp_source_1l00991"/>00991 &#32;&#32;&#32;&#32;<emphasis role="keyword">auto</emphasis>&#32;listChildren&#32;=&#32;<link linkend="_class_flow_tag_panel_1a908b8a9b0319c8c60588dff9296e9baf">getChildrenTags</link>();
+<anchor xml:id="__tag_panel_8cpp_source_1l00992"/>00992 &#32;&#32;&#32;&#32;<link linkend="_class_tag_panel">TagPanel</link>*&#32;firstTag=<emphasis role="keyword">nullptr</emphasis>;
+<anchor xml:id="__tag_panel_8cpp_source_1l00993"/>00993 &#32;&#32;&#32;&#32;<emphasis role="keywordflow">if</emphasis>&#32;(!listChildren.empty())&#32;{
+<anchor xml:id="__tag_panel_8cpp_source_1l00994"/>00994 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;firstTag&#32;=&#32;listChildren.front();
+<anchor xml:id="__tag_panel_8cpp_source_1l00995"/>00995 &#32;&#32;&#32;&#32;}
+<anchor xml:id="__tag_panel_8cpp_source_1l00996"/>00996 &#32;&#32;&#32;&#32;<emphasis role="keywordflow">return</emphasis>&#32;firstTag;
+<anchor xml:id="__tag_panel_8cpp_source_1l00997"/>00997 }
+<anchor xml:id="__tag_panel_8cpp_source_1l00998"/>00998 
+<anchor xml:id="__tag_panel_8cpp_source_1l00999"/><link linkend="_class_flow_tag_panel_1ae00ff43656f4b31fa667c69d74317e59">00999</link> <link linkend="_class_tag_panel">TagPanel</link>*&#32;<link linkend="_class_flow_tag_panel_1ae00ff43656f4b31fa667c69d74317e59">FlowTagPanel::getLastTag</link>()
+<anchor xml:id="__tag_panel_8cpp_source_1l01000"/>01000 {
+<anchor xml:id="__tag_panel_8cpp_source_1l01001"/>01001 &#32;&#32;&#32;&#32;<emphasis role="keyword">auto</emphasis>&#32;listChildren&#32;=&#32;<link linkend="_class_flow_tag_panel_1a908b8a9b0319c8c60588dff9296e9baf">getChildrenTags</link>();
+<anchor xml:id="__tag_panel_8cpp_source_1l01002"/>01002 &#32;&#32;&#32;&#32;<link linkend="_class_tag_panel">TagPanel</link>*&#32;lastTag&#32;=&#32;<emphasis role="keyword">nullptr</emphasis>;
+<anchor xml:id="__tag_panel_8cpp_source_1l01003"/>01003 &#32;&#32;&#32;&#32;<emphasis role="keywordflow">if</emphasis>&#32;(!listChildren.empty())&#32;{
+<anchor xml:id="__tag_panel_8cpp_source_1l01004"/>01004 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;lastTag&#32;=&#32;listChildren.back();
+<anchor xml:id="__tag_panel_8cpp_source_1l01005"/>01005 &#32;&#32;&#32;&#32;}
+<anchor xml:id="__tag_panel_8cpp_source_1l01006"/>01006 &#32;&#32;&#32;&#32;<emphasis role="keywordflow">return</emphasis>&#32;lastTag;
+<anchor xml:id="__tag_panel_8cpp_source_1l01007"/>01007 }
+<anchor xml:id="__tag_panel_8cpp_source_1l01008"/>01008 
+<anchor xml:id="__tag_panel_8cpp_source_1l01009"/><link linkend="_class_flow_tag_panel_1aa8d5b418c6c046a0c53cb67a8d793308">01009</link> <emphasis role="keywordtype">bool</emphasis>&#32;<link linkend="_class_flow_tag_panel_1aa8d5b418c6c046a0c53cb67a8d793308">FlowTagPanel::isLastTagChild</link>(<link linkend="_class_tag_panel">TagPanel</link>*&#32;panel)
+<anchor xml:id="__tag_panel_8cpp_source_1l01010"/>01010 {
+<anchor xml:id="__tag_panel_8cpp_source_1l01011"/>01011 &#32;&#32;&#32;&#32;<emphasis role="keyword">auto</emphasis>&#32;j&#32;=&#32;<link linkend="_class_flow_tag_panel_1a908b8a9b0319c8c60588dff9296e9baf">getChildrenTags</link>();
+<anchor xml:id="__tag_panel_8cpp_source_1l01012"/>01012 &#32;&#32;&#32;&#32;<link linkend="_class_tag_panel">TagPanel</link>*&#32;teg&#32;=&#32;<link linkend="_class_flow_tag_panel_1ae00ff43656f4b31fa667c69d74317e59">getLastTag</link>();
+<anchor xml:id="__tag_panel_8cpp_source_1l01013"/>01013 &#32;&#32;&#32;&#32;<emphasis role="keywordflow">return</emphasis>&#32;teg==panel;
+<anchor xml:id="__tag_panel_8cpp_source_1l01014"/>01014 }
+<anchor xml:id="__tag_panel_8cpp_source_1l01015"/>01015 
+<anchor xml:id="__tag_panel_8cpp_source_1l01016"/><link linkend="_class_flow_tag_panel_1abef0b2e00620e86ebbe17b017aab8e99">01016</link> <emphasis role="keywordtype">bool</emphasis>&#32;<link linkend="_class_flow_tag_panel_1abef0b2e00620e86ebbe17b017aab8e99">FlowTagPanel::isFirstTagChild</link>(<link linkend="_class_tag_panel">TagPanel</link>*&#32;panel)
+<anchor xml:id="__tag_panel_8cpp_source_1l01017"/>01017 {
+<anchor xml:id="__tag_panel_8cpp_source_1l01018"/>01018 &#32;&#32;&#32;&#32;<emphasis role="keywordflow">return</emphasis>&#32;<link linkend="_class_flow_tag_panel_1a94ad251f2137de78a0c8b8fd75d81d7f">getFirstTag</link>()&#32;==&#32;panel;
+<anchor xml:id="__tag_panel_8cpp_source_1l01019"/>01019 }
+<anchor xml:id="__tag_panel_8cpp_source_1l01020"/>01020 
+<anchor xml:id="__tag_panel_8cpp_source_1l01021"/><link linkend="_class_flow_tag_panel_1a06db100e4343fc75a9e947a24c8575fe">01021</link> <emphasis role="keywordtype">int</emphasis>&#32;<link linkend="_class_flow_tag_panel_1a06db100e4343fc75a9e947a24c8575fe">FlowTagPanel::getNbChildren</link>()
+<anchor xml:id="__tag_panel_8cpp_source_1l01022"/>01022 {
+<anchor xml:id="__tag_panel_8cpp_source_1l01023"/>01023 &#32;&#32;&#32;&#32;<emphasis role="keywordflow">return</emphasis>&#32;<link linkend="_class_flow_tag_panel_1aeb64852326aa4019061f0ba333276b6f">childrenSizer</link>-&gt;GetChildren().GetCount();
+<anchor xml:id="__tag_panel_8cpp_source_1l01024"/>01024 }
+<anchor xml:id="__tag_panel_8cpp_source_1l01025"/>01025 
+<anchor xml:id="__tag_panel_8cpp_source_1l01026"/>01026 
+<anchor xml:id="__tag_panel_8cpp_source_1l01027"/><link linkend="_class_flow_tag_panel_1a292d74fbfba61f5c7df90789a9eb31e2">01027</link> wxSizerItem*&#32;<link linkend="_class_flow_tag_panel_1a292d74fbfba61f5c7df90789a9eb31e2">FlowTagPanel::getSizerItem</link>(<link linkend="_class_tag_panel">TagPanel</link>*&#32;panel)
+<anchor xml:id="__tag_panel_8cpp_source_1l01028"/>01028 {
+<anchor xml:id="__tag_panel_8cpp_source_1l01029"/>01029 &#32;&#32;&#32;&#32;<emphasis role="keyword">auto</emphasis>&amp;&#32;listChildren&#32;=&#32;<link linkend="_class_flow_tag_panel_1aeb64852326aa4019061f0ba333276b6f">childrenSizer</link>-&gt;GetChildren();
+<anchor xml:id="__tag_panel_8cpp_source_1l01030"/>01030 &#32;&#32;&#32;&#32;<emphasis role="keywordflow">for</emphasis>&#32;(<emphasis role="keyword">auto</emphasis>&#32;item&#32;:&#32;listChildren)&#32;{
+<anchor xml:id="__tag_panel_8cpp_source_1l01031"/>01031 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">if</emphasis>&#32;(panel&#32;==&#32;item-&gt;GetWindow())<emphasis role="keywordflow">return</emphasis>&#32;item;
+<anchor xml:id="__tag_panel_8cpp_source_1l01032"/>01032 &#32;&#32;&#32;&#32;}
+<anchor xml:id="__tag_panel_8cpp_source_1l01033"/>01033 &#32;&#32;&#32;&#32;<emphasis role="keywordflow">return</emphasis>&#32;<emphasis role="keyword">nullptr</emphasis>;
+<anchor xml:id="__tag_panel_8cpp_source_1l01034"/>01034 }
+<anchor xml:id="__tag_panel_8cpp_source_1l01035"/>01035 
+<anchor xml:id="__tag_panel_8cpp_source_1l01036"/><link linkend="_class_flow_tag_panel_1a77dc30ba98e8e84f02f23ef9af057e4d">01036</link> <emphasis role="keywordtype">bool</emphasis>&#32;<link linkend="_class_flow_tag_panel_1a77dc30ba98e8e84f02f23ef9af057e4d">FlowTagPanel::isMinimized</link>()<emphasis role="keyword">&#32;const</emphasis>
+<anchor xml:id="__tag_panel_8cpp_source_1l01037"/>01037 <emphasis role="keyword"></emphasis>{
+<anchor xml:id="__tag_panel_8cpp_source_1l01038"/>01038 &#32;&#32;&#32;&#32;<emphasis role="keywordflow">return</emphasis>&#32;!childrenShown;
+<anchor xml:id="__tag_panel_8cpp_source_1l01039"/>01039 }
+<anchor xml:id="__tag_panel_8cpp_source_1l01040"/>01040 
+<anchor xml:id="__tag_panel_8cpp_source_1l01041"/><link linkend="_class_flow_tag_panel_1a24aede4ad59f41a079d4c38e26955d55">01041</link> <emphasis role="keywordtype">void</emphasis>&#32;<link linkend="_class_flow_tag_panel_1a24aede4ad59f41a079d4c38e26955d55">FlowTagPanel::addChild</link>(<link linkend="_class_tag_panel">TagPanel</link>*&#32;childrenTag)
+<anchor xml:id="__tag_panel_8cpp_source_1l01042"/>01042 {
+<anchor xml:id="__tag_panel_8cpp_source_1l01043"/>01043 &#32;&#32;&#32;&#32;<emphasis role="keywordflow">if</emphasis>&#32;(childrenTag){
+<anchor xml:id="__tag_panel_8cpp_source_1l01044"/>01044 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">if</emphasis>&#32;(<link linkend="_class_flow_tag_panel_1a29d6875da55a05e85043eafb6d4e9e0f">nbFlowParents</link>&#32;&lt;&#32;MAXFLOW)&#32;{
+<anchor xml:id="__tag_panel_8cpp_source_1l01045"/>01045 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<link linkend="_class_flow_tag_panel_1af98215cc2497f7ef7d8e4ed00e94ca33">insertChild</link>(childrenTag,&#32;<link linkend="_class_flow_tag_panel_1aeb64852326aa4019061f0ba333276b6f">childrenSizer</link>-&gt;GetItemCount());
+<anchor xml:id="__tag_panel_8cpp_source_1l01046"/>01046 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;}
+<anchor xml:id="__tag_panel_8cpp_source_1l01047"/>01047 &#32;&#32;&#32;&#32;}
+<anchor xml:id="__tag_panel_8cpp_source_1l01048"/>01048 }
+<anchor xml:id="__tag_panel_8cpp_source_1l01049"/>01049 
+<anchor xml:id="__tag_panel_8cpp_source_1l01050"/><link linkend="_class_flow_tag_panel_1abf730289f88b08402ed5d924d362814c">01050</link> <emphasis role="keywordtype">void</emphasis>&#32;<link linkend="_class_flow_tag_panel_1abf730289f88b08402ed5d924d362814c">FlowTagPanel::switchFlowTagVisibility</link>(wxMouseEvent&amp;&#32;evt)&#32;{
+<anchor xml:id="__tag_panel_8cpp_source_1l01051"/>01051 &#32;&#32;&#32;&#32;wxButton*&#32;but&#32;=&#32;<emphasis role="keyword">dynamic_cast&lt;</emphasis>wxButton*<emphasis role="keyword">&gt;</emphasis>(evt.GetEventObject());
+<anchor xml:id="__tag_panel_8cpp_source_1l01052"/>01052 &#32;&#32;&#32;&#32;<emphasis role="keywordflow">if</emphasis>&#32;(but)&#32;{
+<anchor xml:id="__tag_panel_8cpp_source_1l01053"/>01053 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<link linkend="_class_flow_tag_panel">FlowTagPanel</link>*&#32;parentPanel&#32;=&#32;<emphasis role="keyword">dynamic_cast&lt;</emphasis><link linkend="_class_flow_tag_panel">FlowTagPanel</link>*<emphasis role="keyword">&gt;</emphasis>(but-&gt;GetParent());
+<anchor xml:id="__tag_panel_8cpp_source_1l01054"/>01054 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">if</emphasis>&#32;(parentPanel)&#32;{
+<anchor xml:id="__tag_panel_8cpp_source_1l01055"/>01055 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">switch</emphasis>&#32;(parentPanel-&gt;<link linkend="_class_flow_tag_panel_1a38a7e2167532623906ae82c0b92728c2">childrenVisible</link>())&#32;{
+<anchor xml:id="__tag_panel_8cpp_source_1l01056"/>01056 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">case</emphasis>&#32;<emphasis role="keyword">false</emphasis>:
+<anchor xml:id="__tag_panel_8cpp_source_1l01057"/>01057 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;parentPanel-&gt;<link linkend="_class_flow_tag_panel_1ae4f118933196a60a71cfa6b4b9b69894">setChildrenVisibility</link>(<emphasis role="keyword">true</emphasis>);
+<anchor xml:id="__tag_panel_8cpp_source_1l01058"/>01058 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">break</emphasis>;
+<anchor xml:id="__tag_panel_8cpp_source_1l01059"/>01059 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">case</emphasis>&#32;<emphasis role="keyword">true</emphasis>:
+<anchor xml:id="__tag_panel_8cpp_source_1l01060"/>01060 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;parentPanel-&gt;<link linkend="_class_flow_tag_panel_1ae4f118933196a60a71cfa6b4b9b69894">setChildrenVisibility</link>(<emphasis role="keyword">false</emphasis>);
+<anchor xml:id="__tag_panel_8cpp_source_1l01061"/>01061 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">break</emphasis>;
+<anchor xml:id="__tag_panel_8cpp_source_1l01062"/>01062 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;}
+<anchor xml:id="__tag_panel_8cpp_source_1l01063"/>01063 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;parentPanel-&gt;<link linkend="_class_flow_tag_panel_1a482b23630874fb9f414c9b029501aadd">updateLayout</link>();
+<anchor xml:id="__tag_panel_8cpp_source_1l01064"/>01064 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;}
+<anchor xml:id="__tag_panel_8cpp_source_1l01065"/>01065 &#32;&#32;&#32;&#32;}
+<anchor xml:id="__tag_panel_8cpp_source_1l01066"/>01066 
+<anchor xml:id="__tag_panel_8cpp_source_1l01067"/>01067 }
+<anchor xml:id="__tag_panel_8cpp_source_1l01068"/>01068 
+<anchor xml:id="__tag_panel_8cpp_source_1l01069"/><link linkend="_class_flow_tag_panel_1af98215cc2497f7ef7d8e4ed00e94ca33">01069</link> <emphasis role="keywordtype">void</emphasis>&#32;<link linkend="_class_flow_tag_panel_1af98215cc2497f7ef7d8e4ed00e94ca33">FlowTagPanel::insertChild</link>(<link linkend="_class_tag_panel">TagPanel</link>*&#32;target,<link linkend="_class_tag_panel">TagPanel</link>*&#32;newPanel,<link linkend="__tag_panel_8h_1a443e25f6957db75e312dbd0fb43d5a6e">AddPosition</link>&#32;pos)
+<anchor xml:id="__tag_panel_8cpp_source_1l01070"/>01070 {
+<anchor xml:id="__tag_panel_8cpp_source_1l01071"/>01071 &#32;&#32;&#32;&#32;<emphasis role="keywordtype">int</emphasis>&#32;offset=0;
+<anchor xml:id="__tag_panel_8cpp_source_1l01072"/>01072 &#32;&#32;&#32;&#32;<emphasis role="keywordflow">switch</emphasis>&#32;(pos)&#32;{
+<anchor xml:id="__tag_panel_8cpp_source_1l01073"/>01073 &#32;&#32;&#32;&#32;<emphasis role="keywordflow">case</emphasis>&#32;<link linkend="__tag_panel_8h_1a443e25f6957db75e312dbd0fb43d5a6eaaad01162f441b9162610e81352541694">ABOVE</link>:
+<anchor xml:id="__tag_panel_8cpp_source_1l01074"/>01074 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;offset&#32;=&#32;0;
+<anchor xml:id="__tag_panel_8cpp_source_1l01075"/>01075 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">break</emphasis>;
+<anchor xml:id="__tag_panel_8cpp_source_1l01076"/>01076 &#32;&#32;&#32;&#32;<emphasis role="keywordflow">case</emphasis>&#32;<link linkend="__tag_panel_8h_1a443e25f6957db75e312dbd0fb43d5a6eab5726a81978ba2a47fcea5ef4fb8fbf4">UNDER</link>:
+<anchor xml:id="__tag_panel_8cpp_source_1l01077"/>01077 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;offset&#32;=&#32;1;
+<anchor xml:id="__tag_panel_8cpp_source_1l01078"/>01078 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">break</emphasis>;
+<anchor xml:id="__tag_panel_8cpp_source_1l01079"/>01079 &#32;&#32;&#32;&#32;}
+<anchor xml:id="__tag_panel_8cpp_source_1l01080"/>01080 &#32;&#32;&#32;&#32;wxSizerItem*&#32;item=<link linkend="_class_flow_tag_panel_1a292d74fbfba61f5c7df90789a9eb31e2">getSizerItem</link>(target);
+<anchor xml:id="__tag_panel_8cpp_source_1l01081"/>01081 &#32;&#32;&#32;&#32;<emphasis role="keywordflow">if</emphasis>&#32;(item)&#32;{
+<anchor xml:id="__tag_panel_8cpp_source_1l01082"/>01082 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordtype">int</emphasis>&#32;targetIndex&#32;=&#32;<link linkend="_class_tag_panel_1a975da9b33d0c94992472b291df4aadbe">getIndexOf</link>(<link linkend="_class_flow_tag_panel_1aeb64852326aa4019061f0ba333276b6f">childrenSizer</link>,&#32;item);
+<anchor xml:id="__tag_panel_8cpp_source_1l01083"/>01083 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<link linkend="_class_flow_tag_panel_1af98215cc2497f7ef7d8e4ed00e94ca33">insertChild</link>(newPanel,&#32;targetIndex&#32;+&#32;offset);
+<anchor xml:id="__tag_panel_8cpp_source_1l01084"/>01084 &#32;&#32;&#32;&#32;}
+<anchor xml:id="__tag_panel_8cpp_source_1l01085"/>01085 }
+<anchor xml:id="__tag_panel_8cpp_source_1l01086"/>01086 
+<anchor xml:id="__tag_panel_8cpp_source_1l01087"/><link linkend="_class_flow_tag_panel_1a38bade8b3e467e730e739bce386b5ea0">01087</link> <emphasis role="keywordtype">void</emphasis>&#32;<link linkend="_class_flow_tag_panel_1af98215cc2497f7ef7d8e4ed00e94ca33">FlowTagPanel::insertChild</link>(<link linkend="_class_tag_panel">TagPanel</link>*&#32;newPanel,&#32;<emphasis role="keywordtype">int</emphasis>&#32;index)
+<anchor xml:id="__tag_panel_8cpp_source_1l01088"/>01088 {
+<anchor xml:id="__tag_panel_8cpp_source_1l01089"/>01089 &#32;&#32;&#32;&#32;<emphasis role="keywordflow">if</emphasis>&#32;(<link linkend="_class_flow_tag_panel_1aa81a6c6c05a02665ceef5ee70dfe8552">containsChild</link>(newPanel))<emphasis role="keywordflow">return</emphasis>;
+<anchor xml:id="__tag_panel_8cpp_source_1l01090"/>01090 &#32;&#32;&#32;&#32;wxSizerFlags&#32;insertFlags&#32;=&#32;wxSizerFlags().Expand().Border(wxLEFT,&#32;leftBorder);
+<anchor xml:id="__tag_panel_8cpp_source_1l01091"/>01091 &#32;&#32;&#32;&#32;<link linkend="_class_flow_tag_panel_1aeb64852326aa4019061f0ba333276b6f">childrenSizer</link>-&gt;Insert(index,&#32;newPanel,&#32;insertFlags);
+<anchor xml:id="__tag_panel_8cpp_source_1l01092"/>01092 &#32;&#32;&#32;&#32;<emphasis role="keywordflow">if</emphasis>&#32;(<link linkend="_class_flow_tag_panel_1a3ed9948e56d17d5b28c2c8708a90bea2">isEmpty</link>())<link linkend="_class_flow_tag_panel_1ad1a55f7e5c1eb22bed92049643bb75b9">showEmptyPanel</link>();
+<anchor xml:id="__tag_panel_8cpp_source_1l01093"/>01093 &#32;&#32;&#32;&#32;<emphasis role="keywordflow">else</emphasis>&#32;<link linkend="_class_flow_tag_panel_1a63038ffcf254ad71b547d31456a0fd2f">hideEmptyPanel</link>();
+<anchor xml:id="__tag_panel_8cpp_source_1l01094"/>01094 }
+<anchor xml:id="__tag_panel_8cpp_source_1l01095"/>01095 
+<anchor xml:id="__tag_panel_8cpp_source_1l01096"/><link linkend="_class_flow_tag_panel_1a1e44ca3ceb2df81762129896dbdb7b62">01096</link> <emphasis role="keywordtype">void</emphasis>&#32;<link linkend="_class_flow_tag_panel_1a1e44ca3ceb2df81762129896dbdb7b62">FlowTagPanel::swapChildren</link>(<link linkend="_class_tag_panel">TagPanel</link>*&#32;panel1,&#32;<link linkend="_class_tag_panel">TagPanel</link>*&#32;panel2)&#32;{
+<anchor xml:id="__tag_panel_8cpp_source_1l01097"/>01097 &#32;&#32;&#32;&#32;<emphasis role="keywordflow">if</emphasis>&#32;(<link linkend="_class_flow_tag_panel_1aa81a6c6c05a02665ceef5ee70dfe8552">containsChild</link>(panel1)&#32;&amp;&amp;&#32;<link linkend="_class_flow_tag_panel_1aa81a6c6c05a02665ceef5ee70dfe8552">containsChild</link>(panel2))&#32;{
+<anchor xml:id="__tag_panel_8cpp_source_1l01098"/>01098 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordtype">int</emphasis>&#32;index2=<link linkend="_class_flow_tag_panel_1aaa4b6f8ffb98f825f255cdd2017fc17a">getIndex</link>(panel2);
+<anchor xml:id="__tag_panel_8cpp_source_1l01099"/>01099 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<link linkend="_class_flow_tag_panel_1a4e3b68f463d8374b7222c6bd28f47b7e">detachPanel</link>(panel2);
+<anchor xml:id="__tag_panel_8cpp_source_1l01100"/>01100 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<link linkend="_class_flow_tag_panel_1aeb64852326aa4019061f0ba333276b6f">childrenSizer</link>-&gt;Replace(panel1,&#32;panel2);
+<anchor xml:id="__tag_panel_8cpp_source_1l01101"/>01101 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<link linkend="_class_flow_tag_panel_1af98215cc2497f7ef7d8e4ed00e94ca33">insertChild</link>(panel1,&#32;index2);
+<anchor xml:id="__tag_panel_8cpp_source_1l01102"/>01102 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<link linkend="_class_flow_tag_panel_1aeb64852326aa4019061f0ba333276b6f">childrenSizer</link>-&gt;Layout();
+<anchor xml:id="__tag_panel_8cpp_source_1l01103"/>01103 &#32;&#32;&#32;&#32;}
+<anchor xml:id="__tag_panel_8cpp_source_1l01104"/>01104 }
+<anchor xml:id="__tag_panel_8cpp_source_1l01105"/>01105 
+<anchor xml:id="__tag_panel_8cpp_source_1l01106"/><link linkend="_class_flow_tag_panel_1aa81a6c6c05a02665ceef5ee70dfe8552">01106</link> <emphasis role="keywordtype">bool</emphasis>&#32;<link linkend="_class_flow_tag_panel_1aa81a6c6c05a02665ceef5ee70dfe8552">FlowTagPanel::containsChild</link>(<link linkend="_class_tag_panel">TagPanel</link>*&#32;panel)
+<anchor xml:id="__tag_panel_8cpp_source_1l01107"/>01107 {
+<anchor xml:id="__tag_panel_8cpp_source_1l01108"/>01108 &#32;&#32;&#32;&#32;<emphasis role="keywordflow">return</emphasis>&#32;<link linkend="_class_flow_tag_panel_1aaa4b6f8ffb98f825f255cdd2017fc17a">getIndex</link>(panel)!=-1;
+<anchor xml:id="__tag_panel_8cpp_source_1l01109"/>01109 }
+<anchor xml:id="__tag_panel_8cpp_source_1l01110"/>01110 
+<anchor xml:id="__tag_panel_8cpp_source_1l01111"/><link linkend="_class_flow_tag_panel_1a8c328c48878111ffebcc91b7b37a8b77">01111</link> <emphasis role="keywordtype">void</emphasis>&#32;<link linkend="_class_flow_tag_panel_1a8c328c48878111ffebcc91b7b37a8b77">FlowTagPanel::addChildren</link>(std::vector&lt;TagPanel*&gt;&#32;childrenTags)
+<anchor xml:id="__tag_panel_8cpp_source_1l01112"/>01112 {
+<anchor xml:id="__tag_panel_8cpp_source_1l01113"/>01113 &#32;&#32;&#32;&#32;<emphasis role="keywordflow">for</emphasis>&#32;(<link linkend="_class_tag_panel">TagPanel</link>*&#32;tag&#32;:&#32;childrenTags)&#32;{
+<anchor xml:id="__tag_panel_8cpp_source_1l01114"/>01114 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<link linkend="_class_flow_tag_panel_1a24aede4ad59f41a079d4c38e26955d55">addChild</link>(tag);
+<anchor xml:id="__tag_panel_8cpp_source_1l01115"/>01115 &#32;&#32;&#32;&#32;}
+<anchor xml:id="__tag_panel_8cpp_source_1l01116"/>01116 }
+<anchor xml:id="__tag_panel_8cpp_source_1l01117"/>01117 
+<anchor xml:id="__tag_panel_8cpp_source_1l01118"/><link linkend="_class_flow_tag_panel_1aaeeb052f14fc5e6aa2be1f124e82b694">01118</link> <emphasis role="keywordtype">void</emphasis>&#32;<link linkend="_class_flow_tag_panel_1aaeeb052f14fc5e6aa2be1f124e82b694">FlowTagPanel::addTagAndSize</link>(std::vector&lt;TagPanel*&gt;&#32;childrenTags)
+<anchor xml:id="__tag_panel_8cpp_source_1l01119"/>01119 {
+<anchor xml:id="__tag_panel_8cpp_source_1l01120"/>01120 &#32;&#32;&#32;&#32;<link linkend="_class_flow_tag_panel_1a8c328c48878111ffebcc91b7b37a8b77">addChildren</link>(childrenTags);
+<anchor xml:id="__tag_panel_8cpp_source_1l01121"/>01121 &#32;&#32;&#32;&#32;<link linkend="_class_tag_panel_1a99231e365be781b584996e68197621b9">setTagSizer</link>();
+<anchor xml:id="__tag_panel_8cpp_source_1l01122"/>01122 }
+<anchor xml:id="__tag_panel_8cpp_source_1l01123"/>01123 
+<anchor xml:id="__tag_panel_8cpp_source_1l01124"/>01124 
+<anchor xml:id="__tag_panel_8cpp_source_1l01125"/><link linkend="_class_flow_tag_panel_1a908b8a9b0319c8c60588dff9296e9baf">01125</link> std::vector&lt;TagPanel*&gt;&#32;<link linkend="_class_flow_tag_panel_1a908b8a9b0319c8c60588dff9296e9baf">FlowTagPanel::getChildrenTags</link>()<emphasis role="keyword">const</emphasis>
+<anchor xml:id="__tag_panel_8cpp_source_1l01126"/>01126 <emphasis role="keyword"></emphasis>{
+<anchor xml:id="__tag_panel_8cpp_source_1l01127"/>01127 &#32;&#32;&#32;&#32;std::vector&lt;TagPanel*&gt;&#32;windowList;
+<anchor xml:id="__tag_panel_8cpp_source_1l01128"/>01128 
+<anchor xml:id="__tag_panel_8cpp_source_1l01129"/>01129 &#32;&#32;&#32;&#32;<emphasis role="keyword">auto</emphasis>&amp;&#32;sizerChildren&#32;=&#32;this-&gt;<link linkend="_class_flow_tag_panel_1aeb64852326aa4019061f0ba333276b6f">childrenSizer</link>-&gt;GetChildren();
+<anchor xml:id="__tag_panel_8cpp_source_1l01130"/>01130 &#32;&#32;&#32;&#32;<emphasis role="keywordflow">for</emphasis>&#32;(<emphasis role="keyword">auto</emphasis>&amp;&#32;item&#32;:&#32;sizerChildren)&#32;{
+<anchor xml:id="__tag_panel_8cpp_source_1l01131"/>01131 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keyword">auto</emphasis>&#32;child&#32;=&#32;<emphasis role="keyword">dynamic_cast&lt;</emphasis><link linkend="_class_tag_panel">TagPanel</link>*<emphasis role="keyword">&gt;</emphasis>(item-&gt;GetWindow());
+<anchor xml:id="__tag_panel_8cpp_source_1l01132"/>01132 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">if</emphasis>(child)windowList.push_back(child);
+<anchor xml:id="__tag_panel_8cpp_source_1l01133"/>01133 &#32;&#32;&#32;&#32;}
+<anchor xml:id="__tag_panel_8cpp_source_1l01134"/>01134 &#32;&#32;&#32;&#32;<emphasis role="keywordflow">return</emphasis>&#32;windowList;
+<anchor xml:id="__tag_panel_8cpp_source_1l01135"/>01135 }
+<anchor xml:id="__tag_panel_8cpp_source_1l01136"/>01136 
+<anchor xml:id="__tag_panel_8cpp_source_1l01137"/><link linkend="__tag_panel_8cpp_1a2f4c4fdbb29d8e8fadcbbd9673b3c370">01137</link> <link linkend="_class_flow_tag_panel">FlowTagPanel</link>*&#32;<link linkend="__tag_panel_8cpp_1a2f4c4fdbb29d8e8fadcbbd9673b3c370">GetParentTag</link>(<link linkend="_class_tag_panel">TagPanel</link>*&#32;panel)
+<anchor xml:id="__tag_panel_8cpp_source_1l01138"/>01138 {
+<anchor xml:id="__tag_panel_8cpp_source_1l01139"/>01139 &#32;&#32;&#32;&#32;<emphasis role="keywordflow">return</emphasis>&#32;<emphasis role="keyword">dynamic_cast&lt;</emphasis><link linkend="_class_flow_tag_panel">FlowTagPanel</link>*<emphasis role="keyword">&gt;</emphasis>(panel-&gt;<link linkend="_class_tag_panel_1af3b5b6fc2b16171af7cab7b0d79d9ed7">getParentTag</link>());
+<anchor xml:id="__tag_panel_8cpp_source_1l01140"/>01140 }
+</programlisting></section>

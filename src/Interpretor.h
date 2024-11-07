@@ -558,10 +558,10 @@ class Interpretor {
 public:
 
 	Interpretor();
-	Interpretor(std::string folder);
+	Interpretor(const std::string& folder);
 	~Interpretor();
-	void readActivityFile(std::string ActivityName);
-	std::string copyActivity(std::filesystem::path ActivityName);
+	void readActivityFile(const std::string& ActivityName);
+	std::string copyActivity(const std::string& ActivityName);
 	std::shared_ptr<Tag> getActivityTag();
 	void createMainTag(const std::string& text);
 	std::shared_ptr<MainToken> mainToken;
@@ -571,6 +571,6 @@ public:
 	std::shared_ptr<TokenResult> tr;
 	IteratorList<Token> tl;
 	Lexer lex;
-	std::filesystem::path ActivityFolder;
+	std::string ActivityFolder;
 };
 

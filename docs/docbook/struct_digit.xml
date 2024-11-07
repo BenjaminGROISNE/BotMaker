@@ -1,0 +1,67 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<section xmlns="http://docbook.org/ns/docbook" version="5.0" xmlns:xlink="http://www.w3.org/1999/xlink" xml:id="_struct_digit" xml:lang="en-US">
+<title>Digit Struct Reference</title>
+<indexterm><primary>Digit</primary></indexterm>
+<para>
+<computeroutput>#include &lt;Units.h&gt;</computeroutput>
+</para>
+Collaboration diagram for Digit:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="struct_digit__coll__graph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+<simplesect>
+    <title>Public Member Functions    </title>
+        <itemizedlist>
+            <listitem><para><link linkend="_struct_digit_1a2005acc424f718bdda6276b56be7b39b">Digit</link> ()</para>
+</listitem>
+        </itemizedlist>
+</simplesect>
+<simplesect>
+    <title>Public Attributes    </title>
+        <itemizedlist>
+            <listitem><para>int <link linkend="_struct_digit_1aa5b5ce0804b5ea5d0525cf610b37c1f2">dig</link></para>
+</listitem>
+            <listitem><para><link linkend="_struct_coord">Coord</link> <link linkend="_struct_digit_1ac7c3dfa0d9f6f0e4d9167c1063928a0b">Cnb</link></para>
+</listitem>
+        </itemizedlist>
+</simplesect>
+<section>
+<title>Detailed Description</title>
+<para>
+Definition at line <link linkend="__units_8h_source_1l00176">176</link> of file <link linkend="__units_8h_source">Units.h</link>.</para>
+</section>
+<section>
+<title>Constructor &amp; Destructor Documentation</title>
+<anchor xml:id="_struct_digit_1a2005acc424f718bdda6276b56be7b39b"/><section>
+    <title>Digit()</title>
+<indexterm><primary>Digit</primary><secondary>Digit</secondary></indexterm>
+<indexterm><primary>Digit</primary><secondary>Digit</secondary></indexterm>
+<para><computeroutput>Digit::Digit ( )<computeroutput>[inline]</computeroutput></computeroutput></para><para>
+Definition at line <link linkend="__units_8h_source_1l00179">179</link> of file <link linkend="__units_8h_source">Units.h</link>.</para>
+</section>
+</section>
+<section>
+<title>Member Data Documentation</title>
+<anchor xml:id="_struct_digit_1ac7c3dfa0d9f6f0e4d9167c1063928a0b"/><section>
+    <title>Cnb</title>
+<indexterm><primary>Cnb</primary><secondary>Digit</secondary></indexterm>
+<indexterm><primary>Digit</primary><secondary>Cnb</secondary></indexterm>
+<para><computeroutput><link linkend="_struct_coord">Coord</link> Digit::Cnb</computeroutput></para><para>
+Definition at line <link linkend="__units_8h_source_1l00178">178</link> of file <link linkend="__units_8h_source">Units.h</link>.</para>
+</section>
+<anchor xml:id="_struct_digit_1aa5b5ce0804b5ea5d0525cf610b37c1f2"/><section>
+    <title>dig</title>
+<indexterm><primary>dig</primary><secondary>Digit</secondary></indexterm>
+<indexterm><primary>Digit</primary><secondary>dig</secondary></indexterm>
+<para><computeroutput>int Digit::dig</computeroutput></para><para>
+Definition at line <link linkend="__units_8h_source_1l00177">177</link> of file <link linkend="__units_8h_source">Units.h</link>.</para>
+</section>
+<para>
+The documentation for this struct was generated from the following file:</para>
+src/<link linkend="__units_8h">Units.h</link></section>
+</section>

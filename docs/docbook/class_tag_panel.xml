@@ -1,0 +1,1354 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<section xmlns="http://docbook.org/ns/docbook" version="5.0" xmlns:xlink="http://www.w3.org/1999/xlink" xml:id="_class_tag_panel" xml:lang="en-US">
+<title>TagPanel Class Reference</title>
+<indexterm><primary>TagPanel</primary></indexterm>
+<para>
+<computeroutput>#include &lt;TagPanel.h&gt;</computeroutput>
+</para>
+Inheritance diagram for TagPanel:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_tag_panel__inherit__graph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+Collaboration diagram for TagPanel:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_tag_panel__coll__graph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+<simplesect>
+    <title>Public Member Functions    </title>
+        <itemizedlist>
+            <listitem><para><link linkend="_class_tag_panel_1a20eb7700df1a0fc1a51352b36a6e5a22">TagPanel</link> (bool topConstructor=true)</para>
+</listitem>
+            <listitem><para><link linkend="_class_tag_panel_1a947de417b587805f538e91916ca1cc5d">TagPanel</link> (wxWindow *parentWindow, bool topConstructor=true)</para>
+</listitem>
+            <listitem><para><link linkend="_class_tag_panel_1a25ab1432ace7974c4abc496f51223942">TagPanel</link> (const <link linkend="_class_tag_panel">TagPanel</link> &amp;toCopy, bool topConstructor=true)</para>
+</listitem>
+            <listitem><para>virtual <link linkend="_class_tag_panel">TagPanel</link> * <link linkend="_class_tag_panel_1a22c1748896f9b2a20dfb610b76216029">clone</link> ()</para>
+</listitem>
+            <listitem><para>virtual int <link linkend="_class_tag_panel_1aa533ce0568d728140272752a071e133a">getTagHeight</link> ()</para>
+</listitem>
+            <listitem><para>virtual void <link linkend="_class_tag_panel_1aa65c4779bd09af4389b2ca49e6ea4136">setTagName</link> ()</para>
+</listitem>
+            <listitem><para>void <link linkend="_class_tag_panel_1adea8840b3b43bfee7f8e090a71dd708c">setTagNameCustom</link> (const std::string &amp;name)</para>
+</listitem>
+            <listitem><para>virtual void <link linkend="_class_tag_panel_1a6e53bfa1e9893d31775867a4f0c7c749">setTagLine</link> ()</para>
+</listitem>
+            <listitem><para>virtual void <link linkend="_class_tag_panel_1a746b3898803ea72e2a7500d7ed73d9ce">setColors</link> ()</para>
+</listitem>
+            <listitem><para>void <link linkend="_class_tag_panel_1af74a61159813873c529dbcb17a371a05">initLineSizer</link> ()</para>
+</listitem>
+            <listitem><para>virtual void <link linkend="_class_tag_panel_1a5edee5cee34656fe89fec14f26af0f80">setPanelColor</link> ()</para>
+</listitem>
+            <listitem><para>virtual void <link linkend="_class_tag_panel_1ae24d607788ed14f2fc8b6a88ff9b7602">initTagSizer</link> ()</para>
+</listitem>
+            <listitem><para>virtual void <link linkend="_class_tag_panel_1a75a1eb94084fc21b1e50322a1c385733">addComponents</link> (<link linkend="_class_tag_panel">TagPanel</link> *tag)</para>
+</listitem>
+            <listitem><para>virtual void <link linkend="_class_tag_panel_1a2974706b1d2a79806571fbebd1f7d56b">initSizers</link> ()</para>
+</listitem>
+            <listitem><para>void <link linkend="_class_tag_panel_1a5d57b2c271078562ca65bf9d0f9c656e">DrawBordersEvent</link> (wxPaintEvent &amp;<link linkend="_paths_8cpp_1a93114eafe7b571802c6787926ec00d93">event</link>)</para>
+</listitem>
+            <listitem><para>void <link linkend="_class_tag_panel_1a72db5ac659ea9dc41b2a236bd5ff0a12">OnHoverPaint</link> (wxPaintEvent &amp;<link linkend="_paths_8cpp_1a93114eafe7b571802c6787926ec00d93">event</link>)</para>
+</listitem>
+            <listitem><para>void <link linkend="_class_tag_panel_1a01e839de7aa3bedbe9a7bc1f152a02f8">setStaticTagName</link> ()</para>
+</listitem>
+            <listitem><para><link linkend="_class_tag_panel">TagPanel</link> * <link linkend="_class_tag_panel_1a20a4cc67dc3ecd4538cb8af3c9668421">getPreviousTag</link> ()</para>
+</listitem>
+            <listitem><para><link linkend="_class_tag_panel">TagPanel</link> * <link linkend="_class_tag_panel_1aefc411bf7be4bd7fd05b3e8a48a6671f">getNextTag</link> ()</para>
+</listitem>
+            <listitem><para>wxBoxSizer * <link linkend="_class_tag_panel_1a7f15f662ac35f7d7b2b96c8d4dae0949">getLineSizer</link> ()</para>
+</listitem>
+            <listitem><para>virtual void <link linkend="_class_tag_panel_1af2926b62ee8940d7aa87591255623814">addTagName</link> ()</para>
+</listitem>
+            <listitem><para>void <link linkend="_class_tag_panel_1a99231e365be781b584996e68197621b9">setTagSizer</link> ()</para>
+</listitem>
+            <listitem><para>void <link linkend="_class_tag_panel_1a752cdf34c8cc8cc25ecc944683dff46b">setTagNameColor</link> ()</para>
+</listitem>
+            <listitem><para>void <link linkend="_class_tag_panel_1aaa6f2d383b2380c7c103b5019bd05782">addMover</link> ()</para>
+</listitem>
+            <listitem><para>bool <link linkend="_class_tag_panel_1a9a11954167303954710c12832b39fbf4">isLastTag</link> ()</para>
+</listitem>
+            <listitem><para>bool <link linkend="_class_tag_panel_1aa16fddf213851034cb33b775ea653efc">isFirstTag</link> ()</para>
+</listitem>
+            <listitem><para>void <link linkend="_class_tag_panel_1a4ddfadd1d39efac7f0123146fc9f8233">OnMoveUpClick</link> (wxMouseEvent &amp;evt)</para>
+</listitem>
+            <listitem><para>void <link linkend="_class_tag_panel_1a716d475b11d29d74392f4b0b581f7a45">OnDuplicateClick</link> (wxMouseEvent &amp;evt)</para>
+</listitem>
+            <listitem><para>void <link linkend="_class_tag_panel_1a33ffecd8625bc7e0783d208d8d18daf7">OnMoveDownClick</link> (wxMouseEvent &amp;evt)</para>
+</listitem>
+            <listitem><para>virtual void <link linkend="_class_tag_panel_1ab2f6c36e777443dcffd1cff986027790">initDeletePanel</link> ()</para>
+</listitem>
+            <listitem><para>void <link linkend="_class_tag_panel_1a92b74a6332f46423e1509044989a4a0a">OnDeleteButtonClick</link> (wxMouseEvent &amp;evt)</para>
+</listitem>
+            <listitem><para>void <link linkend="_class_tag_panel_1a370e5a7a79772ae4775f24de35506582">setPaintEvents</link> ()</para>
+</listitem>
+            <listitem><para>std::shared_ptr&lt; <link linkend="_class_tag">Tag</link> &gt; <link linkend="_class_tag_panel_1acf04179a1277e790a613902b33513a77">getTag</link> () const</para>
+</listitem>
+            <listitem><para>void <link linkend="_class_tag_panel_1aa2808a9ecda8c8181a49b4460e046395">setTag</link> (std::shared_ptr&lt; <link linkend="_class_tag">Tag</link> &gt; tag)</para>
+</listitem>
+            <listitem><para>void <link linkend="_class_tag_panel_1a5a896e5052102ac83010bc155bfd49aa">initDetailsPanel</link> (wxPanel *parentPanel)</para>
+</listitem>
+            <listitem><para>void <link linkend="_class_tag_panel_1a66d61d27a1bc39bf48ec00fd0f09dfd8">initDetailsTagName</link> ()</para>
+</listitem>
+            <listitem><para>void <link linkend="_class_tag_panel_1a43c96ffa9523c002fb96126500209ce8">SetLineFont</link> (wxButton *button, int <link linkend="_class_tag_panel_1aadc6b7d84d378ff8db4682080627030f">policeSize</link>=15)</para>
+</listitem>
+            <listitem><para>void <link linkend="_class_tag_panel_1a53d2a3068096670c08f249b1c2f6e798">SetLineFont</link> (wxStaticText *button, int <link linkend="_class_tag_panel_1aadc6b7d84d378ff8db4682080627030f">policeSize</link>=15)</para>
+</listitem>
+            <listitem><para>void <link linkend="_class_tag_panel_1af7c491223a887d2ce97353157adc9110">OnInsert</link> (wxPaintEvent &amp;evt)</para>
+</listitem>
+            <listitem><para>void <link linkend="_class_tag_panel_1a82ceff512bd6bf6302d782ea908c9ef9">linkToPanel</link> (wxBoxSizer *gridSizer)</para>
+</listitem>
+            <listitem><para>virtual void <link linkend="_class_tag_panel_1aa1a12f478359b6549c0d9c1c90f331b8">createDetailsPanel</link> (<link linkend="_class_tag_panel">TagPanel</link> *tag, wxPanel *parentPanel, wxBoxSizer *gridSizer)</para>
+</listitem>
+            <listitem><para>wxBoxSizer * <link linkend="_class_tag_panel_1a0c29f16235ad971cfa466f5e852cbcd8">getDetailsSizer</link> ()</para>
+</listitem>
+            <listitem><para>wxPanel * <link linkend="_class_tag_panel_1abc3125dfcc3694efea652a2232a6b23e">getDetailsPanel</link> ()</para>
+</listitem>
+            <listitem><para>wxColour <link linkend="_class_tag_panel_1a2968cbcc5c04e34a50085877ddb53f65">getPanelColour</link> ()</para>
+</listitem>
+            <listitem><para>wxBoxSizer * <link linkend="_class_tag_panel_1a98044cff891ada484ee4c845e878735b">getTagSizer</link> ()</para>
+</listitem>
+            <listitem><para><link linkend="_class_tag_panel">TagPanel</link> * <link linkend="_class_tag_panel_1af3b5b6fc2b16171af7cab7b0d79d9ed7">getParentTag</link> ()</para>
+</listitem>
+            <listitem><para>virtual void <link linkend="_class_tag_panel_1a861fccff4a41bbcb235d9d898f0ef17d">setInsertPoint</link> (<link linkend="__tag_panel_8h_1a369abf422adc1247d0d7bc295bf34014">HoverPosition</link> hovPos)</para>
+</listitem>
+            <listitem><para>virtual void <link linkend="_class_tag_panel_1af925f36858bbc30c39bd4716f64822d3">updateInsertRect</link> ()</para>
+</listitem>
+            <listitem><para>wxPoint <link linkend="_class_tag_panel_1aaaf019a2cc75cfb1014a0b9fd366e7f7">getInsertPoint</link> ()</para>
+</listitem>
+            <listitem><para>wxButton * <link linkend="_class_tag_panel_1a3987f5a00ba29cb8f5c1e7d09474f819">getCloneButton</link> () const</para>
+</listitem>
+            <listitem><para>wxButton * <link linkend="_class_tag_panel_1ad32a3e47413abc0b1f2252b7ce530b3d">getCutButton</link> () const</para>
+</listitem>
+        </itemizedlist>
+</simplesect>
+<simplesect>
+    <title>Static Public Member Functions    </title>
+        <itemizedlist>
+            <listitem><para>static int <link linkend="_class_tag_panel_1a975da9b33d0c94992472b291df4aadbe">getIndexOf</link> (wxSizer *sizer, wxSizerItem *item)</para>
+</listitem>
+            <listitem><para>static void <link linkend="_class_tag_panel_1a4fcedad553eb65983ba7a8da2d5895f3">init</link> (<link linkend="_class_tag_panel">TagPanel</link> *tag)</para>
+</listitem>
+            <listitem><para>static bool <link linkend="_class_tag_panel_1a556f0c05ac13e1c9c9f9ea39cd5041f8">isTagPanel</link> (wxWindow *window)</para>
+</listitem>
+            <listitem><para>static <link linkend="_class_tag_panel">TagPanel</link> * <link linkend="_class_tag_panel_1af656776798692c730135d692c6a48a62">getTagPanel</link> (wxWindow *window)</para>
+</listitem>
+        </itemizedlist>
+</simplesect>
+<simplesect>
+    <title>Public Attributes    </title>
+        <itemizedlist>
+            <listitem><para><link linkend="__tag_panel_8h_1a369abf422adc1247d0d7bc295bf34014">HoverPosition</link> <link linkend="_class_tag_panel_1ae51a14087a4b11aa65b79bca524a2dc9">previousHover</link></para>
+</listitem>
+            <listitem><para>bool <link linkend="_class_tag_panel_1a57f33df8ee51553bbb6a1f4b4f727d82">isInserting</link></para>
+</listitem>
+            <listitem><para>bool <link linkend="_class_tag_panel_1ab9e4fd9beea1943bb1fb664bf4b0f876">isHovering</link></para>
+</listitem>
+        </itemizedlist>
+</simplesect>
+<simplesect>
+    <title>Protected Attributes    </title>
+        <itemizedlist>
+            <listitem><para>wxButton * <link linkend="_class_tag_panel_1a81aca1816f6fc0985077fc5f461046e2">cloneButton</link></para>
+</listitem>
+            <listitem><para>wxButton * <link linkend="_class_tag_panel_1a227cddc11db1954dde6b5e3c49591e7a">cutButton</link></para>
+</listitem>
+            <listitem><para>wxButton * <link linkend="_class_tag_panel_1a569386f1f3226d5aa452cbbba46b1ffa">moveUpButton</link></para>
+</listitem>
+            <listitem><para>wxButton * <link linkend="_class_tag_panel_1a7972e5db29975326c850a2dae622eda6">moveDownButton</link></para>
+</listitem>
+            <listitem><para>wxButton * <link linkend="_class_tag_panel_1a481229251b8e6ee6d44ce1b5abd94c1b">deleteButton</link></para>
+</listitem>
+            <listitem><para>wxPoint <link linkend="_class_tag_panel_1ac08e1909ad79173fead54cf2e6c7be61">insertPoint</link></para>
+</listitem>
+            <listitem><para>wxSize <link linkend="_class_tag_panel_1ac6667f655542d928b04f273ba453e7c9">insertRect</link></para>
+</listitem>
+            <listitem><para>wxColour <link linkend="_class_tag_panel_1a0de4005aceb4d6809ec88ffb899f6d17">panelColor</link></para>
+</listitem>
+            <listitem><para>wxColour <link linkend="_class_tag_panel_1a23f2d5d739a33e4f3e4c26e1ee160d46">tagNameColor</link></para>
+</listitem>
+            <listitem><para>wxString <link linkend="_class_tag_panel_1a5dd671ef158b702eb9b17b88fe6c79b6">tagName</link></para>
+</listitem>
+            <listitem><para>int <link linkend="_class_tag_panel_1aadc6b7d84d378ff8db4682080627030f">policeSize</link></para>
+</listitem>
+            <listitem><para>wxBoxSizer * <link linkend="_class_tag_panel_1a0fb4a6bb2fdc47ce21e30a61784b804a">lineSizer</link></para>
+</listitem>
+            <listitem><para>wxBoxSizer * <link linkend="_class_tag_panel_1a480b452569c046bfc03e86a2be72a8eb">tagSizer</link></para>
+</listitem>
+            <listitem><para>wxStaticText * <link linkend="_class_tag_panel_1a0decd0f2236551f78024b107a5ed2e5f">staticTagName</link></para>
+</listitem>
+            <listitem><para>wxStaticText * <link linkend="_class_tag_panel_1a8d05f326ee6854342a0a5cf06228c527">staticDetailsName</link></para>
+</listitem>
+            <listitem><para>wxBoxSizer * <link linkend="_class_tag_panel_1acb5613b513abd882b94dd79981f15e5b">detailsSizer</link></para>
+</listitem>
+            <listitem><para>wxPanel * <link linkend="_class_tag_panel_1afa29a560070ac453fadae46f052cc53f">detailsPanel</link></para>
+</listitem>
+            <listitem><para>std::shared_ptr&lt; <link linkend="_class_tag">Tag</link> &gt; <link linkend="_class_tag_panel_1a5c983b7b476010dc908bdea5b3ce954a">myTag</link></para>
+</listitem>
+        </itemizedlist>
+</simplesect>
+<section>
+<title>Detailed Description</title>
+<para>
+Definition at line <link linkend="__tag_panel_8h_source_1l00016">16</link> of file <link linkend="__tag_panel_8h_source">TagPanel.h</link>.</para>
+</section>
+<section>
+<title>Constructor &amp; Destructor Documentation</title>
+<anchor xml:id="_class_tag_panel_1a20eb7700df1a0fc1a51352b36a6e5a22"/><section>
+    <title>TagPanel()<computeroutput>[1/3]</computeroutput></title>
+<indexterm><primary>TagPanel</primary><secondary>TagPanel</secondary></indexterm>
+<indexterm><primary>TagPanel</primary><secondary>TagPanel</secondary></indexterm>
+<para><computeroutput>TagPanel::TagPanel (bool topConstructor = <computeroutput>true</computeroutput>
+)</computeroutput></para><para>
+Definition at line <link linkend="__tag_panel_8cpp_source_1l00004">4</link> of file <link linkend="__tag_panel_8cpp_source">TagPanel.cpp</link>.</para>
+Here is the caller graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_tag_panel_a20eb7700df1a0fc1a51352b36a6e5a22_icgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_class_tag_panel_1a947de417b587805f538e91916ca1cc5d"/><section>
+    <title>TagPanel()<computeroutput>[2/3]</computeroutput></title>
+<indexterm><primary>TagPanel</primary><secondary>TagPanel</secondary></indexterm>
+<indexterm><primary>TagPanel</primary><secondary>TagPanel</secondary></indexterm>
+<para><computeroutput>TagPanel::TagPanel (wxWindow * parentWindow, bool topConstructor = <computeroutput>true</computeroutput>
+)</computeroutput></para><para>
+Definition at line <link linkend="__tag_panel_8cpp_source_1l00009">9</link> of file <link linkend="__tag_panel_8cpp_source">TagPanel.cpp</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_tag_panel_a947de417b587805f538e91916ca1cc5d_cgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_class_tag_panel_1a25ab1432ace7974c4abc496f51223942"/><section>
+    <title>TagPanel()<computeroutput>[3/3]</computeroutput></title>
+<indexterm><primary>TagPanel</primary><secondary>TagPanel</secondary></indexterm>
+<indexterm><primary>TagPanel</primary><secondary>TagPanel</secondary></indexterm>
+<para><computeroutput>TagPanel::TagPanel (const <link linkend="_class_tag_panel">TagPanel</link> &amp; toCopy, bool topConstructor = <computeroutput>true</computeroutput>
+)</computeroutput></para><para>
+Definition at line <link linkend="__tag_panel_8cpp_source_1l00018">18</link> of file <link linkend="__tag_panel_8cpp_source">TagPanel.cpp</link>.</para>
+</section>
+</section>
+<section>
+<title>Member Function Documentation</title>
+<anchor xml:id="_class_tag_panel_1a75a1eb94084fc21b1e50322a1c385733"/><section>
+    <title>addComponents()</title>
+<indexterm><primary>addComponents</primary><secondary>TagPanel</secondary></indexterm>
+<indexterm><primary>TagPanel</primary><secondary>addComponents</secondary></indexterm>
+<para><computeroutput>void TagPanel::addComponents (<link linkend="_class_tag_panel">TagPanel</link> * tag)<computeroutput>[virtual]</computeroutput></computeroutput></para><para>
+Reimplemented in <link linkend="_class_flow_tag_panel_1a92c626fbe9ab70ee75813edec7e323ba">FlowTagPanel</link>.</para>
+<para>
+Definition at line <link linkend="__tag_panel_8cpp_source_1l00841">841</link> of file <link linkend="__tag_panel_8cpp_source">TagPanel.cpp</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_tag_panel_a75a1eb94084fc21b1e50322a1c385733_cgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+Here is the caller graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_tag_panel_a75a1eb94084fc21b1e50322a1c385733_icgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_class_tag_panel_1aaa6f2d383b2380c7c103b5019bd05782"/><section>
+    <title>addMover()</title>
+<indexterm><primary>addMover</primary><secondary>TagPanel</secondary></indexterm>
+<indexterm><primary>TagPanel</primary><secondary>addMover</secondary></indexterm>
+<para><computeroutput>void TagPanel::addMover ( )</computeroutput></para><para>
+Definition at line <link linkend="__tag_panel_8cpp_source_1l00142">142</link> of file <link linkend="__tag_panel_8cpp_source">TagPanel.cpp</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_tag_panel_aaa6f2d383b2380c7c103b5019bd05782_cgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+Here is the caller graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_tag_panel_aaa6f2d383b2380c7c103b5019bd05782_icgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_class_tag_panel_1af2926b62ee8940d7aa87591255623814"/><section>
+    <title>addTagName()</title>
+<indexterm><primary>addTagName</primary><secondary>TagPanel</secondary></indexterm>
+<indexterm><primary>TagPanel</primary><secondary>addTagName</secondary></indexterm>
+<para><computeroutput>void TagPanel::addTagName ( )<computeroutput>[virtual]</computeroutput></computeroutput></para><para>
+Definition at line <link linkend="__tag_panel_8cpp_source_1l00758">758</link> of file <link linkend="__tag_panel_8cpp_source">TagPanel.cpp</link>.</para>
+Here is the caller graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_tag_panel_af2926b62ee8940d7aa87591255623814_icgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_class_tag_panel_1a22c1748896f9b2a20dfb610b76216029"/><section>
+    <title>clone()</title>
+<indexterm><primary>clone</primary><secondary>TagPanel</secondary></indexterm>
+<indexterm><primary>TagPanel</primary><secondary>clone</secondary></indexterm>
+<para><computeroutput><link linkend="_class_tag_panel">TagPanel</link> * TagPanel::clone ( )<computeroutput>[virtual]</computeroutput></computeroutput></para><para>
+Reimplemented in <link linkend="_class_bool_tag_panel_1ae57699d163de0572b9f78f7661a0baff">BoolTagPanel</link>, <link linkend="_class_empty_panel_1a4c29bf1566d56b29a69a7e9ea1fe70d9">EmptyPanel</link>, <link linkend="_class_flow_tag_panel_1a39e04805c0a27303a05e72d44a531aa4">FlowTagPanel</link>, <link linkend="_class_if_tag_panel_1a275fc196fc3c8d12e847331234e4eb6a">IfTagPanel</link>, <link linkend="_class_loop_tag_panel_1a9aef891de5b23170ad57778c6a7c670b">LoopTagPanel</link>, and <link linkend="_class_main_tag_panel_1a149128cca7c6b0acbb6c2ccba5c280b7">MainTagPanel</link>.</para>
+<para>
+Definition at line <link linkend="__tag_panel_8cpp_source_1l00306">306</link> of file <link linkend="__tag_panel_8cpp_source">TagPanel.cpp</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_tag_panel_a22c1748896f9b2a20dfb610b76216029_cgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+Here is the caller graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_tag_panel_a22c1748896f9b2a20dfb610b76216029_icgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_class_tag_panel_1aa1a12f478359b6549c0d9c1c90f331b8"/><section>
+    <title>createDetailsPanel()</title>
+<indexterm><primary>createDetailsPanel</primary><secondary>TagPanel</secondary></indexterm>
+<indexterm><primary>TagPanel</primary><secondary>createDetailsPanel</secondary></indexterm>
+<para><computeroutput>void TagPanel::createDetailsPanel (<link linkend="_class_tag_panel">TagPanel</link> * tag, wxPanel * parentPanel, wxBoxSizer * gridSizer)<computeroutput>[virtual]</computeroutput></computeroutput></para><para>
+Definition at line <link linkend="__tag_panel_8cpp_source_1l00362">362</link> of file <link linkend="__tag_panel_8cpp_source">TagPanel.cpp</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_tag_panel_aa1a12f478359b6549c0d9c1c90f331b8_cgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_class_tag_panel_1a5d57b2c271078562ca65bf9d0f9c656e"/><section>
+    <title>DrawBordersEvent()</title>
+<indexterm><primary>DrawBordersEvent</primary><secondary>TagPanel</secondary></indexterm>
+<indexterm><primary>TagPanel</primary><secondary>DrawBordersEvent</secondary></indexterm>
+<para><computeroutput>void TagPanel::DrawBordersEvent (wxPaintEvent &amp; event)</computeroutput></para><para>
+Definition at line <link linkend="__tag_panel_8cpp_source_1l00712">712</link> of file <link linkend="__tag_panel_8cpp_source">TagPanel.cpp</link>.</para>
+Here is the caller graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_tag_panel_a5d57b2c271078562ca65bf9d0f9c656e_icgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_class_tag_panel_1a3987f5a00ba29cb8f5c1e7d09474f819"/><section>
+    <title>getCloneButton()</title>
+<indexterm><primary>getCloneButton</primary><secondary>TagPanel</secondary></indexterm>
+<indexterm><primary>TagPanel</primary><secondary>getCloneButton</secondary></indexterm>
+<para><computeroutput>wxButton * TagPanel::getCloneButton ( ) const</computeroutput></para><para>
+Definition at line <link linkend="__tag_panel_8cpp_source_1l00448">448</link> of file <link linkend="__tag_panel_8cpp_source">TagPanel.cpp</link>.</para>
+Here is the caller graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_tag_panel_a3987f5a00ba29cb8f5c1e7d09474f819_icgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_class_tag_panel_1ad32a3e47413abc0b1f2252b7ce530b3d"/><section>
+    <title>getCutButton()</title>
+<indexterm><primary>getCutButton</primary><secondary>TagPanel</secondary></indexterm>
+<indexterm><primary>TagPanel</primary><secondary>getCutButton</secondary></indexterm>
+<para><computeroutput>wxButton * TagPanel::getCutButton ( ) const</computeroutput></para><para>
+Definition at line <link linkend="__tag_panel_8cpp_source_1l00452">452</link> of file <link linkend="__tag_panel_8cpp_source">TagPanel.cpp</link>.</para>
+Here is the caller graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_tag_panel_ad32a3e47413abc0b1f2252b7ce530b3d_icgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_class_tag_panel_1abc3125dfcc3694efea652a2232a6b23e"/><section>
+    <title>getDetailsPanel()</title>
+<indexterm><primary>getDetailsPanel</primary><secondary>TagPanel</secondary></indexterm>
+<indexterm><primary>TagPanel</primary><secondary>getDetailsPanel</secondary></indexterm>
+<para><computeroutput>wxPanel * TagPanel::getDetailsPanel ( )</computeroutput></para><para>
+Definition at line <link linkend="__tag_panel_8cpp_source_1l00374">374</link> of file <link linkend="__tag_panel_8cpp_source">TagPanel.cpp</link>.</para>
+</section>
+<anchor xml:id="_class_tag_panel_1a0c29f16235ad971cfa466f5e852cbcd8"/><section>
+    <title>getDetailsSizer()</title>
+<indexterm><primary>getDetailsSizer</primary><secondary>TagPanel</secondary></indexterm>
+<indexterm><primary>TagPanel</primary><secondary>getDetailsSizer</secondary></indexterm>
+<para><computeroutput>wxBoxSizer * TagPanel::getDetailsSizer ( )</computeroutput></para><para>
+Definition at line <link linkend="__tag_panel_8cpp_source_1l00369">369</link> of file <link linkend="__tag_panel_8cpp_source">TagPanel.cpp</link>.</para>
+</section>
+<anchor xml:id="_class_tag_panel_1a975da9b33d0c94992472b291df4aadbe"/><section>
+    <title>getIndexOf()</title>
+<indexterm><primary>getIndexOf</primary><secondary>TagPanel</secondary></indexterm>
+<indexterm><primary>TagPanel</primary><secondary>getIndexOf</secondary></indexterm>
+<para><computeroutput>int TagPanel::getIndexOf (wxSizer * sizer, wxSizerItem * item)<computeroutput>[static]</computeroutput></computeroutput></para><para>
+Definition at line <link linkend="__tag_panel_8cpp_source_1l00669">669</link> of file <link linkend="__tag_panel_8cpp_source">TagPanel.cpp</link>.</para>
+Here is the caller graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_tag_panel_a975da9b33d0c94992472b291df4aadbe_icgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_class_tag_panel_1aaaf019a2cc75cfb1014a0b9fd366e7f7"/><section>
+    <title>getInsertPoint()</title>
+<indexterm><primary>getInsertPoint</primary><secondary>TagPanel</secondary></indexterm>
+<indexterm><primary>TagPanel</primary><secondary>getInsertPoint</secondary></indexterm>
+<para><computeroutput>wxPoint TagPanel::getInsertPoint ( )</computeroutput></para><para>
+Definition at line <link linkend="__tag_panel_8cpp_source_1l00443">443</link> of file <link linkend="__tag_panel_8cpp_source">TagPanel.cpp</link>.</para>
+</section>
+<anchor xml:id="_class_tag_panel_1a7f15f662ac35f7d7b2b96c8d4dae0949"/><section>
+    <title>getLineSizer()</title>
+<indexterm><primary>getLineSizer</primary><secondary>TagPanel</secondary></indexterm>
+<indexterm><primary>TagPanel</primary><secondary>getLineSizer</secondary></indexterm>
+<para><computeroutput>wxBoxSizer * TagPanel::getLineSizer ( )</computeroutput></para><para>
+Definition at line <link linkend="__tag_panel_8cpp_source_1l00956">956</link> of file <link linkend="__tag_panel_8cpp_source">TagPanel.cpp</link>.</para>
+Here is the caller graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_tag_panel_a7f15f662ac35f7d7b2b96c8d4dae0949_icgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_class_tag_panel_1aefc411bf7be4bd7fd05b3e8a48a6671f"/><section>
+    <title>getNextTag()</title>
+<indexterm><primary>getNextTag</primary><secondary>TagPanel</secondary></indexterm>
+<indexterm><primary>TagPanel</primary><secondary>getNextTag</secondary></indexterm>
+<para><computeroutput><link linkend="_class_tag_panel">TagPanel</link> * TagPanel::getNextTag ( )</computeroutput></para><para>
+Definition at line <link linkend="__tag_panel_8cpp_source_1l00280">280</link> of file <link linkend="__tag_panel_8cpp_source">TagPanel.cpp</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_tag_panel_aefc411bf7be4bd7fd05b3e8a48a6671f_cgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+Here is the caller graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_tag_panel_aefc411bf7be4bd7fd05b3e8a48a6671f_icgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_class_tag_panel_1a2968cbcc5c04e34a50085877ddb53f65"/><section>
+    <title>getPanelColour()</title>
+<indexterm><primary>getPanelColour</primary><secondary>TagPanel</secondary></indexterm>
+<indexterm><primary>TagPanel</primary><secondary>getPanelColour</secondary></indexterm>
+<para><computeroutput>wxColour TagPanel::getPanelColour ( )</computeroutput></para><para>
+Definition at line <link linkend="__tag_panel_8cpp_source_1l00379">379</link> of file <link linkend="__tag_panel_8cpp_source">TagPanel.cpp</link>.</para>
+Here is the caller graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_tag_panel_a2968cbcc5c04e34a50085877ddb53f65_icgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_class_tag_panel_1af3b5b6fc2b16171af7cab7b0d79d9ed7"/><section>
+    <title>getParentTag()</title>
+<indexterm><primary>getParentTag</primary><secondary>TagPanel</secondary></indexterm>
+<indexterm><primary>TagPanel</primary><secondary>getParentTag</secondary></indexterm>
+<para><computeroutput><link linkend="_class_tag_panel">TagPanel</link> * TagPanel::getParentTag ( )</computeroutput></para><para>
+Definition at line <link linkend="__tag_panel_8cpp_source_1l00389">389</link> of file <link linkend="__tag_panel_8cpp_source">TagPanel.cpp</link>.</para>
+Here is the caller graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_tag_panel_af3b5b6fc2b16171af7cab7b0d79d9ed7_icgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_class_tag_panel_1a20a4cc67dc3ecd4538cb8af3c9668421"/><section>
+    <title>getPreviousTag()</title>
+<indexterm><primary>getPreviousTag</primary><secondary>TagPanel</secondary></indexterm>
+<indexterm><primary>TagPanel</primary><secondary>getPreviousTag</secondary></indexterm>
+<para><computeroutput><link linkend="_class_tag_panel">TagPanel</link> * TagPanel::getPreviousTag ( )</computeroutput></para><para>
+Definition at line <link linkend="__tag_panel_8cpp_source_1l00270">270</link> of file <link linkend="__tag_panel_8cpp_source">TagPanel.cpp</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_tag_panel_a20a4cc67dc3ecd4538cb8af3c9668421_cgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+Here is the caller graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_tag_panel_a20a4cc67dc3ecd4538cb8af3c9668421_icgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_class_tag_panel_1acf04179a1277e790a613902b33513a77"/><section>
+    <title>getTag()</title>
+<indexterm><primary>getTag</primary><secondary>TagPanel</secondary></indexterm>
+<indexterm><primary>TagPanel</primary><secondary>getTag</secondary></indexterm>
+<para><computeroutput>std::shared_ptr&lt; <link linkend="_class_tag">Tag</link> &gt; TagPanel::getTag ( ) const</computeroutput></para><para>
+Definition at line <link linkend="__tag_panel_8cpp_source_1l00290">290</link> of file <link linkend="__tag_panel_8cpp_source">TagPanel.cpp</link>.</para>
+</section>
+<anchor xml:id="_class_tag_panel_1aa533ce0568d728140272752a071e133a"/><section>
+    <title>getTagHeight()</title>
+<indexterm><primary>getTagHeight</primary><secondary>TagPanel</secondary></indexterm>
+<indexterm><primary>TagPanel</primary><secondary>getTagHeight</secondary></indexterm>
+<para><computeroutput>int TagPanel::getTagHeight ( )<computeroutput>[virtual]</computeroutput></computeroutput></para><para>
+Reimplemented in <link linkend="_class_flow_tag_panel_1a93b947ffb6b2dc6c2f359490158b7b90">FlowTagPanel</link>.</para>
+<para>
+Definition at line <link linkend="__tag_panel_8cpp_source_1l00115">115</link> of file <link linkend="__tag_panel_8cpp_source">TagPanel.cpp</link>.</para>
+</section>
+<anchor xml:id="_class_tag_panel_1af656776798692c730135d692c6a48a62"/><section>
+    <title>getTagPanel()</title>
+<indexterm><primary>getTagPanel</primary><secondary>TagPanel</secondary></indexterm>
+<indexterm><primary>TagPanel</primary><secondary>getTagPanel</secondary></indexterm>
+<para><computeroutput><link linkend="_class_tag_panel">TagPanel</link> * TagPanel::getTagPanel (wxWindow * window)<computeroutput>[static]</computeroutput></computeroutput></para><para>
+Definition at line <link linkend="__tag_panel_8cpp_source_1l00394">394</link> of file <link linkend="__tag_panel_8cpp_source">TagPanel.cpp</link>.</para>
+</section>
+<anchor xml:id="_class_tag_panel_1a98044cff891ada484ee4c845e878735b"/><section>
+    <title>getTagSizer()</title>
+<indexterm><primary>getTagSizer</primary><secondary>TagPanel</secondary></indexterm>
+<indexterm><primary>TagPanel</primary><secondary>getTagSizer</secondary></indexterm>
+<para><computeroutput>wxBoxSizer * TagPanel::getTagSizer ( )</computeroutput></para><para>
+Definition at line <link linkend="__tag_panel_8cpp_source_1l00384">384</link> of file <link linkend="__tag_panel_8cpp_source">TagPanel.cpp</link>.</para>
+</section>
+<anchor xml:id="_class_tag_panel_1a4fcedad553eb65983ba7a8da2d5895f3"/><section>
+    <title>init()</title>
+<indexterm><primary>init</primary><secondary>TagPanel</secondary></indexterm>
+<indexterm><primary>TagPanel</primary><secondary>init</secondary></indexterm>
+<para><computeroutput>void TagPanel::init (<link linkend="_class_tag_panel">TagPanel</link> * tag)<computeroutput>[static]</computeroutput></computeroutput></para><para>
+Definition at line <link linkend="__tag_panel_8cpp_source_1l00479">479</link> of file <link linkend="__tag_panel_8cpp_source">TagPanel.cpp</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_tag_panel_a4fcedad553eb65983ba7a8da2d5895f3_cgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+Here is the caller graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_tag_panel_a4fcedad553eb65983ba7a8da2d5895f3_icgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_class_tag_panel_1ab2f6c36e777443dcffd1cff986027790"/><section>
+    <title>initDeletePanel()</title>
+<indexterm><primary>initDeletePanel</primary><secondary>TagPanel</secondary></indexterm>
+<indexterm><primary>TagPanel</primary><secondary>initDeletePanel</secondary></indexterm>
+<para><computeroutput>void TagPanel::initDeletePanel ( )<computeroutput>[virtual]</computeroutput></computeroutput></para><para>
+Definition at line <link linkend="__tag_panel_8cpp_source_1l00607">607</link> of file <link linkend="__tag_panel_8cpp_source">TagPanel.cpp</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_tag_panel_ab2f6c36e777443dcffd1cff986027790_cgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+Here is the caller graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_tag_panel_ab2f6c36e777443dcffd1cff986027790_icgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_class_tag_panel_1a5a896e5052102ac83010bc155bfd49aa"/><section>
+    <title>initDetailsPanel()</title>
+<indexterm><primary>initDetailsPanel</primary><secondary>TagPanel</secondary></indexterm>
+<indexterm><primary>TagPanel</primary><secondary>initDetailsPanel</secondary></indexterm>
+<para><computeroutput>void TagPanel::initDetailsPanel (wxPanel * parentPanel)</computeroutput></para><para>
+Definition at line <link linkend="__tag_panel_8cpp_source_1l00300">300</link> of file <link linkend="__tag_panel_8cpp_source">TagPanel.cpp</link>.</para>
+Here is the caller graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_tag_panel_a5a896e5052102ac83010bc155bfd49aa_icgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_class_tag_panel_1a66d61d27a1bc39bf48ec00fd0f09dfd8"/><section>
+    <title>initDetailsTagName()</title>
+<indexterm><primary>initDetailsTagName</primary><secondary>TagPanel</secondary></indexterm>
+<indexterm><primary>TagPanel</primary><secondary>initDetailsTagName</secondary></indexterm>
+<para><computeroutput>void TagPanel::initDetailsTagName ( )</computeroutput></para><para>
+Definition at line <link linkend="__tag_panel_8cpp_source_1l00334">334</link> of file <link linkend="__tag_panel_8cpp_source">TagPanel.cpp</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_tag_panel_a66d61d27a1bc39bf48ec00fd0f09dfd8_cgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+Here is the caller graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_tag_panel_a66d61d27a1bc39bf48ec00fd0f09dfd8_icgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_class_tag_panel_1af74a61159813873c529dbcb17a371a05"/><section>
+    <title>initLineSizer()</title>
+<indexterm><primary>initLineSizer</primary><secondary>TagPanel</secondary></indexterm>
+<indexterm><primary>TagPanel</primary><secondary>initLineSizer</secondary></indexterm>
+<para><computeroutput>void TagPanel::initLineSizer ( )</computeroutput></para><para>
+Definition at line <link linkend="__tag_panel_8cpp_source_1l00818">818</link> of file <link linkend="__tag_panel_8cpp_source">TagPanel.cpp</link>.</para>
+Here is the caller graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_tag_panel_af74a61159813873c529dbcb17a371a05_icgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_class_tag_panel_1a2974706b1d2a79806571fbebd1f7d56b"/><section>
+    <title>initSizers()</title>
+<indexterm><primary>initSizers</primary><secondary>TagPanel</secondary></indexterm>
+<indexterm><primary>TagPanel</primary><secondary>initSizers</secondary></indexterm>
+<para><computeroutput>void TagPanel::initSizers ( )<computeroutput>[virtual]</computeroutput></computeroutput></para><para>
+Reimplemented in <link linkend="_class_flow_tag_panel_1ac485ea3365ed7d46576190699c2ffca2">FlowTagPanel</link>.</para>
+<para>
+Definition at line <link linkend="__tag_panel_8cpp_source_1l00539">539</link> of file <link linkend="__tag_panel_8cpp_source">TagPanel.cpp</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_tag_panel_a2974706b1d2a79806571fbebd1f7d56b_cgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+Here is the caller graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_tag_panel_a2974706b1d2a79806571fbebd1f7d56b_icgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_class_tag_panel_1ae24d607788ed14f2fc8b6a88ff9b7602"/><section>
+    <title>initTagSizer()</title>
+<indexterm><primary>initTagSizer</primary><secondary>TagPanel</secondary></indexterm>
+<indexterm><primary>TagPanel</primary><secondary>initTagSizer</secondary></indexterm>
+<para><computeroutput>void TagPanel::initTagSizer ( )<computeroutput>[virtual]</computeroutput></computeroutput></para><para>
+Definition at line <link linkend="__tag_panel_8cpp_source_1l00813">813</link> of file <link linkend="__tag_panel_8cpp_source">TagPanel.cpp</link>.</para>
+Here is the caller graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_tag_panel_ae24d607788ed14f2fc8b6a88ff9b7602_icgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_class_tag_panel_1aa16fddf213851034cb33b775ea653efc"/><section>
+    <title>isFirstTag()</title>
+<indexterm><primary>isFirstTag</primary><secondary>TagPanel</secondary></indexterm>
+<indexterm><primary>TagPanel</primary><secondary>isFirstTag</secondary></indexterm>
+<para><computeroutput>bool TagPanel::isFirstTag ( )</computeroutput></para><para>
+Definition at line <link linkend="__tag_panel_8cpp_source_1l00180">180</link> of file <link linkend="__tag_panel_8cpp_source">TagPanel.cpp</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_tag_panel_aa16fddf213851034cb33b775ea653efc_cgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+Here is the caller graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_tag_panel_aa16fddf213851034cb33b775ea653efc_icgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_class_tag_panel_1a9a11954167303954710c12832b39fbf4"/><section>
+    <title>isLastTag()</title>
+<indexterm><primary>isLastTag</primary><secondary>TagPanel</secondary></indexterm>
+<indexterm><primary>TagPanel</primary><secondary>isLastTag</secondary></indexterm>
+<para><computeroutput>bool TagPanel::isLastTag ( )</computeroutput></para><para>
+Definition at line <link linkend="__tag_panel_8cpp_source_1l00171">171</link> of file <link linkend="__tag_panel_8cpp_source">TagPanel.cpp</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_tag_panel_a9a11954167303954710c12832b39fbf4_cgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+Here is the caller graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_tag_panel_a9a11954167303954710c12832b39fbf4_icgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_class_tag_panel_1a556f0c05ac13e1c9c9f9ea39cd5041f8"/><section>
+    <title>isTagPanel()</title>
+<indexterm><primary>isTagPanel</primary><secondary>TagPanel</secondary></indexterm>
+<indexterm><primary>TagPanel</primary><secondary>isTagPanel</secondary></indexterm>
+<para><computeroutput>bool TagPanel::isTagPanel (wxWindow * window)<computeroutput>[static]</computeroutput></computeroutput></para><para>
+Definition at line <link linkend="__tag_panel_8cpp_source_1l00265">265</link> of file <link linkend="__tag_panel_8cpp_source">TagPanel.cpp</link>.</para>
+</section>
+<anchor xml:id="_class_tag_panel_1a82ceff512bd6bf6302d782ea908c9ef9"/><section>
+    <title>linkToPanel()</title>
+<indexterm><primary>linkToPanel</primary><secondary>TagPanel</secondary></indexterm>
+<indexterm><primary>TagPanel</primary><secondary>linkToPanel</secondary></indexterm>
+<para><computeroutput>void TagPanel::linkToPanel (wxBoxSizer * gridSizer)</computeroutput></para><para>
+Definition at line <link linkend="__tag_panel_8cpp_source_1l00357">357</link> of file <link linkend="__tag_panel_8cpp_source">TagPanel.cpp</link>.</para>
+Here is the caller graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_tag_panel_a82ceff512bd6bf6302d782ea908c9ef9_icgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_class_tag_panel_1a92b74a6332f46423e1509044989a4a0a"/><section>
+    <title>OnDeleteButtonClick()</title>
+<indexterm><primary>OnDeleteButtonClick</primary><secondary>TagPanel</secondary></indexterm>
+<indexterm><primary>TagPanel</primary><secondary>OnDeleteButtonClick</secondary></indexterm>
+<para><computeroutput>void TagPanel::OnDeleteButtonClick (wxMouseEvent &amp; evt)</computeroutput></para><para>
+Definition at line <link linkend="__tag_panel_8cpp_source_1l00619">619</link> of file <link linkend="__tag_panel_8cpp_source">TagPanel.cpp</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_tag_panel_a92b74a6332f46423e1509044989a4a0a_cgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+Here is the caller graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_tag_panel_a92b74a6332f46423e1509044989a4a0a_icgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_class_tag_panel_1a716d475b11d29d74392f4b0b581f7a45"/><section>
+    <title>OnDuplicateClick()</title>
+<indexterm><primary>OnDuplicateClick</primary><secondary>TagPanel</secondary></indexterm>
+<indexterm><primary>TagPanel</primary><secondary>OnDuplicateClick</secondary></indexterm>
+<para><computeroutput>void TagPanel::OnDuplicateClick (wxMouseEvent &amp; evt)</computeroutput></para><para>
+Definition at line <link linkend="__tag_panel_8cpp_source_1l00217">217</link> of file <link linkend="__tag_panel_8cpp_source">TagPanel.cpp</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_tag_panel_a716d475b11d29d74392f4b0b581f7a45_cgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_class_tag_panel_1a72db5ac659ea9dc41b2a236bd5ff0a12"/><section>
+    <title>OnHoverPaint()</title>
+<indexterm><primary>OnHoverPaint</primary><secondary>TagPanel</secondary></indexterm>
+<indexterm><primary>TagPanel</primary><secondary>OnHoverPaint</secondary></indexterm>
+<para><computeroutput>void TagPanel::OnHoverPaint (wxPaintEvent &amp; event)</computeroutput></para><para>
+Definition at line <link linkend="__tag_panel_8cpp_source_1l00720">720</link> of file <link linkend="__tag_panel_8cpp_source">TagPanel.cpp</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_tag_panel_a72db5ac659ea9dc41b2a236bd5ff0a12_cgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+Here is the caller graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_tag_panel_a72db5ac659ea9dc41b2a236bd5ff0a12_icgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_class_tag_panel_1af7c491223a887d2ce97353157adc9110"/><section>
+    <title>OnInsert()</title>
+<indexterm><primary>OnInsert</primary><secondary>TagPanel</secondary></indexterm>
+<indexterm><primary>TagPanel</primary><secondary>OnInsert</secondary></indexterm>
+<para><computeroutput>void TagPanel::OnInsert (wxPaintEvent &amp; evt)</computeroutput></para><para>
+Definition at line <link linkend="__tag_panel_8cpp_source_1l00734">734</link> of file <link linkend="__tag_panel_8cpp_source">TagPanel.cpp</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_tag_panel_af7c491223a887d2ce97353157adc9110_cgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+Here is the caller graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_tag_panel_af7c491223a887d2ce97353157adc9110_icgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_class_tag_panel_1a33ffecd8625bc7e0783d208d8d18daf7"/><section>
+    <title>OnMoveDownClick()</title>
+<indexterm><primary>OnMoveDownClick</primary><secondary>TagPanel</secondary></indexterm>
+<indexterm><primary>TagPanel</primary><secondary>OnMoveDownClick</secondary></indexterm>
+<para><computeroutput>void TagPanel::OnMoveDownClick (wxMouseEvent &amp; evt)</computeroutput></para><para>
+Definition at line <link linkend="__tag_panel_8cpp_source_1l00226">226</link> of file <link linkend="__tag_panel_8cpp_source">TagPanel.cpp</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_tag_panel_a33ffecd8625bc7e0783d208d8d18daf7_cgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+Here is the caller graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_tag_panel_a33ffecd8625bc7e0783d208d8d18daf7_icgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_class_tag_panel_1a4ddfadd1d39efac7f0123146fc9f8233"/><section>
+    <title>OnMoveUpClick()</title>
+<indexterm><primary>OnMoveUpClick</primary><secondary>TagPanel</secondary></indexterm>
+<indexterm><primary>TagPanel</primary><secondary>OnMoveUpClick</secondary></indexterm>
+<para><computeroutput>void TagPanel::OnMoveUpClick (wxMouseEvent &amp; evt)</computeroutput></para><para>
+Definition at line <link linkend="__tag_panel_8cpp_source_1l00189">189</link> of file <link linkend="__tag_panel_8cpp_source">TagPanel.cpp</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_tag_panel_a4ddfadd1d39efac7f0123146fc9f8233_cgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+Here is the caller graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_tag_panel_a4ddfadd1d39efac7f0123146fc9f8233_icgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_class_tag_panel_1a746b3898803ea72e2a7500d7ed73d9ce"/><section>
+    <title>setColors()</title>
+<indexterm><primary>setColors</primary><secondary>TagPanel</secondary></indexterm>
+<indexterm><primary>TagPanel</primary><secondary>setColors</secondary></indexterm>
+<para><computeroutput>void TagPanel::setColors ( )<computeroutput>[virtual]</computeroutput></computeroutput></para><para>
+Definition at line <link linkend="__tag_panel_8cpp_source_1l00131">131</link> of file <link linkend="__tag_panel_8cpp_source">TagPanel.cpp</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_tag_panel_a746b3898803ea72e2a7500d7ed73d9ce_cgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+Here is the caller graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_tag_panel_a746b3898803ea72e2a7500d7ed73d9ce_icgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_class_tag_panel_1a861fccff4a41bbcb235d9d898f0ef17d"/><section>
+    <title>setInsertPoint()</title>
+<indexterm><primary>setInsertPoint</primary><secondary>TagPanel</secondary></indexterm>
+<indexterm><primary>TagPanel</primary><secondary>setInsertPoint</secondary></indexterm>
+<para><computeroutput>void TagPanel::setInsertPoint (<link linkend="__tag_panel_8h_1a369abf422adc1247d0d7bc295bf34014">HoverPosition</link> hovPos)<computeroutput>[virtual]</computeroutput></computeroutput></para><para>
+Reimplemented in <link linkend="_class_flow_tag_panel_1ab7a16f3ed1f06f7d060aeb086fd8d683">FlowTagPanel</link>.</para>
+<para>
+Definition at line <link linkend="__tag_panel_8cpp_source_1l00399">399</link> of file <link linkend="__tag_panel_8cpp_source">TagPanel.cpp</link>.</para>
+Here is the caller graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_tag_panel_a861fccff4a41bbcb235d9d898f0ef17d_icgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_class_tag_panel_1a43c96ffa9523c002fb96126500209ce8"/><section>
+    <title>SetLineFont()<computeroutput>[1/2]</computeroutput></title>
+<indexterm><primary>SetLineFont</primary><secondary>TagPanel</secondary></indexterm>
+<indexterm><primary>TagPanel</primary><secondary>SetLineFont</secondary></indexterm>
+<para><computeroutput>void TagPanel::SetLineFont (wxButton * button, int policeSize = <computeroutput>15</computeroutput>
+)</computeroutput></para><para>
+Definition at line <link linkend="__tag_panel_8cpp_source_1l00347">347</link> of file <link linkend="__tag_panel_8cpp_source">TagPanel.cpp</link>.</para>
+Here is the caller graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_tag_panel_a43c96ffa9523c002fb96126500209ce8_icgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_class_tag_panel_1a53d2a3068096670c08f249b1c2f6e798"/><section>
+    <title>SetLineFont()<computeroutput>[2/2]</computeroutput></title>
+<indexterm><primary>SetLineFont</primary><secondary>TagPanel</secondary></indexterm>
+<indexterm><primary>TagPanel</primary><secondary>SetLineFont</secondary></indexterm>
+<para><computeroutput>void TagPanel::SetLineFont (wxStaticText * button, int policeSize = <computeroutput>15</computeroutput>
+)</computeroutput></para><para>
+Definition at line <link linkend="__tag_panel_8cpp_source_1l00351">351</link> of file <link linkend="__tag_panel_8cpp_source">TagPanel.cpp</link>.</para>
+</section>
+<anchor xml:id="_class_tag_panel_1a370e5a7a79772ae4775f24de35506582"/><section>
+    <title>setPaintEvents()</title>
+<indexterm><primary>setPaintEvents</primary><secondary>TagPanel</secondary></indexterm>
+<indexterm><primary>TagPanel</primary><secondary>setPaintEvents</secondary></indexterm>
+<para><computeroutput>void TagPanel::setPaintEvents ( )</computeroutput></para><para>
+Definition at line <link linkend="__tag_panel_8cpp_source_1l00258">258</link> of file <link linkend="__tag_panel_8cpp_source">TagPanel.cpp</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_tag_panel_a370e5a7a79772ae4775f24de35506582_cgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+Here is the caller graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_tag_panel_a370e5a7a79772ae4775f24de35506582_icgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_class_tag_panel_1a5edee5cee34656fe89fec14f26af0f80"/><section>
+    <title>setPanelColor()</title>
+<indexterm><primary>setPanelColor</primary><secondary>TagPanel</secondary></indexterm>
+<indexterm><primary>TagPanel</primary><secondary>setPanelColor</secondary></indexterm>
+<para><computeroutput>void TagPanel::setPanelColor ( )<computeroutput>[virtual]</computeroutput></computeroutput></para><para>
+Reimplemented in <link linkend="_class_bool_tag_panel_1a80329102b57ab9a2db08539bfbe7bf10">BoolTagPanel</link>, <link linkend="_class_empty_panel_1a7dc87873614abbe988f37b4b8482a5b2">EmptyPanel</link>, <link linkend="_class_flow_tag_panel_1a76162eeee3010c06151bae79e421f87e">FlowTagPanel</link>, <link linkend="_class_if_tag_panel_1aa1154b083f5a1492358620996cd215e4">IfTagPanel</link>, <link linkend="_class_loop_tag_panel_1ad92c15e604570adffa87bf827ec7a116">LoopTagPanel</link>, and <link linkend="_class_main_tag_panel_1aac0341b624d24a316f4b8939cbae76f6">MainTagPanel</link>.</para>
+<para>
+Definition at line <link linkend="__tag_panel_8cpp_source_1l00763">763</link> of file <link linkend="__tag_panel_8cpp_source">TagPanel.cpp</link>.</para>
+Here is the caller graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_tag_panel_a5edee5cee34656fe89fec14f26af0f80_icgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_class_tag_panel_1a01e839de7aa3bedbe9a7bc1f152a02f8"/><section>
+    <title>setStaticTagName()</title>
+<indexterm><primary>setStaticTagName</primary><secondary>TagPanel</secondary></indexterm>
+<indexterm><primary>TagPanel</primary><secondary>setStaticTagName</secondary></indexterm>
+<para><computeroutput>void TagPanel::setStaticTagName ( )</computeroutput></para><para>
+Definition at line <link linkend="__tag_panel_8cpp_source_1l00748">748</link> of file <link linkend="__tag_panel_8cpp_source">TagPanel.cpp</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_tag_panel_a01e839de7aa3bedbe9a7bc1f152a02f8_cgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+Here is the caller graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_tag_panel_a01e839de7aa3bedbe9a7bc1f152a02f8_icgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_class_tag_panel_1aa2808a9ecda8c8181a49b4460e046395"/><section>
+    <title>setTag()</title>
+<indexterm><primary>setTag</primary><secondary>TagPanel</secondary></indexterm>
+<indexterm><primary>TagPanel</primary><secondary>setTag</secondary></indexterm>
+<para><computeroutput>void TagPanel::setTag (std::shared_ptr&lt; <link linkend="_class_tag">Tag</link> &gt; tag)</computeroutput></para><para>
+Definition at line <link linkend="__tag_panel_8cpp_source_1l00295">295</link> of file <link linkend="__tag_panel_8cpp_source">TagPanel.cpp</link>.</para>
+</section>
+<anchor xml:id="_class_tag_panel_1a6e53bfa1e9893d31775867a4f0c7c749"/><section>
+    <title>setTagLine()</title>
+<indexterm><primary>setTagLine</primary><secondary>TagPanel</secondary></indexterm>
+<indexterm><primary>TagPanel</primary><secondary>setTagLine</secondary></indexterm>
+<para><computeroutput>void TagPanel::setTagLine ( )<computeroutput>[virtual]</computeroutput></computeroutput></para><para>
+Reimplemented in <link linkend="_class_bool_tag_panel_1a978fadc45204eff86c5053fda3bde0b7">BoolTagPanel</link>, <link linkend="_class_empty_panel_1add5bcab802489294327b7043cd6b7aee">EmptyPanel</link>, <link linkend="_class_flow_tag_panel_1a6a2ba7ef0cfdae4b333371b8704a0612">FlowTagPanel</link>, <link linkend="_class_if_tag_panel_1a0eecad5e847dada1e8dfbceb5e1e6121">IfTagPanel</link>, <link linkend="_class_loop_tag_panel_1a199ec8f84860272037a7d2a25051a0a3">LoopTagPanel</link>, and <link linkend="_class_main_tag_panel_1ae0748c8b3939b1533b7ae12a9316ca78">MainTagPanel</link>.</para>
+<para>
+Definition at line <link linkend="__tag_panel_8cpp_source_1l00852">852</link> of file <link linkend="__tag_panel_8cpp_source">TagPanel.cpp</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_tag_panel_a6e53bfa1e9893d31775867a4f0c7c749_cgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+Here is the caller graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_tag_panel_a6e53bfa1e9893d31775867a4f0c7c749_icgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_class_tag_panel_1aa65c4779bd09af4389b2ca49e6ea4136"/><section>
+    <title>setTagName()</title>
+<indexterm><primary>setTagName</primary><secondary>TagPanel</secondary></indexterm>
+<indexterm><primary>TagPanel</primary><secondary>setTagName</secondary></indexterm>
+<para><computeroutput>void TagPanel::setTagName ( )<computeroutput>[virtual]</computeroutput></computeroutput></para><para>
+Reimplemented in <link linkend="_class_bool_tag_panel_1af673aae426f3d51edca047c7031d6846">BoolTagPanel</link>, <link linkend="_class_empty_panel_1a42308a52fd1da5920bfbcaaab7dad69b">EmptyPanel</link>, <link linkend="_class_flow_tag_panel_1abdf6ba578faa620f2aaa4aa5cc4852d6">FlowTagPanel</link>, <link linkend="_class_if_tag_panel_1af46a3cf26077d0dfdab1cd946fff6085">IfTagPanel</link>, <link linkend="_class_loop_tag_panel_1a88144a4a6c13cb1e407e9b6b68935137">LoopTagPanel</link>, and <link linkend="_class_main_tag_panel_1a776aca2e2bcf8c5653f3d088366e5681">MainTagPanel</link>.</para>
+<para>
+Definition at line <link linkend="__tag_panel_8cpp_source_1l00503">503</link> of file <link linkend="__tag_panel_8cpp_source">TagPanel.cpp</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_tag_panel_aa65c4779bd09af4389b2ca49e6ea4136_cgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+Here is the caller graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_tag_panel_aa65c4779bd09af4389b2ca49e6ea4136_icgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_class_tag_panel_1a752cdf34c8cc8cc25ecc944683dff46b"/><section>
+    <title>setTagNameColor()</title>
+<indexterm><primary>setTagNameColor</primary><secondary>TagPanel</secondary></indexterm>
+<indexterm><primary>TagPanel</primary><secondary>setTagNameColor</secondary></indexterm>
+<para><computeroutput>void TagPanel::setTagNameColor ( )</computeroutput></para><para>
+Definition at line <link linkend="__tag_panel_8cpp_source_1l00137">137</link> of file <link linkend="__tag_panel_8cpp_source">TagPanel.cpp</link>.</para>
+Here is the caller graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_tag_panel_a752cdf34c8cc8cc25ecc944683dff46b_icgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_class_tag_panel_1adea8840b3b43bfee7f8e090a71dd708c"/><section>
+    <title>setTagNameCustom()</title>
+<indexterm><primary>setTagNameCustom</primary><secondary>TagPanel</secondary></indexterm>
+<indexterm><primary>TagPanel</primary><secondary>setTagNameCustom</secondary></indexterm>
+<para><computeroutput>void TagPanel::setTagNameCustom (const std::string &amp; name)</computeroutput></para><para>
+Definition at line <link linkend="__tag_panel_8cpp_source_1l00490">490</link> of file <link linkend="__tag_panel_8cpp_source">TagPanel.cpp</link>.</para>
+Here is the caller graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_tag_panel_adea8840b3b43bfee7f8e090a71dd708c_icgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_class_tag_panel_1a99231e365be781b584996e68197621b9"/><section>
+    <title>setTagSizer()</title>
+<indexterm><primary>setTagSizer</primary><secondary>TagPanel</secondary></indexterm>
+<indexterm><primary>TagPanel</primary><secondary>setTagSizer</secondary></indexterm>
+<para><computeroutput>void TagPanel::setTagSizer ( )</computeroutput></para><para>
+Definition at line <link linkend="__tag_panel_8cpp_source_1l00947">947</link> of file <link linkend="__tag_panel_8cpp_source">TagPanel.cpp</link>.</para>
+Here is the caller graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_tag_panel_a99231e365be781b584996e68197621b9_icgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_class_tag_panel_1af925f36858bbc30c39bd4716f64822d3"/><section>
+    <title>updateInsertRect()</title>
+<indexterm><primary>updateInsertRect</primary><secondary>TagPanel</secondary></indexterm>
+<indexterm><primary>TagPanel</primary><secondary>updateInsertRect</secondary></indexterm>
+<para><computeroutput>void TagPanel::updateInsertRect ( )<computeroutput>[virtual]</computeroutput></computeroutput></para><para>
+Reimplemented in <link linkend="_class_flow_tag_panel_1a6c9860496ffc71764f9cfa629d090703">FlowTagPanel</link>.</para>
+<para>
+Definition at line <link linkend="__tag_panel_8cpp_source_1l00439">439</link> of file <link linkend="__tag_panel_8cpp_source">TagPanel.cpp</link>.</para>
+Here is the caller graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_tag_panel_af925f36858bbc30c39bd4716f64822d3_icgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+</section>
+<section>
+<title>Member Data Documentation</title>
+<anchor xml:id="_class_tag_panel_1a81aca1816f6fc0985077fc5f461046e2"/><section>
+    <title>cloneButton</title>
+<indexterm><primary>cloneButton</primary><secondary>TagPanel</secondary></indexterm>
+<indexterm><primary>TagPanel</primary><secondary>cloneButton</secondary></indexterm>
+<para><computeroutput>wxButton* TagPanel::cloneButton<computeroutput>[protected]</computeroutput></computeroutput></para><para>
+Definition at line <link linkend="__tag_panel_8h_source_1l00080">80</link> of file <link linkend="__tag_panel_8h_source">TagPanel.h</link>.</para>
+</section>
+<anchor xml:id="_class_tag_panel_1a227cddc11db1954dde6b5e3c49591e7a"/><section>
+    <title>cutButton</title>
+<indexterm><primary>cutButton</primary><secondary>TagPanel</secondary></indexterm>
+<indexterm><primary>TagPanel</primary><secondary>cutButton</secondary></indexterm>
+<para><computeroutput>wxButton* TagPanel::cutButton<computeroutput>[protected]</computeroutput></computeroutput></para><para>
+Definition at line <link linkend="__tag_panel_8h_source_1l00081">81</link> of file <link linkend="__tag_panel_8h_source">TagPanel.h</link>.</para>
+</section>
+<anchor xml:id="_class_tag_panel_1a481229251b8e6ee6d44ce1b5abd94c1b"/><section>
+    <title>deleteButton</title>
+<indexterm><primary>deleteButton</primary><secondary>TagPanel</secondary></indexterm>
+<indexterm><primary>TagPanel</primary><secondary>deleteButton</secondary></indexterm>
+<para><computeroutput>wxButton* TagPanel::deleteButton<computeroutput>[protected]</computeroutput></computeroutput></para><para>
+Definition at line <link linkend="__tag_panel_8h_source_1l00084">84</link> of file <link linkend="__tag_panel_8h_source">TagPanel.h</link>.</para>
+</section>
+<anchor xml:id="_class_tag_panel_1afa29a560070ac453fadae46f052cc53f"/><section>
+    <title>detailsPanel</title>
+<indexterm><primary>detailsPanel</primary><secondary>TagPanel</secondary></indexterm>
+<indexterm><primary>TagPanel</primary><secondary>detailsPanel</secondary></indexterm>
+<para><computeroutput>wxPanel* TagPanel::detailsPanel<computeroutput>[protected]</computeroutput></computeroutput></para><para>
+Definition at line <link linkend="__tag_panel_8h_source_1l00096">96</link> of file <link linkend="__tag_panel_8h_source">TagPanel.h</link>.</para>
+</section>
+<anchor xml:id="_class_tag_panel_1acb5613b513abd882b94dd79981f15e5b"/><section>
+    <title>detailsSizer</title>
+<indexterm><primary>detailsSizer</primary><secondary>TagPanel</secondary></indexterm>
+<indexterm><primary>TagPanel</primary><secondary>detailsSizer</secondary></indexterm>
+<para><computeroutput>wxBoxSizer* TagPanel::detailsSizer<computeroutput>[protected]</computeroutput></computeroutput></para><para>
+Definition at line <link linkend="__tag_panel_8h_source_1l00095">95</link> of file <link linkend="__tag_panel_8h_source">TagPanel.h</link>.</para>
+</section>
+<anchor xml:id="_class_tag_panel_1ac08e1909ad79173fead54cf2e6c7be61"/><section>
+    <title>insertPoint</title>
+<indexterm><primary>insertPoint</primary><secondary>TagPanel</secondary></indexterm>
+<indexterm><primary>TagPanel</primary><secondary>insertPoint</secondary></indexterm>
+<para><computeroutput>wxPoint TagPanel::insertPoint<computeroutput>[protected]</computeroutput></computeroutput></para><para>
+Definition at line <link linkend="__tag_panel_8h_source_1l00085">85</link> of file <link linkend="__tag_panel_8h_source">TagPanel.h</link>.</para>
+</section>
+<anchor xml:id="_class_tag_panel_1ac6667f655542d928b04f273ba453e7c9"/><section>
+    <title>insertRect</title>
+<indexterm><primary>insertRect</primary><secondary>TagPanel</secondary></indexterm>
+<indexterm><primary>TagPanel</primary><secondary>insertRect</secondary></indexterm>
+<para><computeroutput>wxSize TagPanel::insertRect<computeroutput>[protected]</computeroutput></computeroutput></para><para>
+Definition at line <link linkend="__tag_panel_8h_source_1l00086">86</link> of file <link linkend="__tag_panel_8h_source">TagPanel.h</link>.</para>
+</section>
+<anchor xml:id="_class_tag_panel_1ab9e4fd9beea1943bb1fb664bf4b0f876"/><section>
+    <title>isHovering</title>
+<indexterm><primary>isHovering</primary><secondary>TagPanel</secondary></indexterm>
+<indexterm><primary>TagPanel</primary><secondary>isHovering</secondary></indexterm>
+<para><computeroutput>bool TagPanel::isHovering</computeroutput></para><para>
+Definition at line <link linkend="__tag_panel_8h_source_1l00078">78</link> of file <link linkend="__tag_panel_8h_source">TagPanel.h</link>.</para>
+</section>
+<anchor xml:id="_class_tag_panel_1a57f33df8ee51553bbb6a1f4b4f727d82"/><section>
+    <title>isInserting</title>
+<indexterm><primary>isInserting</primary><secondary>TagPanel</secondary></indexterm>
+<indexterm><primary>TagPanel</primary><secondary>isInserting</secondary></indexterm>
+<para><computeroutput>bool TagPanel::isInserting</computeroutput></para><para>
+Definition at line <link linkend="__tag_panel_8h_source_1l00077">77</link> of file <link linkend="__tag_panel_8h_source">TagPanel.h</link>.</para>
+</section>
+<anchor xml:id="_class_tag_panel_1a0fb4a6bb2fdc47ce21e30a61784b804a"/><section>
+    <title>lineSizer</title>
+<indexterm><primary>lineSizer</primary><secondary>TagPanel</secondary></indexterm>
+<indexterm><primary>TagPanel</primary><secondary>lineSizer</secondary></indexterm>
+<para><computeroutput>wxBoxSizer* TagPanel::lineSizer<computeroutput>[protected]</computeroutput></computeroutput></para><para>
+Definition at line <link linkend="__tag_panel_8h_source_1l00091">91</link> of file <link linkend="__tag_panel_8h_source">TagPanel.h</link>.</para>
+</section>
+<anchor xml:id="_class_tag_panel_1a7972e5db29975326c850a2dae622eda6"/><section>
+    <title>moveDownButton</title>
+<indexterm><primary>moveDownButton</primary><secondary>TagPanel</secondary></indexterm>
+<indexterm><primary>TagPanel</primary><secondary>moveDownButton</secondary></indexterm>
+<para><computeroutput>wxButton* TagPanel::moveDownButton<computeroutput>[protected]</computeroutput></computeroutput></para><para>
+Definition at line <link linkend="__tag_panel_8h_source_1l00083">83</link> of file <link linkend="__tag_panel_8h_source">TagPanel.h</link>.</para>
+</section>
+<anchor xml:id="_class_tag_panel_1a569386f1f3226d5aa452cbbba46b1ffa"/><section>
+    <title>moveUpButton</title>
+<indexterm><primary>moveUpButton</primary><secondary>TagPanel</secondary></indexterm>
+<indexterm><primary>TagPanel</primary><secondary>moveUpButton</secondary></indexterm>
+<para><computeroutput>wxButton* TagPanel::moveUpButton<computeroutput>[protected]</computeroutput></computeroutput></para><para>
+Definition at line <link linkend="__tag_panel_8h_source_1l00082">82</link> of file <link linkend="__tag_panel_8h_source">TagPanel.h</link>.</para>
+</section>
+<anchor xml:id="_class_tag_panel_1a5c983b7b476010dc908bdea5b3ce954a"/><section>
+    <title>myTag</title>
+<indexterm><primary>myTag</primary><secondary>TagPanel</secondary></indexterm>
+<indexterm><primary>TagPanel</primary><secondary>myTag</secondary></indexterm>
+<para><computeroutput>std::shared_ptr&lt;<link linkend="_class_tag">Tag</link>&gt; TagPanel::myTag<computeroutput>[protected]</computeroutput></computeroutput></para><para>
+Definition at line <link linkend="__tag_panel_8h_source_1l00097">97</link> of file <link linkend="__tag_panel_8h_source">TagPanel.h</link>.</para>
+</section>
+<anchor xml:id="_class_tag_panel_1a0de4005aceb4d6809ec88ffb899f6d17"/><section>
+    <title>panelColor</title>
+<indexterm><primary>panelColor</primary><secondary>TagPanel</secondary></indexterm>
+<indexterm><primary>TagPanel</primary><secondary>panelColor</secondary></indexterm>
+<para><computeroutput>wxColour TagPanel::panelColor<computeroutput>[protected]</computeroutput></computeroutput></para><para>
+Definition at line <link linkend="__tag_panel_8h_source_1l00087">87</link> of file <link linkend="__tag_panel_8h_source">TagPanel.h</link>.</para>
+</section>
+<anchor xml:id="_class_tag_panel_1aadc6b7d84d378ff8db4682080627030f"/><section>
+    <title>policeSize</title>
+<indexterm><primary>policeSize</primary><secondary>TagPanel</secondary></indexterm>
+<indexterm><primary>TagPanel</primary><secondary>policeSize</secondary></indexterm>
+<para><computeroutput>int TagPanel::policeSize<computeroutput>[protected]</computeroutput></computeroutput></para><para>
+Definition at line <link linkend="__tag_panel_8h_source_1l00090">90</link> of file <link linkend="__tag_panel_8h_source">TagPanel.h</link>.</para>
+</section>
+<anchor xml:id="_class_tag_panel_1ae51a14087a4b11aa65b79bca524a2dc9"/><section>
+    <title>previousHover</title>
+<indexterm><primary>previousHover</primary><secondary>TagPanel</secondary></indexterm>
+<indexterm><primary>TagPanel</primary><secondary>previousHover</secondary></indexterm>
+<para><computeroutput><link linkend="__tag_panel_8h_1a369abf422adc1247d0d7bc295bf34014">HoverPosition</link> TagPanel::previousHover</computeroutput></para><para>
+Definition at line <link linkend="__tag_panel_8h_source_1l00076">76</link> of file <link linkend="__tag_panel_8h_source">TagPanel.h</link>.</para>
+</section>
+<anchor xml:id="_class_tag_panel_1a8d05f326ee6854342a0a5cf06228c527"/><section>
+    <title>staticDetailsName</title>
+<indexterm><primary>staticDetailsName</primary><secondary>TagPanel</secondary></indexterm>
+<indexterm><primary>TagPanel</primary><secondary>staticDetailsName</secondary></indexterm>
+<para><computeroutput>wxStaticText* TagPanel::staticDetailsName<computeroutput>[protected]</computeroutput></computeroutput></para><para>
+Definition at line <link linkend="__tag_panel_8h_source_1l00094">94</link> of file <link linkend="__tag_panel_8h_source">TagPanel.h</link>.</para>
+</section>
+<anchor xml:id="_class_tag_panel_1a0decd0f2236551f78024b107a5ed2e5f"/><section>
+    <title>staticTagName</title>
+<indexterm><primary>staticTagName</primary><secondary>TagPanel</secondary></indexterm>
+<indexterm><primary>TagPanel</primary><secondary>staticTagName</secondary></indexterm>
+<para><computeroutput>wxStaticText* TagPanel::staticTagName<computeroutput>[protected]</computeroutput></computeroutput></para><para>
+Definition at line <link linkend="__tag_panel_8h_source_1l00093">93</link> of file <link linkend="__tag_panel_8h_source">TagPanel.h</link>.</para>
+</section>
+<anchor xml:id="_class_tag_panel_1a5dd671ef158b702eb9b17b88fe6c79b6"/><section>
+    <title>tagName</title>
+<indexterm><primary>tagName</primary><secondary>TagPanel</secondary></indexterm>
+<indexterm><primary>TagPanel</primary><secondary>tagName</secondary></indexterm>
+<para><computeroutput>wxString TagPanel::tagName<computeroutput>[protected]</computeroutput></computeroutput></para><para>
+Definition at line <link linkend="__tag_panel_8h_source_1l00089">89</link> of file <link linkend="__tag_panel_8h_source">TagPanel.h</link>.</para>
+</section>
+<anchor xml:id="_class_tag_panel_1a23f2d5d739a33e4f3e4c26e1ee160d46"/><section>
+    <title>tagNameColor</title>
+<indexterm><primary>tagNameColor</primary><secondary>TagPanel</secondary></indexterm>
+<indexterm><primary>TagPanel</primary><secondary>tagNameColor</secondary></indexterm>
+<para><computeroutput>wxColour TagPanel::tagNameColor<computeroutput>[protected]</computeroutput></computeroutput></para><para>
+Definition at line <link linkend="__tag_panel_8h_source_1l00088">88</link> of file <link linkend="__tag_panel_8h_source">TagPanel.h</link>.</para>
+</section>
+<anchor xml:id="_class_tag_panel_1a480b452569c046bfc03e86a2be72a8eb"/><section>
+    <title>tagSizer</title>
+<indexterm><primary>tagSizer</primary><secondary>TagPanel</secondary></indexterm>
+<indexterm><primary>TagPanel</primary><secondary>tagSizer</secondary></indexterm>
+<para><computeroutput>wxBoxSizer* TagPanel::tagSizer<computeroutput>[protected]</computeroutput></computeroutput></para><para>
+Definition at line <link linkend="__tag_panel_8h_source_1l00092">92</link> of file <link linkend="__tag_panel_8h_source">TagPanel.h</link>.</para>
+</section>
+<para>
+The documentation for this class was generated from the following files:</para>
+src/<link linkend="__tag_panel_8h">TagPanel.h</link>src/<link linkend="__tag_panel_8cpp">TagPanel.cpp</link></section>
+</section>

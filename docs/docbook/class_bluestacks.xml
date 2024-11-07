@@ -1,0 +1,492 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<section xmlns="http://docbook.org/ns/docbook" version="5.0" xmlns:xlink="http://www.w3.org/1999/xlink" xml:id="_class_bluestacks" xml:lang="en-US">
+<title>Bluestacks Class Reference</title>
+<indexterm><primary>Bluestacks</primary></indexterm>
+<para>
+<computeroutput>#include &lt;BlueStacks.h&gt;</computeroutput>
+</para>
+Inheritance diagram for Bluestacks:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_bluestacks__inherit__graph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+Collaboration diagram for Bluestacks:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_bluestacks__coll__graph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+<simplesect>
+    <title>Public Member Functions    </title>
+        <itemizedlist>
+            <listitem><para><link linkend="_class_bluestacks_1a4895b9836fa2d54b4cee55100b2d3712">Bluestacks</link> ()</para>
+</listitem>
+            <listitem><para>void <link linkend="_class_bluestacks_1ab4e16cfb437f85bdcbf1bc51e57bbf60">setListPlayableInstances</link> ()</para>
+</listitem>
+            <listitem><para><link linkend="_class_bluestacks_1abcc56cc5e8e47efd9354f7098804937a">Bluestacks</link> (const std::string &amp;<link linkend="_class_emulator_1a9a0bbebd40eee57823b313153b1c8cb5">gamePackage</link>, int <link linkend="_class_emulator_1a3c7b1df3adc7ba81a9fa76ce1662fa06">reqDimX</link>, int <link linkend="_class_emulator_1a4db78de463890def4e2296b9da9c0bfb">reqDimY</link>, int dpi)</para>
+</listitem>
+            <listitem><para>void <link linkend="_class_bluestacks_1a00fae4a58be21841c4f388577494b548">startEmulator</link> () override</para>
+</listitem>
+            <listitem><para>void <link linkend="_class_bluestacks_1a3bb0c7f2d750fde081cfdc04a876f543">startInstance</link> (<link linkend="_class_instance">Instance</link> *inst) override</para>
+</listitem>
+            <listitem><para>void <link linkend="_class_bluestacks_1a521e04d3a6b57da783d3248f308d8e2c">stopInstance</link> (<link linkend="_class_instance">Instance</link> *inst) override</para>
+</listitem>
+            <listitem><para>void <link linkend="_class_bluestacks_1a52ecfe65919c8f12ecc32167fe4ba811">showInstance</link> (<link linkend="_class_instance">Instance</link> *Inst) override</para>
+</listitem>
+            <listitem><para>void <link linkend="_class_bluestacks_1a2afa33cb22bb8529ff888107bc717898">getAdbKey</link> (<link linkend="_class_instance">Instance</link> *inst) override</para>
+</listitem>
+            <listitem><para>void <link linkend="_class_bluestacks_1ad3de3527564ca576a834c2b466bec2ea">stopEmulator</link> () override</para>
+</listitem>
+            <listitem><para>bool <link linkend="_class_bluestacks_1a386a0ff4bbe99dcd24d360af2369e564">searchEmulator</link> () override</para>
+</listitem>
+            <listitem><para>void <link linkend="_class_bluestacks_1aed62dd421208481e7dd17a2dfa405eff">searchAllInstances</link> () override</para>
+</listitem>
+            <listitem><para>void <link linkend="_class_bluestacks_1a5ff0e57969f9cf6c45ef05a7fda9e17f">searchInstance</link> ()</para>
+</listitem>
+            <listitem><para>bool <link linkend="_class_bluestacks_1a1f0042e419a5d6f7a7f6160043d0692d">initEmulator</link> (bool searchFiles) override</para>
+</listitem>
+            <listitem><para>void <link linkend="_class_bluestacks_1ab3e585db72c0795deb22ef815e4096c0">initInstances</link> () override</para>
+</listitem>
+            <listitem><para>bool <link linkend="_class_bluestacks_1ab4f3076d8154c72a40f33f0cdfcff07d">init</link> (bool searchFiles) override</para>
+</listitem>
+            <listitem><para>bool <link linkend="_class_bluestacks_1acae435f808653cbbd17165badcc6e9d7">hasGame</link> (<link linkend="_class_instance">Instance</link> *inst) override</para>
+</listitem>
+            <listitem><para>void <link linkend="_class_bluestacks_1a9364fef9e26f24a10ea8e0ae2521fe4b">setSubFolders</link> () override</para>
+</listitem>
+            <listitem><para>bool <link linkend="_class_bluestacks_1a36f38d0c429baa15a1a4a009de5df6d0">isInstanceRunning</link> (<link linkend="_class_instance">Instance</link> *inst) override</para>
+</listitem>
+            <listitem><para>void <link linkend="_class_bluestacks_1a92becd39e7528f75b7117be5a396a7b8">waitForInstance</link> (<link linkend="_class_instance">Instance</link> *inst) override</para>
+</listitem>
+            <listitem><para>void <link linkend="_class_bluestacks_1a6a33894616017361693d8f0dcc7f40c6">clearAllInstances</link> () override</para>
+</listitem>
+            <listitem><para>bool <link linkend="_class_bluestacks_1abc1b77ee2cda5de5289a5fb6f2959063">isInstanceLoaded</link> (<link linkend="_class_instance">Instance</link> *inst) override</para>
+</listitem>
+            <listitem><para>void <link linkend="_class_bluestacks_1a678ac500167f5140adaf6453acc9a974">setRequiredDimensions</link> (<link linkend="_class_instance">Instance</link> *inst) override</para>
+</listitem>
+            <listitem><para>bool <link linkend="_class_bluestacks_1aeeb0532c8208679fd22ae1447bb892f7">adbActivated</link> (<link linkend="_class_instance">Instance</link> *inst) override</para>
+</listitem>
+            <listitem><para>void <link linkend="_class_bluestacks_1a0374bd8ed909a068f809cec36b5b92f9">activateAdb</link> (<link linkend="_class_instance">Instance</link> *inst) override</para>
+</listitem>
+            <listitem><para>void <link linkend="_class_bluestacks_1a96b195f415dc60c4329f508bf54331f5">receiveFolders</link> (std::string <link linkend="_class_bluestacks_1af8ff24fe55ea696c944c0819ad53690a">hdPlayerFolder</link>, std::string <link linkend="_class_bluestacks_1afb053ca9aefed7324c712b7b567e3bd0">configFolder</link>)</para>
+</listitem>
+            <listitem><para><link linkend="_class_bluestacks_instance">BluestacksInstance</link> * <link linkend="_class_bluestacks_1a4ee2fe0a801d17d3fdf2476a8351c60e">transformInstance</link> (<link linkend="_class_instance">Instance</link> *inst)</para>
+</listitem>
+            <listitem><para>bool <link linkend="_class_bluestacks_1a9c04cc1e226501924677803bce946c05">startPlayingInstance</link> ()</para>
+</listitem>
+        </itemizedlist>
+</simplesect>
+Public Member Functions inherited from <link linkend="_class_emulator">Emulator</link>        <itemizedlist>
+            <listitem><para><link linkend="_class_emulator_1ad0ddfc7c60f5cfbbe377154e25cb6cfc">Emulator</link> ()</para>
+</listitem>
+            <listitem><para><link linkend="_class_emulator_1a57bf3e602724d4ac35ca45e9ddc0c9aa">~Emulator</link> ()</para>
+</listitem>
+            <listitem><para>virtual void <link linkend="_class_emulator_1a9e0d57ef011e166cb389060f814abfa1">addInstance</link> (<link linkend="_class_instance">Instance</link> *inst)</para>
+</listitem>
+            <listitem><para>void <link linkend="_class_emulator_1ae6872001b82eb1c25e119eb3b17f1547">checkAdb</link> (<link linkend="_class_instance">Instance</link> *inst)</para>
+</listitem>
+            <listitem><para>void <link linkend="_class_emulator_1a4df4c858eb6bbe991db334523f9ea27c">checkDimensions</link> (<link linkend="_class_instance">Instance</link> *inst)</para>
+</listitem>
+            <listitem><para>bool <link linkend="_class_emulator_1a7875b76738a69f20048883b847fc2802">hasRequiredDimensions</link> (<link linkend="_class_instance">Instance</link> *inst)</para>
+</listitem>
+            <listitem><para>virtual <link linkend="__instance_8h_1a5b026f4903e92a7e60dda754b5028227">EmulatorType</link> <link linkend="_class_emulator_1a150b7fe4395310484621e1f9709be76d">getEmulatorType</link> ()</para>
+</listitem>
+            <listitem><para>bool <link linkend="_class_emulator_1aa5e02fc1e2e75c8be47324043410f17c">searchEmulatorDrive</link> (std::string &amp;emulatorFolder, const std::string &amp;diskLetter)</para>
+</listitem>
+            <listitem><para>bool <link linkend="_class_emulator_1ace0e4b2197a81fe90b00c4bb4986ce4c">searchEmulatorAllDrives</link> (std::string &amp;emulatorFolder, const std::vector&lt; std::string &gt; &amp;allDiskLetter)</para>
+</listitem>
+            <listitem><para>virtual std::vector&lt; <link linkend="_class_instance">Instance</link> * &gt; &amp; <link linkend="_class_emulator_1a619a936779444867c815d5c443d663e6">getListInstances</link> ()</para>
+</listitem>
+            <listitem><para>virtual std::vector&lt; <link linkend="_class_instance">Instance</link> * &gt; &amp; <link linkend="_class_emulator_1a4c0372049844947502d84334e7c0c7c1">getListPlayableInstances</link> ()</para>
+</listitem>
+            <listitem><para>bool <link linkend="_class_emulator_1a89579d9f83f96e3dcc5d13be7e837724">selectedPlayingInstance</link> ()</para>
+</listitem>
+            <listitem><para>std::string <link linkend="_class_emulator_1ad943f2be93bf007f291bdd3762af86b4">getPlayingInstanceAdbKey</link> ()</para>
+</listitem>
+        </itemizedlist>
+<simplesect>
+    <title>Public Attributes    </title>
+        <itemizedlist>
+            <listitem><para>std::string <link linkend="_class_bluestacks_1afb053ca9aefed7324c712b7b567e3bd0">configFolder</link></para>
+</listitem>
+            <listitem><para>std::string <link linkend="_class_bluestacks_1af8ff24fe55ea696c944c0819ad53690a">hdPlayerFolder</link></para>
+</listitem>
+        </itemizedlist>
+</simplesect>
+Public Attributes inherited from <link linkend="_class_emulator">Emulator</link>        <itemizedlist>
+            <listitem><para><link linkend="__instance_8h_1a5b026f4903e92a7e60dda754b5028227">EmulatorType</link> <link linkend="_class_emulator_1a76ffe6e8b9a6f9336ac33d3fe4a34083">myType</link></para>
+</listitem>
+            <listitem><para><link linkend="_class_instance">Instance</link> * <link linkend="_class_emulator_1a6433f757edc9bf813dedef6f68f73b9f">playingInstance</link></para>
+</listitem>
+            <listitem><para>std::string <link linkend="_class_emulator_1a9a0bbebd40eee57823b313153b1c8cb5">gamePackage</link></para>
+</listitem>
+            <listitem><para>std::string <link linkend="_class_emulator_1aaf64827b34747c72854e2ffa0507f37c">emulatorName</link></para>
+</listitem>
+            <listitem><para>std::string <link linkend="_class_emulator_1ae0bf469fc768b1aa831911f0f3bba8dd">executableName</link></para>
+</listitem>
+            <listitem><para>bool <link linkend="_class_emulator_1ac9479705b6bbc1003055bc1e7786989f">isInstalled</link></para>
+</listitem>
+            <listitem><para>int <link linkend="_class_emulator_1a5f038d5e47930bf433ab365fbbaa7ae2">nbInstances</link></para>
+</listitem>
+            <listitem><para>std::vector&lt; <link linkend="_class_instance">Instance</link> * &gt; <link linkend="_class_emulator_1ab78ff181d01d2cfc53203b71a9904506">listPlayableInstances</link></para>
+</listitem>
+            <listitem><para>std::vector&lt; <link linkend="_class_instance">Instance</link> * &gt; <link linkend="_class_emulator_1a85395eef4151d56d9af3e8e1d3db3cf4">listInstances</link></para>
+</listitem>
+            <listitem><para>int <link linkend="_class_emulator_1a3c7b1df3adc7ba81a9fa76ce1662fa06">reqDimX</link></para>
+</listitem>
+            <listitem><para>int <link linkend="_class_emulator_1a4db78de463890def4e2296b9da9c0bfb">reqDimY</link></para>
+</listitem>
+            <listitem><para>int <link linkend="_class_emulator_1a99712a1a614fdbca45b8be35747e5f88">reqDpi</link></para>
+</listitem>
+        </itemizedlist>
+<section>
+<title>Detailed Description</title>
+<para>
+Definition at line <link linkend="__blue_stacks_8h_source_1l00011">11</link> of file <link linkend="__blue_stacks_8h_source">BlueStacks.h</link>.</para>
+</section>
+<section>
+<title>Constructor &amp; Destructor Documentation</title>
+<anchor xml:id="_class_bluestacks_1a4895b9836fa2d54b4cee55100b2d3712"/><section>
+    <title>Bluestacks()<computeroutput>[1/2]</computeroutput></title>
+<indexterm><primary>Bluestacks</primary><secondary>Bluestacks</secondary></indexterm>
+<indexterm><primary>Bluestacks</primary><secondary>Bluestacks</secondary></indexterm>
+<para><computeroutput>Bluestacks::Bluestacks ( )</computeroutput></para><para>
+Definition at line <link linkend="__blue_stacks_8cpp_source_1l00148">148</link> of file <link linkend="__blue_stacks_8cpp_source">BlueStacks.cpp</link>.</para>
+</section>
+<anchor xml:id="_class_bluestacks_1abcc56cc5e8e47efd9354f7098804937a"/><section>
+    <title>Bluestacks()<computeroutput>[2/2]</computeroutput></title>
+<indexterm><primary>Bluestacks</primary><secondary>Bluestacks</secondary></indexterm>
+<indexterm><primary>Bluestacks</primary><secondary>Bluestacks</secondary></indexterm>
+<para><computeroutput>Bluestacks::Bluestacks (const std::string &amp; gamePackage, int reqDimX, int reqDimY, int dpi)</computeroutput></para><para>
+Definition at line <link linkend="__blue_stacks_8cpp_source_1l00163">163</link> of file <link linkend="__blue_stacks_8cpp_source">BlueStacks.cpp</link>.</para>
+</section>
+</section>
+<section>
+<title>Member Function Documentation</title>
+<anchor xml:id="_class_bluestacks_1a0374bd8ed909a068f809cec36b5b92f9"/><section>
+    <title>activateAdb()</title>
+<indexterm><primary>activateAdb</primary><secondary>Bluestacks</secondary></indexterm>
+<indexterm><primary>Bluestacks</primary><secondary>activateAdb</secondary></indexterm>
+<para><computeroutput>void Bluestacks::activateAdb (<link linkend="_class_instance">Instance</link> * inst)<computeroutput>[override]</computeroutput>, <computeroutput>[virtual]</computeroutput></computeroutput></para><para>
+Implements <link linkend="_class_emulator_1ab8fac1aac86cb33884049cd55f65099a">Emulator</link>.</para>
+<para>
+Definition at line <link linkend="__blue_stacks_8cpp_source_1l00273">273</link> of file <link linkend="__blue_stacks_8cpp_source">BlueStacks.cpp</link>.</para>
+</section>
+<anchor xml:id="_class_bluestacks_1aeeb0532c8208679fd22ae1447bb892f7"/><section>
+    <title>adbActivated()</title>
+<indexterm><primary>adbActivated</primary><secondary>Bluestacks</secondary></indexterm>
+<indexterm><primary>Bluestacks</primary><secondary>adbActivated</secondary></indexterm>
+<para><computeroutput>bool Bluestacks::adbActivated (<link linkend="_class_instance">Instance</link> * inst)<computeroutput>[override]</computeroutput>, <computeroutput>[virtual]</computeroutput></computeroutput></para><para>
+Implements <link linkend="_class_emulator_1ab509a885814d9a58e20854dc61f282e1">Emulator</link>.</para>
+<para>
+Definition at line <link linkend="__blue_stacks_8cpp_source_1l00268">268</link> of file <link linkend="__blue_stacks_8cpp_source">BlueStacks.cpp</link>.</para>
+</section>
+<anchor xml:id="_class_bluestacks_1a6a33894616017361693d8f0dcc7f40c6"/><section>
+    <title>clearAllInstances()</title>
+<indexterm><primary>clearAllInstances</primary><secondary>Bluestacks</secondary></indexterm>
+<indexterm><primary>Bluestacks</primary><secondary>clearAllInstances</secondary></indexterm>
+<para><computeroutput>void Bluestacks::clearAllInstances ( )<computeroutput>[override]</computeroutput>, <computeroutput>[virtual]</computeroutput></computeroutput></para><para>
+Reimplemented from <link linkend="_class_emulator_1a767c9d69943a0cd76a5c63f2cc25b234">Emulator</link>.</para>
+<para>
+Definition at line <link linkend="__blue_stacks_8cpp_source_1l00254">254</link> of file <link linkend="__blue_stacks_8cpp_source">BlueStacks.cpp</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_bluestacks_a6a33894616017361693d8f0dcc7f40c6_cgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+Here is the caller graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_bluestacks_a6a33894616017361693d8f0dcc7f40c6_icgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_class_bluestacks_1a2afa33cb22bb8529ff888107bc717898"/><section>
+    <title>getAdbKey()</title>
+<indexterm><primary>getAdbKey</primary><secondary>Bluestacks</secondary></indexterm>
+<indexterm><primary>Bluestacks</primary><secondary>getAdbKey</secondary></indexterm>
+<para><computeroutput>void Bluestacks::getAdbKey (<link linkend="_class_instance">Instance</link> * inst)<computeroutput>[override]</computeroutput>, <computeroutput>[virtual]</computeroutput></computeroutput></para><para>
+Implements <link linkend="_class_emulator_1a906334193d238f331fd24a89f3e41ade">Emulator</link>.</para>
+<para>
+Definition at line <link linkend="__blue_stacks_8cpp_source_1l00190">190</link> of file <link linkend="__blue_stacks_8cpp_source">BlueStacks.cpp</link>.</para>
+</section>
+<anchor xml:id="_class_bluestacks_1acae435f808653cbbd17165badcc6e9d7"/><section>
+    <title>hasGame()</title>
+<indexterm><primary>hasGame</primary><secondary>Bluestacks</secondary></indexterm>
+<indexterm><primary>Bluestacks</primary><secondary>hasGame</secondary></indexterm>
+<para><computeroutput>bool Bluestacks::hasGame (<link linkend="_class_instance">Instance</link> * inst)<computeroutput>[override]</computeroutput>, <computeroutput>[virtual]</computeroutput></computeroutput></para><para>
+Implements <link linkend="_class_emulator_1aca882909bddc93a81e87938f33c0375c">Emulator</link>.</para>
+<para>
+Definition at line <link linkend="__blue_stacks_8cpp_source_1l00236">236</link> of file <link linkend="__blue_stacks_8cpp_source">BlueStacks.cpp</link>.</para>
+Here is the caller graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_bluestacks_acae435f808653cbbd17165badcc6e9d7_icgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_class_bluestacks_1ab4f3076d8154c72a40f33f0cdfcff07d"/><section>
+    <title>init()</title>
+<indexterm><primary>init</primary><secondary>Bluestacks</secondary></indexterm>
+<indexterm><primary>Bluestacks</primary><secondary>init</secondary></indexterm>
+<para><computeroutput>bool Bluestacks::init (bool searchFiles)<computeroutput>[override]</computeroutput>, <computeroutput>[virtual]</computeroutput></computeroutput></para><para>
+Implements <link linkend="_class_emulator_1a7fda708d394a4f9ec006661fb6fe3362">Emulator</link>.</para>
+<para>
+Definition at line <link linkend="__blue_stacks_8cpp_source_1l00231">231</link> of file <link linkend="__blue_stacks_8cpp_source">BlueStacks.cpp</link>.</para>
+Here is the caller graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_bluestacks_ab4f3076d8154c72a40f33f0cdfcff07d_icgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_class_bluestacks_1a1f0042e419a5d6f7a7f6160043d0692d"/><section>
+    <title>initEmulator()</title>
+<indexterm><primary>initEmulator</primary><secondary>Bluestacks</secondary></indexterm>
+<indexterm><primary>Bluestacks</primary><secondary>initEmulator</secondary></indexterm>
+<para><computeroutput>bool Bluestacks::initEmulator (bool searchFiles)<computeroutput>[override]</computeroutput>, <computeroutput>[virtual]</computeroutput></computeroutput></para><para>
+Implements <link linkend="_class_emulator_1a70cd01e0015c64652d994f890e7b456f">Emulator</link>.</para>
+<para>
+Definition at line <link linkend="__blue_stacks_8cpp_source_1l00222">222</link> of file <link linkend="__blue_stacks_8cpp_source">BlueStacks.cpp</link>.</para>
+</section>
+<anchor xml:id="_class_bluestacks_1ab3e585db72c0795deb22ef815e4096c0"/><section>
+    <title>initInstances()</title>
+<indexterm><primary>initInstances</primary><secondary>Bluestacks</secondary></indexterm>
+<indexterm><primary>Bluestacks</primary><secondary>initInstances</secondary></indexterm>
+<para><computeroutput>void Bluestacks::initInstances ( )<computeroutput>[override]</computeroutput>, <computeroutput>[virtual]</computeroutput></computeroutput></para><para>
+Implements <link linkend="_class_emulator_1a209eda62b048eda210adfdf313d6baa2">Emulator</link>.</para>
+<para>
+Definition at line <link linkend="__blue_stacks_8cpp_source_1l00227">227</link> of file <link linkend="__blue_stacks_8cpp_source">BlueStacks.cpp</link>.</para>
+</section>
+<anchor xml:id="_class_bluestacks_1abc1b77ee2cda5de5289a5fb6f2959063"/><section>
+    <title>isInstanceLoaded()</title>
+<indexterm><primary>isInstanceLoaded</primary><secondary>Bluestacks</secondary></indexterm>
+<indexterm><primary>Bluestacks</primary><secondary>isInstanceLoaded</secondary></indexterm>
+<para><computeroutput>bool Bluestacks::isInstanceLoaded (<link linkend="_class_instance">Instance</link> * inst)<computeroutput>[override]</computeroutput>, <computeroutput>[virtual]</computeroutput></computeroutput></para><para>
+Implements <link linkend="_class_emulator_1ab200f5cb5133065e5028db804c881a7a">Emulator</link>.</para>
+<para>
+Definition at line <link linkend="__blue_stacks_8cpp_source_1l00259">259</link> of file <link linkend="__blue_stacks_8cpp_source">BlueStacks.cpp</link>.</para>
+</section>
+<anchor xml:id="_class_bluestacks_1a36f38d0c429baa15a1a4a009de5df6d0"/><section>
+    <title>isInstanceRunning()</title>
+<indexterm><primary>isInstanceRunning</primary><secondary>Bluestacks</secondary></indexterm>
+<indexterm><primary>Bluestacks</primary><secondary>isInstanceRunning</secondary></indexterm>
+<para><computeroutput>bool Bluestacks::isInstanceRunning (<link linkend="_class_instance">Instance</link> * inst)<computeroutput>[override]</computeroutput>, <computeroutput>[virtual]</computeroutput></computeroutput></para><para>
+Implements <link linkend="_class_emulator_1a0e563416ea4f194a64003b8e137ea4dd">Emulator</link>.</para>
+<para>
+Definition at line <link linkend="__blue_stacks_8cpp_source_1l00245">245</link> of file <link linkend="__blue_stacks_8cpp_source">BlueStacks.cpp</link>.</para>
+</section>
+<anchor xml:id="_class_bluestacks_1a96b195f415dc60c4329f508bf54331f5"/><section>
+    <title>receiveFolders()</title>
+<indexterm><primary>receiveFolders</primary><secondary>Bluestacks</secondary></indexterm>
+<indexterm><primary>Bluestacks</primary><secondary>receiveFolders</secondary></indexterm>
+<para><computeroutput>void Bluestacks::receiveFolders (std::string hdPlayerFolder, std::string configFolder)</computeroutput></para><para>
+Definition at line <link linkend="__blue_stacks_8cpp_source_1l00279">279</link> of file <link linkend="__blue_stacks_8cpp_source">BlueStacks.cpp</link>.</para>
+Here is the caller graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_bluestacks_a96b195f415dc60c4329f508bf54331f5_icgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_class_bluestacks_1aed62dd421208481e7dd17a2dfa405eff"/><section>
+    <title>searchAllInstances()</title>
+<indexterm><primary>searchAllInstances</primary><secondary>Bluestacks</secondary></indexterm>
+<indexterm><primary>Bluestacks</primary><secondary>searchAllInstances</secondary></indexterm>
+<para><computeroutput>void Bluestacks::searchAllInstances ( )<computeroutput>[override]</computeroutput>, <computeroutput>[virtual]</computeroutput></computeroutput></para><para>
+Implements <link linkend="_class_emulator_1ab82ec7c38dde216adfaa0ed57582dccb">Emulator</link>.</para>
+<para>
+Definition at line <link linkend="__blue_stacks_8cpp_source_1l00203">203</link> of file <link linkend="__blue_stacks_8cpp_source">BlueStacks.cpp</link>.</para>
+</section>
+<anchor xml:id="_class_bluestacks_1a386a0ff4bbe99dcd24d360af2369e564"/><section>
+    <title>searchEmulator()</title>
+<indexterm><primary>searchEmulator</primary><secondary>Bluestacks</secondary></indexterm>
+<indexterm><primary>Bluestacks</primary><secondary>searchEmulator</secondary></indexterm>
+<para><computeroutput>bool Bluestacks::searchEmulator ( )<computeroutput>[override]</computeroutput>, <computeroutput>[virtual]</computeroutput></computeroutput></para><para>
+Implements <link linkend="_class_emulator_1a0da90844f7da83360619064ebf0d5819">Emulator</link>.</para>
+<para>
+Definition at line <link linkend="__blue_stacks_8cpp_source_1l00198">198</link> of file <link linkend="__blue_stacks_8cpp_source">BlueStacks.cpp</link>.</para>
+</section>
+<anchor xml:id="_class_bluestacks_1a5ff0e57969f9cf6c45ef05a7fda9e17f"/><section>
+    <title>searchInstance()</title>
+<indexterm><primary>searchInstance</primary><secondary>Bluestacks</secondary></indexterm>
+<indexterm><primary>Bluestacks</primary><secondary>searchInstance</secondary></indexterm>
+<para><computeroutput>void Bluestacks::searchInstance ( )</computeroutput></para><para>
+Definition at line <link linkend="__blue_stacks_8cpp_source_1l00206">206</link> of file <link linkend="__blue_stacks_8cpp_source">BlueStacks.cpp</link>.</para>
+</section>
+<anchor xml:id="_class_bluestacks_1ab4e16cfb437f85bdcbf1bc51e57bbf60"/><section>
+    <title>setListPlayableInstances()</title>
+<indexterm><primary>setListPlayableInstances</primary><secondary>Bluestacks</secondary></indexterm>
+<indexterm><primary>Bluestacks</primary><secondary>setListPlayableInstances</secondary></indexterm>
+<para><computeroutput>void Bluestacks::setListPlayableInstances ( )<computeroutput>[virtual]</computeroutput></computeroutput></para><para>
+Implements <link linkend="_class_emulator_1a97a74e16eb464c24b195011b9949a114">Emulator</link>.</para>
+<para>
+Definition at line <link linkend="__blue_stacks_8cpp_source_1l00154">154</link> of file <link linkend="__blue_stacks_8cpp_source">BlueStacks.cpp</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_bluestacks_ab4e16cfb437f85bdcbf1bc51e57bbf60_cgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_class_bluestacks_1a678ac500167f5140adaf6453acc9a974"/><section>
+    <title>setRequiredDimensions()</title>
+<indexterm><primary>setRequiredDimensions</primary><secondary>Bluestacks</secondary></indexterm>
+<indexterm><primary>Bluestacks</primary><secondary>setRequiredDimensions</secondary></indexterm>
+<para><computeroutput>void Bluestacks::setRequiredDimensions (<link linkend="_class_instance">Instance</link> * inst)<computeroutput>[override]</computeroutput>, <computeroutput>[virtual]</computeroutput></computeroutput></para><para>
+Implements <link linkend="_class_emulator_1a1441a057869b23871baa8d42c94f2af6">Emulator</link>.</para>
+<para>
+Definition at line <link linkend="__blue_stacks_8cpp_source_1l00264">264</link> of file <link linkend="__blue_stacks_8cpp_source">BlueStacks.cpp</link>.</para>
+</section>
+<anchor xml:id="_class_bluestacks_1a9364fef9e26f24a10ea8e0ae2521fe4b"/><section>
+    <title>setSubFolders()</title>
+<indexterm><primary>setSubFolders</primary><secondary>Bluestacks</secondary></indexterm>
+<indexterm><primary>Bluestacks</primary><secondary>setSubFolders</secondary></indexterm>
+<para><computeroutput>void Bluestacks::setSubFolders ( )<computeroutput>[override]</computeroutput>, <computeroutput>[virtual]</computeroutput></computeroutput></para><para>
+Implements <link linkend="_class_emulator_1ad7308fa2827b9a85300d6e76ad2290bd">Emulator</link>.</para>
+<para>
+Definition at line <link linkend="__blue_stacks_8cpp_source_1l00241">241</link> of file <link linkend="__blue_stacks_8cpp_source">BlueStacks.cpp</link>.</para>
+</section>
+<anchor xml:id="_class_bluestacks_1a52ecfe65919c8f12ecc32167fe4ba811"/><section>
+    <title>showInstance()</title>
+<indexterm><primary>showInstance</primary><secondary>Bluestacks</secondary></indexterm>
+<indexterm><primary>Bluestacks</primary><secondary>showInstance</secondary></indexterm>
+<para><computeroutput>void Bluestacks::showInstance (<link linkend="_class_instance">Instance</link> * Inst)<computeroutput>[override]</computeroutput>, <computeroutput>[virtual]</computeroutput></computeroutput></para><para>
+Implements <link linkend="_class_emulator_1afc75a4e92e82a3260beb679ce76fd137">Emulator</link>.</para>
+<para>
+Definition at line <link linkend="__blue_stacks_8cpp_source_1l00183">183</link> of file <link linkend="__blue_stacks_8cpp_source">BlueStacks.cpp</link>.</para>
+Here is the caller graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_bluestacks_a52ecfe65919c8f12ecc32167fe4ba811_icgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_class_bluestacks_1a00fae4a58be21841c4f388577494b548"/><section>
+    <title>startEmulator()</title>
+<indexterm><primary>startEmulator</primary><secondary>Bluestacks</secondary></indexterm>
+<indexterm><primary>Bluestacks</primary><secondary>startEmulator</secondary></indexterm>
+<para><computeroutput>void Bluestacks::startEmulator ( )<computeroutput>[override]</computeroutput>, <computeroutput>[virtual]</computeroutput></computeroutput></para><para>
+Implements <link linkend="_class_emulator_1a1e77699004cb878400e0111fbe462343">Emulator</link>.</para>
+<para>
+Definition at line <link linkend="__blue_stacks_8cpp_source_1l00171">171</link> of file <link linkend="__blue_stacks_8cpp_source">BlueStacks.cpp</link>.</para>
+</section>
+<anchor xml:id="_class_bluestacks_1a3bb0c7f2d750fde081cfdc04a876f543"/><section>
+    <title>startInstance()</title>
+<indexterm><primary>startInstance</primary><secondary>Bluestacks</secondary></indexterm>
+<indexterm><primary>Bluestacks</primary><secondary>startInstance</secondary></indexterm>
+<para><computeroutput>void Bluestacks::startInstance (<link linkend="_class_instance">Instance</link> * inst)<computeroutput>[override]</computeroutput>, <computeroutput>[virtual]</computeroutput></computeroutput></para><para>
+Implements <link linkend="_class_emulator_1a7223775167bb8d576f8211800af52ba0">Emulator</link>.</para>
+<para>
+Definition at line <link linkend="__blue_stacks_8cpp_source_1l00175">175</link> of file <link linkend="__blue_stacks_8cpp_source">BlueStacks.cpp</link>.</para>
+Here is the caller graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_bluestacks_a3bb0c7f2d750fde081cfdc04a876f543_icgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_class_bluestacks_1a9c04cc1e226501924677803bce946c05"/><section>
+    <title>startPlayingInstance()</title>
+<indexterm><primary>startPlayingInstance</primary><secondary>Bluestacks</secondary></indexterm>
+<indexterm><primary>Bluestacks</primary><secondary>startPlayingInstance</secondary></indexterm>
+<para><computeroutput>bool Bluestacks::startPlayingInstance ( )<computeroutput>[virtual]</computeroutput></computeroutput></para><para>
+Implements <link linkend="_class_emulator_1af4682d1c7d92660a73b4be6c8a5fc768">Emulator</link>.</para>
+<para>
+Definition at line <link linkend="__blue_stacks_8cpp_source_1l00291">291</link> of file <link linkend="__blue_stacks_8cpp_source">BlueStacks.cpp</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_bluestacks_a9c04cc1e226501924677803bce946c05_cgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_class_bluestacks_1ad3de3527564ca576a834c2b466bec2ea"/><section>
+    <title>stopEmulator()</title>
+<indexterm><primary>stopEmulator</primary><secondary>Bluestacks</secondary></indexterm>
+<indexterm><primary>Bluestacks</primary><secondary>stopEmulator</secondary></indexterm>
+<para><computeroutput>void Bluestacks::stopEmulator ( )<computeroutput>[override]</computeroutput>, <computeroutput>[virtual]</computeroutput></computeroutput></para><para>
+Implements <link linkend="_class_emulator_1a93a13ed65eaa60582a7234551a487e91">Emulator</link>.</para>
+<para>
+Definition at line <link linkend="__blue_stacks_8cpp_source_1l00194">194</link> of file <link linkend="__blue_stacks_8cpp_source">BlueStacks.cpp</link>.</para>
+</section>
+<anchor xml:id="_class_bluestacks_1a521e04d3a6b57da783d3248f308d8e2c"/><section>
+    <title>stopInstance()</title>
+<indexterm><primary>stopInstance</primary><secondary>Bluestacks</secondary></indexterm>
+<indexterm><primary>Bluestacks</primary><secondary>stopInstance</secondary></indexterm>
+<para><computeroutput>void Bluestacks::stopInstance (<link linkend="_class_instance">Instance</link> * inst)<computeroutput>[override]</computeroutput>, <computeroutput>[virtual]</computeroutput></computeroutput></para><para>
+Implements <link linkend="_class_emulator_1a9d944acca478da13c4f3d5be1b057703">Emulator</link>.</para>
+<para>
+Definition at line <link linkend="__blue_stacks_8cpp_source_1l00179">179</link> of file <link linkend="__blue_stacks_8cpp_source">BlueStacks.cpp</link>.</para>
+</section>
+<anchor xml:id="_class_bluestacks_1a4ee2fe0a801d17d3fdf2476a8351c60e"/><section>
+    <title>transformInstance()</title>
+<indexterm><primary>transformInstance</primary><secondary>Bluestacks</secondary></indexterm>
+<indexterm><primary>Bluestacks</primary><secondary>transformInstance</secondary></indexterm>
+<para><computeroutput><link linkend="_class_bluestacks_instance">BluestacksInstance</link> * Bluestacks::transformInstance (<link linkend="_class_instance">Instance</link> * inst)</computeroutput></para><para>
+Definition at line <link linkend="__blue_stacks_8cpp_source_1l00285">285</link> of file <link linkend="__blue_stacks_8cpp_source">BlueStacks.cpp</link>.</para>
+</section>
+<anchor xml:id="_class_bluestacks_1a92becd39e7528f75b7117be5a396a7b8"/><section>
+    <title>waitForInstance()</title>
+<indexterm><primary>waitForInstance</primary><secondary>Bluestacks</secondary></indexterm>
+<indexterm><primary>Bluestacks</primary><secondary>waitForInstance</secondary></indexterm>
+<para><computeroutput>void Bluestacks::waitForInstance (<link linkend="_class_instance">Instance</link> * inst)<computeroutput>[override]</computeroutput>, <computeroutput>[virtual]</computeroutput></computeroutput></para><para>
+Implements <link linkend="_class_emulator_1a3c1982951385d705d049f4f050885f06">Emulator</link>.</para>
+<para>
+Definition at line <link linkend="__blue_stacks_8cpp_source_1l00250">250</link> of file <link linkend="__blue_stacks_8cpp_source">BlueStacks.cpp</link>.</para>
+</section>
+</section>
+<section>
+<title>Member Data Documentation</title>
+<anchor xml:id="_class_bluestacks_1afb053ca9aefed7324c712b7b567e3bd0"/><section>
+    <title>configFolder</title>
+<indexterm><primary>configFolder</primary><secondary>Bluestacks</secondary></indexterm>
+<indexterm><primary>Bluestacks</primary><secondary>configFolder</secondary></indexterm>
+<para><computeroutput>std::string Bluestacks::configFolder</computeroutput></para><para>
+Definition at line <link linkend="__blue_stacks_8h_source_1l00040">40</link> of file <link linkend="__blue_stacks_8h_source">BlueStacks.h</link>.</para>
+</section>
+<anchor xml:id="_class_bluestacks_1af8ff24fe55ea696c944c0819ad53690a"/><section>
+    <title>hdPlayerFolder</title>
+<indexterm><primary>hdPlayerFolder</primary><secondary>Bluestacks</secondary></indexterm>
+<indexterm><primary>Bluestacks</primary><secondary>hdPlayerFolder</secondary></indexterm>
+<para><computeroutput>std::string Bluestacks::hdPlayerFolder</computeroutput></para><para>
+Definition at line <link linkend="__blue_stacks_8h_source_1l00040">40</link> of file <link linkend="__blue_stacks_8h_source">BlueStacks.h</link>.</para>
+</section>
+<para>
+The documentation for this class was generated from the following files:</para>
+src/<link linkend="__blue_stacks_8h">BlueStacks.h</link>src/<link linkend="__blue_stacks_8cpp">BlueStacks.cpp</link></section>
+</section>

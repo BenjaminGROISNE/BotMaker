@@ -1,0 +1,241 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<section xmlns="http://docbook.org/ns/docbook" version="5.0" xmlns:xlink="http://www.w3.org/1999/xlink" xml:id="_struct_coord" xml:lang="en-US">
+<title>Coord Struct Reference</title>
+<indexterm><primary>Coord</primary></indexterm>
+<para>
+<computeroutput>#include &lt;Units.h&gt;</computeroutput>
+</para>
+Collaboration diagram for Coord:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="struct_coord__coll__graph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+<simplesect>
+    <title>Public Member Functions    </title>
+        <itemizedlist>
+            <listitem><para><link linkend="_struct_coord_1add896c4f3fb15b4ad762b5270855345c">Coord</link> ()</para>
+</listitem>
+            <listitem><para><link linkend="_struct_coord_1ae4970eea67b04bf26455ab1e783308ab">Coord</link> (const <link linkend="_struct_coord">Coord</link> &amp;Co)</para>
+</listitem>
+            <listitem><para><link linkend="_struct_coord_1a9d05c62a9855e6f985c12e90968d850e">Coord</link> (int x1, int y1)</para>
+</listitem>
+            <listitem><para><link linkend="_struct_coord_1a6b7383830bac44a485775f87a9432fff">Coord</link> (double x1, double y1)</para>
+</listitem>
+            <listitem><para><link linkend="_struct_coord_1a18f8b410e4a7839ddcd5ed770c7ec260">Coord</link> (int x1, double y1)</para>
+</listitem>
+            <listitem><para><link linkend="_struct_coord_1a2cf43b934772af1f051d2c225912425a">Coord</link> (double x1, int y1)</para>
+</listitem>
+            <listitem><para>void <link linkend="_struct_coord_1af039d91918215598e38227e2041dc81e">showCoords</link> ()</para>
+</listitem>
+            <listitem><para>bool <link linkend="_struct_coord_1a34c573cd6230e5a532f12ae97e7395e2">isNull</link> ()</para>
+</listitem>
+            <listitem><para>bool <link linkend="_struct_coord_1a070514fde2d2d2aa50760d8001583d4e">operator==</link> (const <link linkend="_struct_coord">Coord</link> &amp;other) const</para>
+</listitem>
+            <listitem><para>bool <link linkend="_struct_coord_1a8d845da6ee76d7af4086a8d05d94728e">operator!=</link> (const <link linkend="_struct_coord">Coord</link> &amp;other) const</para>
+</listitem>
+            <listitem><para><link linkend="_struct_coord">Coord</link> &amp; <link linkend="_struct_coord_1a9f8e7eeb6fb6fc01a508eb15d7e4e852">operator=</link> (const <link linkend="_struct_coord">Coord</link> &amp;other)</para>
+</listitem>
+            <listitem><para><link linkend="_struct_coord">Coord</link> <link linkend="_struct_coord_1a3cc014966b45c49dddfda585cc58db72">operator+</link> (const <link linkend="_struct_coord">Coord</link> &amp;other) const</para>
+</listitem>
+            <listitem><para><link linkend="_struct_coord">Coord</link> <link linkend="_struct_coord_1a2e374bd9d815eedef2588dc34fbe41f9">operator-</link> (const <link linkend="_struct_coord">Coord</link> &amp;other) const</para>
+</listitem>
+            <listitem><para><link linkend="_struct_coord">Coord</link> <link linkend="_struct_coord_1af48e84453c40e871c8d65bfa1d5b5c49">operator*</link> (const <link linkend="_struct_coord">Coord</link> &amp;other) const</para>
+</listitem>
+        </itemizedlist>
+</simplesect>
+<simplesect>
+    <title>Public Attributes    </title>
+        <itemizedlist>
+            <listitem><para>int <link linkend="_struct_coord_1a696eaa744360fc791d0e3b331c549dbe">x</link></para>
+</listitem>
+            <listitem><para>int <link linkend="_struct_coord_1a214166cca70cef7dda9201689c3e81ab">y</link></para>
+</listitem>
+        </itemizedlist>
+</simplesect>
+<section>
+<title>Detailed Description</title>
+<para>
+Definition at line <link linkend="__units_8h_source_1l00020">20</link> of file <link linkend="__units_8h_source">Units.h</link>.</para>
+</section>
+<section>
+<title>Constructor &amp; Destructor Documentation</title>
+<anchor xml:id="_struct_coord_1add896c4f3fb15b4ad762b5270855345c"/><section>
+    <title>Coord()<computeroutput>[1/6]</computeroutput></title>
+<indexterm><primary>Coord</primary><secondary>Coord</secondary></indexterm>
+<indexterm><primary>Coord</primary><secondary>Coord</secondary></indexterm>
+<para><computeroutput>Coord::Coord ( )<computeroutput>[inline]</computeroutput></computeroutput></para><para>
+Definition at line <link linkend="__units_8h_source_1l00022">22</link> of file <link linkend="__units_8h_source">Units.h</link>.</para>
+Here is the caller graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="struct_coord_add896c4f3fb15b4ad762b5270855345c_icgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_struct_coord_1ae4970eea67b04bf26455ab1e783308ab"/><section>
+    <title>Coord()<computeroutput>[2/6]</computeroutput></title>
+<indexterm><primary>Coord</primary><secondary>Coord</secondary></indexterm>
+<indexterm><primary>Coord</primary><secondary>Coord</secondary></indexterm>
+<para><computeroutput>Coord::Coord (const <link linkend="_struct_coord">Coord</link> &amp; Co)<computeroutput>[inline]</computeroutput></computeroutput></para><para>
+Definition at line <link linkend="__units_8h_source_1l00025">25</link> of file <link linkend="__units_8h_source">Units.h</link>.</para>
+</section>
+<anchor xml:id="_struct_coord_1a9d05c62a9855e6f985c12e90968d850e"/><section>
+    <title>Coord()<computeroutput>[3/6]</computeroutput></title>
+<indexterm><primary>Coord</primary><secondary>Coord</secondary></indexterm>
+<indexterm><primary>Coord</primary><secondary>Coord</secondary></indexterm>
+<para><computeroutput>Coord::Coord (int x1, int y1)<computeroutput>[inline]</computeroutput></computeroutput></para><para>
+Definition at line <link linkend="__units_8h_source_1l00028">28</link> of file <link linkend="__units_8h_source">Units.h</link>.</para>
+</section>
+<anchor xml:id="_struct_coord_1a6b7383830bac44a485775f87a9432fff"/><section>
+    <title>Coord()<computeroutput>[4/6]</computeroutput></title>
+<indexterm><primary>Coord</primary><secondary>Coord</secondary></indexterm>
+<indexterm><primary>Coord</primary><secondary>Coord</secondary></indexterm>
+<para><computeroutput>Coord::Coord (double x1, double y1)<computeroutput>[inline]</computeroutput></computeroutput></para><para>
+Definition at line <link linkend="__units_8h_source_1l00032">32</link> of file <link linkend="__units_8h_source">Units.h</link>.</para>
+</section>
+<anchor xml:id="_struct_coord_1a18f8b410e4a7839ddcd5ed770c7ec260"/><section>
+    <title>Coord()<computeroutput>[5/6]</computeroutput></title>
+<indexterm><primary>Coord</primary><secondary>Coord</secondary></indexterm>
+<indexterm><primary>Coord</primary><secondary>Coord</secondary></indexterm>
+<para><computeroutput>Coord::Coord (int x1, double y1)<computeroutput>[inline]</computeroutput></computeroutput></para><para>
+Definition at line <link linkend="__units_8h_source_1l00036">36</link> of file <link linkend="__units_8h_source">Units.h</link>.</para>
+</section>
+<anchor xml:id="_struct_coord_1a2cf43b934772af1f051d2c225912425a"/><section>
+    <title>Coord()<computeroutput>[6/6]</computeroutput></title>
+<indexterm><primary>Coord</primary><secondary>Coord</secondary></indexterm>
+<indexterm><primary>Coord</primary><secondary>Coord</secondary></indexterm>
+<para><computeroutput>Coord::Coord (double x1, int y1)<computeroutput>[inline]</computeroutput></computeroutput></para><para>
+Definition at line <link linkend="__units_8h_source_1l00040">40</link> of file <link linkend="__units_8h_source">Units.h</link>.</para>
+</section>
+</section>
+<section>
+<title>Member Function Documentation</title>
+<anchor xml:id="_struct_coord_1a34c573cd6230e5a532f12ae97e7395e2"/><section>
+    <title>isNull()</title>
+<indexterm><primary>isNull</primary><secondary>Coord</secondary></indexterm>
+<indexterm><primary>Coord</primary><secondary>isNull</secondary></indexterm>
+<para><computeroutput>bool Coord::isNull ( )<computeroutput>[inline]</computeroutput></computeroutput></para><para>
+Definition at line <link linkend="__units_8h_source_1l00047">47</link> of file <link linkend="__units_8h_source">Units.h</link>.</para>
+Here is the caller graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="struct_coord_a34c573cd6230e5a532f12ae97e7395e2_icgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_struct_coord_1a8d845da6ee76d7af4086a8d05d94728e"/><section>
+    <title>operator!=()</title>
+<indexterm><primary>operator!=</primary><secondary>Coord</secondary></indexterm>
+<indexterm><primary>Coord</primary><secondary>operator!=</secondary></indexterm>
+<para><computeroutput>bool Coord::operator!= (const <link linkend="_struct_coord">Coord</link> &amp; other) const<computeroutput>[inline]</computeroutput></computeroutput></para><para>
+Definition at line <link linkend="__units_8h_source_1l00053">53</link> of file <link linkend="__units_8h_source">Units.h</link>.</para>
+</section>
+<anchor xml:id="_struct_coord_1af48e84453c40e871c8d65bfa1d5b5c49"/><section>
+    <title>operator*()</title>
+<indexterm><primary>operator*</primary><secondary>Coord</secondary></indexterm>
+<indexterm><primary>Coord</primary><secondary>operator*</secondary></indexterm>
+<para><computeroutput><link linkend="_struct_coord">Coord</link> Coord::operator* (const <link linkend="_struct_coord">Coord</link> &amp; other) const<computeroutput>[inline]</computeroutput></computeroutput></para><para>
+Definition at line <link linkend="__units_8h_source_1l00070">70</link> of file <link linkend="__units_8h_source">Units.h</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="struct_coord_af48e84453c40e871c8d65bfa1d5b5c49_cgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_struct_coord_1a3cc014966b45c49dddfda585cc58db72"/><section>
+    <title>operator+()</title>
+<indexterm><primary>operator+</primary><secondary>Coord</secondary></indexterm>
+<indexterm><primary>Coord</primary><secondary>operator+</secondary></indexterm>
+<para><computeroutput><link linkend="_struct_coord">Coord</link> Coord::operator+ (const <link linkend="_struct_coord">Coord</link> &amp; other) const<computeroutput>[inline]</computeroutput></computeroutput></para><para>
+Definition at line <link linkend="__units_8h_source_1l00062">62</link> of file <link linkend="__units_8h_source">Units.h</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="struct_coord_a3cc014966b45c49dddfda585cc58db72_cgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_struct_coord_1a2e374bd9d815eedef2588dc34fbe41f9"/><section>
+    <title>operator-()</title>
+<indexterm><primary>operator-</primary><secondary>Coord</secondary></indexterm>
+<indexterm><primary>Coord</primary><secondary>operator-</secondary></indexterm>
+<para><computeroutput><link linkend="_struct_coord">Coord</link> Coord::operator- (const <link linkend="_struct_coord">Coord</link> &amp; other) const<computeroutput>[inline]</computeroutput></computeroutput></para><para>
+Definition at line <link linkend="__units_8h_source_1l00066">66</link> of file <link linkend="__units_8h_source">Units.h</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="struct_coord_a2e374bd9d815eedef2588dc34fbe41f9_cgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_struct_coord_1a9f8e7eeb6fb6fc01a508eb15d7e4e852"/><section>
+    <title>operator=()</title>
+<indexterm><primary>operator=</primary><secondary>Coord</secondary></indexterm>
+<indexterm><primary>Coord</primary><secondary>operator=</secondary></indexterm>
+<para><computeroutput><link linkend="_struct_coord">Coord</link> &amp; Coord::operator= (const <link linkend="_struct_coord">Coord</link> &amp; other)<computeroutput>[inline]</computeroutput></computeroutput></para><para>
+Definition at line <link linkend="__units_8h_source_1l00056">56</link> of file <link linkend="__units_8h_source">Units.h</link>.</para>
+</section>
+<anchor xml:id="_struct_coord_1a070514fde2d2d2aa50760d8001583d4e"/><section>
+    <title>operator==()</title>
+<indexterm><primary>operator==</primary><secondary>Coord</secondary></indexterm>
+<indexterm><primary>Coord</primary><secondary>operator==</secondary></indexterm>
+<para><computeroutput>bool Coord::operator== (const <link linkend="_struct_coord">Coord</link> &amp; other) const<computeroutput>[inline]</computeroutput></computeroutput></para><para>
+Definition at line <link linkend="__units_8h_source_1l00050">50</link> of file <link linkend="__units_8h_source">Units.h</link>.</para>
+</section>
+<anchor xml:id="_struct_coord_1af039d91918215598e38227e2041dc81e"/><section>
+    <title>showCoords()</title>
+<indexterm><primary>showCoords</primary><secondary>Coord</secondary></indexterm>
+<indexterm><primary>Coord</primary><secondary>showCoords</secondary></indexterm>
+<para><computeroutput>void Coord::showCoords ( )<computeroutput>[inline]</computeroutput></computeroutput></para><para>
+Definition at line <link linkend="__units_8h_source_1l00044">44</link> of file <link linkend="__units_8h_source">Units.h</link>.</para>
+Here is the caller graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="struct_coord_af039d91918215598e38227e2041dc81e_icgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+</section>
+<section>
+<title>Member Data Documentation</title>
+<anchor xml:id="_struct_coord_1a696eaa744360fc791d0e3b331c549dbe"/><section>
+    <title>x</title>
+<indexterm><primary>x</primary><secondary>Coord</secondary></indexterm>
+<indexterm><primary>Coord</primary><secondary>x</secondary></indexterm>
+<para><computeroutput>int Coord::x</computeroutput></para><para>
+Definition at line <link linkend="__units_8h_source_1l00021">21</link> of file <link linkend="__units_8h_source">Units.h</link>.</para>
+</section>
+<anchor xml:id="_struct_coord_1a214166cca70cef7dda9201689c3e81ab"/><section>
+    <title>y</title>
+<indexterm><primary>y</primary><secondary>Coord</secondary></indexterm>
+<indexterm><primary>Coord</primary><secondary>y</secondary></indexterm>
+<para><computeroutput>int Coord::y</computeroutput></para><para>
+Definition at line <link linkend="__units_8h_source_1l00021">21</link> of file <link linkend="__units_8h_source">Units.h</link>.</para>
+</section>
+<para>
+The documentation for this struct was generated from the following file:</para>
+src/<link linkend="__units_8h">Units.h</link></section>
+</section>

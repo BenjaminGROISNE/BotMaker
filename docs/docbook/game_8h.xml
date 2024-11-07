@@ -1,0 +1,30 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<section xmlns="http://docbook.org/ns/docbook" version="5.0" xmlns:xlink="http://www.w3.org/1999/xlink" xml:id="_game_8h" xml:lang="en-US">
+<title>src/game.h File Reference</title>
+<indexterm><primary>src/game.h</primary></indexterm>
+<programlisting linenumbering="unnumbered">#include &lt;iostream&gt;<?linebreak?>#include &lt;array&gt;<?linebreak?>#include &lt;memory&gt;<?linebreak?>#include &lt;ctime&gt;<?linebreak?>#include &lt;filesystem&gt;<?linebreak?>#include &lt;atomic&gt;<?linebreak?>#include &lt;chrono&gt;<?linebreak?>#include &lt;thread&gt;<?linebreak?>#include &lt;stdexcept&gt;<?linebreak?>#include &lt;cstdio&gt;<?linebreak?>#include &lt;algorithm&gt;<?linebreak?>#include &quot;fopencv.h&quot;<?linebreak?>#include &quot;fadb.h&quot;<?linebreak?>#include &quot;sysCommands.h&quot;<?linebreak?>#include &quot;BotConfig.h&quot;<?linebreak?>#include &quot;paths.h&quot;<?linebreak?>#include &lt;functional&gt;<?linebreak?>#include &quot;Activities.h&quot;<?linebreak?>#include &quot;Interpretor.h&quot;<?linebreak?></programlisting>Include dependency graph for game.h:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="game_8h__incl.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+This graph shows which files directly or indirectly include this file:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="game_8h__dep__incl.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+<simplesect>
+    <title>Classes    </title>
+        <itemizedlist>
+            <listitem><para>class <link linkend="_classgame">game</link></para>
+</listitem>
+        </itemizedlist>
+</simplesect>
+</section>

@@ -1,0 +1,915 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<section xmlns="http://docbook.org/ns/docbook" version="5.0" xmlns:xlink="http://www.w3.org/1999/xlink" xml:id="_class_l_d_player" xml:lang="en-US">
+<title>LDPlayer Class Reference</title>
+<indexterm><primary>LDPlayer</primary></indexterm>
+<para>
+<computeroutput>#include &lt;LDPlayer.h&gt;</computeroutput>
+</para>
+Inheritance diagram for LDPlayer:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_l_d_player__inherit__graph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+Collaboration diagram for LDPlayer:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_l_d_player__coll__graph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+<simplesect>
+    <title>Public Member Functions    </title>
+        <itemizedlist>
+            <listitem><para><link linkend="_class_l_d_player_1a634d2fbfa52b487d449bc74deed85b03">LDPlayer</link> ()</para>
+</listitem>
+            <listitem><para><link linkend="_class_l_d_player_1aeb688ae7ffeffc5c890aa52b577c4fb8">LDPlayer</link> (std::string <link linkend="_class_emulator_1a9a0bbebd40eee57823b313153b1c8cb5">gamePackage</link>, int <link linkend="_class_emulator_1a3c7b1df3adc7ba81a9fa76ce1662fa06">reqDimX</link>, int <link linkend="_class_emulator_1a4db78de463890def4e2296b9da9c0bfb">reqDimY</link>, int dpi)</para>
+</listitem>
+            <listitem><para>void <link linkend="_class_l_d_player_1aeab4fb9ed71c15ae40bb85e7c99a9b51">startEmulator</link> () override</para>
+</listitem>
+            <listitem><para>void <link linkend="_class_l_d_player_1aed135e9f726d03ab77cc86533892576e">startInstance</link> (<link linkend="_class_instance">Instance</link> *inst) override</para>
+</listitem>
+            <listitem><para>void <link linkend="_class_l_d_player_1afa13194be778166f9b0d70e8b6ddf0fb">stopInstance</link> (<link linkend="_class_instance">Instance</link> *inst) override</para>
+</listitem>
+            <listitem><para>void <link linkend="_class_l_d_player_1ab0d7597d7241cfc905136d72d3ce01bd">stopEmulator</link> () override</para>
+</listitem>
+            <listitem><para>bool <link linkend="_class_l_d_player_1a99b2174bd6a896874fe39023faa4e88c">searchEmulator</link> () override</para>
+</listitem>
+            <listitem><para>void <link linkend="_class_l_d_player_1aaf175fa762019c1c22ef205892d196ea">searchAllInstances</link> () override</para>
+</listitem>
+            <listitem><para>bool <link linkend="_class_l_d_player_1af652c272f07898fcabf0df740fbacefa">initEmulator</link> (bool searchFiles) override</para>
+</listitem>
+            <listitem><para>void <link linkend="_class_l_d_player_1a5a7ed2dad62f72bc13993da3d50f385e">initInstances</link> () override</para>
+</listitem>
+            <listitem><para>void <link linkend="_class_l_d_player_1a89852c8289be577bffcedfa52270dd50">showInstance</link> (<link linkend="_class_instance">Instance</link> *inst) override</para>
+</listitem>
+            <listitem><para>bool <link linkend="_class_l_d_player_1afdff9653762ee40295fd344ae3ab637a">hasGame</link> (<link linkend="_class_instance">Instance</link> *inst) override</para>
+</listitem>
+            <listitem><para>bool <link linkend="_class_l_d_player_1aa4d08272c0957b3f9ccd69bee91d39ac">init</link> (bool searchFiles) override</para>
+</listitem>
+            <listitem><para>void <link linkend="_class_l_d_player_1a06ec722fa75c1be28d1ebb785050771e">setListPlayableInstances</link> () override</para>
+</listitem>
+            <listitem><para>void <link linkend="_class_l_d_player_1a7faa435639a0bc0b6168ec43a451abbd">getAdbKey</link> (<link linkend="_class_instance">Instance</link> *inst) override</para>
+</listitem>
+            <listitem><para>void <link linkend="_class_l_d_player_1a0c546f98352f25c612d1dda1819c5131">setSubFolders</link> () override</para>
+</listitem>
+            <listitem><para>void <link linkend="_class_l_d_player_1aa5b8b4522bae77a46c194f161dc7d7bd">clearAllInstances</link> () override</para>
+</listitem>
+            <listitem><para>bool <link linkend="_class_l_d_player_1afe81895e1d9f5f1afc09a3bb98448f85">isInstanceLoaded</link> (<link linkend="_class_instance">Instance</link> *inst) override</para>
+</listitem>
+            <listitem><para>void <link linkend="_class_l_d_player_1ac7f410ba33d1ae1f0ee568c4eab53e25">waitForInstance</link> (<link linkend="_class_instance">Instance</link> *inst) override</para>
+</listitem>
+            <listitem><para>void <link linkend="_class_l_d_player_1a999bed21c40edaa171f48ed5fdd4e022">setRequiredDimensions</link> (<link linkend="_class_instance">Instance</link> *inst) override</para>
+</listitem>
+            <listitem><para>bool <link linkend="_class_l_d_player_1afd9b51341bf5b7b0a2d23777744c97b3">adbActivated</link> (<link linkend="_class_instance">Instance</link> *inst) override</para>
+</listitem>
+            <listitem><para>void <link linkend="_class_l_d_player_1a71ae4d3ffde14a03452c76942db55e6e">activateAdb</link> (<link linkend="_class_instance">Instance</link> *inst) override</para>
+</listitem>
+            <listitem><para>std::string <link linkend="_class_l_d_player_1adbb21d959364d3b54d3981e73f24b0ac">getConfigFile</link> (<link linkend="_class_instance">Instance</link> *inst)</para>
+</listitem>
+            <listitem><para>bool <link linkend="_class_l_d_player_1a2fac3905b9911e0cfec1eaf6a7c1e16b">isInstanceRunning</link> (<link linkend="_class_instance">Instance</link> *inst)</para>
+</listitem>
+            <listitem><para>void <link linkend="_class_l_d_player_1aed9eaafd453b9fcdea05322cf052e743">receiveFolders</link> (std::string <link linkend="_class_l_d_player_1aac7170bb4b860334bca99388d3f2a3f4">ldPlayerFolder</link>)</para>
+</listitem>
+            <listitem><para><link linkend="_class_l_d_player_instance">LDPlayerInstance</link> * <link linkend="_class_l_d_player_1aa85461ad56f19bcf3620c16d6781f640">transformInstance</link> (<link linkend="_class_instance">Instance</link> *inst)</para>
+</listitem>
+            <listitem><para>bool <link linkend="_class_l_d_player_1a6a75a0ed7816421e0154ce60c91697b1">selectedPlayingInstance</link> ()</para>
+</listitem>
+            <listitem><para>std::string <link linkend="_class_l_d_player_1ab07272ab6eb144734e3101719314b730">getPlayingInstanceAdbKey</link> ()</para>
+</listitem>
+            <listitem><para>bool <link linkend="_class_l_d_player_1ac69dba82c1997ba163498c9c711104c2">startPlayingInstance</link> ()</para>
+</listitem>
+            <listitem><para>void <link linkend="_class_l_d_player_1ae531fb07962ccef1e326f231c520ae28">searchInstanceConfig</link> (std::string engineName)</para>
+</listitem>
+            <listitem><para>void <link linkend="_class_l_d_player_1a0f72cc2becd0739ee469eca4088c4f2a">searchAllInstancesConfig</link> ()</para>
+</listitem>
+            <listitem><para>void <link linkend="_class_l_d_player_1a9c76cbcf2494aac40b078978d1163a3e">showAllInstances</link> ()</para>
+</listitem>
+            <listitem><para>void <link linkend="_class_l_d_player_1abaa2bab3427a665327d3e4861ecbe325">showAllPlayableInstances</link> ()</para>
+</listitem>
+        </itemizedlist>
+</simplesect>
+Public Member Functions inherited from <link linkend="_class_emulator">Emulator</link>        <itemizedlist>
+            <listitem><para><link linkend="_class_emulator_1ad0ddfc7c60f5cfbbe377154e25cb6cfc">Emulator</link> ()</para>
+</listitem>
+            <listitem><para><link linkend="_class_emulator_1a57bf3e602724d4ac35ca45e9ddc0c9aa">~Emulator</link> ()</para>
+</listitem>
+            <listitem><para>virtual void <link linkend="_class_emulator_1a9e0d57ef011e166cb389060f814abfa1">addInstance</link> (<link linkend="_class_instance">Instance</link> *inst)</para>
+</listitem>
+            <listitem><para>void <link linkend="_class_emulator_1ae6872001b82eb1c25e119eb3b17f1547">checkAdb</link> (<link linkend="_class_instance">Instance</link> *inst)</para>
+</listitem>
+            <listitem><para>void <link linkend="_class_emulator_1a4df4c858eb6bbe991db334523f9ea27c">checkDimensions</link> (<link linkend="_class_instance">Instance</link> *inst)</para>
+</listitem>
+            <listitem><para>bool <link linkend="_class_emulator_1a7875b76738a69f20048883b847fc2802">hasRequiredDimensions</link> (<link linkend="_class_instance">Instance</link> *inst)</para>
+</listitem>
+            <listitem><para>virtual <link linkend="__instance_8h_1a5b026f4903e92a7e60dda754b5028227">EmulatorType</link> <link linkend="_class_emulator_1a150b7fe4395310484621e1f9709be76d">getEmulatorType</link> ()</para>
+</listitem>
+            <listitem><para>bool <link linkend="_class_emulator_1aa5e02fc1e2e75c8be47324043410f17c">searchEmulatorDrive</link> (std::string &amp;emulatorFolder, const std::string &amp;diskLetter)</para>
+</listitem>
+            <listitem><para>bool <link linkend="_class_emulator_1ace0e4b2197a81fe90b00c4bb4986ce4c">searchEmulatorAllDrives</link> (std::string &amp;emulatorFolder, const std::vector&lt; std::string &gt; &amp;allDiskLetter)</para>
+</listitem>
+            <listitem><para>virtual std::vector&lt; <link linkend="_class_instance">Instance</link> * &gt; &amp; <link linkend="_class_emulator_1a619a936779444867c815d5c443d663e6">getListInstances</link> ()</para>
+</listitem>
+            <listitem><para>virtual std::vector&lt; <link linkend="_class_instance">Instance</link> * &gt; &amp; <link linkend="_class_emulator_1a4c0372049844947502d84334e7c0c7c1">getListPlayableInstances</link> ()</para>
+</listitem>
+            <listitem><para>bool <link linkend="_class_emulator_1a89579d9f83f96e3dcc5d13be7e837724">selectedPlayingInstance</link> ()</para>
+</listitem>
+            <listitem><para>std::string <link linkend="_class_emulator_1ad943f2be93bf007f291bdd3762af86b4">getPlayingInstanceAdbKey</link> ()</para>
+</listitem>
+        </itemizedlist>
+<simplesect>
+    <title>Public Attributes    </title>
+        <itemizedlist>
+            <listitem><para>std::string <link linkend="_class_l_d_player_1a847b6294b865cb602b8c667a8bb1e827">formalEngineName</link></para>
+</listitem>
+            <listitem><para>std::string <link linkend="_class_l_d_player_1af3752c9db69d22b1a35b341c879f7e8f">configFolder</link></para>
+</listitem>
+            <listitem><para>std::string <link linkend="_class_l_d_player_1a9e4eb565c0d0a1b3bf887a5d2af1964b">vmsFolder</link></para>
+</listitem>
+            <listitem><para>std::string <link linkend="_class_l_d_player_1aac7170bb4b860334bca99388d3f2a3f4">ldPlayerFolder</link></para>
+</listitem>
+            <listitem><para>std::vector&lt; std::string &gt; <link linkend="_class_l_d_player_1ad145e5887943748b5c1e8d6e9c5c3b70">allEngines</link></para>
+</listitem>
+        </itemizedlist>
+</simplesect>
+Public Attributes inherited from <link linkend="_class_emulator">Emulator</link>        <itemizedlist>
+            <listitem><para><link linkend="__instance_8h_1a5b026f4903e92a7e60dda754b5028227">EmulatorType</link> <link linkend="_class_emulator_1a76ffe6e8b9a6f9336ac33d3fe4a34083">myType</link></para>
+</listitem>
+            <listitem><para><link linkend="_class_instance">Instance</link> * <link linkend="_class_emulator_1a6433f757edc9bf813dedef6f68f73b9f">playingInstance</link></para>
+</listitem>
+            <listitem><para>std::string <link linkend="_class_emulator_1a9a0bbebd40eee57823b313153b1c8cb5">gamePackage</link></para>
+</listitem>
+            <listitem><para>std::string <link linkend="_class_emulator_1aaf64827b34747c72854e2ffa0507f37c">emulatorName</link></para>
+</listitem>
+            <listitem><para>std::string <link linkend="_class_emulator_1ae0bf469fc768b1aa831911f0f3bba8dd">executableName</link></para>
+</listitem>
+            <listitem><para>bool <link linkend="_class_emulator_1ac9479705b6bbc1003055bc1e7786989f">isInstalled</link></para>
+</listitem>
+            <listitem><para>int <link linkend="_class_emulator_1a5f038d5e47930bf433ab365fbbaa7ae2">nbInstances</link></para>
+</listitem>
+            <listitem><para>std::vector&lt; <link linkend="_class_instance">Instance</link> * &gt; <link linkend="_class_emulator_1ab78ff181d01d2cfc53203b71a9904506">listPlayableInstances</link></para>
+</listitem>
+            <listitem><para>std::vector&lt; <link linkend="_class_instance">Instance</link> * &gt; <link linkend="_class_emulator_1a85395eef4151d56d9af3e8e1d3db3cf4">listInstances</link></para>
+</listitem>
+            <listitem><para>int <link linkend="_class_emulator_1a3c7b1df3adc7ba81a9fa76ce1662fa06">reqDimX</link></para>
+</listitem>
+            <listitem><para>int <link linkend="_class_emulator_1a4db78de463890def4e2296b9da9c0bfb">reqDimY</link></para>
+</listitem>
+            <listitem><para>int <link linkend="_class_emulator_1a99712a1a614fdbca45b8be35747e5f88">reqDpi</link></para>
+</listitem>
+        </itemizedlist>
+<section>
+<title>Detailed Description</title>
+<para>
+Definition at line <link linkend="__l_d_player_8h_source_1l00006">6</link> of file <link linkend="__l_d_player_8h_source">LDPlayer.h</link>.</para>
+</section>
+<section>
+<title>Constructor &amp; Destructor Documentation</title>
+<anchor xml:id="_class_l_d_player_1a634d2fbfa52b487d449bc74deed85b03"/><section>
+    <title>LDPlayer()<computeroutput>[1/2]</computeroutput></title>
+<indexterm><primary>LDPlayer</primary><secondary>LDPlayer</secondary></indexterm>
+<indexterm><primary>LDPlayer</primary><secondary>LDPlayer</secondary></indexterm>
+<para><computeroutput>LDPlayer::LDPlayer ( )</computeroutput></para><para>
+Definition at line <link linkend="__l_d_player_8cpp_source_1l00003">3</link> of file <link linkend="__l_d_player_8cpp_source">LDPlayer.cpp</link>.</para>
+</section>
+<anchor xml:id="_class_l_d_player_1aeb688ae7ffeffc5c890aa52b577c4fb8"/><section>
+    <title>LDPlayer()<computeroutput>[2/2]</computeroutput></title>
+<indexterm><primary>LDPlayer</primary><secondary>LDPlayer</secondary></indexterm>
+<indexterm><primary>LDPlayer</primary><secondary>LDPlayer</secondary></indexterm>
+<para><computeroutput>LDPlayer::LDPlayer (std::string gamePackage, int reqDimX, int reqDimY, int dpi)</computeroutput></para><para>
+Definition at line <link linkend="__l_d_player_8cpp_source_1l00016">16</link> of file <link linkend="__l_d_player_8cpp_source">LDPlayer.cpp</link>.</para>
+</section>
+</section>
+<section>
+<title>Member Function Documentation</title>
+<anchor xml:id="_class_l_d_player_1a71ae4d3ffde14a03452c76942db55e6e"/><section>
+    <title>activateAdb()</title>
+<indexterm><primary>activateAdb</primary><secondary>LDPlayer</secondary></indexterm>
+<indexterm><primary>LDPlayer</primary><secondary>activateAdb</secondary></indexterm>
+<para><computeroutput>void LDPlayer::activateAdb (<link linkend="_class_instance">Instance</link> * inst)<computeroutput>[override]</computeroutput>, <computeroutput>[virtual]</computeroutput></computeroutput></para><para>
+Implements <link linkend="_class_emulator_1ab8fac1aac86cb33884049cd55f65099a">Emulator</link>.</para>
+<para>
+Definition at line <link linkend="__l_d_player_8cpp_source_1l00291">291</link> of file <link linkend="__l_d_player_8cpp_source">LDPlayer.cpp</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_l_d_player_a71ae4d3ffde14a03452c76942db55e6e_cgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_class_l_d_player_1afd9b51341bf5b7b0a2d23777744c97b3"/><section>
+    <title>adbActivated()</title>
+<indexterm><primary>adbActivated</primary><secondary>LDPlayer</secondary></indexterm>
+<indexterm><primary>LDPlayer</primary><secondary>adbActivated</secondary></indexterm>
+<para><computeroutput>bool LDPlayer::adbActivated (<link linkend="_class_instance">Instance</link> * inst)<computeroutput>[override]</computeroutput>, <computeroutput>[virtual]</computeroutput></computeroutput></para><para>
+Implements <link linkend="_class_emulator_1ab509a885814d9a58e20854dc61f282e1">Emulator</link>.</para>
+<para>
+Definition at line <link linkend="__l_d_player_8cpp_source_1l00279">279</link> of file <link linkend="__l_d_player_8cpp_source">LDPlayer.cpp</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_l_d_player_afd9b51341bf5b7b0a2d23777744c97b3_cgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_class_l_d_player_1aa5b8b4522bae77a46c194f161dc7d7bd"/><section>
+    <title>clearAllInstances()</title>
+<indexterm><primary>clearAllInstances</primary><secondary>LDPlayer</secondary></indexterm>
+<indexterm><primary>LDPlayer</primary><secondary>clearAllInstances</secondary></indexterm>
+<para><computeroutput>void LDPlayer::clearAllInstances ( )<computeroutput>[override]</computeroutput>, <computeroutput>[virtual]</computeroutput></computeroutput></para><para>
+Reimplemented from <link linkend="_class_emulator_1a767c9d69943a0cd76a5c63f2cc25b234">Emulator</link>.</para>
+<para>
+Definition at line <link linkend="__l_d_player_8cpp_source_1l00146">146</link> of file <link linkend="__l_d_player_8cpp_source">LDPlayer.cpp</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_l_d_player_aa5b8b4522bae77a46c194f161dc7d7bd_cgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+Here is the caller graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_l_d_player_aa5b8b4522bae77a46c194f161dc7d7bd_icgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_class_l_d_player_1a7faa435639a0bc0b6168ec43a451abbd"/><section>
+    <title>getAdbKey()</title>
+<indexterm><primary>getAdbKey</primary><secondary>LDPlayer</secondary></indexterm>
+<indexterm><primary>LDPlayer</primary><secondary>getAdbKey</secondary></indexterm>
+<para><computeroutput>void LDPlayer::getAdbKey (<link linkend="_class_instance">Instance</link> * inst)<computeroutput>[override]</computeroutput>, <computeroutput>[virtual]</computeroutput></computeroutput></para><para>
+Implements <link linkend="_class_emulator_1a906334193d238f331fd24a89f3e41ade">Emulator</link>.</para>
+<para>
+Definition at line <link linkend="__l_d_player_8cpp_source_1l00185">185</link> of file <link linkend="__l_d_player_8cpp_source">LDPlayer.cpp</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_l_d_player_a7faa435639a0bc0b6168ec43a451abbd_cgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+Here is the caller graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_l_d_player_a7faa435639a0bc0b6168ec43a451abbd_icgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_class_l_d_player_1adbb21d959364d3b54d3981e73f24b0ac"/><section>
+    <title>getConfigFile()</title>
+<indexterm><primary>getConfigFile</primary><secondary>LDPlayer</secondary></indexterm>
+<indexterm><primary>LDPlayer</primary><secondary>getConfigFile</secondary></indexterm>
+<para><computeroutput>std::string LDPlayer::getConfigFile (<link linkend="_class_instance">Instance</link> * inst)</computeroutput></para><para>
+Definition at line <link linkend="__l_d_player_8cpp_source_1l00248">248</link> of file <link linkend="__l_d_player_8cpp_source">LDPlayer.cpp</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_l_d_player_adbb21d959364d3b54d3981e73f24b0ac_cgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+Here is the caller graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_l_d_player_adbb21d959364d3b54d3981e73f24b0ac_icgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_class_l_d_player_1ab07272ab6eb144734e3101719314b730"/><section>
+    <title>getPlayingInstanceAdbKey()</title>
+<indexterm><primary>getPlayingInstanceAdbKey</primary><secondary>LDPlayer</secondary></indexterm>
+<indexterm><primary>LDPlayer</primary><secondary>getPlayingInstanceAdbKey</secondary></indexterm>
+<para><computeroutput>std::string LDPlayer::getPlayingInstanceAdbKey ( )</computeroutput></para><para>
+Definition at line <link linkend="__l_d_player_8cpp_source_1l00152">152</link> of file <link linkend="__l_d_player_8cpp_source">LDPlayer.cpp</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_l_d_player_ab07272ab6eb144734e3101719314b730_cgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_class_l_d_player_1afdff9653762ee40295fd344ae3ab637a"/><section>
+    <title>hasGame()</title>
+<indexterm><primary>hasGame</primary><secondary>LDPlayer</secondary></indexterm>
+<indexterm><primary>LDPlayer</primary><secondary>hasGame</secondary></indexterm>
+<para><computeroutput>bool LDPlayer::hasGame (<link linkend="_class_instance">Instance</link> * inst)<computeroutput>[override]</computeroutput>, <computeroutput>[virtual]</computeroutput></computeroutput></para><para>
+Implements <link linkend="_class_emulator_1aca882909bddc93a81e87938f33c0375c">Emulator</link>.</para>
+<para>
+Definition at line <link linkend="__l_d_player_8cpp_source_1l00254">254</link> of file <link linkend="__l_d_player_8cpp_source">LDPlayer.cpp</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_l_d_player_afdff9653762ee40295fd344ae3ab637a_cgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+Here is the caller graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_l_d_player_afdff9653762ee40295fd344ae3ab637a_icgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_class_l_d_player_1aa4d08272c0957b3f9ccd69bee91d39ac"/><section>
+    <title>init()</title>
+<indexterm><primary>init</primary><secondary>LDPlayer</secondary></indexterm>
+<indexterm><primary>LDPlayer</primary><secondary>init</secondary></indexterm>
+<para><computeroutput>bool LDPlayer::init (bool searchFiles)<computeroutput>[override]</computeroutput>, <computeroutput>[virtual]</computeroutput></computeroutput></para><para>
+Implements <link linkend="_class_emulator_1a7fda708d394a4f9ec006661fb6fe3362">Emulator</link>.</para>
+<para>
+Definition at line <link linkend="__l_d_player_8cpp_source_1l00100">100</link> of file <link linkend="__l_d_player_8cpp_source">LDPlayer.cpp</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_l_d_player_aa4d08272c0957b3f9ccd69bee91d39ac_cgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+Here is the caller graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_l_d_player_aa4d08272c0957b3f9ccd69bee91d39ac_icgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_class_l_d_player_1af652c272f07898fcabf0df740fbacefa"/><section>
+    <title>initEmulator()</title>
+<indexterm><primary>initEmulator</primary><secondary>LDPlayer</secondary></indexterm>
+<indexterm><primary>LDPlayer</primary><secondary>initEmulator</secondary></indexterm>
+<para><computeroutput>bool LDPlayer::initEmulator (bool searchFiles)<computeroutput>[override]</computeroutput>, <computeroutput>[virtual]</computeroutput></computeroutput></para><para>
+Implements <link linkend="_class_emulator_1a70cd01e0015c64652d994f890e7b456f">Emulator</link>.</para>
+<para>
+Definition at line <link linkend="__l_d_player_8cpp_source_1l00086">86</link> of file <link linkend="__l_d_player_8cpp_source">LDPlayer.cpp</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_l_d_player_af652c272f07898fcabf0df740fbacefa_cgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+Here is the caller graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_l_d_player_af652c272f07898fcabf0df740fbacefa_icgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_class_l_d_player_1a5a7ed2dad62f72bc13993da3d50f385e"/><section>
+    <title>initInstances()</title>
+<indexterm><primary>initInstances</primary><secondary>LDPlayer</secondary></indexterm>
+<indexterm><primary>LDPlayer</primary><secondary>initInstances</secondary></indexterm>
+<para><computeroutput>void LDPlayer::initInstances ( )<computeroutput>[override]</computeroutput>, <computeroutput>[virtual]</computeroutput></computeroutput></para><para>
+Implements <link linkend="_class_emulator_1a209eda62b048eda210adfdf313d6baa2">Emulator</link>.</para>
+<para>
+Definition at line <link linkend="__l_d_player_8cpp_source_1l00094">94</link> of file <link linkend="__l_d_player_8cpp_source">LDPlayer.cpp</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_l_d_player_a5a7ed2dad62f72bc13993da3d50f385e_cgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+Here is the caller graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_l_d_player_a5a7ed2dad62f72bc13993da3d50f385e_icgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_class_l_d_player_1afe81895e1d9f5f1afc09a3bb98448f85"/><section>
+    <title>isInstanceLoaded()</title>
+<indexterm><primary>isInstanceLoaded</primary><secondary>LDPlayer</secondary></indexterm>
+<indexterm><primary>LDPlayer</primary><secondary>isInstanceLoaded</secondary></indexterm>
+<para><computeroutput>bool LDPlayer::isInstanceLoaded (<link linkend="_class_instance">Instance</link> * inst)<computeroutput>[override]</computeroutput>, <computeroutput>[virtual]</computeroutput></computeroutput></para><para>
+Implements <link linkend="_class_emulator_1ab200f5cb5133065e5028db804c881a7a">Emulator</link>.</para>
+<para>
+Definition at line <link linkend="__l_d_player_8cpp_source_1l00171">171</link> of file <link linkend="__l_d_player_8cpp_source">LDPlayer.cpp</link>.</para>
+</section>
+<anchor xml:id="_class_l_d_player_1a2fac3905b9911e0cfec1eaf6a7c1e16b"/><section>
+    <title>isInstanceRunning()</title>
+<indexterm><primary>isInstanceRunning</primary><secondary>LDPlayer</secondary></indexterm>
+<indexterm><primary>LDPlayer</primary><secondary>isInstanceRunning</secondary></indexterm>
+<para><computeroutput>bool LDPlayer::isInstanceRunning (<link linkend="_class_instance">Instance</link> * inst)<computeroutput>[virtual]</computeroutput></computeroutput></para><para>
+Implements <link linkend="_class_emulator_1a0e563416ea4f194a64003b8e137ea4dd">Emulator</link>.</para>
+<para>
+Definition at line <link linkend="__l_d_player_8cpp_source_1l00138">138</link> of file <link linkend="__l_d_player_8cpp_source">LDPlayer.cpp</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_l_d_player_a2fac3905b9911e0cfec1eaf6a7c1e16b_cgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+Here is the caller graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_l_d_player_a2fac3905b9911e0cfec1eaf6a7c1e16b_icgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_class_l_d_player_1aed9eaafd453b9fcdea05322cf052e743"/><section>
+    <title>receiveFolders()</title>
+<indexterm><primary>receiveFolders</primary><secondary>LDPlayer</secondary></indexterm>
+<indexterm><primary>LDPlayer</primary><secondary>receiveFolders</secondary></indexterm>
+<para><computeroutput>void LDPlayer::receiveFolders (std::string ldPlayerFolder)</computeroutput></para><para>
+Definition at line <link linkend="__l_d_player_8cpp_source_1l00132">132</link> of file <link linkend="__l_d_player_8cpp_source">LDPlayer.cpp</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_l_d_player_aed9eaafd453b9fcdea05322cf052e743_cgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+Here is the caller graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_l_d_player_aed9eaafd453b9fcdea05322cf052e743_icgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_class_l_d_player_1aaf175fa762019c1c22ef205892d196ea"/><section>
+    <title>searchAllInstances()</title>
+<indexterm><primary>searchAllInstances</primary><secondary>LDPlayer</secondary></indexterm>
+<indexterm><primary>LDPlayer</primary><secondary>searchAllInstances</secondary></indexterm>
+<para><computeroutput>void LDPlayer::searchAllInstances ( )<computeroutput>[override]</computeroutput>, <computeroutput>[virtual]</computeroutput></computeroutput></para><para>
+Implements <link linkend="_class_emulator_1ab82ec7c38dde216adfaa0ed57582dccb">Emulator</link>.</para>
+<para>
+Definition at line <link linkend="__l_d_player_8cpp_source_1l00072">72</link> of file <link linkend="__l_d_player_8cpp_source">LDPlayer.cpp</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_l_d_player_aaf175fa762019c1c22ef205892d196ea_cgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+Here is the caller graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_l_d_player_aaf175fa762019c1c22ef205892d196ea_icgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_class_l_d_player_1a0f72cc2becd0739ee469eca4088c4f2a"/><section>
+    <title>searchAllInstancesConfig()</title>
+<indexterm><primary>searchAllInstancesConfig</primary><secondary>LDPlayer</secondary></indexterm>
+<indexterm><primary>LDPlayer</primary><secondary>searchAllInstancesConfig</secondary></indexterm>
+<para><computeroutput>void LDPlayer::searchAllInstancesConfig ( )</computeroutput></para><para>
+Definition at line <link linkend="__l_d_player_8cpp_source_1l00217">217</link> of file <link linkend="__l_d_player_8cpp_source">LDPlayer.cpp</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_l_d_player_a0f72cc2becd0739ee469eca4088c4f2a_cgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+Here is the caller graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_l_d_player_a0f72cc2becd0739ee469eca4088c4f2a_icgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_class_l_d_player_1a99b2174bd6a896874fe39023faa4e88c"/><section>
+    <title>searchEmulator()</title>
+<indexterm><primary>searchEmulator</primary><secondary>LDPlayer</secondary></indexterm>
+<indexterm><primary>LDPlayer</primary><secondary>searchEmulator</secondary></indexterm>
+<para><computeroutput>bool LDPlayer::searchEmulator ( )<computeroutput>[override]</computeroutput>, <computeroutput>[virtual]</computeroutput></computeroutput></para><para>
+Implements <link linkend="_class_emulator_1a0da90844f7da83360619064ebf0d5819">Emulator</link>.</para>
+<para>
+Definition at line <link linkend="__l_d_player_8cpp_source_1l00051">51</link> of file <link linkend="__l_d_player_8cpp_source">LDPlayer.cpp</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_l_d_player_a99b2174bd6a896874fe39023faa4e88c_cgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+Here is the caller graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_l_d_player_a99b2174bd6a896874fe39023faa4e88c_icgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_class_l_d_player_1ae531fb07962ccef1e326f231c520ae28"/><section>
+    <title>searchInstanceConfig()</title>
+<indexterm><primary>searchInstanceConfig</primary><secondary>LDPlayer</secondary></indexterm>
+<indexterm><primary>LDPlayer</primary><secondary>searchInstanceConfig</secondary></indexterm>
+<para><computeroutput>void LDPlayer::searchInstanceConfig (std::string engineName)</computeroutput></para><para>
+Definition at line <link linkend="__l_d_player_8cpp_source_1l00192">192</link> of file <link linkend="__l_d_player_8cpp_source">LDPlayer.cpp</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_l_d_player_ae531fb07962ccef1e326f231c520ae28_cgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+Here is the caller graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_l_d_player_ae531fb07962ccef1e326f231c520ae28_icgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_class_l_d_player_1a6a75a0ed7816421e0154ce60c91697b1"/><section>
+    <title>selectedPlayingInstance()</title>
+<indexterm><primary>selectedPlayingInstance</primary><secondary>LDPlayer</secondary></indexterm>
+<indexterm><primary>LDPlayer</primary><secondary>selectedPlayingInstance</secondary></indexterm>
+<para><computeroutput>bool LDPlayer::selectedPlayingInstance ( )</computeroutput></para><para>
+Definition at line <link linkend="__l_d_player_8cpp_source_1l00127">127</link> of file <link linkend="__l_d_player_8cpp_source">LDPlayer.cpp</link>.</para>
+Here is the caller graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_l_d_player_a6a75a0ed7816421e0154ce60c91697b1_icgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_class_l_d_player_1a06ec722fa75c1be28d1ebb785050771e"/><section>
+    <title>setListPlayableInstances()</title>
+<indexterm><primary>setListPlayableInstances</primary><secondary>LDPlayer</secondary></indexterm>
+<indexterm><primary>LDPlayer</primary><secondary>setListPlayableInstances</secondary></indexterm>
+<para><computeroutput>void LDPlayer::setListPlayableInstances ( )<computeroutput>[override]</computeroutput>, <computeroutput>[virtual]</computeroutput></computeroutput></para><para>
+Implements <link linkend="_class_emulator_1a97a74e16eb464c24b195011b9949a114">Emulator</link>.</para>
+<para>
+Definition at line <link linkend="__l_d_player_8cpp_source_1l00107">107</link> of file <link linkend="__l_d_player_8cpp_source">LDPlayer.cpp</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_l_d_player_a06ec722fa75c1be28d1ebb785050771e_cgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+Here is the caller graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_l_d_player_a06ec722fa75c1be28d1ebb785050771e_icgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_class_l_d_player_1a999bed21c40edaa171f48ed5fdd4e022"/><section>
+    <title>setRequiredDimensions()</title>
+<indexterm><primary>setRequiredDimensions</primary><secondary>LDPlayer</secondary></indexterm>
+<indexterm><primary>LDPlayer</primary><secondary>setRequiredDimensions</secondary></indexterm>
+<para><computeroutput>void LDPlayer::setRequiredDimensions (<link linkend="_class_instance">Instance</link> * inst)<computeroutput>[override]</computeroutput>, <computeroutput>[virtual]</computeroutput></computeroutput></para><para>
+Implements <link linkend="_class_emulator_1a1441a057869b23871baa8d42c94f2af6">Emulator</link>.</para>
+<para>
+Definition at line <link linkend="__l_d_player_8cpp_source_1l00267">267</link> of file <link linkend="__l_d_player_8cpp_source">LDPlayer.cpp</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_l_d_player_a999bed21c40edaa171f48ed5fdd4e022_cgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_class_l_d_player_1a0c546f98352f25c612d1dda1819c5131"/><section>
+    <title>setSubFolders()</title>
+<indexterm><primary>setSubFolders</primary><secondary>LDPlayer</secondary></indexterm>
+<indexterm><primary>LDPlayer</primary><secondary>setSubFolders</secondary></indexterm>
+<para><computeroutput>void LDPlayer::setSubFolders ( )<computeroutput>[override]</computeroutput>, <computeroutput>[virtual]</computeroutput></computeroutput></para><para>
+Implements <link linkend="_class_emulator_1ad7308fa2827b9a85300d6e76ad2290bd">Emulator</link>.</para>
+<para>
+Definition at line <link linkend="__l_d_player_8cpp_source_1l00121">121</link> of file <link linkend="__l_d_player_8cpp_source">LDPlayer.cpp</link>.</para>
+Here is the caller graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_l_d_player_a0c546f98352f25c612d1dda1819c5131_icgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_class_l_d_player_1a9c76cbcf2494aac40b078978d1163a3e"/><section>
+    <title>showAllInstances()</title>
+<indexterm><primary>showAllInstances</primary><secondary>LDPlayer</secondary></indexterm>
+<indexterm><primary>LDPlayer</primary><secondary>showAllInstances</secondary></indexterm>
+<para><computeroutput>void LDPlayer::showAllInstances ( )</computeroutput></para><para>
+Definition at line <link linkend="__l_d_player_8cpp_source_1l00232">232</link> of file <link linkend="__l_d_player_8cpp_source">LDPlayer.cpp</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_l_d_player_a9c76cbcf2494aac40b078978d1163a3e_cgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_class_l_d_player_1abaa2bab3427a665327d3e4861ecbe325"/><section>
+    <title>showAllPlayableInstances()</title>
+<indexterm><primary>showAllPlayableInstances</primary><secondary>LDPlayer</secondary></indexterm>
+<indexterm><primary>LDPlayer</primary><secondary>showAllPlayableInstances</secondary></indexterm>
+<para><computeroutput>void LDPlayer::showAllPlayableInstances ( )</computeroutput></para><para>
+Definition at line <link linkend="__l_d_player_8cpp_source_1l00240">240</link> of file <link linkend="__l_d_player_8cpp_source">LDPlayer.cpp</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_l_d_player_abaa2bab3427a665327d3e4861ecbe325_cgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_class_l_d_player_1a89852c8289be577bffcedfa52270dd50"/><section>
+    <title>showInstance()</title>
+<indexterm><primary>showInstance</primary><secondary>LDPlayer</secondary></indexterm>
+<indexterm><primary>LDPlayer</primary><secondary>showInstance</secondary></indexterm>
+<para><computeroutput>void LDPlayer::showInstance (<link linkend="_class_instance">Instance</link> * inst)<computeroutput>[override]</computeroutput>, <computeroutput>[virtual]</computeroutput></computeroutput></para><para>
+Implements <link linkend="_class_emulator_1afc75a4e92e82a3260beb679ce76fd137">Emulator</link>.</para>
+<para>
+Definition at line <link linkend="__l_d_player_8cpp_source_1l00225">225</link> of file <link linkend="__l_d_player_8cpp_source">LDPlayer.cpp</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_l_d_player_a89852c8289be577bffcedfa52270dd50_cgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+Here is the caller graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_l_d_player_a89852c8289be577bffcedfa52270dd50_icgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_class_l_d_player_1aeab4fb9ed71c15ae40bb85e7c99a9b51"/><section>
+    <title>startEmulator()</title>
+<indexterm><primary>startEmulator</primary><secondary>LDPlayer</secondary></indexterm>
+<indexterm><primary>LDPlayer</primary><secondary>startEmulator</secondary></indexterm>
+<para><computeroutput>void LDPlayer::startEmulator ( )<computeroutput>[override]</computeroutput>, <computeroutput>[virtual]</computeroutput></computeroutput></para><para>
+Implements <link linkend="_class_emulator_1a1e77699004cb878400e0111fbe462343">Emulator</link>.</para>
+<para>
+Definition at line <link linkend="__l_d_player_8cpp_source_1l00025">25</link> of file <link linkend="__l_d_player_8cpp_source">LDPlayer.cpp</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_l_d_player_aeab4fb9ed71c15ae40bb85e7c99a9b51_cgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_class_l_d_player_1aed135e9f726d03ab77cc86533892576e"/><section>
+    <title>startInstance()</title>
+<indexterm><primary>startInstance</primary><secondary>LDPlayer</secondary></indexterm>
+<indexterm><primary>LDPlayer</primary><secondary>startInstance</secondary></indexterm>
+<para><computeroutput>void LDPlayer::startInstance (<link linkend="_class_instance">Instance</link> * inst)<computeroutput>[override]</computeroutput>, <computeroutput>[virtual]</computeroutput></computeroutput></para><para>
+Implements <link linkend="_class_emulator_1a7223775167bb8d576f8211800af52ba0">Emulator</link>.</para>
+<para>
+Definition at line <link linkend="__l_d_player_8cpp_source_1l00031">31</link> of file <link linkend="__l_d_player_8cpp_source">LDPlayer.cpp</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_l_d_player_aed135e9f726d03ab77cc86533892576e_cgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+Here is the caller graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_l_d_player_aed135e9f726d03ab77cc86533892576e_icgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_class_l_d_player_1ac69dba82c1997ba163498c9c711104c2"/><section>
+    <title>startPlayingInstance()</title>
+<indexterm><primary>startPlayingInstance</primary><secondary>LDPlayer</secondary></indexterm>
+<indexterm><primary>LDPlayer</primary><secondary>startPlayingInstance</secondary></indexterm>
+<para><computeroutput>bool LDPlayer::startPlayingInstance ( )<computeroutput>[virtual]</computeroutput></computeroutput></para><para>
+Implements <link linkend="_class_emulator_1af4682d1c7d92660a73b4be6c8a5fc768">Emulator</link>.</para>
+<para>
+Definition at line <link linkend="__l_d_player_8cpp_source_1l00176">176</link> of file <link linkend="__l_d_player_8cpp_source">LDPlayer.cpp</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_l_d_player_ac69dba82c1997ba163498c9c711104c2_cgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_class_l_d_player_1ab0d7597d7241cfc905136d72d3ce01bd"/><section>
+    <title>stopEmulator()</title>
+<indexterm><primary>stopEmulator</primary><secondary>LDPlayer</secondary></indexterm>
+<indexterm><primary>LDPlayer</primary><secondary>stopEmulator</secondary></indexterm>
+<para><computeroutput>void LDPlayer::stopEmulator ( )<computeroutput>[override]</computeroutput>, <computeroutput>[virtual]</computeroutput></computeroutput></para><para>
+Implements <link linkend="_class_emulator_1a93a13ed65eaa60582a7234551a487e91">Emulator</link>.</para>
+<para>
+Definition at line <link linkend="__l_d_player_8cpp_source_1l00045">45</link> of file <link linkend="__l_d_player_8cpp_source">LDPlayer.cpp</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_l_d_player_ab0d7597d7241cfc905136d72d3ce01bd_cgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_class_l_d_player_1afa13194be778166f9b0d70e8b6ddf0fb"/><section>
+    <title>stopInstance()</title>
+<indexterm><primary>stopInstance</primary><secondary>LDPlayer</secondary></indexterm>
+<indexterm><primary>LDPlayer</primary><secondary>stopInstance</secondary></indexterm>
+<para><computeroutput>void LDPlayer::stopInstance (<link linkend="_class_instance">Instance</link> * inst)<computeroutput>[override]</computeroutput>, <computeroutput>[virtual]</computeroutput></computeroutput></para><para>
+Implements <link linkend="_class_emulator_1a9d944acca478da13c4f3d5be1b057703">Emulator</link>.</para>
+<para>
+Definition at line <link linkend="__l_d_player_8cpp_source_1l00038">38</link> of file <link linkend="__l_d_player_8cpp_source">LDPlayer.cpp</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_l_d_player_afa13194be778166f9b0d70e8b6ddf0fb_cgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+Here is the caller graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_l_d_player_afa13194be778166f9b0d70e8b6ddf0fb_icgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_class_l_d_player_1aa85461ad56f19bcf3620c16d6781f640"/><section>
+    <title>transformInstance()</title>
+<indexterm><primary>transformInstance</primary><secondary>LDPlayer</secondary></indexterm>
+<indexterm><primary>LDPlayer</primary><secondary>transformInstance</secondary></indexterm>
+<para><computeroutput><link linkend="_class_l_d_player_instance">LDPlayerInstance</link> * LDPlayer::transformInstance (<link linkend="_class_instance">Instance</link> * inst)</computeroutput></para><para>
+Definition at line <link linkend="__l_d_player_8cpp_source_1l00116">116</link> of file <link linkend="__l_d_player_8cpp_source">LDPlayer.cpp</link>.</para>
+Here is the caller graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_l_d_player_aa85461ad56f19bcf3620c16d6781f640_icgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_class_l_d_player_1ac7f410ba33d1ae1f0ee568c4eab53e25"/><section>
+    <title>waitForInstance()</title>
+<indexterm><primary>waitForInstance</primary><secondary>LDPlayer</secondary></indexterm>
+<indexterm><primary>LDPlayer</primary><secondary>waitForInstance</secondary></indexterm>
+<para><computeroutput>void LDPlayer::waitForInstance (<link linkend="_class_instance">Instance</link> * inst)<computeroutput>[override]</computeroutput>, <computeroutput>[virtual]</computeroutput></computeroutput></para><para>
+Implements <link linkend="_class_emulator_1a3c1982951385d705d049f4f050885f06">Emulator</link>.</para>
+<para>
+Definition at line <link linkend="__l_d_player_8cpp_source_1l00160">160</link> of file <link linkend="__l_d_player_8cpp_source">LDPlayer.cpp</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_l_d_player_ac7f410ba33d1ae1f0ee568c4eab53e25_cgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+</section>
+<section>
+<title>Member Data Documentation</title>
+<anchor xml:id="_class_l_d_player_1ad145e5887943748b5c1e8d6e9c5c3b70"/><section>
+    <title>allEngines</title>
+<indexterm><primary>allEngines</primary><secondary>LDPlayer</secondary></indexterm>
+<indexterm><primary>LDPlayer</primary><secondary>allEngines</secondary></indexterm>
+<para><computeroutput>std::vector&lt;std::string&gt; LDPlayer::allEngines</computeroutput></para><para>
+Definition at line <link linkend="__l_d_player_8h_source_1l00046">46</link> of file <link linkend="__l_d_player_8h_source">LDPlayer.h</link>.</para>
+</section>
+<anchor xml:id="_class_l_d_player_1af3752c9db69d22b1a35b341c879f7e8f"/><section>
+    <title>configFolder</title>
+<indexterm><primary>configFolder</primary><secondary>LDPlayer</secondary></indexterm>
+<indexterm><primary>LDPlayer</primary><secondary>configFolder</secondary></indexterm>
+<para><computeroutput>std::string LDPlayer::configFolder</computeroutput></para><para>
+Definition at line <link linkend="__l_d_player_8h_source_1l00043">43</link> of file <link linkend="__l_d_player_8h_source">LDPlayer.h</link>.</para>
+</section>
+<anchor xml:id="_class_l_d_player_1a847b6294b865cb602b8c667a8bb1e827"/><section>
+    <title>formalEngineName</title>
+<indexterm><primary>formalEngineName</primary><secondary>LDPlayer</secondary></indexterm>
+<indexterm><primary>LDPlayer</primary><secondary>formalEngineName</secondary></indexterm>
+<para><computeroutput>std::string LDPlayer::formalEngineName</computeroutput></para><para>
+Definition at line <link linkend="__l_d_player_8h_source_1l00042">42</link> of file <link linkend="__l_d_player_8h_source">LDPlayer.h</link>.</para>
+</section>
+<anchor xml:id="_class_l_d_player_1aac7170bb4b860334bca99388d3f2a3f4"/><section>
+    <title>ldPlayerFolder</title>
+<indexterm><primary>ldPlayerFolder</primary><secondary>LDPlayer</secondary></indexterm>
+<indexterm><primary>LDPlayer</primary><secondary>ldPlayerFolder</secondary></indexterm>
+<para><computeroutput>std::string LDPlayer::ldPlayerFolder</computeroutput></para><para>
+Definition at line <link linkend="__l_d_player_8h_source_1l00045">45</link> of file <link linkend="__l_d_player_8h_source">LDPlayer.h</link>.</para>
+</section>
+<anchor xml:id="_class_l_d_player_1a9e4eb565c0d0a1b3bf887a5d2af1964b"/><section>
+    <title>vmsFolder</title>
+<indexterm><primary>vmsFolder</primary><secondary>LDPlayer</secondary></indexterm>
+<indexterm><primary>LDPlayer</primary><secondary>vmsFolder</secondary></indexterm>
+<para><computeroutput>std::string LDPlayer::vmsFolder</computeroutput></para><para>
+Definition at line <link linkend="__l_d_player_8h_source_1l00044">44</link> of file <link linkend="__l_d_player_8h_source">LDPlayer.h</link>.</para>
+</section>
+<para>
+The documentation for this class was generated from the following files:</para>
+src/<link linkend="__l_d_player_8h">LDPlayer.h</link>src/<link linkend="__l_d_player_8cpp">LDPlayer.cpp</link></section>
+</section>

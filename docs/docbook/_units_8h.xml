@@ -1,0 +1,248 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<section xmlns="http://docbook.org/ns/docbook" version="5.0" xmlns:xlink="http://www.w3.org/1999/xlink" xml:id="__units_8h" xml:lang="en-US">
+<title>src/Units.h File Reference</title>
+<indexterm><primary>src/Units.h</primary></indexterm>
+<programlisting linenumbering="unnumbered">#include &lt;iostream&gt;<?linebreak?>#include &lt;string&gt;<?linebreak?>#include &lt;list&gt;<?linebreak?>#include &lt;vector&gt;<?linebreak?>#include &lt;algorithm&gt;<?linebreak?>#include &lt;opencv2/opencv.hpp&gt;<?linebreak?></programlisting>Include dependency graph for Units.h:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="_units_8h__incl.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+This graph shows which files directly or indirectly include this file:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="_units_8h__dep__incl.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+<simplesect>
+    <title>Classes    </title>
+        <itemizedlist>
+            <listitem><para>struct <link linkend="_struct_reboot_exception">RebootException</link></para>
+</listitem>
+            <listitem><para>struct <link linkend="_structend_bot_exception">endBotException</link></para>
+</listitem>
+            <listitem><para>struct <link linkend="_struct_coord">Coord</link></para>
+</listitem>
+            <listitem><para>struct <link linkend="_struct_zone">Zone</link></para>
+</listitem>
+            <listitem><para>struct <link linkend="_struct_template">Template</link></para>
+</listitem>
+            <listitem><para>struct <link linkend="_struct_digit">Digit</link></para>
+</listitem>
+            <listitem><para>struct <link linkend="_struct_unit">Unit</link></para>
+</listitem>
+            <listitem><para>struct <link linkend="_struct_number">Number</link></para>
+</listitem>
+            <listitem><para>struct <link linkend="_struct_custom_number">CustomNumber</link></para>
+</listitem>
+            <listitem><para>struct <link linkend="_struct_popup">Popup</link></para>
+</listitem>
+        </itemizedlist>
+</simplesect>
+<simplesect>
+    <title>Enumerations    </title>
+        <itemizedlist>
+            <listitem><para>enum <link linkend="__units_8h_1a224b9163917ac32fc95a60d8c1eec3aa">Direction</link> { <?linebreak?><link linkend="__units_8h_1a224b9163917ac32fc95a60d8c1eec3aaa2c63acbe79d9f41ba6bb7766e9c37702">N</link>
+, <link linkend="__units_8h_1a224b9163917ac32fc95a60d8c1eec3aaaf1ce01387d2348f8b858721a7db81670">S</link>
+, <link linkend="__units_8h_1a224b9163917ac32fc95a60d8c1eec3aaab722ceeb601c72cd78fbd35f3581fdf7">W</link>
+, <link linkend="__units_8h_1a224b9163917ac32fc95a60d8c1eec3aaab199e021998d49b1f09338d8b9b18ecb">E</link>
+, <?linebreak?><link linkend="__units_8h_1a224b9163917ac32fc95a60d8c1eec3aaa9b2eeb9b33247edbc638099452c6b46f">NW</link>
+, <link linkend="__units_8h_1a224b9163917ac32fc95a60d8c1eec3aaa4d3f872f5054b256b01ee4f2c8cf51db">NE</link>
+, <link linkend="__units_8h_1a224b9163917ac32fc95a60d8c1eec3aaa247b880fc48dc1c74961ba58ae0f68a2">SW</link>
+, <link linkend="__units_8h_1a224b9163917ac32fc95a60d8c1eec3aaa61c600c17d14bd4db73433ddbb8491e8">SE</link>
+ }</para>
+</listitem>
+            <listitem><para>enum <link linkend="__units_8h_1adc6e5733fc3c22f0a7b2914188c49c90">state</link> { <link linkend="__units_8h_1adc6e5733fc3c22f0a7b2914188c49c90a8f3c9fcc480d57857ea2b6e07d6d0769">disconnect</link>
+, <link linkend="__units_8h_1adc6e5733fc3c22f0a7b2914188c49c90a879965b9f596d9c46dc07872284703f1">block</link>
+, <link linkend="__units_8h_1adc6e5733fc3c22f0a7b2914188c49c90a1902b13b4c7f154e31902b7808fc62bc">waitTemplate</link>
+ }</para>
+</listitem>
+            <listitem><para>enum <link linkend="__units_8h_1a2b350cb683584e1f7db6c78f698c161b">Orders</link> { <?linebreak?><link linkend="__units_8h_1a2b350cb683584e1f7db6c78f698c161ba3164f07c167fef9df34fc550a096b2c2">noOrd</link>
+, <link linkend="__units_8h_1a2b350cb683584e1f7db6c78f698c161ba660a38111995acbeb2820648e82f0d8c">K</link>
+, <link linkend="__units_8h_1a2b350cb683584e1f7db6c78f698c161ba51ca6c63d97347ee58cc7da59ab6994b">M</link>
+, <link linkend="__units_8h_1a2b350cb683584e1f7db6c78f698c161ba3f2a77ecd272aa6d6b5902faa5e5fc68">B</link>
+, <?linebreak?><link linkend="__units_8h_1a2b350cb683584e1f7db6c78f698c161ba21f40778b7db9343a6ca75ec2c41ccce">T</link>
+ }</para>
+</listitem>
+            <listitem><para>enum <link linkend="__units_8h_1ae8bf5a756cf15252b4e514a258bbbde9">day</link> { <?linebreak?><link linkend="__units_8h_1ae8bf5a756cf15252b4e514a258bbbde9a455141191c205fb8f46e2e9da6b0dd47">Monday</link>
+, <link linkend="__units_8h_1ae8bf5a756cf15252b4e514a258bbbde9a596327c453efea63ea26096bf041f630">Tuesday</link>
+, <link linkend="__units_8h_1ae8bf5a756cf15252b4e514a258bbbde9a0ae230de6136f0671e2f13a0332a620c">Wednesday</link>
+, <link linkend="__units_8h_1ae8bf5a756cf15252b4e514a258bbbde9a8d9721cec5bcce006e98e794d3ff4912">Thursday</link>
+, <?linebreak?><link linkend="__units_8h_1ae8bf5a756cf15252b4e514a258bbbde9aadb8f1f9f2221414dcd35c6e5f8e7d81">Friday</link>
+, <link linkend="__units_8h_1ae8bf5a756cf15252b4e514a258bbbde9a5a996d296d81b9b8bd3b9201afa4c547">Saturday</link>
+, <link linkend="__units_8h_1ae8bf5a756cf15252b4e514a258bbbde9a50f766951431e13654ab869ef85e162c">Sunday</link>
+ }</para>
+</listitem>
+            <listitem><para>enum <link linkend="__units_8h_1a8bb1ef53467e4f61410d12822d922498">Action</link> { <link linkend="__units_8h_1a8bb1ef53467e4f61410d12822d922498a9345e59b3346666444f7cfa61648a609">Click</link>
+, <link linkend="__units_8h_1a8bb1ef53467e4f61410d12822d922498a304b72a071eba27b9f39f32a9b90f51f">Swipe</link>
+ }</para>
+</listitem>
+            <listitem><para>enum <link linkend="__units_8h_1a6b62789b863165c9d424a7504d4a6f61">typeMat</link> { <link linkend="__units_8h_1a6b62789b863165c9d424a7504d4a6f61a0d368292f17012d66912908725eaedbb">Color</link>
+, <link linkend="__units_8h_1a6b62789b863165c9d424a7504d4a6f61a551cc46435cf57d89ca000b540d78ab0">Gray</link>
+, <link linkend="__units_8h_1a6b62789b863165c9d424a7504d4a6f61a8ccee6f80fd06809ff7d04035c82fc09">notype</link>
+ }</para>
+</listitem>
+        </itemizedlist>
+</simplesect>
+<section>
+<title>Enumeration Type Documentation</title>
+<anchor xml:id="__units_8h_1a8bb1ef53467e4f61410d12822d922498"/><section>
+    <title>Action</title>
+<indexterm><primary>Action</primary><secondary>Units.h</secondary></indexterm>
+<indexterm><primary>Units.h</primary><secondary>Action</secondary></indexterm>
+<para><computeroutput>enum <link linkend="__units_8h_1a8bb1ef53467e4f61410d12822d922498">Action</link></computeroutput></para><informaltable frame="all">
+<title>Enumerator</title>
+    <tgroup cols="2" align="left" colsep="1" rowsep="1">
+      <colspec colname='c1'/>
+      <colspec colname='c2'/>
+<tbody>
+<row><entry><indexterm><primary>Click</primary><secondary>Units.h</secondary></indexterm>
+<indexterm><primary>Units.h</primary><secondary>Click</secondary></indexterm>
+<anchor xml:id="__units_8h_1a8bb1ef53467e4f61410d12822d922498a9345e59b3346666444f7cfa61648a609"/>Click</entry><entry></entry></row><row><entry><indexterm><primary>Swipe</primary><secondary>Units.h</secondary></indexterm>
+<indexterm><primary>Units.h</primary><secondary>Swipe</secondary></indexterm>
+<anchor xml:id="__units_8h_1a8bb1ef53467e4f61410d12822d922498a304b72a071eba27b9f39f32a9b90f51f"/>Swipe</entry><entry></entry></row>    </tbody>
+    </tgroup>
+</informaltable>
+<para>
+Definition at line <link linkend="__units_8h_source_1l00014">14</link> of file <link linkend="__units_8h_source">Units.h</link>.</para>
+</section>
+<anchor xml:id="__units_8h_1ae8bf5a756cf15252b4e514a258bbbde9"/><section>
+    <title>day</title>
+<indexterm><primary>day</primary><secondary>Units.h</secondary></indexterm>
+<indexterm><primary>Units.h</primary><secondary>day</secondary></indexterm>
+<para><computeroutput>enum <link linkend="__units_8h_1ae8bf5a756cf15252b4e514a258bbbde9">day</link></computeroutput></para><informaltable frame="all">
+<title>Enumerator</title>
+    <tgroup cols="2" align="left" colsep="1" rowsep="1">
+      <colspec colname='c1'/>
+      <colspec colname='c2'/>
+<tbody>
+<row><entry><indexterm><primary>Monday</primary><secondary>Units.h</secondary></indexterm>
+<indexterm><primary>Units.h</primary><secondary>Monday</secondary></indexterm>
+<anchor xml:id="__units_8h_1ae8bf5a756cf15252b4e514a258bbbde9a455141191c205fb8f46e2e9da6b0dd47"/>Monday</entry><entry></entry></row><row><entry><indexterm><primary>Tuesday</primary><secondary>Units.h</secondary></indexterm>
+<indexterm><primary>Units.h</primary><secondary>Tuesday</secondary></indexterm>
+<anchor xml:id="__units_8h_1ae8bf5a756cf15252b4e514a258bbbde9a596327c453efea63ea26096bf041f630"/>Tuesday</entry><entry></entry></row><row><entry><indexterm><primary>Wednesday</primary><secondary>Units.h</secondary></indexterm>
+<indexterm><primary>Units.h</primary><secondary>Wednesday</secondary></indexterm>
+<anchor xml:id="__units_8h_1ae8bf5a756cf15252b4e514a258bbbde9a0ae230de6136f0671e2f13a0332a620c"/>Wednesday</entry><entry></entry></row><row><entry><indexterm><primary>Thursday</primary><secondary>Units.h</secondary></indexterm>
+<indexterm><primary>Units.h</primary><secondary>Thursday</secondary></indexterm>
+<anchor xml:id="__units_8h_1ae8bf5a756cf15252b4e514a258bbbde9a8d9721cec5bcce006e98e794d3ff4912"/>Thursday</entry><entry></entry></row><row><entry><indexterm><primary>Friday</primary><secondary>Units.h</secondary></indexterm>
+<indexterm><primary>Units.h</primary><secondary>Friday</secondary></indexterm>
+<anchor xml:id="__units_8h_1ae8bf5a756cf15252b4e514a258bbbde9aadb8f1f9f2221414dcd35c6e5f8e7d81"/>Friday</entry><entry></entry></row><row><entry><indexterm><primary>Saturday</primary><secondary>Units.h</secondary></indexterm>
+<indexterm><primary>Units.h</primary><secondary>Saturday</secondary></indexterm>
+<anchor xml:id="__units_8h_1ae8bf5a756cf15252b4e514a258bbbde9a5a996d296d81b9b8bd3b9201afa4c547"/>Saturday</entry><entry></entry></row><row><entry><indexterm><primary>Sunday</primary><secondary>Units.h</secondary></indexterm>
+<indexterm><primary>Units.h</primary><secondary>Sunday</secondary></indexterm>
+<anchor xml:id="__units_8h_1ae8bf5a756cf15252b4e514a258bbbde9a50f766951431e13654ab869ef85e162c"/>Sunday</entry><entry></entry></row>    </tbody>
+    </tgroup>
+</informaltable>
+<para>
+Definition at line <link linkend="__units_8h_source_1l00013">13</link> of file <link linkend="__units_8h_source">Units.h</link>.</para>
+</section>
+<anchor xml:id="__units_8h_1a224b9163917ac32fc95a60d8c1eec3aa"/><section>
+    <title>Direction</title>
+<indexterm><primary>Direction</primary><secondary>Units.h</secondary></indexterm>
+<indexterm><primary>Units.h</primary><secondary>Direction</secondary></indexterm>
+<para><computeroutput>enum <link linkend="__units_8h_1a224b9163917ac32fc95a60d8c1eec3aa">Direction</link></computeroutput></para><informaltable frame="all">
+<title>Enumerator</title>
+    <tgroup cols="2" align="left" colsep="1" rowsep="1">
+      <colspec colname='c1'/>
+      <colspec colname='c2'/>
+<tbody>
+<row><entry><indexterm><primary>N</primary><secondary>Units.h</secondary></indexterm>
+<indexterm><primary>Units.h</primary><secondary>N</secondary></indexterm>
+<anchor xml:id="__units_8h_1a224b9163917ac32fc95a60d8c1eec3aaa2c63acbe79d9f41ba6bb7766e9c37702"/>N</entry><entry></entry></row><row><entry><indexterm><primary>S</primary><secondary>Units.h</secondary></indexterm>
+<indexterm><primary>Units.h</primary><secondary>S</secondary></indexterm>
+<anchor xml:id="__units_8h_1a224b9163917ac32fc95a60d8c1eec3aaaf1ce01387d2348f8b858721a7db81670"/>S</entry><entry></entry></row><row><entry><indexterm><primary>W</primary><secondary>Units.h</secondary></indexterm>
+<indexterm><primary>Units.h</primary><secondary>W</secondary></indexterm>
+<anchor xml:id="__units_8h_1a224b9163917ac32fc95a60d8c1eec3aaab722ceeb601c72cd78fbd35f3581fdf7"/>W</entry><entry></entry></row><row><entry><indexterm><primary>E</primary><secondary>Units.h</secondary></indexterm>
+<indexterm><primary>Units.h</primary><secondary>E</secondary></indexterm>
+<anchor xml:id="__units_8h_1a224b9163917ac32fc95a60d8c1eec3aaab199e021998d49b1f09338d8b9b18ecb"/>E</entry><entry></entry></row><row><entry><indexterm><primary>NW</primary><secondary>Units.h</secondary></indexterm>
+<indexterm><primary>Units.h</primary><secondary>NW</secondary></indexterm>
+<anchor xml:id="__units_8h_1a224b9163917ac32fc95a60d8c1eec3aaa9b2eeb9b33247edbc638099452c6b46f"/>NW</entry><entry></entry></row><row><entry><indexterm><primary>NE</primary><secondary>Units.h</secondary></indexterm>
+<indexterm><primary>Units.h</primary><secondary>NE</secondary></indexterm>
+<anchor xml:id="__units_8h_1a224b9163917ac32fc95a60d8c1eec3aaa4d3f872f5054b256b01ee4f2c8cf51db"/>NE</entry><entry></entry></row><row><entry><indexterm><primary>SW</primary><secondary>Units.h</secondary></indexterm>
+<indexterm><primary>Units.h</primary><secondary>SW</secondary></indexterm>
+<anchor xml:id="__units_8h_1a224b9163917ac32fc95a60d8c1eec3aaa247b880fc48dc1c74961ba58ae0f68a2"/>SW</entry><entry></entry></row><row><entry><indexterm><primary>SE</primary><secondary>Units.h</secondary></indexterm>
+<indexterm><primary>Units.h</primary><secondary>SE</secondary></indexterm>
+<anchor xml:id="__units_8h_1a224b9163917ac32fc95a60d8c1eec3aaa61c600c17d14bd4db73433ddbb8491e8"/>SE</entry><entry></entry></row>    </tbody>
+    </tgroup>
+</informaltable>
+<para>
+Definition at line <link linkend="__units_8h_source_1l00010">10</link> of file <link linkend="__units_8h_source">Units.h</link>.</para>
+</section>
+<anchor xml:id="__units_8h_1a2b350cb683584e1f7db6c78f698c161b"/><section>
+    <title>Orders</title>
+<indexterm><primary>Orders</primary><secondary>Units.h</secondary></indexterm>
+<indexterm><primary>Units.h</primary><secondary>Orders</secondary></indexterm>
+<para><computeroutput>enum <link linkend="__units_8h_1a2b350cb683584e1f7db6c78f698c161b">Orders</link></computeroutput></para><informaltable frame="all">
+<title>Enumerator</title>
+    <tgroup cols="2" align="left" colsep="1" rowsep="1">
+      <colspec colname='c1'/>
+      <colspec colname='c2'/>
+<tbody>
+<row><entry><indexterm><primary>noOrd</primary><secondary>Units.h</secondary></indexterm>
+<indexterm><primary>Units.h</primary><secondary>noOrd</secondary></indexterm>
+<anchor xml:id="__units_8h_1a2b350cb683584e1f7db6c78f698c161ba3164f07c167fef9df34fc550a096b2c2"/>noOrd</entry><entry></entry></row><row><entry><indexterm><primary>K</primary><secondary>Units.h</secondary></indexterm>
+<indexterm><primary>Units.h</primary><secondary>K</secondary></indexterm>
+<anchor xml:id="__units_8h_1a2b350cb683584e1f7db6c78f698c161ba660a38111995acbeb2820648e82f0d8c"/>K</entry><entry></entry></row><row><entry><indexterm><primary>M</primary><secondary>Units.h</secondary></indexterm>
+<indexterm><primary>Units.h</primary><secondary>M</secondary></indexterm>
+<anchor xml:id="__units_8h_1a2b350cb683584e1f7db6c78f698c161ba51ca6c63d97347ee58cc7da59ab6994b"/>M</entry><entry></entry></row><row><entry><indexterm><primary>B</primary><secondary>Units.h</secondary></indexterm>
+<indexterm><primary>Units.h</primary><secondary>B</secondary></indexterm>
+<anchor xml:id="__units_8h_1a2b350cb683584e1f7db6c78f698c161ba3f2a77ecd272aa6d6b5902faa5e5fc68"/>B</entry><entry></entry></row><row><entry><indexterm><primary>T</primary><secondary>Units.h</secondary></indexterm>
+<indexterm><primary>Units.h</primary><secondary>T</secondary></indexterm>
+<anchor xml:id="__units_8h_1a2b350cb683584e1f7db6c78f698c161ba21f40778b7db9343a6ca75ec2c41ccce"/>T</entry><entry></entry></row>    </tbody>
+    </tgroup>
+</informaltable>
+<para>
+Definition at line <link linkend="__units_8h_source_1l00012">12</link> of file <link linkend="__units_8h_source">Units.h</link>.</para>
+</section>
+<anchor xml:id="__units_8h_1adc6e5733fc3c22f0a7b2914188c49c90"/><section>
+    <title>state</title>
+<indexterm><primary>state</primary><secondary>Units.h</secondary></indexterm>
+<indexterm><primary>Units.h</primary><secondary>state</secondary></indexterm>
+<para><computeroutput>enum <link linkend="__units_8h_1adc6e5733fc3c22f0a7b2914188c49c90">state</link></computeroutput></para><informaltable frame="all">
+<title>Enumerator</title>
+    <tgroup cols="2" align="left" colsep="1" rowsep="1">
+      <colspec colname='c1'/>
+      <colspec colname='c2'/>
+<tbody>
+<row><entry><indexterm><primary>disconnect</primary><secondary>Units.h</secondary></indexterm>
+<indexterm><primary>Units.h</primary><secondary>disconnect</secondary></indexterm>
+<anchor xml:id="__units_8h_1adc6e5733fc3c22f0a7b2914188c49c90a8f3c9fcc480d57857ea2b6e07d6d0769"/>disconnect</entry><entry></entry></row><row><entry><indexterm><primary>block</primary><secondary>Units.h</secondary></indexterm>
+<indexterm><primary>Units.h</primary><secondary>block</secondary></indexterm>
+<anchor xml:id="__units_8h_1adc6e5733fc3c22f0a7b2914188c49c90a879965b9f596d9c46dc07872284703f1"/>block</entry><entry></entry></row><row><entry><indexterm><primary>waitTemplate</primary><secondary>Units.h</secondary></indexterm>
+<indexterm><primary>Units.h</primary><secondary>waitTemplate</secondary></indexterm>
+<anchor xml:id="__units_8h_1adc6e5733fc3c22f0a7b2914188c49c90a1902b13b4c7f154e31902b7808fc62bc"/>waitTemplate</entry><entry></entry></row>    </tbody>
+    </tgroup>
+</informaltable>
+<para>
+Definition at line <link linkend="__units_8h_source_1l00011">11</link> of file <link linkend="__units_8h_source">Units.h</link>.</para>
+</section>
+<anchor xml:id="__units_8h_1a6b62789b863165c9d424a7504d4a6f61"/><section>
+    <title>typeMat</title>
+<indexterm><primary>typeMat</primary><secondary>Units.h</secondary></indexterm>
+<indexterm><primary>Units.h</primary><secondary>typeMat</secondary></indexterm>
+<para><computeroutput>enum <link linkend="__units_8h_1a6b62789b863165c9d424a7504d4a6f61">typeMat</link></computeroutput></para><informaltable frame="all">
+<title>Enumerator</title>
+    <tgroup cols="2" align="left" colsep="1" rowsep="1">
+      <colspec colname='c1'/>
+      <colspec colname='c2'/>
+<tbody>
+<row><entry><indexterm><primary>Color</primary><secondary>Units.h</secondary></indexterm>
+<indexterm><primary>Units.h</primary><secondary>Color</secondary></indexterm>
+<anchor xml:id="__units_8h_1a6b62789b863165c9d424a7504d4a6f61a0d368292f17012d66912908725eaedbb"/>Color</entry><entry></entry></row><row><entry><indexterm><primary>Gray</primary><secondary>Units.h</secondary></indexterm>
+<indexterm><primary>Units.h</primary><secondary>Gray</secondary></indexterm>
+<anchor xml:id="__units_8h_1a6b62789b863165c9d424a7504d4a6f61a551cc46435cf57d89ca000b540d78ab0"/>Gray</entry><entry></entry></row><row><entry><indexterm><primary>notype</primary><secondary>Units.h</secondary></indexterm>
+<indexterm><primary>Units.h</primary><secondary>notype</secondary></indexterm>
+<anchor xml:id="__units_8h_1a6b62789b863165c9d424a7504d4a6f61a8ccee6f80fd06809ff7d04035c82fc09"/>notype</entry><entry></entry></row>    </tbody>
+    </tgroup>
+</informaltable>
+<para>
+Definition at line <link linkend="__units_8h_source_1l00015">15</link> of file <link linkend="__units_8h_source">Units.h</link>.</para>
+</section>
+</section>
+</section>

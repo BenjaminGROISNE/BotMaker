@@ -1,0 +1,292 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<section xmlns="http://docbook.org/ns/docbook" version="5.0" xmlns:xlink="http://www.w3.org/1999/xlink" xml:id="_classgo_home_first_boot" xml:lang="en-US">
+<title>goHomeFirstBoot Class Reference</title>
+<indexterm><primary>goHomeFirstBoot</primary></indexterm>
+<para>
+<computeroutput>#include &lt;Activities.h&gt;</computeroutput>
+</para>
+Inheritance diagram for goHomeFirstBoot:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="classgo_home_first_boot__inherit__graph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+Collaboration diagram for goHomeFirstBoot:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="classgo_home_first_boot__coll__graph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+<simplesect>
+    <title>Public Member Functions    </title>
+        <itemizedlist>
+            <listitem><para><link linkend="_classgo_home_first_boot_1acba822dd25edf2aa88bc4af3f3e66472">goHomeFirstBoot</link> ()</para>
+</listitem>
+            <listitem><para>bool <link linkend="_classgo_home_first_boot_1ab24a529de59d9e823c6b013e7e61c9cf">doActivity</link> () override</para>
+</listitem>
+        </itemizedlist>
+</simplesect>
+Public Member Functions inherited from <link linkend="_class_activity">Activity</link>        <itemizedlist>
+            <listitem><para><link linkend="_class_activity_1abb0e3ce8f97431b704d2685547cc4fac">Activity</link> ()</para>
+</listitem>
+            <listitem><para><link linkend="_class_activity_1a807fce61d76e4f569db32737477b4b3e">Activity</link> (bool act, std::string n, char k)</para>
+</listitem>
+            <listitem><para><link linkend="_class_activity_1a8e6f69ea96a339c5b9196d6f659e65de">Activity</link> (const <link linkend="_class_activity">Activity</link> &amp;copy)</para>
+</listitem>
+            <listitem><para>void <link linkend="_class_activity_1ac31e10fb45decd1f678b014c7298f314">showActivity</link> () const</para>
+</listitem>
+        </itemizedlist>
+Public Member Functions inherited from <link linkend="_class_interactions">Interactions</link>        <itemizedlist>
+            <listitem><para><link linkend="_class_interactions_1ae26abbfd309e818022d07c1d47cb0ede">Interactions</link> ()</para>
+</listitem>
+            <listitem><para>bool <link linkend="_class_interactions_1a85395e185b74c6e25d0f27459b0de33c">fcA</link> (const std::string &amp;Templ, <link linkend="_struct_zone">Zone</link> Z=<link linkend="_struct_zone">Zone</link>(), unsigned int delayMilliseconds=<link linkend="_class_interactions_1a2ba3357ced2764e8901b742c941547c1">DEFAULTDELAY</link>)</para>
+</listitem>
+            <listitem><para>bool <link linkend="_class_interactions_1a25637266a0bf2b2c77d5c7e276baabd0">fA</link> (const std::string &amp;Templ, <link linkend="_struct_zone">Zone</link> Z=<link linkend="_struct_zone">Zone</link>(), unsigned int delayMilliseconds=<link linkend="_class_interactions_1a2ba3357ced2764e8901b742c941547c1">DEFAULTDELAY</link>, bool willInteract=false)</para>
+</listitem>
+            <listitem><para>bool <link linkend="_class_interactions_1aed04f9177d2aba467d71818a5e82c7bc">fcpopupA</link> ()</para>
+</listitem>
+            <listitem><para><link linkend="_struct_template">Template</link> <link linkend="_class_interactions_1a0a0ffd9ad1990de31fd7b2773db32667">loopPopUp</link> (<link linkend="__units_8h_1a6b62789b863165c9d424a7504d4a6f61">typeMat</link> color=<link linkend="__units_8h_1a6b62789b863165c9d424a7504d4a6f61a551cc46435cf57d89ca000b540d78ab0">Gray</link>)</para>
+</listitem>
+            <listitem><para>void <link linkend="_class_interactions_1af819b8e0f2ed260bcef0806e84043db7">fillPopup</link> ()</para>
+</listitem>
+            <listitem><para>bool <link linkend="_class_interactions_1a25b3a4dba323cbb14057035056bf9d56">fcOneTemplateMultipleTemplateA</link> (const std::string &amp;Templ, <link linkend="__units_8h_1a224b9163917ac32fc95a60d8c1eec3aa">Direction</link> direction, int order, <link linkend="_struct_zone">Zone</link> Z=<link linkend="_struct_zone">Zone</link>(), unsigned int delayMilliseconds=<link linkend="_class_interactions_1a2ba3357ced2764e8901b742c941547c1">DEFAULTDELAY</link>)</para>
+</listitem>
+            <listitem><para>bool <link linkend="_class_interactions_1a2b8392d9a1a414b61dca6d6320fd2f79">fOneTemplateMultipleTemplateA</link> (const std::string &amp;Templ, <link linkend="__units_8h_1a224b9163917ac32fc95a60d8c1eec3aa">Direction</link> direction, int order, <link linkend="_struct_zone">Zone</link> Z=<link linkend="_struct_zone">Zone</link>(), unsigned int delayMilliseconds=<link linkend="_class_interactions_1a2ba3357ced2764e8901b742c941547c1">DEFAULTDELAY</link>, bool willInteract=false)</para>
+</listitem>
+            <listitem><para>bool <link linkend="_class_interactions_1a523842705412e68f6461679f201caf07">fOneTemplateMultipleTemplateA</link> (const std::vector&lt; std::string &gt; &amp;alltempl, const <link linkend="__units_8h_1a224b9163917ac32fc95a60d8c1eec3aa">Direction</link> &amp;direction, int order, <link linkend="_struct_zone">Zone</link> Z=<link linkend="_struct_zone">Zone</link>(), unsigned int delayMilliseconds=<link linkend="_class_interactions_1a2ba3357ced2764e8901b742c941547c1">DEFAULTDELAY</link>, bool willInteract=false)</para>
+</listitem>
+            <listitem><para>bool <link linkend="_class_interactions_1a8de1d76318ef0c22ad891b28008a44a3">fcOneTemplateMultipleTemplateA</link> (const std::vector&lt; std::string &gt; &amp;alltempl, const <link linkend="__units_8h_1a224b9163917ac32fc95a60d8c1eec3aa">Direction</link> &amp;direction, int order, <link linkend="_struct_zone">Zone</link> Z=<link linkend="_struct_zone">Zone</link>(), unsigned int delayMilliseconds=<link linkend="_class_interactions_1a2ba3357ced2764e8901b742c941547c1">DEFAULTDELAY</link>)</para>
+</listitem>
+            <listitem><para>bool <link linkend="_class_interactions_1a610a820dde0e642d3bcae7fdf971a75e">fOneMultipleTemplateA</link> (std::vector&lt; std::vector&lt; std::string &gt; &gt; allTempl, <link linkend="_struct_zone">Zone</link> Z=<link linkend="_struct_zone">Zone</link>(), unsigned int delayMilliseconds=<link linkend="_class_interactions_1a2ba3357ced2764e8901b742c941547c1">DEFAULTDELAY</link>, bool willInteract=false)</para>
+</listitem>
+            <listitem><para>bool <link linkend="_class_interactions_1a420519a4236772332018c8acd6f35ab0">fMultipleTemplateA</link> (const std::vector&lt; std::string &gt;alltempl, std::vector&lt; std::string &gt; &amp;foundTemplates, <link linkend="_struct_zone">Zone</link> Z=<link linkend="_struct_zone">Zone</link>(), unsigned int delayMilliseconds=<link linkend="_class_interactions_1a2ba3357ced2764e8901b742c941547c1">DEFAULTDELAY</link>, bool willInteract=false)</para>
+</listitem>
+            <listitem><para>bool <link linkend="_class_interactions_1ad71346be58dfe5a5d5d8ac7f2122a765">fMultipleCompareTemplateA</link> (const std::vector&lt; std::string &gt;alltempl, const std::vector&lt; std::string &gt;simTempl, std::vector&lt; std::string &gt; &amp;foundTemplates, <link linkend="_struct_zone">Zone</link> Z=<link linkend="_struct_zone">Zone</link>(), unsigned int delayMilliseconds=<link linkend="_class_interactions_1a2ba3357ced2764e8901b742c941547c1">DEFAULTDELAY</link>, bool willInteract=false)</para>
+</listitem>
+            <listitem><para>bool <link linkend="_class_interactions_1af01fb8407a9f18982f7e75f0433f7ef2">fcOneTemplateA</link> (const std::vector&lt; std::string &gt; &amp;allTempl, std::string &amp;foundTempl, <link linkend="_struct_zone">Zone</link> Z=<link linkend="_struct_zone">Zone</link>(), unsigned int delayMilliseconds=<link linkend="_class_interactions_1a2ba3357ced2764e8901b742c941547c1">DEFAULTDELAY</link>)</para>
+</listitem>
+            <listitem><para>bool <link linkend="_class_interactions_1ad86db2bcd0900e15cfd36374937d7748">fOneTemplateA</link> (const std::vector&lt; std::string &gt; allTempl, std::string &amp;foundTempl, <link linkend="_struct_zone">Zone</link> Z=<link linkend="_struct_zone">Zone</link>(), unsigned int delayMilliseconds=<link linkend="_class_interactions_1a2ba3357ced2764e8901b742c941547c1">DEFAULTDELAY</link>, bool willInteract=false)</para>
+</listitem>
+            <listitem><para>bool <link linkend="_class_interactions_1aae244f39f0b9b6be1f85f90d0d2c1ff2">fcOneTemplateA</link> (const std::vector&lt; std::string &gt; &amp;toclick, const std::vector&lt; std::string &gt; &amp;tonotclick, std::string &amp;foundTempl, <link linkend="_struct_zone">Zone</link> Z=<link linkend="_struct_zone">Zone</link>(), unsigned int delayMilliseconds=<link linkend="_class_interactions_1a2ba3357ced2764e8901b742c941547c1">DEFAULTDELAY</link>)</para>
+</listitem>
+            <listitem><para>bool <link linkend="_class_interactions_1abe11d91838527eb473bb207986536b70">fcOneTemplateA</link> (const std::vector&lt; std::string &gt; &amp;toclick, const std::vector&lt; std::string &gt; &amp;tonotclick, <link linkend="_struct_zone">Zone</link> Z=<link linkend="_struct_zone">Zone</link>(), unsigned int delayMilliseconds=<link linkend="_class_interactions_1a2ba3357ced2764e8901b742c941547c1">DEFAULTDELAY</link>)</para>
+</listitem>
+            <listitem><para>bool <link linkend="_class_interactions_1a3e09f4be284f0321d27588fc336eef21">fCompareOneTemplateA</link> (const std::vector&lt; std::string &gt; &amp;allTempl, const std::vector&lt; std::string &gt; &amp;simTempl, std::string &amp;Tresult, <link linkend="_struct_zone">Zone</link> Z=<link linkend="_struct_zone">Zone</link>(), unsigned int delayMilliseconds=<link linkend="_class_interactions_1a2ba3357ced2764e8901b742c941547c1">DEFAULTDELAY</link>, bool willInteract=false)</para>
+</listitem>
+            <listitem><para>bool <link linkend="_class_interactions_1a14660eef97f54664ede7c0cccdd524a9">fcOneTemplateA</link> (const std::vector&lt; std::string &gt; &amp;allTempl, <link linkend="_struct_zone">Zone</link> Z=<link linkend="_struct_zone">Zone</link>(), unsigned int delayMilliseconds=<link linkend="_class_interactions_1a2ba3357ced2764e8901b742c941547c1">DEFAULTDELAY</link>)</para>
+</listitem>
+            <listitem><para>bool <link linkend="_class_interactions_1a75d1c7883ad5786240851e1396c85ccf">fOneTemplateA</link> (const std::vector&lt; std::string &gt; &amp;allTempl, <link linkend="_struct_zone">Zone</link> Z=<link linkend="_struct_zone">Zone</link>(), unsigned int delayMilliseconds=<link linkend="_class_interactions_1a2ba3357ced2764e8901b742c941547c1">DEFAULTDELAY</link>, bool willInteract=false)</para>
+</listitem>
+            <listitem><para>bool <link linkend="_class_interactions_1a628a6c47d7580529d4b4e99abc4136fc">fOneTemplateEraseA</link> (std::vector&lt; std::string &gt; &amp;allTempl, <link linkend="_struct_zone">Zone</link> Z=<link linkend="_struct_zone">Zone</link>(), unsigned int delayMilliseconds=<link linkend="_class_interactions_1a2ba3357ced2764e8901b742c941547c1">DEFAULTDELAY</link>, bool willInteract=false)</para>
+</listitem>
+            <listitem><para>bool <link linkend="_class_interactions_1a55a9a71c6ad731e023520197774e1c29">fcOneTemplateEraseA</link> (std::vector&lt; std::string &gt; &amp;allTempl, <link linkend="_struct_zone">Zone</link> Z=<link linkend="_struct_zone">Zone</link>(), unsigned int delayMilliseconds=<link linkend="_class_interactions_1a2ba3357ced2764e8901b742c941547c1">DEFAULTDELAY</link>)</para>
+</listitem>
+            <listitem><para>bool <link linkend="_class_interactions_1aece6b96d6a02046f7805e6ac46d6656b">fnbTemplateA</link> (const std::string &amp;Templ, int &amp;nb, <link linkend="_struct_zone">Zone</link> Z=<link linkend="_struct_zone">Zone</link>(), unsigned int delayMilliseconds=<link linkend="_class_interactions_1a2ba3357ced2764e8901b742c941547c1">DEFAULTDELAY</link>, bool willInteract=false)</para>
+</listitem>
+            <listitem><para>int <link linkend="_class_interactions_1ac0c9eb1e6b218bc4a1dc67d0ee50dc39">fnbTemplateA</link> (const std::string &amp;Templ, <link linkend="_struct_zone">Zone</link> Z=<link linkend="_struct_zone">Zone</link>(), unsigned int delayMilliseconds=<link linkend="_class_interactions_1a2ba3357ced2764e8901b742c941547c1">DEFAULTDELAY</link>, bool willInteract=false)</para>
+</listitem>
+            <listitem><para>int <link linkend="_class_interactions_1a0b5af6e9b6b8bffffd01c1c9c3f60289">fnbTemplateA</link> (const std::vector&lt; std::string &gt; &amp;allTempl, <link linkend="_struct_zone">Zone</link> Z=<link linkend="_struct_zone">Zone</link>(), unsigned int delayMilliseconds=<link linkend="_class_interactions_1a2ba3357ced2764e8901b742c941547c1">DEFAULTDELAY</link>, bool willInteract=false)</para>
+</listitem>
+            <listitem><para>int <link linkend="_class_interactions_1a0fc0c12ee5950b8d0b47bfc6a9eebe14">fnbMultipleCompareTemplateA</link> (const std::vector&lt; std::string &gt; &amp;allTempl, const std::vector&lt; std::string &gt; &amp;simTempls, <link linkend="_struct_zone">Zone</link> Z=<link linkend="_struct_zone">Zone</link>(), unsigned int delayMilliseconds=<link linkend="_class_interactions_1a2ba3357ced2764e8901b742c941547c1">DEFAULTDELAY</link>, bool willInteract=false)</para>
+</listitem>
+            <listitem><para>int <link linkend="_class_interactions_1a136e4508ae7f2b36eea44465ffa0002d">fnbUniqueCompareTemplateA</link> (const std::vector&lt; std::string &gt; &amp;allTempl, const std::vector&lt; std::string &gt; &amp;simTempls, <link linkend="_struct_zone">Zone</link> Z=<link linkend="_struct_zone">Zone</link>(), unsigned int delayMilliseconds=<link linkend="_class_interactions_1a2ba3357ced2764e8901b742c941547c1">DEFAULTDELAY</link>, bool willInteract=false)</para>
+</listitem>
+            <listitem><para>int <link linkend="_class_interactions_1ac8c4e46023594103ca4184699118b6f6">fnbCompareTemplateA</link> (const std::string &amp;Templ, const std::vector&lt; std::string &gt; &amp;simTempls, <link linkend="_struct_zone">Zone</link> Z=<link linkend="_struct_zone">Zone</link>(), unsigned int delayMilliseconds=<link linkend="_class_interactions_1a2ba3357ced2764e8901b742c941547c1">DEFAULTDELAY</link>, bool willInteract=false)</para>
+</listitem>
+            <listitem><para>bool <link linkend="_class_interactions_1afd8c8bc50bb964d44f8880afefe7a6f9">fcCompareA</link> (const std::string &amp;goodTemplate, const std::string &amp;similartemplate, <link linkend="_struct_zone">Zone</link> Z=<link linkend="_struct_zone">Zone</link>(), unsigned int delayMilliseconds=<link linkend="_class_interactions_1a2ba3357ced2764e8901b742c941547c1">DEFAULTDELAY</link>)</para>
+</listitem>
+            <listitem><para>bool <link linkend="_class_interactions_1ad24b4992a69c681dc645d213527d2a07">fCompareA</link> (const std::string &amp;goodTemplate, const std::string &amp;similartemplate, <link linkend="_struct_zone">Zone</link> Z=<link linkend="_struct_zone">Zone</link>(), unsigned int delayMilliseconds=<link linkend="_class_interactions_1a2ba3357ced2764e8901b742c941547c1">DEFAULTDELAY</link>, bool willInteract=false)</para>
+</listitem>
+            <listitem><para>bool <link linkend="_class_interactions_1aaba8562157b738fac74c4ab64ba6a9f8">fcCompareMultipleTemplateA</link> (const std::string &amp;goodTemplate, const std::vector&lt; std::string &gt; &amp;similartemplates, <link linkend="_struct_zone">Zone</link> Z=<link linkend="_struct_zone">Zone</link>(), unsigned int delayMilliseconds=<link linkend="_class_interactions_1a2ba3357ced2764e8901b742c941547c1">DEFAULTDELAY</link>)</para>
+</listitem>
+            <listitem><para>bool <link linkend="_class_interactions_1a1e4898ef6baa65c69e8f4a94e34f91f9">fCompareMultipleTemplateA</link> (const std::string &amp;goodTemplate, const std::vector&lt; std::string &gt; &amp;similartemplates, <link linkend="_struct_zone">Zone</link> Z=<link linkend="_struct_zone">Zone</link>(), unsigned int delayMilliseconds=<link linkend="_class_interactions_1a2ba3357ced2764e8901b742c941547c1">DEFAULTDELAY</link>, bool willInteract=false)</para>
+</listitem>
+            <listitem><para>bool <link linkend="_class_interactions_1a34f2db9d4b23289b4243c14bfd8e67cd">fMultipleCompareMultipleTemplateA</link> (const std::string &amp;goodTemplate, const std::vector&lt; std::string &gt; &amp;similartemplates, <link linkend="_struct_zone">Zone</link> Z=<link linkend="_struct_zone">Zone</link>(), unsigned int delayMilliseconds=<link linkend="_class_interactions_1a2ba3357ced2764e8901b742c941547c1">DEFAULTDELAY</link>, bool willInteract=false)</para>
+</listitem>
+            <listitem><para>bool <link linkend="_class_interactions_1ac561e137b5d8550a5e58d7017aae8cbf">fCompareOneTemplateMultipleTemplateA</link> (const std::vector&lt; std::string &gt; &amp;alltempl, const std::vector&lt; std::string &gt; &amp;simTempl, <link linkend="__units_8h_1a224b9163917ac32fc95a60d8c1eec3aa">Direction</link> direction, int order, <link linkend="_struct_zone">Zone</link> Z=<link linkend="_struct_zone">Zone</link>(), unsigned int delayMilliseconds=<link linkend="_class_interactions_1a2ba3357ced2764e8901b742c941547c1">DEFAULTDELAY</link>, bool willInteract=false)</para>
+</listitem>
+            <listitem><para>bool <link linkend="_class_interactions_1a79cb358170ab8b3f87a252d12cac8528">fcCompareOneTemplateMultipleTemplateA</link> (const std::vector&lt; std::string &gt; &amp;alltempl, const std::vector&lt; std::string &gt; &amp;simTempl, <link linkend="__units_8h_1a224b9163917ac32fc95a60d8c1eec3aa">Direction</link> direction, int order, <link linkend="_struct_zone">Zone</link> Z=<link linkend="_struct_zone">Zone</link>(), unsigned int delayMilliseconds=<link linkend="_class_interactions_1a2ba3357ced2764e8901b742c941547c1">DEFAULTDELAY</link>)</para>
+</listitem>
+            <listitem><para>bool <link linkend="_class_interactions_1ad7daddd9df3cea80e69872b8afd6c8dc">templateFound</link> (bool found, const <link linkend="_struct_template">Template</link> &amp;templ, bool willInteract=false, unsigned int delayMilliseconds=<link linkend="_class_interactions_1a2ba3357ced2764e8901b742c941547c1">DEFAULTDELAY</link>)</para>
+</listitem>
+            <listitem><para>bool <link linkend="_class_interactions_1a1491cc82f7f888b42c035f0325b9610d">templateFound</link> (bool found, const <link linkend="_struct_template">Template</link> &amp;templ, bool willInteract=false, <link linkend="__units_8h_1a8bb1ef53467e4f61410d12822d922498">Action</link> act=<link linkend="__units_8h_1a8bb1ef53467e4f61410d12822d922498a9345e59b3346666444f7cfa61648a609">Action::Click</link>, <link linkend="_struct_coord">Coord</link> coord=<link linkend="_struct_coord">Coord</link>(), unsigned int delayMilliseconds=<link linkend="_class_interactions_1a2ba3357ced2764e8901b742c941547c1">DEFAULTDELAY</link>)</para>
+</listitem>
+            <listitem><para>void <link linkend="_class_interactions_1ade7f52c59105f434650b9358b22e5488">resetCount</link> ()</para>
+</listitem>
+            <listitem><para>bool <link linkend="_class_interactions_1ae6f71f7be8c80c4954bdd0f594891e66">fSwipeA</link> (std::string imgtemplate, <link linkend="_struct_coord">Coord</link> Cresult, <link linkend="_struct_zone">Zone</link> Z=<link linkend="_struct_zone">Zone</link>(), bool willInteract=true)</para>
+</listitem>
+            <listitem><para>bool <link linkend="_class_interactions_1aeecb637d08c04de1439096ad646fdb36">fSwipeA</link> (std::string imgtemplate, <link linkend="__units_8h_1a224b9163917ac32fc95a60d8c1eec3aa">Direction</link> endx, <link linkend="_struct_zone">Zone</link> Z=<link linkend="_struct_zone">Zone</link>(), bool willInteract=true)</para>
+</listitem>
+            <listitem><para>bool <link linkend="_class_interactions_1a8dd8d6d917a4a95c2e2ef2d389380751">fMultipleDigitsA</link> (int nb, std::vector&lt; std::string &gt;Nb, std::vector&lt; <link linkend="_struct_template">Template</link> &gt; &amp;Tresult, <link linkend="_struct_zone">Zone</link> Z)</para>
+</listitem>
+            <listitem><para><link linkend="_struct_number">Number</link> <link linkend="_class_interactions_1a7a8357271583869fba1939d42718a569">fNumberIntegerA</link> (std::vector&lt; std::string &gt;digits, std::vector&lt; <link linkend="_struct_unit">Unit</link> &gt;Units, <link linkend="_struct_zone">Zone</link> Z)</para>
+</listitem>
+            <listitem><para><link linkend="_struct_number">Number</link> <link linkend="_class_interactions_1ab309ac8a5a9dce72e641a1d83dfddcb4">fNumberIntegerA</link> (std::vector&lt; std::string &gt;digits, <link linkend="_struct_zone">Zone</link> Z)</para>
+</listitem>
+            <listitem><para><link linkend="_struct_number">Number</link> <link linkend="_class_interactions_1a4b05b281fd479a1e86264290462f7112">fNumberDecimalA</link> (std::vector&lt; std::string &gt;digits, std::vector&lt; <link linkend="_struct_unit">Unit</link> &gt;Units, std::string dot, <link linkend="_struct_zone">Zone</link> Z)</para>
+</listitem>
+            <listitem><para><link linkend="_struct_number">Number</link> <link linkend="_class_interactions_1a834d2963fb9d55be32d7123f94057c1c">fNumberDecimalA</link> (std::vector&lt; std::string &gt;digits, std::string dot, <link linkend="_struct_zone">Zone</link> Z)</para>
+</listitem>
+            <listitem><para>std::vector&lt; <link linkend="_struct_coord">Coord</link> &gt; <link linkend="_class_interactions_1ae39566ea8b39040355099c95f1e7998d">orderCoords</link> (const std::vector&lt; <link linkend="_struct_coord">Coord</link> &gt; &amp;coords, <link linkend="__units_8h_1a224b9163917ac32fc95a60d8c1eec3aa">Direction</link> dir)</para>
+</listitem>
+            <listitem><para>std::vector&lt; <link linkend="_struct_template">Template</link> &gt; <link linkend="_class_interactions_1a9947d091de5ba2d09ec925866d231fe1">orderTemplates</link> (const std::vector&lt; <link linkend="_struct_template">Template</link> &gt; &amp;allTempl, <link linkend="__units_8h_1a224b9163917ac32fc95a60d8c1eec3aa">Direction</link> dir)</para>
+</listitem>
+            <listitem><para>std::vector&lt; <link linkend="_struct_coord">Coord</link> &gt; <link linkend="_class_interactions_1af916d0cdf7643f49bed0f81afd914f6f">orderPoint</link> (const std::vector&lt; <link linkend="_struct_coord">Coord</link> &gt; &amp;coord, const <link linkend="_struct_coord">Coord</link> &amp;Cf)</para>
+</listitem>
+            <listitem><para><link linkend="_struct_template">Template</link> <link linkend="_class_interactions_1a5b5af2b125ff152043789cfcf70ffb2b">getTemplate</link> (const std::string &amp;images, <link linkend="__units_8h_1a6b62789b863165c9d424a7504d4a6f61">typeMat</link> type)</para>
+</listitem>
+            <listitem><para>std::vector&lt; <link linkend="_struct_template">Template</link> &gt; <link linkend="_class_interactions_1af388711680a68ad02aa6fa6ed9e59cfb">getTemplate</link> (const std::vector&lt; std::string &gt; &amp;images, <link linkend="__units_8h_1a6b62789b863165c9d424a7504d4a6f61">typeMat</link> type)</para>
+</listitem>
+            <listitem><para>int <link linkend="_class_interactions_1a0bd08e482083b90d3b228ec518b12c4d">getDimX</link> ()</para>
+</listitem>
+            <listitem><para>int <link linkend="_class_interactions_1ac4c5a76c6c1c878d67caef77bd2520f2">getDimY</link> ()</para>
+</listitem>
+            <listitem><para><link linkend="__units_8h_1ae8bf5a756cf15252b4e514a258bbbde9">day</link> <link linkend="_class_interactions_1ab56a5b3cd91c4ec1063b9d19205358a0">getUTCDay</link> ()</para>
+</listitem>
+            <listitem><para>int <link linkend="_class_interactions_1a6063dfa44fd2439c23e7b04a0a70c177">getUTCHour</link> ()</para>
+</listitem>
+            <listitem><para>void <link linkend="_class_interactions_1aa07a6de3761c67111c20084509a9ff5e">loadTemplate</link> (std::string image)</para>
+</listitem>
+            <listitem><para>void <link linkend="_class_interactions_1acf4720976ec410b61c65e13d2979fd1f">loadAllTemplates</link> ()</para>
+</listitem>
+            <listitem><para>void <link linkend="_class_interactions_1a5ee06840be01ec86e99072ca262d3791">getFilesPath</link> (std::vector&lt; std::string &gt; &amp;tab, std::filesystem::directory_iterator path)</para>
+</listitem>
+            <listitem><para>void <link linkend="_class_interactions_1a7f2c26654c8cbde803d2267b98479dc1">showVector</link> (std::vector&lt; std::string &gt; vect)</para>
+</listitem>
+            <listitem><para>int <link linkend="_class_interactions_1a981d4790a0903cde44961f2781636cad">getYear</link> ()</para>
+</listitem>
+            <listitem><para>int <link linkend="_class_interactions_1a4e27fdc5316915fd29db386563780388">getMonth</link> ()</para>
+</listitem>
+            <listitem><para>int <link linkend="_class_interactions_1ac7fc1f0d7d65c6b926bf12eb12204ff3">getDay</link> ()</para>
+</listitem>
+            <listitem><para>int <link linkend="_class_interactions_1a0b3c1a0320752fc90bb3d969a472009d">getHour</link> ()</para>
+</listitem>
+            <listitem><para>int <link linkend="_class_interactions_1ab31446219b9680d6960e1c76484c9331">getMinute</link> ()</para>
+</listitem>
+            <listitem><para>int <link linkend="_class_interactions_1a5569890eeb93a27f8c428439460c52b2">getSecond</link> ()</para>
+</listitem>
+            <listitem><para>void <link linkend="_class_interactions_1a185fecdd73adc781ffb402bf0dac3ed7">setRebootCount</link> (int nb)</para>
+</listitem>
+            <listitem><para>int <link linkend="_class_interactions_1a9a7024bd6937b747a114af86263850d5">getRebootCount</link> ()</para>
+</listitem>
+            <listitem><para>void <link linkend="_class_interactions_1a77df030e3199449235b9f50c360b7095">setDimX</link> (int x)</para>
+</listitem>
+            <listitem><para>void <link linkend="_class_interactions_1a9686fccac68a6f049d2d04690febc3d1">setDimY</link> (int y)</para>
+</listitem>
+            <listitem><para>int <link linkend="_class_interactions_1a58d25a692c5ee6773914f3c0c4f2cb6e">getMatWidth</link> (const std::string &amp;name)</para>
+</listitem>
+            <listitem><para>int <link linkend="_class_interactions_1a4c7bbb037e2814f276bdbb3625d25c17">getMatHeight</link> (const std::string &amp;name)</para>
+</listitem>
+            <listitem><para>void <link linkend="_class_interactions_1abd5b5d8a44970e1333e3611e302f166c">wait</link> (int milliSeconds)</para>
+</listitem>
+            <listitem><para>void <link linkend="_class_interactions_1a1a602b1baed0f80f749fbb5d569349b8">gSwipeX</link> (double x1, double x2, int millitime)</para>
+</listitem>
+            <listitem><para>void <link linkend="_class_interactions_1a21f2cc1ce6998a0d6d934f36d7f2df24">gSwipeY</link> (double y1, double y2, int millitime)</para>
+</listitem>
+            <listitem><para>void <link linkend="_class_interactions_1a9044fca002a4287ad1a89ce0422a68e5">gSwipe</link> (double x1, double y1, double x2, double y2, int millitime)</para>
+</listitem>
+            <listitem><para>void <link linkend="_class_interactions_1aae6172962092f278714536142e987cde">click</link> (<link linkend="_struct_coord">Coord</link> <link linkend="_struct_coord">Coord</link>)</para>
+</listitem>
+            <listitem><para>void <link linkend="_class_interactions_1af23557a5473cf551e7a1268f5fc2f0c6">click</link> (int x, int y)</para>
+</listitem>
+            <listitem><para>void <link linkend="_class_interactions_1af3c13c1ae7d10eb3f41f626549982d41">orderDigits</link> (std::vector&lt; <link linkend="_struct_digit">Digit</link> &gt; &amp;digits)</para>
+</listitem>
+            <listitem><para>bool <link linkend="_class_interactions_1a3796cd8ba317d67243241f2510de6fdf">eraseString</link> (std::vector&lt; std::string &gt; &amp;allTempl, std::string templ)</para>
+</listitem>
+            <listitem><para>bool <link linkend="_class_interactions_1a47882846bb356655826f5e9347f1d580">fStr</link> (const std::vector&lt; std::string &gt; &amp;allTempl, std::string templ)</para>
+</listitem>
+            <listitem><para>bool <link linkend="_class_interactions_1a495250a31d9f3762cf300b44a11cd613">fStr</link> (const std::vector&lt; std::string &gt; &amp;allTempl, const std::vector&lt; std::string &gt; allkeys)</para>
+</listitem>
+            <listitem><para>bool <link linkend="_class_interactions_1a1eb3a67f15cd278977b200c6ffca71eb">fOneStr</link> (const std::vector&lt; std::string &gt; &amp;allTempl, const std::vector&lt; std::string &gt; allkeys)</para>
+</listitem>
+            <listitem><para>int <link linkend="_class_interactions_1a1738bd49c06bd5bffb9ac625d46afc19">distancePoint</link> (const <link linkend="_struct_coord">Coord</link> &amp;fixpt, const <link linkend="_struct_coord">Coord</link> &amp;pt)</para>
+</listitem>
+        </itemizedlist>
+<simplesect>
+    <title>Additional Inherited Members    </title>
+Public Attributes inherited from <link linkend="_class_activity">Activity</link>        <itemizedlist>
+            <listitem><para>bool <link linkend="_class_activity_1a2c34efd0d28b0050ebb2de872cc599b9">activate</link></para>
+</listitem>
+            <listitem><para>bool <link linkend="_class_activity_1af06ae7d076732a672fa9b77618fc88f6">automatic</link></para>
+</listitem>
+            <listitem><para>std::string <link linkend="_class_activity_1ac0caaaba639076d9395e813fb73fda9f">name</link></para>
+</listitem>
+            <listitem><para>char <link linkend="_class_activity_1a603d61b2d4ba494a8c34893558663e1a">key</link></para>
+</listitem>
+        </itemizedlist>
+</simplesect>
+Public Attributes inherited from <link linkend="_class_interactions">Interactions</link>        <itemizedlist>
+            <listitem><para><link linkend="_struct_coord">Coord</link> <link linkend="_class_interactions_1a9315497a155670565c9c24f1448940d2">resCoords</link></para>
+</listitem>
+            <listitem><para>std::vector&lt; <link linkend="_struct_coord">Coord</link> &gt; <link linkend="_class_interactions_1a25a543c2ba74a40f05ee1a47cfe9f40b">resMultCoords</link></para>
+</listitem>
+            <listitem><para>std::string <link linkend="_class_interactions_1ae5b95018d6b3e8c79174757907dbd685">adbId</link></para>
+</listitem>
+            <listitem><para>std::vector&lt; <link linkend="_struct_popup">Popup</link> &gt; <link linkend="_class_interactions_1a52ebd573ecfea5806b30e2225f3b9a3f">listPopup</link></para>
+</listitem>
+            <listitem><para>std::map&lt; std::string, <link linkend="_struct_template">Template</link> &gt; <link linkend="_class_interactions_1ac822b4a91ce02780f96305562b755a25">allTemplates</link></para>
+</listitem>
+            <listitem><para><link linkend="_struct_template">Template</link> <link linkend="_class_interactions_1a5c9403e01a3347ff4aef2da96b623617">background</link></para>
+</listitem>
+            <listitem><para>int <link linkend="_class_interactions_1a884bfcd6394ec8faac5777d6fb69a8d7">rebootCount</link></para>
+</listitem>
+            <listitem><para>int <link linkend="_class_interactions_1ac8184067871e90f96c9dec8891125cce">dimX</link></para>
+</listitem>
+            <listitem><para>int <link linkend="_class_interactions_1ab2a75e021a19afe95b43c09b0cb7a0e5">dimY</link></para>
+</listitem>
+        </itemizedlist>
+Static Public Attributes inherited from <link linkend="_class_interactions">Interactions</link>        <itemizedlist>
+            <listitem><para>static const int <link linkend="_class_interactions_1a61b758d8ccf55d4d58b1c5c4f70c03e5">waitnotfound</link> = 1000</para>
+</listitem>
+            <listitem><para>static const int <link linkend="_class_interactions_1a4902f2e22aa30bab114000995a508b1d">waitfound</link> = 2000</para>
+</listitem>
+            <listitem><para>static const int <link linkend="_class_interactions_1a2ba3357ced2764e8901b742c941547c1">DEFAULTDELAY</link> = <link linkend="_class_interactions_1a4902f2e22aa30bab114000995a508b1d">waitfound</link></para>
+</listitem>
+            <listitem><para>static const int <link linkend="_class_interactions_1a2831f0a46f87c4caed466857a76a3f0e">MAXREBOOT</link> = 20</para>
+</listitem>
+        </itemizedlist>
+<section>
+<title>Detailed Description</title>
+<para>
+Definition at line <link linkend="__activities_8h_source_1l00119">119</link> of file <link linkend="__activities_8h_source">Activities.h</link>.</para>
+</section>
+<section>
+<title>Constructor &amp; Destructor Documentation</title>
+<anchor xml:id="_classgo_home_first_boot_1acba822dd25edf2aa88bc4af3f3e66472"/><section>
+    <title>goHomeFirstBoot()</title>
+<indexterm><primary>goHomeFirstBoot</primary><secondary>goHomeFirstBoot</secondary></indexterm>
+<indexterm><primary>goHomeFirstBoot</primary><secondary>goHomeFirstBoot</secondary></indexterm>
+<para><computeroutput>goHomeFirstBoot::goHomeFirstBoot ( )</computeroutput></para><para>
+Definition at line <link linkend="__activities_8cpp_source_1l00958">958</link> of file <link linkend="__activities_8cpp_source">Activities.cpp</link>.</para>
+</section>
+</section>
+<section>
+<title>Member Function Documentation</title>
+<anchor xml:id="_classgo_home_first_boot_1ab24a529de59d9e823c6b013e7e61c9cf"/><section>
+    <title>doActivity()</title>
+<indexterm><primary>doActivity</primary><secondary>goHomeFirstBoot</secondary></indexterm>
+<indexterm><primary>goHomeFirstBoot</primary><secondary>doActivity</secondary></indexterm>
+<para><computeroutput>bool goHomeFirstBoot::doActivity ( )<computeroutput>[override]</computeroutput>, <computeroutput>[virtual]</computeroutput></computeroutput></para><para>
+Reimplemented from <link linkend="_class_activity_1a897b5ab9c841d3db47e9ebf626abfb6e">Activity</link>.</para>
+<para>
+Definition at line <link linkend="__activities_8cpp_source_1l00964">964</link> of file <link linkend="__activities_8cpp_source">Activities.cpp</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="classgo_home_first_boot_ab24a529de59d9e823c6b013e7e61c9cf_cgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<para>
+The documentation for this class was generated from the following files:</para>
+src/<link linkend="__activities_8h">Activities.h</link>src/<link linkend="__activities_8cpp">Activities.cpp</link></section>
+</section>

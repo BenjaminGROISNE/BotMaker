@@ -1,0 +1,464 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<section xmlns="http://docbook.org/ns/docbook" version="5.0" xmlns:xlink="http://www.w3.org/1999/xlink" xml:id="__interpretor_8h" xml:lang="en-US">
+<title>src/Interpretor.h File Reference</title>
+<indexterm><primary>src/Interpretor.h</primary></indexterm>
+<programlisting linenumbering="unnumbered">#include &lt;iostream&gt;<?linebreak?>#include &lt;fstream&gt;<?linebreak?>#include &lt;string&gt;<?linebreak?>#include &lt;vector&gt;<?linebreak?>#include &quot;Interactions.h&quot;<?linebreak?>#include &quot;tags.h&quot;<?linebreak?>#include &lt;unordered_set&gt;<?linebreak?></programlisting>Include dependency graph for Interpretor.h:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="_interpretor_8h__incl.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+This graph shows which files directly or indirectly include this file:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="_interpretor_8h__dep__incl.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+<simplesect>
+    <title>Classes    </title>
+        <itemizedlist>
+            <listitem><para>class <link linkend="_class_error">Error</link></para>
+</listitem>
+            <listitem><para>class <link linkend="_class_token_result">TokenResult</link></para>
+</listitem>
+            <listitem><para>class <link linkend="_class_iterator_list">IteratorList&lt; T &gt;</link></para>
+</listitem>
+            <listitem><para>class <link linkend="_class_token">Token</link></para>
+</listitem>
+            <listitem><para>class <link linkend="_class_o_token">OToken</link></para>
+</listitem>
+            <listitem><para>class <link linkend="_class_p_token">PToken</link></para>
+</listitem>
+            <listitem><para>class <link linkend="_class_l_token">LToken</link></para>
+</listitem>
+            <listitem><para>class <link linkend="_class_k_token">KToken</link></para>
+</listitem>
+            <listitem><para>class <link linkend="_class_k_p_token">KPToken</link></para>
+</listitem>
+            <listitem><para>class <link linkend="_class_flow_k_token">FlowKToken</link></para>
+</listitem>
+            <listitem><para>class <link linkend="_class_flow_k_p_token">FlowKPToken</link></para>
+</listitem>
+            <listitem><para>class <link linkend="_class_flow_k_c_token">FlowKCToken</link></para>
+</listitem>
+            <listitem><para>class <link linkend="_class_identifier_token">IdentifierToken</link></para>
+</listitem>
+            <listitem><para>class <link linkend="_class_unknown_token">UnknownToken</link></para>
+</listitem>
+            <listitem><para>class <link linkend="_class_main_token">MainToken</link></para>
+</listitem>
+            <listitem><para>class <link linkend="_class_do_loop_token">DoLoopToken</link></para>
+</listitem>
+            <listitem><para>class <link linkend="_class_if_token">IfToken</link></para>
+</listitem>
+            <listitem><para>class <link linkend="_class_else_token">ElseToken</link></para>
+</listitem>
+            <listitem><para>class <link linkend="_class_elif_token">ElifToken</link></para>
+</listitem>
+            <listitem><para>class <link linkend="_class_loop_token">LoopToken</link></para>
+</listitem>
+            <listitem><para>class <link linkend="_class_wait_token">WaitToken</link></para>
+</listitem>
+            <listitem><para>class <link linkend="_class_and_token">AndToken</link></para>
+</listitem>
+            <listitem><para>class <link linkend="_class_or_token">OrToken</link></para>
+</listitem>
+            <listitem><para>class <link linkend="_class_not_token">NotToken</link></para>
+</listitem>
+            <listitem><para>class <link linkend="_class_false_token">FalseToken</link></para>
+</listitem>
+            <listitem><para>class <link linkend="_class_true_token">TrueToken</link></para>
+</listitem>
+            <listitem><para>class <link linkend="_class_second_token">SecondToken</link></para>
+</listitem>
+            <listitem><para>class <link linkend="_class_milli_second_token">MilliSecondToken</link></para>
+</listitem>
+            <listitem><para>class <link linkend="_class_minute_token">MinuteToken</link></para>
+</listitem>
+            <listitem><para>class <link linkend="_class_numeric_token">NumericToken</link></para>
+</listitem>
+            <listitem><para>class <link linkend="_class_string_literal_token">StringLiteralToken</link></para>
+</listitem>
+            <listitem><para>class <link linkend="_class_list_token">ListToken</link></para>
+</listitem>
+            <listitem><para>class <link linkend="_class_store_token">StoreToken</link></para>
+</listitem>
+            <listitem><para>class <link linkend="_class_e_k_p_token">EKPToken</link></para>
+</listitem>
+            <listitem><para>class <link linkend="_class_integer_token">IntegerToken</link></para>
+</listitem>
+            <listitem><para>class <link linkend="_class_float_token">FloatToken</link></para>
+</listitem>
+            <listitem><para>class <link linkend="_class_bool_token">BoolToken</link></para>
+</listitem>
+            <listitem><para>class <link linkend="_class_string_token">StringToken</link></para>
+</listitem>
+            <listitem><para>class <link linkend="_class_coord_token">CoordToken</link></para>
+</listitem>
+            <listitem><para>class <link linkend="_class_zone_token">ZoneToken</link></para>
+</listitem>
+            <listitem><para>class <link linkend="_class_direction_token">DirectionToken</link></para>
+</listitem>
+            <listitem><para>class <link linkend="_class_compare_token">CompareToken</link></para>
+</listitem>
+            <listitem><para>class <link linkend="_class_print_token">PrintToken</link></para>
+</listitem>
+            <listitem><para>class <link linkend="_class_break_token">BreakToken</link></para>
+</listitem>
+            <listitem><para>class <link linkend="_class_continue_token">ContinueToken</link></para>
+</listitem>
+            <listitem><para>class <link linkend="_class_open_parenthesis_token">OpenParenthesisToken</link></para>
+</listitem>
+            <listitem><para>class <link linkend="_class_close_parenthesis_token">CloseParenthesisToken</link></para>
+</listitem>
+            <listitem><para>class <link linkend="_class_close_brackets_token">CloseBracketsToken</link></para>
+</listitem>
+            <listitem><para>class <link linkend="_class_open_brackets_token">OpenBracketsToken</link></para>
+</listitem>
+            <listitem><para>class <link linkend="_class_close_angle_brackets_token">CloseAngleBracketsToken</link></para>
+</listitem>
+            <listitem><para>class <link linkend="_class_open_angle_brackets_token">OpenAngleBracketsToken</link></para>
+</listitem>
+            <listitem><para>class <link linkend="_class_comma_token">CommaToken</link></para>
+</listitem>
+            <listitem><para>class <link linkend="_class_lexer">Lexer</link></para>
+</listitem>
+            <listitem><para>class <link linkend="_class_interpretor">Interpretor</link></para>
+</listitem>
+        </itemizedlist>
+</simplesect>
+<simplesect>
+    <title>Enumerations    </title>
+        <itemizedlist>
+            <listitem><para>enum class <link linkend="__interpretor_8h_1acbd1e63c605cbb3dbe67c7411841b46c">TokenVALUE</link> { <?linebreak?><link linkend="__interpretor_8h_1acbd1e63c605cbb3dbe67c7411841b46ca10df3d67626099df882920ba6552f16d">NOT</link>
+, <link linkend="__interpretor_8h_1acbd1e63c605cbb3dbe67c7411841b46ca94c8aa2452bccd82ee129b46f7c4be79">TOKEN</link>
+, <link linkend="__interpretor_8h_1acbd1e63c605cbb3dbe67c7411841b46ca696b031073e74bf2cb98e5ef201d4aa3">UNKNOWN</link>
+, <link linkend="__interpretor_8h_1acbd1e63c605cbb3dbe67c7411841b46caf7193622145fd3c92db6f1b14f175dc0">QUOTATION</link>
+, <?linebreak?><link linkend="__interpretor_8h_1acbd1e63c605cbb3dbe67c7411841b46ca09d62a98aa0b2c29e66b3f81c3641657">OPENANGLEBRACKETS</link>
+, <link linkend="__interpretor_8h_1acbd1e63c605cbb3dbe67c7411841b46cad473a02cda3fb53f1def18c632bf4e9d">CLOSEANGLEBRACKETS</link>
+, <link linkend="__interpretor_8h_1acbd1e63c605cbb3dbe67c7411841b46ca38b13c5b8b7fa5cdbe5e49dbea3cd5b1">FLOW</link>
+, <link linkend="__interpretor_8h_1acbd1e63c605cbb3dbe67c7411841b46ca4d9b3e9fc12849d060371eb65154c751">COMMA</link>
+, <?linebreak?><link linkend="__interpretor_8h_1acbd1e63c605cbb3dbe67c7411841b46cabaaceccc27b1d4e0968c999583f97de5">SEMICOLON</link>
+, <link linkend="__interpretor_8h_1acbd1e63c605cbb3dbe67c7411841b46cab22f521f17b09d0fd389e231f8f6d66d">NUMERIC</link>
+, <link linkend="__interpretor_8h_1acbd1e63c605cbb3dbe67c7411841b46ca6fcc416051346daca31c571646af127a">IDENTIFIER</link>
+, <link linkend="__interpretor_8h_1acbd1e63c605cbb3dbe67c7411841b46caf62b7b10a36ac4ff1386de6dc9c3ec13">CLOSEBRACKETS</link>
+, <?linebreak?><link linkend="__interpretor_8h_1acbd1e63c605cbb3dbe67c7411841b46ca56d9d72077d098fe411d4f715c339e92">OPENBRACKETS</link>
+, <link linkend="__interpretor_8h_1acbd1e63c605cbb3dbe67c7411841b46caab5f2c1029696d0fa27db2acf531e951">OPENPARENTHESIS</link>
+, <link linkend="__interpretor_8h_1acbd1e63c605cbb3dbe67c7411841b46cab658c0ab7888b812782bb032dbf4815c">CLOSEPARENTHESIS</link>
+, <link linkend="__interpretor_8h_1acbd1e63c605cbb3dbe67c7411841b46cace7e8413589722ee650cbce0ea040f86">STRINGLITERAL</link>
+, <?linebreak?><link linkend="__interpretor_8h_1acbd1e63c605cbb3dbe67c7411841b46cad36335449b5720a1384868719f487119">TRUELITERAL</link>
+, <link linkend="__interpretor_8h_1acbd1e63c605cbb3dbe67c7411841b46ca3667ab316297387f31aa717670424e7b">FALSELITERAL</link>
+, <link linkend="__interpretor_8h_1acbd1e63c605cbb3dbe67c7411841b46ca2200becb80f0019c4a2ccecec350d0db">SECOND</link>
+, <link linkend="__interpretor_8h_1acbd1e63c605cbb3dbe67c7411841b46ca52f1e315372b38db1b8f4e3666c4f721">WHITESPACE</link>
+, <?linebreak?><link linkend="__interpretor_8h_1acbd1e63c605cbb3dbe67c7411841b46ca46bda4cde2f10bdb9e51e3bbefa4a2bf">MINUTE</link>
+, <link linkend="__interpretor_8h_1acbd1e63c605cbb3dbe67c7411841b46ca241d7907de05ad50c011812e927cd671">MILLISECOND</link>
+, <link linkend="__interpretor_8h_1acbd1e63c605cbb3dbe67c7411841b46ca5d5cd46919fa987731fb2edefe0f2a0c">INTEGER</link>
+, <link linkend="__interpretor_8h_1acbd1e63c605cbb3dbe67c7411841b46cad5cc6a0064b5c25ba37826aa3fda910c">WAIT</link>
+, <?linebreak?><link linkend="__interpretor_8h_1acbd1e63c605cbb3dbe67c7411841b46cae738c26bf4ce1037fa81b039a915cbf6">FLOAT</link>
+, <link linkend="__interpretor_8h_1acbd1e63c605cbb3dbe67c7411841b46caa97b2c144243b2b9d2c593ec268b62f5">BOOL</link>
+, <link linkend="__interpretor_8h_1acbd1e63c605cbb3dbe67c7411841b46ca558ffc8f5770d8e4f95f51d822685532">AND</link>
+, <link linkend="__interpretor_8h_1acbd1e63c605cbb3dbe67c7411841b46ca1d00e7dce692e8dc3f6877f035e3a616">OR</link>
+, <?linebreak?><link linkend="__interpretor_8h_1acbd1e63c605cbb3dbe67c7411841b46cafee1f202df8193b3ba65f00ad61efcef">COMPARE</link>
+, <link linkend="__interpretor_8h_1acbd1e63c605cbb3dbe67c7411841b46ca63b588d5559f64f89a416e656880b949">STRING</link>
+, <link linkend="__interpretor_8h_1acbd1e63c605cbb3dbe67c7411841b46ca6a977bf6454341ccb0b79c3d0900db91">COORD</link>
+, <link linkend="__interpretor_8h_1acbd1e63c605cbb3dbe67c7411841b46ca823d5f6b867f6d6adec93ad4999bae9f">DIRECTION</link>
+, <?linebreak?><link linkend="__interpretor_8h_1acbd1e63c605cbb3dbe67c7411841b46ca1d23cac77df97a722cd2ec7767a06e06">ZONE</link>
+, <link linkend="__interpretor_8h_1acbd1e63c605cbb3dbe67c7411841b46ca298cb25408234de02baf2085803a464a">LIST</link>
+, <link linkend="__interpretor_8h_1acbd1e63c605cbb3dbe67c7411841b46cade6ee2b5d856295add4d5e3631fbfb93">IF</link>
+, <link linkend="__interpretor_8h_1acbd1e63c605cbb3dbe67c7411841b46ca9159b3578e4e1eb31ffdf90acd6f6e40">LOOP</link>
+, <?linebreak?><link linkend="__interpretor_8h_1acbd1e63c605cbb3dbe67c7411841b46ca94682254f1edc02f9576916290a5fddd">DOLOOP</link>
+, <link linkend="__interpretor_8h_1acbd1e63c605cbb3dbe67c7411841b46ca4239f063a3d4fb9d38a0182be6e39e76">SWITCH</link>
+, <link linkend="__interpretor_8h_1acbd1e63c605cbb3dbe67c7411841b46ca5b39c8b553c821e7cddc6da64b5bd2ee">DEFAULT</link>
+, <link linkend="__interpretor_8h_1acbd1e63c605cbb3dbe67c7411841b46ca778537b0acce06229cb78d5f72c907ab">ELSE</link>
+, <?linebreak?><link linkend="__interpretor_8h_1acbd1e63c605cbb3dbe67c7411841b46ca722462c878f454d0872804374ef77c95">ELIF</link>
+, <link linkend="__interpretor_8h_1acbd1e63c605cbb3dbe67c7411841b46ca14d6a3e0201f58bfe7c01e775973e80e">BREAK</link>
+, <link linkend="__interpretor_8h_1acbd1e63c605cbb3dbe67c7411841b46ca2f453cfe638e57e27bb0c9512436111e">CONTINUE</link>
+, <link linkend="__interpretor_8h_1acbd1e63c605cbb3dbe67c7411841b46cabea5438a9521adc1b23a9117024bbb43">CASE</link>
+, <?linebreak?><link linkend="__interpretor_8h_1acbd1e63c605cbb3dbe67c7411841b46ca3cfba54f6873dfd55b0b09d32910b20e">STORE</link>
+, <link linkend="__interpretor_8h_1acbd1e63c605cbb3dbe67c7411841b46ca186495f7da296bf880df3a22a492b378">MAIN</link>
+, <link linkend="__interpretor_8h_1acbd1e63c605cbb3dbe67c7411841b46caf96eee4e48ee90430f17fb3a8388507b">PRINT</link>
+ }</para>
+</listitem>
+            <listitem><para>enum class <link linkend="__interpretor_8h_1ad8ed01ff3ff33333d8e19db4d2818bb6">DataType</link> { <?linebreak?><link linkend="__interpretor_8h_1ad8ed01ff3ff33333d8e19db4d2818bb6ab50339a10e1de285ac99d4c3990b8693">NONE</link>
+, <link linkend="__interpretor_8h_1ad8ed01ff3ff33333d8e19db4d2818bb6a6a977bf6454341ccb0b79c3d0900db91">COORD</link>
+, <link linkend="__interpretor_8h_1ad8ed01ff3ff33333d8e19db4d2818bb6a1d23cac77df97a722cd2ec7767a06e06">ZONE</link>
+, <link linkend="__interpretor_8h_1ad8ed01ff3ff33333d8e19db4d2818bb6a63b588d5559f64f89a416e656880b949">STRING</link>
+, <?linebreak?><link linkend="__interpretor_8h_1ad8ed01ff3ff33333d8e19db4d2818bb6a823d5f6b867f6d6adec93ad4999bae9f">DIRECTION</link>
+, <link linkend="__interpretor_8h_1ad8ed01ff3ff33333d8e19db4d2818bb6ae738c26bf4ce1037fa81b039a915cbf6">FLOAT</link>
+, <link linkend="__interpretor_8h_1ad8ed01ff3ff33333d8e19db4d2818bb6a53f93baa3057821107c750323892fa92">INT</link>
+, <link linkend="__interpretor_8h_1ad8ed01ff3ff33333d8e19db4d2818bb6aa97b2c144243b2b9d2c593ec268b62f5">BOOL</link>
+, <?linebreak?><link linkend="__interpretor_8h_1ad8ed01ff3ff33333d8e19db4d2818bb6af03689713d1683f6872267046e6de33c">TIMETYPE</link>
+ }</para>
+</listitem>
+            <listitem><para>enum class <link linkend="__interpretor_8h_1ab0df38968e4f03a3f1f6d6df0f31f45a">ErrorType</link> { <link linkend="__interpretor_8h_1ab0df38968e4f03a3f1f6d6df0f31f45aa10d1208b485425756fcc932229386b02">MISSING</link>
+, <link linkend="__interpretor_8h_1ab0df38968e4f03a3f1f6d6df0f31f45aa79c6a788549c6275055c935df474f0e7">UNEXPECTED</link>
+, <link linkend="__interpretor_8h_1ab0df38968e4f03a3f1f6d6df0f31f45aad5edacc5c1724ff7055e7db625117c71">REPLACED</link>
+ }</para>
+</listitem>
+        </itemizedlist>
+</simplesect>
+<simplesect>
+    <title>Functions    </title>
+        <itemizedlist>
+            <listitem><para>std::string <link linkend="__interpretor_8h_1a44cd9137229f6cc0f965ce359f482379">getNextPunctuationToken</link> (const std::string &amp;str)</para>
+</listitem>
+            <listitem><para>bool <link linkend="__interpretor_8h_1a3de0a259acea81f7a880327324e53e4b">isWhitespace</link> (const char &amp;c)</para>
+</listitem>
+            <listitem><para>bool <link linkend="__interpretor_8h_1add26727275e38a1c0054c4baa0c2662a">isBooleanToken</link> (const std::shared_ptr&lt; <link linkend="_class_token">Token</link> &gt; &amp;token)</para>
+</listitem>
+            <listitem><para>std::shared_ptr&lt; <link linkend="_class_token">Token</link> &gt; <link linkend="__interpretor_8h_1a7e41e92472c2a2c1aafa174217d4734f">getToken</link> (const std::string &amp;text)</para>
+</listitem>
+            <listitem><para>std::shared_ptr&lt; <link linkend="_class_token">Token</link> &gt; <link linkend="__interpretor_8h_1a7e77c38c7369e6bffb038003c5083888">getToken</link> (const <link linkend="__interpretor_8h_1acbd1e63c605cbb3dbe67c7411841b46c">TokenVALUE</link> &amp;tValue, const std::string &amp;text)</para>
+</listitem>
+        </itemizedlist>
+</simplesect>
+<section>
+<title>Enumeration Type Documentation</title>
+<anchor xml:id="__interpretor_8h_1ad8ed01ff3ff33333d8e19db4d2818bb6"/><section>
+    <title>DataType</title>
+<indexterm><primary>DataType</primary><secondary>Interpretor.h</secondary></indexterm>
+<indexterm><primary>Interpretor.h</primary><secondary>DataType</secondary></indexterm>
+<para><computeroutput>enum class <link linkend="__interpretor_8h_1ad8ed01ff3ff33333d8e19db4d2818bb6">DataType</link><computeroutput>[strong]</computeroutput></computeroutput></para><informaltable frame="all">
+<title>Enumerator</title>
+    <tgroup cols="2" align="left" colsep="1" rowsep="1">
+      <colspec colname='c1'/>
+      <colspec colname='c2'/>
+<tbody>
+<row><entry><indexterm><primary>NONE</primary><secondary>Interpretor.h</secondary></indexterm>
+<indexterm><primary>Interpretor.h</primary><secondary>NONE</secondary></indexterm>
+<anchor xml:id="__interpretor_8h_1ad8ed01ff3ff33333d8e19db4d2818bb6ab50339a10e1de285ac99d4c3990b8693"/>NONE</entry><entry></entry></row><row><entry><indexterm><primary>COORD</primary><secondary>Interpretor.h</secondary></indexterm>
+<indexterm><primary>Interpretor.h</primary><secondary>COORD</secondary></indexterm>
+<anchor xml:id="__interpretor_8h_1ad8ed01ff3ff33333d8e19db4d2818bb6a6a977bf6454341ccb0b79c3d0900db91"/>COORD</entry><entry></entry></row><row><entry><indexterm><primary>ZONE</primary><secondary>Interpretor.h</secondary></indexterm>
+<indexterm><primary>Interpretor.h</primary><secondary>ZONE</secondary></indexterm>
+<anchor xml:id="__interpretor_8h_1ad8ed01ff3ff33333d8e19db4d2818bb6a1d23cac77df97a722cd2ec7767a06e06"/>ZONE</entry><entry></entry></row><row><entry><indexterm><primary>STRING</primary><secondary>Interpretor.h</secondary></indexterm>
+<indexterm><primary>Interpretor.h</primary><secondary>STRING</secondary></indexterm>
+<anchor xml:id="__interpretor_8h_1ad8ed01ff3ff33333d8e19db4d2818bb6a63b588d5559f64f89a416e656880b949"/>STRING</entry><entry></entry></row><row><entry><indexterm><primary>DIRECTION</primary><secondary>Interpretor.h</secondary></indexterm>
+<indexterm><primary>Interpretor.h</primary><secondary>DIRECTION</secondary></indexterm>
+<anchor xml:id="__interpretor_8h_1ad8ed01ff3ff33333d8e19db4d2818bb6a823d5f6b867f6d6adec93ad4999bae9f"/>DIRECTION</entry><entry></entry></row><row><entry><indexterm><primary>FLOAT</primary><secondary>Interpretor.h</secondary></indexterm>
+<indexterm><primary>Interpretor.h</primary><secondary>FLOAT</secondary></indexterm>
+<anchor xml:id="__interpretor_8h_1ad8ed01ff3ff33333d8e19db4d2818bb6ae738c26bf4ce1037fa81b039a915cbf6"/>FLOAT</entry><entry></entry></row><row><entry><indexterm><primary>INT</primary><secondary>Interpretor.h</secondary></indexterm>
+<indexterm><primary>Interpretor.h</primary><secondary>INT</secondary></indexterm>
+<anchor xml:id="__interpretor_8h_1ad8ed01ff3ff33333d8e19db4d2818bb6a53f93baa3057821107c750323892fa92"/>INT</entry><entry></entry></row><row><entry><indexterm><primary>BOOL</primary><secondary>Interpretor.h</secondary></indexterm>
+<indexterm><primary>Interpretor.h</primary><secondary>BOOL</secondary></indexterm>
+<anchor xml:id="__interpretor_8h_1ad8ed01ff3ff33333d8e19db4d2818bb6aa97b2c144243b2b9d2c593ec268b62f5"/>BOOL</entry><entry></entry></row><row><entry><indexterm><primary>TIMETYPE</primary><secondary>Interpretor.h</secondary></indexterm>
+<indexterm><primary>Interpretor.h</primary><secondary>TIMETYPE</secondary></indexterm>
+<anchor xml:id="__interpretor_8h_1ad8ed01ff3ff33333d8e19db4d2818bb6af03689713d1683f6872267046e6de33c"/>TIMETYPE</entry><entry></entry></row>    </tbody>
+    </tgroup>
+</informaltable>
+<para>
+Definition at line <link linkend="__interpretor_8h_source_1l00081">81</link> of file <link linkend="__interpretor_8h_source">Interpretor.h</link>.</para>
+</section>
+<anchor xml:id="__interpretor_8h_1ab0df38968e4f03a3f1f6d6df0f31f45a"/><section>
+    <title>ErrorType</title>
+<indexterm><primary>ErrorType</primary><secondary>Interpretor.h</secondary></indexterm>
+<indexterm><primary>Interpretor.h</primary><secondary>ErrorType</secondary></indexterm>
+<para><computeroutput>enum class <link linkend="__interpretor_8h_1ab0df38968e4f03a3f1f6d6df0f31f45a">ErrorType</link><computeroutput>[strong]</computeroutput></computeroutput></para><informaltable frame="all">
+<title>Enumerator</title>
+    <tgroup cols="2" align="left" colsep="1" rowsep="1">
+      <colspec colname='c1'/>
+      <colspec colname='c2'/>
+<tbody>
+<row><entry><indexterm><primary>MISSING</primary><secondary>Interpretor.h</secondary></indexterm>
+<indexterm><primary>Interpretor.h</primary><secondary>MISSING</secondary></indexterm>
+<anchor xml:id="__interpretor_8h_1ab0df38968e4f03a3f1f6d6df0f31f45aa10d1208b485425756fcc932229386b02"/>MISSING</entry><entry></entry></row><row><entry><indexterm><primary>UNEXPECTED</primary><secondary>Interpretor.h</secondary></indexterm>
+<indexterm><primary>Interpretor.h</primary><secondary>UNEXPECTED</secondary></indexterm>
+<anchor xml:id="__interpretor_8h_1ab0df38968e4f03a3f1f6d6df0f31f45aa79c6a788549c6275055c935df474f0e7"/>UNEXPECTED</entry><entry></entry></row><row><entry><indexterm><primary>REPLACED</primary><secondary>Interpretor.h</secondary></indexterm>
+<indexterm><primary>Interpretor.h</primary><secondary>REPLACED</secondary></indexterm>
+<anchor xml:id="__interpretor_8h_1ab0df38968e4f03a3f1f6d6df0f31f45aad5edacc5c1724ff7055e7db625117c71"/>REPLACED</entry><entry></entry></row>    </tbody>
+    </tgroup>
+</informaltable>
+<para>
+Definition at line <link linkend="__interpretor_8h_source_1l00094">94</link> of file <link linkend="__interpretor_8h_source">Interpretor.h</link>.</para>
+</section>
+<anchor xml:id="__interpretor_8h_1acbd1e63c605cbb3dbe67c7411841b46c"/><section>
+    <title>TokenVALUE</title>
+<indexterm><primary>TokenVALUE</primary><secondary>Interpretor.h</secondary></indexterm>
+<indexterm><primary>Interpretor.h</primary><secondary>TokenVALUE</secondary></indexterm>
+<para><computeroutput>enum class <link linkend="__interpretor_8h_1acbd1e63c605cbb3dbe67c7411841b46c">TokenVALUE</link><computeroutput>[strong]</computeroutput></computeroutput></para><informaltable frame="all">
+<title>Enumerator</title>
+    <tgroup cols="2" align="left" colsep="1" rowsep="1">
+      <colspec colname='c1'/>
+      <colspec colname='c2'/>
+<tbody>
+<row><entry><indexterm><primary>NOT</primary><secondary>Interpretor.h</secondary></indexterm>
+<indexterm><primary>Interpretor.h</primary><secondary>NOT</secondary></indexterm>
+<anchor xml:id="__interpretor_8h_1acbd1e63c605cbb3dbe67c7411841b46ca10df3d67626099df882920ba6552f16d"/>NOT</entry><entry></entry></row><row><entry><indexterm><primary>TOKEN</primary><secondary>Interpretor.h</secondary></indexterm>
+<indexterm><primary>Interpretor.h</primary><secondary>TOKEN</secondary></indexterm>
+<anchor xml:id="__interpretor_8h_1acbd1e63c605cbb3dbe67c7411841b46ca94c8aa2452bccd82ee129b46f7c4be79"/>TOKEN</entry><entry></entry></row><row><entry><indexterm><primary>UNKNOWN</primary><secondary>Interpretor.h</secondary></indexterm>
+<indexterm><primary>Interpretor.h</primary><secondary>UNKNOWN</secondary></indexterm>
+<anchor xml:id="__interpretor_8h_1acbd1e63c605cbb3dbe67c7411841b46ca696b031073e74bf2cb98e5ef201d4aa3"/>UNKNOWN</entry><entry></entry></row><row><entry><indexterm><primary>QUOTATION</primary><secondary>Interpretor.h</secondary></indexterm>
+<indexterm><primary>Interpretor.h</primary><secondary>QUOTATION</secondary></indexterm>
+<anchor xml:id="__interpretor_8h_1acbd1e63c605cbb3dbe67c7411841b46caf7193622145fd3c92db6f1b14f175dc0"/>QUOTATION</entry><entry></entry></row><row><entry><indexterm><primary>OPENANGLEBRACKETS</primary><secondary>Interpretor.h</secondary></indexterm>
+<indexterm><primary>Interpretor.h</primary><secondary>OPENANGLEBRACKETS</secondary></indexterm>
+<anchor xml:id="__interpretor_8h_1acbd1e63c605cbb3dbe67c7411841b46ca09d62a98aa0b2c29e66b3f81c3641657"/>OPENANGLEBRACKETS</entry><entry></entry></row><row><entry><indexterm><primary>CLOSEANGLEBRACKETS</primary><secondary>Interpretor.h</secondary></indexterm>
+<indexterm><primary>Interpretor.h</primary><secondary>CLOSEANGLEBRACKETS</secondary></indexterm>
+<anchor xml:id="__interpretor_8h_1acbd1e63c605cbb3dbe67c7411841b46cad473a02cda3fb53f1def18c632bf4e9d"/>CLOSEANGLEBRACKETS</entry><entry></entry></row><row><entry><indexterm><primary>FLOW</primary><secondary>Interpretor.h</secondary></indexterm>
+<indexterm><primary>Interpretor.h</primary><secondary>FLOW</secondary></indexterm>
+<anchor xml:id="__interpretor_8h_1acbd1e63c605cbb3dbe67c7411841b46ca38b13c5b8b7fa5cdbe5e49dbea3cd5b1"/>FLOW</entry><entry></entry></row><row><entry><indexterm><primary>COMMA</primary><secondary>Interpretor.h</secondary></indexterm>
+<indexterm><primary>Interpretor.h</primary><secondary>COMMA</secondary></indexterm>
+<anchor xml:id="__interpretor_8h_1acbd1e63c605cbb3dbe67c7411841b46ca4d9b3e9fc12849d060371eb65154c751"/>COMMA</entry><entry></entry></row><row><entry><indexterm><primary>SEMICOLON</primary><secondary>Interpretor.h</secondary></indexterm>
+<indexterm><primary>Interpretor.h</primary><secondary>SEMICOLON</secondary></indexterm>
+<anchor xml:id="__interpretor_8h_1acbd1e63c605cbb3dbe67c7411841b46cabaaceccc27b1d4e0968c999583f97de5"/>SEMICOLON</entry><entry></entry></row><row><entry><indexterm><primary>NUMERIC</primary><secondary>Interpretor.h</secondary></indexterm>
+<indexterm><primary>Interpretor.h</primary><secondary>NUMERIC</secondary></indexterm>
+<anchor xml:id="__interpretor_8h_1acbd1e63c605cbb3dbe67c7411841b46cab22f521f17b09d0fd389e231f8f6d66d"/>NUMERIC</entry><entry></entry></row><row><entry><indexterm><primary>IDENTIFIER</primary><secondary>Interpretor.h</secondary></indexterm>
+<indexterm><primary>Interpretor.h</primary><secondary>IDENTIFIER</secondary></indexterm>
+<anchor xml:id="__interpretor_8h_1acbd1e63c605cbb3dbe67c7411841b46ca6fcc416051346daca31c571646af127a"/>IDENTIFIER</entry><entry></entry></row><row><entry><indexterm><primary>CLOSEBRACKETS</primary><secondary>Interpretor.h</secondary></indexterm>
+<indexterm><primary>Interpretor.h</primary><secondary>CLOSEBRACKETS</secondary></indexterm>
+<anchor xml:id="__interpretor_8h_1acbd1e63c605cbb3dbe67c7411841b46caf62b7b10a36ac4ff1386de6dc9c3ec13"/>CLOSEBRACKETS</entry><entry></entry></row><row><entry><indexterm><primary>OPENBRACKETS</primary><secondary>Interpretor.h</secondary></indexterm>
+<indexterm><primary>Interpretor.h</primary><secondary>OPENBRACKETS</secondary></indexterm>
+<anchor xml:id="__interpretor_8h_1acbd1e63c605cbb3dbe67c7411841b46ca56d9d72077d098fe411d4f715c339e92"/>OPENBRACKETS</entry><entry></entry></row><row><entry><indexterm><primary>OPENPARENTHESIS</primary><secondary>Interpretor.h</secondary></indexterm>
+<indexterm><primary>Interpretor.h</primary><secondary>OPENPARENTHESIS</secondary></indexterm>
+<anchor xml:id="__interpretor_8h_1acbd1e63c605cbb3dbe67c7411841b46caab5f2c1029696d0fa27db2acf531e951"/>OPENPARENTHESIS</entry><entry></entry></row><row><entry><indexterm><primary>CLOSEPARENTHESIS</primary><secondary>Interpretor.h</secondary></indexterm>
+<indexterm><primary>Interpretor.h</primary><secondary>CLOSEPARENTHESIS</secondary></indexterm>
+<anchor xml:id="__interpretor_8h_1acbd1e63c605cbb3dbe67c7411841b46cab658c0ab7888b812782bb032dbf4815c"/>CLOSEPARENTHESIS</entry><entry></entry></row><row><entry><indexterm><primary>STRINGLITERAL</primary><secondary>Interpretor.h</secondary></indexterm>
+<indexterm><primary>Interpretor.h</primary><secondary>STRINGLITERAL</secondary></indexterm>
+<anchor xml:id="__interpretor_8h_1acbd1e63c605cbb3dbe67c7411841b46cace7e8413589722ee650cbce0ea040f86"/>STRINGLITERAL</entry><entry></entry></row><row><entry><indexterm><primary>TRUELITERAL</primary><secondary>Interpretor.h</secondary></indexterm>
+<indexterm><primary>Interpretor.h</primary><secondary>TRUELITERAL</secondary></indexterm>
+<anchor xml:id="__interpretor_8h_1acbd1e63c605cbb3dbe67c7411841b46cad36335449b5720a1384868719f487119"/>TRUELITERAL</entry><entry></entry></row><row><entry><indexterm><primary>FALSELITERAL</primary><secondary>Interpretor.h</secondary></indexterm>
+<indexterm><primary>Interpretor.h</primary><secondary>FALSELITERAL</secondary></indexterm>
+<anchor xml:id="__interpretor_8h_1acbd1e63c605cbb3dbe67c7411841b46ca3667ab316297387f31aa717670424e7b"/>FALSELITERAL</entry><entry></entry></row><row><entry><indexterm><primary>SECOND</primary><secondary>Interpretor.h</secondary></indexterm>
+<indexterm><primary>Interpretor.h</primary><secondary>SECOND</secondary></indexterm>
+<anchor xml:id="__interpretor_8h_1acbd1e63c605cbb3dbe67c7411841b46ca2200becb80f0019c4a2ccecec350d0db"/>SECOND</entry><entry></entry></row><row><entry><indexterm><primary>WHITESPACE</primary><secondary>Interpretor.h</secondary></indexterm>
+<indexterm><primary>Interpretor.h</primary><secondary>WHITESPACE</secondary></indexterm>
+<anchor xml:id="__interpretor_8h_1acbd1e63c605cbb3dbe67c7411841b46ca52f1e315372b38db1b8f4e3666c4f721"/>WHITESPACE</entry><entry></entry></row><row><entry><indexterm><primary>MINUTE</primary><secondary>Interpretor.h</secondary></indexterm>
+<indexterm><primary>Interpretor.h</primary><secondary>MINUTE</secondary></indexterm>
+<anchor xml:id="__interpretor_8h_1acbd1e63c605cbb3dbe67c7411841b46ca46bda4cde2f10bdb9e51e3bbefa4a2bf"/>MINUTE</entry><entry></entry></row><row><entry><indexterm><primary>MILLISECOND</primary><secondary>Interpretor.h</secondary></indexterm>
+<indexterm><primary>Interpretor.h</primary><secondary>MILLISECOND</secondary></indexterm>
+<anchor xml:id="__interpretor_8h_1acbd1e63c605cbb3dbe67c7411841b46ca241d7907de05ad50c011812e927cd671"/>MILLISECOND</entry><entry></entry></row><row><entry><indexterm><primary>INTEGER</primary><secondary>Interpretor.h</secondary></indexterm>
+<indexterm><primary>Interpretor.h</primary><secondary>INTEGER</secondary></indexterm>
+<anchor xml:id="__interpretor_8h_1acbd1e63c605cbb3dbe67c7411841b46ca5d5cd46919fa987731fb2edefe0f2a0c"/>INTEGER</entry><entry></entry></row><row><entry><indexterm><primary>WAIT</primary><secondary>Interpretor.h</secondary></indexterm>
+<indexterm><primary>Interpretor.h</primary><secondary>WAIT</secondary></indexterm>
+<anchor xml:id="__interpretor_8h_1acbd1e63c605cbb3dbe67c7411841b46cad5cc6a0064b5c25ba37826aa3fda910c"/>WAIT</entry><entry></entry></row><row><entry><indexterm><primary>FLOAT</primary><secondary>Interpretor.h</secondary></indexterm>
+<indexterm><primary>Interpretor.h</primary><secondary>FLOAT</secondary></indexterm>
+<anchor xml:id="__interpretor_8h_1acbd1e63c605cbb3dbe67c7411841b46cae738c26bf4ce1037fa81b039a915cbf6"/>FLOAT</entry><entry></entry></row><row><entry><indexterm><primary>BOOL</primary><secondary>Interpretor.h</secondary></indexterm>
+<indexterm><primary>Interpretor.h</primary><secondary>BOOL</secondary></indexterm>
+<anchor xml:id="__interpretor_8h_1acbd1e63c605cbb3dbe67c7411841b46caa97b2c144243b2b9d2c593ec268b62f5"/>BOOL</entry><entry></entry></row><row><entry><indexterm><primary>AND</primary><secondary>Interpretor.h</secondary></indexterm>
+<indexterm><primary>Interpretor.h</primary><secondary>AND</secondary></indexterm>
+<anchor xml:id="__interpretor_8h_1acbd1e63c605cbb3dbe67c7411841b46ca558ffc8f5770d8e4f95f51d822685532"/>AND</entry><entry></entry></row><row><entry><indexterm><primary>OR</primary><secondary>Interpretor.h</secondary></indexterm>
+<indexterm><primary>Interpretor.h</primary><secondary>OR</secondary></indexterm>
+<anchor xml:id="__interpretor_8h_1acbd1e63c605cbb3dbe67c7411841b46ca1d00e7dce692e8dc3f6877f035e3a616"/>OR</entry><entry></entry></row><row><entry><indexterm><primary>COMPARE</primary><secondary>Interpretor.h</secondary></indexterm>
+<indexterm><primary>Interpretor.h</primary><secondary>COMPARE</secondary></indexterm>
+<anchor xml:id="__interpretor_8h_1acbd1e63c605cbb3dbe67c7411841b46cafee1f202df8193b3ba65f00ad61efcef"/>COMPARE</entry><entry></entry></row><row><entry><indexterm><primary>STRING</primary><secondary>Interpretor.h</secondary></indexterm>
+<indexterm><primary>Interpretor.h</primary><secondary>STRING</secondary></indexterm>
+<anchor xml:id="__interpretor_8h_1acbd1e63c605cbb3dbe67c7411841b46ca63b588d5559f64f89a416e656880b949"/>STRING</entry><entry></entry></row><row><entry><indexterm><primary>COORD</primary><secondary>Interpretor.h</secondary></indexterm>
+<indexterm><primary>Interpretor.h</primary><secondary>COORD</secondary></indexterm>
+<anchor xml:id="__interpretor_8h_1acbd1e63c605cbb3dbe67c7411841b46ca6a977bf6454341ccb0b79c3d0900db91"/>COORD</entry><entry></entry></row><row><entry><indexterm><primary>DIRECTION</primary><secondary>Interpretor.h</secondary></indexterm>
+<indexterm><primary>Interpretor.h</primary><secondary>DIRECTION</secondary></indexterm>
+<anchor xml:id="__interpretor_8h_1acbd1e63c605cbb3dbe67c7411841b46ca823d5f6b867f6d6adec93ad4999bae9f"/>DIRECTION</entry><entry></entry></row><row><entry><indexterm><primary>ZONE</primary><secondary>Interpretor.h</secondary></indexterm>
+<indexterm><primary>Interpretor.h</primary><secondary>ZONE</secondary></indexterm>
+<anchor xml:id="__interpretor_8h_1acbd1e63c605cbb3dbe67c7411841b46ca1d23cac77df97a722cd2ec7767a06e06"/>ZONE</entry><entry></entry></row><row><entry><indexterm><primary>LIST</primary><secondary>Interpretor.h</secondary></indexterm>
+<indexterm><primary>Interpretor.h</primary><secondary>LIST</secondary></indexterm>
+<anchor xml:id="__interpretor_8h_1acbd1e63c605cbb3dbe67c7411841b46ca298cb25408234de02baf2085803a464a"/>LIST</entry><entry></entry></row><row><entry><indexterm><primary>IF</primary><secondary>Interpretor.h</secondary></indexterm>
+<indexterm><primary>Interpretor.h</primary><secondary>IF</secondary></indexterm>
+<anchor xml:id="__interpretor_8h_1acbd1e63c605cbb3dbe67c7411841b46cade6ee2b5d856295add4d5e3631fbfb93"/>IF</entry><entry></entry></row><row><entry><indexterm><primary>LOOP</primary><secondary>Interpretor.h</secondary></indexterm>
+<indexterm><primary>Interpretor.h</primary><secondary>LOOP</secondary></indexterm>
+<anchor xml:id="__interpretor_8h_1acbd1e63c605cbb3dbe67c7411841b46ca9159b3578e4e1eb31ffdf90acd6f6e40"/>LOOP</entry><entry></entry></row><row><entry><indexterm><primary>DOLOOP</primary><secondary>Interpretor.h</secondary></indexterm>
+<indexterm><primary>Interpretor.h</primary><secondary>DOLOOP</secondary></indexterm>
+<anchor xml:id="__interpretor_8h_1acbd1e63c605cbb3dbe67c7411841b46ca94682254f1edc02f9576916290a5fddd"/>DOLOOP</entry><entry></entry></row><row><entry><indexterm><primary>SWITCH</primary><secondary>Interpretor.h</secondary></indexterm>
+<indexterm><primary>Interpretor.h</primary><secondary>SWITCH</secondary></indexterm>
+<anchor xml:id="__interpretor_8h_1acbd1e63c605cbb3dbe67c7411841b46ca4239f063a3d4fb9d38a0182be6e39e76"/>SWITCH</entry><entry></entry></row><row><entry><indexterm><primary>DEFAULT</primary><secondary>Interpretor.h</secondary></indexterm>
+<indexterm><primary>Interpretor.h</primary><secondary>DEFAULT</secondary></indexterm>
+<anchor xml:id="__interpretor_8h_1acbd1e63c605cbb3dbe67c7411841b46ca5b39c8b553c821e7cddc6da64b5bd2ee"/>DEFAULT</entry><entry></entry></row><row><entry><indexterm><primary>ELSE</primary><secondary>Interpretor.h</secondary></indexterm>
+<indexterm><primary>Interpretor.h</primary><secondary>ELSE</secondary></indexterm>
+<anchor xml:id="__interpretor_8h_1acbd1e63c605cbb3dbe67c7411841b46ca778537b0acce06229cb78d5f72c907ab"/>ELSE</entry><entry></entry></row><row><entry><indexterm><primary>ELIF</primary><secondary>Interpretor.h</secondary></indexterm>
+<indexterm><primary>Interpretor.h</primary><secondary>ELIF</secondary></indexterm>
+<anchor xml:id="__interpretor_8h_1acbd1e63c605cbb3dbe67c7411841b46ca722462c878f454d0872804374ef77c95"/>ELIF</entry><entry></entry></row><row><entry><indexterm><primary>BREAK</primary><secondary>Interpretor.h</secondary></indexterm>
+<indexterm><primary>Interpretor.h</primary><secondary>BREAK</secondary></indexterm>
+<anchor xml:id="__interpretor_8h_1acbd1e63c605cbb3dbe67c7411841b46ca14d6a3e0201f58bfe7c01e775973e80e"/>BREAK</entry><entry></entry></row><row><entry><indexterm><primary>CONTINUE</primary><secondary>Interpretor.h</secondary></indexterm>
+<indexterm><primary>Interpretor.h</primary><secondary>CONTINUE</secondary></indexterm>
+<anchor xml:id="__interpretor_8h_1acbd1e63c605cbb3dbe67c7411841b46ca2f453cfe638e57e27bb0c9512436111e"/>CONTINUE</entry><entry></entry></row><row><entry><indexterm><primary>CASE</primary><secondary>Interpretor.h</secondary></indexterm>
+<indexterm><primary>Interpretor.h</primary><secondary>CASE</secondary></indexterm>
+<anchor xml:id="__interpretor_8h_1acbd1e63c605cbb3dbe67c7411841b46cabea5438a9521adc1b23a9117024bbb43"/>CASE</entry><entry></entry></row><row><entry><indexterm><primary>STORE</primary><secondary>Interpretor.h</secondary></indexterm>
+<indexterm><primary>Interpretor.h</primary><secondary>STORE</secondary></indexterm>
+<anchor xml:id="__interpretor_8h_1acbd1e63c605cbb3dbe67c7411841b46ca3cfba54f6873dfd55b0b09d32910b20e"/>STORE</entry><entry></entry></row><row><entry><indexterm><primary>MAIN</primary><secondary>Interpretor.h</secondary></indexterm>
+<indexterm><primary>Interpretor.h</primary><secondary>MAIN</secondary></indexterm>
+<anchor xml:id="__interpretor_8h_1acbd1e63c605cbb3dbe67c7411841b46ca186495f7da296bf880df3a22a492b378"/>MAIN</entry><entry></entry></row><row><entry><indexterm><primary>PRINT</primary><secondary>Interpretor.h</secondary></indexterm>
+<indexterm><primary>Interpretor.h</primary><secondary>PRINT</secondary></indexterm>
+<anchor xml:id="__interpretor_8h_1acbd1e63c605cbb3dbe67c7411841b46caf96eee4e48ee90430f17fb3a8388507b"/>PRINT</entry><entry></entry></row>    </tbody>
+    </tgroup>
+</informaltable>
+<para>
+Definition at line <link linkend="__interpretor_8h_source_1l00077">77</link> of file <link linkend="__interpretor_8h_source">Interpretor.h</link>.</para>
+</section>
+</section>
+<section>
+<title>Function Documentation</title>
+<anchor xml:id="__interpretor_8h_1a44cd9137229f6cc0f965ce359f482379"/><section>
+    <title>getNextPunctuationToken()</title>
+<indexterm><primary>getNextPunctuationToken</primary><secondary>Interpretor.h</secondary></indexterm>
+<indexterm><primary>Interpretor.h</primary><secondary>getNextPunctuationToken</secondary></indexterm>
+<para><computeroutput>std::string getNextPunctuationToken (const std::string &amp; str)</computeroutput></para><para>
+Definition at line <link linkend="__interpretor_8cpp_source_1l00154">154</link> of file <link linkend="__interpretor_8cpp_source">Interpretor.cpp</link>.</para>
+Here is the caller graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="_interpretor_8h_a44cd9137229f6cc0f965ce359f482379_icgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="__interpretor_8h_1a7e41e92472c2a2c1aafa174217d4734f"/><section>
+    <title>getToken()<computeroutput>[1/2]</computeroutput></title>
+<indexterm><primary>getToken</primary><secondary>Interpretor.h</secondary></indexterm>
+<indexterm><primary>Interpretor.h</primary><secondary>getToken</secondary></indexterm>
+<para><computeroutput>std::shared_ptr&lt; <link linkend="_class_token">Token</link> &gt; getToken (const std::string &amp; text)</computeroutput></para><para>
+Definition at line <link linkend="__interpretor_8cpp_source_1l00441">441</link> of file <link linkend="__interpretor_8cpp_source">Interpretor.cpp</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="_interpretor_8h_a7e41e92472c2a2c1aafa174217d4734f_cgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+Here is the caller graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="_interpretor_8h_a7e41e92472c2a2c1aafa174217d4734f_icgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="__interpretor_8h_1a7e77c38c7369e6bffb038003c5083888"/><section>
+    <title>getToken()<computeroutput>[2/2]</computeroutput></title>
+<indexterm><primary>getToken</primary><secondary>Interpretor.h</secondary></indexterm>
+<indexterm><primary>Interpretor.h</primary><secondary>getToken</secondary></indexterm>
+<para><computeroutput>std::shared_ptr&lt; <link linkend="_class_token">Token</link> &gt; getToken (const <link linkend="__interpretor_8h_1acbd1e63c605cbb3dbe67c7411841b46c">TokenVALUE</link> &amp; tValue, const std::string &amp; text)</computeroutput></para><para>
+Definition at line <link linkend="__interpretor_8cpp_source_1l00444">444</link> of file <link linkend="__interpretor_8cpp_source">Interpretor.cpp</link>.</para>
+</section>
+<anchor xml:id="__interpretor_8h_1add26727275e38a1c0054c4baa0c2662a"/><section>
+    <title>isBooleanToken()</title>
+<indexterm><primary>isBooleanToken</primary><secondary>Interpretor.h</secondary></indexterm>
+<indexterm><primary>Interpretor.h</primary><secondary>isBooleanToken</secondary></indexterm>
+<para><computeroutput>bool isBooleanToken (const std::shared_ptr&lt; <link linkend="_class_token">Token</link> &gt; &amp; token)</computeroutput></para><para>
+Definition at line <link linkend="__interpretor_8cpp_source_1l00015">15</link> of file <link linkend="__interpretor_8cpp_source">Interpretor.cpp</link>.</para>
+Here is the caller graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="_interpretor_8h_add26727275e38a1c0054c4baa0c2662a_icgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="__interpretor_8h_1a3de0a259acea81f7a880327324e53e4b"/><section>
+    <title>isWhitespace()</title>
+<indexterm><primary>isWhitespace</primary><secondary>Interpretor.h</secondary></indexterm>
+<indexterm><primary>Interpretor.h</primary><secondary>isWhitespace</secondary></indexterm>
+<para><computeroutput>bool isWhitespace (const char &amp; c)</computeroutput></para><para>
+Definition at line <link linkend="__interpretor_8cpp_source_1l00112">112</link> of file <link linkend="__interpretor_8cpp_source">Interpretor.cpp</link>.</para>
+</section>
+</section>
+</section>

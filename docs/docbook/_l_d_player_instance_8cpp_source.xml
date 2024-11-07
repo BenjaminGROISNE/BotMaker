@@ -1,0 +1,41 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<section xmlns="http://docbook.org/ns/docbook" version="5.0" xmlns:xlink="http://www.w3.org/1999/xlink" xml:id="__l_d_player_instance_8cpp_source" xml:lang="en-US">
+<title>LDPlayerInstance.cpp</title>
+<indexterm><primary>src/LDPlayerInstance.cpp</primary></indexterm>
+Go to the documentation of this file.<programlisting linenumbering="unnumbered"><anchor xml:id="__l_d_player_instance_8cpp_source_1l00001"/>00001 <emphasis role="preprocessor">#include&#32;&quot;<link linkend="__l_d_player_instance_8h">LDPlayerInstance.h</link>&quot;</emphasis>
+<anchor xml:id="__l_d_player_instance_8cpp_source_1l00002"/>00002 
+<anchor xml:id="__l_d_player_instance_8cpp_source_1l00003"/><link linkend="_class_l_d_player_instance_1a9384378727ff07e74f5e9a1a84cec8d6">00003</link> <link linkend="_class_l_d_player_instance_1a9384378727ff07e74f5e9a1a84cec8d6">LDPlayerInstance::LDPlayerInstance</link>():<link linkend="_class_instance">Instance</link>()
+<anchor xml:id="__l_d_player_instance_8cpp_source_1l00004"/>00004 {
+<anchor xml:id="__l_d_player_instance_8cpp_source_1l00005"/>00005 &#32;&#32;&#32;&#32;<link linkend="_class_l_d_player_instance_1a5b69e14ed9eebd8b6aaafd403647842f">packageInfoFileName</link>&#32;=&#32;<emphasis role="stringliteral">&quot;reportbody.data&quot;</emphasis>;
+<anchor xml:id="__l_d_player_instance_8cpp_source_1l00006"/>00006 &#32;&#32;&#32;&#32;<link linkend="_class_l_d_player_instance_1a54bd4852604077a154ae55bb00b4d185">ldId</link>&#32;=&#32;-1;
+<anchor xml:id="__l_d_player_instance_8cpp_source_1l00007"/>00007 &#32;&#32;&#32;&#32;<link linkend="_class_instance_1ac8eb7fd97639a6d93161bcd7a4e07317">myType</link>&#32;=&#32;<link linkend="__instance_8h_1a5b026f4903e92a7e60dda754b5028227a53795d6d02157dd72ace4b527453288b">LDPLAYER</link>;
+<anchor xml:id="__l_d_player_instance_8cpp_source_1l00008"/>00008 }
+<anchor xml:id="__l_d_player_instance_8cpp_source_1l00009"/>00009 
+<anchor xml:id="__l_d_player_instance_8cpp_source_1l00010"/><link linkend="_class_l_d_player_instance_1ad75199d7640f5143dee1db06a697cd90">00010</link> <link linkend="_class_l_d_player_instance_1a9384378727ff07e74f5e9a1a84cec8d6">LDPlayerInstance::LDPlayerInstance</link>(std::string&#32;instanceName):<link linkend="_class_l_d_player_instance">LDPlayerInstance</link>()
+<anchor xml:id="__l_d_player_instance_8cpp_source_1l00011"/>00011 {
+<anchor xml:id="__l_d_player_instance_8cpp_source_1l00012"/>00012 &#32;&#32;&#32;&#32;this-&gt;instanceName&#32;=&#32;<link linkend="_class_instance_1a71e6b641e231bdfcfb4f255c6b9e58af">instanceName</link>;
+<anchor xml:id="__l_d_player_instance_8cpp_source_1l00013"/>00013 }
+<anchor xml:id="__l_d_player_instance_8cpp_source_1l00014"/>00014 
+<anchor xml:id="__l_d_player_instance_8cpp_source_1l00015"/><link linkend="_class_l_d_player_instance_1a9e740865e7059e32565a3ee86863b843">00015</link> <emphasis role="keywordtype">void</emphasis>&#32;<link linkend="_class_l_d_player_instance_1a9e740865e7059e32565a3ee86863b843">LDPlayerInstance::showInstance</link>()
+<anchor xml:id="__l_d_player_instance_8cpp_source_1l00016"/>00016 {
+<anchor xml:id="__l_d_player_instance_8cpp_source_1l00017"/>00017 &#32;&#32;&#32;&#32;std::cout&#32;&lt;&lt;&#32;<emphasis role="stringliteral">&quot;&#32;&#32;Instance&#32;Name:&#32;&quot;</emphasis>&#32;&lt;&lt;&#32;<link linkend="_class_instance_1a71e6b641e231bdfcfb4f255c6b9e58af">instanceName</link>&#32;&lt;&lt;&#32;std::endl;
+<anchor xml:id="__l_d_player_instance_8cpp_source_1l00018"/>00018 &#32;&#32;&#32;&#32;std::cout&#32;&lt;&lt;&#32;<emphasis role="stringliteral">&quot;&#32;&#32;Instance&#32;Folder:&#32;&quot;</emphasis>&#32;&lt;&lt;&#32;<link linkend="_class_instance_1ad66900da1ca18b45bae2e46c04a4cdda">instanceFolder</link>&#32;&lt;&lt;&#32;std::endl;
+<anchor xml:id="__l_d_player_instance_8cpp_source_1l00019"/>00019 &#32;&#32;&#32;&#32;std::cout&#32;&lt;&lt;&#32;<emphasis role="stringliteral">&quot;&#32;&#32;Instance&#32;LD&#32;Id:&#32;&quot;</emphasis>&#32;&lt;&lt;&#32;<link linkend="_class_l_d_player_instance_1a54bd4852604077a154ae55bb00b4d185">ldId</link>&#32;&lt;&lt;&#32;std::endl;
+<anchor xml:id="__l_d_player_instance_8cpp_source_1l00020"/>00020 &#32;&#32;&#32;&#32;std::cout&#32;&lt;&lt;&#32;<emphasis role="stringliteral">&quot;&#32;&#32;Instance&#32;Id:&#32;&quot;</emphasis>&#32;&lt;&lt;&#32;<link linkend="_class_instance_1adbf9914982dfc15b3542b57eee68574d">instanceId</link>&#32;&lt;&lt;&#32;std::endl;
+<anchor xml:id="__l_d_player_instance_8cpp_source_1l00021"/>00021 &#32;&#32;&#32;&#32;std::cout&#32;&lt;&lt;&#32;<emphasis role="stringliteral">&quot;&#32;&#32;Instance&#32;Engine:&#32;&quot;</emphasis>&#32;&lt;&lt;&#32;<link linkend="_class_l_d_player_instance_1a6ceacb3c1904d3adf78e7be2b5cc32a6">engineName</link>&#32;&lt;&lt;&#32;std::endl;
+<anchor xml:id="__l_d_player_instance_8cpp_source_1l00022"/>00022 &#32;&#32;&#32;&#32;std::cout&#32;&lt;&lt;&#32;<emphasis role="stringliteral">&quot;&#32;&#32;Instance&#32;DPI:&#32;&quot;</emphasis>&#32;&lt;&lt;&#32;<link linkend="_class_instance_1afac2cbff1e241735f914ee0b95a04ea5">dpi</link>&#32;&lt;&lt;&#32;std::endl;
+<anchor xml:id="__l_d_player_instance_8cpp_source_1l00023"/>00023 &#32;&#32;&#32;&#32;std::cout&#32;&lt;&lt;&#32;<emphasis role="stringliteral">&quot;&#32;&#32;Instance&#32;Width:&#32;&quot;</emphasis>&#32;&lt;&lt;&#32;<link linkend="_class_instance_1ae9cb37b80e1b2586ea1136552f5471c7">width</link>&#32;&lt;&lt;&#32;std::endl;
+<anchor xml:id="__l_d_player_instance_8cpp_source_1l00024"/>00024 &#32;&#32;&#32;&#32;std::cout&#32;&lt;&lt;&#32;<emphasis role="stringliteral">&quot;&#32;&#32;Instance&#32;Height:&#32;&quot;</emphasis>&#32;&lt;&lt;&#32;<link linkend="_class_instance_1a5780eba6a75b91039e627799f07637ee">height</link>&#32;&lt;&lt;&#32;std::endl;
+<anchor xml:id="__l_d_player_instance_8cpp_source_1l00025"/>00025 &#32;&#32;&#32;&#32;std::cout&#32;&lt;&lt;&#32;<emphasis role="stringliteral">&quot;&#32;&#32;Instance&#32;Has&#32;Game:&#32;&quot;</emphasis>&#32;&lt;&lt;&#32;<link linkend="_class_instance_1a163202c6c66861f51cb2b0bffff2993d">hasGame</link>&#32;&lt;&lt;&#32;std::endl;
+<anchor xml:id="__l_d_player_instance_8cpp_source_1l00026"/>00026 &#32;&#32;&#32;&#32;std::cout&#32;&lt;&lt;&#32;<emphasis role="stringliteral">&quot;&#32;&#32;Instance&#32;Type&#32;:&#32;LDPlayer&quot;</emphasis>&#32;&lt;&lt;&#32;std::endl;
+<anchor xml:id="__l_d_player_instance_8cpp_source_1l00027"/>00027 
+<anchor xml:id="__l_d_player_instance_8cpp_source_1l00028"/>00028 }
+<anchor xml:id="__l_d_player_instance_8cpp_source_1l00029"/>00029 
+<anchor xml:id="__l_d_player_instance_8cpp_source_1l00030"/><link linkend="_class_l_d_player_instance_1aa242849ad43bed3a3075794bee9ea908">00030</link> <emphasis role="keywordtype">void</emphasis>&#32;<link linkend="_class_l_d_player_instance_1aa242849ad43bed3a3075794bee9ea908">LDPlayerInstance::setGlobalId</link>()
+<anchor xml:id="__l_d_player_instance_8cpp_source_1l00031"/>00031 {
+<anchor xml:id="__l_d_player_instance_8cpp_source_1l00032"/>00032 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<link linkend="_class_instance_1adbf9914982dfc15b3542b57eee68574d">instanceId</link>&#32;=&#32;<link linkend="_class_l_d_player_instance_1a6ceacb3c1904d3adf78e7be2b5cc32a6">engineName</link>;
+<anchor xml:id="__l_d_player_instance_8cpp_source_1l00033"/>00033 }
+<anchor xml:id="__l_d_player_instance_8cpp_source_1l00034"/>00034 
+<anchor xml:id="__l_d_player_instance_8cpp_source_1l00035"/>00035 
+<anchor xml:id="__l_d_player_instance_8cpp_source_1l00036"/>00036 
+</programlisting></section>

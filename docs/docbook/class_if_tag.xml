@@ -1,0 +1,173 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<section xmlns="http://docbook.org/ns/docbook" version="5.0" xmlns:xlink="http://www.w3.org/1999/xlink" xml:id="_class_if_tag" xml:lang="en-US">
+<title>IfTag Class Reference</title>
+<indexterm><primary>IfTag</primary></indexterm>
+<para>
+<computeroutput>#include &lt;Tags.h&gt;</computeroutput>
+</para>
+Inheritance diagram for IfTag:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_if_tag__inherit__graph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+Collaboration diagram for IfTag:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_if_tag__coll__graph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+<simplesect>
+    <title>Public Member Functions    </title>
+        <itemizedlist>
+            <listitem><para><link linkend="_class_if_tag_1af368199aa2d0c1c73b502a2e31e50422">IfTag</link> ()</para>
+</listitem>
+            <listitem><para><link linkend="_class_if_tag_1ac4faf383d1e376b48b2b87800ae68533">IfTag</link> (const <link linkend="_class_if_tag">IfTag</link> &amp;toCopy)</para>
+</listitem>
+            <listitem><para><link linkend="_class_if_tag_1a485bb6060294db75d5a14d5e984918a8">IfTag</link> (const std::shared_ptr&lt; <link linkend="_class_tag">Tag</link> &gt; &amp;<link linkend="_class_flow_tag_1ac26bb1c7e6e0543a02fc8ddb007548fa">condition</link>, const std::vector&lt; std::shared_ptr&lt; <link linkend="_class_tag">Tag</link> &gt; &gt; &amp;listTags)</para>
+</listitem>
+            <listitem><para>std::shared_ptr&lt; <link linkend="_class_if_tag">IfTag</link> &gt; <link linkend="_class_if_tag_1af88791bec65c6834513c926d1b07a119">clone</link> ()</para>
+</listitem>
+            <listitem><para>void <link linkend="_class_if_tag_1a1e3e94db1e59bead37cf55cd9c791c70">execute</link> () override</para>
+</listitem>
+        </itemizedlist>
+</simplesect>
+Public Member Functions inherited from <link linkend="_class_flow_tag">FlowTag</link>        <itemizedlist>
+            <listitem><para><link linkend="_class_flow_tag_1a012d94d66d6801e961a688229923ff56">FlowTag</link> ()</para>
+</listitem>
+            <listitem><para><link linkend="_class_flow_tag_1a68efd2baf60d2d06c2386f509681fd5b">FlowTag</link> (const <link linkend="_class_flow_tag">FlowTag</link> &amp;toCopy)</para>
+</listitem>
+            <listitem><para>std::shared_ptr&lt; <link linkend="_class_flow_tag">FlowTag</link> &gt; <link linkend="_class_flow_tag_1aab4741be53f0357c81cfb05f800f387e">clone</link> ()</para>
+</listitem>
+            <listitem><para>void <link linkend="_class_flow_tag_1ae6c96344984018fc5be3f56f89f2bf20">showTag</link> ()</para>
+</listitem>
+            <listitem><para>bool <link linkend="_class_flow_tag_1a31aaff76d66f8814e75a6e404c52028c">checkCondition</link> ()</para>
+</listitem>
+            <listitem><para>void <link linkend="_class_flow_tag_1a18d358b77d9233f31db5344531180e18">linkTags</link> ()</para>
+</listitem>
+        </itemizedlist>
+Public Member Functions inherited from <link linkend="_class_tag">Tag</link>        <itemizedlist>
+            <listitem><para><link linkend="_class_tag_1af2008705aa18e21efecb9e737b6b1a26">Tag</link> ()</para>
+</listitem>
+            <listitem><para><link linkend="_class_tag_1a5955a7ef3228749f5d264581d5c612ab">Tag</link> (const <link linkend="_class_tag">Tag</link> &amp;toCopy)</para>
+</listitem>
+            <listitem><para>std::shared_ptr&lt; <link linkend="_class_tag">Tag</link> &gt; <link linkend="_class_tag_1ae01465d32e9a52c777492048fd06bdd5">clone</link> ()</para>
+</listitem>
+        </itemizedlist>
+<simplesect>
+    <title>Additional Inherited Members    </title>
+Public Attributes inherited from <link linkend="_class_flow_tag">FlowTag</link>        <itemizedlist>
+            <listitem><para>bool <link linkend="_class_flow_tag_1a958c7f40de694587c20e8e3a317d3ac9">canReboot</link></para>
+</listitem>
+            <listitem><para>bool <link linkend="_class_flow_tag_1a2deb1b495dd3cc7ba7ae270259a25656">executed</link></para>
+</listitem>
+            <listitem><para>bool <link linkend="_class_flow_tag_1a27aa7ae58c701f6292ca80c42f0ddc42">forcedExit</link></para>
+</listitem>
+            <listitem><para>bool <link linkend="_class_flow_tag_1a05c9772461f3196076558af05e4da81a">rebootLoop</link></para>
+</listitem>
+            <listitem><para>std::shared_ptr&lt; <link linkend="_class_tag">Tag</link> &gt; <link linkend="_class_flow_tag_1ac26bb1c7e6e0543a02fc8ddb007548fa">condition</link></para>
+</listitem>
+            <listitem><para><link linkend="_class_flow_tag">FlowTag</link> * <link linkend="_class_flow_tag_1a55889e6a0b482006dc3940782e892b76">previousTag</link></para>
+</listitem>
+            <listitem><para><link linkend="_class_flow_tag">FlowTag</link> * <link linkend="_class_flow_tag_1abc8bd4efabae9ac712d76869d6ae7621">parentFlowTag</link></para>
+</listitem>
+            <listitem><para>std::vector&lt; std::shared_ptr&lt; <link linkend="_class_tag">Tag</link> &gt; &gt; <link linkend="_class_flow_tag_1a0912449920ad966d78eff6f0a46c50bf">nestedTags</link></para>
+</listitem>
+            <listitem><para>std::vector&lt; <link linkend="_class_flow_tag">FlowTag</link> * &gt; <link linkend="_class_flow_tag_1acd2b7db4f8634f186244c308cc2499c7">listPreviousFlowTags</link></para>
+</listitem>
+        </itemizedlist>
+</simplesect>
+Public Attributes inherited from <link linkend="_class_tag">Tag</link>        <itemizedlist>
+            <listitem><para>std::string <link linkend="_class_tag_1a2b252c6a602db12fcb53a67ce3e9ca1b">tagText</link></para>
+</listitem>
+            <listitem><para>int <link linkend="_class_tag_1a25aa826cd8818bcf0670164d285c3fdd">nbParents</link></para>
+</listitem>
+            <listitem><para>bool <link linkend="_class_tag_1a688d838bee273d203d6b16caaca3ed2b">doExecute</link></para>
+</listitem>
+            <listitem><para><link linkend="__tags_8h_1a7c4faef6b7c4a30990ee13030bc51880">TagType</link> <link linkend="_class_tag_1aa82f368cc2d55922ea75ba85020517c1">myType</link></para>
+</listitem>
+        </itemizedlist>
+<section>
+<title>Detailed Description</title>
+<para>
+Definition at line <link linkend="__tags_8h_source_1l00168">168</link> of file <link linkend="__tags_8h_source">Tags.h</link>.</para>
+</section>
+<section>
+<title>Constructor &amp; Destructor Documentation</title>
+<anchor xml:id="_class_if_tag_1af368199aa2d0c1c73b502a2e31e50422"/><section>
+    <title>IfTag()<computeroutput>[1/3]</computeroutput></title>
+<indexterm><primary>IfTag</primary><secondary>IfTag</secondary></indexterm>
+<indexterm><primary>IfTag</primary><secondary>IfTag</secondary></indexterm>
+<para><computeroutput>IfTag::IfTag ( )</computeroutput></para><para>
+Definition at line <link linkend="__tags_8cpp_source_1l00421">421</link> of file <link linkend="__tags_8cpp_source">Tags.cpp</link>.</para>
+</section>
+<anchor xml:id="_class_if_tag_1ac4faf383d1e376b48b2b87800ae68533"/><section>
+    <title>IfTag()<computeroutput>[2/3]</computeroutput></title>
+<indexterm><primary>IfTag</primary><secondary>IfTag</secondary></indexterm>
+<indexterm><primary>IfTag</primary><secondary>IfTag</secondary></indexterm>
+<para><computeroutput>IfTag::IfTag (const <link linkend="_class_if_tag">IfTag</link> &amp; toCopy)</computeroutput></para><para>
+Definition at line <link linkend="__tags_8cpp_source_1l00153">153</link> of file <link linkend="__tags_8cpp_source">Tags.cpp</link>.</para>
+</section>
+<anchor xml:id="_class_if_tag_1a485bb6060294db75d5a14d5e984918a8"/><section>
+    <title>IfTag()<computeroutput>[3/3]</computeroutput></title>
+<indexterm><primary>IfTag</primary><secondary>IfTag</secondary></indexterm>
+<indexterm><primary>IfTag</primary><secondary>IfTag</secondary></indexterm>
+<para><computeroutput>IfTag::IfTag (const std::shared_ptr&lt; <link linkend="_class_tag">Tag</link> &gt; &amp; condition, const std::vector&lt; std::shared_ptr&lt; <link linkend="_class_tag">Tag</link> &gt; &gt; &amp; listTags)</computeroutput></para><para>
+Definition at line <link linkend="__tags_8cpp_source_1l00443">443</link> of file <link linkend="__tags_8cpp_source">Tags.cpp</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_if_tag_a485bb6060294db75d5a14d5e984918a8_cgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+</section>
+<section>
+<title>Member Function Documentation</title>
+<anchor xml:id="_class_if_tag_1af88791bec65c6834513c926d1b07a119"/><section>
+    <title>clone()</title>
+<indexterm><primary>clone</primary><secondary>IfTag</secondary></indexterm>
+<indexterm><primary>IfTag</primary><secondary>clone</secondary></indexterm>
+<para><computeroutput>std::shared_ptr&lt; <link linkend="_class_if_tag">IfTag</link> &gt; IfTag::clone ( )</computeroutput></para><para>
+Definition at line <link linkend="__tags_8cpp_source_1l00039">39</link> of file <link linkend="__tags_8cpp_source">Tags.cpp</link>.</para>
+Here is the caller graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_if_tag_af88791bec65c6834513c926d1b07a119_icgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_class_if_tag_1a1e3e94db1e59bead37cf55cd9c791c70"/><section>
+    <title>execute()</title>
+<indexterm><primary>execute</primary><secondary>IfTag</secondary></indexterm>
+<indexterm><primary>IfTag</primary><secondary>execute</secondary></indexterm>
+<para><computeroutput>void IfTag::execute ( )<computeroutput>[override]</computeroutput>, <computeroutput>[virtual]</computeroutput></computeroutput></para><para>
+Reimplemented from <link linkend="_class_tag_1a54054f3c9db4decb422972460bbb34c3">Tag</link>.</para>
+<para>
+Definition at line <link linkend="__tags_8cpp_source_1l00428">428</link> of file <link linkend="__tags_8cpp_source">Tags.cpp</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_if_tag_a1e3e94db1e59bead37cf55cd9c791c70_cgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<para>
+The documentation for this class was generated from the following files:</para>
+src/<link linkend="__tags_8h">Tags.h</link>src/<link linkend="__tags_8cpp">Tags.cpp</link></section>
+</section>

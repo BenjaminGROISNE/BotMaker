@@ -1,0 +1,796 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<section xmlns="http://docbook.org/ns/docbook" version="5.0" xmlns:xlink="http://www.w3.org/1999/xlink" xml:id="__tags_8h" xml:lang="en-US">
+<title>src/Tags.h File Reference</title>
+<indexterm><primary>src/Tags.h</primary></indexterm>
+<programlisting linenumbering="unnumbered">#include &lt;iostream&gt;<?linebreak?>#include &lt;string&gt;<?linebreak?>#include &lt;vector&gt;<?linebreak?>#include &quot;Units.h&quot;<?linebreak?>#include &lt;thread&gt;<?linebreak?>#include &lt;typeinfo&gt;<?linebreak?>#include &lt;algorithm&gt;<?linebreak?></programlisting>Include dependency graph for Tags.h:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="_tags_8h__incl.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+This graph shows which files directly or indirectly include this file:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="_tags_8h__dep__incl.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+<simplesect>
+    <title>Classes    </title>
+        <itemizedlist>
+            <listitem><para>struct <link linkend="_struct_user_variables">UserVariables</link></para>
+</listitem>
+            <listitem><para>class <link linkend="_class_tag">Tag</link></para>
+</listitem>
+            <listitem><para>class <link linkend="_class_flow_tag">FlowTag</link></para>
+</listitem>
+            <listitem><para>class <link linkend="_class_main_tag">MainTag</link></para>
+</listitem>
+            <listitem><para>class <link linkend="_class_do_loop_tag">DoLoopTag</link></para>
+</listitem>
+            <listitem><para>class <link linkend="_class_if_tag">IfTag</link></para>
+</listitem>
+            <listitem><para>class <link linkend="_class_else_tag">ElseTag</link></para>
+</listitem>
+            <listitem><para>class <link linkend="_class_elif_tag">ElifTag</link></para>
+</listitem>
+            <listitem><para>class <link linkend="_class_loop_tag">LoopTag</link></para>
+</listitem>
+            <listitem><para>class <link linkend="_class_case_tag">CaseTag</link></para>
+</listitem>
+            <listitem><para>class <link linkend="_class_switch_tag">SwitchTag</link></para>
+</listitem>
+            <listitem><para>class <link linkend="_class_break_tag">BreakTag</link></para>
+</listitem>
+            <listitem><para>class <link linkend="_class_continue_tag">ContinueTag</link></para>
+</listitem>
+            <listitem><para>class <link linkend="_class_store_tag">StoreTag&lt; T &gt;</link></para>
+</listitem>
+            <listitem><para>class <link linkend="_class_store_tag_3_01std_1_1vector_3_01_t_01_4_01_4">StoreTag&lt; std::vector&lt; T &gt; &gt;</link></para>
+</listitem>
+            <listitem><para>class <link linkend="_class_load_tag">LoadTag&lt; T &gt;</link></para>
+</listitem>
+            <listitem><para>class <link linkend="_class_function_tag">FunctionTag</link></para>
+</listitem>
+            <listitem><para>class <link linkend="_class_click_tag">ClickTag</link></para>
+</listitem>
+            <listitem><para>class <link linkend="_class_swipe_tag">SwipeTag</link></para>
+</listitem>
+            <listitem><para>class <link linkend="_class_time_type_tag">TimeTypeTag</link></para>
+</listitem>
+            <listitem><para>class <link linkend="_class_compare_type_tag">CompareTypeTag</link></para>
+</listitem>
+            <listitem><para>class <link linkend="_class_find_tag">FindTag</link></para>
+</listitem>
+            <listitem><para>class <link linkend="_class_find_click_tag">FindClickTag</link></para>
+</listitem>
+            <listitem><para>class <link linkend="_class_find_swipe_tag">FindSwipeTag</link></para>
+</listitem>
+            <listitem><para>class <link linkend="_class_list_tag">ListTag&lt; T &gt;</link></para>
+</listitem>
+            <listitem><para>class <link linkend="_class_dim_x_tag">DimXTag</link></para>
+</listitem>
+            <listitem><para>class <link linkend="_class_dim_y_tag">DimYTag</link></para>
+</listitem>
+            <listitem><para>class <link linkend="_class_wait_tag">WaitTag</link></para>
+</listitem>
+            <listitem><para>class <link linkend="_class_print_tag">PrintTag&lt; T &gt;</link></para>
+</listitem>
+            <listitem><para>class <link linkend="_class_bool_tag">BoolTag</link></para>
+</listitem>
+            <listitem><para>class <link linkend="_class_int_tag">IntTag</link></para>
+</listitem>
+            <listitem><para>class <link linkend="_class_float_tag">FloatTag</link></para>
+</listitem>
+            <listitem><para>class <link linkend="_class_not_tag">NotTag</link></para>
+</listitem>
+            <listitem><para>class <link linkend="_class_and_tag">AndTag</link></para>
+</listitem>
+            <listitem><para>class <link linkend="_class_or_tag">OrTag</link></para>
+</listitem>
+            <listitem><para>class <link linkend="_class_compare_tag">CompareTag&lt; T &gt;</link></para>
+</listitem>
+            <listitem><para>class <link linkend="_class_coord_tag">CoordTag</link></para>
+</listitem>
+            <listitem><para>class <link linkend="_class_zone_tag">ZoneTag</link></para>
+</listitem>
+            <listitem><para>class <link linkend="_class_direction_tag">DirectionTag</link></para>
+</listitem>
+            <listitem><para>class <link linkend="_class_string_tag">StringTag</link></para>
+</listitem>
+        </itemizedlist>
+</simplesect>
+<simplesect>
+    <title>Enumerations    </title>
+        <itemizedlist>
+            <listitem><para>enum <link linkend="__tags_8h_1a36a419f0b50a0c1d2d4cf712e0ba64cc">ReturnType</link> { <link linkend="__tags_8h_1a36a419f0b50a0c1d2d4cf712e0ba64cca7a725f13af144bdef532d0389ba75e0d">ONE</link>
+, <link linkend="__tags_8h_1a36a419f0b50a0c1d2d4cf712e0ba64ccaaf8c96015cff6125fed1860ea4e4e719">MULTIPLE</link>
+ }</para>
+</listitem>
+            <listitem><para>enum <link linkend="__tags_8h_1a15cc00b2ac3048d3b89959ced9ba0520">SearchType</link> { <link linkend="__tags_8h_1a15cc00b2ac3048d3b89959ced9ba0520affb51e7936dae84beb686c4d1bdc4f84">COMPARE</link>
+, <link linkend="__tags_8h_1a15cc00b2ac3048d3b89959ced9ba0520a50d1448013c6f17125caee18aa418af7">NORMAL</link>
+ }</para>
+</listitem>
+            <listitem><para>enum <link linkend="__tags_8h_1a442abf81d641870057467f30b19b9323">SwipeType</link> { <link linkend="__tags_8h_1a442abf81d641870057467f30b19b9323aeb3861f1e747cdc9fead087b7f0cd98e">RELATIVELY</link>
+, <link linkend="__tags_8h_1a442abf81d641870057467f30b19b9323a6ea84cd2c3afcfbb9a53e6e5098d6212">ABSOLUTELY</link>
+ }</para>
+</listitem>
+            <listitem><para>enum <link linkend="__tags_8h_1ae502e73817ed297324627b0d8f76eedd">Dimensions</link> { <link linkend="__tags_8h_1ae502e73817ed297324627b0d8f76eedda09c0423935778ad8da663fd454ef4255">ONEDIM</link>
+, <link linkend="__tags_8h_1ae502e73817ed297324627b0d8f76eeddad8e80b4e6414436d31b920c585e3c6a9">TWODIM</link>
+ }</para>
+</listitem>
+            <listitem><para>enum <link linkend="__tags_8h_1a7c4faef6b7c4a30990ee13030bc51880">TagType</link> { <?linebreak?><link linkend="__tags_8h_1a7c4faef6b7c4a30990ee13030bc51880ab0db3c4898b28269905a7a00a0133812">TAG</link>
+, <link linkend="__tags_8h_1a7c4faef6b7c4a30990ee13030bc51880ae5548b8733dc2349383cdc8ecc198509">FLOWTAG</link>
+, <link linkend="__tags_8h_1a7c4faef6b7c4a30990ee13030bc51880aad89cad9f7bc5a2194360094fa54b7d5">DATATYPETAG</link>
+, <link linkend="__tags_8h_1a7c4faef6b7c4a30990ee13030bc51880abe7decd122fc7b4952d995b3dec364e8">COMPARETYPETAG</link>
+, <?linebreak?><link linkend="__tags_8h_1a7c4faef6b7c4a30990ee13030bc51880a83b8e92d167f597072beb3e56e87a60c">TIMETYPETAG</link>
+, <link linkend="__tags_8h_1a7c4faef6b7c4a30990ee13030bc51880a4e19883d1a3065c2a358870cb3dfb4a9">DIMENSIONTAG</link>
+, <link linkend="__tags_8h_1a7c4faef6b7c4a30990ee13030bc51880a0807368ef7b3e8a0bd3f6473571d1482">INTEGERTAG</link>
+, <link linkend="__tags_8h_1a7c4faef6b7c4a30990ee13030bc51880a92977a6f3d797269d54c323ad37db8cc">FLOATTAG</link>
+, <?linebreak?><link linkend="__tags_8h_1a7c4faef6b7c4a30990ee13030bc51880a8a28726c5abfda0da111d73995ee075a">BOOLTAG</link>
+, <link linkend="__tags_8h_1a7c4faef6b7c4a30990ee13030bc51880a14f9ad7c03fde1738ae6de4a840be4d6">ANDTAG</link>
+, <link linkend="__tags_8h_1a7c4faef6b7c4a30990ee13030bc51880a13bce77d85689a0d7d6d0b522a8cd862">NOTTAG</link>
+, <link linkend="__tags_8h_1a7c4faef6b7c4a30990ee13030bc51880a199d52ad0ed0430bcc91286d139ca162">ORTAG</link>
+, <?linebreak?><link linkend="__tags_8h_1a7c4faef6b7c4a30990ee13030bc51880aab7c3d07f8bb9d4d3862d231bfdf5918">COMPARETAG</link>
+, <link linkend="__tags_8h_1a7c4faef6b7c4a30990ee13030bc51880a35a69f15481a75a963ad3b185f76f73d">WAITTAG</link>
+, <link linkend="__tags_8h_1a7c4faef6b7c4a30990ee13030bc51880a11d91d6f4c67f9381f1a4dece3ce5ff5">STRINGTAG</link>
+, <link linkend="__tags_8h_1a7c4faef6b7c4a30990ee13030bc51880ab62b1ecd04a9b00d5d28af3b0493a5b2">COORDSTAG</link>
+, <?linebreak?><link linkend="__tags_8h_1a7c4faef6b7c4a30990ee13030bc51880a96d60eef4da56925cdc29046e7cd2ac1">DIRECTIONTAG</link>
+, <link linkend="__tags_8h_1a7c4faef6b7c4a30990ee13030bc51880a86843de677434d772038ccd7f22bc632">ZONETAG</link>
+, <link linkend="__tags_8h_1a7c4faef6b7c4a30990ee13030bc51880a16cdbd7bcce4c516cb8b0224ba73d9b5">LISTTAG</link>
+, <link linkend="__tags_8h_1a7c4faef6b7c4a30990ee13030bc51880ad53b271ba2444c954771d2f70f55f452">IFTAG</link>
+, <?linebreak?><link linkend="__tags_8h_1a7c4faef6b7c4a30990ee13030bc51880aed5a0238da5f2aa3abb28ad0c8bcd303">LOOPTAG</link>
+, <link linkend="__tags_8h_1a7c4faef6b7c4a30990ee13030bc51880ac1f64174c4e4fe4438f3d49973ff0f61">DOLOOPTAG</link>
+, <link linkend="__tags_8h_1a7c4faef6b7c4a30990ee13030bc51880a148700a9e2bd2c6003aa4b158be6f8a6">SWITCHTAG</link>
+, <link linkend="__tags_8h_1a7c4faef6b7c4a30990ee13030bc51880ad420138b598cde44c75904fbe6f9f93d">DEFAULTTAG</link>
+, <?linebreak?><link linkend="__tags_8h_1a7c4faef6b7c4a30990ee13030bc51880ac1b0f5b032b122acbb1837921c7aceaf">ELSETAG</link>
+, <link linkend="__tags_8h_1a7c4faef6b7c4a30990ee13030bc51880a17a57baafed17ad57996d2f66057d2aa">ELIFTAG</link>
+, <link linkend="__tags_8h_1a7c4faef6b7c4a30990ee13030bc51880a13d94ca5c9832f8cbbe7535c23dd8a27">BREAKTAG</link>
+, <link linkend="__tags_8h_1a7c4faef6b7c4a30990ee13030bc51880ac8a133daf898a369769587c9ce75793d">CONTINUETAG</link>
+, <?linebreak?><link linkend="__tags_8h_1a7c4faef6b7c4a30990ee13030bc51880ac55b2b4b55ab3c2b2292d0fdaff71c69">CASETAG</link>
+, <link linkend="__tags_8h_1a7c4faef6b7c4a30990ee13030bc51880a552df1d14502610c8d2fe012dec1a82e">LOADTAG</link>
+, <link linkend="__tags_8h_1a7c4faef6b7c4a30990ee13030bc51880a490e7b6af7e57bdf569a25d8a2e333ce">STORETAG</link>
+, <link linkend="__tags_8h_1a7c4faef6b7c4a30990ee13030bc51880a94eb8f57593204f41750d5c451872b26">MAINTAG</link>
+, <?linebreak?><link linkend="__tags_8h_1a7c4faef6b7c4a30990ee13030bc51880aa39dd95065e70abf6cb60bd6e5a45af8">PRINTTAG</link>
+ }</para>
+</listitem>
+            <listitem><para>enum <link linkend="__tags_8h_1a06411e4b1d6791157bb089cc368b11d3">TimeType</link> { <link linkend="__tags_8h_1a06411e4b1d6791157bb089cc368b11d3a26f8ff0cdd909ee179a0ed06adfc4a0b">MINUTE</link>
+, <link linkend="__tags_8h_1a06411e4b1d6791157bb089cc368b11d3a7cb36ff0a80f238d5b987d9250d369e3">SECOND</link>
+, <link linkend="__tags_8h_1a06411e4b1d6791157bb089cc368b11d3a449692f8f5ec911ed443daf65d574c88">MILLISECOND</link>
+ }</para>
+</listitem>
+            <listitem><para>enum <link linkend="__tags_8h_1afbc5396d9a88c41d6aeb522b9f06f426">CompareType</link> { <?linebreak?><link linkend="__tags_8h_1afbc5396d9a88c41d6aeb522b9f06f426a59a84258a4cb9025b567ee5139455029">EQUAL</link>
+, <link linkend="__tags_8h_1afbc5396d9a88c41d6aeb522b9f06f426a9be4c1f75b13960446f5f5902c04d7ce">NOTEQUAL</link>
+, <link linkend="__tags_8h_1afbc5396d9a88c41d6aeb522b9f06f426a25b5ca2f56d99ba6ffcb5316adac34c1">GREATER</link>
+, <link linkend="__tags_8h_1afbc5396d9a88c41d6aeb522b9f06f426af1c37e6bce98d9d9e53f0b44eff7b397">LESSER</link>
+, <?linebreak?><link linkend="__tags_8h_1afbc5396d9a88c41d6aeb522b9f06f426a306b74e8af588fd242b4177069af1f19">GREATEREQUAL</link>
+, <link linkend="__tags_8h_1afbc5396d9a88c41d6aeb522b9f06f426a6b63f1a64e85065a15ea897481e26733">LESSEREQUAL</link>
+ }</para>
+</listitem>
+        </itemizedlist>
+</simplesect>
+<simplesect>
+    <title>Functions    </title>
+        <itemizedlist>
+            <listitem><para>int <link linkend="__tags_8h_1aa5f87364fd0e0374ff582e04db0e6a31">executeInt</link> (const std::shared_ptr&lt; <link linkend="_class_tag">Tag</link> &gt; &amp;parameter)</para>
+</listitem>
+            <listitem><para>float <link linkend="__tags_8h_1ac1dada7a37a3c93abfa74f5d178e096d">executeFloat</link> (const std::shared_ptr&lt; <link linkend="_class_tag">Tag</link> &gt; &amp;parameter)</para>
+</listitem>
+            <listitem><para>std::string <link linkend="__tags_8h_1a4bab8267d7e817b59ed55ad288131821">executeString</link> (const std::shared_ptr&lt; <link linkend="_class_tag">Tag</link> &gt; &amp;parameter)</para>
+</listitem>
+            <listitem><para><link linkend="_struct_zone">Zone</link> <link linkend="__tags_8h_1a0b74b4679c8d4d8c31c482a320e785dd">executeZone</link> (const std::shared_ptr&lt; <link linkend="_class_tag">Tag</link> &gt; &amp;parameter)</para>
+</listitem>
+            <listitem><para><link linkend="_struct_coord">Coord</link> <link linkend="__tags_8h_1a64c0d9752378c22669792b3c89edcd8e">executeCoord</link> (const std::shared_ptr&lt; <link linkend="_class_tag">Tag</link> &gt; &amp;parameter)</para>
+</listitem>
+            <listitem><para><link linkend="__units_8h_1a224b9163917ac32fc95a60d8c1eec3aa">Direction</link> <link linkend="__tags_8h_1adb0c764ef1f20ef3d860516a5040b43a">executeDirection</link> (const std::shared_ptr&lt; <link linkend="_class_tag">Tag</link> &gt; &amp;parameter)</para>
+</listitem>
+            <listitem><para>bool <link linkend="__tags_8h_1a760d219c228224543b5e154be938a6c2">executeBool</link> (const std::shared_ptr&lt; <link linkend="_class_tag">Tag</link> &gt; &amp;parameter)</para>
+</listitem>
+            <listitem><para>template&lt;typename <link linkend="__units_8h_1a2b350cb683584e1f7db6c78f698c161ba21f40778b7db9343a6ca75ec2c41ccce">T</link> &gt; </para><para>std::vector&lt; <link linkend="__units_8h_1a2b350cb683584e1f7db6c78f698c161ba21f40778b7db9343a6ca75ec2c41ccce">T</link> &gt; <link linkend="__tags_8h_1a663afb00e3e4be1f6f395904d5ed7dea">executeList</link> (std::vector&lt; std::shared_ptr&lt; <link linkend="_class_tag">Tag</link> &gt; &gt;listTags)</para>
+</listitem>
+            <listitem><para>std::shared_ptr&lt; <link linkend="_class_float_tag">FloatTag</link> &gt; <link linkend="__tags_8h_1a348690c518cc923ed88d56c2d18f6f7d">getFloatTag</link> (std::shared_ptr&lt; <link linkend="_class_tag">Tag</link> &gt; tag)</para>
+</listitem>
+            <listitem><para>std::shared_ptr&lt; <link linkend="_class_int_tag">IntTag</link> &gt; <link linkend="__tags_8h_1ad39e58dec05b3a0be440334312e1b0a8">getIntTag</link> (std::shared_ptr&lt; <link linkend="_class_tag">Tag</link> &gt; tag)</para>
+</listitem>
+            <listitem><para>std::shared_ptr&lt; <link linkend="_class_string_tag">StringTag</link> &gt; <link linkend="__tags_8h_1a6d2d78e110de0d5def95ebf64150ef48">getStringTag</link> (std::shared_ptr&lt; <link linkend="_class_tag">Tag</link> &gt; tag)</para>
+</listitem>
+            <listitem><para>std::shared_ptr&lt; <link linkend="_class_direction_tag">DirectionTag</link> &gt; <link linkend="__tags_8h_1a51e57c878c8df7f38ce915b45d3dc451">getDirectionTag</link> (std::shared_ptr&lt; <link linkend="_class_tag">Tag</link> &gt; tag)</para>
+</listitem>
+            <listitem><para>std::shared_ptr&lt; <link linkend="_class_coord_tag">CoordTag</link> &gt; <link linkend="__tags_8h_1aa6a6d33b38f91d7bc097749918417cfe">getCoordTag</link> (std::shared_ptr&lt; <link linkend="_class_tag">Tag</link> &gt; tag)</para>
+</listitem>
+            <listitem><para>std::shared_ptr&lt; <link linkend="_class_zone_tag">ZoneTag</link> &gt; <link linkend="__tags_8h_1a87514b166197bc785f979c9b79214abb">getZoneTag</link> (std::shared_ptr&lt; <link linkend="_class_tag">Tag</link> &gt; tag)</para>
+</listitem>
+            <listitem><para>std::shared_ptr&lt; <link linkend="_class_flow_tag">FlowTag</link> &gt; <link linkend="__tags_8h_1a2a49ee7ef9d60abe24ab727b3df6ec9e">getFlowTag</link> (std::shared_ptr&lt; <link linkend="_class_tag">Tag</link> &gt; tag)</para>
+</listitem>
+            <listitem><para>template&lt;typename <link linkend="__units_8h_1a2b350cb683584e1f7db6c78f698c161ba21f40778b7db9343a6ca75ec2c41ccce">T</link> &gt; </para><para>std::shared_ptr&lt; <link linkend="_class_compare_tag">CompareTag</link>&lt; <link linkend="__units_8h_1a2b350cb683584e1f7db6c78f698c161ba21f40778b7db9343a6ca75ec2c41ccce">T</link> &gt; &gt; <link linkend="__tags_8h_1a084ac86e8860745ecc3d46c0a0ec9043">getCompareTag</link> (std::shared_ptr&lt; <link linkend="_class_tag">Tag</link> &gt; tag)</para>
+</listitem>
+            <listitem><para>std::shared_ptr&lt; <link linkend="_class_bool_tag">BoolTag</link> &gt; <link linkend="__tags_8h_1ada36a59d6eb45b5f395f63dcebd48b61">getBoolTag</link> (std::shared_ptr&lt; <link linkend="_class_tag">Tag</link> &gt; tag)</para>
+</listitem>
+            <listitem><para><link linkend="__units_8h_1a224b9163917ac32fc95a60d8c1eec3aa">Direction</link> <link linkend="__tags_8h_1a851e1fc086da436b23ab4e5baf444590">getDirection</link> (std::string d)</para>
+</listitem>
+            <listitem><para>std::string <link linkend="__tags_8h_1ad05fc0cffadc5a4fad1c4bea39546bb8">getDirection</link> (<link linkend="__units_8h_1a224b9163917ac32fc95a60d8c1eec3aa">Direction</link> d)</para>
+</listitem>
+        </itemizedlist>
+</simplesect>
+<section>
+<title>Enumeration Type Documentation</title>
+<anchor xml:id="__tags_8h_1afbc5396d9a88c41d6aeb522b9f06f426"/><section>
+    <title>CompareType</title>
+<indexterm><primary>CompareType</primary><secondary>Tags.h</secondary></indexterm>
+<indexterm><primary>Tags.h</primary><secondary>CompareType</secondary></indexterm>
+<para><computeroutput>enum <link linkend="__tags_8h_1afbc5396d9a88c41d6aeb522b9f06f426">CompareType</link></computeroutput></para><informaltable frame="all">
+<title>Enumerator</title>
+    <tgroup cols="2" align="left" colsep="1" rowsep="1">
+      <colspec colname='c1'/>
+      <colspec colname='c2'/>
+<tbody>
+<row><entry><indexterm><primary>EQUAL</primary><secondary>Tags.h</secondary></indexterm>
+<indexterm><primary>Tags.h</primary><secondary>EQUAL</secondary></indexterm>
+<anchor xml:id="__tags_8h_1afbc5396d9a88c41d6aeb522b9f06f426a59a84258a4cb9025b567ee5139455029"/>EQUAL</entry><entry></entry></row><row><entry><indexterm><primary>NOTEQUAL</primary><secondary>Tags.h</secondary></indexterm>
+<indexterm><primary>Tags.h</primary><secondary>NOTEQUAL</secondary></indexterm>
+<anchor xml:id="__tags_8h_1afbc5396d9a88c41d6aeb522b9f06f426a9be4c1f75b13960446f5f5902c04d7ce"/>NOTEQUAL</entry><entry></entry></row><row><entry><indexterm><primary>GREATER</primary><secondary>Tags.h</secondary></indexterm>
+<indexterm><primary>Tags.h</primary><secondary>GREATER</secondary></indexterm>
+<anchor xml:id="__tags_8h_1afbc5396d9a88c41d6aeb522b9f06f426a25b5ca2f56d99ba6ffcb5316adac34c1"/>GREATER</entry><entry></entry></row><row><entry><indexterm><primary>LESSER</primary><secondary>Tags.h</secondary></indexterm>
+<indexterm><primary>Tags.h</primary><secondary>LESSER</secondary></indexterm>
+<anchor xml:id="__tags_8h_1afbc5396d9a88c41d6aeb522b9f06f426af1c37e6bce98d9d9e53f0b44eff7b397"/>LESSER</entry><entry></entry></row><row><entry><indexterm><primary>GREATEREQUAL</primary><secondary>Tags.h</secondary></indexterm>
+<indexterm><primary>Tags.h</primary><secondary>GREATEREQUAL</secondary></indexterm>
+<anchor xml:id="__tags_8h_1afbc5396d9a88c41d6aeb522b9f06f426a306b74e8af588fd242b4177069af1f19"/>GREATEREQUAL</entry><entry></entry></row><row><entry><indexterm><primary>LESSEREQUAL</primary><secondary>Tags.h</secondary></indexterm>
+<indexterm><primary>Tags.h</primary><secondary>LESSEREQUAL</secondary></indexterm>
+<anchor xml:id="__tags_8h_1afbc5396d9a88c41d6aeb522b9f06f426a6b63f1a64e85065a15ea897481e26733"/>LESSEREQUAL</entry><entry></entry></row>    </tbody>
+    </tgroup>
+</informaltable>
+<para>
+Definition at line <link linkend="__tags_8h_source_1l00075">75</link> of file <link linkend="__tags_8h_source">Tags.h</link>.</para>
+</section>
+<anchor xml:id="__tags_8h_1ae502e73817ed297324627b0d8f76eedd"/><section>
+    <title>Dimensions</title>
+<indexterm><primary>Dimensions</primary><secondary>Tags.h</secondary></indexterm>
+<indexterm><primary>Tags.h</primary><secondary>Dimensions</secondary></indexterm>
+<para><computeroutput>enum <link linkend="__tags_8h_1ae502e73817ed297324627b0d8f76eedd">Dimensions</link></computeroutput></para><informaltable frame="all">
+<title>Enumerator</title>
+    <tgroup cols="2" align="left" colsep="1" rowsep="1">
+      <colspec colname='c1'/>
+      <colspec colname='c2'/>
+<tbody>
+<row><entry><indexterm><primary>ONEDIM</primary><secondary>Tags.h</secondary></indexterm>
+<indexterm><primary>Tags.h</primary><secondary>ONEDIM</secondary></indexterm>
+<anchor xml:id="__tags_8h_1ae502e73817ed297324627b0d8f76eedda09c0423935778ad8da663fd454ef4255"/>ONEDIM</entry><entry></entry></row><row><entry><indexterm><primary>TWODIM</primary><secondary>Tags.h</secondary></indexterm>
+<indexterm><primary>Tags.h</primary><secondary>TWODIM</secondary></indexterm>
+<anchor xml:id="__tags_8h_1ae502e73817ed297324627b0d8f76eeddad8e80b4e6414436d31b920c585e3c6a9"/>TWODIM</entry><entry></entry></row>    </tbody>
+    </tgroup>
+</informaltable>
+<para>
+Definition at line <link linkend="__tags_8h_source_1l00063">63</link> of file <link linkend="__tags_8h_source">Tags.h</link>.</para>
+</section>
+<anchor xml:id="__tags_8h_1a36a419f0b50a0c1d2d4cf712e0ba64cc"/><section>
+    <title>ReturnType</title>
+<indexterm><primary>ReturnType</primary><secondary>Tags.h</secondary></indexterm>
+<indexterm><primary>Tags.h</primary><secondary>ReturnType</secondary></indexterm>
+<para><computeroutput>enum <link linkend="__tags_8h_1a36a419f0b50a0c1d2d4cf712e0ba64cc">ReturnType</link></computeroutput></para><informaltable frame="all">
+<title>Enumerator</title>
+    <tgroup cols="2" align="left" colsep="1" rowsep="1">
+      <colspec colname='c1'/>
+      <colspec colname='c2'/>
+<tbody>
+<row><entry><indexterm><primary>ONE</primary><secondary>Tags.h</secondary></indexterm>
+<indexterm><primary>Tags.h</primary><secondary>ONE</secondary></indexterm>
+<anchor xml:id="__tags_8h_1a36a419f0b50a0c1d2d4cf712e0ba64cca7a725f13af144bdef532d0389ba75e0d"/>ONE</entry><entry></entry></row><row><entry><indexterm><primary>MULTIPLE</primary><secondary>Tags.h</secondary></indexterm>
+<indexterm><primary>Tags.h</primary><secondary>MULTIPLE</secondary></indexterm>
+<anchor xml:id="__tags_8h_1a36a419f0b50a0c1d2d4cf712e0ba64ccaaf8c96015cff6125fed1860ea4e4e719"/>MULTIPLE</entry><entry></entry></row>    </tbody>
+    </tgroup>
+</informaltable>
+<para>
+Definition at line <link linkend="__tags_8h_source_1l00050">50</link> of file <link linkend="__tags_8h_source">Tags.h</link>.</para>
+</section>
+<anchor xml:id="__tags_8h_1a15cc00b2ac3048d3b89959ced9ba0520"/><section>
+    <title>SearchType</title>
+<indexterm><primary>SearchType</primary><secondary>Tags.h</secondary></indexterm>
+<indexterm><primary>Tags.h</primary><secondary>SearchType</secondary></indexterm>
+<para><computeroutput>enum <link linkend="__tags_8h_1a15cc00b2ac3048d3b89959ced9ba0520">SearchType</link></computeroutput></para><informaltable frame="all">
+<title>Enumerator</title>
+    <tgroup cols="2" align="left" colsep="1" rowsep="1">
+      <colspec colname='c1'/>
+      <colspec colname='c2'/>
+<tbody>
+<row><entry><indexterm><primary>COMPARE</primary><secondary>Tags.h</secondary></indexterm>
+<indexterm><primary>Tags.h</primary><secondary>COMPARE</secondary></indexterm>
+<anchor xml:id="__tags_8h_1a15cc00b2ac3048d3b89959ced9ba0520affb51e7936dae84beb686c4d1bdc4f84"/>COMPARE</entry><entry></entry></row><row><entry><indexterm><primary>NORMAL</primary><secondary>Tags.h</secondary></indexterm>
+<indexterm><primary>Tags.h</primary><secondary>NORMAL</secondary></indexterm>
+<anchor xml:id="__tags_8h_1a15cc00b2ac3048d3b89959ced9ba0520a50d1448013c6f17125caee18aa418af7"/>NORMAL</entry><entry></entry></row>    </tbody>
+    </tgroup>
+</informaltable>
+<para>
+Definition at line <link linkend="__tags_8h_source_1l00054">54</link> of file <link linkend="__tags_8h_source">Tags.h</link>.</para>
+</section>
+<anchor xml:id="__tags_8h_1a442abf81d641870057467f30b19b9323"/><section>
+    <title>SwipeType</title>
+<indexterm><primary>SwipeType</primary><secondary>Tags.h</secondary></indexterm>
+<indexterm><primary>Tags.h</primary><secondary>SwipeType</secondary></indexterm>
+<para><computeroutput>enum <link linkend="__tags_8h_1a442abf81d641870057467f30b19b9323">SwipeType</link></computeroutput></para><informaltable frame="all">
+<title>Enumerator</title>
+    <tgroup cols="2" align="left" colsep="1" rowsep="1">
+      <colspec colname='c1'/>
+      <colspec colname='c2'/>
+<tbody>
+<row><entry><indexterm><primary>RELATIVELY</primary><secondary>Tags.h</secondary></indexterm>
+<indexterm><primary>Tags.h</primary><secondary>RELATIVELY</secondary></indexterm>
+<anchor xml:id="__tags_8h_1a442abf81d641870057467f30b19b9323aeb3861f1e747cdc9fead087b7f0cd98e"/>RELATIVELY</entry><entry></entry></row><row><entry><indexterm><primary>ABSOLUTELY</primary><secondary>Tags.h</secondary></indexterm>
+<indexterm><primary>Tags.h</primary><secondary>ABSOLUTELY</secondary></indexterm>
+<anchor xml:id="__tags_8h_1a442abf81d641870057467f30b19b9323a6ea84cd2c3afcfbb9a53e6e5098d6212"/>ABSOLUTELY</entry><entry></entry></row>    </tbody>
+    </tgroup>
+</informaltable>
+<para>
+Definition at line <link linkend="__tags_8h_source_1l00058">58</link> of file <link linkend="__tags_8h_source">Tags.h</link>.</para>
+</section>
+<anchor xml:id="__tags_8h_1a7c4faef6b7c4a30990ee13030bc51880"/><section>
+    <title>TagType</title>
+<indexterm><primary>TagType</primary><secondary>Tags.h</secondary></indexterm>
+<indexterm><primary>Tags.h</primary><secondary>TagType</secondary></indexterm>
+<para><computeroutput>enum <link linkend="__tags_8h_1a7c4faef6b7c4a30990ee13030bc51880">TagType</link></computeroutput></para><informaltable frame="all">
+<title>Enumerator</title>
+    <tgroup cols="2" align="left" colsep="1" rowsep="1">
+      <colspec colname='c1'/>
+      <colspec colname='c2'/>
+<tbody>
+<row><entry><indexterm><primary>TAG</primary><secondary>Tags.h</secondary></indexterm>
+<indexterm><primary>Tags.h</primary><secondary>TAG</secondary></indexterm>
+<anchor xml:id="__tags_8h_1a7c4faef6b7c4a30990ee13030bc51880ab0db3c4898b28269905a7a00a0133812"/>TAG</entry><entry></entry></row><row><entry><indexterm><primary>FLOWTAG</primary><secondary>Tags.h</secondary></indexterm>
+<indexterm><primary>Tags.h</primary><secondary>FLOWTAG</secondary></indexterm>
+<anchor xml:id="__tags_8h_1a7c4faef6b7c4a30990ee13030bc51880ae5548b8733dc2349383cdc8ecc198509"/>FLOWTAG</entry><entry></entry></row><row><entry><indexterm><primary>DATATYPETAG</primary><secondary>Tags.h</secondary></indexterm>
+<indexterm><primary>Tags.h</primary><secondary>DATATYPETAG</secondary></indexterm>
+<anchor xml:id="__tags_8h_1a7c4faef6b7c4a30990ee13030bc51880aad89cad9f7bc5a2194360094fa54b7d5"/>DATATYPETAG</entry><entry></entry></row><row><entry><indexterm><primary>COMPARETYPETAG</primary><secondary>Tags.h</secondary></indexterm>
+<indexterm><primary>Tags.h</primary><secondary>COMPARETYPETAG</secondary></indexterm>
+<anchor xml:id="__tags_8h_1a7c4faef6b7c4a30990ee13030bc51880abe7decd122fc7b4952d995b3dec364e8"/>COMPARETYPETAG</entry><entry></entry></row><row><entry><indexterm><primary>TIMETYPETAG</primary><secondary>Tags.h</secondary></indexterm>
+<indexterm><primary>Tags.h</primary><secondary>TIMETYPETAG</secondary></indexterm>
+<anchor xml:id="__tags_8h_1a7c4faef6b7c4a30990ee13030bc51880a83b8e92d167f597072beb3e56e87a60c"/>TIMETYPETAG</entry><entry></entry></row><row><entry><indexterm><primary>DIMENSIONTAG</primary><secondary>Tags.h</secondary></indexterm>
+<indexterm><primary>Tags.h</primary><secondary>DIMENSIONTAG</secondary></indexterm>
+<anchor xml:id="__tags_8h_1a7c4faef6b7c4a30990ee13030bc51880a4e19883d1a3065c2a358870cb3dfb4a9"/>DIMENSIONTAG</entry><entry></entry></row><row><entry><indexterm><primary>INTEGERTAG</primary><secondary>Tags.h</secondary></indexterm>
+<indexterm><primary>Tags.h</primary><secondary>INTEGERTAG</secondary></indexterm>
+<anchor xml:id="__tags_8h_1a7c4faef6b7c4a30990ee13030bc51880a0807368ef7b3e8a0bd3f6473571d1482"/>INTEGERTAG</entry><entry></entry></row><row><entry><indexterm><primary>FLOATTAG</primary><secondary>Tags.h</secondary></indexterm>
+<indexterm><primary>Tags.h</primary><secondary>FLOATTAG</secondary></indexterm>
+<anchor xml:id="__tags_8h_1a7c4faef6b7c4a30990ee13030bc51880a92977a6f3d797269d54c323ad37db8cc"/>FLOATTAG</entry><entry></entry></row><row><entry><indexterm><primary>BOOLTAG</primary><secondary>Tags.h</secondary></indexterm>
+<indexterm><primary>Tags.h</primary><secondary>BOOLTAG</secondary></indexterm>
+<anchor xml:id="__tags_8h_1a7c4faef6b7c4a30990ee13030bc51880a8a28726c5abfda0da111d73995ee075a"/>BOOLTAG</entry><entry></entry></row><row><entry><indexterm><primary>ANDTAG</primary><secondary>Tags.h</secondary></indexterm>
+<indexterm><primary>Tags.h</primary><secondary>ANDTAG</secondary></indexterm>
+<anchor xml:id="__tags_8h_1a7c4faef6b7c4a30990ee13030bc51880a14f9ad7c03fde1738ae6de4a840be4d6"/>ANDTAG</entry><entry></entry></row><row><entry><indexterm><primary>NOTTAG</primary><secondary>Tags.h</secondary></indexterm>
+<indexterm><primary>Tags.h</primary><secondary>NOTTAG</secondary></indexterm>
+<anchor xml:id="__tags_8h_1a7c4faef6b7c4a30990ee13030bc51880a13bce77d85689a0d7d6d0b522a8cd862"/>NOTTAG</entry><entry></entry></row><row><entry><indexterm><primary>ORTAG</primary><secondary>Tags.h</secondary></indexterm>
+<indexterm><primary>Tags.h</primary><secondary>ORTAG</secondary></indexterm>
+<anchor xml:id="__tags_8h_1a7c4faef6b7c4a30990ee13030bc51880a199d52ad0ed0430bcc91286d139ca162"/>ORTAG</entry><entry></entry></row><row><entry><indexterm><primary>COMPARETAG</primary><secondary>Tags.h</secondary></indexterm>
+<indexterm><primary>Tags.h</primary><secondary>COMPARETAG</secondary></indexterm>
+<anchor xml:id="__tags_8h_1a7c4faef6b7c4a30990ee13030bc51880aab7c3d07f8bb9d4d3862d231bfdf5918"/>COMPARETAG</entry><entry></entry></row><row><entry><indexterm><primary>WAITTAG</primary><secondary>Tags.h</secondary></indexterm>
+<indexterm><primary>Tags.h</primary><secondary>WAITTAG</secondary></indexterm>
+<anchor xml:id="__tags_8h_1a7c4faef6b7c4a30990ee13030bc51880a35a69f15481a75a963ad3b185f76f73d"/>WAITTAG</entry><entry></entry></row><row><entry><indexterm><primary>STRINGTAG</primary><secondary>Tags.h</secondary></indexterm>
+<indexterm><primary>Tags.h</primary><secondary>STRINGTAG</secondary></indexterm>
+<anchor xml:id="__tags_8h_1a7c4faef6b7c4a30990ee13030bc51880a11d91d6f4c67f9381f1a4dece3ce5ff5"/>STRINGTAG</entry><entry></entry></row><row><entry><indexterm><primary>COORDSTAG</primary><secondary>Tags.h</secondary></indexterm>
+<indexterm><primary>Tags.h</primary><secondary>COORDSTAG</secondary></indexterm>
+<anchor xml:id="__tags_8h_1a7c4faef6b7c4a30990ee13030bc51880ab62b1ecd04a9b00d5d28af3b0493a5b2"/>COORDSTAG</entry><entry></entry></row><row><entry><indexterm><primary>DIRECTIONTAG</primary><secondary>Tags.h</secondary></indexterm>
+<indexterm><primary>Tags.h</primary><secondary>DIRECTIONTAG</secondary></indexterm>
+<anchor xml:id="__tags_8h_1a7c4faef6b7c4a30990ee13030bc51880a96d60eef4da56925cdc29046e7cd2ac1"/>DIRECTIONTAG</entry><entry></entry></row><row><entry><indexterm><primary>ZONETAG</primary><secondary>Tags.h</secondary></indexterm>
+<indexterm><primary>Tags.h</primary><secondary>ZONETAG</secondary></indexterm>
+<anchor xml:id="__tags_8h_1a7c4faef6b7c4a30990ee13030bc51880a86843de677434d772038ccd7f22bc632"/>ZONETAG</entry><entry></entry></row><row><entry><indexterm><primary>LISTTAG</primary><secondary>Tags.h</secondary></indexterm>
+<indexterm><primary>Tags.h</primary><secondary>LISTTAG</secondary></indexterm>
+<anchor xml:id="__tags_8h_1a7c4faef6b7c4a30990ee13030bc51880a16cdbd7bcce4c516cb8b0224ba73d9b5"/>LISTTAG</entry><entry></entry></row><row><entry><indexterm><primary>IFTAG</primary><secondary>Tags.h</secondary></indexterm>
+<indexterm><primary>Tags.h</primary><secondary>IFTAG</secondary></indexterm>
+<anchor xml:id="__tags_8h_1a7c4faef6b7c4a30990ee13030bc51880ad53b271ba2444c954771d2f70f55f452"/>IFTAG</entry><entry></entry></row><row><entry><indexterm><primary>LOOPTAG</primary><secondary>Tags.h</secondary></indexterm>
+<indexterm><primary>Tags.h</primary><secondary>LOOPTAG</secondary></indexterm>
+<anchor xml:id="__tags_8h_1a7c4faef6b7c4a30990ee13030bc51880aed5a0238da5f2aa3abb28ad0c8bcd303"/>LOOPTAG</entry><entry></entry></row><row><entry><indexterm><primary>DOLOOPTAG</primary><secondary>Tags.h</secondary></indexterm>
+<indexterm><primary>Tags.h</primary><secondary>DOLOOPTAG</secondary></indexterm>
+<anchor xml:id="__tags_8h_1a7c4faef6b7c4a30990ee13030bc51880ac1f64174c4e4fe4438f3d49973ff0f61"/>DOLOOPTAG</entry><entry></entry></row><row><entry><indexterm><primary>SWITCHTAG</primary><secondary>Tags.h</secondary></indexterm>
+<indexterm><primary>Tags.h</primary><secondary>SWITCHTAG</secondary></indexterm>
+<anchor xml:id="__tags_8h_1a7c4faef6b7c4a30990ee13030bc51880a148700a9e2bd2c6003aa4b158be6f8a6"/>SWITCHTAG</entry><entry></entry></row><row><entry><indexterm><primary>DEFAULTTAG</primary><secondary>Tags.h</secondary></indexterm>
+<indexterm><primary>Tags.h</primary><secondary>DEFAULTTAG</secondary></indexterm>
+<anchor xml:id="__tags_8h_1a7c4faef6b7c4a30990ee13030bc51880ad420138b598cde44c75904fbe6f9f93d"/>DEFAULTTAG</entry><entry></entry></row><row><entry><indexterm><primary>ELSETAG</primary><secondary>Tags.h</secondary></indexterm>
+<indexterm><primary>Tags.h</primary><secondary>ELSETAG</secondary></indexterm>
+<anchor xml:id="__tags_8h_1a7c4faef6b7c4a30990ee13030bc51880ac1b0f5b032b122acbb1837921c7aceaf"/>ELSETAG</entry><entry></entry></row><row><entry><indexterm><primary>ELIFTAG</primary><secondary>Tags.h</secondary></indexterm>
+<indexterm><primary>Tags.h</primary><secondary>ELIFTAG</secondary></indexterm>
+<anchor xml:id="__tags_8h_1a7c4faef6b7c4a30990ee13030bc51880a17a57baafed17ad57996d2f66057d2aa"/>ELIFTAG</entry><entry></entry></row><row><entry><indexterm><primary>BREAKTAG</primary><secondary>Tags.h</secondary></indexterm>
+<indexterm><primary>Tags.h</primary><secondary>BREAKTAG</secondary></indexterm>
+<anchor xml:id="__tags_8h_1a7c4faef6b7c4a30990ee13030bc51880a13d94ca5c9832f8cbbe7535c23dd8a27"/>BREAKTAG</entry><entry></entry></row><row><entry><indexterm><primary>CONTINUETAG</primary><secondary>Tags.h</secondary></indexterm>
+<indexterm><primary>Tags.h</primary><secondary>CONTINUETAG</secondary></indexterm>
+<anchor xml:id="__tags_8h_1a7c4faef6b7c4a30990ee13030bc51880ac8a133daf898a369769587c9ce75793d"/>CONTINUETAG</entry><entry></entry></row><row><entry><indexterm><primary>CASETAG</primary><secondary>Tags.h</secondary></indexterm>
+<indexterm><primary>Tags.h</primary><secondary>CASETAG</secondary></indexterm>
+<anchor xml:id="__tags_8h_1a7c4faef6b7c4a30990ee13030bc51880ac55b2b4b55ab3c2b2292d0fdaff71c69"/>CASETAG</entry><entry></entry></row><row><entry><indexterm><primary>LOADTAG</primary><secondary>Tags.h</secondary></indexterm>
+<indexterm><primary>Tags.h</primary><secondary>LOADTAG</secondary></indexterm>
+<anchor xml:id="__tags_8h_1a7c4faef6b7c4a30990ee13030bc51880a552df1d14502610c8d2fe012dec1a82e"/>LOADTAG</entry><entry></entry></row><row><entry><indexterm><primary>STORETAG</primary><secondary>Tags.h</secondary></indexterm>
+<indexterm><primary>Tags.h</primary><secondary>STORETAG</secondary></indexterm>
+<anchor xml:id="__tags_8h_1a7c4faef6b7c4a30990ee13030bc51880a490e7b6af7e57bdf569a25d8a2e333ce"/>STORETAG</entry><entry></entry></row><row><entry><indexterm><primary>MAINTAG</primary><secondary>Tags.h</secondary></indexterm>
+<indexterm><primary>Tags.h</primary><secondary>MAINTAG</secondary></indexterm>
+<anchor xml:id="__tags_8h_1a7c4faef6b7c4a30990ee13030bc51880a94eb8f57593204f41750d5c451872b26"/>MAINTAG</entry><entry></entry></row><row><entry><indexterm><primary>PRINTTAG</primary><secondary>Tags.h</secondary></indexterm>
+<indexterm><primary>Tags.h</primary><secondary>PRINTTAG</secondary></indexterm>
+<anchor xml:id="__tags_8h_1a7c4faef6b7c4a30990ee13030bc51880aa39dd95065e70abf6cb60bd6e5a45af8"/>PRINTTAG</entry><entry></entry></row>    </tbody>
+    </tgroup>
+</informaltable>
+<para>
+Definition at line <link linkend="__tags_8h_source_1l00067">67</link> of file <link linkend="__tags_8h_source">Tags.h</link>.</para>
+</section>
+<anchor xml:id="__tags_8h_1a06411e4b1d6791157bb089cc368b11d3"/><section>
+    <title>TimeType</title>
+<indexterm><primary>TimeType</primary><secondary>Tags.h</secondary></indexterm>
+<indexterm><primary>Tags.h</primary><secondary>TimeType</secondary></indexterm>
+<para><computeroutput>enum <link linkend="__tags_8h_1a06411e4b1d6791157bb089cc368b11d3">TimeType</link></computeroutput></para><informaltable frame="all">
+<title>Enumerator</title>
+    <tgroup cols="2" align="left" colsep="1" rowsep="1">
+      <colspec colname='c1'/>
+      <colspec colname='c2'/>
+<tbody>
+<row><entry><indexterm><primary>MINUTE</primary><secondary>Tags.h</secondary></indexterm>
+<indexterm><primary>Tags.h</primary><secondary>MINUTE</secondary></indexterm>
+<anchor xml:id="__tags_8h_1a06411e4b1d6791157bb089cc368b11d3a26f8ff0cdd909ee179a0ed06adfc4a0b"/>MINUTE</entry><entry></entry></row><row><entry><indexterm><primary>SECOND</primary><secondary>Tags.h</secondary></indexterm>
+<indexterm><primary>Tags.h</primary><secondary>SECOND</secondary></indexterm>
+<anchor xml:id="__tags_8h_1a06411e4b1d6791157bb089cc368b11d3a7cb36ff0a80f238d5b987d9250d369e3"/>SECOND</entry><entry></entry></row><row><entry><indexterm><primary>MILLISECOND</primary><secondary>Tags.h</secondary></indexterm>
+<indexterm><primary>Tags.h</primary><secondary>MILLISECOND</secondary></indexterm>
+<anchor xml:id="__tags_8h_1a06411e4b1d6791157bb089cc368b11d3a449692f8f5ec911ed443daf65d574c88"/>MILLISECOND</entry><entry></entry></row>    </tbody>
+    </tgroup>
+</informaltable>
+<para>
+Definition at line <link linkend="__tags_8h_source_1l00071">71</link> of file <link linkend="__tags_8h_source">Tags.h</link>.</para>
+</section>
+</section>
+<section>
+<title>Function Documentation</title>
+<anchor xml:id="__tags_8h_1a760d219c228224543b5e154be938a6c2"/><section>
+    <title>executeBool()</title>
+<indexterm><primary>executeBool</primary><secondary>Tags.h</secondary></indexterm>
+<indexterm><primary>Tags.h</primary><secondary>executeBool</secondary></indexterm>
+<para><computeroutput>bool executeBool (const std::shared_ptr&lt; <link linkend="_class_tag">Tag</link> &gt; &amp; parameter)</computeroutput></para><para>
+Definition at line <link linkend="__tags_8cpp_source_1l01104">1104</link> of file <link linkend="__tags_8cpp_source">Tags.cpp</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="_tags_8h_a760d219c228224543b5e154be938a6c2_cgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+Here is the caller graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="_tags_8h_a760d219c228224543b5e154be938a6c2_icgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="__tags_8h_1a64c0d9752378c22669792b3c89edcd8e"/><section>
+    <title>executeCoord()</title>
+<indexterm><primary>executeCoord</primary><secondary>Tags.h</secondary></indexterm>
+<indexterm><primary>Tags.h</primary><secondary>executeCoord</secondary></indexterm>
+<para><computeroutput><link linkend="_struct_coord">Coord</link> executeCoord (const std::shared_ptr&lt; <link linkend="_class_tag">Tag</link> &gt; &amp; parameter)</computeroutput></para><para>
+Definition at line <link linkend="__tags_8cpp_source_1l00970">970</link> of file <link linkend="__tags_8cpp_source">Tags.cpp</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="_tags_8h_a64c0d9752378c22669792b3c89edcd8e_cgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+Here is the caller graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="_tags_8h_a64c0d9752378c22669792b3c89edcd8e_icgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="__tags_8h_1adb0c764ef1f20ef3d860516a5040b43a"/><section>
+    <title>executeDirection()</title>
+<indexterm><primary>executeDirection</primary><secondary>Tags.h</secondary></indexterm>
+<indexterm><primary>Tags.h</primary><secondary>executeDirection</secondary></indexterm>
+<para><computeroutput><link linkend="__units_8h_1a224b9163917ac32fc95a60d8c1eec3aa">Direction</link> executeDirection (const std::shared_ptr&lt; <link linkend="_class_tag">Tag</link> &gt; &amp; parameter)</computeroutput></para><para>
+Definition at line <link linkend="__tags_8cpp_source_1l00870">870</link> of file <link linkend="__tags_8cpp_source">Tags.cpp</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="_tags_8h_adb0c764ef1f20ef3d860516a5040b43a_cgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+Here is the caller graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="_tags_8h_adb0c764ef1f20ef3d860516a5040b43a_icgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="__tags_8h_1ac1dada7a37a3c93abfa74f5d178e096d"/><section>
+    <title>executeFloat()</title>
+<indexterm><primary>executeFloat</primary><secondary>Tags.h</secondary></indexterm>
+<indexterm><primary>Tags.h</primary><secondary>executeFloat</secondary></indexterm>
+<para><computeroutput>float executeFloat (const std::shared_ptr&lt; <link linkend="_class_tag">Tag</link> &gt; &amp; parameter)</computeroutput></para><para>
+Definition at line <link linkend="__tags_8cpp_source_1l01178">1178</link> of file <link linkend="__tags_8cpp_source">Tags.cpp</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="_tags_8h_ac1dada7a37a3c93abfa74f5d178e096d_cgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+Here is the caller graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="_tags_8h_ac1dada7a37a3c93abfa74f5d178e096d_icgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="__tags_8h_1aa5f87364fd0e0374ff582e04db0e6a31"/><section>
+    <title>executeInt()</title>
+<indexterm><primary>executeInt</primary><secondary>Tags.h</secondary></indexterm>
+<indexterm><primary>Tags.h</primary><secondary>executeInt</secondary></indexterm>
+<para><computeroutput>int executeInt (const std::shared_ptr&lt; <link linkend="_class_tag">Tag</link> &gt; &amp; parameter)</computeroutput></para><para>
+Definition at line <link linkend="__tags_8cpp_source_1l01158">1158</link> of file <link linkend="__tags_8cpp_source">Tags.cpp</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="_tags_8h_aa5f87364fd0e0374ff582e04db0e6a31_cgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+Here is the caller graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="_tags_8h_aa5f87364fd0e0374ff582e04db0e6a31_icgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="__tags_8h_1a663afb00e3e4be1f6f395904d5ed7dea"/><section>
+    <title>executeList()</title>
+<indexterm><primary>executeList</primary><secondary>Tags.h</secondary></indexterm>
+<indexterm><primary>Tags.h</primary><secondary>executeList</secondary></indexterm>
+<computeroutput>template&lt;typename <link linkend="__units_8h_1a2b350cb683584e1f7db6c78f698c161ba21f40778b7db9343a6ca75ec2c41ccce">T</link> &gt; </computeroutput><para><computeroutput>std::vector&lt; <link linkend="__units_8h_1a2b350cb683584e1f7db6c78f698c161ba21f40778b7db9343a6ca75ec2c41ccce">T</link> &gt; executeList (std::vector&lt; std::shared_ptr&lt; <link linkend="_class_tag">Tag</link> &gt; &gt; listTags)</computeroutput></para><para>
+Definition at line <link linkend="__tags_8cpp_source_1l00621">621</link> of file <link linkend="__tags_8cpp_source">Tags.cpp</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="_tags_8h_a663afb00e3e4be1f6f395904d5ed7dea_cgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+Here is the caller graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="_tags_8h_a663afb00e3e4be1f6f395904d5ed7dea_icgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="__tags_8h_1a4bab8267d7e817b59ed55ad288131821"/><section>
+    <title>executeString()</title>
+<indexterm><primary>executeString</primary><secondary>Tags.h</secondary></indexterm>
+<indexterm><primary>Tags.h</primary><secondary>executeString</secondary></indexterm>
+<para><computeroutput>std::string executeString (const std::shared_ptr&lt; <link linkend="_class_tag">Tag</link> &gt; &amp; parameter)</computeroutput></para><para>
+Definition at line <link linkend="__tags_8cpp_source_1l00811">811</link> of file <link linkend="__tags_8cpp_source">Tags.cpp</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="_tags_8h_a4bab8267d7e817b59ed55ad288131821_cgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+Here is the caller graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="_tags_8h_a4bab8267d7e817b59ed55ad288131821_icgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="__tags_8h_1a0b74b4679c8d4d8c31c482a320e785dd"/><section>
+    <title>executeZone()</title>
+<indexterm><primary>executeZone</primary><secondary>Tags.h</secondary></indexterm>
+<indexterm><primary>Tags.h</primary><secondary>executeZone</secondary></indexterm>
+<para><computeroutput><link linkend="_struct_zone">Zone</link> executeZone (const std::shared_ptr&lt; <link linkend="_class_tag">Tag</link> &gt; &amp; parameter)</computeroutput></para><para>
+Definition at line <link linkend="__tags_8cpp_source_1l00910">910</link> of file <link linkend="__tags_8cpp_source">Tags.cpp</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="_tags_8h_a0b74b4679c8d4d8c31c482a320e785dd_cgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+Here is the caller graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="_tags_8h_a0b74b4679c8d4d8c31c482a320e785dd_icgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="__tags_8h_1ada36a59d6eb45b5f395f63dcebd48b61"/><section>
+    <title>getBoolTag()</title>
+<indexterm><primary>getBoolTag</primary><secondary>Tags.h</secondary></indexterm>
+<indexterm><primary>Tags.h</primary><secondary>getBoolTag</secondary></indexterm>
+<para><computeroutput>std::shared_ptr&lt; <link linkend="_class_bool_tag">BoolTag</link> &gt; getBoolTag (std::shared_ptr&lt; <link linkend="_class_tag">Tag</link> &gt; tag)</computeroutput></para><para>
+Definition at line <link linkend="__tags_8cpp_source_1l01491">1491</link> of file <link linkend="__tags_8cpp_source">Tags.cpp</link>.</para>
+Here is the caller graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="_tags_8h_ada36a59d6eb45b5f395f63dcebd48b61_icgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="__tags_8h_1a084ac86e8860745ecc3d46c0a0ec9043"/><section>
+    <title>getCompareTag()</title>
+<indexterm><primary>getCompareTag</primary><secondary>Tags.h</secondary></indexterm>
+<indexterm><primary>Tags.h</primary><secondary>getCompareTag</secondary></indexterm>
+<computeroutput>template&lt;typename <link linkend="__units_8h_1a2b350cb683584e1f7db6c78f698c161ba21f40778b7db9343a6ca75ec2c41ccce">T</link> &gt; </computeroutput><para><computeroutput>std::shared_ptr&lt; <link linkend="_class_compare_tag">CompareTag</link>&lt; <link linkend="__units_8h_1a2b350cb683584e1f7db6c78f698c161ba21f40778b7db9343a6ca75ec2c41ccce">T</link> &gt; &gt; getCompareTag (std::shared_ptr&lt; <link linkend="_class_tag">Tag</link> &gt; tag)</computeroutput></para><para>
+Definition at line <link linkend="__tags_8cpp_source_1l01271">1271</link> of file <link linkend="__tags_8cpp_source">Tags.cpp</link>.</para>
+Here is the caller graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="_tags_8h_a084ac86e8860745ecc3d46c0a0ec9043_icgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="__tags_8h_1aa6a6d33b38f91d7bc097749918417cfe"/><section>
+    <title>getCoordTag()</title>
+<indexterm><primary>getCoordTag</primary><secondary>Tags.h</secondary></indexterm>
+<indexterm><primary>Tags.h</primary><secondary>getCoordTag</secondary></indexterm>
+<para><computeroutput>std::shared_ptr&lt; <link linkend="_class_coord_tag">CoordTag</link> &gt; getCoordTag (std::shared_ptr&lt; <link linkend="_class_tag">Tag</link> &gt; tag)</computeroutput></para><para>
+Definition at line <link linkend="__tags_8cpp_source_1l00963">963</link> of file <link linkend="__tags_8cpp_source">Tags.cpp</link>.</para>
+Here is the caller graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="_tags_8h_aa6a6d33b38f91d7bc097749918417cfe_icgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="__tags_8h_1ad05fc0cffadc5a4fad1c4bea39546bb8"/><section>
+    <title>getDirection()<computeroutput>[1/2]</computeroutput></title>
+<indexterm><primary>getDirection</primary><secondary>Tags.h</secondary></indexterm>
+<indexterm><primary>Tags.h</primary><secondary>getDirection</secondary></indexterm>
+<para><computeroutput>std::string getDirection (<link linkend="__units_8h_1a224b9163917ac32fc95a60d8c1eec3aa">Direction</link> d)</computeroutput></para><para>
+Definition at line <link linkend="__tags_8cpp_source_1l01559">1559</link> of file <link linkend="__tags_8cpp_source">Tags.cpp</link>.</para>
+Here is the caller graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="_tags_8h_ad05fc0cffadc5a4fad1c4bea39546bb8_icgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="__tags_8h_1a851e1fc086da436b23ab4e5baf444590"/><section>
+    <title>getDirection()<computeroutput>[2/2]</computeroutput></title>
+<indexterm><primary>getDirection</primary><secondary>Tags.h</secondary></indexterm>
+<indexterm><primary>Tags.h</primary><secondary>getDirection</secondary></indexterm>
+<para><computeroutput><link linkend="__units_8h_1a224b9163917ac32fc95a60d8c1eec3aa">Direction</link> getDirection (std::string d)</computeroutput></para><para>
+Definition at line <link linkend="__tags_8cpp_source_1l01590">1590</link> of file <link linkend="__tags_8cpp_source">Tags.cpp</link>.</para>
+</section>
+<anchor xml:id="__tags_8h_1a51e57c878c8df7f38ce915b45d3dc451"/><section>
+    <title>getDirectionTag()</title>
+<indexterm><primary>getDirectionTag</primary><secondary>Tags.h</secondary></indexterm>
+<indexterm><primary>Tags.h</primary><secondary>getDirectionTag</secondary></indexterm>
+<para><computeroutput>std::shared_ptr&lt; <link linkend="_class_direction_tag">DirectionTag</link> &gt; getDirectionTag (std::shared_ptr&lt; <link linkend="_class_tag">Tag</link> &gt; tag)</computeroutput></para><para>
+Definition at line <link linkend="__tags_8cpp_source_1l00866">866</link> of file <link linkend="__tags_8cpp_source">Tags.cpp</link>.</para>
+Here is the caller graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="_tags_8h_a51e57c878c8df7f38ce915b45d3dc451_icgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="__tags_8h_1a348690c518cc923ed88d56c2d18f6f7d"/><section>
+    <title>getFloatTag()</title>
+<indexterm><primary>getFloatTag</primary><secondary>Tags.h</secondary></indexterm>
+<indexterm><primary>Tags.h</primary><secondary>getFloatTag</secondary></indexterm>
+<para><computeroutput>std::shared_ptr&lt; <link linkend="_class_float_tag">FloatTag</link> &gt; getFloatTag (std::shared_ptr&lt; <link linkend="_class_tag">Tag</link> &gt; tag)</computeroutput></para><para>
+Definition at line <link linkend="__tags_8cpp_source_1l01219">1219</link> of file <link linkend="__tags_8cpp_source">Tags.cpp</link>.</para>
+Here is the caller graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="_tags_8h_a348690c518cc923ed88d56c2d18f6f7d_icgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="__tags_8h_1a2a49ee7ef9d60abe24ab727b3df6ec9e"/><section>
+    <title>getFlowTag()</title>
+<indexterm><primary>getFlowTag</primary><secondary>Tags.h</secondary></indexterm>
+<indexterm><primary>Tags.h</primary><secondary>getFlowTag</secondary></indexterm>
+<para><computeroutput>std::shared_ptr&lt; <link linkend="_class_flow_tag">FlowTag</link> &gt; getFlowTag (std::shared_ptr&lt; <link linkend="_class_tag">Tag</link> &gt; tag)</computeroutput></para><para>
+Definition at line <link linkend="__tags_8cpp_source_1l00905">905</link> of file <link linkend="__tags_8cpp_source">Tags.cpp</link>.</para>
+</section>
+<anchor xml:id="__tags_8h_1ad39e58dec05b3a0be440334312e1b0a8"/><section>
+    <title>getIntTag()</title>
+<indexterm><primary>getIntTag</primary><secondary>Tags.h</secondary></indexterm>
+<indexterm><primary>Tags.h</primary><secondary>getIntTag</secondary></indexterm>
+<para><computeroutput>std::shared_ptr&lt; <link linkend="_class_int_tag">IntTag</link> &gt; getIntTag (std::shared_ptr&lt; <link linkend="_class_tag">Tag</link> &gt; tag)</computeroutput></para><para>
+Definition at line <link linkend="__tags_8cpp_source_1l01251">1251</link> of file <link linkend="__tags_8cpp_source">Tags.cpp</link>.</para>
+Here is the caller graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="_tags_8h_ad39e58dec05b3a0be440334312e1b0a8_icgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="__tags_8h_1a6d2d78e110de0d5def95ebf64150ef48"/><section>
+    <title>getStringTag()</title>
+<indexterm><primary>getStringTag</primary><secondary>Tags.h</secondary></indexterm>
+<indexterm><primary>Tags.h</primary><secondary>getStringTag</secondary></indexterm>
+<para><computeroutput>std::shared_ptr&lt; <link linkend="_class_string_tag">StringTag</link> &gt; getStringTag (std::shared_ptr&lt; <link linkend="_class_tag">Tag</link> &gt; tag)</computeroutput></para><para>
+Definition at line <link linkend="__tags_8cpp_source_1l00806">806</link> of file <link linkend="__tags_8cpp_source">Tags.cpp</link>.</para>
+Here is the caller graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="_tags_8h_a6d2d78e110de0d5def95ebf64150ef48_icgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="__tags_8h_1a87514b166197bc785f979c9b79214abb"/><section>
+    <title>getZoneTag()</title>
+<indexterm><primary>getZoneTag</primary><secondary>Tags.h</secondary></indexterm>
+<indexterm><primary>Tags.h</primary><secondary>getZoneTag</secondary></indexterm>
+<para><computeroutput>std::shared_ptr&lt; <link linkend="_class_zone_tag">ZoneTag</link> &gt; getZoneTag (std::shared_ptr&lt; <link linkend="_class_tag">Tag</link> &gt; tag)</computeroutput></para><para>
+Definition at line <link linkend="__tags_8cpp_source_1l00900">900</link> of file <link linkend="__tags_8cpp_source">Tags.cpp</link>.</para>
+Here is the caller graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="_tags_8h_a87514b166197bc785f979c9b79214abb_icgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+</section>
+</section>

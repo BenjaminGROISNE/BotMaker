@@ -1,0 +1,139 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<section xmlns="http://docbook.org/ns/docbook" version="5.0" xmlns:xlink="http://www.w3.org/1999/xlink" xml:id="_struct_number" xml:lang="en-US">
+<title>Number Struct Reference</title>
+<indexterm><primary>Number</primary></indexterm>
+<para>
+<computeroutput>#include &lt;Units.h&gt;</computeroutput>
+</para>
+Collaboration diagram for Number:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="struct_number__coll__graph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+<simplesect>
+    <title>Public Member Functions    </title>
+        <itemizedlist>
+            <listitem><para><link linkend="_struct_number_1a5a596a2f86f33fb48493ce0d19e48b34">Number</link> ()</para>
+</listitem>
+        </itemizedlist>
+</simplesect>
+<simplesect>
+    <title>Public Attributes    </title>
+        <itemizedlist>
+            <listitem><para><link linkend="_struct_unit">Unit</link> <link linkend="_struct_number_1a0245ad051b1798bf8ba97c339c46c8ab">U</link></para>
+</listitem>
+            <listitem><para>long double <link linkend="_struct_number_1afa76834b41de1cf8c3fdf5ae5950fe8e">nb</link></para>
+</listitem>
+            <listitem><para>bool <link linkend="_struct_number_1a81cc49933167da9c6fd34f4db4a7e859">integer</link></para>
+</listitem>
+            <listitem><para>bool <link linkend="_struct_number_1ab79250e6a622ea5627a04b0867ff4750">decimal</link></para>
+</listitem>
+            <listitem><para>bool <link linkend="_struct_number_1a3bb0e3105b6a29a7afa20ecd368093f4">T</link></para>
+</listitem>
+            <listitem><para>bool <link linkend="_struct_number_1a31db3f2b1a31b8902594096bd04cd406">B</link></para>
+</listitem>
+            <listitem><para>bool <link linkend="_struct_number_1a832eedab21672c2fd1080487c8937e6f">M</link></para>
+</listitem>
+            <listitem><para>bool <link linkend="_struct_number_1a7014a93868df01160171efa7a6eabb0d">K</link></para>
+</listitem>
+            <listitem><para>std::vector&lt; <link linkend="_struct_digit">Digit</link> &gt; <link linkend="_struct_number_1ab6756da04bb95c8d1a3316a247482010">digits</link></para>
+</listitem>
+            <listitem><para>int <link linkend="_struct_number_1aae8f998c54dc46847ea2f71a897671ea">dotposition</link></para>
+</listitem>
+        </itemizedlist>
+</simplesect>
+<section>
+<title>Detailed Description</title>
+<para>
+Definition at line <link linkend="__units_8h_source_1l00198">198</link> of file <link linkend="__units_8h_source">Units.h</link>.</para>
+</section>
+<section>
+<title>Constructor &amp; Destructor Documentation</title>
+<anchor xml:id="_struct_number_1a5a596a2f86f33fb48493ce0d19e48b34"/><section>
+    <title>Number()</title>
+<indexterm><primary>Number</primary><secondary>Number</secondary></indexterm>
+<indexterm><primary>Number</primary><secondary>Number</secondary></indexterm>
+<para><computeroutput>Number::Number ( )<computeroutput>[inline]</computeroutput></computeroutput></para><para>
+Definition at line <link linkend="__units_8h_source_1l00205">205</link> of file <link linkend="__units_8h_source">Units.h</link>.</para>
+</section>
+</section>
+<section>
+<title>Member Data Documentation</title>
+<anchor xml:id="_struct_number_1a31db3f2b1a31b8902594096bd04cd406"/><section>
+    <title>B</title>
+<indexterm><primary>B</primary><secondary>Number</secondary></indexterm>
+<indexterm><primary>Number</primary><secondary>B</secondary></indexterm>
+<para><computeroutput>bool Number::B</computeroutput></para><para>
+Definition at line <link linkend="__units_8h_source_1l00202">202</link> of file <link linkend="__units_8h_source">Units.h</link>.</para>
+</section>
+<anchor xml:id="_struct_number_1ab79250e6a622ea5627a04b0867ff4750"/><section>
+    <title>decimal</title>
+<indexterm><primary>decimal</primary><secondary>Number</secondary></indexterm>
+<indexterm><primary>Number</primary><secondary>decimal</secondary></indexterm>
+<para><computeroutput>bool Number::decimal</computeroutput></para><para>
+Definition at line <link linkend="__units_8h_source_1l00201">201</link> of file <link linkend="__units_8h_source">Units.h</link>.</para>
+</section>
+<anchor xml:id="_struct_number_1ab6756da04bb95c8d1a3316a247482010"/><section>
+    <title>digits</title>
+<indexterm><primary>digits</primary><secondary>Number</secondary></indexterm>
+<indexterm><primary>Number</primary><secondary>digits</secondary></indexterm>
+<para><computeroutput>std::vector&lt;<link linkend="_struct_digit">Digit</link>&gt; Number::digits</computeroutput></para><para>
+Definition at line <link linkend="__units_8h_source_1l00203">203</link> of file <link linkend="__units_8h_source">Units.h</link>.</para>
+</section>
+<anchor xml:id="_struct_number_1aae8f998c54dc46847ea2f71a897671ea"/><section>
+    <title>dotposition</title>
+<indexterm><primary>dotposition</primary><secondary>Number</secondary></indexterm>
+<indexterm><primary>Number</primary><secondary>dotposition</secondary></indexterm>
+<para><computeroutput>int Number::dotposition</computeroutput></para><para>
+Definition at line <link linkend="__units_8h_source_1l00204">204</link> of file <link linkend="__units_8h_source">Units.h</link>.</para>
+</section>
+<anchor xml:id="_struct_number_1a81cc49933167da9c6fd34f4db4a7e859"/><section>
+    <title>integer</title>
+<indexterm><primary>integer</primary><secondary>Number</secondary></indexterm>
+<indexterm><primary>Number</primary><secondary>integer</secondary></indexterm>
+<para><computeroutput>bool Number::integer</computeroutput></para><para>
+Definition at line <link linkend="__units_8h_source_1l00201">201</link> of file <link linkend="__units_8h_source">Units.h</link>.</para>
+</section>
+<anchor xml:id="_struct_number_1a7014a93868df01160171efa7a6eabb0d"/><section>
+    <title>K</title>
+<indexterm><primary>K</primary><secondary>Number</secondary></indexterm>
+<indexterm><primary>Number</primary><secondary>K</secondary></indexterm>
+<para><computeroutput>bool Number::K</computeroutput></para><para>
+Definition at line <link linkend="__units_8h_source_1l00202">202</link> of file <link linkend="__units_8h_source">Units.h</link>.</para>
+</section>
+<anchor xml:id="_struct_number_1a832eedab21672c2fd1080487c8937e6f"/><section>
+    <title>M</title>
+<indexterm><primary>M</primary><secondary>Number</secondary></indexterm>
+<indexterm><primary>Number</primary><secondary>M</secondary></indexterm>
+<para><computeroutput>bool Number::M</computeroutput></para><para>
+Definition at line <link linkend="__units_8h_source_1l00202">202</link> of file <link linkend="__units_8h_source">Units.h</link>.</para>
+</section>
+<anchor xml:id="_struct_number_1afa76834b41de1cf8c3fdf5ae5950fe8e"/><section>
+    <title>nb</title>
+<indexterm><primary>nb</primary><secondary>Number</secondary></indexterm>
+<indexterm><primary>Number</primary><secondary>nb</secondary></indexterm>
+<para><computeroutput>long double Number::nb</computeroutput></para><para>
+Definition at line <link linkend="__units_8h_source_1l00200">200</link> of file <link linkend="__units_8h_source">Units.h</link>.</para>
+</section>
+<anchor xml:id="_struct_number_1a3bb0e3105b6a29a7afa20ecd368093f4"/><section>
+    <title>T</title>
+<indexterm><primary>T</primary><secondary>Number</secondary></indexterm>
+<indexterm><primary>Number</primary><secondary>T</secondary></indexterm>
+<para><computeroutput>bool Number::T</computeroutput></para><para>
+Definition at line <link linkend="__units_8h_source_1l00202">202</link> of file <link linkend="__units_8h_source">Units.h</link>.</para>
+</section>
+<anchor xml:id="_struct_number_1a0245ad051b1798bf8ba97c339c46c8ab"/><section>
+    <title>U</title>
+<indexterm><primary>U</primary><secondary>Number</secondary></indexterm>
+<indexterm><primary>Number</primary><secondary>U</secondary></indexterm>
+<para><computeroutput><link linkend="_struct_unit">Unit</link> Number::U</computeroutput></para><para>
+Definition at line <link linkend="__units_8h_source_1l00199">199</link> of file <link linkend="__units_8h_source">Units.h</link>.</para>
+</section>
+<para>
+The documentation for this struct was generated from the following file:</para>
+src/<link linkend="__units_8h">Units.h</link></section>
+</section>

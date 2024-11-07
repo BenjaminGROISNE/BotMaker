@@ -1,0 +1,2034 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<section xmlns="http://docbook.org/ns/docbook" version="5.0" xmlns:xlink="http://www.w3.org/1999/xlink" xml:id="_class_bot_config" xml:lang="en-US">
+<title>BotConfig Class Reference</title>
+<indexterm><primary>BotConfig</primary></indexterm>
+<para>
+<computeroutput>#include &lt;BotConfig.h&gt;</computeroutput>
+</para>
+Collaboration diagram for BotConfig:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_bot_config__coll__graph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+<simplesect>
+    <title>Public Member Functions    </title>
+        <itemizedlist>
+            <listitem><para><link linkend="_class_bot_config_1a00a2927e0ed7e0a0f3d8bfa96cd323fc">BotConfig</link> ()</para>
+</listitem>
+            <listitem><para><link linkend="_class_bot_config_1a0e505da151078e86753f220064097013">BotConfig</link> (std::string <link linkend="_class_bot_config_1a72abeb980d886515c3d476e6d524a116">gamePackage</link>, std::string <link linkend="_class_bot_config_1afe99fd562cd17fa872729ccca4d9525f">gameActivity</link>, int dimX, int dimY, int dpi)</para>
+</listitem>
+            <listitem><para>std::string <link linkend="_class_bot_config_1a623d05e4d8e0122d35b1a3e391fc2464">readString</link> (const std::string &amp;filename, const std::string &amp;lineParameter, const std::string &amp;first, const std::string &amp;last)</para>
+</listitem>
+            <listitem><para>int <link linkend="_class_bot_config_1ab2bc74b90f5fa9c6761c2b5a8f06903e">readInt</link> (const std::string &amp;filename, const std::string &amp;lineParameter, const std::string &amp;first, const std::string &amp;last)</para>
+</listitem>
+            <listitem><para>bool <link linkend="_class_bot_config_1a459cd36b6c6f36f9bd73ff207e2fe5ec">readBool</link> (const std::string &amp;filename, const std::string &amp;lineParameter, const std::string &amp;first, const std::string &amp;last)</para>
+</listitem>
+            <listitem><para>int <link linkend="_class_bot_config_1ab692e666bc268ac76e501e29fe80d7fc">readIntBotFile</link> (const std::string &amp;lineParameter)</para>
+</listitem>
+            <listitem><para>bool <link linkend="_class_bot_config_1a5aafe893fa75e1b711e3ef3f4e4db9cc">readBoolBotFile</link> (const std::string &amp;lineParameter)</para>
+</listitem>
+            <listitem><para>std::string <link linkend="_class_bot_config_1a6347ad0b79f04a755fe1d7151ed87cd2">readStringBotFile</link> (const std::string &amp;lineParameter)</para>
+</listitem>
+            <listitem><para>bool <link linkend="_class_bot_config_1a52e7277feeeb5387104d7b66a44ff519">anyPlayableInstance</link> ()</para>
+</listitem>
+            <listitem><para>void <link linkend="_class_bot_config_1a72e8877046483a6c3c8f03a21ea9c6b2">choosePlayingInstance</link> ()</para>
+</listitem>
+            <listitem><para>bool <link linkend="_class_bot_config_1a2de6914c1428da89266ac78057e0ebe0">chronoInstanceMenu</link> (std::chrono::time_point&lt; std::chrono::steady_clock &gt; <link linkend="_paths_8cpp_1a423ec00aa9b17614cb8a0c52de937623">start</link>, int duration, int &amp;lastelapsed)</para>
+</listitem>
+            <listitem><para>bool <link linkend="_class_bot_config_1a6a480c4db4e8b69df4ed425503dd4ab4">interactUserInstance</link> (int totalInstances, int &amp;nbRunningInstance)</para>
+</listitem>
+            <listitem><para>void <link linkend="_class_bot_config_1af5d808aed675a21368cb8669ed12b756">interactUserFavoriteInstance</link> (int totalInstances)</para>
+</listitem>
+            <listitem><para>int <link linkend="_class_bot_config_1ac00a1d2728bca4fe8ad17e8dc8b792e2">handleFavoriteInstance</link> ()</para>
+</listitem>
+            <listitem><para>void <link linkend="_class_bot_config_1ad0f786d110e0eb647fbc444963a1d8e7">explainInstanceChoice</link> ()</para>
+</listitem>
+            <listitem><para>bool <link linkend="_class_bot_config_1a0c63abf2bd51de63c3de85b91fc1e5f1">readDataCollected</link> ()</para>
+</listitem>
+            <listitem><para>bool <link linkend="_class_bot_config_1ad461209f70e41b763999c7453e4529ee">readDataBluestacks</link> ()</para>
+</listitem>
+            <listitem><para>bool <link linkend="_class_bot_config_1a0c8b3da81dd5f06097ee696f2f466b67">readDataLDPlayer</link> ()</para>
+</listitem>
+            <listitem><para>std::string <link linkend="_class_bot_config_1a78cc040bd6fa993620e33882fe5a9641">readLineBotFile</link> (const std::string &amp;lineparameter)</para>
+</listitem>
+            <listitem><para>std::string <link linkend="_class_bot_config_1abf2a58007d9d7ea7d39e4f5a47f70bfc">readFavoriteInstance</link> ()</para>
+</listitem>
+            <listitem><para>std::string <link linkend="_class_bot_config_1ad4f685732935069ed53b312cf6a35b58">readFavoritePreset</link> ()</para>
+</listitem>
+            <listitem><para>void <link linkend="_class_bot_config_1a1fa99db24f032484c9170eae8345ab06">read</link> ()</para>
+</listitem>
+            <listitem><para>void <link linkend="_class_bot_config_1adbc147eff876980c05cd0f08104b69ec">readBluestacks</link> ()</para>
+</listitem>
+            <listitem><para>std::string <link linkend="_class_bot_config_1a47a08f20862705d00d5647b7ba975664">readBluestacksFolder</link> ()</para>
+</listitem>
+            <listitem><para>std::string <link linkend="_class_bot_config_1a0e6d03f4aaf4a056c97882717f03870f">readBluestacksConfig</link> ()</para>
+</listitem>
+            <listitem><para>std::string <link linkend="_class_bot_config_1a0be029b74be2d6925d33d6d3a7cf08b3">readLdPlayerFolder</link> ()</para>
+</listitem>
+            <listitem><para>void <link linkend="_class_bot_config_1aeec6d982e69269df217894edc9f4ff3e">readLdPlayer</link> ()</para>
+</listitem>
+            <listitem><para>bool <link linkend="_class_bot_config_1ae75cf338c4da36cf1996494dae4273ca">readSearchAll</link> ()</para>
+</listitem>
+            <listitem><para>bool <link linkend="_class_bot_config_1abe575477e07b1c120141f019fc7101af">readSearchBluestacks</link> ()</para>
+</listitem>
+            <listitem><para>bool <link linkend="_class_bot_config_1ab89c77f603cb134bb5a1859dcd1bd850">readSearchLdPlayer</link> ()</para>
+</listitem>
+            <listitem><para>void <link linkend="_class_bot_config_1ab92a15dd3027a7f42b452cdf5eaf9529">updateString</link> (const std::string &amp;filename, const std::string &amp;lineParameter, const std::string &amp;content, const std::string &amp;first, const std::string &amp;last)</para>
+</listitem>
+            <listitem><para>void <link linkend="_class_bot_config_1a7fe6cbda7ec98c3070e6f9437f6eeb84">updateStringBotFile</link> (const std::string &amp;lineParameter, const std::string &amp;content, const std::string &amp;first, const std::string &amp;last)</para>
+</listitem>
+            <listitem><para>void <link linkend="_class_bot_config_1a6156a0424ed044c8309b986c62a61d62">updateInt</link> (const std::string &amp;filename, const std::string &amp;lineParameter, const int &amp;content, const std::string &amp;first, const std::string &amp;last)</para>
+</listitem>
+            <listitem><para>void <link linkend="_class_bot_config_1a84ab86ab1cdcf8c6c9bac78044bc0f12">updateIntBotFile</link> (const std::string &amp;lineParameter, const int &amp;content, const std::string &amp;first, const std::string &amp;last)</para>
+</listitem>
+            <listitem><para>void <link linkend="_class_bot_config_1a7b0b572a14dd5f0630b335041f83049a">updateBool</link> (const std::string &amp;filename, const std::string &amp;lineParameter, const bool &amp;content, const std::string &amp;first, const std::string &amp;last)</para>
+</listitem>
+            <listitem><para>void <link linkend="_class_bot_config_1a70992bec079cbf9412e69b0f0e712ca2">updateBoolBotFile</link> (const std::string &amp;lineParameter, const bool &amp;content, const std::string &amp;first, const std::string &amp;last)</para>
+</listitem>
+            <listitem><para>void <link linkend="_class_bot_config_1a9c0206c0081858886963267f855a9ec8">updateFavoriteInstance</link> (<link linkend="_class_instance">Instance</link> *inst)</para>
+</listitem>
+            <listitem><para>void <link linkend="_class_bot_config_1ac766bf2645c392ae3057a93c7628aa85">updateFavoritePreset</link> (const std::string &amp;preset)</para>
+</listitem>
+            <listitem><para>void <link linkend="_class_bot_config_1add6ae08a184d93e02b4ad2a03aa95e90">updateInit</link> ()</para>
+</listitem>
+            <listitem><para>void <link linkend="_class_bot_config_1a994d7a4b890c4ab02c1da5778cc36f9c">updateInitBluestacks</link> ()</para>
+</listitem>
+            <listitem><para>void <link linkend="_class_bot_config_1a4630e1c0cfc4366a1e97df9452cad69d">updateInitLdPlayer</link> ()</para>
+</listitem>
+            <listitem><para>void <link linkend="_class_bot_config_1a53485f20f89c00397495b545b91044da">updateDataAll</link> (bool search)</para>
+</listitem>
+            <listitem><para>void <link linkend="_class_bot_config_1ab4929dd1c99a9e725800349a9cfc3b0e">updateDataBluestacks</link> (bool search)</para>
+</listitem>
+            <listitem><para>void <link linkend="_class_bot_config_1ae1e96b6b256aa8894b603259674f6a6f">updateDataLdPlayer</link> (bool search)</para>
+</listitem>
+            <listitem><para>void <link linkend="_class_bot_config_1ae21ba22e6f1b9dfcacf38dd78f904d82">updateBluestacksFolder</link> (const std::string &amp;folder)</para>
+</listitem>
+            <listitem><para>void <link linkend="_class_bot_config_1ab9fe07595e423fcdfc22322dd1ede393">updateBluestacksConfig</link> (const std::string &amp;folder)</para>
+</listitem>
+            <listitem><para>void <link linkend="_class_bot_config_1a095c01a9b9e6ff1db9c683716337f45f">updateLdPlayerFolder</link> (const std::string &amp;folder)</para>
+</listitem>
+            <listitem><para>void <link linkend="_class_bot_config_1a2a28f19b68e5d8a4b8fa52f9d4f2fbbe">waitBootDevice</link> ()</para>
+</listitem>
+            <listitem><para>void <link linkend="_class_bot_config_1a5ea5db5fbc78be03cd9450d4b4c0e73c">writeInit</link> ()</para>
+</listitem>
+            <listitem><para>std::string <link linkend="_class_bot_config_1a6c307da0b2712317dcb70daa3bfae0dc">writeInitBluestacks</link> ()</para>
+</listitem>
+            <listitem><para>std::string <link linkend="_class_bot_config_1a8133a513c928f79a35b8b69a5ad69e68">writeInitLdPlayer</link> ()</para>
+</listitem>
+            <listitem><para>std::string <link linkend="_class_bot_config_1aeb7fe97edfbfb8a9d0a30c156e8a5bb9">textInitBluestacks</link> ()</para>
+</listitem>
+            <listitem><para>std::string <link linkend="_class_bot_config_1a734ee0b264983e8da4ee33926e076602">textInitLdPlayer</link> ()</para>
+</listitem>
+            <listitem><para>std::string <link linkend="_class_bot_config_1a1652dcc0a496d11e8d7f35d8c88e6014">getBotFilecontent</link> ()</para>
+</listitem>
+            <listitem><para>void <link linkend="_class_bot_config_1af0e522630e79d295768f36a640dd257a">setParameters</link> ()</para>
+</listitem>
+            <listitem><para>void <link linkend="_class_bot_config_1ac67855a292a9b00c0d1bdb3e09cafb50">getAllPlayableInstances</link> ()</para>
+</listitem>
+            <listitem><para>void <link linkend="_class_bot_config_1acad99a7dc9cbe220677bfdb90b04f48f">setSearchEmulators</link> (bool reset=false)</para>
+</listitem>
+            <listitem><para>void <link linkend="_class_bot_config_1a939c57f64624e4160f921b093ca827d0">initBotFile</link> ()</para>
+</listitem>
+            <listitem><para>void <link linkend="_class_bot_config_1ad8b1cd4e0943a64f9e3a91d9a09fe21e">checkPlayingInstanceParameters</link> ()</para>
+</listitem>
+            <listitem><para>bool <link linkend="_class_bot_config_1a8925ef3403b945f27b9ee2719ef257b9">initBotConfig</link> (bool reset=false)</para>
+</listitem>
+            <listitem><para>void <link linkend="_class_bot_config_1af8c906f3cd22726a96e758886c756068">initEmulators</link> ()</para>
+</listitem>
+            <listitem><para>void <link linkend="_class_bot_config_1a24360fdf5b92d7fb02ca39004ceb06cf">initBluestacks</link> ()</para>
+</listitem>
+            <listitem><para>void <link linkend="_class_bot_config_1ac91f46c5dca7953454d5a2340dfd7f5c">initLdPlayer</link> ()</para>
+</listitem>
+            <listitem><para>void <link linkend="_class_bot_config_1ae575c3fd3b6384b68c87ffca7e269132">setDim</link> (int dimx, int dimy)</para>
+</listitem>
+            <listitem><para>bool <link linkend="_class_bot_config_1a100e179305b4c6eb54ff8a680616ec03">verifyParameters</link> ()</para>
+</listitem>
+            <listitem><para>bool <link linkend="_class_bot_config_1a87ca6a00d5b852b1c96966bcd1cbb417">verifyBluestacksParameters</link> (const std::string &amp;botFile)</para>
+</listitem>
+            <listitem><para>bool <link linkend="_class_bot_config_1a6ed63ab2d1ba5fcb75a28e8068296585">verifyLdPlayerParameters</link> (const std::string &amp;botFile)</para>
+</listitem>
+            <listitem><para>bool <link linkend="_class_bot_config_1a065587486500e26019a183c4727ac9ef">verifyfavoriteParameters</link> (const std::string &amp;botFile)</para>
+</listitem>
+            <listitem><para><link linkend="_class_instance">Instance</link> * <link linkend="_class_bot_config_1a7b9529e08b815f71595c6b5953654057">getPlayingInstance</link> ()</para>
+</listitem>
+            <listitem><para>bool <link linkend="_class_bot_config_1aaa9ade6d9deb18e7457ab5d1d925e9e6">doWriteInit</link> ()</para>
+</listitem>
+            <listitem><para>bool <link linkend="_class_bot_config_1a1ede9834fcb1b8dcedf47a367241d030">verifyEmulatorFolder</link> (const std::string &amp;<link linkend="_class_bot_config_1aa4504f810fa5d45d507234ae76565ffe">emulatorFolder</link>, bool &amp;emulatorinstalled, bool &amp;search)</para>
+</listitem>
+            <listitem><para>void <link linkend="_class_bot_config_1a721c788702f464bb4406b919d018c5f9">startPlayingInstance</link> ()</para>
+</listitem>
+            <listitem><para>std::string <link linkend="_class_bot_config_1a6b10b258e97759cf77f5c35f57698bc7">getAdbKey</link> ()</para>
+</listitem>
+        </itemizedlist>
+</simplesect>
+<simplesect>
+    <title>Public Attributes    </title>
+        <itemizedlist>
+            <listitem><para>bool <link linkend="_class_bot_config_1abe21c3220cdb52cd85ad15e8c3e55982">blueStacksInstalled</link></para>
+</listitem>
+            <listitem><para>bool <link linkend="_class_bot_config_1ae7e47847f68c73a9d31c3437a970389d">ldPlayerInstalled</link></para>
+</listitem>
+            <listitem><para>bool <link linkend="_class_bot_config_1af4340d8753f4ad3d3717c6d5b69368e1">searchAll</link></para>
+</listitem>
+            <listitem><para>bool <link linkend="_class_bot_config_1a0d607d1afacc3568084d163bf89565a5">searchBluestacks</link></para>
+</listitem>
+            <listitem><para>bool <link linkend="_class_bot_config_1a7e670ede2140b300b37e9fd07b8a6eff">searchLdPlayer</link></para>
+</listitem>
+            <listitem><para>std::string <link linkend="_class_bot_config_1a97d5d8c5d1f2c7d676eecf517413ab63">favPresetParam</link></para>
+</listitem>
+            <listitem><para>std::string <link linkend="_class_bot_config_1af541e9a5c255ba8de81c38b89b73f63e">favInstanceParam</link></para>
+</listitem>
+            <listitem><para>std::string <link linkend="_class_bot_config_1aa4504f810fa5d45d507234ae76565ffe">emulatorFolder</link></para>
+</listitem>
+            <listitem><para>std::string <link linkend="_class_bot_config_1a9cc1461a2436554f99212532097d5fe5">data</link></para>
+</listitem>
+            <listitem><para>std::string <link linkend="_class_bot_config_1ac433b4b457db719af5e56b786827fcb9">bluestacksFolder</link></para>
+</listitem>
+            <listitem><para>std::string <link linkend="_class_bot_config_1a6c736e999146a7d05ae25d26583c734f">bluestacksConfigFolder</link></para>
+</listitem>
+            <listitem><para>std::string <link linkend="_class_bot_config_1a9f801cc5f2ff528b9bcf05b8f748b71b">ldPlayerFolder</link></para>
+</listitem>
+            <listitem><para>std::string <link linkend="_class_bot_config_1abe2489cbbe63afc83c21a4fe0d25cc1b">dataBluestacks</link></para>
+</listitem>
+            <listitem><para>std::string <link linkend="_class_bot_config_1a8fe68744500dce25c3c2a700a427ec2a">dataLDPlayer</link></para>
+</listitem>
+            <listitem><para>std::string <link linkend="_class_bot_config_1a8d3c3820fab2ef322e3929cfaed3a3a1">dataCollected</link></para>
+</listitem>
+            <listitem><para>std::string <link linkend="_class_bot_config_1adbb6cd71fca55ebb943869a88a808875">NOTINSTALLED</link></para>
+</listitem>
+            <listitem><para>std::string <link linkend="_class_bot_config_1a9c113f5440c9f1637724ad7c1c422f2b">TOSEARCH</link></para>
+</listitem>
+            <listitem><para>std::string <link linkend="_class_bot_config_1aac5783e0f4d039c2ddb6de6f1d7e8f6a">end</link></para>
+</listitem>
+            <listitem><para>std::string <link linkend="_class_bot_config_1aba7e690ba344f65eabc717996981ca0e">quote</link></para>
+</listitem>
+            <listitem><para>std::string <link linkend="_class_bot_config_1a72abeb980d886515c3d476e6d524a116">gamePackage</link></para>
+</listitem>
+            <listitem><para>std::string <link linkend="_class_bot_config_1afe99fd562cd17fa872729ccca4d9525f">gameActivity</link></para>
+</listitem>
+            <listitem><para>std::string <link linkend="_class_bot_config_1ab2bc67e00b87b45a72db8363ce38a198">BotFile</link></para>
+</listitem>
+            <listitem><para>std::string <link linkend="_class_bot_config_1ad6aeb089df6502e04cad880c58361755">favoritePreset</link></para>
+</listitem>
+            <listitem><para>std::string <link linkend="_class_bot_config_1a04819c65a0bc6f682b906b3d796fafdf">favoriteInstance</link></para>
+</listitem>
+            <listitem><para>std::string <link linkend="_class_bot_config_1a7a39c005495ff862f6f57e2393ed0d0e">adbKey</link></para>
+</listitem>
+            <listitem><para>int <link linkend="_class_bot_config_1a9ebfbe0b69d4f9a09c08770dadba5a36">desiredX</link></para>
+</listitem>
+            <listitem><para>int <link linkend="_class_bot_config_1a82dc12794d01b4a4209b356c3077a446">desiredY</link></para>
+</listitem>
+            <listitem><para>int <link linkend="_class_bot_config_1aa5b3992386fdc65aa95e800d0802e71c">desiredDpi</link></para>
+</listitem>
+            <listitem><para><link linkend="_struct_all_emulators">AllEmulators</link> <link linkend="_class_bot_config_1a98b58016baad4e504ec1fbcb7eace8b9">allEmu</link></para>
+</listitem>
+        </itemizedlist>
+</simplesect>
+<section>
+<title>Detailed Description</title>
+<para>
+Definition at line <link linkend="__bot_config_8h_source_1l00055">55</link> of file <link linkend="__bot_config_8h_source">BotConfig.h</link>.</para>
+</section>
+<section>
+<title>Constructor &amp; Destructor Documentation</title>
+<anchor xml:id="_class_bot_config_1a00a2927e0ed7e0a0f3d8bfa96cd323fc"/><section>
+    <title>BotConfig()<computeroutput>[1/2]</computeroutput></title>
+<indexterm><primary>BotConfig</primary><secondary>BotConfig</secondary></indexterm>
+<indexterm><primary>BotConfig</primary><secondary>BotConfig</secondary></indexterm>
+<para><computeroutput>BotConfig::BotConfig ( )</computeroutput></para><para>
+Definition at line <link linkend="__bot_config_8cpp_source_1l00003">3</link> of file <link linkend="__bot_config_8cpp_source">BotConfig.cpp</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_bot_config_a00a2927e0ed7e0a0f3d8bfa96cd323fc_cgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_class_bot_config_1a0e505da151078e86753f220064097013"/><section>
+    <title>BotConfig()<computeroutput>[2/2]</computeroutput></title>
+<indexterm><primary>BotConfig</primary><secondary>BotConfig</secondary></indexterm>
+<indexterm><primary>BotConfig</primary><secondary>BotConfig</secondary></indexterm>
+<para><computeroutput>BotConfig::BotConfig (std::string gamePackage, std::string gameActivity, int dimX, int dimY, int dpi)</computeroutput></para><para>
+Definition at line <link linkend="__bot_config_8cpp_source_1l00014">14</link> of file <link linkend="__bot_config_8cpp_source">BotConfig.cpp</link>.</para>
+</section>
+</section>
+<section>
+<title>Member Function Documentation</title>
+<anchor xml:id="_class_bot_config_1a52e7277feeeb5387104d7b66a44ff519"/><section>
+    <title>anyPlayableInstance()</title>
+<indexterm><primary>anyPlayableInstance</primary><secondary>BotConfig</secondary></indexterm>
+<indexterm><primary>BotConfig</primary><secondary>anyPlayableInstance</secondary></indexterm>
+<para><computeroutput>bool BotConfig::anyPlayableInstance ( )</computeroutput></para><para>
+Definition at line <link linkend="__bot_config_8cpp_source_1l00074">74</link> of file <link linkend="__bot_config_8cpp_source">BotConfig.cpp</link>.</para>
+Here is the caller graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_bot_config_a52e7277feeeb5387104d7b66a44ff519_icgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_class_bot_config_1ad8b1cd4e0943a64f9e3a91d9a09fe21e"/><section>
+    <title>checkPlayingInstanceParameters()</title>
+<indexterm><primary>checkPlayingInstanceParameters</primary><secondary>BotConfig</secondary></indexterm>
+<indexterm><primary>BotConfig</primary><secondary>checkPlayingInstanceParameters</secondary></indexterm>
+<para><computeroutput>void BotConfig::checkPlayingInstanceParameters ( )</computeroutput></para><para>
+Definition at line <link linkend="__bot_config_8cpp_source_1l00248">248</link> of file <link linkend="__bot_config_8cpp_source">BotConfig.cpp</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_bot_config_ad8b1cd4e0943a64f9e3a91d9a09fe21e_cgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+Here is the caller graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_bot_config_ad8b1cd4e0943a64f9e3a91d9a09fe21e_icgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_class_bot_config_1a72e8877046483a6c3c8f03a21ea9c6b2"/><section>
+    <title>choosePlayingInstance()</title>
+<indexterm><primary>choosePlayingInstance</primary><secondary>BotConfig</secondary></indexterm>
+<indexterm><primary>BotConfig</primary><secondary>choosePlayingInstance</secondary></indexterm>
+<para><computeroutput>void BotConfig::choosePlayingInstance ( )</computeroutput></para><para>
+Definition at line <link linkend="__bot_config_8cpp_source_1l00266">266</link> of file <link linkend="__bot_config_8cpp_source">BotConfig.cpp</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_bot_config_a72e8877046483a6c3c8f03a21ea9c6b2_cgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+Here is the caller graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_bot_config_a72e8877046483a6c3c8f03a21ea9c6b2_icgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_class_bot_config_1a2de6914c1428da89266ac78057e0ebe0"/><section>
+    <title>chronoInstanceMenu()</title>
+<indexterm><primary>chronoInstanceMenu</primary><secondary>BotConfig</secondary></indexterm>
+<indexterm><primary>BotConfig</primary><secondary>chronoInstanceMenu</secondary></indexterm>
+<para><computeroutput>bool BotConfig::chronoInstanceMenu (std::chrono::time_point&lt; std::chrono::steady_clock &gt; start, int duration, int &amp; lastelapsed)</computeroutput></para><para>
+Definition at line <link linkend="__bot_config_8cpp_source_1l00318">318</link> of file <link linkend="__bot_config_8cpp_source">BotConfig.cpp</link>.</para>
+Here is the caller graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_bot_config_a2de6914c1428da89266ac78057e0ebe0_icgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_class_bot_config_1aaa9ade6d9deb18e7457ab5d1d925e9e6"/><section>
+    <title>doWriteInit()</title>
+<indexterm><primary>doWriteInit</primary><secondary>BotConfig</secondary></indexterm>
+<indexterm><primary>BotConfig</primary><secondary>doWriteInit</secondary></indexterm>
+<para><computeroutput>bool BotConfig::doWriteInit ( )</computeroutput></para><para>
+Definition at line <link linkend="__bot_config_8cpp_source_1l00530">530</link> of file <link linkend="__bot_config_8cpp_source">BotConfig.cpp</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_bot_config_aaa9ade6d9deb18e7457ab5d1d925e9e6_cgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+Here is the caller graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_bot_config_aaa9ade6d9deb18e7457ab5d1d925e9e6_icgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_class_bot_config_1ad0f786d110e0eb647fbc444963a1d8e7"/><section>
+    <title>explainInstanceChoice()</title>
+<indexterm><primary>explainInstanceChoice</primary><secondary>BotConfig</secondary></indexterm>
+<indexterm><primary>BotConfig</primary><secondary>explainInstanceChoice</secondary></indexterm>
+<para><computeroutput>void BotConfig::explainInstanceChoice ( )</computeroutput></para><para>
+Definition at line <link linkend="__bot_config_8cpp_source_1l00309">309</link> of file <link linkend="__bot_config_8cpp_source">BotConfig.cpp</link>.</para>
+Here is the caller graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_bot_config_ad0f786d110e0eb647fbc444963a1d8e7_icgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_class_bot_config_1a6b10b258e97759cf77f5c35f57698bc7"/><section>
+    <title>getAdbKey()</title>
+<indexterm><primary>getAdbKey</primary><secondary>BotConfig</secondary></indexterm>
+<indexterm><primary>BotConfig</primary><secondary>getAdbKey</secondary></indexterm>
+<para><computeroutput>std::string BotConfig::getAdbKey ( )</computeroutput></para><para>
+Definition at line <link linkend="__bot_config_8cpp_source_1l00623">623</link> of file <link linkend="__bot_config_8cpp_source">BotConfig.cpp</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_bot_config_a6b10b258e97759cf77f5c35f57698bc7_cgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+Here is the caller graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_bot_config_a6b10b258e97759cf77f5c35f57698bc7_icgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_class_bot_config_1ac67855a292a9b00c0d1bdb3e09cafb50"/><section>
+    <title>getAllPlayableInstances()</title>
+<indexterm><primary>getAllPlayableInstances</primary><secondary>BotConfig</secondary></indexterm>
+<indexterm><primary>BotConfig</primary><secondary>getAllPlayableInstances</secondary></indexterm>
+<para><computeroutput>void BotConfig::getAllPlayableInstances ( )</computeroutput></para><para>
+Definition at line <link linkend="__bot_config_8cpp_source_1l00214">214</link> of file <link linkend="__bot_config_8cpp_source">BotConfig.cpp</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_bot_config_ac67855a292a9b00c0d1bdb3e09cafb50_cgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+Here is the caller graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_bot_config_ac67855a292a9b00c0d1bdb3e09cafb50_icgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_class_bot_config_1a1652dcc0a496d11e8d7f35d8c88e6014"/><section>
+    <title>getBotFilecontent()</title>
+<indexterm><primary>getBotFilecontent</primary><secondary>BotConfig</secondary></indexterm>
+<indexterm><primary>BotConfig</primary><secondary>getBotFilecontent</secondary></indexterm>
+<para><computeroutput>std::string BotConfig::getBotFilecontent ( )</computeroutput></para><para>
+Definition at line <link linkend="__bot_config_8cpp_source_1l00153">153</link> of file <link linkend="__bot_config_8cpp_source">BotConfig.cpp</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_bot_config_a1652dcc0a496d11e8d7f35d8c88e6014_cgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+Here is the caller graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_bot_config_a1652dcc0a496d11e8d7f35d8c88e6014_icgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_class_bot_config_1a7b9529e08b815f71595c6b5953654057"/><section>
+    <title>getPlayingInstance()</title>
+<indexterm><primary>getPlayingInstance</primary><secondary>BotConfig</secondary></indexterm>
+<indexterm><primary>BotConfig</primary><secondary>getPlayingInstance</secondary></indexterm>
+<para><computeroutput><link linkend="_class_instance">Instance</link> * BotConfig::getPlayingInstance ( )</computeroutput></para><para>
+Definition at line <link linkend="__bot_config_8cpp_source_1l00525">525</link> of file <link linkend="__bot_config_8cpp_source">BotConfig.cpp</link>.</para>
+Here is the caller graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_bot_config_a7b9529e08b815f71595c6b5953654057_icgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_class_bot_config_1ac00a1d2728bca4fe8ad17e8dc8b792e2"/><section>
+    <title>handleFavoriteInstance()</title>
+<indexterm><primary>handleFavoriteInstance</primary><secondary>BotConfig</secondary></indexterm>
+<indexterm><primary>BotConfig</primary><secondary>handleFavoriteInstance</secondary></indexterm>
+<para><computeroutput>int BotConfig::handleFavoriteInstance ( )</computeroutput></para><para>
+Definition at line <link linkend="__bot_config_8cpp_source_1l00408">408</link> of file <link linkend="__bot_config_8cpp_source">BotConfig.cpp</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_bot_config_ac00a1d2728bca4fe8ad17e8dc8b792e2_cgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+Here is the caller graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_bot_config_ac00a1d2728bca4fe8ad17e8dc8b792e2_icgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_class_bot_config_1a24360fdf5b92d7fb02ca39004ceb06cf"/><section>
+    <title>initBluestacks()</title>
+<indexterm><primary>initBluestacks</primary><secondary>BotConfig</secondary></indexterm>
+<indexterm><primary>BotConfig</primary><secondary>initBluestacks</secondary></indexterm>
+<para><computeroutput>void BotConfig::initBluestacks ( )</computeroutput></para><para>
+Definition at line <link linkend="__bot_config_8cpp_source_1l00584">584</link> of file <link linkend="__bot_config_8cpp_source">BotConfig.cpp</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_bot_config_a24360fdf5b92d7fb02ca39004ceb06cf_cgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+Here is the caller graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_bot_config_a24360fdf5b92d7fb02ca39004ceb06cf_icgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_class_bot_config_1a8925ef3403b945f27b9ee2719ef257b9"/><section>
+    <title>initBotConfig()</title>
+<indexterm><primary>initBotConfig</primary><secondary>BotConfig</secondary></indexterm>
+<indexterm><primary>BotConfig</primary><secondary>initBotConfig</secondary></indexterm>
+<para><computeroutput>bool BotConfig::initBotConfig (bool reset = <computeroutput>false</computeroutput>
+)</computeroutput></para><para>
+Definition at line <link linkend="__bot_config_8cpp_source_1l00562">562</link> of file <link linkend="__bot_config_8cpp_source">BotConfig.cpp</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_bot_config_a8925ef3403b945f27b9ee2719ef257b9_cgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+Here is the caller graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_bot_config_a8925ef3403b945f27b9ee2719ef257b9_icgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_class_bot_config_1a939c57f64624e4160f921b093ca827d0"/><section>
+    <title>initBotFile()</title>
+<indexterm><primary>initBotFile</primary><secondary>BotConfig</secondary></indexterm>
+<indexterm><primary>BotConfig</primary><secondary>initBotFile</secondary></indexterm>
+<para><computeroutput>void BotConfig::initBotFile ( )</computeroutput></para><para>
+Definition at line <link linkend="__bot_config_8cpp_source_1l00243">243</link> of file <link linkend="__bot_config_8cpp_source">BotConfig.cpp</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_bot_config_a939c57f64624e4160f921b093ca827d0_cgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+Here is the caller graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_bot_config_a939c57f64624e4160f921b093ca827d0_icgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_class_bot_config_1af8c906f3cd22726a96e758886c756068"/><section>
+    <title>initEmulators()</title>
+<indexterm><primary>initEmulators</primary><secondary>BotConfig</secondary></indexterm>
+<indexterm><primary>BotConfig</primary><secondary>initEmulators</secondary></indexterm>
+<para><computeroutput>void BotConfig::initEmulators ( )</computeroutput></para><para>
+Definition at line <link linkend="__bot_config_8cpp_source_1l00577">577</link> of file <link linkend="__bot_config_8cpp_source">BotConfig.cpp</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_bot_config_af8c906f3cd22726a96e758886c756068_cgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+Here is the caller graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_bot_config_af8c906f3cd22726a96e758886c756068_icgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_class_bot_config_1ac91f46c5dca7953454d5a2340dfd7f5c"/><section>
+    <title>initLdPlayer()</title>
+<indexterm><primary>initLdPlayer</primary><secondary>BotConfig</secondary></indexterm>
+<indexterm><primary>BotConfig</primary><secondary>initLdPlayer</secondary></indexterm>
+<para><computeroutput>void BotConfig::initLdPlayer ( )</computeroutput></para><para>
+Definition at line <link linkend="__bot_config_8cpp_source_1l00602">602</link> of file <link linkend="__bot_config_8cpp_source">BotConfig.cpp</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_bot_config_ac91f46c5dca7953454d5a2340dfd7f5c_cgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+Here is the caller graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_bot_config_ac91f46c5dca7953454d5a2340dfd7f5c_icgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_class_bot_config_1af5d808aed675a21368cb8669ed12b756"/><section>
+    <title>interactUserFavoriteInstance()</title>
+<indexterm><primary>interactUserFavoriteInstance</primary><secondary>BotConfig</secondary></indexterm>
+<indexterm><primary>BotConfig</primary><secondary>interactUserFavoriteInstance</secondary></indexterm>
+<para><computeroutput>void BotConfig::interactUserFavoriteInstance (int totalInstances)</computeroutput></para><para>
+Definition at line <link linkend="__bot_config_8cpp_source_1l00359">359</link> of file <link linkend="__bot_config_8cpp_source">BotConfig.cpp</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_bot_config_af5d808aed675a21368cb8669ed12b756_cgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_class_bot_config_1a6a480c4db4e8b69df4ed425503dd4ab4"/><section>
+    <title>interactUserInstance()</title>
+<indexterm><primary>interactUserInstance</primary><secondary>BotConfig</secondary></indexterm>
+<indexterm><primary>BotConfig</primary><secondary>interactUserInstance</secondary></indexterm>
+<para><computeroutput>bool BotConfig::interactUserInstance (int totalInstances, int &amp; nbRunningInstance)</computeroutput></para><para>
+Definition at line <link linkend="__bot_config_8cpp_source_1l00337">337</link> of file <link linkend="__bot_config_8cpp_source">BotConfig.cpp</link>.</para>
+</section>
+<anchor xml:id="_class_bot_config_1a1fa99db24f032484c9170eae8345ab06"/><section>
+    <title>read()</title>
+<indexterm><primary>read</primary><secondary>BotConfig</secondary></indexterm>
+<indexterm><primary>BotConfig</primary><secondary>read</secondary></indexterm>
+<para><computeroutput>void BotConfig::read ( )</computeroutput></para><para>
+Definition at line <link linkend="__bot_config_8cpp_source_1l00421">421</link> of file <link linkend="__bot_config_8cpp_source">BotConfig.cpp</link>.</para>
+</section>
+<anchor xml:id="_class_bot_config_1adbc147eff876980c05cd0f08104b69ec"/><section>
+    <title>readBluestacks()</title>
+<indexterm><primary>readBluestacks</primary><secondary>BotConfig</secondary></indexterm>
+<indexterm><primary>BotConfig</primary><secondary>readBluestacks</secondary></indexterm>
+<para><computeroutput>void BotConfig::readBluestacks ( )</computeroutput></para><para>
+Definition at line <link linkend="__bot_config_8cpp_source_1l00428">428</link> of file <link linkend="__bot_config_8cpp_source">BotConfig.cpp</link>.</para>
+</section>
+<anchor xml:id="_class_bot_config_1a0e6d03f4aaf4a056c97882717f03870f"/><section>
+    <title>readBluestacksConfig()</title>
+<indexterm><primary>readBluestacksConfig</primary><secondary>BotConfig</secondary></indexterm>
+<indexterm><primary>BotConfig</primary><secondary>readBluestacksConfig</secondary></indexterm>
+<para><computeroutput>std::string BotConfig::readBluestacksConfig ( )</computeroutput></para><para>
+Definition at line <link linkend="__bot_config_8cpp_source_1l00438">438</link> of file <link linkend="__bot_config_8cpp_source">BotConfig.cpp</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_bot_config_a0e6d03f4aaf4a056c97882717f03870f_cgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+Here is the caller graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_bot_config_a0e6d03f4aaf4a056c97882717f03870f_icgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_class_bot_config_1a47a08f20862705d00d5647b7ba975664"/><section>
+    <title>readBluestacksFolder()</title>
+<indexterm><primary>readBluestacksFolder</primary><secondary>BotConfig</secondary></indexterm>
+<indexterm><primary>BotConfig</primary><secondary>readBluestacksFolder</secondary></indexterm>
+<para><computeroutput>std::string BotConfig::readBluestacksFolder ( )</computeroutput></para><para>
+Definition at line <link linkend="__bot_config_8cpp_source_1l00433">433</link> of file <link linkend="__bot_config_8cpp_source">BotConfig.cpp</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_bot_config_a47a08f20862705d00d5647b7ba975664_cgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+Here is the caller graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_bot_config_a47a08f20862705d00d5647b7ba975664_icgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_class_bot_config_1a459cd36b6c6f36f9bd73ff207e2fe5ec"/><section>
+    <title>readBool()</title>
+<indexterm><primary>readBool</primary><secondary>BotConfig</secondary></indexterm>
+<indexterm><primary>BotConfig</primary><secondary>readBool</secondary></indexterm>
+<para><computeroutput>bool BotConfig::readBool (const std::string &amp; filename, const std::string &amp; lineParameter, const std::string &amp; first, const std::string &amp; last)</computeroutput></para><para>
+Definition at line <link linkend="__bot_config_8cpp_source_1l00053">53</link> of file <link linkend="__bot_config_8cpp_source">BotConfig.cpp</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_bot_config_a459cd36b6c6f36f9bd73ff207e2fe5ec_cgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+Here is the caller graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_bot_config_a459cd36b6c6f36f9bd73ff207e2fe5ec_icgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_class_bot_config_1a5aafe893fa75e1b711e3ef3f4e4db9cc"/><section>
+    <title>readBoolBotFile()</title>
+<indexterm><primary>readBoolBotFile</primary><secondary>BotConfig</secondary></indexterm>
+<indexterm><primary>BotConfig</primary><secondary>readBoolBotFile</secondary></indexterm>
+<para><computeroutput>bool BotConfig::readBoolBotFile (const std::string &amp; lineParameter)</computeroutput></para><para>
+Definition at line <link linkend="__bot_config_8cpp_source_1l00064">64</link> of file <link linkend="__bot_config_8cpp_source">BotConfig.cpp</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_bot_config_a5aafe893fa75e1b711e3ef3f4e4db9cc_cgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+Here is the caller graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_bot_config_a5aafe893fa75e1b711e3ef3f4e4db9cc_icgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_class_bot_config_1ad461209f70e41b763999c7453e4529ee"/><section>
+    <title>readDataBluestacks()</title>
+<indexterm><primary>readDataBluestacks</primary><secondary>BotConfig</secondary></indexterm>
+<indexterm><primary>BotConfig</primary><secondary>readDataBluestacks</secondary></indexterm>
+<para><computeroutput>bool BotConfig::readDataBluestacks ( )</computeroutput></para><para>
+Definition at line <link linkend="__bot_config_8cpp_source_1l00126">126</link> of file <link linkend="__bot_config_8cpp_source">BotConfig.cpp</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_bot_config_ad461209f70e41b763999c7453e4529ee_cgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+Here is the caller graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_bot_config_ad461209f70e41b763999c7453e4529ee_icgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_class_bot_config_1a0c63abf2bd51de63c3de85b91fc1e5f1"/><section>
+    <title>readDataCollected()</title>
+<indexterm><primary>readDataCollected</primary><secondary>BotConfig</secondary></indexterm>
+<indexterm><primary>BotConfig</primary><secondary>readDataCollected</secondary></indexterm>
+<para><computeroutput>bool BotConfig::readDataCollected ( )</computeroutput></para><para>
+Definition at line <link linkend="__bot_config_8cpp_source_1l00121">121</link> of file <link linkend="__bot_config_8cpp_source">BotConfig.cpp</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_bot_config_a0c63abf2bd51de63c3de85b91fc1e5f1_cgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+Here is the caller graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_bot_config_a0c63abf2bd51de63c3de85b91fc1e5f1_icgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_class_bot_config_1a0c8b3da81dd5f06097ee696f2f466b67"/><section>
+    <title>readDataLDPlayer()</title>
+<indexterm><primary>readDataLDPlayer</primary><secondary>BotConfig</secondary></indexterm>
+<indexterm><primary>BotConfig</primary><secondary>readDataLDPlayer</secondary></indexterm>
+<para><computeroutput>bool BotConfig::readDataLDPlayer ( )</computeroutput></para><para>
+Definition at line <link linkend="__bot_config_8cpp_source_1l00130">130</link> of file <link linkend="__bot_config_8cpp_source">BotConfig.cpp</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_bot_config_a0c8b3da81dd5f06097ee696f2f466b67_cgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+Here is the caller graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_bot_config_a0c8b3da81dd5f06097ee696f2f466b67_icgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_class_bot_config_1abf2a58007d9d7ea7d39e4f5a47f70bfc"/><section>
+    <title>readFavoriteInstance()</title>
+<indexterm><primary>readFavoriteInstance</primary><secondary>BotConfig</secondary></indexterm>
+<indexterm><primary>BotConfig</primary><secondary>readFavoriteInstance</secondary></indexterm>
+<para><computeroutput>std::string BotConfig::readFavoriteInstance ( )</computeroutput></para><para>
+Definition at line <link linkend="__bot_config_8cpp_source_1l00140">140</link> of file <link linkend="__bot_config_8cpp_source">BotConfig.cpp</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_bot_config_abf2a58007d9d7ea7d39e4f5a47f70bfc_cgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+Here is the caller graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_bot_config_abf2a58007d9d7ea7d39e4f5a47f70bfc_icgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_class_bot_config_1ad4f685732935069ed53b312cf6a35b58"/><section>
+    <title>readFavoritePreset()</title>
+<indexterm><primary>readFavoritePreset</primary><secondary>BotConfig</secondary></indexterm>
+<indexterm><primary>BotConfig</primary><secondary>readFavoritePreset</secondary></indexterm>
+<para><computeroutput>std::string BotConfig::readFavoritePreset ( )</computeroutput></para><para>
+Definition at line <link linkend="__bot_config_8cpp_source_1l00146">146</link> of file <link linkend="__bot_config_8cpp_source">BotConfig.cpp</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_bot_config_ad4f685732935069ed53b312cf6a35b58_cgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+Here is the caller graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_bot_config_ad4f685732935069ed53b312cf6a35b58_icgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_class_bot_config_1ab2bc74b90f5fa9c6761c2b5a8f06903e"/><section>
+    <title>readInt()</title>
+<indexterm><primary>readInt</primary><secondary>BotConfig</secondary></indexterm>
+<indexterm><primary>BotConfig</primary><secondary>readInt</secondary></indexterm>
+<para><computeroutput>int BotConfig::readInt (const std::string &amp; filename, const std::string &amp; lineParameter, const std::string &amp; first, const std::string &amp; last)</computeroutput></para><para>
+Definition at line <link linkend="__bot_config_8cpp_source_1l00047">47</link> of file <link linkend="__bot_config_8cpp_source">BotConfig.cpp</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_bot_config_ab2bc74b90f5fa9c6761c2b5a8f06903e_cgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+Here is the caller graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_bot_config_ab2bc74b90f5fa9c6761c2b5a8f06903e_icgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_class_bot_config_1ab692e666bc268ac76e501e29fe80d7fc"/><section>
+    <title>readIntBotFile()</title>
+<indexterm><primary>readIntBotFile</primary><secondary>BotConfig</secondary></indexterm>
+<indexterm><primary>BotConfig</primary><secondary>readIntBotFile</secondary></indexterm>
+<para><computeroutput>int BotConfig::readIntBotFile (const std::string &amp; lineParameter)</computeroutput></para><para>
+Definition at line <link linkend="__bot_config_8cpp_source_1l00059">59</link> of file <link linkend="__bot_config_8cpp_source">BotConfig.cpp</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_bot_config_ab692e666bc268ac76e501e29fe80d7fc_cgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_class_bot_config_1aeec6d982e69269df217894edc9f4ff3e"/><section>
+    <title>readLdPlayer()</title>
+<indexterm><primary>readLdPlayer</primary><secondary>BotConfig</secondary></indexterm>
+<indexterm><primary>BotConfig</primary><secondary>readLdPlayer</secondary></indexterm>
+<para><computeroutput>void BotConfig::readLdPlayer ( )</computeroutput></para><para>
+Definition at line <link linkend="__bot_config_8cpp_source_1l00448">448</link> of file <link linkend="__bot_config_8cpp_source">BotConfig.cpp</link>.</para>
+</section>
+<anchor xml:id="_class_bot_config_1a0be029b74be2d6925d33d6d3a7cf08b3"/><section>
+    <title>readLdPlayerFolder()</title>
+<indexterm><primary>readLdPlayerFolder</primary><secondary>BotConfig</secondary></indexterm>
+<indexterm><primary>BotConfig</primary><secondary>readLdPlayerFolder</secondary></indexterm>
+<para><computeroutput>std::string BotConfig::readLdPlayerFolder ( )</computeroutput></para><para>
+Definition at line <link linkend="__bot_config_8cpp_source_1l00443">443</link> of file <link linkend="__bot_config_8cpp_source">BotConfig.cpp</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_bot_config_a0be029b74be2d6925d33d6d3a7cf08b3_cgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+Here is the caller graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_bot_config_a0be029b74be2d6925d33d6d3a7cf08b3_icgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_class_bot_config_1a78cc040bd6fa993620e33882fe5a9641"/><section>
+    <title>readLineBotFile()</title>
+<indexterm><primary>readLineBotFile</primary><secondary>BotConfig</secondary></indexterm>
+<indexterm><primary>BotConfig</primary><secondary>readLineBotFile</secondary></indexterm>
+<para><computeroutput>std::string BotConfig::readLineBotFile (const std::string &amp; lineparameter)</computeroutput></para><para>
+Definition at line <link linkend="__bot_config_8cpp_source_1l00135">135</link> of file <link linkend="__bot_config_8cpp_source">BotConfig.cpp</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_bot_config_a78cc040bd6fa993620e33882fe5a9641_cgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_class_bot_config_1ae75cf338c4da36cf1996494dae4273ca"/><section>
+    <title>readSearchAll()</title>
+<indexterm><primary>readSearchAll</primary><secondary>BotConfig</secondary></indexterm>
+<indexterm><primary>BotConfig</primary><secondary>readSearchAll</secondary></indexterm>
+<para><computeroutput>bool BotConfig::readSearchAll ( )</computeroutput></para><para>
+Definition at line <link linkend="__bot_config_8cpp_source_1l00504">504</link> of file <link linkend="__bot_config_8cpp_source">BotConfig.cpp</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_bot_config_ae75cf338c4da36cf1996494dae4273ca_cgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+Here is the caller graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_bot_config_ae75cf338c4da36cf1996494dae4273ca_icgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_class_bot_config_1abe575477e07b1c120141f019fc7101af"/><section>
+    <title>readSearchBluestacks()</title>
+<indexterm><primary>readSearchBluestacks</primary><secondary>BotConfig</secondary></indexterm>
+<indexterm><primary>BotConfig</primary><secondary>readSearchBluestacks</secondary></indexterm>
+<para><computeroutput>bool BotConfig::readSearchBluestacks ( )</computeroutput></para><para>
+Definition at line <link linkend="__bot_config_8cpp_source_1l00511">511</link> of file <link linkend="__bot_config_8cpp_source">BotConfig.cpp</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_bot_config_abe575477e07b1c120141f019fc7101af_cgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+Here is the caller graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_bot_config_abe575477e07b1c120141f019fc7101af_icgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_class_bot_config_1ab89c77f603cb134bb5a1859dcd1bd850"/><section>
+    <title>readSearchLdPlayer()</title>
+<indexterm><primary>readSearchLdPlayer</primary><secondary>BotConfig</secondary></indexterm>
+<indexterm><primary>BotConfig</primary><secondary>readSearchLdPlayer</secondary></indexterm>
+<para><computeroutput>bool BotConfig::readSearchLdPlayer ( )</computeroutput></para><para>
+Definition at line <link linkend="__bot_config_8cpp_source_1l00518">518</link> of file <link linkend="__bot_config_8cpp_source">BotConfig.cpp</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_bot_config_ab89c77f603cb134bb5a1859dcd1bd850_cgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+Here is the caller graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_bot_config_ab89c77f603cb134bb5a1859dcd1bd850_icgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_class_bot_config_1a623d05e4d8e0122d35b1a3e391fc2464"/><section>
+    <title>readString()</title>
+<indexterm><primary>readString</primary><secondary>BotConfig</secondary></indexterm>
+<indexterm><primary>BotConfig</primary><secondary>readString</secondary></indexterm>
+<para><computeroutput>std::string BotConfig::readString (const std::string &amp; filename, const std::string &amp; lineParameter, const std::string &amp; first, const std::string &amp; last)</computeroutput></para><para>
+Definition at line <link linkend="__bot_config_8cpp_source_1l00041">41</link> of file <link linkend="__bot_config_8cpp_source">BotConfig.cpp</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_bot_config_a623d05e4d8e0122d35b1a3e391fc2464_cgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+Here is the caller graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_bot_config_a623d05e4d8e0122d35b1a3e391fc2464_icgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_class_bot_config_1a6347ad0b79f04a755fe1d7151ed87cd2"/><section>
+    <title>readStringBotFile()</title>
+<indexterm><primary>readStringBotFile</primary><secondary>BotConfig</secondary></indexterm>
+<indexterm><primary>BotConfig</primary><secondary>readStringBotFile</secondary></indexterm>
+<para><computeroutput>std::string BotConfig::readStringBotFile (const std::string &amp; lineParameter)</computeroutput></para><para>
+Definition at line <link linkend="__bot_config_8cpp_source_1l00069">69</link> of file <link linkend="__bot_config_8cpp_source">BotConfig.cpp</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_bot_config_a6347ad0b79f04a755fe1d7151ed87cd2_cgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+Here is the caller graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_bot_config_a6347ad0b79f04a755fe1d7151ed87cd2_icgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_class_bot_config_1ae575c3fd3b6384b68c87ffca7e269132"/><section>
+    <title>setDim()</title>
+<indexterm><primary>setDim</primary><secondary>BotConfig</secondary></indexterm>
+<indexterm><primary>BotConfig</primary><secondary>setDim</secondary></indexterm>
+<para><computeroutput>void BotConfig::setDim (int dimx, int dimy)</computeroutput></para><para>
+Definition at line <link linkend="__bot_config_8cpp_source_1l00381">381</link> of file <link linkend="__bot_config_8cpp_source">BotConfig.cpp</link>.</para>
+Here is the caller graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_bot_config_ae575c3fd3b6384b68c87ffca7e269132_icgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_class_bot_config_1af0e522630e79d295768f36a640dd257a"/><section>
+    <title>setParameters()</title>
+<indexterm><primary>setParameters</primary><secondary>BotConfig</secondary></indexterm>
+<indexterm><primary>BotConfig</primary><secondary>setParameters</secondary></indexterm>
+<para><computeroutput>void BotConfig::setParameters ( )</computeroutput></para><para>
+Definition at line <link linkend="__bot_config_8cpp_source_1l00190">190</link> of file <link linkend="__bot_config_8cpp_source">BotConfig.cpp</link>.</para>
+Here is the caller graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_bot_config_af0e522630e79d295768f36a640dd257a_icgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_class_bot_config_1acad99a7dc9cbe220677bfdb90b04f48f"/><section>
+    <title>setSearchEmulators()</title>
+<indexterm><primary>setSearchEmulators</primary><secondary>BotConfig</secondary></indexterm>
+<indexterm><primary>BotConfig</primary><secondary>setSearchEmulators</secondary></indexterm>
+<para><computeroutput>void BotConfig::setSearchEmulators (bool reset = <computeroutput>false</computeroutput>
+)</computeroutput></para><para>
+Definition at line <link linkend="__bot_config_8cpp_source_1l00220">220</link> of file <link linkend="__bot_config_8cpp_source">BotConfig.cpp</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_bot_config_acad99a7dc9cbe220677bfdb90b04f48f_cgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+Here is the caller graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_bot_config_acad99a7dc9cbe220677bfdb90b04f48f_icgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_class_bot_config_1a721c788702f464bb4406b919d018c5f9"/><section>
+    <title>startPlayingInstance()</title>
+<indexterm><primary>startPlayingInstance</primary><secondary>BotConfig</secondary></indexterm>
+<indexterm><primary>BotConfig</primary><secondary>startPlayingInstance</secondary></indexterm>
+<para><computeroutput>void BotConfig::startPlayingInstance ( )</computeroutput></para><para>
+Definition at line <link linkend="__bot_config_8cpp_source_1l00618">618</link> of file <link linkend="__bot_config_8cpp_source">BotConfig.cpp</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_bot_config_a721c788702f464bb4406b919d018c5f9_cgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+Here is the caller graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_bot_config_a721c788702f464bb4406b919d018c5f9_icgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_class_bot_config_1aeb7fe97edfbfb8a9d0a30c156e8a5bb9"/><section>
+    <title>textInitBluestacks()</title>
+<indexterm><primary>textInitBluestacks</primary><secondary>BotConfig</secondary></indexterm>
+<indexterm><primary>BotConfig</primary><secondary>textInitBluestacks</secondary></indexterm>
+<para><computeroutput>std::string BotConfig::textInitBluestacks ( )</computeroutput></para><para>
+Definition at line <link linkend="__bot_config_8cpp_source_1l00179">179</link> of file <link linkend="__bot_config_8cpp_source">BotConfig.cpp</link>.</para>
+Here is the caller graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_bot_config_aeb7fe97edfbfb8a9d0a30c156e8a5bb9_icgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_class_bot_config_1a734ee0b264983e8da4ee33926e076602"/><section>
+    <title>textInitLdPlayer()</title>
+<indexterm><primary>textInitLdPlayer</primary><secondary>BotConfig</secondary></indexterm>
+<indexterm><primary>BotConfig</primary><secondary>textInitLdPlayer</secondary></indexterm>
+<para><computeroutput>std::string BotConfig::textInitLdPlayer ( )</computeroutput></para><para>
+Definition at line <link linkend="__bot_config_8cpp_source_1l00184">184</link> of file <link linkend="__bot_config_8cpp_source">BotConfig.cpp</link>.</para>
+Here is the caller graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_bot_config_a734ee0b264983e8da4ee33926e076602_icgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_class_bot_config_1ab9fe07595e423fcdfc22322dd1ede393"/><section>
+    <title>updateBluestacksConfig()</title>
+<indexterm><primary>updateBluestacksConfig</primary><secondary>BotConfig</secondary></indexterm>
+<indexterm><primary>BotConfig</primary><secondary>updateBluestacksConfig</secondary></indexterm>
+<para><computeroutput>void BotConfig::updateBluestacksConfig (const std::string &amp; folder)</computeroutput></para><para>
+Definition at line <link linkend="__bot_config_8cpp_source_1l00488">488</link> of file <link linkend="__bot_config_8cpp_source">BotConfig.cpp</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_bot_config_ab9fe07595e423fcdfc22322dd1ede393_cgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+Here is the caller graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_bot_config_ab9fe07595e423fcdfc22322dd1ede393_icgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_class_bot_config_1ae21ba22e6f1b9dfcacf38dd78f904d82"/><section>
+    <title>updateBluestacksFolder()</title>
+<indexterm><primary>updateBluestacksFolder</primary><secondary>BotConfig</secondary></indexterm>
+<indexterm><primary>BotConfig</primary><secondary>updateBluestacksFolder</secondary></indexterm>
+<para><computeroutput>void BotConfig::updateBluestacksFolder (const std::string &amp; folder)</computeroutput></para><para>
+Definition at line <link linkend="__bot_config_8cpp_source_1l00484">484</link> of file <link linkend="__bot_config_8cpp_source">BotConfig.cpp</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_bot_config_ae21ba22e6f1b9dfcacf38dd78f904d82_cgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+Here is the caller graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_bot_config_ae21ba22e6f1b9dfcacf38dd78f904d82_icgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_class_bot_config_1a7b0b572a14dd5f0630b335041f83049a"/><section>
+    <title>updateBool()</title>
+<indexterm><primary>updateBool</primary><secondary>BotConfig</secondary></indexterm>
+<indexterm><primary>BotConfig</primary><secondary>updateBool</secondary></indexterm>
+<para><computeroutput>void BotConfig::updateBool (const std::string &amp; filename, const std::string &amp; lineParameter, const bool &amp; content, const std::string &amp; first, const std::string &amp; last)</computeroutput></para><para>
+Definition at line <link linkend="__bot_config_8cpp_source_1l00111">111</link> of file <link linkend="__bot_config_8cpp_source">BotConfig.cpp</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_bot_config_a7b0b572a14dd5f0630b335041f83049a_cgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+Here is the caller graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_bot_config_a7b0b572a14dd5f0630b335041f83049a_icgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_class_bot_config_1a70992bec079cbf9412e69b0f0e712ca2"/><section>
+    <title>updateBoolBotFile()</title>
+<indexterm><primary>updateBoolBotFile</primary><secondary>BotConfig</secondary></indexterm>
+<indexterm><primary>BotConfig</primary><secondary>updateBoolBotFile</secondary></indexterm>
+<para><computeroutput>void BotConfig::updateBoolBotFile (const std::string &amp; lineParameter, const bool &amp; content, const std::string &amp; first, const std::string &amp; last)</computeroutput></para><para>
+Definition at line <link linkend="__bot_config_8cpp_source_1l00116">116</link> of file <link linkend="__bot_config_8cpp_source">BotConfig.cpp</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_bot_config_a70992bec079cbf9412e69b0f0e712ca2_cgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+Here is the caller graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_bot_config_a70992bec079cbf9412e69b0f0e712ca2_icgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_class_bot_config_1a53485f20f89c00397495b545b91044da"/><section>
+    <title>updateDataAll()</title>
+<indexterm><primary>updateDataAll</primary><secondary>BotConfig</secondary></indexterm>
+<indexterm><primary>BotConfig</primary><secondary>updateDataAll</secondary></indexterm>
+<para><computeroutput>void BotConfig::updateDataAll (bool search)</computeroutput></para><para>
+Definition at line <link linkend="__bot_config_8cpp_source_1l00469">469</link> of file <link linkend="__bot_config_8cpp_source">BotConfig.cpp</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_bot_config_a53485f20f89c00397495b545b91044da_cgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+Here is the caller graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_bot_config_a53485f20f89c00397495b545b91044da_icgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_class_bot_config_1ab4929dd1c99a9e725800349a9cfc3b0e"/><section>
+    <title>updateDataBluestacks()</title>
+<indexterm><primary>updateDataBluestacks</primary><secondary>BotConfig</secondary></indexterm>
+<indexterm><primary>BotConfig</primary><secondary>updateDataBluestacks</secondary></indexterm>
+<para><computeroutput>void BotConfig::updateDataBluestacks (bool search)</computeroutput></para><para>
+Definition at line <link linkend="__bot_config_8cpp_source_1l00474">474</link> of file <link linkend="__bot_config_8cpp_source">BotConfig.cpp</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_bot_config_ab4929dd1c99a9e725800349a9cfc3b0e_cgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+Here is the caller graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_bot_config_ab4929dd1c99a9e725800349a9cfc3b0e_icgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_class_bot_config_1ae1e96b6b256aa8894b603259674f6a6f"/><section>
+    <title>updateDataLdPlayer()</title>
+<indexterm><primary>updateDataLdPlayer</primary><secondary>BotConfig</secondary></indexterm>
+<indexterm><primary>BotConfig</primary><secondary>updateDataLdPlayer</secondary></indexterm>
+<para><computeroutput>void BotConfig::updateDataLdPlayer (bool search)</computeroutput></para><para>
+Definition at line <link linkend="__bot_config_8cpp_source_1l00479">479</link> of file <link linkend="__bot_config_8cpp_source">BotConfig.cpp</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_bot_config_ae1e96b6b256aa8894b603259674f6a6f_cgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+Here is the caller graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_bot_config_ae1e96b6b256aa8894b603259674f6a6f_icgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_class_bot_config_1a9c0206c0081858886963267f855a9ec8"/><section>
+    <title>updateFavoriteInstance()</title>
+<indexterm><primary>updateFavoriteInstance</primary><secondary>BotConfig</secondary></indexterm>
+<indexterm><primary>BotConfig</primary><secondary>updateFavoriteInstance</secondary></indexterm>
+<para><computeroutput>void BotConfig::updateFavoriteInstance (<link linkend="_class_instance">Instance</link> * inst)</computeroutput></para><para>
+Definition at line <link linkend="__bot_config_8cpp_source_1l00256">256</link> of file <link linkend="__bot_config_8cpp_source">BotConfig.cpp</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_bot_config_a9c0206c0081858886963267f855a9ec8_cgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+Here is the caller graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_bot_config_a9c0206c0081858886963267f855a9ec8_icgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_class_bot_config_1ac766bf2645c392ae3057a93c7628aa85"/><section>
+    <title>updateFavoritePreset()</title>
+<indexterm><primary>updateFavoritePreset</primary><secondary>BotConfig</secondary></indexterm>
+<indexterm><primary>BotConfig</primary><secondary>updateFavoritePreset</secondary></indexterm>
+<para><computeroutput>void BotConfig::updateFavoritePreset (const std::string &amp; preset)</computeroutput></para><para>
+Definition at line <link linkend="__bot_config_8cpp_source_1l00261">261</link> of file <link linkend="__bot_config_8cpp_source">BotConfig.cpp</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_bot_config_ac766bf2645c392ae3057a93c7628aa85_cgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+Here is the caller graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_bot_config_ac766bf2645c392ae3057a93c7628aa85_icgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_class_bot_config_1add6ae08a184d93e02b4ad2a03aa95e90"/><section>
+    <title>updateInit()</title>
+<indexterm><primary>updateInit</primary><secondary>BotConfig</secondary></indexterm>
+<indexterm><primary>BotConfig</primary><secondary>updateInit</secondary></indexterm>
+<para><computeroutput>void BotConfig::updateInit ( )</computeroutput></para><para>
+Definition at line <link linkend="__bot_config_8cpp_source_1l00452">452</link> of file <link linkend="__bot_config_8cpp_source">BotConfig.cpp</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_bot_config_add6ae08a184d93e02b4ad2a03aa95e90_cgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+Here is the caller graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_bot_config_add6ae08a184d93e02b4ad2a03aa95e90_icgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_class_bot_config_1a994d7a4b890c4ab02c1da5778cc36f9c"/><section>
+    <title>updateInitBluestacks()</title>
+<indexterm><primary>updateInitBluestacks</primary><secondary>BotConfig</secondary></indexterm>
+<indexterm><primary>BotConfig</primary><secondary>updateInitBluestacks</secondary></indexterm>
+<para><computeroutput>void BotConfig::updateInitBluestacks ( )</computeroutput></para><para>
+Definition at line <link linkend="__bot_config_8cpp_source_1l00459">459</link> of file <link linkend="__bot_config_8cpp_source">BotConfig.cpp</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_bot_config_a994d7a4b890c4ab02c1da5778cc36f9c_cgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+Here is the caller graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_bot_config_a994d7a4b890c4ab02c1da5778cc36f9c_icgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_class_bot_config_1a4630e1c0cfc4366a1e97df9452cad69d"/><section>
+    <title>updateInitLdPlayer()</title>
+<indexterm><primary>updateInitLdPlayer</primary><secondary>BotConfig</secondary></indexterm>
+<indexterm><primary>BotConfig</primary><secondary>updateInitLdPlayer</secondary></indexterm>
+<para><computeroutput>void BotConfig::updateInitLdPlayer ( )</computeroutput></para><para>
+Definition at line <link linkend="__bot_config_8cpp_source_1l00464">464</link> of file <link linkend="__bot_config_8cpp_source">BotConfig.cpp</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_bot_config_a4630e1c0cfc4366a1e97df9452cad69d_cgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+Here is the caller graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_bot_config_a4630e1c0cfc4366a1e97df9452cad69d_icgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_class_bot_config_1a6156a0424ed044c8309b986c62a61d62"/><section>
+    <title>updateInt()</title>
+<indexterm><primary>updateInt</primary><secondary>BotConfig</secondary></indexterm>
+<indexterm><primary>BotConfig</primary><secondary>updateInt</secondary></indexterm>
+<para><computeroutput>void BotConfig::updateInt (const std::string &amp; filename, const std::string &amp; lineParameter, const int &amp; content, const std::string &amp; first, const std::string &amp; last)</computeroutput></para><para>
+Definition at line <link linkend="__bot_config_8cpp_source_1l00101">101</link> of file <link linkend="__bot_config_8cpp_source">BotConfig.cpp</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_bot_config_a6156a0424ed044c8309b986c62a61d62_cgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+Here is the caller graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_bot_config_a6156a0424ed044c8309b986c62a61d62_icgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_class_bot_config_1a84ab86ab1cdcf8c6c9bac78044bc0f12"/><section>
+    <title>updateIntBotFile()</title>
+<indexterm><primary>updateIntBotFile</primary><secondary>BotConfig</secondary></indexterm>
+<indexterm><primary>BotConfig</primary><secondary>updateIntBotFile</secondary></indexterm>
+<para><computeroutput>void BotConfig::updateIntBotFile (const std::string &amp; lineParameter, const int &amp; content, const std::string &amp; first, const std::string &amp; last)</computeroutput></para><para>
+Definition at line <link linkend="__bot_config_8cpp_source_1l00106">106</link> of file <link linkend="__bot_config_8cpp_source">BotConfig.cpp</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_bot_config_a84ab86ab1cdcf8c6c9bac78044bc0f12_cgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_class_bot_config_1a095c01a9b9e6ff1db9c683716337f45f"/><section>
+    <title>updateLdPlayerFolder()</title>
+<indexterm><primary>updateLdPlayerFolder</primary><secondary>BotConfig</secondary></indexterm>
+<indexterm><primary>BotConfig</primary><secondary>updateLdPlayerFolder</secondary></indexterm>
+<para><computeroutput>void BotConfig::updateLdPlayerFolder (const std::string &amp; folder)</computeroutput></para><para>
+Definition at line <link linkend="__bot_config_8cpp_source_1l00493">493</link> of file <link linkend="__bot_config_8cpp_source">BotConfig.cpp</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_bot_config_a095c01a9b9e6ff1db9c683716337f45f_cgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+Here is the caller graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_bot_config_a095c01a9b9e6ff1db9c683716337f45f_icgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_class_bot_config_1ab92a15dd3027a7f42b452cdf5eaf9529"/><section>
+    <title>updateString()</title>
+<indexterm><primary>updateString</primary><secondary>BotConfig</secondary></indexterm>
+<indexterm><primary>BotConfig</primary><secondary>updateString</secondary></indexterm>
+<para><computeroutput>void BotConfig::updateString (const std::string &amp; filename, const std::string &amp; lineParameter, const std::string &amp; content, const std::string &amp; first, const std::string &amp; last)</computeroutput></para><para>
+Definition at line <link linkend="__bot_config_8cpp_source_1l00083">83</link> of file <link linkend="__bot_config_8cpp_source">BotConfig.cpp</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_bot_config_ab92a15dd3027a7f42b452cdf5eaf9529_cgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+Here is the caller graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_bot_config_ab92a15dd3027a7f42b452cdf5eaf9529_icgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_class_bot_config_1a7fe6cbda7ec98c3070e6f9437f6eeb84"/><section>
+    <title>updateStringBotFile()</title>
+<indexterm><primary>updateStringBotFile</primary><secondary>BotConfig</secondary></indexterm>
+<indexterm><primary>BotConfig</primary><secondary>updateStringBotFile</secondary></indexterm>
+<para><computeroutput>void BotConfig::updateStringBotFile (const std::string &amp; lineParameter, const std::string &amp; content, const std::string &amp; first, const std::string &amp; last)</computeroutput></para><para>
+Definition at line <link linkend="__bot_config_8cpp_source_1l00096">96</link> of file <link linkend="__bot_config_8cpp_source">BotConfig.cpp</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_bot_config_a7fe6cbda7ec98c3070e6f9437f6eeb84_cgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+Here is the caller graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_bot_config_a7fe6cbda7ec98c3070e6f9437f6eeb84_icgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_class_bot_config_1a87ca6a00d5b852b1c96966bcd1cbb417"/><section>
+    <title>verifyBluestacksParameters()</title>
+<indexterm><primary>verifyBluestacksParameters</primary><secondary>BotConfig</secondary></indexterm>
+<indexterm><primary>BotConfig</primary><secondary>verifyBluestacksParameters</secondary></indexterm>
+<para><computeroutput>bool BotConfig::verifyBluestacksParameters (const std::string &amp; botFile)</computeroutput></para><para>
+Definition at line <link linkend="__bot_config_8cpp_source_1l00393">393</link> of file <link linkend="__bot_config_8cpp_source">BotConfig.cpp</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_bot_config_a87ca6a00d5b852b1c96966bcd1cbb417_cgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+Here is the caller graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_bot_config_a87ca6a00d5b852b1c96966bcd1cbb417_icgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_class_bot_config_1a1ede9834fcb1b8dcedf47a367241d030"/><section>
+    <title>verifyEmulatorFolder()</title>
+<indexterm><primary>verifyEmulatorFolder</primary><secondary>BotConfig</secondary></indexterm>
+<indexterm><primary>BotConfig</primary><secondary>verifyEmulatorFolder</secondary></indexterm>
+<para><computeroutput>bool BotConfig::verifyEmulatorFolder (const std::string &amp; emulatorFolder, bool &amp; emulatorinstalled, bool &amp; search)</computeroutput></para><para>
+Definition at line <link linkend="__bot_config_8cpp_source_1l00541">541</link> of file <link linkend="__bot_config_8cpp_source">BotConfig.cpp</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_bot_config_a1ede9834fcb1b8dcedf47a367241d030_cgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+Here is the caller graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_bot_config_a1ede9834fcb1b8dcedf47a367241d030_icgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_class_bot_config_1a065587486500e26019a183c4727ac9ef"/><section>
+    <title>verifyfavoriteParameters()</title>
+<indexterm><primary>verifyfavoriteParameters</primary><secondary>BotConfig</secondary></indexterm>
+<indexterm><primary>BotConfig</primary><secondary>verifyfavoriteParameters</secondary></indexterm>
+<para><computeroutput>bool BotConfig::verifyfavoriteParameters (const std::string &amp; botFile)</computeroutput></para><para>
+Definition at line <link linkend="__bot_config_8cpp_source_1l00403">403</link> of file <link linkend="__bot_config_8cpp_source">BotConfig.cpp</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_bot_config_a065587486500e26019a183c4727ac9ef_cgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+Here is the caller graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_bot_config_a065587486500e26019a183c4727ac9ef_icgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_class_bot_config_1a6ed63ab2d1ba5fcb75a28e8068296585"/><section>
+    <title>verifyLdPlayerParameters()</title>
+<indexterm><primary>verifyLdPlayerParameters</primary><secondary>BotConfig</secondary></indexterm>
+<indexterm><primary>BotConfig</primary><secondary>verifyLdPlayerParameters</secondary></indexterm>
+<para><computeroutput>bool BotConfig::verifyLdPlayerParameters (const std::string &amp; botFile)</computeroutput></para><para>
+Definition at line <link linkend="__bot_config_8cpp_source_1l00398">398</link> of file <link linkend="__bot_config_8cpp_source">BotConfig.cpp</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_bot_config_a6ed63ab2d1ba5fcb75a28e8068296585_cgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+Here is the caller graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_bot_config_a6ed63ab2d1ba5fcb75a28e8068296585_icgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_class_bot_config_1a100e179305b4c6eb54ff8a680616ec03"/><section>
+    <title>verifyParameters()</title>
+<indexterm><primary>verifyParameters</primary><secondary>BotConfig</secondary></indexterm>
+<indexterm><primary>BotConfig</primary><secondary>verifyParameters</secondary></indexterm>
+<para><computeroutput>bool BotConfig::verifyParameters ( )</computeroutput></para><para>
+Definition at line <link linkend="__bot_config_8cpp_source_1l00387">387</link> of file <link linkend="__bot_config_8cpp_source">BotConfig.cpp</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_bot_config_a100e179305b4c6eb54ff8a680616ec03_cgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+Here is the caller graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_bot_config_a100e179305b4c6eb54ff8a680616ec03_icgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_class_bot_config_1a2a28f19b68e5d8a4b8fa52f9d4f2fbbe"/><section>
+    <title>waitBootDevice()</title>
+<indexterm><primary>waitBootDevice</primary><secondary>BotConfig</secondary></indexterm>
+<indexterm><primary>BotConfig</primary><secondary>waitBootDevice</secondary></indexterm>
+<para><computeroutput>void BotConfig::waitBootDevice ( )</computeroutput></para><para>
+Definition at line <link linkend="__bot_config_8cpp_source_1l00498">498</link> of file <link linkend="__bot_config_8cpp_source">BotConfig.cpp</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_bot_config_a2a28f19b68e5d8a4b8fa52f9d4f2fbbe_cgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+Here is the caller graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_bot_config_a2a28f19b68e5d8a4b8fa52f9d4f2fbbe_icgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_class_bot_config_1a5ea5db5fbc78be03cd9450d4b4c0e73c"/><section>
+    <title>writeInit()</title>
+<indexterm><primary>writeInit</primary><secondary>BotConfig</secondary></indexterm>
+<indexterm><primary>BotConfig</primary><secondary>writeInit</secondary></indexterm>
+<para><computeroutput>void BotConfig::writeInit ( )</computeroutput></para><para>
+Definition at line <link linkend="__bot_config_8cpp_source_1l00160">160</link> of file <link linkend="__bot_config_8cpp_source">BotConfig.cpp</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_bot_config_a5ea5db5fbc78be03cd9450d4b4c0e73c_cgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+Here is the caller graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_bot_config_a5ea5db5fbc78be03cd9450d4b4c0e73c_icgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_class_bot_config_1a6c307da0b2712317dcb70daa3bfae0dc"/><section>
+    <title>writeInitBluestacks()</title>
+<indexterm><primary>writeInitBluestacks</primary><secondary>BotConfig</secondary></indexterm>
+<indexterm><primary>BotConfig</primary><secondary>writeInitBluestacks</secondary></indexterm>
+<para><computeroutput>std::string BotConfig::writeInitBluestacks ( )</computeroutput></para><para>
+Definition at line <link linkend="__bot_config_8cpp_source_1l00170">170</link> of file <link linkend="__bot_config_8cpp_source">BotConfig.cpp</link>.</para>
+</section>
+<anchor xml:id="_class_bot_config_1a8133a513c928f79a35b8b69a5ad69e68"/><section>
+    <title>writeInitLdPlayer()</title>
+<indexterm><primary>writeInitLdPlayer</primary><secondary>BotConfig</secondary></indexterm>
+<indexterm><primary>BotConfig</primary><secondary>writeInitLdPlayer</secondary></indexterm>
+<para><computeroutput>std::string BotConfig::writeInitLdPlayer ( )</computeroutput></para><para>
+Definition at line <link linkend="__bot_config_8cpp_source_1l00174">174</link> of file <link linkend="__bot_config_8cpp_source">BotConfig.cpp</link>.</para>
+</section>
+</section>
+<section>
+<title>Member Data Documentation</title>
+<anchor xml:id="_class_bot_config_1a7a39c005495ff862f6f57e2393ed0d0e"/><section>
+    <title>adbKey</title>
+<indexterm><primary>adbKey</primary><secondary>BotConfig</secondary></indexterm>
+<indexterm><primary>BotConfig</primary><secondary>adbKey</secondary></indexterm>
+<para><computeroutput>std::string BotConfig::adbKey</computeroutput></para><para>
+Definition at line <link linkend="__bot_config_8h_source_1l00154">154</link> of file <link linkend="__bot_config_8h_source">BotConfig.h</link>.</para>
+</section>
+<anchor xml:id="_class_bot_config_1a98b58016baad4e504ec1fbcb7eace8b9"/><section>
+    <title>allEmu</title>
+<indexterm><primary>allEmu</primary><secondary>BotConfig</secondary></indexterm>
+<indexterm><primary>BotConfig</primary><secondary>allEmu</secondary></indexterm>
+<para><computeroutput><link linkend="_struct_all_emulators">AllEmulators</link> BotConfig::allEmu</computeroutput></para><para>
+Definition at line <link linkend="__bot_config_8h_source_1l00156">156</link> of file <link linkend="__bot_config_8h_source">BotConfig.h</link>.</para>
+</section>
+<anchor xml:id="_class_bot_config_1a6c736e999146a7d05ae25d26583c734f"/><section>
+    <title>bluestacksConfigFolder</title>
+<indexterm><primary>bluestacksConfigFolder</primary><secondary>BotConfig</secondary></indexterm>
+<indexterm><primary>BotConfig</primary><secondary>bluestacksConfigFolder</secondary></indexterm>
+<para><computeroutput>std::string BotConfig::bluestacksConfigFolder</computeroutput></para><para>
+Definition at line <link linkend="__bot_config_8h_source_1l00150">150</link> of file <link linkend="__bot_config_8h_source">BotConfig.h</link>.</para>
+</section>
+<anchor xml:id="_class_bot_config_1ac433b4b457db719af5e56b786827fcb9"/><section>
+    <title>bluestacksFolder</title>
+<indexterm><primary>bluestacksFolder</primary><secondary>BotConfig</secondary></indexterm>
+<indexterm><primary>BotConfig</primary><secondary>bluestacksFolder</secondary></indexterm>
+<para><computeroutput>std::string BotConfig::bluestacksFolder</computeroutput></para><para>
+Definition at line <link linkend="__bot_config_8h_source_1l00150">150</link> of file <link linkend="__bot_config_8h_source">BotConfig.h</link>.</para>
+</section>
+<anchor xml:id="_class_bot_config_1abe21c3220cdb52cd85ad15e8c3e55982"/><section>
+    <title>blueStacksInstalled</title>
+<indexterm><primary>blueStacksInstalled</primary><secondary>BotConfig</secondary></indexterm>
+<indexterm><primary>BotConfig</primary><secondary>blueStacksInstalled</secondary></indexterm>
+<para><computeroutput>bool BotConfig::blueStacksInstalled</computeroutput></para><para>
+Definition at line <link linkend="__bot_config_8h_source_1l00147">147</link> of file <link linkend="__bot_config_8h_source">BotConfig.h</link>.</para>
+</section>
+<anchor xml:id="_class_bot_config_1ab2bc67e00b87b45a72db8363ce38a198"/><section>
+    <title>BotFile</title>
+<indexterm><primary>BotFile</primary><secondary>BotConfig</secondary></indexterm>
+<indexterm><primary>BotConfig</primary><secondary>BotFile</secondary></indexterm>
+<para><computeroutput>std::string BotConfig::BotFile</computeroutput></para><para>
+Definition at line <link linkend="__bot_config_8h_source_1l00152">152</link> of file <link linkend="__bot_config_8h_source">BotConfig.h</link>.</para>
+</section>
+<anchor xml:id="_class_bot_config_1a9cc1461a2436554f99212532097d5fe5"/><section>
+    <title>data</title>
+<indexterm><primary>data</primary><secondary>BotConfig</secondary></indexterm>
+<indexterm><primary>BotConfig</primary><secondary>data</secondary></indexterm>
+<para><computeroutput>std::string BotConfig::data</computeroutput></para><para>
+Definition at line <link linkend="__bot_config_8h_source_1l00150">150</link> of file <link linkend="__bot_config_8h_source">BotConfig.h</link>.</para>
+</section>
+<anchor xml:id="_class_bot_config_1abe2489cbbe63afc83c21a4fe0d25cc1b"/><section>
+    <title>dataBluestacks</title>
+<indexterm><primary>dataBluestacks</primary><secondary>BotConfig</secondary></indexterm>
+<indexterm><primary>BotConfig</primary><secondary>dataBluestacks</secondary></indexterm>
+<para><computeroutput>std::string BotConfig::dataBluestacks</computeroutput></para><para>
+Definition at line <link linkend="__bot_config_8h_source_1l00150">150</link> of file <link linkend="__bot_config_8h_source">BotConfig.h</link>.</para>
+</section>
+<anchor xml:id="_class_bot_config_1a8d3c3820fab2ef322e3929cfaed3a3a1"/><section>
+    <title>dataCollected</title>
+<indexterm><primary>dataCollected</primary><secondary>BotConfig</secondary></indexterm>
+<indexterm><primary>BotConfig</primary><secondary>dataCollected</secondary></indexterm>
+<para><computeroutput>std::string BotConfig::dataCollected</computeroutput></para><para>
+Definition at line <link linkend="__bot_config_8h_source_1l00150">150</link> of file <link linkend="__bot_config_8h_source">BotConfig.h</link>.</para>
+</section>
+<anchor xml:id="_class_bot_config_1a8fe68744500dce25c3c2a700a427ec2a"/><section>
+    <title>dataLDPlayer</title>
+<indexterm><primary>dataLDPlayer</primary><secondary>BotConfig</secondary></indexterm>
+<indexterm><primary>BotConfig</primary><secondary>dataLDPlayer</secondary></indexterm>
+<para><computeroutput>std::string BotConfig::dataLDPlayer</computeroutput></para><para>
+Definition at line <link linkend="__bot_config_8h_source_1l00150">150</link> of file <link linkend="__bot_config_8h_source">BotConfig.h</link>.</para>
+</section>
+<anchor xml:id="_class_bot_config_1aa5b3992386fdc65aa95e800d0802e71c"/><section>
+    <title>desiredDpi</title>
+<indexterm><primary>desiredDpi</primary><secondary>BotConfig</secondary></indexterm>
+<indexterm><primary>BotConfig</primary><secondary>desiredDpi</secondary></indexterm>
+<para><computeroutput>int BotConfig::desiredDpi</computeroutput></para><para>
+Definition at line <link linkend="__bot_config_8h_source_1l00155">155</link> of file <link linkend="__bot_config_8h_source">BotConfig.h</link>.</para>
+</section>
+<anchor xml:id="_class_bot_config_1a9ebfbe0b69d4f9a09c08770dadba5a36"/><section>
+    <title>desiredX</title>
+<indexterm><primary>desiredX</primary><secondary>BotConfig</secondary></indexterm>
+<indexterm><primary>BotConfig</primary><secondary>desiredX</secondary></indexterm>
+<para><computeroutput>int BotConfig::desiredX</computeroutput></para><para>
+Definition at line <link linkend="__bot_config_8h_source_1l00155">155</link> of file <link linkend="__bot_config_8h_source">BotConfig.h</link>.</para>
+</section>
+<anchor xml:id="_class_bot_config_1a82dc12794d01b4a4209b356c3077a446"/><section>
+    <title>desiredY</title>
+<indexterm><primary>desiredY</primary><secondary>BotConfig</secondary></indexterm>
+<indexterm><primary>BotConfig</primary><secondary>desiredY</secondary></indexterm>
+<para><computeroutput>int BotConfig::desiredY</computeroutput></para><para>
+Definition at line <link linkend="__bot_config_8h_source_1l00155">155</link> of file <link linkend="__bot_config_8h_source">BotConfig.h</link>.</para>
+</section>
+<anchor xml:id="_class_bot_config_1aa4504f810fa5d45d507234ae76565ffe"/><section>
+    <title>emulatorFolder</title>
+<indexterm><primary>emulatorFolder</primary><secondary>BotConfig</secondary></indexterm>
+<indexterm><primary>BotConfig</primary><secondary>emulatorFolder</secondary></indexterm>
+<para><computeroutput>std::string BotConfig::emulatorFolder</computeroutput></para><para>
+Definition at line <link linkend="__bot_config_8h_source_1l00150">150</link> of file <link linkend="__bot_config_8h_source">BotConfig.h</link>.</para>
+</section>
+<anchor xml:id="_class_bot_config_1aac5783e0f4d039c2ddb6de6f1d7e8f6a"/><section>
+    <title>end</title>
+<indexterm><primary>end</primary><secondary>BotConfig</secondary></indexterm>
+<indexterm><primary>BotConfig</primary><secondary>end</secondary></indexterm>
+<para><computeroutput>std::string BotConfig::end</computeroutput></para><para>
+Definition at line <link linkend="__bot_config_8h_source_1l00150">150</link> of file <link linkend="__bot_config_8h_source">BotConfig.h</link>.</para>
+</section>
+<anchor xml:id="_class_bot_config_1af541e9a5c255ba8de81c38b89b73f63e"/><section>
+    <title>favInstanceParam</title>
+<indexterm><primary>favInstanceParam</primary><secondary>BotConfig</secondary></indexterm>
+<indexterm><primary>BotConfig</primary><secondary>favInstanceParam</secondary></indexterm>
+<para><computeroutput>std::string BotConfig::favInstanceParam</computeroutput></para><para>
+Definition at line <link linkend="__bot_config_8h_source_1l00150">150</link> of file <link linkend="__bot_config_8h_source">BotConfig.h</link>.</para>
+</section>
+<anchor xml:id="_class_bot_config_1a04819c65a0bc6f682b906b3d796fafdf"/><section>
+    <title>favoriteInstance</title>
+<indexterm><primary>favoriteInstance</primary><secondary>BotConfig</secondary></indexterm>
+<indexterm><primary>BotConfig</primary><secondary>favoriteInstance</secondary></indexterm>
+<para><computeroutput>std::string BotConfig::favoriteInstance</computeroutput></para><para>
+Definition at line <link linkend="__bot_config_8h_source_1l00153">153</link> of file <link linkend="__bot_config_8h_source">BotConfig.h</link>.</para>
+</section>
+<anchor xml:id="_class_bot_config_1ad6aeb089df6502e04cad880c58361755"/><section>
+    <title>favoritePreset</title>
+<indexterm><primary>favoritePreset</primary><secondary>BotConfig</secondary></indexterm>
+<indexterm><primary>BotConfig</primary><secondary>favoritePreset</secondary></indexterm>
+<para><computeroutput>std::string BotConfig::favoritePreset</computeroutput></para><para>
+Definition at line <link linkend="__bot_config_8h_source_1l00153">153</link> of file <link linkend="__bot_config_8h_source">BotConfig.h</link>.</para>
+</section>
+<anchor xml:id="_class_bot_config_1a97d5d8c5d1f2c7d676eecf517413ab63"/><section>
+    <title>favPresetParam</title>
+<indexterm><primary>favPresetParam</primary><secondary>BotConfig</secondary></indexterm>
+<indexterm><primary>BotConfig</primary><secondary>favPresetParam</secondary></indexterm>
+<para><computeroutput>std::string BotConfig::favPresetParam</computeroutput></para><para>
+Definition at line <link linkend="__bot_config_8h_source_1l00150">150</link> of file <link linkend="__bot_config_8h_source">BotConfig.h</link>.</para>
+</section>
+<anchor xml:id="_class_bot_config_1afe99fd562cd17fa872729ccca4d9525f"/><section>
+    <title>gameActivity</title>
+<indexterm><primary>gameActivity</primary><secondary>BotConfig</secondary></indexterm>
+<indexterm><primary>BotConfig</primary><secondary>gameActivity</secondary></indexterm>
+<para><computeroutput>std::string BotConfig::gameActivity</computeroutput></para><para>
+Definition at line <link linkend="__bot_config_8h_source_1l00151">151</link> of file <link linkend="__bot_config_8h_source">BotConfig.h</link>.</para>
+</section>
+<anchor xml:id="_class_bot_config_1a72abeb980d886515c3d476e6d524a116"/><section>
+    <title>gamePackage</title>
+<indexterm><primary>gamePackage</primary><secondary>BotConfig</secondary></indexterm>
+<indexterm><primary>BotConfig</primary><secondary>gamePackage</secondary></indexterm>
+<para><computeroutput>std::string BotConfig::gamePackage</computeroutput></para><para>
+Definition at line <link linkend="__bot_config_8h_source_1l00151">151</link> of file <link linkend="__bot_config_8h_source">BotConfig.h</link>.</para>
+</section>
+<anchor xml:id="_class_bot_config_1a9f801cc5f2ff528b9bcf05b8f748b71b"/><section>
+    <title>ldPlayerFolder</title>
+<indexterm><primary>ldPlayerFolder</primary><secondary>BotConfig</secondary></indexterm>
+<indexterm><primary>BotConfig</primary><secondary>ldPlayerFolder</secondary></indexterm>
+<para><computeroutput>std::string BotConfig::ldPlayerFolder</computeroutput></para><para>
+Definition at line <link linkend="__bot_config_8h_source_1l00150">150</link> of file <link linkend="__bot_config_8h_source">BotConfig.h</link>.</para>
+</section>
+<anchor xml:id="_class_bot_config_1ae7e47847f68c73a9d31c3437a970389d"/><section>
+    <title>ldPlayerInstalled</title>
+<indexterm><primary>ldPlayerInstalled</primary><secondary>BotConfig</secondary></indexterm>
+<indexterm><primary>BotConfig</primary><secondary>ldPlayerInstalled</secondary></indexterm>
+<para><computeroutput>bool BotConfig::ldPlayerInstalled</computeroutput></para><para>
+Definition at line <link linkend="__bot_config_8h_source_1l00147">147</link> of file <link linkend="__bot_config_8h_source">BotConfig.h</link>.</para>
+</section>
+<anchor xml:id="_class_bot_config_1adbb6cd71fca55ebb943869a88a808875"/><section>
+    <title>NOTINSTALLED</title>
+<indexterm><primary>NOTINSTALLED</primary><secondary>BotConfig</secondary></indexterm>
+<indexterm><primary>BotConfig</primary><secondary>NOTINSTALLED</secondary></indexterm>
+<para><computeroutput>std::string BotConfig::NOTINSTALLED</computeroutput></para><para>
+Definition at line <link linkend="__bot_config_8h_source_1l00150">150</link> of file <link linkend="__bot_config_8h_source">BotConfig.h</link>.</para>
+</section>
+<anchor xml:id="_class_bot_config_1aba7e690ba344f65eabc717996981ca0e"/><section>
+    <title>quote</title>
+<indexterm><primary>quote</primary><secondary>BotConfig</secondary></indexterm>
+<indexterm><primary>BotConfig</primary><secondary>quote</secondary></indexterm>
+<para><computeroutput>std::string BotConfig::quote</computeroutput></para><para>
+Definition at line <link linkend="__bot_config_8h_source_1l00150">150</link> of file <link linkend="__bot_config_8h_source">BotConfig.h</link>.</para>
+</section>
+<anchor xml:id="_class_bot_config_1af4340d8753f4ad3d3717c6d5b69368e1"/><section>
+    <title>searchAll</title>
+<indexterm><primary>searchAll</primary><secondary>BotConfig</secondary></indexterm>
+<indexterm><primary>BotConfig</primary><secondary>searchAll</secondary></indexterm>
+<para><computeroutput>bool BotConfig::searchAll</computeroutput></para><para>
+Definition at line <link linkend="__bot_config_8h_source_1l00148">148</link> of file <link linkend="__bot_config_8h_source">BotConfig.h</link>.</para>
+</section>
+<anchor xml:id="_class_bot_config_1a0d607d1afacc3568084d163bf89565a5"/><section>
+    <title>searchBluestacks</title>
+<indexterm><primary>searchBluestacks</primary><secondary>BotConfig</secondary></indexterm>
+<indexterm><primary>BotConfig</primary><secondary>searchBluestacks</secondary></indexterm>
+<para><computeroutput>bool BotConfig::searchBluestacks</computeroutput></para><para>
+Definition at line <link linkend="__bot_config_8h_source_1l00148">148</link> of file <link linkend="__bot_config_8h_source">BotConfig.h</link>.</para>
+</section>
+<anchor xml:id="_class_bot_config_1a7e670ede2140b300b37e9fd07b8a6eff"/><section>
+    <title>searchLdPlayer</title>
+<indexterm><primary>searchLdPlayer</primary><secondary>BotConfig</secondary></indexterm>
+<indexterm><primary>BotConfig</primary><secondary>searchLdPlayer</secondary></indexterm>
+<para><computeroutput>bool BotConfig::searchLdPlayer</computeroutput></para><para>
+Definition at line <link linkend="__bot_config_8h_source_1l00148">148</link> of file <link linkend="__bot_config_8h_source">BotConfig.h</link>.</para>
+</section>
+<anchor xml:id="_class_bot_config_1a9c113f5440c9f1637724ad7c1c422f2b"/><section>
+    <title>TOSEARCH</title>
+<indexterm><primary>TOSEARCH</primary><secondary>BotConfig</secondary></indexterm>
+<indexterm><primary>BotConfig</primary><secondary>TOSEARCH</secondary></indexterm>
+<para><computeroutput>std::string BotConfig::TOSEARCH</computeroutput></para><para>
+Definition at line <link linkend="__bot_config_8h_source_1l00150">150</link> of file <link linkend="__bot_config_8h_source">BotConfig.h</link>.</para>
+</section>
+<para>
+The documentation for this class was generated from the following files:</para>
+src/<link linkend="__bot_config_8h">BotConfig.h</link>src/<link linkend="__bot_config_8cpp">BotConfig.cpp</link></section>
+</section>

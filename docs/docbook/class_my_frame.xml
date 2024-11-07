@@ -1,0 +1,590 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<section xmlns="http://docbook.org/ns/docbook" version="5.0" xmlns:xlink="http://www.w3.org/1999/xlink" xml:id="_class_my_frame" xml:lang="en-US">
+<title>MyFrame Class Reference</title>
+<indexterm><primary>MyFrame</primary></indexterm>
+<para>
+<computeroutput>#include &lt;MyFrame.h&gt;</computeroutput>
+</para>
+Inheritance diagram for MyFrame:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_my_frame__inherit__graph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+Collaboration diagram for MyFrame:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_my_frame__coll__graph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+<simplesect>
+    <title>Public Member Functions    </title>
+        <itemizedlist>
+            <listitem><para><link linkend="_class_my_frame_1af13d7bffe3d6844c2331085f423764a4">MyFrame</link> (const wxString &amp;title)</para>
+</listitem>
+            <listitem><para><link linkend="_class_my_frame_1a711b2bda77494841f2e582982b80c356">~MyFrame</link> ()</para>
+</listitem>
+            <listitem><para>void <link linkend="_class_my_frame_1a774684146b2b14e42891f6d8b8a73912">setMainPanel</link> ()</para>
+</listitem>
+            <listitem><para>void <link linkend="_class_my_frame_1ae268aae5c15908fe722358a19acdfd23">setMenu</link> ()</para>
+</listitem>
+            <listitem><para>void <link linkend="_class_my_frame_1a9021090d0039a901c587e8054952046a">setTopPanel</link> ()</para>
+</listitem>
+            <listitem><para>void <link linkend="_class_my_frame_1a0281cb45b6735fcbd2c885d98c874d18">setBottomPanel</link> ()</para>
+</listitem>
+            <listitem><para>void <link linkend="_class_my_frame_1a72b4f4c02d1a12561c4cc1f5f7685db8">setProgramPanel</link> ()</para>
+</listitem>
+            <listitem><para>void <link linkend="_class_my_frame_1a0dbb5d4453fefd4e027e2a7cb9a02706">setTagChoicePanel</link> ()</para>
+</listitem>
+            <listitem><para>void <link linkend="_class_my_frame_1a7795237fe8d78e10023b2e078f9728e3">setProgramWindow</link> ()</para>
+</listitem>
+            <listitem><para>void <link linkend="_class_my_frame_1ab7c6287940dde30412ad83ee933bc351">setTagDetailsPanel</link> ()</para>
+</listitem>
+            <listitem><para>void <link linkend="_class_my_frame_1a94347f33c5b653b114a76551dfb77d33">initDetailsTitle</link> ()</para>
+</listitem>
+            <listitem><para>std::shared_ptr&lt; <link linkend="_class_main_tag">MainTag</link> &gt; <link linkend="_class_my_frame_1a6e0ebad55b1d785b586997826c512f7d">getMainTag</link> ()</para>
+</listitem>
+            <listitem><para>void <link linkend="_class_my_frame_1a925c0f3521d20358ed4838fc95f8826f">closeDetailsPanel</link> ()</para>
+</listitem>
+            <listitem><para>void <link linkend="_class_my_frame_1a4c12737bfb50074cf73aa048290f22d3">setNeighboursPanel</link> (<link linkend="_class_tag_panel">TagPanel</link> *panel, <link linkend="__tag_panel_8h_1a369abf422adc1247d0d7bc295bf34014">HoverPosition</link> currentHover)</para>
+</listitem>
+            <listitem><para><link linkend="_class_flow_tag_panel">FlowTagPanel</link> * <link linkend="_class_my_frame_1abb986879321b4dceaffb43eae82e37f1">createPanelTags</link> ()</para>
+</listitem>
+            <listitem><para>void <link linkend="_class_my_frame_1ab408ce89472a26337fbfb7fc30a09a22">resetTagChoicePanel</link> ()</para>
+</listitem>
+            <listitem><para>void <link linkend="_class_my_frame_1a4339439d5fed3d897184942e7220d93f">createLogicTagChoice</link> ()</para>
+</listitem>
+            <listitem><para>void <link linkend="_class_my_frame_1aaf74dd53f41987d231b8fb82a5e53916">createMathsTagChoice</link> ()</para>
+</listitem>
+            <listitem><para>void <link linkend="_class_my_frame_1af731182041ef8c25a0da07f4324fb6f3">createFindTagChoice</link> ()</para>
+</listitem>
+            <listitem><para>void <link linkend="_class_my_frame_1ad58638c9da6c63a300da14e5a46901a9">createControlTagChoice</link> ()</para>
+</listitem>
+            <listitem><para>void <link linkend="_class_my_frame_1aa9b1a6e75f7ee9f3c6afd860f370a495">BindChoiceButtons</link> ()</para>
+</listitem>
+            <listitem><para>void <link linkend="_class_my_frame_1a2db86527ceff17603c5e3c636330cd45">BindControlButtons</link> ()</para>
+</listitem>
+            <listitem><para>void <link linkend="_class_my_frame_1a01f2e54de1670750b396d4256eeff398">BindEventsRec</link> (<link linkend="_class_tag_panel">TagPanel</link> *panel)</para>
+</listitem>
+            <listitem><para>void <link linkend="_class_my_frame_1abd836be1b8e86b5c0f7b6389b9d20efe">BindMainTagPanelEvents</link> ()</para>
+</listitem>
+            <listitem><para>void <link linkend="_class_my_frame_1a4fa368851e6e293456a865a4e6f70aa9">BindFlowTagPanelEvents</link> (<link linkend="_class_tag_panel">TagPanel</link> *newFlowPanel)</para>
+</listitem>
+            <listitem><para>void <link linkend="_class_my_frame_1acd9a16551875b5044f741e6cbd164423">BindTagPanelEvents</link> (<link linkend="_class_tag_panel">TagPanel</link> *newPanel)</para>
+</listitem>
+            <listitem><para>void <link linkend="_class_my_frame_1a829e18afe3f16416ab4bd7a10205fce5">BindEmptyPanelEvents</link> (<link linkend="_class_tag_panel">TagPanel</link> *newPanel)</para>
+</listitem>
+            <listitem><para>void <link linkend="_class_my_frame_1aecc593f08da4fb3be3cc03c50cf5fc6f">resetInsertHover</link> ()</para>
+</listitem>
+        </itemizedlist>
+</simplesect>
+<simplesect>
+    <title>Public Attributes    </title>
+        <itemizedlist>
+            <listitem><para><link linkend="_class_main_tag_panel">MainTagPanel</link> * <link linkend="_class_my_frame_1a589a4f949ba9328b3e6d61d134f692c0">mainTagPanel</link></para>
+</listitem>
+            <listitem><para>bool <link linkend="_class_my_frame_1a309bef2ecd819969f0bb6b70f0529abc">HoverSwitch</link></para>
+</listitem>
+        </itemizedlist>
+</simplesect>
+<section>
+<title>Detailed Description</title>
+<para>
+Definition at line <link linkend="__my_frame_8h_source_1l00018">18</link> of file <link linkend="__my_frame_8h_source">MyFrame.h</link>.</para>
+</section>
+<section>
+<title>Constructor &amp; Destructor Documentation</title>
+<anchor xml:id="_class_my_frame_1af13d7bffe3d6844c2331085f423764a4"/><section>
+    <title>MyFrame()</title>
+<indexterm><primary>MyFrame</primary><secondary>MyFrame</secondary></indexterm>
+<indexterm><primary>MyFrame</primary><secondary>MyFrame</secondary></indexterm>
+<para><computeroutput>MyFrame::MyFrame (const wxString &amp; title)</computeroutput></para><para>
+Definition at line <link linkend="__my_frame_8cpp_source_1l00003">3</link> of file <link linkend="__my_frame_8cpp_source">MyFrame.cpp</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_my_frame_af13d7bffe3d6844c2331085f423764a4_cgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_class_my_frame_1a711b2bda77494841f2e582982b80c356"/><section>
+    <title>~MyFrame()</title>
+<indexterm><primary>~MyFrame</primary><secondary>MyFrame</secondary></indexterm>
+<indexterm><primary>MyFrame</primary><secondary>~MyFrame</secondary></indexterm>
+<para><computeroutput>MyFrame::~MyFrame ( )</computeroutput></para><para>
+Definition at line <link linkend="__my_frame_8cpp_source_1l00010">10</link> of file <link linkend="__my_frame_8cpp_source">MyFrame.cpp</link>.</para>
+</section>
+</section>
+<section>
+<title>Member Function Documentation</title>
+<anchor xml:id="_class_my_frame_1aa9b1a6e75f7ee9f3c6afd860f370a495"/><section>
+    <title>BindChoiceButtons()</title>
+<indexterm><primary>BindChoiceButtons</primary><secondary>MyFrame</secondary></indexterm>
+<indexterm><primary>MyFrame</primary><secondary>BindChoiceButtons</secondary></indexterm>
+<para><computeroutput>void MyFrame::BindChoiceButtons ( )</computeroutput></para><para>
+Definition at line <link linkend="__my_frame_8cpp_source_1l00055">55</link> of file <link linkend="__my_frame_8cpp_source">MyFrame.cpp</link>.</para>
+Here is the caller graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_my_frame_aa9b1a6e75f7ee9f3c6afd860f370a495_icgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_class_my_frame_1a2db86527ceff17603c5e3c636330cd45"/><section>
+    <title>BindControlButtons()</title>
+<indexterm><primary>BindControlButtons</primary><secondary>MyFrame</secondary></indexterm>
+<indexterm><primary>MyFrame</primary><secondary>BindControlButtons</secondary></indexterm>
+<para><computeroutput>void MyFrame::BindControlButtons ( )</computeroutput></para><para>
+Definition at line <link linkend="__my_frame_8cpp_source_1l00469">469</link> of file <link linkend="__my_frame_8cpp_source">MyFrame.cpp</link>.</para>
+Here is the caller graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_my_frame_a2db86527ceff17603c5e3c636330cd45_icgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_class_my_frame_1a829e18afe3f16416ab4bd7a10205fce5"/><section>
+    <title>BindEmptyPanelEvents()</title>
+<indexterm><primary>BindEmptyPanelEvents</primary><secondary>MyFrame</secondary></indexterm>
+<indexterm><primary>MyFrame</primary><secondary>BindEmptyPanelEvents</secondary></indexterm>
+<para><computeroutput>void MyFrame::BindEmptyPanelEvents (<link linkend="_class_tag_panel">TagPanel</link> * newPanel)</computeroutput></para><para>
+Definition at line <link linkend="__my_frame_8cpp_source_1l00839">839</link> of file <link linkend="__my_frame_8cpp_source">MyFrame.cpp</link>.</para>
+Here is the caller graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_my_frame_a829e18afe3f16416ab4bd7a10205fce5_icgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_class_my_frame_1a01f2e54de1670750b396d4256eeff398"/><section>
+    <title>BindEventsRec()</title>
+<indexterm><primary>BindEventsRec</primary><secondary>MyFrame</secondary></indexterm>
+<indexterm><primary>MyFrame</primary><secondary>BindEventsRec</secondary></indexterm>
+<para><computeroutput>void MyFrame::BindEventsRec (<link linkend="_class_tag_panel">TagPanel</link> * panel)</computeroutput></para><para>
+Definition at line <link linkend="__my_frame_8cpp_source_1l00172">172</link> of file <link linkend="__my_frame_8cpp_source">MyFrame.cpp</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_my_frame_a01f2e54de1670750b396d4256eeff398_cgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+Here is the caller graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_my_frame_a01f2e54de1670750b396d4256eeff398_icgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_class_my_frame_1a4fa368851e6e293456a865a4e6f70aa9"/><section>
+    <title>BindFlowTagPanelEvents()</title>
+<indexterm><primary>BindFlowTagPanelEvents</primary><secondary>MyFrame</secondary></indexterm>
+<indexterm><primary>MyFrame</primary><secondary>BindFlowTagPanelEvents</secondary></indexterm>
+<para><computeroutput>void MyFrame::BindFlowTagPanelEvents (<link linkend="_class_tag_panel">TagPanel</link> * newFlowPanel)</computeroutput></para><para>
+Definition at line <link linkend="__my_frame_8cpp_source_1l00813">813</link> of file <link linkend="__my_frame_8cpp_source">MyFrame.cpp</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_my_frame_a4fa368851e6e293456a865a4e6f70aa9_cgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_class_my_frame_1abd836be1b8e86b5c0f7b6389b9d20efe"/><section>
+    <title>BindMainTagPanelEvents()</title>
+<indexterm><primary>BindMainTagPanelEvents</primary><secondary>MyFrame</secondary></indexterm>
+<indexterm><primary>MyFrame</primary><secondary>BindMainTagPanelEvents</secondary></indexterm>
+<para><computeroutput>void MyFrame::BindMainTagPanelEvents ( )</computeroutput></para></section>
+<anchor xml:id="_class_my_frame_1acd9a16551875b5044f741e6cbd164423"/><section>
+    <title>BindTagPanelEvents()</title>
+<indexterm><primary>BindTagPanelEvents</primary><secondary>MyFrame</secondary></indexterm>
+<indexterm><primary>MyFrame</primary><secondary>BindTagPanelEvents</secondary></indexterm>
+<para><computeroutput>void MyFrame::BindTagPanelEvents (<link linkend="_class_tag_panel">TagPanel</link> * newPanel)</computeroutput></para><para>
+Definition at line <link linkend="__my_frame_8cpp_source_1l00821">821</link> of file <link linkend="__my_frame_8cpp_source">MyFrame.cpp</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_my_frame_acd9a16551875b5044f741e6cbd164423_cgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+Here is the caller graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_my_frame_acd9a16551875b5044f741e6cbd164423_icgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_class_my_frame_1a925c0f3521d20358ed4838fc95f8826f"/><section>
+    <title>closeDetailsPanel()</title>
+<indexterm><primary>closeDetailsPanel</primary><secondary>MyFrame</secondary></indexterm>
+<indexterm><primary>MyFrame</primary><secondary>closeDetailsPanel</secondary></indexterm>
+<para><computeroutput>void MyFrame::closeDetailsPanel ( )</computeroutput></para><para>
+Definition at line <link linkend="__my_frame_8cpp_source_1l00260">260</link> of file <link linkend="__my_frame_8cpp_source">MyFrame.cpp</link>.</para>
+Here is the caller graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_my_frame_a925c0f3521d20358ed4838fc95f8826f_icgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_class_my_frame_1ad58638c9da6c63a300da14e5a46901a9"/><section>
+    <title>createControlTagChoice()</title>
+<indexterm><primary>createControlTagChoice</primary><secondary>MyFrame</secondary></indexterm>
+<indexterm><primary>MyFrame</primary><secondary>createControlTagChoice</secondary></indexterm>
+<para><computeroutput>void MyFrame::createControlTagChoice ( )</computeroutput></para><para>
+Definition at line <link linkend="__my_frame_8cpp_source_1l00446">446</link> of file <link linkend="__my_frame_8cpp_source">MyFrame.cpp</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_my_frame_ad58638c9da6c63a300da14e5a46901a9_cgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_class_my_frame_1af731182041ef8c25a0da07f4324fb6f3"/><section>
+    <title>createFindTagChoice()</title>
+<indexterm><primary>createFindTagChoice</primary><secondary>MyFrame</secondary></indexterm>
+<indexterm><primary>MyFrame</primary><secondary>createFindTagChoice</secondary></indexterm>
+<para><computeroutput>void MyFrame::createFindTagChoice ( )</computeroutput></para><para>
+Definition at line <link linkend="__my_frame_8cpp_source_1l00430">430</link> of file <link linkend="__my_frame_8cpp_source">MyFrame.cpp</link>.</para>
+</section>
+<anchor xml:id="_class_my_frame_1a4339439d5fed3d897184942e7220d93f"/><section>
+    <title>createLogicTagChoice()</title>
+<indexterm><primary>createLogicTagChoice</primary><secondary>MyFrame</secondary></indexterm>
+<indexterm><primary>MyFrame</primary><secondary>createLogicTagChoice</secondary></indexterm>
+<para><computeroutput>void MyFrame::createLogicTagChoice ( )</computeroutput></para><para>
+Definition at line <link linkend="__my_frame_8cpp_source_1l00393">393</link> of file <link linkend="__my_frame_8cpp_source">MyFrame.cpp</link>.</para>
+</section>
+<anchor xml:id="_class_my_frame_1aaf74dd53f41987d231b8fb82a5e53916"/><section>
+    <title>createMathsTagChoice()</title>
+<indexterm><primary>createMathsTagChoice</primary><secondary>MyFrame</secondary></indexterm>
+<indexterm><primary>MyFrame</primary><secondary>createMathsTagChoice</secondary></indexterm>
+<para><computeroutput>void MyFrame::createMathsTagChoice ( )</computeroutput></para><para>
+Definition at line <link linkend="__my_frame_8cpp_source_1l00413">413</link> of file <link linkend="__my_frame_8cpp_source">MyFrame.cpp</link>.</para>
+</section>
+<anchor xml:id="_class_my_frame_1abb986879321b4dceaffb43eae82e37f1"/><section>
+    <title>createPanelTags()</title>
+<indexterm><primary>createPanelTags</primary><secondary>MyFrame</secondary></indexterm>
+<indexterm><primary>MyFrame</primary><secondary>createPanelTags</secondary></indexterm>
+<para><computeroutput><link linkend="_class_flow_tag_panel">FlowTagPanel</link> * MyFrame::createPanelTags ( )</computeroutput></para><para>
+Definition at line <link linkend="__my_frame_8cpp_source_1l00288">288</link> of file <link linkend="__my_frame_8cpp_source">MyFrame.cpp</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_my_frame_abb986879321b4dceaffb43eae82e37f1_cgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+Here is the caller graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_my_frame_abb986879321b4dceaffb43eae82e37f1_icgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_class_my_frame_1a6e0ebad55b1d785b586997826c512f7d"/><section>
+    <title>getMainTag()</title>
+<indexterm><primary>getMainTag</primary><secondary>MyFrame</secondary></indexterm>
+<indexterm><primary>MyFrame</primary><secondary>getMainTag</secondary></indexterm>
+<para><computeroutput>std::shared_ptr&lt; <link linkend="_class_main_tag">MainTag</link> &gt; MyFrame::getMainTag ( )</computeroutput></para><para>
+Definition at line <link linkend="__my_frame_8cpp_source_1l00269">269</link> of file <link linkend="__my_frame_8cpp_source">MyFrame.cpp</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_my_frame_a6e0ebad55b1d785b586997826c512f7d_cgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+Here is the caller graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_my_frame_a6e0ebad55b1d785b586997826c512f7d_icgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_class_my_frame_1a94347f33c5b653b114a76551dfb77d33"/><section>
+    <title>initDetailsTitle()</title>
+<indexterm><primary>initDetailsTitle</primary><secondary>MyFrame</secondary></indexterm>
+<indexterm><primary>MyFrame</primary><secondary>initDetailsTitle</secondary></indexterm>
+<para><computeroutput>void MyFrame::initDetailsTitle ( )</computeroutput></para><para>
+Definition at line <link linkend="__my_frame_8cpp_source_1l00234">234</link> of file <link linkend="__my_frame_8cpp_source">MyFrame.cpp</link>.</para>
+</section>
+<anchor xml:id="_class_my_frame_1aecc593f08da4fb3be3cc03c50cf5fc6f"/><section>
+    <title>resetInsertHover()</title>
+<indexterm><primary>resetInsertHover</primary><secondary>MyFrame</secondary></indexterm>
+<indexterm><primary>MyFrame</primary><secondary>resetInsertHover</secondary></indexterm>
+<para><computeroutput>void MyFrame::resetInsertHover ( )</computeroutput></para><para>
+Definition at line <link linkend="__my_frame_8cpp_source_1l00543">543</link> of file <link linkend="__my_frame_8cpp_source">MyFrame.cpp</link>.</para>
+</section>
+<anchor xml:id="_class_my_frame_1ab408ce89472a26337fbfb7fc30a09a22"/><section>
+    <title>resetTagChoicePanel()</title>
+<indexterm><primary>resetTagChoicePanel</primary><secondary>MyFrame</secondary></indexterm>
+<indexterm><primary>MyFrame</primary><secondary>resetTagChoicePanel</secondary></indexterm>
+<para><computeroutput>void MyFrame::resetTagChoicePanel ( )</computeroutput></para><para>
+Definition at line <link linkend="__my_frame_8cpp_source_1l00379">379</link> of file <link linkend="__my_frame_8cpp_source">MyFrame.cpp</link>.</para>
+</section>
+<anchor xml:id="_class_my_frame_1a0281cb45b6735fcbd2c885d98c874d18"/><section>
+    <title>setBottomPanel()</title>
+<indexterm><primary>setBottomPanel</primary><secondary>MyFrame</secondary></indexterm>
+<indexterm><primary>MyFrame</primary><secondary>setBottomPanel</secondary></indexterm>
+<para><computeroutput>void MyFrame::setBottomPanel ( )</computeroutput></para><para>
+Definition at line <link linkend="__my_frame_8cpp_source_1l00088">88</link> of file <link linkend="__my_frame_8cpp_source">MyFrame.cpp</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_my_frame_a0281cb45b6735fcbd2c885d98c874d18_cgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+Here is the caller graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_my_frame_a0281cb45b6735fcbd2c885d98c874d18_icgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_class_my_frame_1a774684146b2b14e42891f6d8b8a73912"/><section>
+    <title>setMainPanel()</title>
+<indexterm><primary>setMainPanel</primary><secondary>MyFrame</secondary></indexterm>
+<indexterm><primary>MyFrame</primary><secondary>setMainPanel</secondary></indexterm>
+<para><computeroutput>void MyFrame::setMainPanel ( )</computeroutput></para><para>
+Definition at line <link linkend="__my_frame_8cpp_source_1l00015">15</link> of file <link linkend="__my_frame_8cpp_source">MyFrame.cpp</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_my_frame_a774684146b2b14e42891f6d8b8a73912_cgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+Here is the caller graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_my_frame_a774684146b2b14e42891f6d8b8a73912_icgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_class_my_frame_1ae268aae5c15908fe722358a19acdfd23"/><section>
+    <title>setMenu()</title>
+<indexterm><primary>setMenu</primary><secondary>MyFrame</secondary></indexterm>
+<indexterm><primary>MyFrame</primary><secondary>setMenu</secondary></indexterm>
+<para><computeroutput>void MyFrame::setMenu ( )</computeroutput></para><para>
+Definition at line <link linkend="__my_frame_8cpp_source_1l00032">32</link> of file <link linkend="__my_frame_8cpp_source">MyFrame.cpp</link>.</para>
+Here is the caller graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_my_frame_ae268aae5c15908fe722358a19acdfd23_icgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_class_my_frame_1a4c12737bfb50074cf73aa048290f22d3"/><section>
+    <title>setNeighboursPanel()</title>
+<indexterm><primary>setNeighboursPanel</primary><secondary>MyFrame</secondary></indexterm>
+<indexterm><primary>MyFrame</primary><secondary>setNeighboursPanel</secondary></indexterm>
+<para><computeroutput>void MyFrame::setNeighboursPanel (<link linkend="_class_tag_panel">TagPanel</link> * panel, <link linkend="__tag_panel_8h_1a369abf422adc1247d0d7bc295bf34014">HoverPosition</link> currentHover)</computeroutput></para><para>
+Definition at line <link linkend="__my_frame_8cpp_source_1l00755">755</link> of file <link linkend="__my_frame_8cpp_source">MyFrame.cpp</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_my_frame_a4c12737bfb50074cf73aa048290f22d3_cgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_class_my_frame_1a72b4f4c02d1a12561c4cc1f5f7685db8"/><section>
+    <title>setProgramPanel()</title>
+<indexterm><primary>setProgramPanel</primary><secondary>MyFrame</secondary></indexterm>
+<indexterm><primary>MyFrame</primary><secondary>setProgramPanel</secondary></indexterm>
+<para><computeroutput>void MyFrame::setProgramPanel ( )</computeroutput></para><para>
+Definition at line <link linkend="__my_frame_8cpp_source_1l00101">101</link> of file <link linkend="__my_frame_8cpp_source">MyFrame.cpp</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_my_frame_a72b4f4c02d1a12561c4cc1f5f7685db8_cgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+Here is the caller graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_my_frame_a72b4f4c02d1a12561c4cc1f5f7685db8_icgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_class_my_frame_1a7795237fe8d78e10023b2e078f9728e3"/><section>
+    <title>setProgramWindow()</title>
+<indexterm><primary>setProgramWindow</primary><secondary>MyFrame</secondary></indexterm>
+<indexterm><primary>MyFrame</primary><secondary>setProgramWindow</secondary></indexterm>
+<para><computeroutput>void MyFrame::setProgramWindow ( )</computeroutput></para><para>
+Definition at line <link linkend="__my_frame_8cpp_source_1l00115">115</link> of file <link linkend="__my_frame_8cpp_source">MyFrame.cpp</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_my_frame_a7795237fe8d78e10023b2e078f9728e3_cgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+Here is the caller graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_my_frame_a7795237fe8d78e10023b2e078f9728e3_icgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_class_my_frame_1a0dbb5d4453fefd4e027e2a7cb9a02706"/><section>
+    <title>setTagChoicePanel()</title>
+<indexterm><primary>setTagChoicePanel</primary><secondary>MyFrame</secondary></indexterm>
+<indexterm><primary>MyFrame</primary><secondary>setTagChoicePanel</secondary></indexterm>
+<para><computeroutput>void MyFrame::setTagChoicePanel ( )</computeroutput></para><para>
+Definition at line <link linkend="__my_frame_8cpp_source_1l00383">383</link> of file <link linkend="__my_frame_8cpp_source">MyFrame.cpp</link>.</para>
+Here is the caller graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_my_frame_a0dbb5d4453fefd4e027e2a7cb9a02706_icgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_class_my_frame_1ab7c6287940dde30412ad83ee933bc351"/><section>
+    <title>setTagDetailsPanel()</title>
+<indexterm><primary>setTagDetailsPanel</primary><secondary>MyFrame</secondary></indexterm>
+<indexterm><primary>MyFrame</primary><secondary>setTagDetailsPanel</secondary></indexterm>
+<para><computeroutput>void MyFrame::setTagDetailsPanel ( )</computeroutput></para><para>
+Definition at line <link linkend="__my_frame_8cpp_source_1l00224">224</link> of file <link linkend="__my_frame_8cpp_source">MyFrame.cpp</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_my_frame_ab7c6287940dde30412ad83ee933bc351_cgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+Here is the caller graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_my_frame_ab7c6287940dde30412ad83ee933bc351_icgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_class_my_frame_1a9021090d0039a901c587e8054952046a"/><section>
+    <title>setTopPanel()</title>
+<indexterm><primary>setTopPanel</primary><secondary>MyFrame</secondary></indexterm>
+<indexterm><primary>MyFrame</primary><secondary>setTopPanel</secondary></indexterm>
+<para><computeroutput>void MyFrame::setTopPanel ( )</computeroutput></para><para>
+Definition at line <link linkend="__my_frame_8cpp_source_1l00062">62</link> of file <link linkend="__my_frame_8cpp_source">MyFrame.cpp</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_my_frame_a9021090d0039a901c587e8054952046a_cgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+Here is the caller graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_my_frame_a9021090d0039a901c587e8054952046a_icgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+</section>
+<section>
+<title>Member Data Documentation</title>
+<anchor xml:id="_class_my_frame_1a309bef2ecd819969f0bb6b70f0529abc"/><section>
+    <title>HoverSwitch</title>
+<indexterm><primary>HoverSwitch</primary><secondary>MyFrame</secondary></indexterm>
+<indexterm><primary>MyFrame</primary><secondary>HoverSwitch</secondary></indexterm>
+<para><computeroutput>bool MyFrame::HoverSwitch</computeroutput></para><para>
+Definition at line <link linkend="__my_frame_8h_source_1l00050">50</link> of file <link linkend="__my_frame_8h_source">MyFrame.h</link>.</para>
+</section>
+<anchor xml:id="_class_my_frame_1a589a4f949ba9328b3e6d61d134f692c0"/><section>
+    <title>mainTagPanel</title>
+<indexterm><primary>mainTagPanel</primary><secondary>MyFrame</secondary></indexterm>
+<indexterm><primary>MyFrame</primary><secondary>mainTagPanel</secondary></indexterm>
+<para><computeroutput><link linkend="_class_main_tag_panel">MainTagPanel</link>* MyFrame::mainTagPanel</computeroutput></para><para>
+Definition at line <link linkend="__my_frame_8h_source_1l00049">49</link> of file <link linkend="__my_frame_8h_source">MyFrame.h</link>.</para>
+</section>
+<para>
+The documentation for this class was generated from the following files:</para>
+src/<link linkend="__my_frame_8h">MyFrame.h</link>src/<link linkend="__my_frame_8cpp">MyFrame.cpp</link></section>
+</section>
