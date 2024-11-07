@@ -86,8 +86,8 @@ void BotConfig::updateString(const std::string& filename, const std::string& lin
     std::string text = getFileContent(filename);
     linetochange = getLine(text, lineParameter);
     std::string firstpart, secondpart;
-    firstpart = getContentBefore(text, linetochange);
-    secondpart = getContentAfter(text, linetochange);
+    firstpart = getStringBefore(text, linetochange);
+    secondpart = getStringAfter(text, linetochange);
     text = firstpart + updateContent(linetochange, content, first, last) + secondpart;
     writeToFile(filename, text, OVERWRITE);
 

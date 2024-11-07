@@ -167,7 +167,7 @@ std::string getNextPunctuationToken(const std::string& str) {
 std::string getNextTokenString(const std::string& text)
 {
 	std::string nextPunc = getNextPunctuationToken(text);
-	std::string contentBefore = getContentBefore(text,nextPunc);
+	std::string contentBefore = getStringBefore(text,nextPunc);
 	if (!nextPunc.empty()) {
 		if (!contentBefore.empty()) {
 			return contentBefore;
@@ -179,7 +179,7 @@ std::string getNextTokenString(const std::string& text)
 
 void getPastTokenString(std::string& text,const std::string tokenText)
 {
-	text=getContentAfter(text, tokenText);
+	text=getStringAfter(text, tokenText);
 }
 
 TokenVALUE getNextTokenValue(const std::string& text)
@@ -188,7 +188,7 @@ TokenVALUE getNextTokenValue(const std::string& text)
 }
 
 std::string getStringLiteral(std::string& text) {
-	std::string temp = getContentBefore(text, quotation);
+	std::string temp = getStringBefore(text, quotation);
 	if (temp.empty())return text;
 	else return temp;
 }

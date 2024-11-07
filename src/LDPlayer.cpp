@@ -203,10 +203,10 @@ void LDPlayer::searchInstanceConfig(std::string engineName)
     newInstance->dpi = stoi(extractLineContent(configText, instanceDpiParameter, instanceDpiParameter, ","));
     std::string resolution = extractBetween(configText,resolutionParameter, "}");
     newInstance->width= stoi(extractLineContent(resolution, instanceWidthParameter, ": ", ","));
-    std::string heightline = getContentAfter(resolution, instanceHeightParameter);
-    newInstance->height = stoi(getContentBefore(heightline, "\n"));
+    std::string heightline = getStringAfter(resolution, instanceHeightParameter);
+    newInstance->height = stoi(getStringBefore(heightline, "\n"));
     newInstance->ldId = stoi(extractBetween(engineName, formalEngineName, ".config"));
-    newInstance->engineName = getContentBefore(engineName,".config");
+    newInstance->engineName = getStringBefore(engineName,".config");
     newInstance->setGlobalId();
     newInstance->instanceFolder = vmsFolder + "\\" + newInstance->engineName + "\\";
     hasGame(newInstance);

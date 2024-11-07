@@ -60,7 +60,7 @@ void clearFile(const std::string& path)
 
 std::string extractBetween(const std::string& text, const std::string& begin, const std::string& end)
 {
-	return getContentBefore(getContentAfter(text, begin), end);
+	return getStringBefore(getStringAfter(text, begin), end);
 }
 
 std::size_t getOccurencePosBefore(const std::string& text, const std::string& begin, const std::string& end) {
@@ -68,7 +68,7 @@ std::size_t getOccurencePosBefore(const std::string& text, const std::string& be
 }
 
 std::string extractBetweenReverse(const std::string& text, const std::string& begin, const std::string& end) {
-    return getContentAfter(getContentBefore(text, end), begin);
+    return getStringAfter(getStringBefore(text, end), begin);
 }
 
 std::string extractLineContent(const std::string& fullContent, const std::string& lineParameter, const std::string& begin, const std::string& end)
@@ -78,7 +78,7 @@ std::string extractLineContent(const std::string& fullContent, const std::string
 
 std::string updateContent(std::string fullContent, std::string newContent, const std::string& begin, const std::string& end)
 {
-	return getContentBefore(fullContent, begin) + newContent + getContentAfter(fullContent, end);
+	return getStringBefore(fullContent, begin) + newContent + getStringAfter(fullContent, end);
 }
 
 std::size_t getFirstOccurencePosBefore(const std::string& text,const std::string& occ, const std::string& beforeParameter) {
@@ -95,35 +95,43 @@ std::string getLine(const std::string& text, const std::string& lineParameter)
 
 std::string removeContent(const std::string& text, const std::string& content)
 {
-    std::string first = getContentBefore(text, content);
-    std::string second = getContentAfter(text, content);
+    std::string first = getStringBefore(text, content);
+    std::string second = getStringAfter(text, content);
     return first + second;
 }
 
-std::string getContentBefore(const std::string& text, const std::string& content)
+std::string getStringBefore(const std::string& text, const std::string& content)
 {
     size_t pos = getSequencePos(text, content);
     if (pos != std::string::npos) return text.substr(0, pos);
 }
 
-std::string getContentUntil(const std::string& text, const std::string& content)
+std::string getStringUntil(const std::string& text, const std::string& content)
 {
-    return getContentUntil(text, getSequencePos(text, content));
+    return getStringUntil(text, getPosAfter(text, content));
 }
 
-std::string getContentAfter(const std::string& text, const std::string& content)
+std::string getStringAfter(const std::string& text, const std::string& content)
 {
-    return getContentAfter(text, getPosAfter(text, content));
+    return getStringStarting(text, getPosAfter(text, content));
 }
 
-size_t getPosAfter(const std::string& text, const std::string& content)
+size_t getPosAfter(const std::string& text, const std::string& content,const size_t& offset)
 {
-    return getSequencePos(text, content) + content.size();
+    std::size_t pos = getSequencePos(text, content);
+    return pos==std::string::npos ? text.size() : pos+content.size() ;
+}
+size_t getPosEnd(const std::string& text, const std::string& content, const size_t& offset)
+{
+    std::size_t pos = getSequencePos(text, content);
+    return pos == std::string::npos ? text.size() : pos + content.size()-1;
 }
 
-std::string getContentStarting(const std::string& text, const std::string& content)
+
+
+std::string getStringStarting(const std::string& text, const std::string& content)
 {
-    return getContentStarting(text, getSequencePos(text, content));
+    return getStringStarting(text, getSequencePos(text, content));
 }
 
 //only compares the starting point of the two strings not the whole string
@@ -142,99 +150,47 @@ bool isBefore(const std::string& text, const std::string& before, const std::str
     return pos1 != std::string::npos && pos1 <= pos2;
 }
 
-std::string getContentUntilEqual(const std::string& text, const std::string& open, const std::string& close)
-{
-    size_t pos =-1;
-    std::string newtext;
-    int nbOpen = 1;
-    int nbClose = 0;
-    while (nbOpen != nbClose) {
-		pos = getSequencePos(text, close,pos+1);
-        if (pos != std::string::npos) {
-            newtext = getContentUntil(text, pos+close.length());
-			nbOpen = countMatches(newtext, open);
-			nbClose = countMatches(newtext, close);
-		}
-        else {
-			return "";
-		}
-	}
-    return newtext;
-}
 
-std::string getContentUntilEqualUntil(const std::string& text, const std::string& open, const std::string& close, const std::string& stop)
-{
-    size_t pos = -1;
-    std::string newtext;
-    int nbOpen = 1;
-    int nbClose = 0;
-    while (nbOpen != nbClose) {
-        pos = getSequencePos(text, stop, pos+1);
-        if (pos != std::string::npos) {
-            newtext = getContentUntil(text, pos+stop.length());
-            nbOpen = countMatches(newtext, open);
-            nbClose = countMatches(newtext, close);
-        }
-        else {
-            return "";
-        }
-    }
-    return newtext;
-}
-std::string getContentUntilOutside(const std::string& text, const std::string& inside, const std::string& outside)
-{
-    size_t pos = -1;
-    std::string newtext;
+
+std::string getStringInsideBorders(const std::string& text, const std::string& open, const std::string& close) {
     int nbOpen = 0;
     int nbClose = 0;
-    while (nbOpen+1 != nbClose) {
-        pos = getSequencePos(text, outside, pos+1);
-        if (pos != std::string::npos) {
-            newtext = getContentUntil(text, pos+outside.length());
-            nbOpen = countMatches(newtext, inside);
-            nbClose = countMatches(newtext, outside);
-        }
-        else {
-            return "";
-        }
-    }
-    return newtext;
-}
-
-std::string getContentInsideUntil(const std::string& text, const std::string& inside, const std::string& outside, const std::string& stop)
-{
-    size_t pos = -1;
-    std::string newtext;
-    int nbOpen = 0;
-    int nbClose = 0;
-    while (nbOpen != nbClose+1) {
-        pos = getSequencePos(text, stop, pos+1);
-        if (pos != std::string::npos) {
-            newtext = getContentUntil(text, pos+stop.length());
-            nbOpen = countMatches(newtext, inside);
-            nbClose = countMatches(newtext, outside);
-        }
-        else {
-            return "";
+    std::string copy(text);
+    std::string save;
+    size_t lastClosePos = std::string::npos;
+    size_t firstOpenPos = getSequencePos(copy, open);
+    if (firstOpenPos != std::string::npos) {
+        while (true) {
+            lastClosePos = getSequencePos(copy, close);
+            if (lastClosePos != std::string::npos) {
+                if (nbOpen == 0 && firstOpenPos > lastClosePos) {
+                    firstOpenPos = 0;
+                    lastClosePos = text.size();
+                    break;
+                }
+                nbClose++;
+                save = getStringUntil(copy, close);
+                nbOpen += countMatches(save, open);
+                skipSequence(copy, save);
+                if (nbClose == nbOpen) {
+                    firstOpenPos += open.length();
+                    lastClosePos = getSequencePosR(text, copy)- close.length();
+                    break;
+                }
+            }
+            else break;
         }
     }
-    return newtext;
+    return getStringStarting(getStringUntil(text, lastClosePos),firstOpenPos);
 }
 
-std::string getContentBeforeLastOccurence(const std::string& text, const std::string& occurence)
+std::string getStringBeforeLastMatch(const std::string& text, const std::string& match)
 {
-    size_t pos = text.find_last_of(occurence)-occurence.length()+1;
-    if (pos != std::string::npos) {
-		return text.substr(0, pos);
-	}
-	else return "";
+    return getStringUntil(text, getSequencePosR(text, match));
 }
 
-std::string reverseString(const std::string& text)
-{
-    std::string newtext = text;
-    std::reverse(newtext.begin(), newtext.end());
-    return newtext;
+std::string reverseString(const std::string& text) {
+    return std::string(text.rbegin(), text.rend());
 }
 
 int countMatches(const std::string& text, const std::string& match)
@@ -243,55 +199,58 @@ int countMatches(const std::string& text, const std::string& match)
     std::string temp = text;
     while (!temp.empty()) {
         if (containsSequence(temp, match))count++;
-        skipSequence(temp, getContentUntil(temp, match));
+        skipSequence(temp, getStringUntil(temp, match));
     }
     return count;
+}
+
+int countMatchesBefore(const std::string& text, const std::string& match, const std::string& end)
+{
+    return countMatches(getStringBefore(text, end),match);
 }
 
 
 
 void skipSpace(std::string& text) {
-	skipSequence(text, "\b\t\n\r ");
+    skipAnySequence(text, "\b\t\n\r ");
+}
+
+void skipAnySequence(std::string& text, const std::string& sequence)
+{
+    size_t pos = text.find_first_not_of(sequence);
+    text.erase(0, pos);
 }
 
 void skipSequence(std::string& text, const std::string& sequence)
 {
-    size_t pos = text.find_first_not_of(sequence);
-    if (pos != std::string::npos) {
-        text.erase(0, pos);
-    }
+    size_t pos = text.find_first_of(sequence);
+    if(pos==0) text.erase(0, getPosAfter(text,sequence));
 }
 
-std::string getContentBefore(const std::string& text, const size_t& pos)
-{
-    size_t size = text.length();
-    if (size >= pos - 1) size = pos - 1;
-    return text.substr(0, size);
-}
-
-std::string getContentUntil(const std::string& text, const size_t& pos)
+std::string getStringUntil(const std::string& text, const size_t& pos)
 {
     size_t size = text.length();
     if (size >= pos)size = pos;
     return text.substr(0, size);
 }
 
-std::string getContentAfter(const std::string& text, const size_t& pos)
-{
-	size_t start = 0;
-    if (text.length() > pos+1)start = pos+1;
-	return text.substr(start);
-}
-
-std::string getContentStarting(const std::string& text, const size_t& pos)
+std::string getStringStarting(const std::string& text, const size_t& pos)
 {
     size_t start = 0;
     if (text.length() > pos)start = pos;
     return text.substr(start);
 }
 
+std::string tolower(const std::string& s) {
+    std::string newString;
+    for (char c : s) {
+        newString.push_back(tolower(c));
+    }
+    return newString;
+}
+
 bool to_bool(const std::string& s) {
-    return s == "1" || s=="true";
+    return s == "1" || tolower(s)=="true";
 }
 
 bool containsSequence(const std::string& text, const std::string& seq, const size_t& offset)
@@ -304,34 +263,32 @@ size_t getSequencePos(const std::string& text, const std::string& seq, const siz
     return text.find(seq, offset);
 }
 
-void printFileContent(std::string path)
+size_t getSequencePosR(const std::string& text, const std::string& seq, const size_t& offset)
+{
+    size_t pos = text.rfind(seq, offset);
+    return pos==std::string::npos ? std::string::npos : pos;
+}
+
+void printFileContent(const std::string& path)
 {
     std::cout << getFileContent(path);
 }
 
-std::string removeLastOccurence(const std::string& text, const std::string& content)
+std::string eraseLastMatch(const std::string& text, const std::string& content)
 {
-    size_t pos =text.find_last_of(content)-content.length()+1;
-    if (pos != std::string::npos) {
-		return text.substr(0, pos);
-	}
+    return getStringUntil(text, getSequencePosR(text, content));
 }
 
 std::vector<std::string> getAllLines(const std::string& text, const std::string& lineParameter)
 {
-    std::vector<std::string> allocc;
-    size_t pos = 0;
-    size_t endPos = 0;
+    std::vector<std::string> allLinesTab;
     std::string newtext = text;
-    while (pos != std::string::npos) {
-        pos = getSequencePos(newtext, lineParameter);
-        if (pos != std::string::npos) {
-            newtext = getContentStarting(newtext, pos);
-            std::string line = getLine(newtext, lineParameter);
-            allocc.push_back(line);
-        }
+    while (!newtext.empty()) {
+        std::string line = getLine(newtext, lineParameter);
+        allLinesTab.push_back(line);
+        skipSequence(newtext, line);
     }
-    return allocc;
+    return allLinesTab;
 }
 
 std::string removeCharacter(const std::string& text, const char c)
