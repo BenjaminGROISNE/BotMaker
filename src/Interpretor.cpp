@@ -198,17 +198,22 @@ std::string getStringLiteral(std::string& text) {
 std::shared_ptr<Token> getStringLiteralToken(std::string& stringLiteral) {
 	return std::make_shared<StringLiteralToken>(stringLiteral);
 }
+
+void Lexer::extractStringLiteral(std::string& newText, std::string& nextTokenString) {
+	skipTokenString(newText, nextTokenString);
+	nextTokenString = getStringLiteral(newText);
+	listTokens.push_back(getToken(TokenVALUE::STRINGLITERAL, nextTokenString));
+	skipTokenString(newText, nextTokenString);
+	skipSequence(newText, quotation);
+}
+
 void Lexer::extractTokens(const std::string& text)
 {
-	if (!text.empty()) {
-		std::string newText = text;
+	std::string newText = text;
+	while (!newText.empty()) {
 		std::string nextTokenString = getNextTokenString(newText);
 		if (nextTokenString == quotation) {
-			skipTokenString(newText, nextTokenString);
-			nextTokenString = getStringLiteral(newText);
-			listTokens.push_back(getToken(TokenVALUE::STRINGLITERAL,nextTokenString));
-			skipTokenString(newText, nextTokenString);
-			skipSequence(newText, quotation);
+			extractStringLiteral(newText, nextTokenString);
 		}
 		else if (beginsBySpace(nextTokenString)) {
 			skipSpace(newText);
@@ -217,8 +222,23 @@ void Lexer::extractTokens(const std::string& text)
 			listTokens.push_back(getToken(nextTokenString));
 			skipTokenString(newText, nextTokenString);
 		}
-		extractTokens(newText);
 	}
+}
+
+void Interpretor::compileScript(const std::string& text)
+{
+	lex.extractTokens(text);
+	std::string allTokens = lex.showAllTokens();
+	tl = IteratorList(lex.listTokens);
+	if (!tl.nextTokens.empty()) {
+		mainToken = std::dynamic_pointer_cast<MainToken>(tl.nextTokens.front());
+		if (tl.nextTokens.size() > 1) {
+			if (mainToken)tr = mainToken->addTokens(tl, mainToken->tRes);
+		}
+	}
+	if (tr->isSuccess())mainTag = std::dynamic_pointer_cast<MainTag>(mainToken->execute());
+
+	int a = 1;
 }
 
 TokenVALUE Lexer::getTokenValue(const std::string& text) {
@@ -350,8 +370,6 @@ TokenVALUE Lexer::getTokenValue(const std::string& text) {
 	}
 	else return TokenVALUE::UNKNOWN;
 }
-
-
 std::string Lexer::getTokenString(TokenVALUE value)
 {
 	switch (value) {
@@ -436,7 +454,6 @@ std::string Lexer::getTokenString(TokenVALUE value)
 		return "UNKNOWN";
 	}
 }
-
 std::shared_ptr<Token> Lexer::getToken(const std::string& text) {
 	return getToken(getTokenValue(text), text);
 }
@@ -526,12 +543,12 @@ std::shared_ptr<Token> Lexer::getToken(const TokenVALUE& tValue, const std::stri
 
 Lexer::Lexer()
 {
+
 }
 
 Lexer::Lexer(const std::string& text)
 {
 	totalContent = text;
-	//extractTokens(totalContent);
 }
 
 
@@ -603,10 +620,14 @@ std::shared_ptr<Token> KPToken::addCp(IteratorList<Token>& tl, std::shared_ptr<T
 	addError(TokenVALUE::CLOSEPARENTHESIS);
 	return nullptr;
 }
-
+//Leave empty
 std::shared_ptr<Token> KPToken::handleCp(IteratorList<Token>& tl, std::shared_ptr<TokenResult> tRes)
 {
-	return nullptr;
+	return std::shared_ptr<Token>();
+}
+
+KPToken::KPToken():KToken()
+{
 }
 
 std::shared_ptr<TokenResult> KPToken::addTokens(IteratorList<Token>& tl, std::shared_ptr<TokenResult> tRes)
@@ -840,6 +861,10 @@ std::shared_ptr<Token> FlowKToken::addCb(IteratorList<Token>& tl, std::shared_pt
 	return nullptr;
 }
 
+FlowKPToken::FlowKPToken():KPToken()
+{
+}
+
 std::shared_ptr<Token> FlowKPToken::addOb(IteratorList<Token>& tl)
 {
 	while (!tl.ended()) {
@@ -898,6 +923,10 @@ std::shared_ptr<TokenResult> FlowKPToken::addTokens(IteratorList<Token>& tl, std
 
 
 
+FlowKCToken::FlowKCToken():FlowKPToken()
+{
+}
+
 std::shared_ptr<Token> FlowKCToken::addCondition(IteratorList<Token>& tl, std::shared_ptr<TokenResult> tRes)
 {
 	while (!tl.ended()) {
@@ -947,19 +976,6 @@ std::shared_ptr<Tag> MainToken::execute()
 	return std::shared_ptr<Tag>();
 }
 
-FlowKPToken::FlowKPToken() :KPToken()
-{
-}
-	
-
-
-FlowKToken::FlowKToken():KToken()
-{
-}
-
-
-
-
 TokenResult::TokenResult()
 {
 	varTable = std::make_shared<std::map<std::string, DataType>>();
@@ -999,21 +1015,6 @@ void TokenResult::addVar(const std::string& name, const DataType& type)
 bool TokenResult::isSuccess()
 {
 	return listErrors.empty();
-}
-
-
-
-KPToken::KPToken():KToken()
-{
-}
-
-
-
-
-
-FlowKCToken::FlowKCToken():FlowKPToken()
-{
-
 }
 
 Token::Token()
@@ -1101,7 +1102,7 @@ Interpretor::~Interpretor()
 
 void Interpretor::readActivityFile(const std::string& ActivityName)
 {
- 	createMainTag(copyActivity(appendToFolder(ActivityFolder,ActivityName)));
+	compileScript(copyActivity(appendToFolder(ActivityFolder,ActivityName)));
 }
 
 std::string Interpretor::copyActivity(const std::string& ActivityPath)
@@ -1114,21 +1115,7 @@ std::shared_ptr<Tag> Interpretor::getActivityTag()
 	return mainTag;
 }
 
-void Interpretor::createMainTag(const std::string& text)
-{
-	lex.extractTokens(text); 
-	std::string allTokens = lex.showAllTokens();
-	tl = IteratorList(lex.listTokens);
-	if (!tl.nextTokens.empty()) {
-		mainToken = std::dynamic_pointer_cast<MainToken>(tl.nextTokens.front());
-		if (tl.nextTokens.size() > 1) {
-			if (mainToken)tr=mainToken->addTokens(tl, mainToken->tRes);
-		}
-	}
-	if (tr->isSuccess())mainTag = std::dynamic_pointer_cast<MainTag>(mainToken->execute());
 
-	int a = 1;
-}
 
 DoLoopToken::DoLoopToken()
 {

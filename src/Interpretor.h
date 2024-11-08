@@ -183,6 +183,7 @@ public:
 class KPToken :public KToken {
 protected:
 	KPToken();
+	//Implemented
 	std::shared_ptr<TokenResult> addTokens(IteratorList<Token>& tl, std::shared_ptr<TokenResult> tRes)override;
 	std::shared_ptr<Token> addNumber(IteratorList<Token>& tl, std::shared_ptr<TokenResult> tRes);
 	std::shared_ptr<Token> addInteger(IteratorList<Token>& tl, std::shared_ptr<TokenResult> tRes);
@@ -194,24 +195,28 @@ protected:
 	std::shared_ptr<Token> addOp(IteratorList<Token>& tl);
     std::shared_ptr<Token> addCp(IteratorList<Token>& tl, std::shared_ptr<TokenResult> tRes);
 	virtual std::shared_ptr<Token> handleCp(IteratorList<Token>& tl, std::shared_ptr<TokenResult> tRes);
+	//Not Implemented
 };
 
 class FlowKToken :public KToken {
 protected:
-	FlowKToken();
+	//Implemented
 	std::vector<std::shared_ptr<Token>> nestedTokens;
 	std::shared_ptr<Token> addOb(IteratorList<Token>& tl);
 	std::shared_ptr<Token> addCb(IteratorList<Token>& tl, std::shared_ptr<TokenResult> tRes);
 	std::shared_ptr<TokenResult> addTokens(IteratorList<Token>& tl, std::shared_ptr<TokenResult> tRes)override;
+	//Not Implemented
 };
 
 class FlowKPToken :public KPToken {
 protected:
 	FlowKPToken();
+	//Implemented
 	std::vector<std::shared_ptr<Token>> nestedTokens;
 	std::shared_ptr<Token> addOb(IteratorList<Token>& tl);
 	std::shared_ptr<Token> addCb(IteratorList<Token>& tl, std::shared_ptr<TokenResult> tRes);
 	std::shared_ptr<TokenResult> addTokens(IteratorList<Token>& tl, std::shared_ptr<TokenResult> tRes)override;
+	//Not Implemented
 };
 
 class FlowKCToken :public FlowKPToken {
@@ -521,15 +526,8 @@ public:
 };
 
 
-
-
-
-
-
-
-
 class Lexer {
-public:
+	public:
 	Lexer();
 	Lexer(const std::string& text);
 	std::string nameToken;
@@ -537,8 +535,8 @@ public:
 	std::string updatedContent;
 	bool empty();
 	std::shared_ptr<Token> getToken(const std::string& text);
-
 	std::shared_ptr<Token> getToken(const TokenVALUE& tValue, const std::string& text);
+	void extractStringLiteral(std::string& newText, std::string& nextTokenString);
 	void extractTokens(const std::string&text);
 	TokenVALUE getTokenValue(const std::string& text);
 	std::string getTokenString(TokenVALUE value);
@@ -549,7 +547,6 @@ public:
 	TokenVALUE getNextTokenValue(const std::string& text);
 	std::vector<std::shared_ptr<Token>> listTokens;
 	std::string showAllTokens();
-	UserVariables* uv;
 };
 
 
@@ -557,7 +554,7 @@ public:
 
 class Interpretor {
 
-public:
+	public:
 
 	Interpretor();
 	Interpretor(const std::string& folder);
@@ -565,7 +562,7 @@ public:
 	void readActivityFile(const std::string& ActivityName);
 	std::string copyActivity(const std::string& ActivityName);
 	std::shared_ptr<Tag> getActivityTag();
-	void createMainTag(const std::string& text);
+	void compileScript(const std::string& text);
 	std::shared_ptr<MainToken> mainToken;
 	std::shared_ptr<MainTag> mainTag;
 	std::shared_ptr<Lexer> mainStack;
