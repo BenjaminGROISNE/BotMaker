@@ -103,7 +103,7 @@ std::string removeContent(const std::string& text, const std::string& content)
 std::string getStringBefore(const std::string& text, const std::string& content)
 {
     size_t pos = getSequencePos(text, content);
-    if (pos != std::string::npos) return text.substr(0, pos);
+    return text.substr(0, pos);
 }
 
 std::string getStringUntil(const std::string& text, const std::string& content)
@@ -213,6 +213,14 @@ int countMatchesBefore(const std::string& text, const std::string& match, const 
 
 void skipSpace(std::string& text) {
     skipAnySequence(text, "\b\t\n\r ");
+}
+
+bool beginsBySpace(const std::string& text) {
+    return beginsBySequence(text,"\b\t\n\r ");
+}
+
+bool beginsBySequence(const std::string& text,const std::string& sequence) {
+    return text.find_first_of(sequence)==0;
 }
 
 void skipAnySequence(std::string& text, const std::string& sequence)

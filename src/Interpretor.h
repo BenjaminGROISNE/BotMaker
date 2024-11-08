@@ -84,12 +84,7 @@ enum class DataType {
 
 
 
-static TokenVALUE getTokenValue(const std::string& text);
-static std::string getTokenString(TokenVALUE value);
-std::string getNextPunctuationToken(const std::string& str);
-static std::string getNextTokenString(const std::string& text);
-static TokenVALUE getNextTokenValue(const std::string& text);
-bool isWhitespace(const char& c);
+
 
 enum class ErrorType{MISSING,UNEXPECTED,REPLACED};
 
@@ -528,11 +523,8 @@ public:
 
 
 
-std::shared_ptr<Token> getToken(const std::string& text);
 
-std::shared_ptr<Token> getToken(const TokenVALUE& tValue,const std::string&text);
 
-static bool isSpaceToken(std::string& c);
 
 
 
@@ -544,7 +536,17 @@ public:
 	std::string totalContent;
 	std::string updatedContent;
 	bool empty();
+	std::shared_ptr<Token> getToken(const std::string& text);
+
+	std::shared_ptr<Token> getToken(const TokenVALUE& tValue, const std::string& text);
 	void extractTokens(const std::string&text);
+	TokenVALUE getTokenValue(const std::string& text);
+	std::string getTokenString(TokenVALUE value);
+	std::string getNextPunctuationToken(const std::string& str);
+	std::string getNextTokenString(const std::string& text);
+	void skipTokenString(std::string& text, const std::string tokenText);
+	void skipStringLiteral(std::string& text, const std::string tokenText);
+	TokenVALUE getNextTokenValue(const std::string& text);
 	std::vector<std::shared_ptr<Token>> listTokens;
 	std::string showAllTokens();
 	UserVariables* uv;

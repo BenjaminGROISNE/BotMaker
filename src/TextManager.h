@@ -39,6 +39,8 @@ int countMatches(const std::string& text, const std::string& content);
 int countMatchesBefore(const std::string& text, const std::string& before, const std::string& end);
 
 void skipSpace(std::string& text);
+bool beginsBySpace(const std::string& text);
+bool beginsBySequence(const std::string& text, const std::string& sequence);
 void skipAnySequence(std::string& text, const std::string& sequence);
 void skipSequence(std::string& text, const std::string& sequence);
 bool containsSequence(const std::string& text, const std::string& content, const size_t& offset=0);

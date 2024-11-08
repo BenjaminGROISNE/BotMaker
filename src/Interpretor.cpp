@@ -109,9 +109,6 @@ bool isTokenStringContained(const std::string& text) {
 	return false;
 }
 
-bool isWhitespace(const char& c) {
-	return c == ' ';
-}
 
 std::string getNextNumeric(const std::string str) {
 	std::string digits = "0123456789";
@@ -147,7 +144,7 @@ bool isIdentifier(const std::shared_ptr<Token>& token) {
 
 
 
-std::string getNextPunctuationToken(const std::string& str) {
+std::string Lexer::getNextPunctuationToken(const std::string& str) {
 	auto lowest = std::string::npos;
 	std::string punc = "";
 	if (!str.empty()) {
@@ -164,7 +161,7 @@ std::string getNextPunctuationToken(const std::string& str) {
 }
 
 
-std::string getNextTokenString(const std::string& text)
+std::string Lexer::getNextTokenString(const std::string& text)
 {
 	std::string nextPunc = getNextPunctuationToken(text);
 	std::string contentBefore = getStringBefore(text,nextPunc);
@@ -177,16 +174,21 @@ std::string getNextTokenString(const std::string& text)
 	return std::string();
 }
 
-void getPastTokenString(std::string& text,const std::string tokenText)
+void Lexer::skipTokenString(std::string& text,const std::string tokenText)
 {
 	text=getStringAfter(text, tokenText);
 }
 
-TokenVALUE getNextTokenValue(const std::string& text)
+void Lexer::skipStringLiteral(std::string& text, const std::string tokenText)
+{
+	text = getStringAfter(getStringAfter(text, tokenText),quotation);
+}
+
+TokenVALUE Lexer::getNextTokenValue(const std::string& text)
 {
 	return getTokenValue(getNextTokenString(text));
 }
-
+//Doesn't have an escape character to store "
 std::string getStringLiteral(std::string& text) {
 	std::string temp = getStringBefore(text, quotation);
 	if (temp.empty())return text;
@@ -202,23 +204,24 @@ void Lexer::extractTokens(const std::string& text)
 		std::string newText = text;
 		std::string nextTokenString = getNextTokenString(newText);
 		if (nextTokenString == quotation) {
-			getPastTokenString(newText, nextTokenString);
+			skipTokenString(newText, nextTokenString);
 			nextTokenString = getStringLiteral(newText);
 			listTokens.push_back(getToken(TokenVALUE::STRINGLITERAL,nextTokenString));
-			getPastTokenString(newText, nextTokenString);
+			skipTokenString(newText, nextTokenString);
+			skipSequence(newText, quotation);
 		}
-		else if (isSpaceToken(nextTokenString)) {
+		else if (beginsBySpace(nextTokenString)) {
 			skipSpace(newText);
 		}
 		else {
 			listTokens.push_back(getToken(nextTokenString));
-			getPastTokenString(newText, nextTokenString);
+			skipTokenString(newText, nextTokenString);
 		}
 		extractTokens(newText);
 	}
 }
 
-TokenVALUE getTokenValue(const std::string& text) {
+TokenVALUE Lexer::getTokenValue(const std::string& text) {
 	if (text == mainK) {
 		return TokenVALUE::MAIN;
 	}
@@ -349,7 +352,7 @@ TokenVALUE getTokenValue(const std::string& text) {
 }
 
 
-std::string getTokenString(TokenVALUE value)
+std::string Lexer::getTokenString(TokenVALUE value)
 {
 	switch (value) {
 	case TokenVALUE::MAIN:
@@ -434,10 +437,10 @@ std::string getTokenString(TokenVALUE value)
 	}
 }
 
-std::shared_ptr<Token> getToken(const std::string& text) {
+std::shared_ptr<Token> Lexer::getToken(const std::string& text) {
 	return getToken(getTokenValue(text), text);
 }
-std::shared_ptr<Token> getToken(const TokenVALUE& tValue, const std::string& text) {
+std::shared_ptr<Token> Lexer::getToken(const TokenVALUE& tValue, const std::string& text) {
 	switch (tValue) {
 	case TokenVALUE::MAIN:
 		return std::make_shared<MainToken>();	
@@ -531,10 +534,6 @@ Lexer::Lexer(const std::string& text)
 	//extractTokens(totalContent);
 }
 
-static bool isSpaceToken(std::string& c) {
-	auto j= c.find_first_of(" \t\b\n\r") != std::string::npos;
-	return j;
-}
 
 bool Lexer::empty()
 {
@@ -548,8 +547,6 @@ bool Lexer::empty()
 
 std::string Lexer::showAllTokens()
 {
-
-
 	std::cout << "Console is now available for debugging output!" << std::endl;
 	std::string str;
 	for (auto& s : this->listTokens) {
@@ -1982,6 +1979,8 @@ StringLiteralToken::StringLiteralToken(const std::string& content):LToken()
 	tokenText = content;
 	tValue = TokenVALUE::STRINGLITERAL;
 }
+
+
 
 std::shared_ptr<Tag> StringLiteralToken::execute()
 {
