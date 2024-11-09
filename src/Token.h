@@ -25,6 +25,8 @@ public:
 	Error(TokenVALUE ev, ErrorType et, int el);
 	Error(DataType dType, ErrorType et, int el);
 	void showError();
+protected:
+
 	ErrorType errorType;
 	TokenVALUE errorValue;
 	DataType dType;
@@ -41,6 +43,10 @@ public:
 	void addError(const std::shared_ptr<TokenResult>& nestedToken);
 	void addVar(const std::string& name, const DataType& type);
 	bool isSuccess();
+	std::shared_ptr<std::map<std::string, DataType>> getVarTable();
+protected:
+
+
 	std::shared_ptr<std::map<std::string, DataType>> varTable;
 	std::vector<std::shared_ptr<Error>> listErrors;
 };
@@ -50,28 +56,39 @@ public:
 template <typename T>
 class IteratorList {
 public:
+
 	IteratorList() {
 		current = 0;
 	}
 	IteratorList(std::vector<std::shared_ptr<T>> nextTokens) :IteratorList() {
-		this->nextTokens = nextTokens;
+		this->listTokens = nextTokens;
+	}
+	std::vector<std::shared_ptr<T>> getTokens() {
+		return listTokens;
+	}
+	std::shared_ptr<T> getFirst() {
+		return listTokens.front();
+	}
+	size_t size() {
+		return listTokens.size();
+	}
+	bool empty() {
+		return listTokens.empty();
 	}
 	void next() {
 		++current;
 	}
 	bool ended() {
-		return current >= nextTokens.size();
-	}
-	int size()const {
-		return nextTokens.size();
+		return current >= listTokens.size();
 	}
 	std::shared_ptr<T> currentToken() {
-		return nextTokens.at(current);
+		return listTokens.at(current);
 	}
-	bool empty()const {
-		return nextTokens.empty();
-	}
-	std::vector<std::shared_ptr<T>> nextTokens;
+protected:
+
+
+
+	std::vector<std::shared_ptr<T>> listTokens;
 	int current;
 };
 
@@ -148,46 +165,87 @@ std::string getStringLiteral(std::string& text);
 class Token {
 public:
 	Token();
-	std::string tokenText;
-	TokenVALUE tValue;
-	std::shared_ptr<TokenResult> tRes;
+	void initExecute();
+	void initAddTokens(IteratorList<Token>& tl, std::shared_ptr<TokenResult> tRes);
+	virtual DataType getDataType();
+	std::shared_ptr<TokenResult> getResult();
+	virtual void showTokenTree(const int nestedLayer);// Does show punctuation automatically but lexer will stop if there's an error
+	TokenVALUE getValue();
 	std::shared_ptr<TokenResult> updateRes(std::shared_ptr<TokenResult> tRes);
 	std::shared_ptr<TokenResult> addError(TokenVALUE value, ErrorType et = ErrorType::MISSING);
 	std::shared_ptr<TokenResult> addError(const std::shared_ptr <TokenResult>& tr);
 	std::shared_ptr<TokenResult> addError(DataType type, ErrorType et = ErrorType::REPLACED);
-	void printTabs(const int nestedLayer);
-	virtual void showTokenTree(const int nestedLayer);// Does show punctuation automatically but lexer will stop if there's an error
-	int line;
+	std::string getTokenText();
+protected:
 
-	virtual DataType getDataType();
+	std::string tokenText;
+	TokenVALUE tValue;
+	std::shared_ptr<TokenResult> tRes;
+	int line;
 	virtual std::shared_ptr<TokenResult> addTokens(IteratorList<Token>& tl, std::shared_ptr<TokenResult> tRes);
 	virtual std::shared_ptr<Tag> execute();
 }; 
 
 
-class OToken :public Token {
+class FlowToken {
 public:
-};
-class PToken :public Token {
-public:
+
+	virtual void showTokenTree(const int nestedLayer);
+
+protected:
+	//Implemented
+	void printTabs(const int nestedLayer);
+	std::vector<std::shared_ptr<Token>> nestedTokens;
+	std::shared_ptr<Token> addOb(IteratorList<Token>& tl);
+	std::shared_ptr<Token> addCb(IteratorList<Token>& tl, std::shared_ptr<TokenResult> tRes);
+	virtual std::shared_ptr<TokenResult> addTokens(IteratorList<Token>& tl, std::shared_ptr<TokenResult> tRes);
+	std::shared_ptr<TokenResult> updateRes(std::shared_ptr<TokenResult> tRes);
+	std::shared_ptr<TokenResult> nestedRes;
+	//Not Implemented
 };
 
-class LToken :public Token {
-public:
-};
+
 
 class KToken :public Token {
 public:
+protected:
 
 };
 //Keyword token with arguments
 class PKToken :public KToken {
-
 public:
+
+
+	PKToken();
 	void showTokenTree(const int nestedLayer)override;
 protected:
 	
-	PKToken();
+	//Implemented
+	std::shared_ptr<TokenResult> addTokens(IteratorList<Token>& tl, std::shared_ptr<TokenResult> tRes)override;
+	std::shared_ptr<Token> addNumber(IteratorList<Token>& tl, std::shared_ptr<TokenResult> tRes);
+	std::shared_ptr<Token> addInteger(IteratorList<Token>& tl, std::shared_ptr<TokenResult> tRes);
+	std::shared_ptr<Token> addFloat(IteratorList<Token>& tl, std::shared_ptr<TokenResult> tRes);
+	std::shared_ptr<Token> addCoord(IteratorList<Token>& tl, std::shared_ptr<TokenResult> tRes);
+	std::shared_ptr<Token> addString(IteratorList<Token>& tl, std::shared_ptr<TokenResult> tRes);
+	std::shared_ptr<Token> addComma(IteratorList<Token>& tl);
+	std::shared_ptr<Token> addTimeType(IteratorList<Token>& tl, std::shared_ptr<TokenResult> tRes);
+	std::shared_ptr<Token> addOp(IteratorList<Token>& tl);
+	std::shared_ptr<Token> addCp(IteratorList<Token>& tl, std::shared_ptr<TokenResult> tRes);
+	virtual std::shared_ptr<Token> handleCp(IteratorList<Token>& tl, std::shared_ptr<TokenResult> tRes);
+	std::vector<std::shared_ptr<Token>> argTokens;
+	virtual void addParameter() = 0;
+	//Not Implemented
+	virtual void showArguments(const int nestedLayer);
+};
+
+
+//Keyword token with arguments
+class MPKToken :public PKToken {
+public:
+	MPKToken();
+	void showTokenTree(const int nestedLayer)override;
+protected:
+
 	//Implemented
 	std::shared_ptr<TokenResult> addTokens(IteratorList<Token>& tl, std::shared_ptr<TokenResult> tRes)override;
 	std::shared_ptr<Token> addNumber(IteratorList<Token>& tl, std::shared_ptr<TokenResult> tRes);
@@ -204,22 +262,25 @@ protected:
 	//Not Implemented
 	virtual void showArguments(const int nestedLayer);
 };
-//Keyword token with a unique argument
+
 class UPKToken : public PKToken {
 public:
-
 protected:
+	std::shared_ptr<Token> handleCp(IteratorList<Token>& tl, std::shared_ptr<TokenResult> tRes)override;
 
 };
+
+
 //Keyword token with 1 boolean argument
 class CKToken : public UPKToken {
 public:
 protected:
 	std::shared_ptr<Token> handleCp(IteratorList<Token>& tl, std::shared_ptr<TokenResult> tRes)override;
+	void addParameter()override;
 };
 
 //Flow Control Keyword with no arguments
-class FlowKToken :public KToken {
+class FlowKToken :public KToken , public FlowToken  {
 public:
 	void showTokenTree(const int nestedLayer)override;
 protected:
@@ -228,34 +289,31 @@ protected:
 	std::shared_ptr<Token> addOb(IteratorList<Token>& tl);
 	std::shared_ptr<Token> addCb(IteratorList<Token>& tl, std::shared_ptr<TokenResult> tRes);
 	std::shared_ptr<TokenResult> addTokens(IteratorList<Token>& tl, std::shared_ptr<TokenResult> tRes)override;
-
 	//Not Implemented
 };
 
 //Flow Control Keyword with arguments
-class FlowPKToken :public PKToken {
-protected:
+class FlowPKToken :public PKToken, public FlowToken {
+public:
 	FlowPKToken();
+	void showTokenTree(const int nestedLayer)override;
+protected:
 	//Implemented
 	std::vector<std::shared_ptr<Token>> nestedTokens;
 	std::shared_ptr<Token> addOb(IteratorList<Token>& tl);
 	std::shared_ptr<Token> addCb(IteratorList<Token>& tl, std::shared_ptr<TokenResult> tRes);
 	std::shared_ptr<TokenResult> addTokens(IteratorList<Token>& tl, std::shared_ptr<TokenResult> tRes)override;
-public:
-	void showTokenTree(const int nestedLayer)override;
+
+
 	//Not Implemented
 };
 
-//Flow Control Keyword with 1 argument
-class FlowUPKToken : public UPKToken {
-public:
-protected:
-};
 
 //Flow Control Keyword with 1 boolean argument
-class FlowCKToken :public FlowUPKToken {
-protected:
+class FlowCKToken :public CKToken, public FlowToken {
+public:
 	FlowCKToken();
+protected:
 	std::shared_ptr<Token> condition;
 	std::shared_ptr<Token> addCondition(IteratorList<Token>& tl, std::shared_ptr<TokenResult> tRes);
 	std::shared_ptr < TokenResult> addTokens(IteratorList<Token>& tl, std::shared_ptr<TokenResult> tRes)override;
@@ -266,17 +324,21 @@ class IdentifierToken :public Token {
 public:
 	IdentifierToken(const std::string& varName);
 	DataType getDataType()override;
+protected:
+
 	std::shared_ptr < TokenResult> addTokens(IteratorList<Token>& tl, std::shared_ptr<TokenResult> tRes)override;
 };
 
 class UnknownToken : public Token {
 public:
 	UnknownToken();
+protected:
 };
 
 class MainToken :public FlowPKToken {
 public:
 	MainToken();
+protected:
 	std::vector<std::shared_ptr<Token>> argvTokens;
 	std::shared_ptr<TokenResult> addTokens(IteratorList<Token>& tl, std::shared_ptr<TokenResult> tRes)override;
 	std::shared_ptr<Tag> execute()override;
@@ -285,6 +347,7 @@ public:
 class DoLoopToken :public FlowCKToken {
 public:
 	DoLoopToken();
+protected:
 	std::shared_ptr<TokenResult> addTokens(IteratorList<Token>& tl, std::shared_ptr<TokenResult> tRes)override;
 	std::shared_ptr<Tag> execute()override;
 };
@@ -292,6 +355,7 @@ public:
 class IfToken :public FlowCKToken {
 public:
 	IfToken();
+protected:
 	std::shared_ptr<TokenResult> addTokens(IteratorList<Token>& tl, std::shared_ptr<TokenResult> tRes)override;
 	std::shared_ptr<Tag> execute()override;
 };
@@ -299,12 +363,14 @@ public:
 class ElseToken :public FlowKToken {
 public:
 	ElseToken();
+protected:
 	std::shared_ptr<Tag> execute()override;
 };
 
 class ElifToken :public FlowCKToken {
 public:
 	ElifToken();
+protected:
 	std::shared_ptr<TokenResult> addTokens(IteratorList<Token>& tl, std::shared_ptr<TokenResult> tRes)override;
 	std::shared_ptr<Tag> execute()override;
 };
@@ -312,6 +378,7 @@ public:
 class LoopToken :public FlowCKToken {
 public:
 	LoopToken();
+protected:
 	std::shared_ptr<Tag> execute()override;
 };
 
@@ -319,6 +386,7 @@ public:
 class WaitToken :public PKToken {
 public:
 	WaitToken();
+protected:
 	std::shared_ptr<TokenResult> addTokens(IteratorList<Token>& tl, std::shared_ptr<TokenResult> tRes)override;
 	std::vector<std::shared_ptr<Token>> listToken;
 	std::shared_ptr<Token> integerToken;
@@ -329,6 +397,7 @@ class AndToken :public PKToken {
 public:
 	AndToken();
 	DataType getDataType()override;
+protected:
 	std::shared_ptr<Token> handleCp(IteratorList<Token>& tl, std::shared_ptr<TokenResult> tRes)override;
 	std::vector<std::shared_ptr<Token>> listBoolToken;
 	std::shared_ptr<Tag> execute()override;
@@ -339,6 +408,7 @@ class OrToken :public PKToken {
 public:
 	OrToken();
 	DataType getDataType()override;
+protected:
 	std::shared_ptr<Token> handleCp(IteratorList<Token>& tl, std::shared_ptr<TokenResult> tRes)override;
 	std::vector<std::shared_ptr<Token>> listBoolToken;
 	std::shared_ptr<Tag> execute()override;
@@ -348,52 +418,13 @@ class NotToken :public CKToken {
 public:
 	NotToken();
 	DataType getDataType();
+protected:
 	std::shared_ptr<TokenResult> addTokens(IteratorList<Token>& tl, std::shared_ptr<TokenResult> tRes)override;
 	std::shared_ptr<Token> handleCp(IteratorList<Token>& tl, std::shared_ptr<TokenResult> tRes)override;
 	std::shared_ptr<Token> boolToken;
 	std::shared_ptr<Tag> execute()override;
 };
 
-class FalseToken : public LToken {
-public:
-	FalseToken();
-	DataType getDataType()override;
-};
-
-class TrueToken : public LToken {
-public:
-	TrueToken();
-	DataType getDataType()override;
-};
-
-class SecondToken : public LToken {
-public:
-	SecondToken();
-	DataType getDataType()override;
-};
-class MilliSecondToken : public LToken {
-public:
-	MilliSecondToken();
-	DataType getDataType()override;
-};
-class MinuteToken : public LToken {
-public:
-	MinuteToken();
-	DataType getDataType()override;
-};
-
-class NumericToken : public LToken {
-public:
-	NumericToken(const std::string& nb);
-	DataType getDataType()override;
-	int number;
-};
-
-class StringLiteralToken :public LToken {
-public:
-	StringLiteralToken(const std::string& content);
-	std::shared_ptr<Tag> execute()override;
-};
 
 
 
@@ -401,6 +432,7 @@ public:
 class ListToken :public PKToken {
 public:
 	ListToken();
+protected:
 	std::shared_ptr<Token> addOab(IteratorList<Token>& tokenList);
 	std::shared_ptr<Token> addCab(IteratorList<Token>& tokenList);
 	std::shared_ptr<Token> addType(IteratorList<Token>& tl, std::shared_ptr<TokenResult> tRes);
@@ -414,6 +446,7 @@ public:
 class StoreToken :public PKToken {
 public:
 	StoreToken();
+protected:
 	std::shared_ptr<Token> identifierToken;
 	std::shared_ptr<Token> valueToken;
 	std::shared_ptr<Token> addIdentifier(IteratorList<Token>& tl, std::shared_ptr<TokenResult> tRes);
@@ -422,42 +455,55 @@ public:
 	std::shared_ptr<Tag> execute()override;
 };
 
-
+//empty or multiple parameters token
 class EPKToken :public PKToken {
 public:
+protected:
 	std::shared_ptr < TokenResult> addTokens(IteratorList<Token>& tl, std::shared_ptr<TokenResult> tRes)override;
 };
 
-class IntegerToken :public EPKToken {
+//empty or 1 parameter token
+class EUPKToken :public UPKToken {
+public:
+protected:
+	std::shared_ptr < TokenResult> addTokens(IteratorList<Token>& tl, std::shared_ptr<TokenResult> tRes)override;
+};
+
+class IntegerToken :public EUPKToken {
 public:
 	IntegerToken();
-	std::shared_ptr<Token> intToken;
 	DataType getDataType()override;
+protected:
+	std::shared_ptr<Token> intToken;
 	std::shared_ptr<Token> handleCp(IteratorList<Token>& tl, std::shared_ptr<TokenResult> tRes)override;
 	std::shared_ptr<Tag> execute()override;
 };
 
-class FloatToken :public EPKToken {
+
+
+class FloatToken :public EUPKToken {
 public:
 	FloatToken();
-	std::shared_ptr<Token> handleCp(IteratorList<Token>& tl, std::shared_ptr<TokenResult> tRes)override;
 	DataType getDataType()override;
+protected:
+	std::shared_ptr<Token> handleCp(IteratorList<Token>& tl, std::shared_ptr<TokenResult> tRes)override;
 	std::shared_ptr<Token> floatToken;
 	std::shared_ptr<Tag> execute()override;
 };
 
-class BoolToken :public EPKToken {
+class BoolToken :public EUPKToken {
 public:
 	BoolToken();
+	DataType getDataType()override;
+protected:
 	std::shared_ptr<Token> handleCp(IteratorList<Token>& tl, std::shared_ptr<TokenResult> tRes);
 	std::shared_ptr<Token> boolToken;
-	DataType getDataType()override;
 	std::shared_ptr<Tag> execute()override;
 };
-class StringToken :public EPKToken {
+class StringToken :public EUPKToken {
 public:
-
 	StringToken();
+protected:
 	std::shared_ptr<Token> handleCp(IteratorList<Token>& tl, std::shared_ptr<TokenResult> tRes);
 	std::shared_ptr<Token> stringToken;
 	std::shared_ptr<Tag> execute()override;
@@ -466,6 +512,7 @@ class CoordToken :public EPKToken {
 public:
 	CoordToken();
 	DataType getDataType()override;
+protected:
 	std::shared_ptr<Token> xPoint;
 	std::shared_ptr<Token> yPoint;
 	std::shared_ptr<Token> coordToken;
@@ -477,6 +524,7 @@ class ZoneToken :public EPKToken {
 public:
 	ZoneToken();
 	DataType getDataType()override;
+protected:
 	std::shared_ptr<Token> topLeft;
 	std::shared_ptr<Token> bottomRight;
 	std::shared_ptr<Token> zoneToken;
@@ -487,9 +535,10 @@ public:
 class DirectionToken :public EPKToken {
 public:
 	DirectionToken();
+	DataType getDataType()override;
+protected:
 	std::shared_ptr<Token> dirToken;
 	std::shared_ptr<Token> handleCp(IteratorList<Token>& tl, std::shared_ptr<TokenResult> tRes)override;
-	DataType getDataType()override;
 	std::shared_ptr<Tag> execute()override;
 };
 
@@ -497,6 +546,7 @@ class CompareToken :public PKToken {
 public:
 	CompareToken();
 	DataType getDataType()override;
+protected:
 	std::vector<std::shared_ptr<Token>> listTokens;
 	CompareType cmpType;
 	DataType valuesType;
@@ -508,12 +558,14 @@ public:
 class PrintToken :public PKToken {
 public:
 	PrintToken();
+protected:
 	std::shared_ptr<Tag> execute()override;
 };
 
 class BreakToken :public KToken {
 public:
 	BreakToken();
+protected:
 	std::shared_ptr < TokenResult> addTokens(IteratorList<Token>& tl, std::shared_ptr<TokenResult> tRes)override;
 	virtual std::shared_ptr<Tag> execute()override;
 };
@@ -521,43 +573,115 @@ public:
 class ContinueToken :public KToken {
 public:
 	ContinueToken();
+protected:
 	std::shared_ptr < TokenResult> addTokens(IteratorList<Token>& tl, std::shared_ptr<TokenResult> tRes)override;
 	virtual std::shared_ptr<Tag> execute()override;
 };
 
-class OpenParenthesisToken : public PToken {
+
+class OToken :public Token {
+public:
+protected:
+};
+class PToken :public Token {
+public:
+protected:
+};
+
+class LToken :public Token {
+public:
+protected:
+};
+
+
+class OpenParenthesisToken :public PToken {
 public:
 	OpenParenthesisToken();
+protected:
 };
 
-class CloseParenthesisToken : public PToken {
+class CloseParenthesisToken :public PToken {
 public:
 	CloseParenthesisToken();
+protected:
 };
 
-class CloseBracketsToken : public PToken {
+class CloseBracketsToken :public PToken {
 public:
 	CloseBracketsToken();
+protected:
 };
 
-class OpenBracketsToken : public PToken {
+class OpenBracketsToken :public PToken {
 public:
 	OpenBracketsToken();
+protected:
 };
 
-class CloseAngleBracketsToken : public PToken {
+class CloseAngleBracketsToken :public PToken {
 public:
 	CloseAngleBracketsToken();
+protected:
 };
 
-class OpenAngleBracketsToken : public PToken {
+class OpenAngleBracketsToken :public PToken {
 public:
 	OpenAngleBracketsToken();
+protected:
 };
 
-class CommaToken : public PToken {
+class CommaToken :public PToken {
 public:
 	CommaToken();
+protected:
 };
 
+class FalseToken :public LToken {
+public:
+	FalseToken();
+	DataType getDataType()override;
+protected:
+};
+
+class TrueToken :public LToken {
+public:
+	TrueToken();
+	DataType getDataType()override;
+protected:
+};
+
+class SecondToken :public LToken {
+public:
+	SecondToken();
+	DataType getDataType()override;
+protected:
+};
+class MilliSecondToken :public LToken {
+public:	MilliSecondToken();
+	  DataType getDataType()override;
+protected:
+
+};
+class MinuteToken :public LToken {
+public:	MinuteToken();
+	  DataType getDataType()override;
+protected:
+
+};
+
+class NumericToken :public LToken {
+public:
+	NumericToken(const std::string& nb);
+	DataType getDataType()override;
+protected:
+
+	int number;
+};
+
+class StringLiteralToken :public LToken {
+public:
+	StringLiteralToken(const std::string& content);
+protected:
+	std::shared_ptr<Tag> execute()override;
+};
 bool isBooleanToken(const std::shared_ptr<Token>& token);
