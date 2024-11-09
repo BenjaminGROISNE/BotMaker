@@ -1,0 +1,31 @@
+#pragma once
+#include <iostream>
+#include <fstream>
+#include <string>
+#include <vector>
+#include "Token.h"
+
+
+
+class Lexer {
+public:
+	Lexer();
+	Lexer(const std::string& text);
+	std::string nameToken;
+	std::string totalContent;
+	std::string updatedContent;
+	bool empty();
+	std::shared_ptr<Token> getToken(const std::string& text);
+	std::shared_ptr<Token> getToken(const TokenVALUE& tValue, const std::string& text);
+	void extractStringLiteral(std::string& newText, std::string& nextTokenString);
+	void extractTokens(const std::string& text);
+	TokenVALUE getTokenValue(const std::string& text);
+	std::string getTokenString(TokenVALUE value);
+	std::string getNextPunctuationToken(const std::string& str);
+	std::string getNextTokenString(const std::string& text);
+	void skipTokenString(std::string& text, const std::string tokenText);
+	void skipStringLiteral(std::string& text, const std::string tokenText);
+	TokenVALUE getNextTokenValue(const std::string& text);
+	std::vector<std::shared_ptr<Token>> listTokens;
+	std::string showAllTokens();
+};

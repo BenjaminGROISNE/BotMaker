@@ -177,6 +177,7 @@
     <ClCompile Include="src\Emulator.cpp" />
     <ClCompile Include="src\fadb.cpp" />
     <ClCompile Include="src\Interactions.cpp" />
+    <ClCompile Include="src\Lexer.cpp" />
     <ClCompile Include="src\MyFrame.cpp" />
     <ClCompile Include="src\TagPanel.cpp" />
     <ClCompile Include="src\Tags.cpp" />
@@ -190,6 +191,7 @@
     <ClCompile Include="src\paths.cpp" />
     <ClCompile Include="src\Instance.cpp" />
     <ClCompile Include="src\sysCommands.cpp" />
+    <ClCompile Include="src\Token.cpp" />
     <ClCompile Include="src\Units.cpp" />
     <ClCompile Include="src\WXManager.cpp" />
   </ItemGroup>
@@ -202,6 +204,7 @@
     <ClInclude Include="src\Emulator.h" />
     <ClInclude Include="src\fadb.h" />
     <ClInclude Include="src\Interactions.h" />
+    <ClInclude Include="src\Lexer.h" />
     <ClInclude Include="src\MyFrame.h" />
     <ClInclude Include="src\TagPanel.h" />
     <ClInclude Include="src\Tags.h" />
@@ -214,6 +217,7 @@
     <ClInclude Include="src\game.h" />
     <ClInclude Include="src\paths.h" />
     <ClInclude Include="src\sysCommands.h" />
+    <ClInclude Include="src\Token.h" />
     <ClInclude Include="src\Units.h" />
     <ClInclude Include="src\WXManager.h" />
   </ItemGroup>
