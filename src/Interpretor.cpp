@@ -11,7 +11,7 @@ void Interpretor::compileScript(const std::string& text)
 			if (mainToken)tr = mainToken->addTokens(tl, mainToken->tRes);
 		}
 	}
-	mainToken->showTokenTree();
+	mainToken->showTokenTree(0);
 	if (tr->isSuccess())mainTag = std::dynamic_pointer_cast<MainTag>(mainToken->execute());
 
 	int a = 1;

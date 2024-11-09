@@ -153,14 +153,14 @@ std::shared_ptr<TokenResult> IdentifierToken::addTokens(IteratorList<Token>& tl,
 	return updateRes(tRes);
 }
 
-MainToken::MainToken() :FlowKPToken()
+MainToken::MainToken() :FlowPKToken()
 {
 	tRes = std::make_shared<TokenResult>();
 	tValue = TokenVALUE::MAIN;
 	tokenText = mainK;
 }
 
-std::shared_ptr<Token> KPToken::addOp(IteratorList<Token>& tl)
+std::shared_ptr<Token> PKToken::addOp(IteratorList<Token>& tl)
 {
 	if (!tl.ended()) {
 		auto elem = tl.currentToken();
@@ -173,7 +173,7 @@ std::shared_ptr<Token> KPToken::addOp(IteratorList<Token>& tl)
 	return nullptr;
 }
 
-std::shared_ptr<Token> KPToken::addCp(IteratorList<Token>& tl, std::shared_ptr<TokenResult> tRes)
+std::shared_ptr<Token> PKToken::addCp(IteratorList<Token>& tl, std::shared_ptr<TokenResult> tRes)
 {
 	if (!tl.ended()) {
 		auto elem = tl.currentToken();
@@ -186,28 +186,31 @@ std::shared_ptr<Token> KPToken::addCp(IteratorList<Token>& tl, std::shared_ptr<T
 	return nullptr;
 }
 //Leave empty
-std::shared_ptr<Token> KPToken::handleCp(IteratorList<Token>& tl, std::shared_ptr<TokenResult> tRes)
+std::shared_ptr<Token> PKToken::handleCp(IteratorList<Token>& tl, std::shared_ptr<TokenResult> tRes)
 {
 	return std::shared_ptr<Token>();
 }
 
-void KPToken::showTokenTree()
+void PKToken::showTokenTree(const int nestedLayer)
 {
-	Token::showTokenTree();
+	Token::showTokenTree(nestedLayer);
 	std::cout << openParenthesisP;
-	showArguments();
+	showArguments(nestedLayer);
 	std::cout << closeParenthesisP;
 }
 
-void KPToken::showArguments()
+void PKToken::showArguments(const int nestedLayer)
+{
+	for (auto elem : argTokens) {
+		elem->showTokenTree(nestedLayer);
+	}
+}
+
+PKToken::PKToken() :KToken()
 {
 }
 
-KPToken::KPToken() :KToken()
-{
-}
-
-std::shared_ptr<TokenResult> KPToken::addTokens(IteratorList<Token>& tl, std::shared_ptr<TokenResult> tRes)
+std::shared_ptr<TokenResult> PKToken::addTokens(IteratorList<Token>& tl, std::shared_ptr<TokenResult> tRes)
 {
 	tl.next();
 	if (addOp(tl)) {
@@ -216,7 +219,7 @@ std::shared_ptr<TokenResult> KPToken::addTokens(IteratorList<Token>& tl, std::sh
 	return updateRes(tRes);
 }
 
-std::shared_ptr<Token> KPToken::addNumber(IteratorList<Token>& tl, std::shared_ptr<TokenResult> tRes) {
+std::shared_ptr<Token> PKToken::addNumber(IteratorList<Token>& tl, std::shared_ptr<TokenResult> tRes) {
 	if (!tl.ended()) {
 		auto elem = tl.currentToken();
 		elem->addTokens(tl, tRes);
@@ -230,7 +233,7 @@ std::shared_ptr<Token> KPToken::addNumber(IteratorList<Token>& tl, std::shared_p
 	return nullptr;
 }
 
-std::shared_ptr<Token> KPToken::addInteger(IteratorList<Token>& tl, std::shared_ptr<TokenResult> tRes) {
+std::shared_ptr<Token> PKToken::addInteger(IteratorList<Token>& tl, std::shared_ptr<TokenResult> tRes) {
 	if (!tl.ended()) {
 		auto elem = tl.currentToken();
 		elem->addTokens(tl, tRes);
@@ -244,7 +247,7 @@ std::shared_ptr<Token> KPToken::addInteger(IteratorList<Token>& tl, std::shared_
 	return nullptr;
 }
 
-std::shared_ptr<Token> KPToken::addFloat(IteratorList<Token>& tl, std::shared_ptr<TokenResult> tRes) {
+std::shared_ptr<Token> PKToken::addFloat(IteratorList<Token>& tl, std::shared_ptr<TokenResult> tRes) {
 	if (!tl.ended()) {
 		auto elem = tl.currentToken();
 		elem->addTokens(tl, tRes);
@@ -258,7 +261,7 @@ std::shared_ptr<Token> KPToken::addFloat(IteratorList<Token>& tl, std::shared_pt
 	return nullptr;
 }
 
-std::shared_ptr<Token> KPToken::addCoord(IteratorList<Token>& tl, std::shared_ptr<TokenResult> tRes) {
+std::shared_ptr<Token> PKToken::addCoord(IteratorList<Token>& tl, std::shared_ptr<TokenResult> tRes) {
 	if (!tl.ended()) {
 		auto elem = tl.currentToken();
 		elem->addTokens(tl, tRes);
@@ -272,7 +275,7 @@ std::shared_ptr<Token> KPToken::addCoord(IteratorList<Token>& tl, std::shared_pt
 	return nullptr;
 }
 
-std::shared_ptr<Token> KPToken::addString(IteratorList<Token>& tl, std::shared_ptr<TokenResult> tRes) {
+std::shared_ptr<Token> PKToken::addString(IteratorList<Token>& tl, std::shared_ptr<TokenResult> tRes) {
 	if (!tl.ended()) {
 		auto elem = tl.currentToken();
 		auto res = elem->addTokens(tl, tRes);
@@ -287,7 +290,7 @@ std::shared_ptr<Token> KPToken::addString(IteratorList<Token>& tl, std::shared_p
 	return nullptr;
 }
 
-std::shared_ptr<Token> KPToken::addComma(IteratorList<Token>& tl) {
+std::shared_ptr<Token> PKToken::addComma(IteratorList<Token>& tl) {
 	if (!tl.ended()) {
 		auto elem = tl.currentToken();
 		if (elem->tValue == TokenVALUE::COMMA) {
@@ -299,7 +302,7 @@ std::shared_ptr<Token> KPToken::addComma(IteratorList<Token>& tl) {
 	return nullptr;
 }
 
-std::shared_ptr<Token> KPToken::addTimeType(IteratorList<Token>& tl, std::shared_ptr<TokenResult> tRes) {
+std::shared_ptr<Token> PKToken::addTimeType(IteratorList<Token>& tl, std::shared_ptr<TokenResult> tRes) {
 	if (!tl.ended()) {
 		auto elem = tl.currentToken();
 		if (isTimeTypeToken(elem)) {
@@ -438,11 +441,11 @@ std::shared_ptr<Token> FlowKToken::addCb(IteratorList<Token>& tl, std::shared_pt
 	return nullptr;
 }
 
-FlowKPToken::FlowKPToken() :KPToken()
+FlowPKToken::FlowPKToken() :PKToken()
 {
 }
 
-std::shared_ptr<Token> FlowKPToken::addOb(IteratorList<Token>& tl)
+std::shared_ptr<Token> FlowPKToken::addOb(IteratorList<Token>& tl)
 {
 	while (!tl.ended()) {
 		auto elem = tl.currentToken();
@@ -455,7 +458,7 @@ std::shared_ptr<Token> FlowKPToken::addOb(IteratorList<Token>& tl)
 	return nullptr;
 }
 
-std::shared_ptr<Token> FlowKPToken::addCb(IteratorList<Token>& tl, std::shared_ptr<TokenResult> tRes)
+std::shared_ptr<Token> FlowPKToken::addCb(IteratorList<Token>& tl, std::shared_ptr<TokenResult> tRes)
 {
 	while (!tl.ended()) {
 		auto elem = tl.currentToken();
@@ -487,18 +490,18 @@ std::shared_ptr<TokenResult> FlowKToken::addTokens(IteratorList<Token>& tl, std:
 	return updateRes(tRes);
 }
 
-void FlowKToken::showTokenTree()
+void FlowKToken::showTokenTree(const int nestedLayer)
 {
-	Token::showTokenTree();
+	Token::showTokenTree(nestedLayer);
 	std::cout << openBracketsP + '\n';
 	for (auto elem : nestedTokens) {
-		elem->showTokenTree();
+		elem->showTokenTree(nestedLayer+1);
 	}
 	std::cout << closeBracketsP + '\n';
 
 }
 
-std::shared_ptr<TokenResult> FlowKPToken::addTokens(IteratorList<Token>& tl, std::shared_ptr<TokenResult> tRes)
+std::shared_ptr<TokenResult> FlowPKToken::addTokens(IteratorList<Token>& tl, std::shared_ptr<TokenResult> tRes)
 {
 	tl.next();
 	if (addOp(tl)) {
@@ -509,15 +512,17 @@ std::shared_ptr<TokenResult> FlowKPToken::addTokens(IteratorList<Token>& tl, std
 	return updateRes(tRes);
 }
 
-void FlowKPToken::showTokenTree()
+void FlowPKToken::showTokenTree(const int nestedLayer)
 {
-	KPToken::showTokenTree();
-	std::cout << '\n' + openBracketsP + "\n\t";
+	PKToken::showTokenTree(nestedLayer);
+	std::cout << openBracketsP + "\n";
+	printTabs(nestedLayer+1);
 	for (auto elem : nestedTokens) {
-
-		elem->showTokenTree();
+		elem->showTokenTree(nestedLayer+1);
 	}
-	std::cout << '\n' + closeBracketsP + '\n';
+	std::cout << '\n';
+	printTabs(nestedLayer);
+	std::cout<<closeBracketsP + '\n';
 }
 
 
@@ -527,11 +532,11 @@ std::shared_ptr<Token> getStringLiteralToken(std::string& stringLiteral) {
 
 
 
-FlowKCToken::FlowKCToken() :FlowKPToken()
+FlowCKToken::FlowCKToken() :FlowUPKToken()
 {
 }
 
-std::shared_ptr<Token> FlowKCToken::addCondition(IteratorList<Token>& tl, std::shared_ptr<TokenResult> tRes)
+std::shared_ptr<Token> FlowCKToken::addCondition(IteratorList<Token>& tl, std::shared_ptr<TokenResult> tRes)
 {
 	while (!tl.ended()) {
 		auto elem = tl.currentToken();
@@ -545,7 +550,7 @@ std::shared_ptr<Token> FlowKCToken::addCondition(IteratorList<Token>& tl, std::s
 	return nullptr;
 }
 
-std::shared_ptr<TokenResult> FlowKCToken::addTokens(IteratorList<Token>& tl, std::shared_ptr<TokenResult> tRes)
+std::shared_ptr<TokenResult> FlowCKToken::addTokens(IteratorList<Token>& tl, std::shared_ptr<TokenResult> tRes)
 {
 	tl.next();
 	if (addOp(tl)) {
@@ -556,6 +561,11 @@ std::shared_ptr<TokenResult> FlowKCToken::addTokens(IteratorList<Token>& tl, std
 		}
 	}
 	return updateRes(tRes);
+}
+
+void FlowCKToken::showArguments(const int nestedLayer)
+{
+	condition->showTokenTree(nestedLayer);
 }
 
 
@@ -766,9 +776,21 @@ std::shared_ptr<Token> NotToken::handleCp(IteratorList<Token>& tl, std::shared_p
 	return nullptr;
 }
 
+std::shared_ptr<Token> CKToken::handleCp(IteratorList<Token>& tl, std::shared_ptr<TokenResult> tRes)
+{
+	return std::shared_ptr<Token>();
+}
+
 std::shared_ptr<Tag> AndToken::execute()
 {
 	return std::shared_ptr<Tag>();
+}
+
+void AndToken::showArguments(const int nestedLayer)
+{
+	for (auto arg : listBoolToken) {
+		arg->showTokenTree(nestedLayer);
+	}
 }
 
 OrToken::OrToken()
@@ -956,7 +978,7 @@ DataType CoordToken::getDataType()
 	return DataType::COORD;
 }
 
-std::shared_ptr<TokenResult> EKPToken::addTokens(IteratorList<Token>& tl, std::shared_ptr<TokenResult> tRes)
+std::shared_ptr<TokenResult> EPKToken::addTokens(IteratorList<Token>& tl, std::shared_ptr<TokenResult> tRes)
 {
 	tl.next();
 	if (addOp(tl)) {
@@ -1555,7 +1577,14 @@ std::shared_ptr<TokenResult> Token::addError(DataType type, ErrorType et)
 	return tRes;
 }
 
-void Token::showTokenTree()
+void Token::printTabs(const int nestedLayer)
+{
+	for (int i = 0; i < nestedLayer; ++i) {
+		std::cout << '\t';
+	}
+}
+
+void Token::showTokenTree(const int nestedLayer)
 {
 	std::cout << tokenText;
 }
@@ -1575,4 +1604,5 @@ std::shared_ptr<Tag> Token::execute()
 {
 	return std::shared_ptr<Tag>();
 }
+
 
