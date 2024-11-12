@@ -42,6 +42,9 @@ static std::string boolK		= "bool";
 static std::string printK		= "print";
 static std::string returnK		= "return";
 static std::string voidK		= "void";
+static std::string addK		= "add";
+static std::string subK		= "sub";
+static std::string multK		= "mult";
 
 
 

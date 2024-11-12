@@ -338,7 +338,7 @@ std::string Lexer::showAllTokens()
 	std::cout << "Console is now available for debugging output!" << std::endl;
 	std::string str;
 	for (auto& s : this->listTokens) {
-		auto h = s->tokenText;
+		auto h = s->getTokenText();
 
 		if (s)str.append(h + ' ');
 		if (h == "{" || h == "}")str.append("\n");

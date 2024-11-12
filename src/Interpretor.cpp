@@ -8,7 +8,7 @@ void Interpretor::compileScript(const std::string& text)
 	if (!tl.empty()) {
 		mainToken = std::dynamic_pointer_cast<MainToken>(tl.getFirst());
 		if (tl.size() > 1) {
-			if (mainToken)tr = mainToken->initAddTokens(tl, mainToken->getResult());
+			if (mainToken)tr = mainToken->addTokens(tl, mainToken->getResult());
 		}
 	}
 	mainToken->showTokenTree(0);
