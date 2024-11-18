@@ -23,7 +23,7 @@ class Interpretor {
 	std::shared_ptr<MainTag> mainTag;
 	std::shared_ptr<Lexer> mainStack;
 	UserVariables uv;
-	std::shared_ptr<TokenResult> tr;
+	TokenResult tr;
 	IteratorList<Token> tl;
 	Lexer lex;
 	std::string ActivityFolder;

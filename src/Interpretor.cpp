@@ -8,11 +8,11 @@ void Interpretor::compileScript(const std::string& text)
 	if (!tl.empty()) {
 		mainToken = std::dynamic_pointer_cast<MainToken>(tl.getFirst());
 		if (tl.size() > 1) {
-			if (mainToken)tr = mainToken->addTokens(tl, mainToken->getResult());
+			if (mainToken)mainToken->addTokens(tl,tr);
 		}
 	}
 	mainToken->showTokenTree(0);
-	if (tr->success())mainTag = std::dynamic_pointer_cast<MainTag>(mainToken->execute());
+	if (tr.success())mainTag = std::dynamic_pointer_cast<MainTag>(mainToken->execute());
 
 	int a = 1;
 }
