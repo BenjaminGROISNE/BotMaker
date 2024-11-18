@@ -12,7 +12,7 @@ void Interpretor::compileScript(const std::string& text)
 		}
 	}
 	mainToken->showTokenTree(0);
-	if (tr->isSuccess())mainTag = std::dynamic_pointer_cast<MainTag>(mainToken->execute());
+	if (tr->success())mainTag = std::dynamic_pointer_cast<MainTag>(mainToken->execute());
 
 	int a = 1;
 }

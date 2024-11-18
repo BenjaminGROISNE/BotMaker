@@ -371,13 +371,7 @@ class ListTag :public Tag {
 	void executeSimpleTag(std::shared_ptr<Tag> tag);
 	void execute()override;
 };
-template class ListTag<int>;
-template class ListTag<float>;
-template class ListTag<std::string>;
-template class ListTag<bool>;
-template class ListTag<Coord>;
-template class ListTag<Zone>;
-template class ListTag<Direction>;
+
 
 
 class DimXTag :public Tag {
@@ -413,13 +407,6 @@ public:
 	std::shared_ptr<PrintTag> clone();
 	void execute()override;
 };
-template class PrintTag<int>;
-template class PrintTag<float>;
-template class PrintTag<std::string>;
-template class PrintTag<bool>;
-template class PrintTag<Coord>;
-template class PrintTag<Zone>;
-template class PrintTag<Direction>;
 
 //Data Tags
 class BoolTag : public Tag {
@@ -502,18 +489,7 @@ public:
 	CompareType compType;
 	void execute()override;
 };
-template <>
-void CompareTag<float>::execute();
-template <>
-void CompareTag<int>::execute();
 
-template class CompareTag<int>;
-template class CompareTag<float>;
-template class CompareTag<std::string>;
-template class CompareTag<bool>;
-template class CompareTag<Coord>;
-template class CompareTag<Zone>;
-template class CompareTag<Direction>;
 
 
 class CoordTag :public Tag {
@@ -573,6 +549,8 @@ bool executeBool(const std::shared_ptr<Tag>& parameter);
 
 template <typename T>
 std::vector<T> executeList(std::vector<std::shared_ptr<Tag>>listTags);
+
+
 std::shared_ptr < FloatTag> getFloatTag(std::shared_ptr<Tag> tag);
 std::shared_ptr < IntTag> getIntTag(std::shared_ptr<Tag> tag);
 std::shared_ptr<StringTag> getStringTag(std::shared_ptr<Tag> tag);

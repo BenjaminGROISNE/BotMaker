@@ -155,9 +155,11 @@ std::shared_ptr<TokenResult> IdentifierToken::addTokens(IteratorList<Token>& tl,
 
 MainToken::MainToken() :FlowPKToken()
 {
+	args = std::make_shared<Arguments>(DataType::NONE, true);
 	tRes = std::make_shared<TokenResult>();
 	tValue = TokenVALUE::MAIN;
 	tokenText = mainK;
+	canEnd = true;
 }
 
 std::shared_ptr<Token> PKToken::addOp(IteratorList<Token>& tl)
@@ -169,7 +171,7 @@ std::shared_ptr<Token> PKToken::addOp(IteratorList<Token>& tl)
 			return elem;
 		}
 	}
-	addError(TokenVALUE::OPENPARENTHESIS,ErrorType::MISSING);
+	addError(TokenVALUE::OPENPARENTHESIS);
 	return nullptr;
 }
 
@@ -185,11 +187,56 @@ std::shared_ptr<Token> PKToken::addCp(IteratorList<Token>& tl, std::shared_ptr<T
 	addError(TokenVALUE::CLOSEPARENTHESIS);
 	return nullptr;
 }
+
 //Leave empty
-std::shared_ptr<Token> PKToken::handleCp(IteratorList<Token>& tl, std::shared_ptr<TokenResult> tRes)
+std::shared_ptr<Token> PKToken::handleArguments(IteratorList<Token>& tl, std::shared_ptr<TokenResult> tRes)
 {
-	return std::shared_ptr<Token>();
+	DataType correctType;
+	if (!args->empty()) {
+		if (repeat)correctType = args->getFirst();
+		while (!tl.ended() && (!args->ended() || repeat)) {
+			auto elem = tl.currentToken();
+			if (mustEnd) {
+				return addCp(tl, tRes);
+			}
+			else if (mustComma) {
+				if (addComma(tl)) {
+					mustComma = false;
+					continue;
+				}
+				else break;
+			}
+			else {
+				if (!repeat)correctType = args->getCurrentDataType();
+				if (addCorrectType(tl, correctType, elem))continue;
+				else break;
+			}
+		}
+	}
+	return nullptr;
 }
+
+std::shared_ptr<Token> PKToken::addCorrectType(IteratorList<Token>& tl,DataType correctType, std::shared_ptr<Token> elem) {
+	if (elem->getDataType() == correctType) {
+		auto elemRes = elem->addTokens(tl, tRes);
+		if (elemRes->success()) {
+			mustComma = true;
+			argTokens.push_back(elem);		
+			if (!repeat) {
+				args->next();
+				if (args->ended())mustEnd = true;
+			}
+		}
+		else updateRes(elemRes);
+	}
+	return nullptr;
+}
+
+
+
+
+
+
 
 void PKToken::addParameter()
 {
@@ -212,33 +259,57 @@ void PKToken::showArguments(const int nestedLayer)
 
 PKToken::PKToken() :KToken()
 {
+	args = std::make_shared<Arguments>();
+	mustComma = mustEnd=canEnd = false;
+
+}
+
+std::shared_ptr<TokenResult> Token::addTokens(IteratorList<Token>& tl, std::shared_ptr<TokenResult> tRes)
+{
+	return tRes;
+}
+
+std::shared_ptr<TokenResult> KToken::addTokens(IteratorList<Token>& tl, std::shared_ptr<TokenResult> tRes)
+{
+	tl.next();
+	return tRes;
 }
 
 std::shared_ptr<TokenResult> PKToken::addTokens(IteratorList<Token>& tl, std::shared_ptr<TokenResult> tRes)
 {
-	tl.next();
+	KToken::addTokens(tl, tRes);
 	if (addOp(tl)) {
-		handleCp(tl, tRes);
+		handleArguments(tl, tRes);
+	}
+	return updateRes(tRes);
+}
+std::shared_ptr<TokenResult> UPKToken::addTokens(IteratorList<Token>& tl, std::shared_ptr<TokenResult> tRes)
+{
+	//same as PKToken, handleArguments gets only 1 token
+	return updateRes(PKToken::addTokens(tl, tRes));
+}
+std::shared_ptr<TokenResult> FlowKToken::addTokens(IteratorList<Token>& tl, std::shared_ptr<TokenResult> tRes)
+{
+	if (KToken::addTokens(tl, tRes)->success()) {
+		return updateRes(FlowToken::addBody(tl, tRes));
+	}
+	else return updateRes(tRes);
+}
+std::shared_ptr<TokenResult> FlowPKToken::addTokens(IteratorList<Token>& tl, std::shared_ptr<TokenResult> tRes)
+{
+	if (PKToken::addTokens(tl, tRes)->success()){
+		return FlowToken::addBody(tl, tRes);
 	}
 	return updateRes(tRes);
 }
 
-std::shared_ptr<TokenResult> FlowKToken::addTokens(IteratorList<Token>& tl, std::shared_ptr<TokenResult> tRes)
+std::shared_ptr<TokenResult> MainToken::addTokens(IteratorList<Token>& tl, std::shared_ptr<TokenResult> tRes)
 {
-	tl.next();
-	return updateRes(FlowToken::addBody(tl, tRes));
-}
-std::shared_ptr<TokenResult> FlowPKToken::addTokens(IteratorList<Token>& tl, std::shared_ptr<TokenResult> tRes)
-{
-	tl.next();
-	PKToken::addTokens(tl, tRes);
-	if (addOp(tl)) {
-		if (addCp(tl, tRes)) {
-			FlowToken::addBody(tl, tRes);
-		}
-	}
+	FlowPKToken::addTokens(tl, tRes);
+	//handle main logic
 	return updateRes(tRes);
 }
+
 std::shared_ptr<TokenResult> FlowCKToken::addTokens(IteratorList<Token>& tl, std::shared_ptr<TokenResult> tRes)
 {
 	tl.next();
@@ -282,16 +353,7 @@ std::shared_ptr<TokenResult> StoreToken::addTokens(IteratorList<Token>& tl, std:
 	return updateRes(tRes);
 }
 
-std::shared_ptr<TokenResult> MainToken::addTokens(IteratorList<Token>& tl, std::shared_ptr<TokenResult> tRes)
-{
-	tl.next();
-	if (addOp(tl)) {
-		if (addCp(tl, tRes)) {
-			if (addOb(tl))addCb(tl, tRes);
-		}
-	}
-	return updateRes(tRes);
-}
+
 
 std::shared_ptr<TokenResult> DoLoopToken::addTokens(IteratorList<Token>& tl, std::shared_ptr<TokenResult> tRes)
 {
@@ -318,7 +380,7 @@ std::shared_ptr<TokenResult> ListToken::addTokens(IteratorList<Token>& tl, std::
 		if (addType(tl, tRes)) {
 			if (addCab(tl)) {
 				if (addOp(tl)) {
-					if (handleCp(tl, tRes));
+					if (handleArguments(tl, tRes));
 				}
 			}
 		}
@@ -330,7 +392,7 @@ std::shared_ptr<Token> PKToken::addNumber(IteratorList<Token>& tl, std::shared_p
 	if (!tl.ended()) {
 		auto elem = tl.currentToken();
 		elem->addTokens(tl, tRes);
-		if (tRes->isSuccess()) {
+		if (tRes->success()) {
 			if (isNumericToken(elem)) {
 				return elem;
 			}
@@ -344,7 +406,7 @@ std::shared_ptr<Token> PKToken::addInteger(IteratorList<Token>& tl, std::shared_
 	if (!tl.ended()) {
 		auto elem = tl.currentToken();
 		elem->addTokens(tl, tRes);
-		if (tRes->isSuccess()) {
+		if (tRes->success()) {
 			if (isIntegerToken(elem)) {
 				return elem;
 			}
@@ -358,7 +420,7 @@ std::shared_ptr<Token> PKToken::addFloat(IteratorList<Token>& tl, std::shared_pt
 	if (!tl.ended()) {
 		auto elem = tl.currentToken();
 		elem->addTokens(tl, tRes);
-		if (tRes->isSuccess()) {
+		if (tRes->success()) {
 			if (isFloatToken(elem)) {
 				return elem;
 			}
@@ -372,7 +434,7 @@ std::shared_ptr<Token> PKToken::addCoord(IteratorList<Token>& tl, std::shared_pt
 	if (!tl.ended()) {
 		auto elem = tl.currentToken();
 		elem->addTokens(tl, tRes);
-		if (tRes->isSuccess()) {
+		if (tRes->success()) {
 			if (isCoordToken(elem)) {
 				return elem;
 			}
@@ -386,7 +448,7 @@ std::shared_ptr<Token> PKToken::addString(IteratorList<Token>& tl, std::shared_p
 	if (!tl.ended()) {
 		auto elem = tl.currentToken();
 		auto res = elem->addTokens(tl, tRes);
-		if (res->isSuccess()) {
+		if (res->success()) {
 			if (isStringToken(elem)) {
 				return elem;
 			}
@@ -467,7 +529,7 @@ std::shared_ptr<Token> StoreToken::addValue(IteratorList<Token>& tl, std::shared
 	if (!tl.ended()) {
 		auto elem = tl.currentToken();
 		auto res = elem->addTokens(tl, tRes);
-		if (res->isSuccess()) {
+		if (res->success()) {
 			if (isValue(elem)) {
 				valueToken = elem;
 				tRes->addVar(identifierToken->getTokenText(), valueToken->getDataType());
@@ -494,7 +556,7 @@ std::shared_ptr<Token> FlowToken::addCb(IteratorList<Token>& tl, std::shared_ptr
 			}
 			else {
 				auto elemRes = elem->addTokens(tl, tRes);
-				if (elemRes->isSuccess()) {
+				if (elemRes->success()) {
 					nestedTokens.push_back(elem);
 				}
 				else {
@@ -538,14 +600,16 @@ std::shared_ptr<Token> FlowToken::addOb(IteratorList<Token>& tl)
 
 
 
-FlowPKToken::FlowPKToken() :PKToken()
+FlowPKToken::FlowPKToken() :PKToken(), FlowToken(line)
 {
+
 }
 
 
+FlowKToken::FlowKToken() :KToken(), FlowToken(line)
+{
 
-
-
+}
 
 void FlowKToken::showTokenTree(const int nestedLayer)
 {
@@ -573,8 +637,9 @@ std::shared_ptr<Token> getStringLiteralToken(std::string& stringLiteral) {
 
 
 
-FlowCKToken::FlowCKToken() :CKToken()
+FlowCKToken::FlowCKToken() :CKToken(), FlowToken(line)
 {
+	args = std::make_shared<Arguments>(DataType::BOOL, false);
 }
 
 std::shared_ptr<Token> FlowCKToken::addCondition(IteratorList<Token>& tl, std::shared_ptr<TokenResult> tRes)
@@ -609,8 +674,9 @@ std::shared_ptr<Tag> MainToken::execute()
 }
 
 
-DoLoopToken::DoLoopToken()
+DoLoopToken::DoLoopToken():FlowCKToken()
 {
+
 	tValue = TokenVALUE::DOLOOP;
 	tokenText = doloopK;
 }
@@ -622,7 +688,7 @@ std::shared_ptr<Tag> DoLoopToken::execute()
 	return std::shared_ptr<Tag>();
 }
 
-IfToken::IfToken()
+IfToken::IfToken() :FlowCKToken()
 {
 	tValue = TokenVALUE::IF;
 	tokenText = ifK;
@@ -634,7 +700,7 @@ std::shared_ptr<Tag> IfToken::execute()
 	return std::shared_ptr<Tag>();
 }
 
-ElseToken::ElseToken()
+ElseToken::ElseToken() :FlowKToken()
 {
 	tValue = TokenVALUE::ELSE;
 	tokenText = elseK;
@@ -645,7 +711,7 @@ std::shared_ptr<Tag> ElseToken::execute()
 	return std::shared_ptr<Tag>();
 }
 
-ElifToken::ElifToken()
+ElifToken::ElifToken() :FlowCKToken()
 {
 	tValue = TokenVALUE::ELIF;
 	tokenText = elifK;
@@ -658,7 +724,7 @@ std::shared_ptr<Tag> ElifToken::execute()
 	return std::shared_ptr<Tag>();
 }
 
-LoopToken::LoopToken()
+LoopToken::LoopToken() :FlowCKToken()
 {
 	tValue = TokenVALUE::LOOP;
 	tokenText = loopK;
@@ -685,7 +751,7 @@ std::shared_ptr<Tag> BoolToken::execute()
 	return std::shared_ptr<Tag>();
 }
 
-WaitToken::WaitToken()
+WaitToken::WaitToken() :MPKToken()
 {
 	tValue = TokenVALUE::WAIT;
 	tokenText = waitK;
@@ -698,92 +764,25 @@ std::shared_ptr<Tag> WaitToken::execute()
 	return std::shared_ptr<Tag>();
 }
 
-AndToken::AndToken()
+AndToken::AndToken() :BMPKToken()
 {
+
 	tValue = TokenVALUE::AND;
 	tokenText = andK;
 }
 
-DataType AndToken::getDataType()
+
+
+
+
+CKToken::CKToken() :UPKToken()
+{
+	args = std::make_shared<Arguments>(DataType::BOOL,false);
+}
+
+DataType CKToken::getDataType()
 {
 	return DataType::BOOL;
-}
-
-std::shared_ptr<Token> AndToken::handleCp(IteratorList<Token>& tl, std::shared_ptr<TokenResult> tRes)
-{
-	bool mustComma = false;
-	bool mustEnd = false;
-	while (!tl.ended()) {
-		if (mustComma) {
-			if (addComma(tl))continue;
-			else break;
-		}
-		auto elem = tl.currentToken();
-		if (isBoolToken(elem) && !mustEnd) {
-			elem->addTokens(tl, tRes);
-			if (tRes->isSuccess()) {
-				listBoolToken.push_back(elem);
-				mustEnd = true;
-				continue;
-			}
-			else break;
-		}
-		addCp(tl, tRes);
-		break;
-	}
-	return nullptr;
-}
-
-std::shared_ptr<Token> OrToken::handleCp(IteratorList<Token>& tl, std::shared_ptr<TokenResult> tRes)
-{
-	bool mustComma = false;
-	bool mustEnd = false;
-	while (!tl.ended()) {
-		auto elem = tl.currentToken();
-		if (mustComma) {
-			if (addComma(tl))continue;
-			else break;
-		}
-		if (isBoolToken(elem) && !mustEnd) {
-			elem->addTokens(tl, tRes);
-			if (tRes->isSuccess()) {
-				listBoolToken.push_back(elem);
-				mustEnd = true;
-				continue;
-			}
-			else break;
-		}
-		addCp(tl, tRes);
-		break;
-	}
-	return nullptr;
-}
-std::shared_ptr<Token> NotToken::handleCp(IteratorList<Token>& tl, std::shared_ptr<TokenResult> tRes)
-{
-	bool addedCond = false;
-	while (!tl.ended()) {
-		auto elem = tl.currentToken();
-		if (addedCond)return addCp(tl, tRes);
-		else if (isBoolToken(elem)) {
-			elem->addTokens(tl, tRes);
-			if (tRes->isSuccess()) {
-				this->boolToken = elem;
-				addedCond = true;
-				continue;
-			}
-			else break;
-		}
-		else {
-			addError(TokenVALUE::BOOL);
-			break;
-		}
-	}
-	return nullptr;
-}
-
-std::shared_ptr<Token> CKToken::handleCp(IteratorList<Token>& tl, std::shared_ptr<TokenResult> tRes)
-{
-	return std::shared_ptr<Token>();
 }
 
 void CKToken::addParameter()
@@ -802,16 +801,12 @@ void AndToken::showArguments(const int nestedLayer)
 	}
 }
 
-OrToken::OrToken()
+OrToken::OrToken() :BMPKToken()	
 {
 	tValue = TokenVALUE::OR;
 	tokenText = orK;
 }
 
-DataType OrToken::getDataType()
-{
-	return DataType::BOOL;
-}
 
 
 
@@ -827,10 +822,6 @@ NotToken::NotToken()
 	tokenText = notK;
 }
 
-DataType NotToken::getDataType()
-{
-	return DataType::BOOL;
-}
 
 std::shared_ptr<TokenResult> NotToken::addTokens(IteratorList<Token>& tl, std::shared_ptr<TokenResult> tRes)
 {
@@ -979,202 +970,7 @@ DataType CoordToken::getDataType()
 
 
 
-std::shared_ptr<Token> CoordToken::handleCp(IteratorList<Token>& tl, std::shared_ptr<TokenResult> tRes)
-{
-	bool mustEnd = false;
-	bool mustComma = false;
-	int nbElements = 0;
-	while (!tl.ended()) {
-		auto elem = tl.currentToken();
-		if (mustComma) {
-			if (addComma(tl))continue;
-			else break;
-		}
-		if (isCoordToken(elem) && !mustEnd) {
-			if (nbElements == 0) {
-				elem->addTokens(tl, tRes);
-				if (tRes->isSuccess()) {
-					coordToken = elem;
-					mustEnd = true;
-					continue;
-				}
-			}
-			else {
-				addError(TokenVALUE::COORD, ErrorType::UNEXPECTED);
-				break;
-			}
-		}
-		if (isIntegerToken(elem) && !mustEnd) {
-			++nbElements;
-			elem->addTokens(tl, tRes);
-			if (tRes->isSuccess()) {
-				switch (nbElements) {
-				case 1:
-					xPoint = elem;
-					mustComma = true;
-					continue;
-				case 2:
-					yPoint = elem;
-					mustEnd = true;
-					continue;
-				default:
-					return nullptr;
-				}
-			}
-		}
-		addCp(tl, tRes);
-		break;
-	}
-	return nullptr;
-}
 
-std::shared_ptr<Token> ZoneToken::handleCp(IteratorList<Token>& tl, std::shared_ptr<TokenResult> tRes)
-{
-	bool mustEnd = false;
-	bool mustComma = false;
-	int nbElements = 0;
-	while (!tl.ended()) {
-		auto elem = tl.currentToken();
-		if (mustComma) {
-			if (addComma(tl))continue;
-			else break;
-		}
-		if (isZoneToken(elem) && !mustEnd) {
-			if (nbElements == 0) {
-				elem->addTokens(tl, tRes);
-				if (tRes->isSuccess()) {
-					zoneToken = elem;
-					mustEnd = true;
-					continue;
-				}
-			}
-			else {
-				addError(TokenVALUE::COORD, ErrorType::UNEXPECTED);
-			}
-			break;
-		}
-		if (isCoordToken(elem) && !mustEnd) {
-			++nbElements;
-			elem->addTokens(tl, tRes);
-			if (tRes->isSuccess()) {
-				switch (nbElements) {
-				case 1:
-					topLeft = elem;
-					mustComma = true;
-					continue;
-				case 2:
-					bottomRight = elem;
-					mustEnd = true;
-					continue;
-				default:
-					return nullptr;
-				}
-			}
-		}
-		addCp(tl, tRes);
-		break;
-	}
-	return nullptr;
-}
-
-std::shared_ptr<Token> IntegerToken::handleCp(IteratorList<Token>& tl, std::shared_ptr<TokenResult> tRes)
-{
-	bool mustEnd = false;
-	while (!tl.ended()) {
-		auto elem = tl.currentToken();
-		if (isIntegerToken(elem) && !mustEnd) {
-			elem->addTokens(tl, tRes);
-			if (tRes->isSuccess()) {
-				intToken = elem;
-				mustEnd = true;
-				continue;
-			}
-			else break;
-		}
-		addCp(tl, tRes);
-		break;
-	}
-	return nullptr;
-}
-
-std::shared_ptr<Token> FloatToken::handleCp(IteratorList<Token>& tl, std::shared_ptr<TokenResult> tRes)
-{
-	bool mustEnd = false;
-	while (!tl.ended()) {
-		auto elem = tl.currentToken();
-		if (isFloatToken(elem) && !mustEnd) {
-			elem->addTokens(tl, tRes);
-			if (tRes->isSuccess()) {
-				floatToken = elem;
-				mustEnd = true;
-				continue;
-			}
-			else break;
-		}
-		addCp(tl, tRes);
-		break;
-	}
-	return nullptr;
-}
-
-std::shared_ptr<Token> StringToken::handleCp(IteratorList<Token>& tl, std::shared_ptr<TokenResult> tRes)
-{
-	bool mustEnd = false;
-	while (!tl.ended()) {
-		auto elem = tl.currentToken();
-		if (isStringToken(elem) && !mustEnd) {
-			elem->addTokens(tl, tRes);
-			if (tRes->isSuccess()) {
-				stringToken = elem;
-				mustEnd = true;
-				continue;
-			}
-			else break;
-		}
-		addCp(tl, tRes);
-		break;
-	}
-	return nullptr;
-}
-
-std::shared_ptr<Token> BoolToken::handleCp(IteratorList<Token>& tl, std::shared_ptr<TokenResult> tRes)
-{
-	bool mustEnd = false;
-	while (!tl.ended()) {
-		auto elem = tl.currentToken();
-		if (isBoolToken(elem) && !mustEnd) {
-			elem->addTokens(tl, tRes);
-			if (tRes->isSuccess()) {
-				boolToken = elem;
-				mustEnd = true;
-				continue;
-			}
-			else break;
-		}
-		addCp(tl, tRes);
-		break;
-	}
-	return nullptr;
-}
-std::shared_ptr<Token> DirectionToken::handleCp(IteratorList<Token>& tl, std::shared_ptr<TokenResult> tRes)
-{
-	bool mustEnd = false;
-	while (!tl.ended()) {
-		auto elem = tl.currentToken();
-		if (isDirectionToken(elem) && !mustEnd) {
-			elem->addTokens(tl, tRes);
-			if (tRes->isSuccess()) {
-				dirToken = elem;
-				mustEnd = true;
-				continue;
-			}
-			else break;
-		}
-		addCp(tl, tRes);
-		break;
-	}
-	return nullptr;
-}
 
 std::shared_ptr<Tag> CoordToken::execute()
 {
@@ -1294,65 +1090,7 @@ std::shared_ptr<Token> ListToken::addType(IteratorList<Token>& tl, std::shared_p
 	return nullptr;
 }
 
-std::shared_ptr<Token> ListToken::handleCp(IteratorList<Token>& tl, std::shared_ptr<TokenResult> tRes)
-{
-	bool addedComma = false;
-	bool firstEntry = true;
-	while (!tl.ended()) {
-		auto elem = tl.currentToken();
-		if (elem) {
-			if (firstEntry) {
-				firstEntry = false;
-				if (elem->getDataType() == dType) {
-					auto elemRes = elem->addTokens(tl, tRes);
-					if (elemRes->isSuccess()) {
-						listToken.push_back(elem);
-						tl.next();
-					}
-					else {
-						updateRes(elemRes);
-						break;
-					}
-					continue;
-				}
-				else if (elem->getValue() == TokenVALUE::CLOSEPARENTHESIS) {
-					return elem;
-				}
-				else break;
-			}
 
-			if (addedComma) {
-				if (elem->getDataType() == dType) {
-					addedComma = false;
-					auto elemRes = elem->addTokens(tl, tRes);
-					if (elemRes->isSuccess()) {
-						listToken.push_back(elem);
-						tl.next();
-					}
-					else {
-						updateRes(elemRes);
-						break;
-					}
-					continue;
-				}
-				else break;
-			}
-			else {
-				if (elem->getValue() == TokenVALUE::CLOSEPARENTHESIS) {
-					return elem;
-				}
-				else if (elem->getValue() == TokenVALUE::COMMA) {
-					addedComma = true;
-					tl.next();
-					continue;
-				}
-				else break;
-			}
-		}
-	}
-	addError(TokenVALUE::CLOSEPARENTHESIS);
-	return nullptr;
-}
 
 
 
@@ -1495,7 +1233,7 @@ void TokenResult::addVar(const std::string& name, const DataType& type)
 	varTable->insert(std::pair<std::string, DataType>(name, type));
 }
 
-bool TokenResult::isSuccess()
+bool TokenResult::success()
 {
 	return listErrors.empty();
 }
@@ -1565,6 +1303,7 @@ int Token::getLine()
 
 FlowToken::FlowToken()
 {
+
 }
 
 FlowToken::FlowToken(int line):FlowToken()
@@ -1611,39 +1350,19 @@ std::shared_ptr<TokenResult> Token::getResult()
 	return tRes;
 }
 
-std::shared_ptr<TokenResult> Token::addTokens(IteratorList<Token>& tl, std::shared_ptr<TokenResult> tRes)
-{
-	tl.next();
-	return updateRes(tRes);
-}
+
 
 std::shared_ptr<Tag> Token::execute()
 {
 	return std::shared_ptr<Tag>();
 }
 
-UPKToken::UPKToken()
+UPKToken::UPKToken() :PKToken()
 {
 }
 
-std::shared_ptr<Token> UPKToken::handleCp(IteratorList<Token>& tl, std::shared_ptr<TokenResult> tRes)
-{
-	bool addedCond = false;
-	if (!tl.ended()) {
-		auto elem = tl.currentToken();
-		if (checkType(elem)) {
-			elem->addTokens(tl, tRes);
-			if (tRes->isSuccess()) {
-				argTokens.push_back(elem);
-				addedCond = true;
-			}
-		}
-		else {
-			addError(TokenVALUE::BOOL);
-		}
-	}
-	return nullptr;
-}
+
+
 
 bool UPKToken::checkType(std::shared_ptr<Token>& elem)
 {
@@ -1655,19 +1374,16 @@ void UPKToken::showArguments(const int nestedLayer)
 	if (!argTokens.empty())argTokens.front()->showTokenTree(nestedLayer);
 }
 
-MPKToken::MPKToken()
+MPKToken::MPKToken() :PKToken()
 {
+
 }
 
 std::shared_ptr<TokenResult> MPKToken::addTokens(IteratorList<Token>& tl, std::shared_ptr<TokenResult> tRes)
 {
-	return std::shared_ptr<TokenResult>();
+	return PKToken::addTokens(tl, tRes);
 }
 
-std::shared_ptr<Token> MPKToken::handleCp(IteratorList<Token>& tl, std::shared_ptr<TokenResult> tRes)
-{
-	return std::shared_ptr<Token>();
-}
 
 void MPKToken::showArguments(const int nestedLayer)
 {
@@ -1679,4 +1395,177 @@ void MPKToken::showArguments(const int nestedLayer)
 std::shared_ptr<TokenResult> EUPKToken::addTokens(IteratorList<Token>& tl, std::shared_ptr<TokenResult> tRes)
 {
 	return std::shared_ptr<TokenResult>();
+}
+
+Arguments::Arguments()
+{
+	currentIndex = 0;
+	valid = true;
+}
+
+Arguments::Arguments(DataType type, bool infinite):Arguments()
+{
+	listArgsTypes.push_back(type);
+}
+
+Arguments::Arguments(std::vector<DataType> listTypes) :Arguments()
+{
+	listArgsTypes = listTypes;
+}
+
+
+std::vector<DataType> Arguments::getArgsTypes()
+{
+	return listArgsTypes;
+}
+
+void Arguments::next()
+{
+	++currentIndex;
+}
+
+DataType Arguments::getFirst()
+{
+	return this->listArgsTypes.front();
+}
+
+bool Arguments::ended()
+{
+	return currentIndex >= listArgsTypes.size();
+}
+
+int Arguments::size()
+{
+	return listArgsTypes.size();
+}
+
+bool Arguments::empty()
+{
+	return getArgsTypes().empty();
+}
+
+DataType Arguments::at(int i)
+{
+	if (i < size())return listArgsTypes.at(i);
+}
+
+DataType Arguments::getCurrentDataType()
+{
+	return listArgsTypes.at(currentIndex);
+}
+
+bool Arguments::isInfinite()
+{
+	return infinite;
+}
+
+bool Arguments::isValid()
+{
+	return valid;
+}
+
+bool Arguments::isEqual(Arguments args)
+{
+	if (infinite != args.infinite)return false;
+	if (args.size() != size())return false;
+
+	for (int i = 0; i < args.size(); ++i) {
+		if (args.at(i) != at(i))return false;
+	}
+	return true;
+}
+
+BMPKToken::BMPKToken():MPKToken()
+{
+	args = std::make_shared<Arguments>(DataType::BOOL,true);
+	repeat = true;
+}
+
+DataType BMPKToken::getDataType()
+{
+	return DataType::BOOL;
+}
+
+std::shared_ptr<TokenResult> BMPKToken::addTokens(IteratorList<Token>& tl, std::shared_ptr<TokenResult> tRes)
+{
+	return MPKToken::addTokens(tl,tRes);
+}
+
+bool OverloadArguments::isValid()
+{
+	for (auto arg:listArguments) {
+		if (arg.isValid())return true;
+	}
+	return false;
+}
+
+OverloadArguments::OverloadArguments()
+{
+	currentIndex = 0;
+	listArguments.clear();
+	possibleDataTypes.clear();
+}
+
+OverloadArguments::OverloadArguments(Arguments args):OverloadArguments()
+{
+	if (!isPresent(args)) {
+		listArguments.push_back(args);
+	}
+}
+
+OverloadArguments::OverloadArguments(std::vector<Arguments> ovArgs):OverloadArguments()
+{
+	listArguments  =   ovArgs;
+}
+
+bool OverloadArguments::isPresent(Arguments args)
+{
+	for (auto arg : listArguments) {
+		if (arg.isEqual(args))return true;
+	}
+}
+
+void OverloadArguments::addArgs(Arguments args)
+{
+	listArguments.push_back(args);
+}
+
+std::vector<DataType> OverloadArguments::getPossibleDataTypes()
+{
+	possibleDataTypes.clear();
+	for (auto arg : listArguments) {
+		if (!arg.ended() && arg.isValid()) {
+			possibleDataTypes.push_back(arg.getCurrentDataType());
+		}
+	}
+	return possibleDataTypes;
+}
+
+void OverloadArguments::next()
+{
+	for (auto arg : listArguments)arg.next();
+}
+
+std::vector<DataType> OverloadArguments::getFirst()
+{
+	currentIndex = 0;
+	return getPossibleDataTypes();
+}
+
+bool OverloadArguments::ended()
+{
+	for (auto arg : listArguments) {
+		if (!arg.ended())return false;
+	}
+	return true;
+}
+
+int OverloadArguments::size()
+{
+	return listArguments.size();
+}
+
+bool OverloadArguments::empty()
+{
+	return listArguments.empty();
 }
