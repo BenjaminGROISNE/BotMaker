@@ -3,7 +3,7 @@
 <title>WaitToken Class Reference</title>
 <indexterm><primary>WaitToken</primary></indexterm>
 <para>
-<computeroutput>#include &lt;Interpretor.h&gt;</computeroutput>
+<computeroutput>#include &lt;Token.h&gt;</computeroutput>
 </para>
 Inheritance diagram for WaitToken:<para>
     <informalfigure>
@@ -28,76 +28,114 @@ Collaboration diagram for WaitToken:<para>
         <itemizedlist>
             <listitem><para><link linkend="_class_wait_token_1aba6c9c4c6466b72c1ff3a545feb10050">WaitToken</link> ()</para>
 </listitem>
-            <listitem><para>std::shared_ptr&lt; <link linkend="_class_token_result">TokenResult</link> &gt; <link linkend="_class_wait_token_1a025496a739c85ce044f303b38fee7608">addTokens</link> (<link linkend="_class_iterator_list">IteratorList</link>&lt; <link linkend="_class_token">Token</link> &gt; &amp;tl, std::shared_ptr&lt; <link linkend="_class_token_result">TokenResult</link> &gt; <link linkend="_class_token_1a374f334f070a5a07daf0bbde3be02ced">tRes</link>) override</para>
+            <listitem><para>void <link linkend="_class_wait_token_1ab8a24eb04c56c85111816352fcee3381">setOverloads</link> () final</para>
+</listitem>
+            <listitem><para>void <link linkend="_class_wait_token_1a639055be7ce0426127e3441ffcb28652">dispatchArguments</link> () override</para>
 </listitem>
             <listitem><para>std::shared_ptr&lt; <link linkend="_class_tag">Tag</link> &gt; <link linkend="_class_wait_token_1afdc303d17be95afa35bbee3b36936303">execute</link> () override</para>
 </listitem>
+            <listitem><para>bool <link linkend="_class_wait_token_1a0c7c5e917c640de13ee85f0361f73fb1">addTokens</link> (<link linkend="_class_iterator_list">IteratorList</link>&lt; <link linkend="_class_token">Token</link> &gt; &amp;tl, <link linkend="_class_token_result">TokenResult</link> &amp;tRes) override</para>
+</listitem>
         </itemizedlist>
 </simplesect>
+Public Member Functions inherited from <link linkend="_class_m_p_k_token">MPKToken</link>        <itemizedlist>
+            <listitem><para><link linkend="_class_m_p_k_token_1a02776677c87410903882f8655cbfbb7b">MPKToken</link> ()</para>
+</listitem>
+        </itemizedlist>
+Public Member Functions inherited from <link linkend="_class_p_k_token">PKToken</link>        <itemizedlist>
+            <listitem><para><link linkend="_class_p_k_token_1a3af43a7a3050bf9e446938692be33262">PKToken</link> ()</para>
+</listitem>
+            <listitem><para>void <link linkend="_class_p_k_token_1a53a1431d31066e66aac1c2ea99245c0a">showTokenTree</link> (const int nestedLayer) override</para>
+</listitem>
+        </itemizedlist>
 Public Member Functions inherited from <link linkend="_class_token">Token</link>        <itemizedlist>
             <listitem><para><link linkend="_class_token_1aa3c5868ba4115f3189df6b2ac5b36f39">Token</link> ()</para>
 </listitem>
-            <listitem><para>std::shared_ptr&lt; <link linkend="_class_token_result">TokenResult</link> &gt; <link linkend="_class_token_1af13c7d494e5fe273558cb37286fa7185">updateRes</link> (std::shared_ptr&lt; <link linkend="_class_token_result">TokenResult</link> &gt; <link linkend="_class_token_1a374f334f070a5a07daf0bbde3be02ced">tRes</link>)</para>
+            <listitem><para>virtual <link linkend="__token_8h_1ad8ed01ff3ff33333d8e19db4d2818bb6">DataType</link> <link linkend="_class_token_1ace668259c90b6fd2acc2f61d0e141565">getDataType</link> (<link linkend="_class_token_result">TokenResult</link> &amp;tRes)</para>
 </listitem>
-            <listitem><para>std::shared_ptr&lt; <link linkend="_class_token_result">TokenResult</link> &gt; <link linkend="_class_token_1a4c0f84a84656f0b5e28c4193c3c13ea3">addError</link> (<link linkend="__interpretor_8h_1acbd1e63c605cbb3dbe67c7411841b46c">TokenVALUE</link> value, <link linkend="__interpretor_8h_1ab0df38968e4f03a3f1f6d6df0f31f45a">ErrorType</link> et=<link linkend="__interpretor_8h_1ab0df38968e4f03a3f1f6d6df0f31f45aa10d1208b485425756fcc932229386b02">ErrorType::MISSING</link>)</para>
+            <listitem><para><link linkend="__token_8h_1acbd1e63c605cbb3dbe67c7411841b46c">TokenVALUE</link> <link linkend="_class_token_1a0dec1385788e690b5dc30cd99a1ed3c8">getValue</link> ()</para>
 </listitem>
-            <listitem><para>std::shared_ptr&lt; <link linkend="_class_token_result">TokenResult</link> &gt; <link linkend="_class_token_1a97d36ac6f4a4d06cdf931f4240c6472c">addError</link> (const std::shared_ptr&lt; <link linkend="_class_token_result">TokenResult</link> &gt; &amp;tr)</para>
+            <listitem><para>bool <link linkend="_class_token_1ade47ed51e2f495f6d847c1bff9fe8db6">addError</link> (<link linkend="_class_token_result">TokenResult</link> &amp;tRes, <link linkend="__token_8h_1acbd1e63c605cbb3dbe67c7411841b46c">TokenVALUE</link> value, <link linkend="__token_8h_1ab0df38968e4f03a3f1f6d6df0f31f45a">ErrorType</link> et=<link linkend="__token_8h_1ab0df38968e4f03a3f1f6d6df0f31f45aa10d1208b485425756fcc932229386b02">ErrorType::MISSING</link>)</para>
 </listitem>
-            <listitem><para>std::shared_ptr&lt; <link linkend="_class_token_result">TokenResult</link> &gt; <link linkend="_class_token_1a342eebc35a823997d3fe2a6c66f9cbe1">addError</link> (<link linkend="__interpretor_8h_1ad8ed01ff3ff33333d8e19db4d2818bb6">DataType</link> type, <link linkend="__interpretor_8h_1ab0df38968e4f03a3f1f6d6df0f31f45a">ErrorType</link> et=<link linkend="__interpretor_8h_1ab0df38968e4f03a3f1f6d6df0f31f45aad5edacc5c1724ff7055e7db625117c71">ErrorType::REPLACED</link>)</para>
+            <listitem><para>bool <link linkend="_class_token_1a61f4575ae9e05b93b8812ae9cbacc0f0">addError</link> (<link linkend="_class_token_result">TokenResult</link> &amp;tRes, <link linkend="__token_8h_1ad8ed01ff3ff33333d8e19db4d2818bb6">DataType</link> type)</para>
 </listitem>
-            <listitem><para>virtual <link linkend="__interpretor_8h_1ad8ed01ff3ff33333d8e19db4d2818bb6">DataType</link> <link linkend="_class_token_1a41ebddd1a5ac42b80e3bd916e1f8e472">getDataType</link> ()</para>
+            <listitem><para>std::string <link linkend="_class_token_1a2643198d67a19ce0bd8102b4379d9d12">getTokenText</link> ()</para>
+</listitem>
+            <listitem><para>int <link linkend="_class_token_1a0fe3c8022c8c5f6143c7dd3fba9408fe">getLine</link> ()</para>
+</listitem>
+            <listitem><para>bool <link linkend="_class_token_1ad3fb88977cc7e687450f46e4f9d80a05">hasValue</link> (<link linkend="__token_8h_1acbd1e63c605cbb3dbe67c7411841b46c">TokenVALUE</link> value) const</para>
 </listitem>
         </itemizedlist>
 <simplesect>
-    <title>Public Attributes    </title>
+    <title>Protected Attributes    </title>
         <itemizedlist>
-            <listitem><para>std::vector&lt; std::shared_ptr&lt; <link linkend="_class_token">Token</link> &gt; &gt; <link linkend="_class_wait_token_1a43d8ea1eada1a0f9831736cba160dda2">listToken</link></para>
+            <listitem><para>std::shared_ptr&lt; <link linkend="_class_token">Token</link> &gt; <link linkend="_class_wait_token_1aed3ec2a75d33295a16081a881b7ecad6">numberToken</link></para>
 </listitem>
-            <listitem><para>std::shared_ptr&lt; <link linkend="_class_token">Token</link> &gt; <link linkend="_class_wait_token_1aa4d5a469d180186cc08223eb42fa7a40">integerToken</link></para>
+            <listitem><para>std::shared_ptr&lt; <link linkend="_class_token">Token</link> &gt; <link linkend="_class_wait_token_1a63c9a4570f8bc923927db941bdbb4b80">timeTypeToken</link></para>
 </listitem>
         </itemizedlist>
 </simplesect>
-Public Attributes inherited from <link linkend="_class_token">Token</link>        <itemizedlist>
+Protected Attributes inherited from <link linkend="_class_p_k_token">PKToken</link>        <itemizedlist>
+            <listitem><para><link linkend="_class_arguments_overload">ArgumentsOverload</link> <link linkend="_class_p_k_token_1a42553332bc9d8bb3f267bf3cba36240c">argsOverload</link></para>
+</listitem>
+            <listitem><para>std::vector&lt; std::shared_ptr&lt; <link linkend="_class_token">Token</link> &gt; &gt; <link linkend="_class_p_k_token_1a4d20bfdc555a0c45d45465b9ab26d1ec">argTokens</link></para>
+</listitem>
+        </itemizedlist>
+Protected Attributes inherited from <link linkend="_class_token">Token</link>        <itemizedlist>
             <listitem><para>std::string <link linkend="_class_token_1a8b3faba4c73c28d11fec73758a0302b2">tokenText</link></para>
 </listitem>
-            <listitem><para><link linkend="__interpretor_8h_1acbd1e63c605cbb3dbe67c7411841b46c">TokenVALUE</link> <link linkend="_class_token_1a4c8ce9cf1eecbc7e49650307eea6a862">tValue</link></para>
-</listitem>
-            <listitem><para>std::shared_ptr&lt; <link linkend="_class_token_result">TokenResult</link> &gt; <link linkend="_class_token_1a374f334f070a5a07daf0bbde3be02ced">tRes</link></para>
+            <listitem><para><link linkend="__token_8h_1acbd1e63c605cbb3dbe67c7411841b46c">TokenVALUE</link> <link linkend="_class_token_1a4c8ce9cf1eecbc7e49650307eea6a862">tValue</link></para>
 </listitem>
             <listitem><para>int <link linkend="_class_token_1a4b96c2a31d7c374fd2bd1986794f80dd">line</link></para>
 </listitem>
         </itemizedlist>
 <simplesect>
     <title>Additional Inherited Members    </title>
-Protected Member Functions inherited from <link linkend="_class_k_p_token">KPToken</link>        <itemizedlist>
-            <listitem><para><link linkend="_class_k_p_token_1abb5c3e0fd2d70e45246277e7b4e6229f">KPToken</link> ()</para>
-</listitem>
-            <listitem><para>std::shared_ptr&lt; <link linkend="_class_token">Token</link> &gt; <link linkend="_class_k_p_token_1a35b0aee206a6f3296d01adb8597ea331">addNumber</link> (<link linkend="_class_iterator_list">IteratorList</link>&lt; <link linkend="_class_token">Token</link> &gt; &amp;tl, std::shared_ptr&lt; <link linkend="_class_token_result">TokenResult</link> &gt; <link linkend="_class_token_1a374f334f070a5a07daf0bbde3be02ced">tRes</link>)</para>
-</listitem>
-            <listitem><para>std::shared_ptr&lt; <link linkend="_class_token">Token</link> &gt; <link linkend="_class_k_p_token_1aa9f011132395d98cbf2563233b16a510">addInteger</link> (<link linkend="_class_iterator_list">IteratorList</link>&lt; <link linkend="_class_token">Token</link> &gt; &amp;tl, std::shared_ptr&lt; <link linkend="_class_token_result">TokenResult</link> &gt; <link linkend="_class_token_1a374f334f070a5a07daf0bbde3be02ced">tRes</link>)</para>
-</listitem>
-            <listitem><para>std::shared_ptr&lt; <link linkend="_class_token">Token</link> &gt; <link linkend="_class_k_p_token_1af0e2ae4f677dc0ac40543384c090afca">addFloat</link> (<link linkend="_class_iterator_list">IteratorList</link>&lt; <link linkend="_class_token">Token</link> &gt; &amp;tl, std::shared_ptr&lt; <link linkend="_class_token_result">TokenResult</link> &gt; <link linkend="_class_token_1a374f334f070a5a07daf0bbde3be02ced">tRes</link>)</para>
-</listitem>
-            <listitem><para>std::shared_ptr&lt; <link linkend="_class_token">Token</link> &gt; <link linkend="_class_k_p_token_1a9cd65bfbd30b7157eff902f162a45553">addCoord</link> (<link linkend="_class_iterator_list">IteratorList</link>&lt; <link linkend="_class_token">Token</link> &gt; &amp;tl, std::shared_ptr&lt; <link linkend="_class_token_result">TokenResult</link> &gt; <link linkend="_class_token_1a374f334f070a5a07daf0bbde3be02ced">tRes</link>)</para>
-</listitem>
-            <listitem><para>std::shared_ptr&lt; <link linkend="_class_token">Token</link> &gt; <link linkend="_class_k_p_token_1a79d7487ddc6918bf30349557f379fc04">addString</link> (<link linkend="_class_iterator_list">IteratorList</link>&lt; <link linkend="_class_token">Token</link> &gt; &amp;tl, std::shared_ptr&lt; <link linkend="_class_token_result">TokenResult</link> &gt; <link linkend="_class_token_1a374f334f070a5a07daf0bbde3be02ced">tRes</link>)</para>
-</listitem>
-            <listitem><para>std::shared_ptr&lt; <link linkend="_class_token">Token</link> &gt; <link linkend="_class_k_p_token_1a53794cd4c78b5873550ca3f5a457f346">addComma</link> (<link linkend="_class_iterator_list">IteratorList</link>&lt; <link linkend="_class_token">Token</link> &gt; &amp;tl)</para>
-</listitem>
-            <listitem><para>std::shared_ptr&lt; <link linkend="_class_token">Token</link> &gt; <link linkend="_class_k_p_token_1acbaa6483144d6800ad8ffa2df21392d2">addTimeType</link> (<link linkend="_class_iterator_list">IteratorList</link>&lt; <link linkend="_class_token">Token</link> &gt; &amp;tl, std::shared_ptr&lt; <link linkend="_class_token_result">TokenResult</link> &gt; <link linkend="_class_token_1a374f334f070a5a07daf0bbde3be02ced">tRes</link>)</para>
-</listitem>
-            <listitem><para>std::shared_ptr&lt; <link linkend="_class_token">Token</link> &gt; <link linkend="_class_k_p_token_1a0d6ee24aa23095edb2b1c9ba4baedc03">addOp</link> (<link linkend="_class_iterator_list">IteratorList</link>&lt; <link linkend="_class_token">Token</link> &gt; &amp;tl)</para>
-</listitem>
-            <listitem><para>std::shared_ptr&lt; <link linkend="_class_token">Token</link> &gt; <link linkend="_class_k_p_token_1a0a95e55ef2440fbaa21cd74442eb3c65">addCp</link> (<link linkend="_class_iterator_list">IteratorList</link>&lt; <link linkend="_class_token">Token</link> &gt; &amp;tl, std::shared_ptr&lt; <link linkend="_class_token_result">TokenResult</link> &gt; <link linkend="_class_token_1a374f334f070a5a07daf0bbde3be02ced">tRes</link>)</para>
-</listitem>
-            <listitem><para>virtual std::shared_ptr&lt; <link linkend="_class_token">Token</link> &gt; <link linkend="_class_k_p_token_1a87c8af27b17d6ecbc8f7338d1f7737a7">handleCp</link> (<link linkend="_class_iterator_list">IteratorList</link>&lt; <link linkend="_class_token">Token</link> &gt; &amp;tl, std::shared_ptr&lt; <link linkend="_class_token_result">TokenResult</link> &gt; <link linkend="_class_token_1a374f334f070a5a07daf0bbde3be02ced">tRes</link>)</para>
+Protected Member Functions inherited from <link linkend="_class_m_p_k_token">MPKToken</link>        <itemizedlist>
+            <listitem><para>void <link linkend="_class_m_p_k_token_1a11f6e83467f2cfef75d5b0d6affca054">showArguments</link> (const int nestedLayer) override</para>
 </listitem>
         </itemizedlist>
 </simplesect>
-<section>
+Protected Member Functions inherited from <link linkend="_class_p_k_token">PKToken</link>        <itemizedlist>
+            <listitem><para>bool <link linkend="_class_p_k_token_1a6161b28490f22a80ba2898bcc3fab9d8">addToken</link> (<link linkend="__token_8h_1acbd1e63c605cbb3dbe67c7411841b46c">TokenVALUE</link> tVal, <link linkend="_class_iterator_list">IteratorList</link>&lt; <link linkend="_class_token">Token</link> &gt; &amp;tl, <link linkend="_class_token_result">TokenResult</link> &amp;tRes)</para>
+</listitem>
+            <listitem><para>bool <link linkend="_class_p_k_token_1ae8d5672d16cc994d3d0d3f73e240cec4">addType</link> (<link linkend="__token_8h_1ad8ed01ff3ff33333d8e19db4d2818bb6">DataType</link> tVal, <link linkend="_class_iterator_list">IteratorList</link>&lt; <link linkend="_class_token">Token</link> &gt; &amp;tl, <link linkend="_class_token_result">TokenResult</link> &amp;tRes)</para>
+</listitem>
+            <listitem><para>bool <link linkend="_class_p_k_token_1addbc260740c6abb048dbe063fc52eb67">addType</link> (std::vector&lt; <link linkend="__token_8h_1ad8ed01ff3ff33333d8e19db4d2818bb6">DataType</link> &gt; listTypes, <link linkend="_class_iterator_list">IteratorList</link>&lt; <link linkend="_class_token">Token</link> &gt; &amp;tl, <link linkend="_class_token_result">TokenResult</link> &amp;tRes)</para>
+</listitem>
+            <listitem><para>bool <link linkend="_class_p_k_token_1ae1cc35c4987621ced09326fe94d07e88">addNumber</link> (<link linkend="_class_iterator_list">IteratorList</link>&lt; <link linkend="_class_token">Token</link> &gt; &amp;tl, <link linkend="_class_token_result">TokenResult</link> &amp;tRes)</para>
+</listitem>
+            <listitem><para>bool <link linkend="_class_p_k_token_1abcee4a278fbc864a01ce17a7fe2871b7">addDataType</link> (<link linkend="_class_iterator_list">IteratorList</link>&lt; <link linkend="_class_token">Token</link> &gt; &amp;tl, <link linkend="_class_token_result">TokenResult</link> &amp;tRes)</para>
+</listitem>
+            <listitem><para>bool <link linkend="_class_p_k_token_1a93e03c8505eb71b40a996f895ea0a8a1">addInteger</link> (<link linkend="_class_iterator_list">IteratorList</link>&lt; <link linkend="_class_token">Token</link> &gt; &amp;tl, <link linkend="_class_token_result">TokenResult</link> &amp;tRes)</para>
+</listitem>
+            <listitem><para>bool <link linkend="_class_p_k_token_1ac1c11a5ce856f6705bec792cb9417f16">addFloat</link> (<link linkend="_class_iterator_list">IteratorList</link>&lt; <link linkend="_class_token">Token</link> &gt; &amp;tl, <link linkend="_class_token_result">TokenResult</link> &amp;tRes)</para>
+</listitem>
+            <listitem><para>bool <link linkend="_class_p_k_token_1a00080a1fa3e1ff14ff53f523acf09770">addCoord</link> (<link linkend="_class_iterator_list">IteratorList</link>&lt; <link linkend="_class_token">Token</link> &gt; &amp;tl, <link linkend="_class_token_result">TokenResult</link> &amp;tRes)</para>
+</listitem>
+            <listitem><para>bool <link linkend="_class_p_k_token_1a32ca841c2a6ae8e213d15babbc4a27f9">addZone</link> (<link linkend="_class_iterator_list">IteratorList</link>&lt; <link linkend="_class_token">Token</link> &gt; &amp;tl, <link linkend="_class_token_result">TokenResult</link> &amp;tRes)</para>
+</listitem>
+            <listitem><para>bool <link linkend="_class_p_k_token_1a62f5f46f8befb663543c117d6ed92fc9">addBool</link> (<link linkend="_class_iterator_list">IteratorList</link>&lt; <link linkend="_class_token">Token</link> &gt; &amp;tl, <link linkend="_class_token_result">TokenResult</link> &amp;tRes)</para>
+</listitem>
+            <listitem><para>bool <link linkend="_class_p_k_token_1a97e1183958a6dabeb6652340bfe4a1f7">addIdentifier</link> (<link linkend="_class_iterator_list">IteratorList</link>&lt; <link linkend="_class_token">Token</link> &gt; &amp;tl, <link linkend="_class_token_result">TokenResult</link> &amp;tRes)</para>
+</listitem>
+            <listitem><para>bool <link linkend="_class_p_k_token_1a6cf23e694a6bf9e4c08a72d3cc48d899">addString</link> (<link linkend="_class_iterator_list">IteratorList</link>&lt; <link linkend="_class_token">Token</link> &gt; &amp;tl, <link linkend="_class_token_result">TokenResult</link> &amp;tRes)</para>
+</listitem>
+            <listitem><para>bool <link linkend="_class_p_k_token_1a9bd07a9eaf2728560d1aa29bcc13bba9">addComma</link> (<link linkend="_class_iterator_list">IteratorList</link>&lt; <link linkend="_class_token">Token</link> &gt; &amp;tl, <link linkend="_class_token_result">TokenResult</link> &amp;tRes)</para>
+</listitem>
+            <listitem><para>bool <link linkend="_class_p_k_token_1abf2772818107f39c995f40f698630539">addTimeType</link> (<link linkend="_class_iterator_list">IteratorList</link>&lt; <link linkend="_class_token">Token</link> &gt; &amp;tl, <link linkend="_class_token_result">TokenResult</link> &amp;tRes)</para>
+</listitem>
+            <listitem><para>bool <link linkend="_class_p_k_token_1aa0d39255200f157dcead5e02815c0345">addOp</link> (<link linkend="_class_iterator_list">IteratorList</link>&lt; <link linkend="_class_token">Token</link> &gt; &amp;tl, <link linkend="_class_token_result">TokenResult</link> &amp;tRes)</para>
+</listitem>
+            <listitem><para>bool <link linkend="_class_p_k_token_1a2a1e90c3b769f9125740c05de9da7499">addCp</link> (<link linkend="_class_iterator_list">IteratorList</link>&lt; <link linkend="_class_token">Token</link> &gt; &amp;tl, <link linkend="_class_token_result">TokenResult</link> &amp;tRes)</para>
+</listitem>
+            <listitem><para>virtual bool <link linkend="_class_p_k_token_1ab964c1ed5353551fafcab7d9f0053a86">handleArguments</link> (<link linkend="_class_iterator_list">IteratorList</link>&lt; <link linkend="_class_token">Token</link> &gt; &amp;tl, <link linkend="_class_token_result">TokenResult</link> &amp;tRes)</para>
+</listitem>
+        </itemizedlist>
+Protected Member Functions inherited from <link linkend="_class_k_token">KToken</link><section>
 <title>Detailed Description</title>
 <para>
-Definition at line <link linkend="__interpretor_8h_source_1l00285">285</link> of file <link linkend="__interpretor_8h_source">Interpretor.h</link>.</para>
+Definition at line <link linkend="__token_8h_source_1l00480">480</link> of file <link linkend="__token_8h_source">Token.h</link>.</para>
 </section>
 <section>
 <title>Constructor &amp; Destructor Documentation</title>
@@ -106,24 +144,51 @@ Definition at line <link linkend="__interpretor_8h_source_1l00285">285</link> of
 <indexterm><primary>WaitToken</primary><secondary>WaitToken</secondary></indexterm>
 <indexterm><primary>WaitToken</primary><secondary>WaitToken</secondary></indexterm>
 <para><computeroutput>WaitToken::WaitToken ( )</computeroutput></para><para>
-Definition at line <link linkend="__interpretor_8cpp_source_1l01229">1229</link> of file <link linkend="__interpretor_8cpp_source">Interpretor.cpp</link>.</para>
-</section>
-</section>
-<section>
-<title>Member Function Documentation</title>
-<anchor xml:id="_class_wait_token_1a025496a739c85ce044f303b38fee7608"/><section>
-    <title>addTokens()</title>
-<indexterm><primary>addTokens</primary><secondary>WaitToken</secondary></indexterm>
-<indexterm><primary>WaitToken</primary><secondary>addTokens</secondary></indexterm>
-<para><computeroutput>std::shared_ptr&lt; <link linkend="_class_token_result">TokenResult</link> &gt; WaitToken::addTokens (<link linkend="_class_iterator_list">IteratorList</link>&lt; <link linkend="_class_token">Token</link> &gt; &amp; tl, std::shared_ptr&lt; <link linkend="_class_token_result">TokenResult</link> &gt; tRes)<computeroutput>[override]</computeroutput>, <computeroutput>[virtual]</computeroutput></computeroutput></para><para>
-Reimplemented from <link linkend="_class_k_p_token_1a7d6892f81389e89ec9f255ab1032758d">KPToken</link>.</para>
-<para>
-Definition at line <link linkend="__interpretor_8cpp_source_1l00723">723</link> of file <link linkend="__interpretor_8cpp_source">Interpretor.cpp</link>.</para>
+Definition at line <link linkend="__token_8cpp_source_1l00667">667</link> of file <link linkend="__token_8cpp_source">Token.cpp</link>.</para>
 Here is the call graph for this function:<para>
     <informalfigure>
         <mediaobject>
             <imageobject>
-                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_wait_token_a025496a739c85ce044f303b38fee7608_cgraph.svg"></imagedata>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_wait_token_aba6c9c4c6466b72c1ff3a545feb10050_cgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+</section>
+<section>
+<title>Member Function Documentation</title>
+<anchor xml:id="_class_wait_token_1a0c7c5e917c640de13ee85f0361f73fb1"/><section>
+    <title>addTokens()</title>
+<indexterm><primary>addTokens</primary><secondary>WaitToken</secondary></indexterm>
+<indexterm><primary>WaitToken</primary><secondary>addTokens</secondary></indexterm>
+<para><computeroutput>bool WaitToken::addTokens (<link linkend="_class_iterator_list">IteratorList</link>&lt; <link linkend="_class_token">Token</link> &gt; &amp; tl, <link linkend="_class_token_result">TokenResult</link> &amp; tRes)<computeroutput>[override]</computeroutput>, <computeroutput>[virtual]</computeroutput></computeroutput></para><para>
+Reimplemented from <link linkend="_class_m_p_k_token_1a9a5cbbc3269d1601a414e3dd25bfeb63">MPKToken</link>.</para>
+<para>
+Definition at line <link linkend="__token_8cpp_source_1l00249">249</link> of file <link linkend="__token_8cpp_source">Token.cpp</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_wait_token_a0c7c5e917c640de13ee85f0361f73fb1_cgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_class_wait_token_1a639055be7ce0426127e3441ffcb28652"/><section>
+    <title>dispatchArguments()</title>
+<indexterm><primary>dispatchArguments</primary><secondary>WaitToken</secondary></indexterm>
+<indexterm><primary>WaitToken</primary><secondary>dispatchArguments</secondary></indexterm>
+<para><computeroutput>void WaitToken::dispatchArguments ( )<computeroutput>[override]</computeroutput>, <computeroutput>[virtual]</computeroutput></computeroutput></para><para>
+Reimplemented from <link linkend="_class_p_k_token_1a64d744e4cf4b113bc458eb03f15ba69d">PKToken</link>.</para>
+<para>
+Definition at line <link linkend="__token_8cpp_source_1l00680">680</link> of file <link linkend="__token_8cpp_source">Token.cpp</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_wait_token_a639055be7ce0426127e3441ffcb28652_cgraph.svg"></imagedata>
             </imageobject>
         </mediaobject>
     </informalfigure>
@@ -136,26 +201,53 @@ Here is the call graph for this function:<para>
 <para><computeroutput>std::shared_ptr&lt; <link linkend="_class_tag">Tag</link> &gt; WaitToken::execute ( )<computeroutput>[override]</computeroutput>, <computeroutput>[virtual]</computeroutput></computeroutput></para><para>
 Reimplemented from <link linkend="_class_token_1aea759b8376bff558791fdc1f2f70f4fb">Token</link>.</para>
 <para>
-Definition at line <link linkend="__interpretor_8cpp_source_1l01237">1237</link> of file <link linkend="__interpretor_8cpp_source">Interpretor.cpp</link>.</para>
+Definition at line <link linkend="__token_8cpp_source_1l00694">694</link> of file <link linkend="__token_8cpp_source">Token.cpp</link>.</para>
+</section>
+<anchor xml:id="_class_wait_token_1ab8a24eb04c56c85111816352fcee3381"/><section>
+    <title>setOverloads()</title>
+<indexterm><primary>setOverloads</primary><secondary>WaitToken</secondary></indexterm>
+<indexterm><primary>WaitToken</primary><secondary>setOverloads</secondary></indexterm>
+<para><computeroutput>void WaitToken::setOverloads ( )<computeroutput>[final]</computeroutput>, <computeroutput>[virtual]</computeroutput></computeroutput></para><para>
+Reimplemented from <link linkend="_class_p_k_token_1a6b73584776ba004968c2273a7466e62c">PKToken</link>.</para>
+<para>
+Definition at line <link linkend="__token_8cpp_source_1l00674">674</link> of file <link linkend="__token_8cpp_source">Token.cpp</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_wait_token_ab8a24eb04c56c85111816352fcee3381_cgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+Here is the caller graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_wait_token_ab8a24eb04c56c85111816352fcee3381_icgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
 </section>
 </section>
 <section>
 <title>Member Data Documentation</title>
-<anchor xml:id="_class_wait_token_1aa4d5a469d180186cc08223eb42fa7a40"/><section>
-    <title>integerToken</title>
-<indexterm><primary>integerToken</primary><secondary>WaitToken</secondary></indexterm>
-<indexterm><primary>WaitToken</primary><secondary>integerToken</secondary></indexterm>
-<para><computeroutput>std::shared_ptr&lt;<link linkend="_class_token">Token</link>&gt; WaitToken::integerToken</computeroutput></para><para>
-Definition at line <link linkend="__interpretor_8h_source_1l00290">290</link> of file <link linkend="__interpretor_8h_source">Interpretor.h</link>.</para>
+<anchor xml:id="_class_wait_token_1aed3ec2a75d33295a16081a881b7ecad6"/><section>
+    <title>numberToken</title>
+<indexterm><primary>numberToken</primary><secondary>WaitToken</secondary></indexterm>
+<indexterm><primary>WaitToken</primary><secondary>numberToken</secondary></indexterm>
+<para><computeroutput>std::shared_ptr&lt;<link linkend="_class_token">Token</link>&gt; WaitToken::numberToken<computeroutput>[protected]</computeroutput></computeroutput></para><para>
+Definition at line <link linkend="__token_8h_source_1l00488">488</link> of file <link linkend="__token_8h_source">Token.h</link>.</para>
 </section>
-<anchor xml:id="_class_wait_token_1a43d8ea1eada1a0f9831736cba160dda2"/><section>
-    <title>listToken</title>
-<indexterm><primary>listToken</primary><secondary>WaitToken</secondary></indexterm>
-<indexterm><primary>WaitToken</primary><secondary>listToken</secondary></indexterm>
-<para><computeroutput>std::vector&lt;std::shared_ptr&lt;<link linkend="_class_token">Token</link>&gt; &gt; WaitToken::listToken</computeroutput></para><para>
-Definition at line <link linkend="__interpretor_8h_source_1l00289">289</link> of file <link linkend="__interpretor_8h_source">Interpretor.h</link>.</para>
+<anchor xml:id="_class_wait_token_1a63c9a4570f8bc923927db941bdbb4b80"/><section>
+    <title>timeTypeToken</title>
+<indexterm><primary>timeTypeToken</primary><secondary>WaitToken</secondary></indexterm>
+<indexterm><primary>WaitToken</primary><secondary>timeTypeToken</secondary></indexterm>
+<para><computeroutput>std::shared_ptr&lt;<link linkend="_class_token">Token</link>&gt; WaitToken::timeTypeToken<computeroutput>[protected]</computeroutput></computeroutput></para><para>
+Definition at line <link linkend="__token_8h_source_1l00489">489</link> of file <link linkend="__token_8h_source">Token.h</link>.</para>
 </section>
 <para>
 The documentation for this class was generated from the following files:</para>
-src/<link linkend="__interpretor_8h">Interpretor.h</link>src/<link linkend="__interpretor_8cpp">Interpretor.cpp</link></section>
+src/<link linkend="__token_8h">Token.h</link>src/<link linkend="__token_8cpp">Token.cpp</link></section>
 </section>

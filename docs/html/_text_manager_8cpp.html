@@ -27,9 +27,8 @@
  <tbody>
  <tr id="projectrow">
   <td id="projectalign">
-   <div id="projectname">BotMaker<span id="projectnumber">&#160;beta</span>
+   <div id="projectname">BotMaker
    </div>
-   <div id="projectbrief">Tool to create bots on Bluestacks</div>
   </td>
  </tr>
  </tbody>
@@ -106,7 +105,7 @@ $(function(){initNavTree('_text_manager_8cpp.html',''); initResizable(true); });
 </div><div class="textblock"><div class="dynheader">
 Include dependency graph for TextManager.cpp:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="_text_manager_8cpp__incl.svg" width="428" height="187"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="_text_manager_8cpp__incl.svg" width="534" height="187"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 </div>
 <p><a href="_text_manager_8cpp_source.html">Go to the source code of this file.</a></p>
@@ -115,68 +114,86 @@ Include dependency graph for TextManager.cpp:</div>
 Functions</h2></td></tr>
 <tr class="memitem:add36cc54cd9616a393a17b8961491477" id="r_add36cc54cd9616a393a17b8961491477"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#add36cc54cd9616a393a17b8961491477">getFileContent</a> (const std::string &amp;path)</td></tr>
 <tr class="separator:add36cc54cd9616a393a17b8961491477"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a5e4308ca14d1f4cfc2456fc26b1361a8" id="r_a5e4308ca14d1f4cfc2456fc26b1361a8"><td class="memItemLeft" align="right" valign="top">std::ifstream&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a5e4308ca14d1f4cfc2456fc26b1361a8">getIfstreamFile</a> (const std::string &amp;path)</td></tr>
-<tr class="separator:a5e4308ca14d1f4cfc2456fc26b1361a8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7877c01eb21ddf2a0d98bfc1f11de9df" id="r_a7877c01eb21ddf2a0d98bfc1f11de9df"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a7877c01eb21ddf2a0d98bfc1f11de9df">getCorrectPath</a> (const std::string &amp;path)</td></tr>
+<tr class="separator:a7877c01eb21ddf2a0d98bfc1f11de9df"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a34a7fbcd3165980b6f6a9e00f79af34c" id="r_a34a7fbcd3165980b6f6a9e00f79af34c"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a34a7fbcd3165980b6f6a9e00f79af34c">appendToFolder</a> (const std::string &amp;folderName, const std::string &amp;fileName)</td></tr>
+<tr class="separator:a34a7fbcd3165980b6f6a9e00f79af34c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4a86df56d2737552b2fd63bfa85c5800" id="r_a4a86df56d2737552b2fd63bfa85c5800"><td class="memItemLeft" align="right" valign="top">std::ofstream&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a4a86df56d2737552b2fd63bfa85c5800">getOfstreamFile</a> (const std::string &amp;path, <a class="el" href="_text_manager_8h.html#a61d23b393fdc35f2f0e30a1ed566c76d">WriteMode</a> method)</td></tr>
 <tr class="separator:a4a86df56d2737552b2fd63bfa85c5800"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab55140c566370b105b9bf81756293fa5" id="r_ab55140c566370b105b9bf81756293fa5"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ab55140c566370b105b9bf81756293fa5">writeToFile</a> (const std::string &amp;path, const std::string &amp;content, <a class="el" href="_text_manager_8h.html#a61d23b393fdc35f2f0e30a1ed566c76d">WriteMode</a> method)</td></tr>
 <tr class="separator:ab55140c566370b105b9bf81756293fa5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae4fe8a84012650993d5d2fac420daec2" id="r_ae4fe8a84012650993d5d2fac420daec2"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ae4fe8a84012650993d5d2fac420daec2">clearFile</a> (const std::string &amp;path)</td></tr>
 <tr class="separator:ae4fe8a84012650993d5d2fac420daec2"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa61ad4367d44c1e14541c7c1c46da795" id="r_aa61ad4367d44c1e14541c7c1c46da795"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aa61ad4367d44c1e14541c7c1c46da795">extractContent</a> (const std::string &amp;fullContent, const std::string &amp;first, const std::string &amp;last)</td></tr>
-<tr class="separator:aa61ad4367d44c1e14541c7c1c46da795"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a55651a43aac6404e3e403967b3633201" id="r_a55651a43aac6404e3e403967b3633201"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a55651a43aac6404e3e403967b3633201">extractLineContent</a> (const std::string &amp;fullContent, const std::string &amp;lineParameter, const std::string &amp;first, const std::string &amp;last)</td></tr>
-<tr class="separator:a55651a43aac6404e3e403967b3633201"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a98e5aae2b6659418890caba4fad17d5e" id="r_a98e5aae2b6659418890caba4fad17d5e"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a98e5aae2b6659418890caba4fad17d5e">updateContent</a> (std::string fullContent, std::string newContent, const std::string &amp;first, const std::string &amp;last)</td></tr>
-<tr class="separator:a98e5aae2b6659418890caba4fad17d5e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a85a282af68cca7cf7d69487d1bacdc47" id="r_a85a282af68cca7cf7d69487d1bacdc47"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a85a282af68cca7cf7d69487d1bacdc47">extractBetween</a> (const std::string &amp;text, const std::string &amp;begin, const std::string &amp;end)</td></tr>
+<tr class="separator:a85a282af68cca7cf7d69487d1bacdc47"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad801a1079aa77d461defa5538ad4f9a9" id="r_ad801a1079aa77d461defa5538ad4f9a9"><td class="memItemLeft" align="right" valign="top">std::size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ad801a1079aa77d461defa5538ad4f9a9">getOccurencePosBefore</a> (const std::string &amp;text, const std::string &amp;begin, const std::string &amp;end)</td></tr>
+<tr class="separator:ad801a1079aa77d461defa5538ad4f9a9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a84a9e24fc5cce3cebf746bb656909bf8" id="r_a84a9e24fc5cce3cebf746bb656909bf8"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a84a9e24fc5cce3cebf746bb656909bf8">extractBetweenReverse</a> (const std::string &amp;text, const std::string &amp;begin, const std::string &amp;end)</td></tr>
+<tr class="separator:a84a9e24fc5cce3cebf746bb656909bf8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae390b108793fa81984968410a695c1af" id="r_ae390b108793fa81984968410a695c1af"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ae390b108793fa81984968410a695c1af">extractLineContent</a> (const std::string &amp;fullContent, const std::string &amp;lineParameter, const std::string &amp;begin, const std::string &amp;end)</td></tr>
+<tr class="separator:ae390b108793fa81984968410a695c1af"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac695ebe5513185f42689b419f58d8a83" id="r_ac695ebe5513185f42689b419f58d8a83"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ac695ebe5513185f42689b419f58d8a83">updateContent</a> (std::string fullContent, std::string newContent, const std::string &amp;begin, const std::string &amp;end)</td></tr>
+<tr class="separator:ac695ebe5513185f42689b419f58d8a83"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a06bb4181369f742553d8b86fdb3e1c97" id="r_a06bb4181369f742553d8b86fdb3e1c97"><td class="memItemLeft" align="right" valign="top">std::size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a06bb4181369f742553d8b86fdb3e1c97">getFirstOccurencePosBefore</a> (const std::string &amp;text, const std::string &amp;occ, const std::string &amp;beforeParameter)</td></tr>
+<tr class="separator:a06bb4181369f742553d8b86fdb3e1c97"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af24bee60aa1d3d5b4ae3bf6ebd267ecd" id="r_af24bee60aa1d3d5b4ae3bf6ebd267ecd"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#af24bee60aa1d3d5b4ae3bf6ebd267ecd">getLine</a> (const std::string &amp;text, const std::string &amp;lineParameter)</td></tr>
 <tr class="separator:af24bee60aa1d3d5b4ae3bf6ebd267ecd"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5f4889fcc6892114ae5ea80e2fec852e" id="r_a5f4889fcc6892114ae5ea80e2fec852e"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a5f4889fcc6892114ae5ea80e2fec852e">removeContent</a> (const std::string &amp;text, const std::string &amp;content)</td></tr>
 <tr class="separator:a5f4889fcc6892114ae5ea80e2fec852e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a377407ab4c28873a8e1956ea343f9cc2" id="r_a377407ab4c28873a8e1956ea343f9cc2"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a377407ab4c28873a8e1956ea343f9cc2">getContentBefore</a> (const std::string &amp;text, const std::string &amp;content)</td></tr>
-<tr class="separator:a377407ab4c28873a8e1956ea343f9cc2"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a85498cf9c4f0f7c18a2aae6a2707f245" id="r_a85498cf9c4f0f7c18a2aae6a2707f245"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a85498cf9c4f0f7c18a2aae6a2707f245">getContentUntil</a> (const std::string &amp;text, const std::string &amp;content)</td></tr>
-<tr class="separator:a85498cf9c4f0f7c18a2aae6a2707f245"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6a1f72a80ddaec746c95996b16e3a1dc" id="r_a6a1f72a80ddaec746c95996b16e3a1dc"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a6a1f72a80ddaec746c95996b16e3a1dc">getContentAfter</a> (const std::string &amp;text, const std::string &amp;content)</td></tr>
-<tr class="separator:a6a1f72a80ddaec746c95996b16e3a1dc"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a2b5e78b03c6bedc0fa93a0c3b2dbd5b1" id="r_a2b5e78b03c6bedc0fa93a0c3b2dbd5b1"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a2b5e78b03c6bedc0fa93a0c3b2dbd5b1">getContentStarting</a> (const std::string &amp;text, const std::string &amp;content)</td></tr>
-<tr class="separator:a2b5e78b03c6bedc0fa93a0c3b2dbd5b1"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a856b84aae48313c32a2e29a29babd901" id="r_a856b84aae48313c32a2e29a29babd901"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a856b84aae48313c32a2e29a29babd901">isPresentBefore</a> (const std::string &amp;text, const std::string &amp;before, const std::string &amp;after)</td></tr>
-<tr class="separator:a856b84aae48313c32a2e29a29babd901"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae05a3fd36bf5fe073c1e2e46c4055ee0" id="r_ae05a3fd36bf5fe073c1e2e46c4055ee0"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ae05a3fd36bf5fe073c1e2e46c4055ee0">countOccurrencesBefore</a> (const std::string &amp;text, const std::string &amp;before, const std::string &amp;end)</td></tr>
-<tr class="separator:ae05a3fd36bf5fe073c1e2e46c4055ee0"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a73094485e8f0933e42411cfa2b197a79" id="r_a73094485e8f0933e42411cfa2b197a79"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a73094485e8f0933e42411cfa2b197a79">getContentUntilEqual</a> (const std::string &amp;text, const std::string &amp;open, const std::string &amp;close)</td></tr>
-<tr class="separator:a73094485e8f0933e42411cfa2b197a79"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6c3a83e299bc5fddfc934b5cc78093d8" id="r_a6c3a83e299bc5fddfc934b5cc78093d8"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a6c3a83e299bc5fddfc934b5cc78093d8">getContentUntilEqualUntil</a> (const std::string &amp;text, const std::string &amp;open, const std::string &amp;close, const std::string &amp;stop)</td></tr>
-<tr class="separator:a6c3a83e299bc5fddfc934b5cc78093d8"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a98316ec2e3cf34b3091ab6ba823f486c" id="r_a98316ec2e3cf34b3091ab6ba823f486c"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a98316ec2e3cf34b3091ab6ba823f486c">getContentUntilOutside</a> (const std::string &amp;text, const std::string &amp;inside, const std::string &amp;outside)</td></tr>
-<tr class="separator:a98316ec2e3cf34b3091ab6ba823f486c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3f557e0fad17d434f0d6839e590f6cfe" id="r_a3f557e0fad17d434f0d6839e590f6cfe"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a3f557e0fad17d434f0d6839e590f6cfe">getContentInsideUntil</a> (const std::string &amp;text, const std::string &amp;inside, const std::string &amp;outside, const std::string &amp;stop)</td></tr>
-<tr class="separator:a3f557e0fad17d434f0d6839e590f6cfe"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae0e68335c17a2ff305e151cc1d9e21cd" id="r_ae0e68335c17a2ff305e151cc1d9e21cd"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ae0e68335c17a2ff305e151cc1d9e21cd">getContentBeforeLastOccurence</a> (const std::string &amp;text, const std::string &amp;occurence)</td></tr>
-<tr class="separator:ae0e68335c17a2ff305e151cc1d9e21cd"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aff8311b88dbf5f3091f3ac1262543242" id="r_aff8311b88dbf5f3091f3ac1262543242"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aff8311b88dbf5f3091f3ac1262543242">getStringBefore</a> (const std::string &amp;text, const std::string &amp;content)</td></tr>
+<tr class="separator:aff8311b88dbf5f3091f3ac1262543242"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4d2b9819e5e2504ea8d55a553812146a" id="r_a4d2b9819e5e2504ea8d55a553812146a"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a4d2b9819e5e2504ea8d55a553812146a">getStringUntil</a> (const std::string &amp;text, const std::string &amp;content)</td></tr>
+<tr class="separator:a4d2b9819e5e2504ea8d55a553812146a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6956d58559ef67f422247fdeb1c22775" id="r_a6956d58559ef67f422247fdeb1c22775"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a6956d58559ef67f422247fdeb1c22775">getStringAfter</a> (const std::string &amp;text, const std::string &amp;content)</td></tr>
+<tr class="separator:a6956d58559ef67f422247fdeb1c22775"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5b66873abcff2faee361721f86b65dd0" id="r_a5b66873abcff2faee361721f86b65dd0"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a5b66873abcff2faee361721f86b65dd0">getPosAfter</a> (const std::string &amp;text, const std::string &amp;content, const size_t &amp;offset)</td></tr>
+<tr class="separator:a5b66873abcff2faee361721f86b65dd0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aea84354f56ede69a592634bdaeeebca6" id="r_aea84354f56ede69a592634bdaeeebca6"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aea84354f56ede69a592634bdaeeebca6">getPosEnd</a> (const std::string &amp;text, const std::string &amp;content, const size_t &amp;offset)</td></tr>
+<tr class="separator:aea84354f56ede69a592634bdaeeebca6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2946b90fb3df56b0a74d53eb4160f4e2" id="r_a2946b90fb3df56b0a74d53eb4160f4e2"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a2946b90fb3df56b0a74d53eb4160f4e2">getStringStarting</a> (const std::string &amp;text, const std::string &amp;content)</td></tr>
+<tr class="separator:a2946b90fb3df56b0a74d53eb4160f4e2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a72a90b0bbf9fa83e1542341baef2d051" id="r_a72a90b0bbf9fa83e1542341baef2d051"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a72a90b0bbf9fa83e1542341baef2d051">isBeforeStrict</a> (const std::string &amp;text, const std::string &amp;before, const std::string &amp;after)</td></tr>
+<tr class="separator:a72a90b0bbf9fa83e1542341baef2d051"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a91f22ed7b57fcd5b0c51ef13f0c13873" id="r_a91f22ed7b57fcd5b0c51ef13f0c13873"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a91f22ed7b57fcd5b0c51ef13f0c13873">isBefore</a> (const std::string &amp;text, const std::string &amp;before, const std::string &amp;after)</td></tr>
+<tr class="separator:a91f22ed7b57fcd5b0c51ef13f0c13873"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5adfb1e14ce20866bfe01ed05b344a87" id="r_a5adfb1e14ce20866bfe01ed05b344a87"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a5adfb1e14ce20866bfe01ed05b344a87">getStringInsideBorders</a> (const std::string &amp;text, const std::string &amp;open, const std::string &amp;close)</td></tr>
+<tr class="separator:a5adfb1e14ce20866bfe01ed05b344a87"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa98ebbb97e30e73c3fec5e26ec1305d8" id="r_aa98ebbb97e30e73c3fec5e26ec1305d8"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aa98ebbb97e30e73c3fec5e26ec1305d8">getStringBeforeLastMatch</a> (const std::string &amp;text, const std::string &amp;match)</td></tr>
+<tr class="separator:aa98ebbb97e30e73c3fec5e26ec1305d8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8e4fb03d21e39e65bf90e109939b0105" id="r_a8e4fb03d21e39e65bf90e109939b0105"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a8e4fb03d21e39e65bf90e109939b0105">reverseString</a> (const std::string &amp;text)</td></tr>
 <tr class="separator:a8e4fb03d21e39e65bf90e109939b0105"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aaa7941b150f7dd0f8e641601c83f7159" id="r_aaa7941b150f7dd0f8e641601c83f7159"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aaa7941b150f7dd0f8e641601c83f7159">countOccurrences</a> (const std::string &amp;text, const std::string &amp;content)</td></tr>
-<tr class="separator:aaa7941b150f7dd0f8e641601c83f7159"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:adc00e45bfad17a490132d632f34aa1c1" id="r_adc00e45bfad17a490132d632f34aa1c1"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#adc00e45bfad17a490132d632f34aa1c1">getContentBefore</a> (const std::string &amp;text, const size_t &amp;pos)</td></tr>
-<tr class="separator:adc00e45bfad17a490132d632f34aa1c1"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6a59b82e4799f14153c7a28e08d0f96b" id="r_a6a59b82e4799f14153c7a28e08d0f96b"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a6a59b82e4799f14153c7a28e08d0f96b">getContentUntil</a> (const std::string &amp;text, const size_t &amp;pos)</td></tr>
-<tr class="separator:a6a59b82e4799f14153c7a28e08d0f96b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a10209da657488a985c6a92e534ef32a3" id="r_a10209da657488a985c6a92e534ef32a3"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a10209da657488a985c6a92e534ef32a3">getContentAfter</a> (const std::string &amp;text, const size_t &amp;pos)</td></tr>
-<tr class="separator:a10209da657488a985c6a92e534ef32a3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8f90c1ec899f25ae8d1087459a6bc108" id="r_a8f90c1ec899f25ae8d1087459a6bc108"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a8f90c1ec899f25ae8d1087459a6bc108">countMatches</a> (const std::string &amp;text, const std::string &amp;match)</td></tr>
+<tr class="separator:a8f90c1ec899f25ae8d1087459a6bc108"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a87f06bcc7caeab328ba32f4aec7883e2" id="r_a87f06bcc7caeab328ba32f4aec7883e2"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a87f06bcc7caeab328ba32f4aec7883e2">countMatchesBefore</a> (const std::string &amp;text, const std::string &amp;match, const std::string &amp;end)</td></tr>
+<tr class="separator:a87f06bcc7caeab328ba32f4aec7883e2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa6913b7fe272fe20684f1c5c701d54d7" id="r_aa6913b7fe272fe20684f1c5c701d54d7"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aa6913b7fe272fe20684f1c5c701d54d7">skipSpace</a> (std::string &amp;text)</td></tr>
+<tr class="separator:aa6913b7fe272fe20684f1c5c701d54d7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a46d952a72f09b33c8620f9978b962cee" id="r_a46d952a72f09b33c8620f9978b962cee"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a46d952a72f09b33c8620f9978b962cee">beginsBySpace</a> (const std::string &amp;text)</td></tr>
+<tr class="separator:a46d952a72f09b33c8620f9978b962cee"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa18ab3a474aba30784c5521be8a7da65" id="r_aa18ab3a474aba30784c5521be8a7da65"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aa18ab3a474aba30784c5521be8a7da65">beginsBySequence</a> (const std::string &amp;text, const std::string &amp;sequence)</td></tr>
+<tr class="separator:aa18ab3a474aba30784c5521be8a7da65"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae58f22c7238c63a9ffd8ac0f9fb36216" id="r_ae58f22c7238c63a9ffd8ac0f9fb36216"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ae58f22c7238c63a9ffd8ac0f9fb36216">skipAnySequence</a> (std::string &amp;text, const std::string &amp;sequence)</td></tr>
+<tr class="separator:ae58f22c7238c63a9ffd8ac0f9fb36216"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a053e0b36b2796cc4d128150353f13449" id="r_a053e0b36b2796cc4d128150353f13449"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a053e0b36b2796cc4d128150353f13449">skipSequence</a> (std::string &amp;text, const std::string &amp;sequence)</td></tr>
+<tr class="separator:a053e0b36b2796cc4d128150353f13449"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1e51a0b4d80fa91c2b174d65be392cb6" id="r_a1e51a0b4d80fa91c2b174d65be392cb6"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a1e51a0b4d80fa91c2b174d65be392cb6">getStringUntil</a> (const std::string &amp;text, const size_t &amp;pos)</td></tr>
+<tr class="separator:a1e51a0b4d80fa91c2b174d65be392cb6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a68949f143705185b5de387b1250a8599" id="r_a68949f143705185b5de387b1250a8599"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a68949f143705185b5de387b1250a8599">getStringStarting</a> (const std::string &amp;text, const size_t &amp;pos)</td></tr>
+<tr class="separator:a68949f143705185b5de387b1250a8599"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:adc3f57b5732570ab943a917fda563ae0" id="r_adc3f57b5732570ab943a917fda563ae0"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#adc3f57b5732570ab943a917fda563ae0">tolower</a> (const std::string &amp;s)</td></tr>
+<tr class="separator:adc3f57b5732570ab943a917fda563ae0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a298789aa768d11d50d04a2f246a19a74" id="r_a298789aa768d11d50d04a2f246a19a74"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a298789aa768d11d50d04a2f246a19a74">to_bool</a> (const std::string &amp;s)</td></tr>
 <tr class="separator:a298789aa768d11d50d04a2f246a19a74"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6b6762c360fecdd04e1dba79a58e8466" id="r_a6b6762c360fecdd04e1dba79a58e8466"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a6b6762c360fecdd04e1dba79a58e8466">getContentStarting</a> (const std::string &amp;text, const size_t &amp;pos)</td></tr>
-<tr class="separator:a6b6762c360fecdd04e1dba79a58e8466"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:afbb8972025ad14e914fdaafa26957439" id="r_afbb8972025ad14e914fdaafa26957439"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#afbb8972025ad14e914fdaafa26957439">findPos</a> (const std::string &amp;text, const std::string &amp;content, const size_t startPos)</td></tr>
-<tr class="separator:afbb8972025ad14e914fdaafa26957439"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:acd5e438b43d1ea1b3fc41a8badfe635b" id="r_acd5e438b43d1ea1b3fc41a8badfe635b"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#acd5e438b43d1ea1b3fc41a8badfe635b">findContent</a> (const std::string &amp;text, const std::string &amp;content)</td></tr>
-<tr class="separator:acd5e438b43d1ea1b3fc41a8badfe635b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af28b966ccdfa1dc51f8a9aa18b62b343" id="r_af28b966ccdfa1dc51f8a9aa18b62b343"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#af28b966ccdfa1dc51f8a9aa18b62b343">printFileContent</a> (std::string path)</td></tr>
-<tr class="separator:af28b966ccdfa1dc51f8a9aa18b62b343"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6d7c13a554de9db4c8ebc8b3175af417" id="r_a6d7c13a554de9db4c8ebc8b3175af417"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a6d7c13a554de9db4c8ebc8b3175af417">removeLastOccurence</a> (const std::string &amp;text, const std::string &amp;content)</td></tr>
-<tr class="separator:a6d7c13a554de9db4c8ebc8b3175af417"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a079e0c70f384def9d00b70f9ee62ee4a" id="r_a079e0c70f384def9d00b70f9ee62ee4a"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a079e0c70f384def9d00b70f9ee62ee4a">containsSequence</a> (const std::string &amp;text, const std::string &amp;seq, const size_t &amp;offset)</td></tr>
+<tr class="separator:a079e0c70f384def9d00b70f9ee62ee4a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3f4afb2b62acd297e783a22ffa9a7000" id="r_a3f4afb2b62acd297e783a22ffa9a7000"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a3f4afb2b62acd297e783a22ffa9a7000">getSequencePos</a> (const std::string &amp;text, const std::string &amp;seq, const size_t &amp;offset)</td></tr>
+<tr class="separator:a3f4afb2b62acd297e783a22ffa9a7000"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a07d720ed3b57aaff2c6b76019524b927" id="r_a07d720ed3b57aaff2c6b76019524b927"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a07d720ed3b57aaff2c6b76019524b927">getSequencePosR</a> (const std::string &amp;text, const std::string &amp;seq, const size_t &amp;offset)</td></tr>
+<tr class="separator:a07d720ed3b57aaff2c6b76019524b927"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6d41db9b9e6416e155fc5bdeeacef16c" id="r_a6d41db9b9e6416e155fc5bdeeacef16c"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a6d41db9b9e6416e155fc5bdeeacef16c">printFileContent</a> (const std::string &amp;path)</td></tr>
+<tr class="separator:a6d41db9b9e6416e155fc5bdeeacef16c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab7ccde875039001c7db16bf6eae6936b" id="r_ab7ccde875039001c7db16bf6eae6936b"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ab7ccde875039001c7db16bf6eae6936b">eraseLastMatch</a> (const std::string &amp;text, const std::string &amp;content)</td></tr>
+<tr class="separator:ab7ccde875039001c7db16bf6eae6936b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a42b898aede0151587625671fa5ba1ef3" id="r_a42b898aede0151587625671fa5ba1ef3"><td class="memItemLeft" align="right" valign="top">std::vector&lt; std::string &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a42b898aede0151587625671fa5ba1ef3">getAllLines</a> (const std::string &amp;text, const std::string &amp;lineParameter)</td></tr>
 <tr class="separator:a42b898aede0151587625671fa5ba1ef3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa0db2023b135700695842f97f21f2d47" id="r_aa0db2023b135700695842f97f21f2d47"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aa0db2023b135700695842f97f21f2d47">removeCharacter</a> (const std::string &amp;text, const char c)</td></tr>
@@ -185,6 +202,91 @@ Functions</h2></td></tr>
 <tr class="separator:a55e73c9c3cfe26561256a7936deb02db"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Function Documentation</h2>
+<a id="a34a7fbcd3165980b6f6a9e00f79af34c" name="a34a7fbcd3165980b6f6a9e00f79af34c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a34a7fbcd3165980b6f6a9e00f79af34c">&#9670;&#160;</a></span>appendToFolder()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::string appendToFolder </td>
+          <td>(</td>
+          <td class="paramtype">const std::string &amp;</td>          <td class="paramname"><span class="paramname"><em>folderName</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const std::string &amp;</td>          <td class="paramname"><span class="paramname"><em>fileName</em></span>&#160;)</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="_text_manager_8cpp_source.html#l00023">23</a> of file <a class="el" href="_text_manager_8cpp_source.html">TextManager.cpp</a>.</p>
+<div class="dynheader">
+Here is the caller graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="_text_manager_8cpp_a34a7fbcd3165980b6f6a9e00f79af34c_icgraph.svg" width="100%" height="300"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
+</div>
+
+</div>
+</div>
+<a id="aa18ab3a474aba30784c5521be8a7da65" name="aa18ab3a474aba30784c5521be8a7da65"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa18ab3a474aba30784c5521be8a7da65">&#9670;&#160;</a></span>beginsBySequence()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool beginsBySequence </td>
+          <td>(</td>
+          <td class="paramtype">const std::string &amp;</td>          <td class="paramname"><span class="paramname"><em>text</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const std::string &amp;</td>          <td class="paramname"><span class="paramname"><em>sequence</em></span>&#160;)</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="_text_manager_8cpp_source.html#l00222">222</a> of file <a class="el" href="_text_manager_8cpp_source.html">TextManager.cpp</a>.</p>
+<div class="dynheader">
+Here is the caller graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="_text_manager_8cpp_aa18ab3a474aba30784c5521be8a7da65_icgraph.svg" width="100%" height="366"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
+</div>
+
+</div>
+</div>
+<a id="a46d952a72f09b33c8620f9978b962cee" name="a46d952a72f09b33c8620f9978b962cee"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a46d952a72f09b33c8620f9978b962cee">&#9670;&#160;</a></span>beginsBySpace()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool beginsBySpace </td>
+          <td>(</td>
+          <td class="paramtype">const std::string &amp;</td>          <td class="paramname"><span class="paramname"><em>text</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="_text_manager_8cpp_source.html#l00218">218</a> of file <a class="el" href="_text_manager_8cpp_source.html">TextManager.cpp</a>.</p>
+<div class="dynheader">
+Here is the call graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><iframe scrolling="no" frameborder="0" src="_text_manager_8cpp_a46d952a72f09b33c8620f9978b962cee_cgraph.svg" width="304" height="38"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
+<div class="dynheader">
+Here is the caller graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="_text_manager_8cpp_a46d952a72f09b33c8620f9978b962cee_icgraph.svg" width="100%" height="366"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
+</div>
+
+</div>
+</div>
 <a id="ae4fe8a84012650993d5d2fac420daec2" name="ae4fe8a84012650993d5d2fac420daec2"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ae4fe8a84012650993d5d2fac420daec2">&#9670;&#160;</a></span>clearFile()</h2>
 
@@ -200,7 +302,7 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_text_manager_8cpp_source.html#l00052">52</a> of file <a class="el" href="_text_manager_8cpp_source.html">TextManager.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_text_manager_8cpp_source.html#l00053">53</a> of file <a class="el" href="_text_manager_8cpp_source.html">TextManager.cpp</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -209,14 +311,113 @@ Here is the call graph for this function:</div>
 
 </div>
 </div>
-<a id="aaa7941b150f7dd0f8e641601c83f7159" name="aaa7941b150f7dd0f8e641601c83f7159"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aaa7941b150f7dd0f8e641601c83f7159">&#9670;&#160;</a></span>countOccurrences()</h2>
+<a id="a079e0c70f384def9d00b70f9ee62ee4a" name="a079e0c70f384def9d00b70f9ee62ee4a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a079e0c70f384def9d00b70f9ee62ee4a">&#9670;&#160;</a></span>containsSequence()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">int countOccurrences </td>
+          <td class="memname">bool containsSequence </td>
+          <td>(</td>
+          <td class="paramtype">const std::string &amp;</td>          <td class="paramname"><span class="paramname"><em>text</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const std::string &amp;</td>          <td class="paramname"><span class="paramname"><em>seq</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const size_t &amp;</td>          <td class="paramname"><span class="paramname"><em>offset</em></span>&#160;)</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="_text_manager_8cpp_source.html#l00264">264</a> of file <a class="el" href="_text_manager_8cpp_source.html">TextManager.cpp</a>.</p>
+<div class="dynheader">
+Here is the caller graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><iframe scrolling="no" frameborder="0" src="_text_manager_8cpp_a079e0c70f384def9d00b70f9ee62ee4a_icgraph.svg" width="611" height="88"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
+
+</div>
+</div>
+<a id="a8f90c1ec899f25ae8d1087459a6bc108" name="a8f90c1ec899f25ae8d1087459a6bc108"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8f90c1ec899f25ae8d1087459a6bc108">&#9670;&#160;</a></span>countMatches()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int countMatches </td>
+          <td>(</td>
+          <td class="paramtype">const std::string &amp;</td>          <td class="paramname"><span class="paramname"><em>text</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const std::string &amp;</td>          <td class="paramname"><span class="paramname"><em>match</em></span>&#160;)</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="_text_manager_8cpp_source.html#l00196">196</a> of file <a class="el" href="_text_manager_8cpp_source.html">TextManager.cpp</a>.</p>
+<div class="dynheader">
+Here is the call graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><iframe scrolling="no" frameborder="0" src="_text_manager_8cpp_a8f90c1ec899f25ae8d1087459a6bc108_cgraph.svg" width="598" height="163"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
+<div class="dynheader">
+Here is the caller graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><iframe scrolling="no" frameborder="0" src="_text_manager_8cpp_a8f90c1ec899f25ae8d1087459a6bc108_icgraph.svg" width="435" height="88"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
+
+</div>
+</div>
+<a id="a87f06bcc7caeab328ba32f4aec7883e2" name="a87f06bcc7caeab328ba32f4aec7883e2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a87f06bcc7caeab328ba32f4aec7883e2">&#9670;&#160;</a></span>countMatchesBefore()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int countMatchesBefore </td>
+          <td>(</td>
+          <td class="paramtype">const std::string &amp;</td>          <td class="paramname"><span class="paramname"><em>text</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const std::string &amp;</td>          <td class="paramname"><span class="paramname"><em>match</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const std::string &amp;</td>          <td class="paramname"><span class="paramname"><em>end</em></span>&#160;)</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="_text_manager_8cpp_source.html#l00207">207</a> of file <a class="el" href="_text_manager_8cpp_source.html">TextManager.cpp</a>.</p>
+<div class="dynheader">
+Here is the call graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="_text_manager_8cpp_a87f06bcc7caeab328ba32f4aec7883e2_cgraph.svg" width="100%" height="460"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
+</div>
+
+</div>
+</div>
+<a id="ab7ccde875039001c7db16bf6eae6936b" name="ab7ccde875039001c7db16bf6eae6936b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab7ccde875039001c7db16bf6eae6936b">&#9670;&#160;</a></span>eraseLastMatch()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::string eraseLastMatch </td>
           <td>(</td>
           <td class="paramtype">const std::string &amp;</td>          <td class="paramname"><span class="paramname"><em>text</em></span>, </td>
         </tr>
@@ -228,30 +429,30 @@ Here is the call graph for this function:</div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_text_manager_8cpp_source.html#l00258">258</a> of file <a class="el" href="_text_manager_8cpp_source.html">TextManager.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_text_manager_8cpp_source.html#l00285">285</a> of file <a class="el" href="_text_manager_8cpp_source.html">TextManager.cpp</a>.</p>
 <div class="dynheader">
-Here is the caller graph for this function:</div>
+Here is the call graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="_text_manager_8cpp_aaa7941b150f7dd0f8e641601c83f7159_icgraph.svg" width="359" height="240"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="_text_manager_8cpp_ab7ccde875039001c7db16bf6eae6936b_cgraph.svg" width="611" height="112"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 
 </div>
 </div>
-<a id="ae05a3fd36bf5fe073c1e2e46c4055ee0" name="ae05a3fd36bf5fe073c1e2e46c4055ee0"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ae05a3fd36bf5fe073c1e2e46c4055ee0">&#9670;&#160;</a></span>countOccurrencesBefore()</h2>
+<a id="a85a282af68cca7cf7d69487d1bacdc47" name="a85a282af68cca7cf7d69487d1bacdc47"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a85a282af68cca7cf7d69487d1bacdc47">&#9670;&#160;</a></span>extractBetween()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">int countOccurrencesBefore </td>
+          <td class="memname">std::string extractBetween </td>
           <td>(</td>
           <td class="paramtype">const std::string &amp;</td>          <td class="paramname"><span class="paramname"><em>text</em></span>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">const std::string &amp;</td>          <td class="paramname"><span class="paramname"><em>before</em></span>, </td>
+          <td class="paramtype">const std::string &amp;</td>          <td class="paramname"><span class="paramname"><em>begin</em></span>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
@@ -261,55 +462,60 @@ Here is the caller graph for this function:</div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_text_manager_8cpp_source.html#l00153">153</a> of file <a class="el" href="_text_manager_8cpp_source.html">TextManager.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_text_manager_8cpp_source.html#l00061">61</a> of file <a class="el" href="_text_manager_8cpp_source.html">TextManager.cpp</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="_text_manager_8cpp_ae05a3fd36bf5fe073c1e2e46c4055ee0_cgraph.svg" width="466" height="163"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="_text_manager_8cpp_a85a282af68cca7cf7d69487d1bacdc47_cgraph.svg" width="618" height="163"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
+<div class="dynheader">
+Here is the caller graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="_text_manager_8cpp_a85a282af68cca7cf7d69487d1bacdc47_icgraph.svg" width="100%" height="600"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
 </div>
 
 </div>
 </div>
-<a id="aa61ad4367d44c1e14541c7c1c46da795" name="aa61ad4367d44c1e14541c7c1c46da795"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aa61ad4367d44c1e14541c7c1c46da795">&#9670;&#160;</a></span>extractContent()</h2>
+<a id="a84a9e24fc5cce3cebf746bb656909bf8" name="a84a9e24fc5cce3cebf746bb656909bf8"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a84a9e24fc5cce3cebf746bb656909bf8">&#9670;&#160;</a></span>extractBetweenReverse()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">std::string extractContent </td>
+          <td class="memname">std::string extractBetweenReverse </td>
           <td>(</td>
-          <td class="paramtype">const std::string &amp;</td>          <td class="paramname"><span class="paramname"><em>fullContent</em></span>, </td>
+          <td class="paramtype">const std::string &amp;</td>          <td class="paramname"><span class="paramname"><em>text</em></span>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">const std::string &amp;</td>          <td class="paramname"><span class="paramname"><em>first</em></span>, </td>
+          <td class="paramtype">const std::string &amp;</td>          <td class="paramname"><span class="paramname"><em>begin</em></span>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">const std::string &amp;</td>          <td class="paramname"><span class="paramname"><em>last</em></span>&#160;)</td>
+          <td class="paramtype">const std::string &amp;</td>          <td class="paramname"><span class="paramname"><em>end</em></span>&#160;)</td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_text_manager_8cpp_source.html#l00064">64</a> of file <a class="el" href="_text_manager_8cpp_source.html">TextManager.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_text_manager_8cpp_source.html#l00070">70</a> of file <a class="el" href="_text_manager_8cpp_source.html">TextManager.cpp</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="_text_manager_8cpp_aa61ad4367d44c1e14541c7c1c46da795_cgraph.svg" width="232" height="38"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="_text_manager_8cpp_a84a9e24fc5cce3cebf746bb656909bf8_cgraph.svg" width="667" height="163"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="_text_manager_8cpp_aa61ad4367d44c1e14541c7c1c46da795_icgraph.svg" width="100%" height="600"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
+<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="_text_manager_8cpp_a84a9e24fc5cce3cebf746bb656909bf8_icgraph.svg" width="100%" height="600"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
 </div>
 
 </div>
 </div>
-<a id="a55651a43aac6404e3e403967b3633201" name="a55651a43aac6404e3e403967b3633201"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a55651a43aac6404e3e403967b3633201">&#9670;&#160;</a></span>extractLineContent()</h2>
+<a id="ae390b108793fa81984968410a695c1af" name="ae390b108793fa81984968410a695c1af"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae390b108793fa81984968410a695c1af">&#9670;&#160;</a></span>extractLineContent()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -327,92 +533,26 @@ Here is the caller graph for this function:</div>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">const std::string &amp;</td>          <td class="paramname"><span class="paramname"><em>first</em></span>, </td>
+          <td class="paramtype">const std::string &amp;</td>          <td class="paramname"><span class="paramname"><em>begin</em></span>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">const std::string &amp;</td>          <td class="paramname"><span class="paramname"><em>last</em></span>&#160;)</td>
+          <td class="paramtype">const std::string &amp;</td>          <td class="paramname"><span class="paramname"><em>end</em></span>&#160;)</td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_text_manager_8cpp_source.html#l00077">77</a> of file <a class="el" href="_text_manager_8cpp_source.html">TextManager.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_text_manager_8cpp_source.html#l00074">74</a> of file <a class="el" href="_text_manager_8cpp_source.html">TextManager.cpp</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="_text_manager_8cpp_a55651a43aac6404e3e403967b3633201_cgraph.svg" width="411" height="88"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="_text_manager_8cpp_ae390b108793fa81984968410a695c1af_cgraph.svg" width="100%" height="422"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
 </div>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="_text_manager_8cpp_a55651a43aac6404e3e403967b3633201_icgraph.svg" width="100%" height="378"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
-</div>
-
-</div>
-</div>
-<a id="acd5e438b43d1ea1b3fc41a8badfe635b" name="acd5e438b43d1ea1b3fc41a8badfe635b"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#acd5e438b43d1ea1b3fc41a8badfe635b">&#9670;&#160;</a></span>findContent()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">bool findContent </td>
-          <td>(</td>
-          <td class="paramtype">const std::string &amp;</td>          <td class="paramname"><span class="paramname"><em>text</em></span>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">const std::string &amp;</td>          <td class="paramname"><span class="paramname"><em>content</em></span>&#160;)</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="_text_manager_8cpp_source.html#l00313">313</a> of file <a class="el" href="_text_manager_8cpp_source.html">TextManager.cpp</a>.</p>
-<div class="dynheader">
-Here is the call graph for this function:</div>
-<div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="_text_manager_8cpp_acd5e438b43d1ea1b3fc41a8badfe635b_cgraph.svg" width="212" height="38"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
-</div>
-<div class="dynheader">
-Here is the caller graph for this function:</div>
-<div class="dyncontent">
-<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="_text_manager_8cpp_acd5e438b43d1ea1b3fc41a8badfe635b_icgraph.svg" width="100%" height="600"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
-</div>
-
-</div>
-</div>
-<a id="afbb8972025ad14e914fdaafa26957439" name="afbb8972025ad14e914fdaafa26957439"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#afbb8972025ad14e914fdaafa26957439">&#9670;&#160;</a></span>findPos()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">size_t findPos </td>
-          <td>(</td>
-          <td class="paramtype">const std::string &amp;</td>          <td class="paramname"><span class="paramname"><em>text</em></span>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">const std::string &amp;</td>          <td class="paramname"><span class="paramname"><em>content</em></span>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">const size_t</td>          <td class="paramname"><span class="paramname"><em>startPos</em></span>&#160;)</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="_text_manager_8cpp_source.html#l00309">309</a> of file <a class="el" href="_text_manager_8cpp_source.html">TextManager.cpp</a>.</p>
-<div class="dynheader">
-Here is the caller graph for this function:</div>
-<div class="dyncontent">
-<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="_text_manager_8cpp_afbb8972025ad14e914fdaafa26957439_icgraph.svg" width="100%" height="600"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
+<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="_text_manager_8cpp_ae390b108793fa81984968410a695c1af_icgraph.svg" width="100%" height="378"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
 </div>
 
 </div>
@@ -436,401 +576,31 @@ Here is the caller graph for this function:</div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_text_manager_8cpp_source.html#l00331">331</a> of file <a class="el" href="_text_manager_8cpp_source.html">TextManager.cpp</a>.</p>
-<div class="dynheader">
-Here is the call graph for this function:</div>
-<div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="_text_manager_8cpp_a42b898aede0151587625671fa5ba1ef3_cgraph.svg" width="388" height="136"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
-</div>
-
-</div>
-</div>
-<a id="a10209da657488a985c6a92e534ef32a3" name="a10209da657488a985c6a92e534ef32a3"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a10209da657488a985c6a92e534ef32a3">&#9670;&#160;</a></span>getContentAfter() <span class="overload">[1/2]</span></h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">std::string getContentAfter </td>
-          <td>(</td>
-          <td class="paramtype">const std::string &amp;</td>          <td class="paramname"><span class="paramname"><em>text</em></span>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">const size_t &amp;</td>          <td class="paramname"><span class="paramname"><em>pos</em></span>&#160;)</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
 <p class="definition">Definition at line <a class="el" href="_text_manager_8cpp_source.html#l00290">290</a> of file <a class="el" href="_text_manager_8cpp_source.html">TextManager.cpp</a>.</p>
-
-</div>
-</div>
-<a id="a6a1f72a80ddaec746c95996b16e3a1dc" name="a6a1f72a80ddaec746c95996b16e3a1dc"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a6a1f72a80ddaec746c95996b16e3a1dc">&#9670;&#160;</a></span>getContentAfter() <span class="overload">[2/2]</span></h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">std::string getContentAfter </td>
-          <td>(</td>
-          <td class="paramtype">const std::string &amp;</td>          <td class="paramname"><span class="paramname"><em>text</em></span>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">const std::string &amp;</td>          <td class="paramname"><span class="paramname"><em>content</em></span>&#160;)</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="_text_manager_8cpp_source.html#l00132">132</a> of file <a class="el" href="_text_manager_8cpp_source.html">TextManager.cpp</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="_text_manager_8cpp_a6a1f72a80ddaec746c95996b16e3a1dc_cgraph.svg" width="238" height="62"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
-</div>
-<div class="dynheader">
-Here is the caller graph for this function:</div>
-<div class="dyncontent">
-<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="_text_manager_8cpp_a6a1f72a80ddaec746c95996b16e3a1dc_icgraph.svg" width="100%" height="600"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
+<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="_text_manager_8cpp_a42b898aede0151587625671fa5ba1ef3_cgraph.svg" width="100%" height="404"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
 </div>
 
 </div>
 </div>
-<a id="adc00e45bfad17a490132d632f34aa1c1" name="adc00e45bfad17a490132d632f34aa1c1"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#adc00e45bfad17a490132d632f34aa1c1">&#9670;&#160;</a></span>getContentBefore() <span class="overload">[1/2]</span></h2>
+<a id="a7877c01eb21ddf2a0d98bfc1f11de9df" name="a7877c01eb21ddf2a0d98bfc1f11de9df"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7877c01eb21ddf2a0d98bfc1f11de9df">&#9670;&#160;</a></span>getCorrectPath()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">std::string getContentBefore </td>
+          <td class="memname">std::string getCorrectPath </td>
           <td>(</td>
-          <td class="paramtype">const std::string &amp;</td>          <td class="paramname"><span class="paramname"><em>text</em></span>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
+          <td class="paramtype">const std::string &amp;</td>          <td class="paramname"><span class="paramname"><em>path</em></span></td><td>)</td>
           <td></td>
-          <td class="paramtype">const size_t &amp;</td>          <td class="paramname"><span class="paramname"><em>pos</em></span>&#160;)</td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_text_manager_8cpp_source.html#l00274">274</a> of file <a class="el" href="_text_manager_8cpp_source.html">TextManager.cpp</a>.</p>
-
-</div>
-</div>
-<a id="a377407ab4c28873a8e1956ea343f9cc2" name="a377407ab4c28873a8e1956ea343f9cc2"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a377407ab4c28873a8e1956ea343f9cc2">&#9670;&#160;</a></span>getContentBefore() <span class="overload">[2/2]</span></h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">std::string getContentBefore </td>
-          <td>(</td>
-          <td class="paramtype">const std::string &amp;</td>          <td class="paramname"><span class="paramname"><em>text</em></span>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">const std::string &amp;</td>          <td class="paramname"><span class="paramname"><em>content</em></span>&#160;)</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="_text_manager_8cpp_source.html#l00118">118</a> of file <a class="el" href="_text_manager_8cpp_source.html">TextManager.cpp</a>.</p>
-<div class="dynheader">
-Here is the call graph for this function:</div>
-<div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="_text_manager_8cpp_a377407ab4c28873a8e1956ea343f9cc2_cgraph.svg" width="248" height="38"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
-</div>
-<div class="dynheader">
-Here is the caller graph for this function:</div>
-<div class="dyncontent">
-<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="_text_manager_8cpp_a377407ab4c28873a8e1956ea343f9cc2_icgraph.svg" width="100%" height="600"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
-</div>
-
-</div>
-</div>
-<a id="ae0e68335c17a2ff305e151cc1d9e21cd" name="ae0e68335c17a2ff305e151cc1d9e21cd"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ae0e68335c17a2ff305e151cc1d9e21cd">&#9670;&#160;</a></span>getContentBeforeLastOccurence()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">std::string getContentBeforeLastOccurence </td>
-          <td>(</td>
-          <td class="paramtype">const std::string &amp;</td>          <td class="paramname"><span class="paramname"><em>text</em></span>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">const std::string &amp;</td>          <td class="paramname"><span class="paramname"><em>occurence</em></span>&#160;)</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="_text_manager_8cpp_source.html#l00242">242</a> of file <a class="el" href="_text_manager_8cpp_source.html">TextManager.cpp</a>.</p>
-
-</div>
-</div>
-<a id="a3f557e0fad17d434f0d6839e590f6cfe" name="a3f557e0fad17d434f0d6839e590f6cfe"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a3f557e0fad17d434f0d6839e590f6cfe">&#9670;&#160;</a></span>getContentInsideUntil()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">std::string getContentInsideUntil </td>
-          <td>(</td>
-          <td class="paramtype">const std::string &amp;</td>          <td class="paramname"><span class="paramname"><em>text</em></span>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">const std::string &amp;</td>          <td class="paramname"><span class="paramname"><em>inside</em></span>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">const std::string &amp;</td>          <td class="paramname"><span class="paramname"><em>outside</em></span>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">const std::string &amp;</td>          <td class="paramname"><span class="paramname"><em>stop</em></span>&#160;)</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="_text_manager_8cpp_source.html#l00222">222</a> of file <a class="el" href="_text_manager_8cpp_source.html">TextManager.cpp</a>.</p>
-<div class="dynheader">
-Here is the call graph for this function:</div>
-<div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="_text_manager_8cpp_a3f557e0fad17d434f0d6839e590f6cfe_cgraph.svg" width="447" height="163"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
-</div>
-
-</div>
-</div>
-<a id="a6b6762c360fecdd04e1dba79a58e8466" name="a6b6762c360fecdd04e1dba79a58e8466"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a6b6762c360fecdd04e1dba79a58e8466">&#9670;&#160;</a></span>getContentStarting() <span class="overload">[1/2]</span></h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">std::string getContentStarting </td>
-          <td>(</td>
-          <td class="paramtype">const std::string &amp;</td>          <td class="paramname"><span class="paramname"><em>text</em></span>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">const size_t &amp;</td>          <td class="paramname"><span class="paramname"><em>pos</em></span>&#160;)</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="_text_manager_8cpp_source.html#l00302">302</a> of file <a class="el" href="_text_manager_8cpp_source.html">TextManager.cpp</a>.</p>
-
-</div>
-</div>
-<a id="a2b5e78b03c6bedc0fa93a0c3b2dbd5b1" name="a2b5e78b03c6bedc0fa93a0c3b2dbd5b1"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a2b5e78b03c6bedc0fa93a0c3b2dbd5b1">&#9670;&#160;</a></span>getContentStarting() <span class="overload">[2/2]</span></h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">std::string getContentStarting </td>
-          <td>(</td>
-          <td class="paramtype">const std::string &amp;</td>          <td class="paramname"><span class="paramname"><em>text</em></span>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">const std::string &amp;</td>          <td class="paramname"><span class="paramname"><em>content</em></span>&#160;)</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="_text_manager_8cpp_source.html#l00137">137</a> of file <a class="el" href="_text_manager_8cpp_source.html">TextManager.cpp</a>.</p>
-<div class="dynheader">
-Here is the call graph for this function:</div>
-<div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="_text_manager_8cpp_a2b5e78b03c6bedc0fa93a0c3b2dbd5b1_cgraph.svg" width="255" height="62"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
-</div>
-<div class="dynheader">
-Here is the caller graph for this function:</div>
-<div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="_text_manager_8cpp_a2b5e78b03c6bedc0fa93a0c3b2dbd5b1_icgraph.svg" width="275" height="62"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
-</div>
-
-</div>
-</div>
-<a id="a6a59b82e4799f14153c7a28e08d0f96b" name="a6a59b82e4799f14153c7a28e08d0f96b"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a6a59b82e4799f14153c7a28e08d0f96b">&#9670;&#160;</a></span>getContentUntil() <span class="overload">[1/2]</span></h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">std::string getContentUntil </td>
-          <td>(</td>
-          <td class="paramtype">const std::string &amp;</td>          <td class="paramname"><span class="paramname"><em>text</em></span>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">const size_t &amp;</td>          <td class="paramname"><span class="paramname"><em>pos</em></span>&#160;)</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="_text_manager_8cpp_source.html#l00282">282</a> of file <a class="el" href="_text_manager_8cpp_source.html">TextManager.cpp</a>.</p>
-
-</div>
-</div>
-<a id="a85498cf9c4f0f7c18a2aae6a2707f245" name="a85498cf9c4f0f7c18a2aae6a2707f245"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a85498cf9c4f0f7c18a2aae6a2707f245">&#9670;&#160;</a></span>getContentUntil() <span class="overload">[2/2]</span></h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">std::string getContentUntil </td>
-          <td>(</td>
-          <td class="paramtype">const std::string &amp;</td>          <td class="paramname"><span class="paramname"><em>text</em></span>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">const std::string &amp;</td>          <td class="paramname"><span class="paramname"><em>content</em></span>&#160;)</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="_text_manager_8cpp_source.html#l00127">127</a> of file <a class="el" href="_text_manager_8cpp_source.html">TextManager.cpp</a>.</p>
-<div class="dynheader">
-Here is the call graph for this function:</div>
-<div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="_text_manager_8cpp_a85498cf9c4f0f7c18a2aae6a2707f245_cgraph.svg" width="236" height="62"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
-</div>
-<div class="dynheader">
-Here is the caller graph for this function:</div>
-<div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="_text_manager_8cpp_a85498cf9c4f0f7c18a2aae6a2707f245_icgraph.svg" width="344" height="240"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
-</div>
-
-</div>
-</div>
-<a id="a73094485e8f0933e42411cfa2b197a79" name="a73094485e8f0933e42411cfa2b197a79"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a73094485e8f0933e42411cfa2b197a79">&#9670;&#160;</a></span>getContentUntilEqual()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">std::string getContentUntilEqual </td>
-          <td>(</td>
-          <td class="paramtype">const std::string &amp;</td>          <td class="paramname"><span class="paramname"><em>text</em></span>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">const std::string &amp;</td>          <td class="paramname"><span class="paramname"><em>open</em></span>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">const std::string &amp;</td>          <td class="paramname"><span class="paramname"><em>close</em></span>&#160;)</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="_text_manager_8cpp_source.html#l00163">163</a> of file <a class="el" href="_text_manager_8cpp_source.html">TextManager.cpp</a>.</p>
-<div class="dynheader">
-Here is the call graph for this function:</div>
-<div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="_text_manager_8cpp_a73094485e8f0933e42411cfa2b197a79_cgraph.svg" width="446" height="163"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
-</div>
-
-</div>
-</div>
-<a id="a6c3a83e299bc5fddfc934b5cc78093d8" name="a6c3a83e299bc5fddfc934b5cc78093d8"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a6c3a83e299bc5fddfc934b5cc78093d8">&#9670;&#160;</a></span>getContentUntilEqualUntil()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">std::string getContentUntilEqualUntil </td>
-          <td>(</td>
-          <td class="paramtype">const std::string &amp;</td>          <td class="paramname"><span class="paramname"><em>text</em></span>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">const std::string &amp;</td>          <td class="paramname"><span class="paramname"><em>open</em></span>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">const std::string &amp;</td>          <td class="paramname"><span class="paramname"><em>close</em></span>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">const std::string &amp;</td>          <td class="paramname"><span class="paramname"><em>stop</em></span>&#160;)</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="_text_manager_8cpp_source.html#l00183">183</a> of file <a class="el" href="_text_manager_8cpp_source.html">TextManager.cpp</a>.</p>
-<div class="dynheader">
-Here is the call graph for this function:</div>
-<div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="_text_manager_8cpp_a6c3a83e299bc5fddfc934b5cc78093d8_cgraph.svg" width="472" height="163"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
-</div>
-
-</div>
-</div>
-<a id="a98316ec2e3cf34b3091ab6ba823f486c" name="a98316ec2e3cf34b3091ab6ba823f486c"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a98316ec2e3cf34b3091ab6ba823f486c">&#9670;&#160;</a></span>getContentUntilOutside()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">std::string getContentUntilOutside </td>
-          <td>(</td>
-          <td class="paramtype">const std::string &amp;</td>          <td class="paramname"><span class="paramname"><em>text</em></span>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">const std::string &amp;</td>          <td class="paramname"><span class="paramname"><em>inside</em></span>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">const std::string &amp;</td>          <td class="paramname"><span class="paramname"><em>outside</em></span>&#160;)</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="_text_manager_8cpp_source.html#l00202">202</a> of file <a class="el" href="_text_manager_8cpp_source.html">TextManager.cpp</a>.</p>
-<div class="dynheader">
-Here is the call graph for this function:</div>
-<div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="_text_manager_8cpp_a98316ec2e3cf34b3091ab6ba823f486c_cgraph.svg" width="458" height="163"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
-</div>
+<p class="definition">Definition at line <a class="el" href="_text_manager_8cpp_source.html#l00018">18</a> of file <a class="el" href="_text_manager_8cpp_source.html">TextManager.cpp</a>.</p>
 
 </div>
 </div>
@@ -851,11 +621,6 @@ Here is the call graph for this function:</div>
 
 <p class="definition">Definition at line <a class="el" href="_text_manager_8cpp_source.html#l00004">4</a> of file <a class="el" href="_text_manager_8cpp_source.html">TextManager.cpp</a>.</p>
 <div class="dynheader">
-Here is the call graph for this function:</div>
-<div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="_text_manager_8cpp_add36cc54cd9616a393a17b8961491477_cgraph.svg" width="274" height="38"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
-</div>
-<div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
 <div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="_text_manager_8cpp_add36cc54cd9616a393a17b8961491477_icgraph.svg" width="100%" height="600"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
@@ -863,26 +628,35 @@ Here is the caller graph for this function:</div>
 
 </div>
 </div>
-<a id="a5e4308ca14d1f4cfc2456fc26b1361a8" name="a5e4308ca14d1f4cfc2456fc26b1361a8"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a5e4308ca14d1f4cfc2456fc26b1361a8">&#9670;&#160;</a></span>getIfstreamFile()</h2>
+<a id="a06bb4181369f742553d8b86fdb3e1c97" name="a06bb4181369f742553d8b86fdb3e1c97"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a06bb4181369f742553d8b86fdb3e1c97">&#9670;&#160;</a></span>getFirstOccurencePosBefore()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">std::ifstream getIfstreamFile </td>
+          <td class="memname">std::size_t getFirstOccurencePosBefore </td>
           <td>(</td>
-          <td class="paramtype">const std::string &amp;</td>          <td class="paramname"><span class="paramname"><em>path</em></span></td><td>)</td>
+          <td class="paramtype">const std::string &amp;</td>          <td class="paramname"><span class="paramname"><em>text</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
           <td></td>
+          <td class="paramtype">const std::string &amp;</td>          <td class="paramname"><span class="paramname"><em>occ</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const std::string &amp;</td>          <td class="paramname"><span class="paramname"><em>beforeParameter</em></span>&#160;)</td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_text_manager_8cpp_source.html#l00020">20</a> of file <a class="el" href="_text_manager_8cpp_source.html">TextManager.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_text_manager_8cpp_source.html#l00084">84</a> of file <a class="el" href="_text_manager_8cpp_source.html">TextManager.cpp</a>.</p>
 <div class="dynheader">
-Here is the caller graph for this function:</div>
+Here is the call graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="_text_manager_8cpp_a5e4308ca14d1f4cfc2456fc26b1361a8_icgraph.svg" width="100%" height="600"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="_text_manager_8cpp_a06bb4181369f742553d8b86fdb3e1c97_cgraph.svg" width="368" height="38"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 
 </div>
@@ -906,16 +680,49 @@ Here is the caller graph for this function:</div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_text_manager_8cpp_source.html#l00098">98</a> of file <a class="el" href="_text_manager_8cpp_source.html">TextManager.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_text_manager_8cpp_source.html#l00091">91</a> of file <a class="el" href="_text_manager_8cpp_source.html">TextManager.cpp</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="_text_manager_8cpp_af24bee60aa1d3d5b4ae3bf6ebd267ecd_cgraph.svg" width="188" height="38"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="_text_manager_8cpp_af24bee60aa1d3d5b4ae3bf6ebd267ecd_cgraph.svg" width="100%" height="422"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
 </div>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
 <div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="_text_manager_8cpp_af24bee60aa1d3d5b4ae3bf6ebd267ecd_icgraph.svg" width="100%" height="600"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
+</div>
+
+</div>
+</div>
+<a id="ad801a1079aa77d461defa5538ad4f9a9" name="ad801a1079aa77d461defa5538ad4f9a9"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad801a1079aa77d461defa5538ad4f9a9">&#9670;&#160;</a></span>getOccurencePosBefore()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::size_t getOccurencePosBefore </td>
+          <td>(</td>
+          <td class="paramtype">const std::string &amp;</td>          <td class="paramname"><span class="paramname"><em>text</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const std::string &amp;</td>          <td class="paramname"><span class="paramname"><em>begin</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const std::string &amp;</td>          <td class="paramname"><span class="paramname"><em>end</em></span>&#160;)</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="_text_manager_8cpp_source.html#l00066">66</a> of file <a class="el" href="_text_manager_8cpp_source.html">TextManager.cpp</a>.</p>
+<div class="dynheader">
+Here is the call graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><iframe scrolling="no" frameborder="0" src="_text_manager_8cpp_ad801a1079aa77d461defa5538ad4f9a9_cgraph.svg" width="343" height="38"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 
 </div>
@@ -939,7 +746,7 @@ Here is the caller graph for this function:</div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_text_manager_8cpp_source.html#l00025">25</a> of file <a class="el" href="_text_manager_8cpp_source.html">TextManager.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_text_manager_8cpp_source.html#l00030">30</a> of file <a class="el" href="_text_manager_8cpp_source.html">TextManager.cpp</a>.</p>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
@@ -948,14 +755,395 @@ Here is the caller graph for this function:</div>
 
 </div>
 </div>
-<a id="a856b84aae48313c32a2e29a29babd901" name="a856b84aae48313c32a2e29a29babd901"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a856b84aae48313c32a2e29a29babd901">&#9670;&#160;</a></span>isPresentBefore()</h2>
+<a id="a5b66873abcff2faee361721f86b65dd0" name="a5b66873abcff2faee361721f86b65dd0"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5b66873abcff2faee361721f86b65dd0">&#9670;&#160;</a></span>getPosAfter()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">bool isPresentBefore </td>
+          <td class="memname">size_t getPosAfter </td>
+          <td>(</td>
+          <td class="paramtype">const std::string &amp;</td>          <td class="paramname"><span class="paramname"><em>text</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const std::string &amp;</td>          <td class="paramname"><span class="paramname"><em>content</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const size_t &amp;</td>          <td class="paramname"><span class="paramname"><em>offset</em></span>&#160;)</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="_text_manager_8cpp_source.html#l00119">119</a> of file <a class="el" href="_text_manager_8cpp_source.html">TextManager.cpp</a>.</p>
+<div class="dynheader">
+Here is the call graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><iframe scrolling="no" frameborder="0" src="_text_manager_8cpp_a5b66873abcff2faee361721f86b65dd0_cgraph.svg" width="270" height="38"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
+<div class="dynheader">
+Here is the caller graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="_text_manager_8cpp_a5b66873abcff2faee361721f86b65dd0_icgraph.svg" width="100%" height="600"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
+</div>
+
+</div>
+</div>
+<a id="aea84354f56ede69a592634bdaeeebca6" name="aea84354f56ede69a592634bdaeeebca6"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aea84354f56ede69a592634bdaeeebca6">&#9670;&#160;</a></span>getPosEnd()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">size_t getPosEnd </td>
+          <td>(</td>
+          <td class="paramtype">const std::string &amp;</td>          <td class="paramname"><span class="paramname"><em>text</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const std::string &amp;</td>          <td class="paramname"><span class="paramname"><em>content</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const size_t &amp;</td>          <td class="paramname"><span class="paramname"><em>offset</em></span>&#160;)</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="_text_manager_8cpp_source.html#l00124">124</a> of file <a class="el" href="_text_manager_8cpp_source.html">TextManager.cpp</a>.</p>
+<div class="dynheader">
+Here is the call graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><iframe scrolling="no" frameborder="0" src="_text_manager_8cpp_aea84354f56ede69a592634bdaeeebca6_cgraph.svg" width="264" height="38"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
+
+</div>
+</div>
+<a id="a3f4afb2b62acd297e783a22ffa9a7000" name="a3f4afb2b62acd297e783a22ffa9a7000"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3f4afb2b62acd297e783a22ffa9a7000">&#9670;&#160;</a></span>getSequencePos()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">size_t getSequencePos </td>
+          <td>(</td>
+          <td class="paramtype">const std::string &amp;</td>          <td class="paramname"><span class="paramname"><em>text</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const std::string &amp;</td>          <td class="paramname"><span class="paramname"><em>seq</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const size_t &amp;</td>          <td class="paramname"><span class="paramname"><em>offset</em></span>&#160;)</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="_text_manager_8cpp_source.html#l00269">269</a> of file <a class="el" href="_text_manager_8cpp_source.html">TextManager.cpp</a>.</p>
+<div class="dynheader">
+Here is the caller graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="_text_manager_8cpp_a3f4afb2b62acd297e783a22ffa9a7000_icgraph.svg" width="100%" height="600"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
+</div>
+
+</div>
+</div>
+<a id="a07d720ed3b57aaff2c6b76019524b927" name="a07d720ed3b57aaff2c6b76019524b927"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a07d720ed3b57aaff2c6b76019524b927">&#9670;&#160;</a></span>getSequencePosR()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">size_t getSequencePosR </td>
+          <td>(</td>
+          <td class="paramtype">const std::string &amp;</td>          <td class="paramname"><span class="paramname"><em>text</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const std::string &amp;</td>          <td class="paramname"><span class="paramname"><em>seq</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const size_t &amp;</td>          <td class="paramname"><span class="paramname"><em>offset</em></span>&#160;)</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="_text_manager_8cpp_source.html#l00274">274</a> of file <a class="el" href="_text_manager_8cpp_source.html">TextManager.cpp</a>.</p>
+<div class="dynheader">
+Here is the caller graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><iframe scrolling="no" frameborder="0" src="_text_manager_8cpp_a07d720ed3b57aaff2c6b76019524b927_icgraph.svg" width="482" height="139"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
+
+</div>
+</div>
+<a id="a6956d58559ef67f422247fdeb1c22775" name="a6956d58559ef67f422247fdeb1c22775"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6956d58559ef67f422247fdeb1c22775">&#9670;&#160;</a></span>getStringAfter()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::string getStringAfter </td>
+          <td>(</td>
+          <td class="paramtype">const std::string &amp;</td>          <td class="paramname"><span class="paramname"><em>text</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const std::string &amp;</td>          <td class="paramname"><span class="paramname"><em>content</em></span>&#160;)</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="_text_manager_8cpp_source.html#l00114">114</a> of file <a class="el" href="_text_manager_8cpp_source.html">TextManager.cpp</a>.</p>
+<div class="dynheader">
+Here is the call graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><iframe scrolling="no" frameborder="0" src="_text_manager_8cpp_a6956d58559ef67f422247fdeb1c22775_cgraph.svg" width="447" height="112"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
+<div class="dynheader">
+Here is the caller graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="_text_manager_8cpp_a6956d58559ef67f422247fdeb1c22775_icgraph.svg" width="100%" height="600"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
+</div>
+
+</div>
+</div>
+<a id="aff8311b88dbf5f3091f3ac1262543242" name="aff8311b88dbf5f3091f3ac1262543242"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aff8311b88dbf5f3091f3ac1262543242">&#9670;&#160;</a></span>getStringBefore()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::string getStringBefore </td>
+          <td>(</td>
+          <td class="paramtype">const std::string &amp;</td>          <td class="paramname"><span class="paramname"><em>text</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const std::string &amp;</td>          <td class="paramname"><span class="paramname"><em>content</em></span>&#160;)</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="_text_manager_8cpp_source.html#l00103">103</a> of file <a class="el" href="_text_manager_8cpp_source.html">TextManager.cpp</a>.</p>
+<div class="dynheader">
+Here is the call graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><iframe scrolling="no" frameborder="0" src="_text_manager_8cpp_aff8311b88dbf5f3091f3ac1262543242_cgraph.svg" width="291" height="38"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
+<div class="dynheader">
+Here is the caller graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="_text_manager_8cpp_aff8311b88dbf5f3091f3ac1262543242_icgraph.svg" width="100%" height="600"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
+</div>
+
+</div>
+</div>
+<a id="aa98ebbb97e30e73c3fec5e26ec1305d8" name="aa98ebbb97e30e73c3fec5e26ec1305d8"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa98ebbb97e30e73c3fec5e26ec1305d8">&#9670;&#160;</a></span>getStringBeforeLastMatch()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::string getStringBeforeLastMatch </td>
+          <td>(</td>
+          <td class="paramtype">const std::string &amp;</td>          <td class="paramname"><span class="paramname"><em>text</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const std::string &amp;</td>          <td class="paramname"><span class="paramname"><em>match</em></span>&#160;)</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="_text_manager_8cpp_source.html#l00187">187</a> of file <a class="el" href="_text_manager_8cpp_source.html">TextManager.cpp</a>.</p>
+<div class="dynheader">
+Here is the call graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="_text_manager_8cpp_aa98ebbb97e30e73c3fec5e26ec1305d8_cgraph.svg" width="100%" height="384"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
+</div>
+
+</div>
+</div>
+<a id="a5adfb1e14ce20866bfe01ed05b344a87" name="a5adfb1e14ce20866bfe01ed05b344a87"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5adfb1e14ce20866bfe01ed05b344a87">&#9670;&#160;</a></span>getStringInsideBorders()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::string getStringInsideBorders </td>
+          <td>(</td>
+          <td class="paramtype">const std::string &amp;</td>          <td class="paramname"><span class="paramname"><em>text</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const std::string &amp;</td>          <td class="paramname"><span class="paramname"><em>open</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const std::string &amp;</td>          <td class="paramname"><span class="paramname"><em>close</em></span>&#160;)</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="_text_manager_8cpp_source.html#l00155">155</a> of file <a class="el" href="_text_manager_8cpp_source.html">TextManager.cpp</a>.</p>
+<div class="dynheader">
+Here is the call graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="_text_manager_8cpp_a5adfb1e14ce20866bfe01ed05b344a87_cgraph.svg" width="100%" height="531"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
+</div>
+<div class="dynheader">
+Here is the caller graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><iframe scrolling="no" frameborder="0" src="_text_manager_8cpp_a5adfb1e14ce20866bfe01ed05b344a87_icgraph.svg" width="284" height="38"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
+
+</div>
+</div>
+<a id="a68949f143705185b5de387b1250a8599" name="a68949f143705185b5de387b1250a8599"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a68949f143705185b5de387b1250a8599">&#9670;&#160;</a></span>getStringStarting() <span class="overload">[1/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::string getStringStarting </td>
+          <td>(</td>
+          <td class="paramtype">const std::string &amp;</td>          <td class="paramname"><span class="paramname"><em>text</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const size_t &amp;</td>          <td class="paramname"><span class="paramname"><em>pos</em></span>&#160;)</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="_text_manager_8cpp_source.html#l00245">245</a> of file <a class="el" href="_text_manager_8cpp_source.html">TextManager.cpp</a>.</p>
+
+</div>
+</div>
+<a id="a2946b90fb3df56b0a74d53eb4160f4e2" name="a2946b90fb3df56b0a74d53eb4160f4e2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2946b90fb3df56b0a74d53eb4160f4e2">&#9670;&#160;</a></span>getStringStarting() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::string getStringStarting </td>
+          <td>(</td>
+          <td class="paramtype">const std::string &amp;</td>          <td class="paramname"><span class="paramname"><em>text</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const std::string &amp;</td>          <td class="paramname"><span class="paramname"><em>content</em></span>&#160;)</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="_text_manager_8cpp_source.html#l00132">132</a> of file <a class="el" href="_text_manager_8cpp_source.html">TextManager.cpp</a>.</p>
+<div class="dynheader">
+Here is the call graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><iframe scrolling="no" frameborder="0" src="_text_manager_8cpp_a2946b90fb3df56b0a74d53eb4160f4e2_cgraph.svg" width="298" height="62"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
+<div class="dynheader">
+Here is the caller graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="_text_manager_8cpp_a2946b90fb3df56b0a74d53eb4160f4e2_icgraph.svg" width="100%" height="600"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
+</div>
+
+</div>
+</div>
+<a id="a1e51a0b4d80fa91c2b174d65be392cb6" name="a1e51a0b4d80fa91c2b174d65be392cb6"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1e51a0b4d80fa91c2b174d65be392cb6">&#9670;&#160;</a></span>getStringUntil() <span class="overload">[1/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::string getStringUntil </td>
+          <td>(</td>
+          <td class="paramtype">const std::string &amp;</td>          <td class="paramname"><span class="paramname"><em>text</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const size_t &amp;</td>          <td class="paramname"><span class="paramname"><em>pos</em></span>&#160;)</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="_text_manager_8cpp_source.html#l00238">238</a> of file <a class="el" href="_text_manager_8cpp_source.html">TextManager.cpp</a>.</p>
+
+</div>
+</div>
+<a id="a4d2b9819e5e2504ea8d55a553812146a" name="a4d2b9819e5e2504ea8d55a553812146a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4d2b9819e5e2504ea8d55a553812146a">&#9670;&#160;</a></span>getStringUntil() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::string getStringUntil </td>
+          <td>(</td>
+          <td class="paramtype">const std::string &amp;</td>          <td class="paramname"><span class="paramname"><em>text</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const std::string &amp;</td>          <td class="paramname"><span class="paramname"><em>content</em></span>&#160;)</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="_text_manager_8cpp_source.html#l00109">109</a> of file <a class="el" href="_text_manager_8cpp_source.html">TextManager.cpp</a>.</p>
+<div class="dynheader">
+Here is the call graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><iframe scrolling="no" frameborder="0" src="_text_manager_8cpp_a4d2b9819e5e2504ea8d55a553812146a_cgraph.svg" width="418" height="62"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
+<div class="dynheader">
+Here is the caller graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><iframe scrolling="no" frameborder="0" src="_text_manager_8cpp_a4d2b9819e5e2504ea8d55a553812146a_icgraph.svg" width="652" height="190"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
+
+</div>
+</div>
+<a id="a91f22ed7b57fcd5b0c51ef13f0c13873" name="a91f22ed7b57fcd5b0c51ef13f0c13873"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a91f22ed7b57fcd5b0c51ef13f0c13873">&#9670;&#160;</a></span>isBefore()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool isBefore </td>
           <td>(</td>
           <td class="paramtype">const std::string &amp;</td>          <td class="paramname"><span class="paramname"><em>text</em></span>, </td>
         </tr>
@@ -972,17 +1160,50 @@ Here is the caller graph for this function:</div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_text_manager_8cpp_source.html#l00143">143</a> of file <a class="el" href="_text_manager_8cpp_source.html">TextManager.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_text_manager_8cpp_source.html#l00146">146</a> of file <a class="el" href="_text_manager_8cpp_source.html">TextManager.cpp</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="_text_manager_8cpp_a856b84aae48313c32a2e29a29babd901_cgraph.svg" width="239" height="38"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="_text_manager_8cpp_a91f22ed7b57fcd5b0c51ef13f0c13873_cgraph.svg" width="248" height="38"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 
 </div>
 </div>
-<a id="af28b966ccdfa1dc51f8a9aa18b62b343" name="af28b966ccdfa1dc51f8a9aa18b62b343"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#af28b966ccdfa1dc51f8a9aa18b62b343">&#9670;&#160;</a></span>printFileContent()</h2>
+<a id="a72a90b0bbf9fa83e1542341baef2d051" name="a72a90b0bbf9fa83e1542341baef2d051"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a72a90b0bbf9fa83e1542341baef2d051">&#9670;&#160;</a></span>isBeforeStrict()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool isBeforeStrict </td>
+          <td>(</td>
+          <td class="paramtype">const std::string &amp;</td>          <td class="paramname"><span class="paramname"><em>text</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const std::string &amp;</td>          <td class="paramname"><span class="paramname"><em>before</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const std::string &amp;</td>          <td class="paramname"><span class="paramname"><em>after</em></span>&#160;)</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="_text_manager_8cpp_source.html#l00138">138</a> of file <a class="el" href="_text_manager_8cpp_source.html">TextManager.cpp</a>.</p>
+<div class="dynheader">
+Here is the call graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><iframe scrolling="no" frameborder="0" src="_text_manager_8cpp_a72a90b0bbf9fa83e1542341baef2d051_cgraph.svg" width="280" height="38"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
+
+</div>
+</div>
+<a id="a6d41db9b9e6416e155fc5bdeeacef16c" name="a6d41db9b9e6416e155fc5bdeeacef16c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6d41db9b9e6416e155fc5bdeeacef16c">&#9670;&#160;</a></span>printFileContent()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -990,17 +1211,17 @@ Here is the call graph for this function:</div>
         <tr>
           <td class="memname">void printFileContent </td>
           <td>(</td>
-          <td class="paramtype">std::string</td>          <td class="paramname"><span class="paramname"><em>path</em></span></td><td>)</td>
+          <td class="paramtype">const std::string &amp;</td>          <td class="paramname"><span class="paramname"><em>path</em></span></td><td>)</td>
           <td></td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_text_manager_8cpp_source.html#l00318">318</a> of file <a class="el" href="_text_manager_8cpp_source.html">TextManager.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_text_manager_8cpp_source.html#l00280">280</a> of file <a class="el" href="_text_manager_8cpp_source.html">TextManager.cpp</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="_text_manager_8cpp_af28b966ccdfa1dc51f8a9aa18b62b343_cgraph.svg" width="435" height="38"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="_text_manager_8cpp_a6d41db9b9e6416e155fc5bdeeacef16c_cgraph.svg" width="279" height="38"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 
 </div>
@@ -1024,7 +1245,7 @@ Here is the call graph for this function:</div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_text_manager_8cpp_source.html#l00348">348</a> of file <a class="el" href="_text_manager_8cpp_source.html">TextManager.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_text_manager_8cpp_source.html#l00302">302</a> of file <a class="el" href="_text_manager_8cpp_source.html">TextManager.cpp</a>.</p>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
@@ -1052,7 +1273,7 @@ Here is the caller graph for this function:</div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_text_manager_8cpp_source.html#l00358">358</a> of file <a class="el" href="_text_manager_8cpp_source.html">TextManager.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_text_manager_8cpp_source.html#l00312">312</a> of file <a class="el" href="_text_manager_8cpp_source.html">TextManager.cpp</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -1080,35 +1301,12 @@ Here is the call graph for this function:</div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_text_manager_8cpp_source.html#l00111">111</a> of file <a class="el" href="_text_manager_8cpp_source.html">TextManager.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_text_manager_8cpp_source.html#l00096">96</a> of file <a class="el" href="_text_manager_8cpp_source.html">TextManager.cpp</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="_text_manager_8cpp_a5f4889fcc6892114ae5ea80e2fec852e_cgraph.svg" width="406" height="112"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="_text_manager_8cpp_a5f4889fcc6892114ae5ea80e2fec852e_cgraph.svg" width="615" height="163"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
-
-</div>
-</div>
-<a id="a6d7c13a554de9db4c8ebc8b3175af417" name="a6d7c13a554de9db4c8ebc8b3175af417"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a6d7c13a554de9db4c8ebc8b3175af417">&#9670;&#160;</a></span>removeLastOccurence()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">std::string removeLastOccurence </td>
-          <td>(</td>
-          <td class="paramtype">const std::string &amp;</td>          <td class="paramname"><span class="paramname"><em>text</em></span>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">const std::string &amp;</td>          <td class="paramname"><span class="paramname"><em>content</em></span>&#160;)</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="_text_manager_8cpp_source.html#l00323">323</a> of file <a class="el" href="_text_manager_8cpp_source.html">TextManager.cpp</a>.</p>
 
 </div>
 </div>
@@ -1127,7 +1325,97 @@ Here is the call graph for this function:</div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_text_manager_8cpp_source.html#l00251">251</a> of file <a class="el" href="_text_manager_8cpp_source.html">TextManager.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_text_manager_8cpp_source.html#l00192">192</a> of file <a class="el" href="_text_manager_8cpp_source.html">TextManager.cpp</a>.</p>
+
+</div>
+</div>
+<a id="ae58f22c7238c63a9ffd8ac0f9fb36216" name="ae58f22c7238c63a9ffd8ac0f9fb36216"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae58f22c7238c63a9ffd8ac0f9fb36216">&#9670;&#160;</a></span>skipAnySequence()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void skipAnySequence </td>
+          <td>(</td>
+          <td class="paramtype">std::string &amp;</td>          <td class="paramname"><span class="paramname"><em>text</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const std::string &amp;</td>          <td class="paramname"><span class="paramname"><em>sequence</em></span>&#160;)</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="_text_manager_8cpp_source.html#l00226">226</a> of file <a class="el" href="_text_manager_8cpp_source.html">TextManager.cpp</a>.</p>
+<div class="dynheader">
+Here is the caller graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="_text_manager_8cpp_ae58f22c7238c63a9ffd8ac0f9fb36216_icgraph.svg" width="100%" height="366"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
+</div>
+
+</div>
+</div>
+<a id="a053e0b36b2796cc4d128150353f13449" name="a053e0b36b2796cc4d128150353f13449"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a053e0b36b2796cc4d128150353f13449">&#9670;&#160;</a></span>skipSequence()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void skipSequence </td>
+          <td>(</td>
+          <td class="paramtype">std::string &amp;</td>          <td class="paramname"><span class="paramname"><em>text</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const std::string &amp;</td>          <td class="paramname"><span class="paramname"><em>sequence</em></span>&#160;)</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="_text_manager_8cpp_source.html#l00232">232</a> of file <a class="el" href="_text_manager_8cpp_source.html">TextManager.cpp</a>.</p>
+<div class="dynheader">
+Here is the call graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><iframe scrolling="no" frameborder="0" src="_text_manager_8cpp_a053e0b36b2796cc4d128150353f13449_cgraph.svg" width="422" height="38"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
+<div class="dynheader">
+Here is the caller graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="_text_manager_8cpp_a053e0b36b2796cc4d128150353f13449_icgraph.svg" width="100%" height="442"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
+</div>
+
+</div>
+</div>
+<a id="aa6913b7fe272fe20684f1c5c701d54d7" name="aa6913b7fe272fe20684f1c5c701d54d7"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa6913b7fe272fe20684f1c5c701d54d7">&#9670;&#160;</a></span>skipSpace()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void skipSpace </td>
+          <td>(</td>
+          <td class="paramtype">std::string &amp;</td>          <td class="paramname"><span class="paramname"><em>text</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="_text_manager_8cpp_source.html#l00214">214</a> of file <a class="el" href="_text_manager_8cpp_source.html">TextManager.cpp</a>.</p>
+<div class="dynheader">
+Here is the call graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><iframe scrolling="no" frameborder="0" src="_text_manager_8cpp_aa6913b7fe272fe20684f1c5c701d54d7_cgraph.svg" width="268" height="38"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
+<div class="dynheader">
+Here is the caller graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="_text_manager_8cpp_aa6913b7fe272fe20684f1c5c701d54d7_icgraph.svg" width="100%" height="366"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
+</div>
 
 </div>
 </div>
@@ -1146,12 +1434,46 @@ Here is the call graph for this function:</div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_text_manager_8cpp_source.html#l00298">298</a> of file <a class="el" href="_text_manager_8cpp_source.html">TextManager.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_text_manager_8cpp_source.html#l00260">260</a> of file <a class="el" href="_text_manager_8cpp_source.html">TextManager.cpp</a>.</p>
+<div class="dynheader">
+Here is the call graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><iframe scrolling="no" frameborder="0" src="_text_manager_8cpp_a298789aa768d11d50d04a2f246a19a74_cgraph.svg" width="186" height="62"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
 
 </div>
 </div>
-<a id="a98e5aae2b6659418890caba4fad17d5e" name="a98e5aae2b6659418890caba4fad17d5e"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a98e5aae2b6659418890caba4fad17d5e">&#9670;&#160;</a></span>updateContent()</h2>
+<a id="adc3f57b5732570ab943a917fda563ae0" name="adc3f57b5732570ab943a917fda563ae0"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#adc3f57b5732570ab943a917fda563ae0">&#9670;&#160;</a></span>tolower()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::string tolower </td>
+          <td>(</td>
+          <td class="paramtype">const std::string &amp;</td>          <td class="paramname"><span class="paramname"><em>s</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="_text_manager_8cpp_source.html#l00252">252</a> of file <a class="el" href="_text_manager_8cpp_source.html">TextManager.cpp</a>.</p>
+<div class="dynheader">
+Here is the call graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><iframe scrolling="no" frameborder="0" src="_text_manager_8cpp_adc3f57b5732570ab943a917fda563ae0_cgraph.svg" width="75" height="62"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
+<div class="dynheader">
+Here is the caller graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><iframe scrolling="no" frameborder="0" src="_text_manager_8cpp_adc3f57b5732570ab943a917fda563ae0_icgraph.svg" width="186" height="62"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
+
+</div>
+</div>
+<a id="ac695ebe5513185f42689b419f58d8a83" name="ac695ebe5513185f42689b419f58d8a83"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac695ebe5513185f42689b419f58d8a83">&#9670;&#160;</a></span>updateContent()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1169,26 +1491,26 @@ Here is the call graph for this function:</div>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">const std::string &amp;</td>          <td class="paramname"><span class="paramname"><em>first</em></span>, </td>
+          <td class="paramtype">const std::string &amp;</td>          <td class="paramname"><span class="paramname"><em>begin</em></span>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">const std::string &amp;</td>          <td class="paramname"><span class="paramname"><em>last</em></span>&#160;)</td>
+          <td class="paramtype">const std::string &amp;</td>          <td class="paramname"><span class="paramname"><em>end</em></span>&#160;)</td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_text_manager_8cpp_source.html#l00082">82</a> of file <a class="el" href="_text_manager_8cpp_source.html">TextManager.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_text_manager_8cpp_source.html#l00079">79</a> of file <a class="el" href="_text_manager_8cpp_source.html">TextManager.cpp</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="_text_manager_8cpp_a98e5aae2b6659418890caba4fad17d5e_cgraph.svg" width="231" height="38"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="_text_manager_8cpp_ac695ebe5513185f42689b419f58d8a83_cgraph.svg" width="611" height="163"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="_text_manager_8cpp_a98e5aae2b6659418890caba4fad17d5e_icgraph.svg" width="100%" height="600"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
+<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="_text_manager_8cpp_ac695ebe5513185f42689b419f58d8a83_icgraph.svg" width="100%" height="600"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
 </div>
 
 </div>
@@ -1217,7 +1539,7 @@ Here is the caller graph for this function:</div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_text_manager_8cpp_source.html#l00040">40</a> of file <a class="el" href="_text_manager_8cpp_source.html">TextManager.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_text_manager_8cpp_source.html#l00045">45</a> of file <a class="el" href="_text_manager_8cpp_source.html">TextManager.cpp</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">

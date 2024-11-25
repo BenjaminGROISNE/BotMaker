@@ -85,7 +85,7 @@ Public Attributes inherited from <link linkend="_class_tag">Tag</link>        <i
 <title>Detailed Description</title>
 <simplesect><title>template&lt;typename <link linkend="__units_8h_1a2b350cb683584e1f7db6c78f698c161ba21f40778b7db9343a6ca75ec2c41ccce">T</link>&gt;<?linebreak?>class StoreTag&lt; T &gt;</title></simplesect>
 <para>
-Definition at line <link linkend="__tags_8h_source_1l00239">239</link> of file <link linkend="__tags_8h_source">Tags.h</link>.</para>
+Definition at line <link linkend="__tags_8h_source_1l00243">243</link> of file <link linkend="__tags_8h_source">Tags.h</link>.</para>
 </section>
 <section>
 <title>Constructor &amp; Destructor Documentation</title>
@@ -94,21 +94,21 @@ Definition at line <link linkend="__tags_8h_source_1l00239">239</link> of file <
 <indexterm><primary>StoreTag</primary><secondary>StoreTag&lt; T &gt;</secondary></indexterm>
 <indexterm><primary>StoreTag&lt; T &gt;</primary><secondary>StoreTag</secondary></indexterm>
 <computeroutput>template&lt;typename <link linkend="__units_8h_1a2b350cb683584e1f7db6c78f698c161ba21f40778b7db9343a6ca75ec2c41ccce">T</link> &gt; </computeroutput><para><computeroutput><link linkend="_class_store_tag">StoreTag</link>&lt; <link linkend="__units_8h_1a2b350cb683584e1f7db6c78f698c161ba21f40778b7db9343a6ca75ec2c41ccce">T</link> &gt;<link linkend="_class_store_tag">::StoreTag</link> ( )</computeroutput></para><para>
-Definition at line <link linkend="__tags_8cpp_source_1l00495">495</link> of file <link linkend="__tags_8cpp_source">Tags.cpp</link>.</para>
+Definition at line <link linkend="__tags_8cpp_source_1l00500">500</link> of file <link linkend="__tags_8cpp_source">Tags.cpp</link>.</para>
 </section>
 <anchor xml:id="_class_store_tag_1a50314ee81c399e99613d20151ea8a9df"/><section>
     <title>StoreTag()<computeroutput>[2/3]</computeroutput></title>
 <indexterm><primary>StoreTag</primary><secondary>StoreTag&lt; T &gt;</secondary></indexterm>
 <indexterm><primary>StoreTag&lt; T &gt;</primary><secondary>StoreTag</secondary></indexterm>
 <computeroutput>template&lt;typename <link linkend="__units_8h_1a2b350cb683584e1f7db6c78f698c161ba21f40778b7db9343a6ca75ec2c41ccce">T</link> &gt; </computeroutput><para><computeroutput><link linkend="_class_store_tag">StoreTag</link>&lt; <link linkend="__units_8h_1a2b350cb683584e1f7db6c78f698c161ba21f40778b7db9343a6ca75ec2c41ccce">T</link> &gt;<link linkend="_class_store_tag">::StoreTag</link> (const <link linkend="_class_store_tag">StoreTag</link>&lt; <link linkend="__units_8h_1a2b350cb683584e1f7db6c78f698c161ba21f40778b7db9343a6ca75ec2c41ccce">T</link> &gt; &amp; toCopy)</computeroutput></para><para>
-Definition at line <link linkend="__tags_8cpp_source_1l00180">180</link> of file <link linkend="__tags_8cpp_source">Tags.cpp</link>.</para>
+Definition at line <link linkend="__tags_8cpp_source_1l00185">185</link> of file <link linkend="__tags_8cpp_source">Tags.cpp</link>.</para>
 </section>
 <anchor xml:id="_class_store_tag_1aa9fea3a9af763e0747846b0f1636107b"/><section>
     <title>StoreTag()<computeroutput>[3/3]</computeroutput></title>
 <indexterm><primary>StoreTag</primary><secondary>StoreTag&lt; T &gt;</secondary></indexterm>
 <indexterm><primary>StoreTag&lt; T &gt;</primary><secondary>StoreTag</secondary></indexterm>
 <computeroutput>template&lt;typename <link linkend="__units_8h_1a2b350cb683584e1f7db6c78f698c161ba21f40778b7db9343a6ca75ec2c41ccce">T</link> &gt; </computeroutput><para><computeroutput><link linkend="_class_store_tag">StoreTag</link>&lt; <link linkend="__units_8h_1a2b350cb683584e1f7db6c78f698c161ba21f40778b7db9343a6ca75ec2c41ccce">T</link> &gt;<link linkend="_class_store_tag">::StoreTag</link> (const std::string &amp; name, const std::shared_ptr&lt; <link linkend="_class_tag">Tag</link> &gt; &amp; value, <link linkend="_struct_user_variables">UserVariables</link> * uv)</computeroutput></para><para>
-Definition at line <link linkend="__tags_8cpp_source_1l00629">629</link> of file <link linkend="__tags_8cpp_source">Tags.cpp</link>.</para>
+Definition at line <link linkend="__tags_8cpp_source_1l00634">634</link> of file <link linkend="__tags_8cpp_source">Tags.cpp</link>.</para>
 </section>
 </section>
 <section>
@@ -127,7 +127,7 @@ Definition at line <link linkend="__tags_8cpp_source_1l00063">63</link> of file 
 <para><computeroutput>void <link linkend="_class_store_tag">StoreTag</link>&lt; int &gt;::execute ( )<computeroutput>[virtual]</computeroutput></computeroutput></para><para>
 Reimplemented from <link linkend="_class_tag_1a54054f3c9db4decb422972460bbb34c3">Tag</link>.</para>
 <para>
-Definition at line <link linkend="__tags_8cpp_source_1l00577">577</link> of file <link linkend="__tags_8cpp_source">Tags.cpp</link>.</para>
+Definition at line <link linkend="__tags_8cpp_source_1l00582">582</link> of file <link linkend="__tags_8cpp_source">Tags.cpp</link>.</para>
 Here is the call graph for this function:<para>
     <informalfigure>
         <mediaobject>
@@ -145,7 +145,7 @@ Here is the call graph for this function:<para>
 <para><computeroutput>void <link linkend="_class_store_tag">StoreTag</link>&lt; float &gt;::execute ( )<computeroutput>[virtual]</computeroutput></computeroutput></para><para>
 Reimplemented from <link linkend="_class_tag_1a54054f3c9db4decb422972460bbb34c3">Tag</link>.</para>
 <para>
-Definition at line <link linkend="__tags_8cpp_source_1l00582">582</link> of file <link linkend="__tags_8cpp_source">Tags.cpp</link>.</para>
+Definition at line <link linkend="__tags_8cpp_source_1l00587">587</link> of file <link linkend="__tags_8cpp_source">Tags.cpp</link>.</para>
 Here is the call graph for this function:<para>
     <informalfigure>
         <mediaobject>
@@ -163,7 +163,7 @@ Here is the call graph for this function:<para>
 <para><computeroutput>void <link linkend="_class_store_tag">StoreTag</link>&lt; bool &gt;::execute ( )<computeroutput>[virtual]</computeroutput></computeroutput></para><para>
 Reimplemented from <link linkend="_class_tag_1a54054f3c9db4decb422972460bbb34c3">Tag</link>.</para>
 <para>
-Definition at line <link linkend="__tags_8cpp_source_1l00587">587</link> of file <link linkend="__tags_8cpp_source">Tags.cpp</link>.</para>
+Definition at line <link linkend="__tags_8cpp_source_1l00592">592</link> of file <link linkend="__tags_8cpp_source">Tags.cpp</link>.</para>
 Here is the call graph for this function:<para>
     <informalfigure>
         <mediaobject>
@@ -181,7 +181,7 @@ Here is the call graph for this function:<para>
 <para><computeroutput>void <link linkend="_class_store_tag">StoreTag</link>&lt; std::string &gt;::execute ( )<computeroutput>[virtual]</computeroutput></computeroutput></para><para>
 Reimplemented from <link linkend="_class_tag_1a54054f3c9db4decb422972460bbb34c3">Tag</link>.</para>
 <para>
-Definition at line <link linkend="__tags_8cpp_source_1l00592">592</link> of file <link linkend="__tags_8cpp_source">Tags.cpp</link>.</para>
+Definition at line <link linkend="__tags_8cpp_source_1l00597">597</link> of file <link linkend="__tags_8cpp_source">Tags.cpp</link>.</para>
 Here is the call graph for this function:<para>
     <informalfigure>
         <mediaobject>
@@ -199,7 +199,7 @@ Here is the call graph for this function:<para>
 <para><computeroutput>void <link linkend="_class_store_tag">StoreTag</link>&lt; <link linkend="_struct_coord">Coord</link> &gt;::execute ( )<computeroutput>[virtual]</computeroutput></computeroutput></para><para>
 Reimplemented from <link linkend="_class_tag_1a54054f3c9db4decb422972460bbb34c3">Tag</link>.</para>
 <para>
-Definition at line <link linkend="__tags_8cpp_source_1l00597">597</link> of file <link linkend="__tags_8cpp_source">Tags.cpp</link>.</para>
+Definition at line <link linkend="__tags_8cpp_source_1l00602">602</link> of file <link linkend="__tags_8cpp_source">Tags.cpp</link>.</para>
 Here is the call graph for this function:<para>
     <informalfigure>
         <mediaobject>
@@ -217,7 +217,7 @@ Here is the call graph for this function:<para>
 <para><computeroutput>void <link linkend="_class_store_tag">StoreTag</link>&lt; <link linkend="_struct_zone">Zone</link> &gt;::execute ( )<computeroutput>[virtual]</computeroutput></computeroutput></para><para>
 Reimplemented from <link linkend="_class_tag_1a54054f3c9db4decb422972460bbb34c3">Tag</link>.</para>
 <para>
-Definition at line <link linkend="__tags_8cpp_source_1l00602">602</link> of file <link linkend="__tags_8cpp_source">Tags.cpp</link>.</para>
+Definition at line <link linkend="__tags_8cpp_source_1l00607">607</link> of file <link linkend="__tags_8cpp_source">Tags.cpp</link>.</para>
 Here is the call graph for this function:<para>
     <informalfigure>
         <mediaobject>
@@ -235,7 +235,7 @@ Here is the call graph for this function:<para>
 <para><computeroutput>void <link linkend="_class_store_tag">StoreTag</link>&lt; <link linkend="__units_8h_1a224b9163917ac32fc95a60d8c1eec3aa">Direction</link> &gt;::execute ( )<computeroutput>[virtual]</computeroutput></computeroutput></para><para>
 Reimplemented from <link linkend="_class_tag_1a54054f3c9db4decb422972460bbb34c3">Tag</link>.</para>
 <para>
-Definition at line <link linkend="__tags_8cpp_source_1l00607">607</link> of file <link linkend="__tags_8cpp_source">Tags.cpp</link>.</para>
+Definition at line <link linkend="__tags_8cpp_source_1l00612">612</link> of file <link linkend="__tags_8cpp_source">Tags.cpp</link>.</para>
 Here is the call graph for this function:<para>
     <informalfigure>
         <mediaobject>
@@ -261,21 +261,21 @@ Reimplemented from <link linkend="_class_tag_1a54054f3c9db4decb422972460bbb34c3"
 <indexterm><primary>myVariables</primary><secondary>StoreTag&lt; T &gt;</secondary></indexterm>
 <indexterm><primary>StoreTag&lt; T &gt;</primary><secondary>myVariables</secondary></indexterm>
 <computeroutput>template&lt;typename <link linkend="__units_8h_1a2b350cb683584e1f7db6c78f698c161ba21f40778b7db9343a6ca75ec2c41ccce">T</link> &gt; </computeroutput><para><computeroutput><link linkend="_struct_user_variables">UserVariables</link>* <link linkend="_class_store_tag">StoreTag</link>&lt; <link linkend="__units_8h_1a2b350cb683584e1f7db6c78f698c161ba21f40778b7db9343a6ca75ec2c41ccce">T</link> &gt;::myVariables</computeroutput></para><para>
-Definition at line <link linkend="__tags_8h_source_1l00248">248</link> of file <link linkend="__tags_8h_source">Tags.h</link>.</para>
+Definition at line <link linkend="__tags_8h_source_1l00252">252</link> of file <link linkend="__tags_8h_source">Tags.h</link>.</para>
 </section>
 <anchor xml:id="_class_store_tag_1a5aa68146f859cc2edee34f50ad04e83e"/><section>
     <title>valueTag</title>
 <indexterm><primary>valueTag</primary><secondary>StoreTag&lt; T &gt;</secondary></indexterm>
 <indexterm><primary>StoreTag&lt; T &gt;</primary><secondary>valueTag</secondary></indexterm>
 <computeroutput>template&lt;typename <link linkend="__units_8h_1a2b350cb683584e1f7db6c78f698c161ba21f40778b7db9343a6ca75ec2c41ccce">T</link> &gt; </computeroutput><para><computeroutput>std::shared_ptr&lt;<link linkend="_class_tag">Tag</link>&gt; <link linkend="_class_store_tag">StoreTag</link>&lt; <link linkend="__units_8h_1a2b350cb683584e1f7db6c78f698c161ba21f40778b7db9343a6ca75ec2c41ccce">T</link> &gt;::valueTag</computeroutput></para><para>
-Definition at line <link linkend="__tags_8h_source_1l00246">246</link> of file <link linkend="__tags_8h_source">Tags.h</link>.</para>
+Definition at line <link linkend="__tags_8h_source_1l00250">250</link> of file <link linkend="__tags_8h_source">Tags.h</link>.</para>
 </section>
 <anchor xml:id="_class_store_tag_1a32164953b7bc56dd47bc0bc4a439df8f"/><section>
     <title>varName</title>
 <indexterm><primary>varName</primary><secondary>StoreTag&lt; T &gt;</secondary></indexterm>
 <indexterm><primary>StoreTag&lt; T &gt;</primary><secondary>varName</secondary></indexterm>
 <computeroutput>template&lt;typename <link linkend="__units_8h_1a2b350cb683584e1f7db6c78f698c161ba21f40778b7db9343a6ca75ec2c41ccce">T</link> &gt; </computeroutput><para><computeroutput>std::string <link linkend="_class_store_tag">StoreTag</link>&lt; <link linkend="__units_8h_1a2b350cb683584e1f7db6c78f698c161ba21f40778b7db9343a6ca75ec2c41ccce">T</link> &gt;::varName</computeroutput></para><para>
-Definition at line <link linkend="__tags_8h_source_1l00245">245</link> of file <link linkend="__tags_8h_source">Tags.h</link>.</para>
+Definition at line <link linkend="__tags_8h_source_1l00249">249</link> of file <link linkend="__tags_8h_source">Tags.h</link>.</para>
 </section>
 <para>
 The documentation for this class was generated from the following files:</para>

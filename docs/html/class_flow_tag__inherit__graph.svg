@@ -389,29 +389,32 @@ var sectionId = 'dynsection-0';
 <g id="Node000011" class="node">
 <title>Node11</title>
 <g id="a_Node000011"><a xlink:href="class_main_tag.html" target="_top" xlink:title=" ">
-<polygon fill="white" stroke="none" points="1332.25,-222 1203.25,-222 1203.25,-46 1332.25,-46 1332.25,-222"/>
-<text text-anchor="start" x="1249.38" y="-208.5" font-family="Helvetica,sans-Serif" font-size="10.00">MainTag</text>
-<text text-anchor="start" x="1207.25" y="-192.5" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
-<text text-anchor="start" x="1217.25" y="-192.5" font-family="Helvetica,sans-Serif" font-size="10.00">std::vector&lt; std::shared</text>
-<text text-anchor="start" x="1217.25" y="-180.5" font-family="Helvetica,sans-Serif" font-size="10.00">_ptr&lt; Tag &gt; &gt; argvTag</text>
-<text text-anchor="start" x="1207.25" y="-164.5" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
-<text text-anchor="start" x="1217.25" y="-164.5" font-family="Helvetica,sans-Serif" font-size="10.00">MainTag()</text>
-<text text-anchor="start" x="1207.25" y="-148.5" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
-<text text-anchor="start" x="1217.25" y="-148.5" font-family="Helvetica,sans-Serif" font-size="10.00">MainTag(const MainTag</text>
-<text text-anchor="start" x="1217.25" y="-136.5" font-family="Helvetica,sans-Serif" font-size="10.00"> &amp;toCopy)</text>
-<text text-anchor="start" x="1207.25" y="-120.5" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
-<text text-anchor="start" x="1217.25" y="-120.5" font-family="Helvetica,sans-Serif" font-size="10.00">MainTag(const std</text>
-<text text-anchor="start" x="1217.25" y="-108.5" font-family="Helvetica,sans-Serif" font-size="10.00">::vector&lt; std::shared</text>
-<text text-anchor="start" x="1217.25" y="-96.5" font-family="Helvetica,sans-Serif" font-size="10.00">_ptr&lt; Tag &gt; &gt; &amp;tags)</text>
-<text text-anchor="start" x="1207.25" y="-80.5" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
-<text text-anchor="start" x="1217.25" y="-80.5" font-family="Helvetica,sans-Serif" font-size="10.00">std::shared_ptr&lt; MainTag</text>
-<text text-anchor="start" x="1217.25" y="-68.5" font-family="Helvetica,sans-Serif" font-size="10.00"> &gt; clone()</text>
-<text text-anchor="start" x="1207.25" y="-52.5" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
-<text text-anchor="start" x="1217.25" y="-52.5" font-family="Helvetica,sans-Serif" font-size="10.00">void execute() override</text>
-<polygon fill="#666666" stroke="#666666" points="1203.25,-204 1203.25,-204 1332.25,-204 1332.25,-204 1203.25,-204"/>
-<polygon fill="#666666" stroke="#666666" points="1203.25,-176 1203.25,-176 1215.25,-176 1215.25,-176 1203.25,-176"/>
-<polygon fill="#666666" stroke="#666666" points="1215.25,-176 1215.25,-176 1332.25,-176 1332.25,-176 1215.25,-176"/>
-<polygon fill="none" stroke="#666666" points="1203.25,-46 1203.25,-222 1332.25,-222 1332.25,-46 1203.25,-46"/>
+<polygon fill="white" stroke="none" points="1332.25,-236 1203.25,-236 1203.25,-32 1332.25,-32 1332.25,-236"/>
+<text text-anchor="start" x="1249.38" y="-222.5" font-family="Helvetica,sans-Serif" font-size="10.00">MainTag</text>
+<text text-anchor="start" x="1207.25" y="-206.5" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
+<text text-anchor="start" x="1217.25" y="-206.5" font-family="Helvetica,sans-Serif" font-size="10.00">std::vector&lt; std::shared</text>
+<text text-anchor="start" x="1217.25" y="-194.5" font-family="Helvetica,sans-Serif" font-size="10.00">_ptr&lt; Tag &gt; &gt; argvTag</text>
+<text text-anchor="start" x="1207.25" y="-178.5" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
+<text text-anchor="start" x="1217.25" y="-178.5" font-family="Helvetica,sans-Serif" font-size="10.00">MainTag()</text>
+<text text-anchor="start" x="1207.25" y="-162.5" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
+<text text-anchor="start" x="1217.25" y="-162.5" font-family="Helvetica,sans-Serif" font-size="10.00">MainTag(const MainTag</text>
+<text text-anchor="start" x="1217.25" y="-150.5" font-family="Helvetica,sans-Serif" font-size="10.00"> &amp;toCopy)</text>
+<text text-anchor="start" x="1207.25" y="-134.5" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
+<text text-anchor="start" x="1217.25" y="-134.5" font-family="Helvetica,sans-Serif" font-size="10.00">MainTag(std::shared</text>
+<text text-anchor="start" x="1217.25" y="-122.5" font-family="Helvetica,sans-Serif" font-size="10.00">_ptr&lt; Tag &gt; innerTag)</text>
+<text text-anchor="start" x="1207.25" y="-106.5" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
+<text text-anchor="start" x="1217.25" y="-106.5" font-family="Helvetica,sans-Serif" font-size="10.00">MainTag(const std</text>
+<text text-anchor="start" x="1217.25" y="-94.5" font-family="Helvetica,sans-Serif" font-size="10.00">::vector&lt; std::shared</text>
+<text text-anchor="start" x="1217.25" y="-82.5" font-family="Helvetica,sans-Serif" font-size="10.00">_ptr&lt; Tag &gt; &gt; &amp;tags)</text>
+<text text-anchor="start" x="1207.25" y="-66.5" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
+<text text-anchor="start" x="1217.25" y="-66.5" font-family="Helvetica,sans-Serif" font-size="10.00">std::shared_ptr&lt; MainTag</text>
+<text text-anchor="start" x="1217.25" y="-54.5" font-family="Helvetica,sans-Serif" font-size="10.00"> &gt; clone()</text>
+<text text-anchor="start" x="1207.25" y="-38.5" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
+<text text-anchor="start" x="1217.25" y="-38.5" font-family="Helvetica,sans-Serif" font-size="10.00">void execute() override</text>
+<polygon fill="#666666" stroke="#666666" points="1203.25,-218 1203.25,-218 1332.25,-218 1332.25,-218 1203.25,-218"/>
+<polygon fill="#666666" stroke="#666666" points="1203.25,-190 1203.25,-190 1215.25,-190 1215.25,-190 1203.25,-190"/>
+<polygon fill="#666666" stroke="#666666" points="1215.25,-190 1215.25,-190 1332.25,-190 1332.25,-190 1215.25,-190"/>
+<polygon fill="none" stroke="#666666" points="1203.25,-32 1203.25,-236 1332.25,-236 1332.25,-32 1203.25,-32"/>
 </a>
 </g>
 </g>
@@ -419,7 +422,7 @@ var sectionId = 'dynsection-0';
 <g id="edge10_Node000001_Node000011" class="edge">
 <title>Node1&#45;&gt;Node11</title>
 <g id="a_edge10_Node000001_Node000011"><a xlink:title=" ">
-<path fill="none" stroke="#63b8ff" d="M764.45,-450.54C871.2,-429.56 1067.04,-378.19 1193.75,-268 1208.41,-255.26 1220.74,-238.87 1230.89,-221.97"/>
+<path fill="none" stroke="#63b8ff" d="M764.45,-450.54C871.2,-429.56 1067.04,-378.19 1193.75,-268 1204.32,-258.81 1213.68,-247.72 1221.89,-235.92"/>
 <polygon fill="none" stroke="#63b8ff" points="764.11,-447.04 754.95,-452.36 765.43,-453.91 764.11,-447.04"/>
 </a>
 </g>

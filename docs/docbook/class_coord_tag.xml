@@ -70,7 +70,7 @@ Public Attributes inherited from <link linkend="_class_tag">Tag</link>        <i
 <section>
 <title>Detailed Description</title>
 <para>
-Definition at line <link linkend="__tags_8h_source_1l00516">516</link> of file <link linkend="__tags_8h_source">Tags.h</link>.</para>
+Definition at line <link linkend="__tags_8h_source_1l00496">496</link> of file <link linkend="__tags_8h_source">Tags.h</link>.</para>
 </section>
 <section>
 <title>Constructor &amp; Destructor Documentation</title>
@@ -79,28 +79,28 @@ Definition at line <link linkend="__tags_8h_source_1l00516">516</link> of file <
 <indexterm><primary>CoordTag</primary><secondary>CoordTag</secondary></indexterm>
 <indexterm><primary>CoordTag</primary><secondary>CoordTag</secondary></indexterm>
 <para><computeroutput>CoordTag::CoordTag ( )</computeroutput></para><para>
-Definition at line <link linkend="__tags_8cpp_source_1l00948">948</link> of file <link linkend="__tags_8cpp_source">Tags.cpp</link>.</para>
+Definition at line <link linkend="__tags_8cpp_source_1l00953">953</link> of file <link linkend="__tags_8cpp_source">Tags.cpp</link>.</para>
 </section>
 <anchor xml:id="_class_coord_tag_1ace866bfea641c8ed60d85978450cf9da"/><section>
     <title>CoordTag()<computeroutput>[2/4]</computeroutput></title>
 <indexterm><primary>CoordTag</primary><secondary>CoordTag</secondary></indexterm>
 <indexterm><primary>CoordTag</primary><secondary>CoordTag</secondary></indexterm>
 <para><computeroutput>CoordTag::CoordTag (const <link linkend="_class_coord_tag">CoordTag</link> &amp; toCopy)</computeroutput></para><para>
-Definition at line <link linkend="__tags_8cpp_source_1l00251">251</link> of file <link linkend="__tags_8cpp_source">Tags.cpp</link>.</para>
+Definition at line <link linkend="__tags_8cpp_source_1l00256">256</link> of file <link linkend="__tags_8cpp_source">Tags.cpp</link>.</para>
 </section>
 <anchor xml:id="_class_coord_tag_1a165316b5f12ce7d38e3dd10e93676834"/><section>
     <title>CoordTag()<computeroutput>[3/4]</computeroutput></title>
 <indexterm><primary>CoordTag</primary><secondary>CoordTag</secondary></indexterm>
 <indexterm><primary>CoordTag</primary><secondary>CoordTag</secondary></indexterm>
 <para><computeroutput>CoordTag::CoordTag (const std::shared_ptr&lt; <link linkend="_class_tag">Tag</link> &gt; &amp; parameters)</computeroutput></para><para>
-Definition at line <link linkend="__tags_8cpp_source_1l00954">954</link> of file <link linkend="__tags_8cpp_source">Tags.cpp</link>.</para>
+Definition at line <link linkend="__tags_8cpp_source_1l00959">959</link> of file <link linkend="__tags_8cpp_source">Tags.cpp</link>.</para>
 </section>
 <anchor xml:id="_class_coord_tag_1abf3490e4deaceefde96250cefee8d947"/><section>
     <title>CoordTag()<computeroutput>[4/4]</computeroutput></title>
 <indexterm><primary>CoordTag</primary><secondary>CoordTag</secondary></indexterm>
 <indexterm><primary>CoordTag</primary><secondary>CoordTag</secondary></indexterm>
 <para><computeroutput>CoordTag::CoordTag (const std::shared_ptr&lt; <link linkend="_class_tag">Tag</link> &gt; &amp; xPoint, const std::shared_ptr&lt; <link linkend="_class_tag">Tag</link> &gt; &amp; yPoint)</computeroutput></para><para>
-Definition at line <link linkend="__tags_8cpp_source_1l00959">959</link> of file <link linkend="__tags_8cpp_source">Tags.cpp</link>.</para>
+Definition at line <link linkend="__tags_8cpp_source_1l00964">964</link> of file <link linkend="__tags_8cpp_source">Tags.cpp</link>.</para>
 </section>
 </section>
 <section>
@@ -119,7 +119,7 @@ Definition at line <link linkend="__tags_8cpp_source_1l00120">120</link> of file
 <para><computeroutput>void CoordTag::execute ( )<computeroutput>[override]</computeroutput>, <computeroutput>[virtual]</computeroutput></computeroutput></para><para>
 Reimplemented from <link linkend="_class_tag_1a54054f3c9db4decb422972460bbb34c3">Tag</link>.</para>
 <para>
-Definition at line <link linkend="__tags_8cpp_source_1l00998">998</link> of file <link linkend="__tags_8cpp_source">Tags.cpp</link>.</para>
+Definition at line <link linkend="__tags_8cpp_source_1l01003">1003</link> of file <link linkend="__tags_8cpp_source">Tags.cpp</link>.</para>
 Here is the call graph for this function:<para>
     <informalfigure>
         <mediaobject>
@@ -138,14 +138,14 @@ Here is the call graph for this function:<para>
 <indexterm><primary>coordsTag</primary><secondary>CoordTag</secondary></indexterm>
 <indexterm><primary>CoordTag</primary><secondary>coordsTag</secondary></indexterm>
 <para><computeroutput>std::shared_ptr&lt;<link linkend="_class_tag">Tag</link>&gt; CoordTag::coordsTag</computeroutput></para><para>
-Definition at line <link linkend="__tags_8h_source_1l00523">523</link> of file <link linkend="__tags_8h_source">Tags.h</link>.</para>
+Definition at line <link linkend="__tags_8h_source_1l00503">503</link> of file <link linkend="__tags_8h_source">Tags.h</link>.</para>
 </section>
 <anchor xml:id="_class_coord_tag_1a33ae3880b132e3599a4c39bbd69b6b87"/><section>
     <title>myCoords</title>
 <indexterm><primary>myCoords</primary><secondary>CoordTag</secondary></indexterm>
 <indexterm><primary>CoordTag</primary><secondary>myCoords</secondary></indexterm>
 <para><computeroutput><link linkend="_struct_coord">Coord</link> CoordTag::myCoords</computeroutput></para><para>
-Definition at line <link linkend="__tags_8h_source_1l00524">524</link> of file <link linkend="__tags_8h_source">Tags.h</link>.</para>
+Definition at line <link linkend="__tags_8h_source_1l00504">504</link> of file <link linkend="__tags_8h_source">Tags.h</link>.</para>
 </section>
 <para>
 The documentation for this class was generated from the following files:</para>

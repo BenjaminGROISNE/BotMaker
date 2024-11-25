@@ -1,0 +1,601 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<section xmlns="http://docbook.org/ns/docbook" version="5.0" xmlns:xlink="http://www.w3.org/1999/xlink" xml:id="_class_p_k_token" xml:lang="en-US">
+<title>PKToken Class Reference</title>
+<indexterm><primary>PKToken</primary></indexterm>
+<para>
+<computeroutput>#include &lt;Token.h&gt;</computeroutput>
+</para>
+Inheritance diagram for PKToken:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_p_k_token__inherit__graph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+Collaboration diagram for PKToken:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_p_k_token__coll__graph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+<simplesect>
+    <title>Public Member Functions    </title>
+        <itemizedlist>
+            <listitem><para><link linkend="_class_p_k_token_1a3af43a7a3050bf9e446938692be33262">PKToken</link> ()</para>
+</listitem>
+            <listitem><para>void <link linkend="_class_p_k_token_1a53a1431d31066e66aac1c2ea99245c0a">showTokenTree</link> (const int nestedLayer) override</para>
+</listitem>
+            <listitem><para>bool <link linkend="_class_p_k_token_1a533aa21d507b12c9682e3babc83c4396">addTokens</link> (<link linkend="_class_iterator_list">IteratorList</link>&lt; <link linkend="_class_token">Token</link> &gt; &amp;tl, <link linkend="_class_token_result">TokenResult</link> &amp;tRes) override</para>
+</listitem>
+        </itemizedlist>
+</simplesect>
+Public Member Functions inherited from <link linkend="_class_token">Token</link>        <itemizedlist>
+            <listitem><para><link linkend="_class_token_1aa3c5868ba4115f3189df6b2ac5b36f39">Token</link> ()</para>
+</listitem>
+            <listitem><para>virtual <link linkend="__token_8h_1ad8ed01ff3ff33333d8e19db4d2818bb6">DataType</link> <link linkend="_class_token_1ace668259c90b6fd2acc2f61d0e141565">getDataType</link> (<link linkend="_class_token_result">TokenResult</link> &amp;tRes)</para>
+</listitem>
+            <listitem><para><link linkend="__token_8h_1acbd1e63c605cbb3dbe67c7411841b46c">TokenVALUE</link> <link linkend="_class_token_1a0dec1385788e690b5dc30cd99a1ed3c8">getValue</link> ()</para>
+</listitem>
+            <listitem><para>bool <link linkend="_class_token_1ade47ed51e2f495f6d847c1bff9fe8db6">addError</link> (<link linkend="_class_token_result">TokenResult</link> &amp;tRes, <link linkend="__token_8h_1acbd1e63c605cbb3dbe67c7411841b46c">TokenVALUE</link> value, <link linkend="__token_8h_1ab0df38968e4f03a3f1f6d6df0f31f45a">ErrorType</link> et=<link linkend="__token_8h_1ab0df38968e4f03a3f1f6d6df0f31f45aa10d1208b485425756fcc932229386b02">ErrorType::MISSING</link>)</para>
+</listitem>
+            <listitem><para>bool <link linkend="_class_token_1a61f4575ae9e05b93b8812ae9cbacc0f0">addError</link> (<link linkend="_class_token_result">TokenResult</link> &amp;tRes, <link linkend="__token_8h_1ad8ed01ff3ff33333d8e19db4d2818bb6">DataType</link> type)</para>
+</listitem>
+            <listitem><para>std::string <link linkend="_class_token_1a2643198d67a19ce0bd8102b4379d9d12">getTokenText</link> ()</para>
+</listitem>
+            <listitem><para>int <link linkend="_class_token_1a0fe3c8022c8c5f6143c7dd3fba9408fe">getLine</link> ()</para>
+</listitem>
+            <listitem><para>bool <link linkend="_class_token_1ad3fb88977cc7e687450f46e4f9d80a05">hasValue</link> (<link linkend="__token_8h_1acbd1e63c605cbb3dbe67c7411841b46c">TokenVALUE</link> value) const</para>
+</listitem>
+            <listitem><para>virtual std::shared_ptr&lt; <link linkend="_class_tag">Tag</link> &gt; <link linkend="_class_token_1aea759b8376bff558791fdc1f2f70f4fb">execute</link> ()</para>
+</listitem>
+        </itemizedlist>
+<simplesect>
+    <title>Protected Member Functions    </title>
+        <itemizedlist>
+            <listitem><para>bool <link linkend="_class_p_k_token_1a6161b28490f22a80ba2898bcc3fab9d8">addToken</link> (<link linkend="__token_8h_1acbd1e63c605cbb3dbe67c7411841b46c">TokenVALUE</link> tVal, <link linkend="_class_iterator_list">IteratorList</link>&lt; <link linkend="_class_token">Token</link> &gt; &amp;tl, <link linkend="_class_token_result">TokenResult</link> &amp;tRes)</para>
+</listitem>
+            <listitem><para>bool <link linkend="_class_p_k_token_1ae8d5672d16cc994d3d0d3f73e240cec4">addType</link> (<link linkend="__token_8h_1ad8ed01ff3ff33333d8e19db4d2818bb6">DataType</link> tVal, <link linkend="_class_iterator_list">IteratorList</link>&lt; <link linkend="_class_token">Token</link> &gt; &amp;tl, <link linkend="_class_token_result">TokenResult</link> &amp;tRes)</para>
+</listitem>
+            <listitem><para>bool <link linkend="_class_p_k_token_1addbc260740c6abb048dbe063fc52eb67">addType</link> (std::vector&lt; <link linkend="__token_8h_1ad8ed01ff3ff33333d8e19db4d2818bb6">DataType</link> &gt; listTypes, <link linkend="_class_iterator_list">IteratorList</link>&lt; <link linkend="_class_token">Token</link> &gt; &amp;tl, <link linkend="_class_token_result">TokenResult</link> &amp;tRes)</para>
+</listitem>
+            <listitem><para>bool <link linkend="_class_p_k_token_1ae1cc35c4987621ced09326fe94d07e88">addNumber</link> (<link linkend="_class_iterator_list">IteratorList</link>&lt; <link linkend="_class_token">Token</link> &gt; &amp;tl, <link linkend="_class_token_result">TokenResult</link> &amp;tRes)</para>
+</listitem>
+            <listitem><para>bool <link linkend="_class_p_k_token_1abcee4a278fbc864a01ce17a7fe2871b7">addDataType</link> (<link linkend="_class_iterator_list">IteratorList</link>&lt; <link linkend="_class_token">Token</link> &gt; &amp;tl, <link linkend="_class_token_result">TokenResult</link> &amp;tRes)</para>
+</listitem>
+            <listitem><para>bool <link linkend="_class_p_k_token_1a93e03c8505eb71b40a996f895ea0a8a1">addInteger</link> (<link linkend="_class_iterator_list">IteratorList</link>&lt; <link linkend="_class_token">Token</link> &gt; &amp;tl, <link linkend="_class_token_result">TokenResult</link> &amp;tRes)</para>
+</listitem>
+            <listitem><para>bool <link linkend="_class_p_k_token_1ac1c11a5ce856f6705bec792cb9417f16">addFloat</link> (<link linkend="_class_iterator_list">IteratorList</link>&lt; <link linkend="_class_token">Token</link> &gt; &amp;tl, <link linkend="_class_token_result">TokenResult</link> &amp;tRes)</para>
+</listitem>
+            <listitem><para>bool <link linkend="_class_p_k_token_1a00080a1fa3e1ff14ff53f523acf09770">addCoord</link> (<link linkend="_class_iterator_list">IteratorList</link>&lt; <link linkend="_class_token">Token</link> &gt; &amp;tl, <link linkend="_class_token_result">TokenResult</link> &amp;tRes)</para>
+</listitem>
+            <listitem><para>bool <link linkend="_class_p_k_token_1a32ca841c2a6ae8e213d15babbc4a27f9">addZone</link> (<link linkend="_class_iterator_list">IteratorList</link>&lt; <link linkend="_class_token">Token</link> &gt; &amp;tl, <link linkend="_class_token_result">TokenResult</link> &amp;tRes)</para>
+</listitem>
+            <listitem><para>bool <link linkend="_class_p_k_token_1a62f5f46f8befb663543c117d6ed92fc9">addBool</link> (<link linkend="_class_iterator_list">IteratorList</link>&lt; <link linkend="_class_token">Token</link> &gt; &amp;tl, <link linkend="_class_token_result">TokenResult</link> &amp;tRes)</para>
+</listitem>
+            <listitem><para>bool <link linkend="_class_p_k_token_1a97e1183958a6dabeb6652340bfe4a1f7">addIdentifier</link> (<link linkend="_class_iterator_list">IteratorList</link>&lt; <link linkend="_class_token">Token</link> &gt; &amp;tl, <link linkend="_class_token_result">TokenResult</link> &amp;tRes)</para>
+</listitem>
+            <listitem><para>bool <link linkend="_class_p_k_token_1a6cf23e694a6bf9e4c08a72d3cc48d899">addString</link> (<link linkend="_class_iterator_list">IteratorList</link>&lt; <link linkend="_class_token">Token</link> &gt; &amp;tl, <link linkend="_class_token_result">TokenResult</link> &amp;tRes)</para>
+</listitem>
+            <listitem><para>bool <link linkend="_class_p_k_token_1a9bd07a9eaf2728560d1aa29bcc13bba9">addComma</link> (<link linkend="_class_iterator_list">IteratorList</link>&lt; <link linkend="_class_token">Token</link> &gt; &amp;tl, <link linkend="_class_token_result">TokenResult</link> &amp;tRes)</para>
+</listitem>
+            <listitem><para>bool <link linkend="_class_p_k_token_1abf2772818107f39c995f40f698630539">addTimeType</link> (<link linkend="_class_iterator_list">IteratorList</link>&lt; <link linkend="_class_token">Token</link> &gt; &amp;tl, <link linkend="_class_token_result">TokenResult</link> &amp;tRes)</para>
+</listitem>
+            <listitem><para>bool <link linkend="_class_p_k_token_1aa0d39255200f157dcead5e02815c0345">addOp</link> (<link linkend="_class_iterator_list">IteratorList</link>&lt; <link linkend="_class_token">Token</link> &gt; &amp;tl, <link linkend="_class_token_result">TokenResult</link> &amp;tRes)</para>
+</listitem>
+            <listitem><para>bool <link linkend="_class_p_k_token_1a2a1e90c3b769f9125740c05de9da7499">addCp</link> (<link linkend="_class_iterator_list">IteratorList</link>&lt; <link linkend="_class_token">Token</link> &gt; &amp;tl, <link linkend="_class_token_result">TokenResult</link> &amp;tRes)</para>
+</listitem>
+            <listitem><para>virtual bool <link linkend="_class_p_k_token_1ab964c1ed5353551fafcab7d9f0053a86">handleArguments</link> (<link linkend="_class_iterator_list">IteratorList</link>&lt; <link linkend="_class_token">Token</link> &gt; &amp;tl, <link linkend="_class_token_result">TokenResult</link> &amp;tRes)</para>
+</listitem>
+            <listitem><para>virtual void <link linkend="_class_p_k_token_1a6b73584776ba004968c2273a7466e62c">setOverloads</link> ()</para>
+</listitem>
+            <listitem><para>virtual void <link linkend="_class_p_k_token_1a64d744e4cf4b113bc458eb03f15ba69d">dispatchArguments</link> ()</para>
+</listitem>
+            <listitem><para>virtual void <link linkend="_class_p_k_token_1a5aebdb70c18806f9119694e027202396">showArguments</link> (const int nestedLayer)</para>
+</listitem>
+        </itemizedlist>
+</simplesect>
+Protected Member Functions inherited from <link linkend="_class_k_token">KToken</link><simplesect>
+    <title>Protected Attributes    </title>
+        <itemizedlist>
+            <listitem><para><link linkend="_class_arguments_overload">ArgumentsOverload</link> <link linkend="_class_p_k_token_1a42553332bc9d8bb3f267bf3cba36240c">argsOverload</link></para>
+</listitem>
+            <listitem><para>std::vector&lt; std::shared_ptr&lt; <link linkend="_class_token">Token</link> &gt; &gt; <link linkend="_class_p_k_token_1a4d20bfdc555a0c45d45465b9ab26d1ec">argTokens</link></para>
+</listitem>
+        </itemizedlist>
+</simplesect>
+Protected Attributes inherited from <link linkend="_class_token">Token</link>        <itemizedlist>
+            <listitem><para>std::string <link linkend="_class_token_1a8b3faba4c73c28d11fec73758a0302b2">tokenText</link></para>
+</listitem>
+            <listitem><para><link linkend="__token_8h_1acbd1e63c605cbb3dbe67c7411841b46c">TokenVALUE</link> <link linkend="_class_token_1a4c8ce9cf1eecbc7e49650307eea6a862">tValue</link></para>
+</listitem>
+            <listitem><para>int <link linkend="_class_token_1a4b96c2a31d7c374fd2bd1986794f80dd">line</link></para>
+</listitem>
+        </itemizedlist>
+<section>
+<title>Detailed Description</title>
+<para>
+Definition at line <link linkend="__token_8h_source_1l00313">313</link> of file <link linkend="__token_8h_source">Token.h</link>.</para>
+</section>
+<section>
+<title>Constructor &amp; Destructor Documentation</title>
+<anchor xml:id="_class_p_k_token_1a3af43a7a3050bf9e446938692be33262"/><section>
+    <title>PKToken()</title>
+<indexterm><primary>PKToken</primary><secondary>PKToken</secondary></indexterm>
+<indexterm><primary>PKToken</primary><secondary>PKToken</secondary></indexterm>
+<para><computeroutput>PKToken::PKToken ( )</computeroutput></para><para>
+Definition at line <link linkend="__token_8cpp_source_1l00187">187</link> of file <link linkend="__token_8cpp_source">Token.cpp</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_p_k_token_a3af43a7a3050bf9e446938692be33262_cgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+</section>
+<section>
+<title>Member Function Documentation</title>
+<anchor xml:id="_class_p_k_token_1a62f5f46f8befb663543c117d6ed92fc9"/><section>
+    <title>addBool()</title>
+<indexterm><primary>addBool</primary><secondary>PKToken</secondary></indexterm>
+<indexterm><primary>PKToken</primary><secondary>addBool</secondary></indexterm>
+<para><computeroutput>bool PKToken::addBool (<link linkend="_class_iterator_list">IteratorList</link>&lt; <link linkend="_class_token">Token</link> &gt; &amp; tl, <link linkend="_class_token_result">TokenResult</link> &amp; tRes)<computeroutput>[protected]</computeroutput></computeroutput></para><para>
+Definition at line <link linkend="__token_8cpp_source_1l00366">366</link> of file <link linkend="__token_8cpp_source">Token.cpp</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_p_k_token_a62f5f46f8befb663543c117d6ed92fc9_cgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+Here is the caller graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_p_k_token_a62f5f46f8befb663543c117d6ed92fc9_icgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_class_p_k_token_1a9bd07a9eaf2728560d1aa29bcc13bba9"/><section>
+    <title>addComma()</title>
+<indexterm><primary>addComma</primary><secondary>PKToken</secondary></indexterm>
+<indexterm><primary>PKToken</primary><secondary>addComma</secondary></indexterm>
+<para><computeroutput>bool PKToken::addComma (<link linkend="_class_iterator_list">IteratorList</link>&lt; <link linkend="_class_token">Token</link> &gt; &amp; tl, <link linkend="_class_token_result">TokenResult</link> &amp; tRes)<computeroutput>[protected]</computeroutput></computeroutput></para><para>
+Definition at line <link linkend="__token_8cpp_source_1l00358">358</link> of file <link linkend="__token_8cpp_source">Token.cpp</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_p_k_token_a9bd07a9eaf2728560d1aa29bcc13bba9_cgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+Here is the caller graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_p_k_token_a9bd07a9eaf2728560d1aa29bcc13bba9_icgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_class_p_k_token_1a00080a1fa3e1ff14ff53f523acf09770"/><section>
+    <title>addCoord()</title>
+<indexterm><primary>addCoord</primary><secondary>PKToken</secondary></indexterm>
+<indexterm><primary>PKToken</primary><secondary>addCoord</secondary></indexterm>
+<para><computeroutput>bool PKToken::addCoord (<link linkend="_class_iterator_list">IteratorList</link>&lt; <link linkend="_class_token">Token</link> &gt; &amp; tl, <link linkend="_class_token_result">TokenResult</link> &amp; tRes)<computeroutput>[protected]</computeroutput></computeroutput></para><para>
+Definition at line <link linkend="__token_8cpp_source_1l00346">346</link> of file <link linkend="__token_8cpp_source">Token.cpp</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_p_k_token_a00080a1fa3e1ff14ff53f523acf09770_cgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_class_p_k_token_1a2a1e90c3b769f9125740c05de9da7499"/><section>
+    <title>addCp()</title>
+<indexterm><primary>addCp</primary><secondary>PKToken</secondary></indexterm>
+<indexterm><primary>PKToken</primary><secondary>addCp</secondary></indexterm>
+<para><computeroutput>bool PKToken::addCp (<link linkend="_class_iterator_list">IteratorList</link>&lt; <link linkend="_class_token">Token</link> &gt; &amp; tl, <link linkend="_class_token_result">TokenResult</link> &amp; tRes)<computeroutput>[protected]</computeroutput></computeroutput></para><para>
+Definition at line <link linkend="__token_8cpp_source_1l00375">375</link> of file <link linkend="__token_8cpp_source">Token.cpp</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_p_k_token_a2a1e90c3b769f9125740c05de9da7499_cgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_class_p_k_token_1abcee4a278fbc864a01ce17a7fe2871b7"/><section>
+    <title>addDataType()</title>
+<indexterm><primary>addDataType</primary><secondary>PKToken</secondary></indexterm>
+<indexterm><primary>PKToken</primary><secondary>addDataType</secondary></indexterm>
+<para><computeroutput>bool PKToken::addDataType (<link linkend="_class_iterator_list">IteratorList</link>&lt; <link linkend="_class_token">Token</link> &gt; &amp; tl, <link linkend="_class_token_result">TokenResult</link> &amp; tRes)<computeroutput>[protected]</computeroutput></computeroutput></para><para>
+Definition at line <link linkend="__token_8cpp_source_1l00335">335</link> of file <link linkend="__token_8cpp_source">Token.cpp</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_p_k_token_abcee4a278fbc864a01ce17a7fe2871b7_cgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_class_p_k_token_1ac1c11a5ce856f6705bec792cb9417f16"/><section>
+    <title>addFloat()</title>
+<indexterm><primary>addFloat</primary><secondary>PKToken</secondary></indexterm>
+<indexterm><primary>PKToken</primary><secondary>addFloat</secondary></indexterm>
+<para><computeroutput>bool PKToken::addFloat (<link linkend="_class_iterator_list">IteratorList</link>&lt; <link linkend="_class_token">Token</link> &gt; &amp; tl, <link linkend="_class_token_result">TokenResult</link> &amp; tRes)<computeroutput>[protected]</computeroutput></computeroutput></para><para>
+Definition at line <link linkend="__token_8cpp_source_1l00342">342</link> of file <link linkend="__token_8cpp_source">Token.cpp</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_p_k_token_ac1c11a5ce856f6705bec792cb9417f16_cgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_class_p_k_token_1a97e1183958a6dabeb6652340bfe4a1f7"/><section>
+    <title>addIdentifier()</title>
+<indexterm><primary>addIdentifier</primary><secondary>PKToken</secondary></indexterm>
+<indexterm><primary>PKToken</primary><secondary>addIdentifier</secondary></indexterm>
+<para><computeroutput>bool PKToken::addIdentifier (<link linkend="_class_iterator_list">IteratorList</link>&lt; <link linkend="_class_token">Token</link> &gt; &amp; tl, <link linkend="_class_token_result">TokenResult</link> &amp; tRes)<computeroutput>[protected]</computeroutput></computeroutput></para><para>
+Definition at line <link linkend="__token_8cpp_source_1l00431">431</link> of file <link linkend="__token_8cpp_source">Token.cpp</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_p_k_token_a97e1183958a6dabeb6652340bfe4a1f7_cgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_class_p_k_token_1a93e03c8505eb71b40a996f895ea0a8a1"/><section>
+    <title>addInteger()</title>
+<indexterm><primary>addInteger</primary><secondary>PKToken</secondary></indexterm>
+<indexterm><primary>PKToken</primary><secondary>addInteger</secondary></indexterm>
+<para><computeroutput>bool PKToken::addInteger (<link linkend="_class_iterator_list">IteratorList</link>&lt; <link linkend="_class_token">Token</link> &gt; &amp; tl, <link linkend="_class_token_result">TokenResult</link> &amp; tRes)<computeroutput>[protected]</computeroutput></computeroutput></para><para>
+Definition at line <link linkend="__token_8cpp_source_1l00338">338</link> of file <link linkend="__token_8cpp_source">Token.cpp</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_p_k_token_a93e03c8505eb71b40a996f895ea0a8a1_cgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_class_p_k_token_1ae1cc35c4987621ced09326fe94d07e88"/><section>
+    <title>addNumber()</title>
+<indexterm><primary>addNumber</primary><secondary>PKToken</secondary></indexterm>
+<indexterm><primary>PKToken</primary><secondary>addNumber</secondary></indexterm>
+<para><computeroutput>bool PKToken::addNumber (<link linkend="_class_iterator_list">IteratorList</link>&lt; <link linkend="_class_token">Token</link> &gt; &amp; tl, <link linkend="_class_token_result">TokenResult</link> &amp; tRes)<computeroutput>[protected]</computeroutput></computeroutput></para><para>
+Definition at line <link linkend="__token_8cpp_source_1l00274">274</link> of file <link linkend="__token_8cpp_source">Token.cpp</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_p_k_token_ae1cc35c4987621ced09326fe94d07e88_cgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_class_p_k_token_1aa0d39255200f157dcead5e02815c0345"/><section>
+    <title>addOp()</title>
+<indexterm><primary>addOp</primary><secondary>PKToken</secondary></indexterm>
+<indexterm><primary>PKToken</primary><secondary>addOp</secondary></indexterm>
+<para><computeroutput>bool PKToken::addOp (<link linkend="_class_iterator_list">IteratorList</link>&lt; <link linkend="_class_token">Token</link> &gt; &amp; tl, <link linkend="_class_token_result">TokenResult</link> &amp; tRes)<computeroutput>[protected]</computeroutput></computeroutput></para><para>
+Definition at line <link linkend="__token_8cpp_source_1l00370">370</link> of file <link linkend="__token_8cpp_source">Token.cpp</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_p_k_token_aa0d39255200f157dcead5e02815c0345_cgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+Here is the caller graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_p_k_token_aa0d39255200f157dcead5e02815c0345_icgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_class_p_k_token_1a6cf23e694a6bf9e4c08a72d3cc48d899"/><section>
+    <title>addString()</title>
+<indexterm><primary>addString</primary><secondary>PKToken</secondary></indexterm>
+<indexterm><primary>PKToken</primary><secondary>addString</secondary></indexterm>
+<para><computeroutput>bool PKToken::addString (<link linkend="_class_iterator_list">IteratorList</link>&lt; <link linkend="_class_token">Token</link> &gt; &amp; tl, <link linkend="_class_token_result">TokenResult</link> &amp; tRes)<computeroutput>[protected]</computeroutput></computeroutput></para><para>
+Definition at line <link linkend="__token_8cpp_source_1l00354">354</link> of file <link linkend="__token_8cpp_source">Token.cpp</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_p_k_token_a6cf23e694a6bf9e4c08a72d3cc48d899_cgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_class_p_k_token_1abf2772818107f39c995f40f698630539"/><section>
+    <title>addTimeType()</title>
+<indexterm><primary>addTimeType</primary><secondary>PKToken</secondary></indexterm>
+<indexterm><primary>PKToken</primary><secondary>addTimeType</secondary></indexterm>
+<para><computeroutput>bool PKToken::addTimeType (<link linkend="_class_iterator_list">IteratorList</link>&lt; <link linkend="_class_token">Token</link> &gt; &amp; tl, <link linkend="_class_token_result">TokenResult</link> &amp; tRes)<computeroutput>[protected]</computeroutput></computeroutput></para><para>
+Definition at line <link linkend="__token_8cpp_source_1l00362">362</link> of file <link linkend="__token_8cpp_source">Token.cpp</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_p_k_token_abf2772818107f39c995f40f698630539_cgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_class_p_k_token_1a6161b28490f22a80ba2898bcc3fab9d8"/><section>
+    <title>addToken()</title>
+<indexterm><primary>addToken</primary><secondary>PKToken</secondary></indexterm>
+<indexterm><primary>PKToken</primary><secondary>addToken</secondary></indexterm>
+<para><computeroutput>bool PKToken::addToken (<link linkend="__token_8h_1acbd1e63c605cbb3dbe67c7411841b46c">TokenVALUE</link> tVal, <link linkend="_class_iterator_list">IteratorList</link>&lt; <link linkend="_class_token">Token</link> &gt; &amp; tl, <link linkend="_class_token_result">TokenResult</link> &amp; tRes)<computeroutput>[protected]</computeroutput></computeroutput></para><para>
+Definition at line <link linkend="__token_8cpp_source_1l00279">279</link> of file <link linkend="__token_8cpp_source">Token.cpp</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_p_k_token_a6161b28490f22a80ba2898bcc3fab9d8_cgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+Here is the caller graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_p_k_token_a6161b28490f22a80ba2898bcc3fab9d8_icgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_class_p_k_token_1a533aa21d507b12c9682e3babc83c4396"/><section>
+    <title>addTokens()</title>
+<indexterm><primary>addTokens</primary><secondary>PKToken</secondary></indexterm>
+<indexterm><primary>PKToken</primary><secondary>addTokens</secondary></indexterm>
+<para><computeroutput>bool PKToken::addTokens (<link linkend="_class_iterator_list">IteratorList</link>&lt; <link linkend="_class_token">Token</link> &gt; &amp; tl, <link linkend="_class_token_result">TokenResult</link> &amp; tRes)<computeroutput>[override]</computeroutput>, <computeroutput>[virtual]</computeroutput></computeroutput></para><para>
+Reimplemented from <link linkend="_class_k_token_1aa70f9690ec470ceece17f9641bc9fb96">KToken</link>.</para>
+<para>
+Reimplemented in <link linkend="_class_store_token_1a42ebff8fa5aa531bfa439cf4b9fd7613">StoreToken</link>, <link linkend="_class_u_p_k_token_1a17fe15dac3bae5361799314d76a63800">UPKToken</link>, and <link linkend="_class_wait_token_1a0c7c5e917c640de13ee85f0361f73fb1">WaitToken</link>.</para>
+<para>
+Definition at line <link linkend="__token_8cpp_source_1l00204">204</link> of file <link linkend="__token_8cpp_source">Token.cpp</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_p_k_token_a533aa21d507b12c9682e3babc83c4396_cgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+Here is the caller graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_p_k_token_a533aa21d507b12c9682e3babc83c4396_icgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_class_p_k_token_1ae8d5672d16cc994d3d0d3f73e240cec4"/><section>
+    <title>addType()<computeroutput>[1/2]</computeroutput></title>
+<indexterm><primary>addType</primary><secondary>PKToken</secondary></indexterm>
+<indexterm><primary>PKToken</primary><secondary>addType</secondary></indexterm>
+<para><computeroutput>bool PKToken::addType (<link linkend="__token_8h_1ad8ed01ff3ff33333d8e19db4d2818bb6">DataType</link> tVal, <link linkend="_class_iterator_list">IteratorList</link>&lt; <link linkend="_class_token">Token</link> &gt; &amp; tl, <link linkend="_class_token_result">TokenResult</link> &amp; tRes)<computeroutput>[protected]</computeroutput></computeroutput></para><para>
+Definition at line <link linkend="__token_8cpp_source_1l00299">299</link> of file <link linkend="__token_8cpp_source">Token.cpp</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_p_k_token_ae8d5672d16cc994d3d0d3f73e240cec4_cgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+Here is the caller graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_p_k_token_ae8d5672d16cc994d3d0d3f73e240cec4_icgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_class_p_k_token_1addbc260740c6abb048dbe063fc52eb67"/><section>
+    <title>addType()<computeroutput>[2/2]</computeroutput></title>
+<indexterm><primary>addType</primary><secondary>PKToken</secondary></indexterm>
+<indexterm><primary>PKToken</primary><secondary>addType</secondary></indexterm>
+<para><computeroutput>bool PKToken::addType (std::vector&lt; <link linkend="__token_8h_1ad8ed01ff3ff33333d8e19db4d2818bb6">DataType</link> &gt; listTypes, <link linkend="_class_iterator_list">IteratorList</link>&lt; <link linkend="_class_token">Token</link> &gt; &amp; tl, <link linkend="_class_token_result">TokenResult</link> &amp; tRes)<computeroutput>[protected]</computeroutput></computeroutput></para><para>
+Definition at line <link linkend="__token_8cpp_source_1l00309">309</link> of file <link linkend="__token_8cpp_source">Token.cpp</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_p_k_token_addbc260740c6abb048dbe063fc52eb67_cgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_class_p_k_token_1a32ca841c2a6ae8e213d15babbc4a27f9"/><section>
+    <title>addZone()</title>
+<indexterm><primary>addZone</primary><secondary>PKToken</secondary></indexterm>
+<indexterm><primary>PKToken</primary><secondary>addZone</secondary></indexterm>
+<para><computeroutput>bool PKToken::addZone (<link linkend="_class_iterator_list">IteratorList</link>&lt; <link linkend="_class_token">Token</link> &gt; &amp; tl, <link linkend="_class_token_result">TokenResult</link> &amp; tRes)<computeroutput>[protected]</computeroutput></computeroutput></para><para>
+Definition at line <link linkend="__token_8cpp_source_1l00350">350</link> of file <link linkend="__token_8cpp_source">Token.cpp</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_p_k_token_a32ca841c2a6ae8e213d15babbc4a27f9_cgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_class_p_k_token_1a64d744e4cf4b113bc458eb03f15ba69d"/><section>
+    <title>dispatchArguments()</title>
+<indexterm><primary>dispatchArguments</primary><secondary>PKToken</secondary></indexterm>
+<indexterm><primary>PKToken</primary><secondary>dispatchArguments</secondary></indexterm>
+<para><computeroutput>void PKToken::dispatchArguments ( )<computeroutput>[protected]</computeroutput>, <computeroutput>[virtual]</computeroutput></computeroutput></para><para>
+Reimplemented in <link linkend="_class_c_k_token_1a2d3563d0c427c2f88fbd7ddd118efe78">CKToken</link>, <link linkend="_class_coord_token_1a427329931b6beea89e89eb777290e0b3">CoordToken</link>, <link linkend="_class_store_token_1ab7dd1b936a3f820ab3b06091496f434d">StoreToken</link>, <link linkend="_class_u_p_k_token_1ab96afbaa766bc09f25fee4a0a8c8098f">UPKToken</link>, <link linkend="_class_wait_token_1a639055be7ce0426127e3441ffcb28652">WaitToken</link>, and <link linkend="_class_zone_token_1a7ebcb70f7ef89bc1cd193e86f337022a">ZoneToken</link>.</para>
+<para>
+Definition at line <link linkend="__token_8cpp_source_1l00158">158</link> of file <link linkend="__token_8cpp_source">Token.cpp</link>.</para>
+Here is the caller graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_p_k_token_a64d744e4cf4b113bc458eb03f15ba69d_icgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_class_p_k_token_1ab964c1ed5353551fafcab7d9f0053a86"/><section>
+    <title>handleArguments()</title>
+<indexterm><primary>handleArguments</primary><secondary>PKToken</secondary></indexterm>
+<indexterm><primary>PKToken</primary><secondary>handleArguments</secondary></indexterm>
+<para><computeroutput>bool PKToken::handleArguments (<link linkend="_class_iterator_list">IteratorList</link>&lt; <link linkend="_class_token">Token</link> &gt; &amp; tl, <link linkend="_class_token_result">TokenResult</link> &amp; tRes)<computeroutput>[protected]</computeroutput>, <computeroutput>[virtual]</computeroutput></computeroutput></para><para>
+Definition at line <link linkend="__token_8cpp_source_1l00116">116</link> of file <link linkend="__token_8cpp_source">Token.cpp</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_p_k_token_ab964c1ed5353551fafcab7d9f0053a86_cgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+Here is the caller graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_p_k_token_ab964c1ed5353551fafcab7d9f0053a86_icgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_class_p_k_token_1a6b73584776ba004968c2273a7466e62c"/><section>
+    <title>setOverloads()</title>
+<indexterm><primary>setOverloads</primary><secondary>PKToken</secondary></indexterm>
+<indexterm><primary>PKToken</primary><secondary>setOverloads</secondary></indexterm>
+<para><computeroutput>void PKToken::setOverloads ( )<computeroutput>[protected]</computeroutput>, <computeroutput>[virtual]</computeroutput></computeroutput></para><para>
+Reimplemented in <link linkend="_class_b_m_p_k_token_1a7ca2b30d87d777d1b086ef885069cfb6">BMPKToken</link>, <link linkend="_class_c_k_token_1a826b592efb9b09d8f3110f134671ec4b">CKToken</link>, <link linkend="_class_compare_token_1a518feb2d1f82dab200d49538bd303ad7">CompareToken</link>, <link linkend="_class_coord_token_1a6cc138e57660c753a4b96c335c6105a4">CoordToken</link>, <link linkend="_class_direction_token_1a0a49d672e7b1c45ed5a67db29dc35955">DirectionToken</link>, <link linkend="_class_float_token_1a0f59e32a7fff30d2b09e509a69126305">FloatToken</link>, <link linkend="_class_integer_token_1a30a0007432b5d56252b4a3f703569801">IntegerToken</link>, <link linkend="_class_list_token_1a7d31a5d4d920fbdaaa0073c76d9051a3">ListToken</link>, <link linkend="_class_main_token_1ae9247cca379895ee8c033482c1beab9e">MainToken</link>, <link linkend="_class_print_token_1a0901d022b06f4b6cee86160bac8b8bb5">PrintToken</link>, <link linkend="_class_store_token_1a153770d480bad3f9c611084e64641a78">StoreToken</link>, <link linkend="_class_string_token_1a5f90b2ff445397ebeb3ae09dbbc749f5">StringToken</link>, <link linkend="_class_wait_token_1ab8a24eb04c56c85111816352fcee3381">WaitToken</link>, and <link linkend="_class_zone_token_1a0ecbf706cef317c8fa0234cbb9006824">ZoneToken</link>.</para>
+<para>
+Definition at line <link linkend="__token_8cpp_source_1l00154">154</link> of file <link linkend="__token_8cpp_source">Token.cpp</link>.</para>
+Here is the caller graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_p_k_token_a6b73584776ba004968c2273a7466e62c_icgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_class_p_k_token_1a5aebdb70c18806f9119694e027202396"/><section>
+    <title>showArguments()</title>
+<indexterm><primary>showArguments</primary><secondary>PKToken</secondary></indexterm>
+<indexterm><primary>PKToken</primary><secondary>showArguments</secondary></indexterm>
+<para><computeroutput>void PKToken::showArguments (const int nestedLayer)<computeroutput>[protected]</computeroutput>, <computeroutput>[virtual]</computeroutput></computeroutput></para><para>
+Reimplemented in <link linkend="_class_coord_token_1a9f04020eee6553e459eaef139ad0ba66">CoordToken</link>, <link linkend="_class_flow_c_k_token_1a697e625af9e4d7a142b87242d5179d3b">FlowCKToken</link>, <link linkend="_class_m_p_k_token_1a11f6e83467f2cfef75d5b0d6affca054">MPKToken</link>, <link linkend="_class_u_p_k_token_1a001ffd8e4e33029fe1aa8e0a4cc3eaac">UPKToken</link>, and <link linkend="_class_zone_token_1af424617eb2ad025c9e4b9d470cf5d46f">ZoneToken</link>.</para>
+<para>
+Definition at line <link linkend="__token_8cpp_source_1l00170">170</link> of file <link linkend="__token_8cpp_source">Token.cpp</link>.</para>
+Here is the caller graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_p_k_token_a5aebdb70c18806f9119694e027202396_icgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_class_p_k_token_1a53a1431d31066e66aac1c2ea99245c0a"/><section>
+    <title>showTokenTree()</title>
+<indexterm><primary>showTokenTree</primary><secondary>PKToken</secondary></indexterm>
+<indexterm><primary>PKToken</primary><secondary>showTokenTree</secondary></indexterm>
+<para><computeroutput>void PKToken::showTokenTree (const int nestedLayer)<computeroutput>[override]</computeroutput>, <computeroutput>[virtual]</computeroutput></computeroutput></para><para>
+Reimplemented from <link linkend="_class_token_1abd61b776070d98e2e1b748831a8ae85e">Token</link>.</para>
+<para>
+Definition at line <link linkend="__token_8cpp_source_1l00162">162</link> of file <link linkend="__token_8cpp_source">Token.cpp</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_p_k_token_a53a1431d31066e66aac1c2ea99245c0a_cgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+Here is the caller graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_p_k_token_a53a1431d31066e66aac1c2ea99245c0a_icgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+</section>
+<section>
+<title>Member Data Documentation</title>
+<anchor xml:id="_class_p_k_token_1a42553332bc9d8bb3f267bf3cba36240c"/><section>
+    <title>argsOverload</title>
+<indexterm><primary>argsOverload</primary><secondary>PKToken</secondary></indexterm>
+<indexterm><primary>PKToken</primary><secondary>argsOverload</secondary></indexterm>
+<para><computeroutput><link linkend="_class_arguments_overload">ArgumentsOverload</link> PKToken::argsOverload<computeroutput>[protected]</computeroutput></computeroutput></para><para>
+Definition at line <link linkend="__token_8h_source_1l00319">319</link> of file <link linkend="__token_8h_source">Token.h</link>.</para>
+</section>
+<anchor xml:id="_class_p_k_token_1a4d20bfdc555a0c45d45465b9ab26d1ec"/><section>
+    <title>argTokens</title>
+<indexterm><primary>argTokens</primary><secondary>PKToken</secondary></indexterm>
+<indexterm><primary>PKToken</primary><secondary>argTokens</secondary></indexterm>
+<para><computeroutput>std::vector&lt;std::shared_ptr&lt;<link linkend="_class_token">Token</link>&gt; &gt; PKToken::argTokens<computeroutput>[protected]</computeroutput></computeroutput></para><para>
+Definition at line <link linkend="__token_8h_source_1l00340">340</link> of file <link linkend="__token_8h_source">Token.h</link>.</para>
+</section>
+<para>
+The documentation for this class was generated from the following files:</para>
+src/<link linkend="__token_8h">Token.h</link>src/<link linkend="__token_8cpp">Token.cpp</link></section>
+</section>

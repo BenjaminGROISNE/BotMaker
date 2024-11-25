@@ -40,10 +40,6 @@ Collaboration diagram for CompareTag&lt; T &gt;:<para>
 </listitem>
             <listitem><para>void <link linkend="_class_compare_tag_1a85e20d6d3c66adf2b5835842c36cceb6">execute</link> ()</para>
 </listitem>
-            <listitem><para>void <link linkend="_class_compare_tag_1a85e20d6d3c66adf2b5835842c36cceb6">execute</link> ()</para>
-</listitem>
-            <listitem><para>void <link linkend="_class_compare_tag_1a86f4370ec7c06612dc614d5ee0a80bbc">execute</link> ()</para>
-</listitem>
         </itemizedlist>
 </simplesect>
 Public Member Functions inherited from <link linkend="_class_bool_tag">BoolTag</link>        <itemizedlist>
@@ -95,7 +91,7 @@ Public Attributes inherited from <link linkend="_class_tag">Tag</link>        <i
 <title>Detailed Description</title>
 <simplesect><title>template&lt;typename <link linkend="__units_8h_1a2b350cb683584e1f7db6c78f698c161ba21f40778b7db9343a6ca75ec2c41ccce">T</link>&gt;<?linebreak?>class CompareTag&lt; T &gt;</title></simplesect>
 <para>
-Definition at line <link linkend="__tags_8h_source_1l00492">492</link> of file <link linkend="__tags_8h_source">Tags.h</link>.</para>
+Definition at line <link linkend="__tags_8h_source_1l00483">483</link> of file <link linkend="__tags_8h_source">Tags.h</link>.</para>
 </section>
 <section>
 <title>Constructor &amp; Destructor Documentation</title>
@@ -104,21 +100,21 @@ Definition at line <link linkend="__tags_8h_source_1l00492">492</link> of file <
 <indexterm><primary>CompareTag</primary><secondary>CompareTag&lt; T &gt;</secondary></indexterm>
 <indexterm><primary>CompareTag&lt; T &gt;</primary><secondary>CompareTag</secondary></indexterm>
 <computeroutput>template&lt;typename <link linkend="__units_8h_1a2b350cb683584e1f7db6c78f698c161ba21f40778b7db9343a6ca75ec2c41ccce">T</link> &gt; </computeroutput><para><computeroutput><link linkend="_class_compare_tag">CompareTag</link>&lt; <link linkend="__units_8h_1a2b350cb683584e1f7db6c78f698c161ba21f40778b7db9343a6ca75ec2c41ccce">T</link> &gt;<link linkend="_class_compare_tag">::CompareTag</link> ( )</computeroutput></para><para>
-Definition at line <link linkend="__tags_8cpp_source_1l01262">1262</link> of file <link linkend="__tags_8cpp_source">Tags.cpp</link>.</para>
+Definition at line <link linkend="__tags_8cpp_source_1l01267">1267</link> of file <link linkend="__tags_8cpp_source">Tags.cpp</link>.</para>
 </section>
 <anchor xml:id="_class_compare_tag_1a68a4235b16258efd215b6db0be537154"/><section>
     <title>CompareTag()<computeroutput>[2/3]</computeroutput></title>
 <indexterm><primary>CompareTag</primary><secondary>CompareTag&lt; T &gt;</secondary></indexterm>
 <indexterm><primary>CompareTag&lt; T &gt;</primary><secondary>CompareTag</secondary></indexterm>
 <computeroutput>template&lt;typename <link linkend="__units_8h_1a2b350cb683584e1f7db6c78f698c161ba21f40778b7db9343a6ca75ec2c41ccce">T</link> &gt; </computeroutput><para><computeroutput><link linkend="_class_compare_tag">CompareTag</link>&lt; <link linkend="__units_8h_1a2b350cb683584e1f7db6c78f698c161ba21f40778b7db9343a6ca75ec2c41ccce">T</link> &gt;<link linkend="_class_compare_tag">::CompareTag</link> (const <link linkend="_class_compare_tag">CompareTag</link>&lt; <link linkend="__units_8h_1a2b350cb683584e1f7db6c78f698c161ba21f40778b7db9343a6ca75ec2c41ccce">T</link> &gt; &amp; toCopy)</computeroutput></para><para>
-Definition at line <link linkend="__tags_8cpp_source_1l00245">245</link> of file <link linkend="__tags_8cpp_source">Tags.cpp</link>.</para>
+Definition at line <link linkend="__tags_8cpp_source_1l00250">250</link> of file <link linkend="__tags_8cpp_source">Tags.cpp</link>.</para>
 </section>
 <anchor xml:id="_class_compare_tag_1adb5c84adc077cafd2ca312e65b1266e3"/><section>
     <title>CompareTag()<computeroutput>[3/3]</computeroutput></title>
 <indexterm><primary>CompareTag</primary><secondary>CompareTag&lt; T &gt;</secondary></indexterm>
 <indexterm><primary>CompareTag&lt; T &gt;</primary><secondary>CompareTag</secondary></indexterm>
 <computeroutput>template&lt;typename <link linkend="__units_8h_1a2b350cb683584e1f7db6c78f698c161ba21f40778b7db9343a6ca75ec2c41ccce">T</link> &gt; </computeroutput><para><computeroutput><link linkend="_class_compare_tag">CompareTag</link>&lt; <link linkend="__units_8h_1a2b350cb683584e1f7db6c78f698c161ba21f40778b7db9343a6ca75ec2c41ccce">T</link> &gt;<link linkend="_class_compare_tag">::CompareTag</link> (const std::vector&lt; std::shared_ptr&lt; <link linkend="_class_tag">Tag</link> &gt; &gt; &amp; parameters, const <link linkend="__tags_8h_1afbc5396d9a88c41d6aeb522b9f06f426">CompareType</link> &amp; cType)</computeroutput></para><para>
-Definition at line <link linkend="__tags_8cpp_source_1l01438">1438</link> of file <link linkend="__tags_8cpp_source">Tags.cpp</link>.</para>
+Definition at line <link linkend="__tags_8cpp_source_1l01443">1443</link> of file <link linkend="__tags_8cpp_source">Tags.cpp</link>.</para>
 </section>
 </section>
 <section>
@@ -131,13 +127,13 @@ Definition at line <link linkend="__tags_8cpp_source_1l01438">1438</link> of fil
 Definition at line <link linkend="__tags_8cpp_source_1l00117">117</link> of file <link linkend="__tags_8cpp_source">Tags.cpp</link>.</para>
 </section>
 <anchor xml:id="_class_compare_tag_1a86f4370ec7c06612dc614d5ee0a80bbc"/><section>
-    <title>execute()<computeroutput>[1/5]</computeroutput></title>
+    <title>execute()<computeroutput>[1/3]</computeroutput></title>
 <indexterm><primary>execute</primary><secondary>CompareTag&lt; T &gt;</secondary></indexterm>
 <indexterm><primary>CompareTag&lt; T &gt;</primary><secondary>execute</secondary></indexterm>
 <para><computeroutput>void <link linkend="_class_compare_tag">CompareTag</link>&lt; int &gt;::execute ( )<computeroutput>[virtual]</computeroutput></computeroutput></para><para>
 Reimplemented from <link linkend="_class_bool_tag_1a2695d817dcbf4150f25cec21a453633a">BoolTag</link>.</para>
 <para>
-Definition at line <link linkend="__tags_8cpp_source_1l01378">1378</link> of file <link linkend="__tags_8cpp_source">Tags.cpp</link>.</para>
+Definition at line <link linkend="__tags_8cpp_source_1l01383">1383</link> of file <link linkend="__tags_8cpp_source">Tags.cpp</link>.</para>
 Here is the call graph for this function:<para>
     <informalfigure>
         <mediaobject>
@@ -149,13 +145,13 @@ Here is the call graph for this function:<para>
 </para>
 </section>
 <anchor xml:id="_class_compare_tag_1a85e20d6d3c66adf2b5835842c36cceb6"/><section>
-    <title>execute()<computeroutput>[2/5]</computeroutput></title>
+    <title>execute()<computeroutput>[2/3]</computeroutput></title>
 <indexterm><primary>execute</primary><secondary>CompareTag&lt; T &gt;</secondary></indexterm>
 <indexterm><primary>CompareTag&lt; T &gt;</primary><secondary>execute</secondary></indexterm>
 <para><computeroutput>void <link linkend="_class_compare_tag">CompareTag</link>&lt; float &gt;::execute ( )<computeroutput>[virtual]</computeroutput></computeroutput></para><para>
 Reimplemented from <link linkend="_class_bool_tag_1a2695d817dcbf4150f25cec21a453633a">BoolTag</link>.</para>
 <para>
-Definition at line <link linkend="__tags_8cpp_source_1l01406">1406</link> of file <link linkend="__tags_8cpp_source">Tags.cpp</link>.</para>
+Definition at line <link linkend="__tags_8cpp_source_1l01411">1411</link> of file <link linkend="__tags_8cpp_source">Tags.cpp</link>.</para>
 Here is the call graph for this function:<para>
     <informalfigure>
         <mediaobject>
@@ -166,28 +162,14 @@ Here is the call graph for this function:<para>
     </informalfigure>
 </para>
 </section>
-<anchor xml:id="_class_compare_tag_1a85e20d6d3c66adf2b5835842c36cceb6"/><section>
-    <title>execute()<computeroutput>[3/5]</computeroutput></title>
-<indexterm><primary>execute</primary><secondary>CompareTag&lt; T &gt;</secondary></indexterm>
-<indexterm><primary>CompareTag&lt; T &gt;</primary><secondary>execute</secondary></indexterm>
-<para><computeroutput>void <link linkend="_class_compare_tag">CompareTag</link>&lt; float &gt;::execute ( )<computeroutput>[virtual]</computeroutput></computeroutput></para><para>
-Reimplemented from <link linkend="_class_bool_tag_1a2695d817dcbf4150f25cec21a453633a">BoolTag</link>.</para>
-</section>
-<anchor xml:id="_class_compare_tag_1a86f4370ec7c06612dc614d5ee0a80bbc"/><section>
-    <title>execute()<computeroutput>[4/5]</computeroutput></title>
-<indexterm><primary>execute</primary><secondary>CompareTag&lt; T &gt;</secondary></indexterm>
-<indexterm><primary>CompareTag&lt; T &gt;</primary><secondary>execute</secondary></indexterm>
-<para><computeroutput>void <link linkend="_class_compare_tag">CompareTag</link>&lt; int &gt;::execute ( )<computeroutput>[virtual]</computeroutput></computeroutput></para><para>
-Reimplemented from <link linkend="_class_bool_tag_1a2695d817dcbf4150f25cec21a453633a">BoolTag</link>.</para>
-</section>
 <anchor xml:id="_class_compare_tag_1a574c5229cbbc446a28fa2ef1cea813c3"/><section>
-    <title>execute()<computeroutput>[5/5]</computeroutput></title>
+    <title>execute()<computeroutput>[3/3]</computeroutput></title>
 <indexterm><primary>execute</primary><secondary>CompareTag&lt; T &gt;</secondary></indexterm>
 <indexterm><primary>CompareTag&lt; T &gt;</primary><secondary>execute</secondary></indexterm>
 <computeroutput>template&lt;typename <link linkend="__units_8h_1a2b350cb683584e1f7db6c78f698c161ba21f40778b7db9343a6ca75ec2c41ccce">T</link> &gt; </computeroutput><para><computeroutput>void <link linkend="_class_compare_tag">CompareTag</link>&lt; <link linkend="__units_8h_1a2b350cb683584e1f7db6c78f698c161ba21f40778b7db9343a6ca75ec2c41ccce">T</link> &gt;::execute ( )<computeroutput>[override]</computeroutput>, <computeroutput>[virtual]</computeroutput></computeroutput></para><para>
 Reimplemented from <link linkend="_class_bool_tag_1a2695d817dcbf4150f25cec21a453633a">BoolTag</link>.</para>
 <para>
-Definition at line <link linkend="__tags_8cpp_source_1l01361">1361</link> of file <link linkend="__tags_8cpp_source">Tags.cpp</link>.</para>
+Definition at line <link linkend="__tags_8cpp_source_1l01366">1366</link> of file <link linkend="__tags_8cpp_source">Tags.cpp</link>.</para>
 Here is the call graph for this function:<para>
     <informalfigure>
         <mediaobject>
@@ -206,14 +188,14 @@ Here is the call graph for this function:<para>
 <indexterm><primary>compType</primary><secondary>CompareTag&lt; T &gt;</secondary></indexterm>
 <indexterm><primary>CompareTag&lt; T &gt;</primary><secondary>compType</secondary></indexterm>
 <computeroutput>template&lt;typename <link linkend="__units_8h_1a2b350cb683584e1f7db6c78f698c161ba21f40778b7db9343a6ca75ec2c41ccce">T</link> &gt; </computeroutput><para><computeroutput><link linkend="__tags_8h_1afbc5396d9a88c41d6aeb522b9f06f426">CompareType</link> <link linkend="_class_compare_tag">CompareTag</link>&lt; <link linkend="__units_8h_1a2b350cb683584e1f7db6c78f698c161ba21f40778b7db9343a6ca75ec2c41ccce">T</link> &gt;::compType</computeroutput></para><para>
-Definition at line <link linkend="__tags_8h_source_1l00499">499</link> of file <link linkend="__tags_8h_source">Tags.h</link>.</para>
+Definition at line <link linkend="__tags_8h_source_1l00490">490</link> of file <link linkend="__tags_8h_source">Tags.h</link>.</para>
 </section>
 <anchor xml:id="_class_compare_tag_1a4bd1f8441e86eed46ed849b844af3050"/><section>
     <title>listTags</title>
 <indexterm><primary>listTags</primary><secondary>CompareTag&lt; T &gt;</secondary></indexterm>
 <indexterm><primary>CompareTag&lt; T &gt;</primary><secondary>listTags</secondary></indexterm>
 <computeroutput>template&lt;typename <link linkend="__units_8h_1a2b350cb683584e1f7db6c78f698c161ba21f40778b7db9343a6ca75ec2c41ccce">T</link> &gt; </computeroutput><para><computeroutput>std::vector&lt;std::shared_ptr&lt;<link linkend="_class_tag">Tag</link>&gt; &gt; <link linkend="_class_compare_tag">CompareTag</link>&lt; <link linkend="__units_8h_1a2b350cb683584e1f7db6c78f698c161ba21f40778b7db9343a6ca75ec2c41ccce">T</link> &gt;::listTags</computeroutput></para><para>
-Definition at line <link linkend="__tags_8h_source_1l00498">498</link> of file <link linkend="__tags_8h_source">Tags.h</link>.</para>
+Definition at line <link linkend="__tags_8h_source_1l00489">489</link> of file <link linkend="__tags_8h_source">Tags.h</link>.</para>
 </section>
 <para>
 The documentation for this class was generated from the following files:</para>

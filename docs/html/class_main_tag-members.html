@@ -27,9 +27,8 @@
  <tbody>
  <tr id="projectrow">
   <td id="projectalign">
-   <div id="projectname">BotMaker<span id="projectnumber">&#160;beta</span>
+   <div id="projectname">BotMaker
    </div>
-   <div id="projectbrief">Tool to create bots on Bluestacks</div>
   </td>
  </tr>
  </tbody>
@@ -118,17 +117,18 @@ $(function(){initNavTree('class_main_tag.html',''); initResizable(true); });
   <tr class="even"><td class="entry"><a class="el" href="class_flow_tag.html#acd2b7db4f8634f186244c308cc2499c7">listPreviousFlowTags</a></td><td class="entry"><a class="el" href="class_flow_tag.html">FlowTag</a></td><td class="entry"></td></tr>
   <tr class="odd"><td class="entry"><a class="el" href="class_main_tag.html#a78d5543dafe277cb3d92a7dc81d4a1a9">MainTag</a>()</td><td class="entry"><a class="el" href="class_main_tag.html">MainTag</a></td><td class="entry"></td></tr>
   <tr class="even"><td class="entry"><a class="el" href="class_main_tag.html#a0e708aab6c532a7f544203a52885eb25">MainTag</a>(const MainTag &amp;toCopy)</td><td class="entry"><a class="el" href="class_main_tag.html">MainTag</a></td><td class="entry"></td></tr>
-  <tr class="odd"><td class="entry"><a class="el" href="class_main_tag.html#aca93f098bb94af3ab20b7ab1f67ef527">MainTag</a>(const std::vector&lt; std::shared_ptr&lt; Tag &gt; &gt; &amp;tags)</td><td class="entry"><a class="el" href="class_main_tag.html">MainTag</a></td><td class="entry"></td></tr>
-  <tr class="even"><td class="entry"><a class="el" href="class_tag.html#aa82f368cc2d55922ea75ba85020517c1">myType</a></td><td class="entry"><a class="el" href="class_tag.html">Tag</a></td><td class="entry"></td></tr>
-  <tr class="odd"><td class="entry"><a class="el" href="class_tag.html#a25aa826cd8818bcf0670164d285c3fdd">nbParents</a></td><td class="entry"><a class="el" href="class_tag.html">Tag</a></td><td class="entry"></td></tr>
-  <tr class="even"><td class="entry"><a class="el" href="class_flow_tag.html#a0912449920ad966d78eff6f0a46c50bf">nestedTags</a></td><td class="entry"><a class="el" href="class_flow_tag.html">FlowTag</a></td><td class="entry"></td></tr>
-  <tr class="odd"><td class="entry"><a class="el" href="class_flow_tag.html#abc8bd4efabae9ac712d76869d6ae7621">parentFlowTag</a></td><td class="entry"><a class="el" href="class_flow_tag.html">FlowTag</a></td><td class="entry"></td></tr>
-  <tr class="even"><td class="entry"><a class="el" href="class_flow_tag.html#a55889e6a0b482006dc3940782e892b76">previousTag</a></td><td class="entry"><a class="el" href="class_flow_tag.html">FlowTag</a></td><td class="entry"></td></tr>
-  <tr class="odd"><td class="entry"><a class="el" href="class_flow_tag.html#a05c9772461f3196076558af05e4da81a">rebootLoop</a></td><td class="entry"><a class="el" href="class_flow_tag.html">FlowTag</a></td><td class="entry"></td></tr>
-  <tr class="even"><td class="entry"><a class="el" href="class_flow_tag.html#ae6c96344984018fc5be3f56f89f2bf20">showTag</a>()</td><td class="entry"><a class="el" href="class_flow_tag.html">FlowTag</a></td><td class="entry"></td></tr>
-  <tr class="odd"><td class="entry"><a class="el" href="class_tag.html#af2008705aa18e21efecb9e737b6b1a26">Tag</a>()</td><td class="entry"><a class="el" href="class_tag.html">Tag</a></td><td class="entry"></td></tr>
-  <tr class="even"><td class="entry"><a class="el" href="class_tag.html#a5955a7ef3228749f5d264581d5c612ab">Tag</a>(const Tag &amp;toCopy)</td><td class="entry"><a class="el" href="class_tag.html">Tag</a></td><td class="entry"></td></tr>
-  <tr class="odd"><td class="entry"><a class="el" href="class_tag.html#a2b252c6a602db12fcb53a67ce3e9ca1b">tagText</a></td><td class="entry"><a class="el" href="class_tag.html">Tag</a></td><td class="entry"></td></tr>
+  <tr class="odd"><td class="entry"><a class="el" href="class_main_tag.html#aa34cb8e47a02b0d94c9d4ef0ff36e310">MainTag</a>(std::shared_ptr&lt; Tag &gt; innerTag)</td><td class="entry"><a class="el" href="class_main_tag.html">MainTag</a></td><td class="entry"></td></tr>
+  <tr class="even"><td class="entry"><a class="el" href="class_main_tag.html#aca93f098bb94af3ab20b7ab1f67ef527">MainTag</a>(const std::vector&lt; std::shared_ptr&lt; Tag &gt; &gt; &amp;tags)</td><td class="entry"><a class="el" href="class_main_tag.html">MainTag</a></td><td class="entry"></td></tr>
+  <tr class="odd"><td class="entry"><a class="el" href="class_tag.html#aa82f368cc2d55922ea75ba85020517c1">myType</a></td><td class="entry"><a class="el" href="class_tag.html">Tag</a></td><td class="entry"></td></tr>
+  <tr class="even"><td class="entry"><a class="el" href="class_tag.html#a25aa826cd8818bcf0670164d285c3fdd">nbParents</a></td><td class="entry"><a class="el" href="class_tag.html">Tag</a></td><td class="entry"></td></tr>
+  <tr class="odd"><td class="entry"><a class="el" href="class_flow_tag.html#a0912449920ad966d78eff6f0a46c50bf">nestedTags</a></td><td class="entry"><a class="el" href="class_flow_tag.html">FlowTag</a></td><td class="entry"></td></tr>
+  <tr class="even"><td class="entry"><a class="el" href="class_flow_tag.html#abc8bd4efabae9ac712d76869d6ae7621">parentFlowTag</a></td><td class="entry"><a class="el" href="class_flow_tag.html">FlowTag</a></td><td class="entry"></td></tr>
+  <tr class="odd"><td class="entry"><a class="el" href="class_flow_tag.html#a55889e6a0b482006dc3940782e892b76">previousTag</a></td><td class="entry"><a class="el" href="class_flow_tag.html">FlowTag</a></td><td class="entry"></td></tr>
+  <tr class="even"><td class="entry"><a class="el" href="class_flow_tag.html#a05c9772461f3196076558af05e4da81a">rebootLoop</a></td><td class="entry"><a class="el" href="class_flow_tag.html">FlowTag</a></td><td class="entry"></td></tr>
+  <tr class="odd"><td class="entry"><a class="el" href="class_flow_tag.html#ae6c96344984018fc5be3f56f89f2bf20">showTag</a>()</td><td class="entry"><a class="el" href="class_flow_tag.html">FlowTag</a></td><td class="entry"></td></tr>
+  <tr class="even"><td class="entry"><a class="el" href="class_tag.html#af2008705aa18e21efecb9e737b6b1a26">Tag</a>()</td><td class="entry"><a class="el" href="class_tag.html">Tag</a></td><td class="entry"></td></tr>
+  <tr class="odd"><td class="entry"><a class="el" href="class_tag.html#a5955a7ef3228749f5d264581d5c612ab">Tag</a>(const Tag &amp;toCopy)</td><td class="entry"><a class="el" href="class_tag.html">Tag</a></td><td class="entry"></td></tr>
+  <tr class="even"><td class="entry"><a class="el" href="class_tag.html#a2b252c6a602db12fcb53a67ce3e9ca1b">tagText</a></td><td class="entry"><a class="el" href="class_tag.html">Tag</a></td><td class="entry"></td></tr>
 </table></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->

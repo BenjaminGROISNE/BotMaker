@@ -145,6 +145,7 @@ class MainTag : public FlowTag {
 public:
 	MainTag();
 	MainTag(const MainTag& toCopy);
+	MainTag(std::shared_ptr<Tag> innerTag);
 	MainTag(const std::vector<std::shared_ptr<Tag>>&tags);
 	std::vector<std::shared_ptr<Tag>> argvTag;
 	std::shared_ptr<MainTag> clone();

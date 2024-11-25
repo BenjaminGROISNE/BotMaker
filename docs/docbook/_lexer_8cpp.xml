@@ -1,0 +1,67 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<section xmlns="http://docbook.org/ns/docbook" version="5.0" xmlns:xlink="http://www.w3.org/1999/xlink" xml:id="__lexer_8cpp" xml:lang="en-US">
+<title>src/Lexer.cpp File Reference</title>
+<indexterm><primary>src/Lexer.cpp</primary></indexterm>
+<programlisting linenumbering="unnumbered">#include &quot;Lexer.h&quot;<?linebreak?></programlisting>Include dependency graph for Lexer.cpp:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="_lexer_8cpp__incl.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+<simplesect>
+    <title>Functions    </title>
+        <itemizedlist>
+            <listitem><para>bool <link linkend="__lexer_8cpp_1aaa3b01d6b7b6b5bf4b868b37fcf3ac6f">isNumber</link> (const std::string &amp;s)</para>
+</listitem>
+            <listitem><para>bool <link linkend="__lexer_8cpp_1a32fa5cbc79c968c5b53e8303ad77091d">isIdentifier</link> (const std::string &amp;s)</para>
+</listitem>
+        </itemizedlist>
+</simplesect>
+<section>
+<title>Function Documentation</title>
+<anchor xml:id="__lexer_8cpp_1a32fa5cbc79c968c5b53e8303ad77091d"/><section>
+    <title>isIdentifier()</title>
+<indexterm><primary>isIdentifier</primary><secondary>Lexer.cpp</secondary></indexterm>
+<indexterm><primary>Lexer.cpp</primary><secondary>isIdentifier</secondary></indexterm>
+<para><computeroutput>bool isIdentifier (const std::string &amp; s)</computeroutput></para><para>
+Definition at line <link linkend="__lexer_8cpp_source_1l00011">11</link> of file <link linkend="__lexer_8cpp_source">Lexer.cpp</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="_lexer_8cpp_a32fa5cbc79c968c5b53e8303ad77091d_cgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+Here is the caller graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="_lexer_8cpp_a32fa5cbc79c968c5b53e8303ad77091d_icgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="__lexer_8cpp_1aaa3b01d6b7b6b5bf4b868b37fcf3ac6f"/><section>
+    <title>isNumber()</title>
+<indexterm><primary>isNumber</primary><secondary>Lexer.cpp</secondary></indexterm>
+<indexterm><primary>Lexer.cpp</primary><secondary>isNumber</secondary></indexterm>
+<para><computeroutput>bool isNumber (const std::string &amp; s)</computeroutput></para><para>
+Definition at line <link linkend="__lexer_8cpp_source_1l00004">4</link> of file <link linkend="__lexer_8cpp_source">Lexer.cpp</link>.</para>
+Here is the caller graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="_lexer_8cpp_aaa3b01d6b7b6b5bf4b868b37fcf3ac6f_icgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+</section>
+</section>

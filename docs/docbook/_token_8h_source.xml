@@ -1,0 +1,776 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<section xmlns="http://docbook.org/ns/docbook" version="5.0" xmlns:xlink="http://www.w3.org/1999/xlink" xml:id="__token_8h_source" xml:lang="en-US">
+<title>Token.h</title>
+<indexterm><primary>src/Token.h</primary></indexterm>
+Go to the documentation of this file.<programlisting linenumbering="unnumbered"><anchor xml:id="__token_8h_source_1l00001"/>00001 <emphasis role="preprocessor">#pragma&#32;once</emphasis>
+<anchor xml:id="__token_8h_source_1l00002"/>00002 <emphasis role="preprocessor">#include&#32;&lt;iostream&gt;</emphasis>
+<anchor xml:id="__token_8h_source_1l00003"/>00003 <emphasis role="preprocessor">#include&#32;&lt;fstream&gt;</emphasis>
+<anchor xml:id="__token_8h_source_1l00004"/>00004 <emphasis role="preprocessor">#include&#32;&lt;string&gt;</emphasis>
+<anchor xml:id="__token_8h_source_1l00005"/>00005 <emphasis role="preprocessor">#include&#32;&lt;vector&gt;</emphasis>
+<anchor xml:id="__token_8h_source_1l00006"/>00006 <emphasis role="preprocessor">#include&#32;&lt;map&gt;</emphasis>
+<anchor xml:id="__token_8h_source_1l00007"/>00007 <emphasis role="preprocessor">#include&#32;&lt;unordered_set&gt;</emphasis>
+<anchor xml:id="__token_8h_source_1l00008"/>00008 <emphasis role="preprocessor">#include&#32;&quot;<link linkend="__tags_8h">Tags.h</link>&quot;</emphasis>
+<anchor xml:id="__token_8h_source_1l00009"/>00009 <emphasis role="preprocessor">#include&#32;&quot;<link linkend="__text_manager_8h">TextManager.h</link>&quot;</emphasis>
+<anchor xml:id="__token_8h_source_1l00010"/>00010 
+<anchor xml:id="__token_8h_source_1l00011"/>00011 
+<anchor xml:id="__token_8h_source_1l00012"/>00012 <emphasis role="comment">//Punctuation&#32;Tokens&#32;string</emphasis>
+<anchor xml:id="__token_8h_source_1l00013"/>00013 <emphasis role="keyword">static</emphasis>&#32;<emphasis role="keyword">const</emphasis>&#32;std::string&#32;commaP&#32;=&#32;<emphasis role="stringliteral">&quot;,&quot;</emphasis>;
+<anchor xml:id="__token_8h_source_1l00014"/>00014 <emphasis role="keyword">static</emphasis>&#32;<emphasis role="keyword">const</emphasis>&#32;std::string&#32;openParenthesisP&#32;=&#32;<emphasis role="stringliteral">&quot;(&quot;</emphasis>;
+<anchor xml:id="__token_8h_source_1l00015"/>00015 <emphasis role="keyword">static</emphasis>&#32;<emphasis role="keyword">const</emphasis>&#32;std::string&#32;closeParenthesisP&#32;=&#32;<emphasis role="stringliteral">&quot;)&quot;</emphasis>;
+<anchor xml:id="__token_8h_source_1l00016"/>00016 <emphasis role="keyword">static</emphasis>&#32;<emphasis role="keyword">const</emphasis>&#32;std::string&#32;openBracketsP&#32;=&#32;<emphasis role="stringliteral">&quot;{&quot;</emphasis>;
+<anchor xml:id="__token_8h_source_1l00017"/>00017 <emphasis role="keyword">static</emphasis>&#32;<emphasis role="keyword">const</emphasis>&#32;std::string&#32;closeBracketsP&#32;=&#32;<emphasis role="stringliteral">&quot;}&quot;</emphasis>;
+<anchor xml:id="__token_8h_source_1l00018"/>00018 <emphasis role="keyword">static</emphasis>&#32;<emphasis role="keyword">const</emphasis>&#32;std::string&#32;openAngleBracketsP&#32;=&#32;<emphasis role="stringliteral">&quot;&lt;&quot;</emphasis>;
+<anchor xml:id="__token_8h_source_1l00019"/>00019 <emphasis role="keyword">static</emphasis>&#32;<emphasis role="keyword">const</emphasis>&#32;std::string&#32;closeAngleBracketsP&#32;=&#32;<emphasis role="stringliteral">&quot;&gt;&quot;</emphasis>;
+<anchor xml:id="__token_8h_source_1l00020"/>00020 <emphasis role="keyword">static</emphasis>&#32;<emphasis role="keyword">const</emphasis>&#32;std::string&#32;quotation&#32;=&#32;<emphasis role="stringliteral">&quot;\&quot;&quot;</emphasis>;
+<anchor xml:id="__token_8h_source_1l00021"/>00021 <emphasis role="keyword">static</emphasis>&#32;<emphasis role="keyword">const</emphasis>&#32;std::string&#32;whitespace&#32;=&#32;<emphasis role="stringliteral">&quot;&#32;&quot;</emphasis>;
+<anchor xml:id="__token_8h_source_1l00022"/>00022 <emphasis role="keyword">static</emphasis>&#32;<emphasis role="keyword">const</emphasis>&#32;std::string&#32;tabulation&#32;=&#32;<emphasis role="stringliteral">&quot;\t&quot;</emphasis>;
+<anchor xml:id="__token_8h_source_1l00023"/>00023 <emphasis role="keyword">static</emphasis>&#32;<emphasis role="keyword">const</emphasis>&#32;std::string&#32;backspace&#32;=&#32;<emphasis role="stringliteral">&quot;\b&quot;</emphasis>;
+<anchor xml:id="__token_8h_source_1l00024"/>00024 <emphasis role="keyword">static</emphasis>&#32;<emphasis role="keyword">const</emphasis>&#32;std::string&#32;newline&#32;=&#32;<emphasis role="stringliteral">&quot;\n&quot;</emphasis>;
+<anchor xml:id="__token_8h_source_1l00025"/>00025 <emphasis role="keyword">static</emphasis>&#32;<emphasis role="keyword">const</emphasis>&#32;std::string&#32;carriagereturn&#32;=&#32;<emphasis role="stringliteral">&quot;\r&quot;</emphasis>;
+<anchor xml:id="__token_8h_source_1l00026"/>00026 <emphasis role="keyword">static</emphasis>&#32;<emphasis role="keyword">const</emphasis>&#32;std::string&#32;allPunctuations&#32;=&#32;<emphasis role="stringliteral">&quot;&#32;&lt;&gt;\&quot;,(){}\t\b\n\r&quot;</emphasis>;
+<anchor xml:id="__token_8h_source_1l00027"/>00027 
+<anchor xml:id="__token_8h_source_1l00028"/>00028 <emphasis role="keyword">static</emphasis>&#32;<emphasis role="keyword">const</emphasis>&#32;std::vector&lt;std::string&gt;&#32;allPunctuationsTokensStrings&#32;=&#32;{&#32;openAngleBracketsP,closeAngleBracketsP,&#32;quotation,carriagereturn,&#32;newline,&#32;whitespace,tabulation,backspace,&#32;commaP,&#32;openParenthesisP,&#32;closeParenthesisP,&#32;openBracketsP,&#32;closeBracketsP&#32;};
+<anchor xml:id="__token_8h_source_1l00029"/>00029 
+<anchor xml:id="__token_8h_source_1l00030"/>00030 <emphasis role="comment">//Operators&#32;Tokens&#32;</emphasis>
+<anchor xml:id="__token_8h_source_1l00031"/>00031 <emphasis role="comment">//string</emphasis>
+<anchor xml:id="__token_8h_source_1l00032"/>00032 <emphasis role="keyword">static</emphasis>&#32;<emphasis role="keyword">const</emphasis>&#32;std::string&#32;plusO&#32;=&#32;<emphasis role="stringliteral">&quot;+&quot;</emphasis>;
+<anchor xml:id="__token_8h_source_1l00033"/>00033 <emphasis role="keyword">static</emphasis>&#32;<emphasis role="keyword">const</emphasis>&#32;std::string&#32;minusO&#32;=&#32;<emphasis role="stringliteral">&quot;-&quot;</emphasis>;
+<anchor xml:id="__token_8h_source_1l00034"/>00034 <emphasis role="keyword">static</emphasis>&#32;<emphasis role="keyword">const</emphasis>&#32;std::string&#32;divideO&#32;=&#32;<emphasis role="stringliteral">&quot;/&quot;</emphasis>;
+<anchor xml:id="__token_8h_source_1l00035"/>00035 <emphasis role="keyword">static</emphasis>&#32;<emphasis role="keyword">const</emphasis>&#32;std::string&#32;multiplyO&#32;=&#32;<emphasis role="stringliteral">&quot;*&quot;</emphasis>;
+<anchor xml:id="__token_8h_source_1l00036"/>00036 <emphasis role="keyword">static</emphasis>&#32;<emphasis role="keyword">const</emphasis>&#32;std::string&#32;biggerO&#32;=&#32;<emphasis role="stringliteral">&quot;&gt;&quot;</emphasis>;
+<anchor xml:id="__token_8h_source_1l00037"/>00037 <emphasis role="keyword">static</emphasis>&#32;<emphasis role="keyword">const</emphasis>&#32;std::string&#32;biggerEqualO&#32;=&#32;<emphasis role="stringliteral">&quot;&gt;=&quot;</emphasis>;
+<anchor xml:id="__token_8h_source_1l00038"/>00038 <emphasis role="keyword">static</emphasis>&#32;<emphasis role="keyword">const</emphasis>&#32;std::string&#32;lesserO&#32;=&#32;<emphasis role="stringliteral">&quot;&lt;&quot;</emphasis>;
+<anchor xml:id="__token_8h_source_1l00039"/>00039 <emphasis role="keyword">static</emphasis>&#32;<emphasis role="keyword">const</emphasis>&#32;std::string&#32;lesserEqualO&#32;=&#32;<emphasis role="stringliteral">&quot;&lt;=&quot;</emphasis>;
+<anchor xml:id="__token_8h_source_1l00040"/>00040 
+<anchor xml:id="__token_8h_source_1l00041"/>00041 <emphasis role="keyword">static</emphasis>&#32;<emphasis role="keyword">const</emphasis>&#32;std::vector&lt;std::string&gt;&#32;allOperatorsTokensStrings&#32;=&#32;{&#32;plusO,&#32;minusO,&#32;divideO,&#32;multiplyO,&#32;biggerO,&#32;biggerEqualO,&#32;lesserO,&#32;lesserEqualO&#32;};
+<anchor xml:id="__token_8h_source_1l00042"/>00042 
+<anchor xml:id="__token_8h_source_1l00043"/>00043 
+<anchor xml:id="__token_8h_source_1l00044"/>00044 <emphasis role="comment">//Literal&#32;Tokens&#32;string</emphasis>
+<anchor xml:id="__token_8h_source_1l00045"/>00045 <emphasis role="keyword">static</emphasis>&#32;<emphasis role="keyword">const</emphasis>&#32;std::string&#32;trueL&#32;=&#32;<emphasis role="stringliteral">&quot;true&quot;</emphasis>;
+<anchor xml:id="__token_8h_source_1l00046"/>00046 <emphasis role="keyword">static</emphasis>&#32;<emphasis role="keyword">const</emphasis>&#32;std::string&#32;falseL&#32;=&#32;<emphasis role="stringliteral">&quot;false&quot;</emphasis>;
+<anchor xml:id="__token_8h_source_1l00047"/>00047 <emphasis role="keyword">static</emphasis>&#32;<emphasis role="keyword">const</emphasis>&#32;std::string&#32;secondL&#32;=&#32;<emphasis role="stringliteral">&quot;SECOND&quot;</emphasis>;
+<anchor xml:id="__token_8h_source_1l00048"/>00048 <emphasis role="keyword">static</emphasis>&#32;<emphasis role="keyword">const</emphasis>&#32;std::string&#32;millisecondL&#32;=&#32;<emphasis role="stringliteral">&quot;MILLISECOND&quot;</emphasis>;
+<anchor xml:id="__token_8h_source_1l00049"/>00049 <emphasis role="keyword">static</emphasis>&#32;<emphasis role="keyword">const</emphasis>&#32;std::string&#32;minuteL&#32;=&#32;<emphasis role="stringliteral">&quot;MINUTE&quot;</emphasis>;
+<anchor xml:id="__token_8h_source_1l00050"/>00050 <emphasis role="keyword">static</emphasis>&#32;<emphasis role="keyword">const</emphasis>&#32;std::vector&lt;std::string&gt;&#32;allLiteralsTokensStrings&#32;=&#32;{&#32;trueL,falseL,secondL,millisecondL,minuteL&#32;};
+<anchor xml:id="__token_8h_source_1l00051"/>00051 
+<anchor xml:id="__token_8h_source_1l00052"/>00052 
+<anchor xml:id="__token_8h_source_1l00053"/>00053 <emphasis role="comment">//&#32;Concatenate&#32;all&#32;token&#32;vectors</emphasis>
+<anchor xml:id="__token_8h_source_1l00054"/>00054 <emphasis role="keyword">static</emphasis>&#32;<emphasis role="keyword">const</emphasis>&#32;std::vector&lt;std::string&gt;&#32;allTokensStrings&#32;=&#32;[]&#32;{
+<anchor xml:id="__token_8h_source_1l00055"/>00055 &#32;&#32;&#32;&#32;std::vector&lt;std::string&gt;&#32;result;
+<anchor xml:id="__token_8h_source_1l00056"/>00056 &#32;&#32;&#32;&#32;result.reserve(allKeywordsTokensString.size()&#32;+
+<anchor xml:id="__token_8h_source_1l00057"/>00057 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;allPunctuationsTokensStrings.size()&#32;+
+<anchor xml:id="__token_8h_source_1l00058"/>00058 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;allOperatorsTokensStrings.size()&#32;+
+<anchor xml:id="__token_8h_source_1l00059"/>00059 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;allLiteralsTokensStrings.size());
+<anchor xml:id="__token_8h_source_1l00060"/>00060 
+<anchor xml:id="__token_8h_source_1l00061"/>00061 &#32;&#32;&#32;&#32;result.insert(result.end(),&#32;allKeywordsTokensString.begin(),&#32;allKeywordsTokensString.end());
+<anchor xml:id="__token_8h_source_1l00062"/>00062 &#32;&#32;&#32;&#32;result.insert(result.end(),&#32;allPunctuationsTokensStrings.begin(),&#32;allPunctuationsTokensStrings.end());
+<anchor xml:id="__token_8h_source_1l00063"/>00063 &#32;&#32;&#32;&#32;result.insert(result.end(),&#32;allOperatorsTokensStrings.begin(),&#32;allOperatorsTokensStrings.end());
+<anchor xml:id="__token_8h_source_1l00064"/>00064 &#32;&#32;&#32;&#32;result.insert(result.end(),&#32;allLiteralsTokensStrings.begin(),&#32;allLiteralsTokensStrings.end());
+<anchor xml:id="__token_8h_source_1l00065"/>00065 
+<anchor xml:id="__token_8h_source_1l00066"/>00066 &#32;&#32;&#32;&#32;<emphasis role="keywordflow">return</emphasis>&#32;result;
+<anchor xml:id="__token_8h_source_1l00067"/>00067 &#32;&#32;&#32;&#32;}();
+<anchor xml:id="__token_8h_source_1l00068"/>00068 
+<anchor xml:id="__token_8h_source_1l00069"/>00069 
+<anchor xml:id="__token_8h_source_1l00070"/>00070 <emphasis role="keywordtype">bool</emphasis>&#32;<link linkend="__token_8h_1ad42767aaf8252eb57581d009530bd527">isTokenString</link>(<emphasis role="keyword">const</emphasis>&#32;std::string&amp;&#32;text);
+<anchor xml:id="__token_8h_source_1l00071"/>00071 <emphasis role="keywordtype">bool</emphasis>&#32;<link linkend="__token_8h_1a3276e6efe4a3f409262ffe0b345e9636">isKeywordString</link>(<emphasis role="keyword">const</emphasis>&#32;std::string&amp;&#32;text);
+<anchor xml:id="__token_8h_source_1l00072"/>00072 <emphasis role="keywordtype">bool</emphasis>&#32;<link linkend="__token_8h_1ae8bab56314c8b787497a84c189b9114d">isLiteralString</link>(<emphasis role="keyword">const</emphasis>&#32;std::string&amp;&#32;text);
+<anchor xml:id="__token_8h_source_1l00073"/>00073 <emphasis role="keywordtype">bool</emphasis>&#32;<link linkend="__token_8h_1ad93eecc58b3fdba57ba605dcb296f03e">isPunctuationString</link>(<emphasis role="keyword">const</emphasis>&#32;std::string&amp;&#32;text);
+<anchor xml:id="__token_8h_source_1l00074"/>00074 <emphasis role="keywordtype">bool</emphasis>&#32;<link linkend="__token_8h_1ae80d3823673e42ed3ce7e84597bbd552">isOperatorString</link>(<emphasis role="keyword">const</emphasis>&#32;std::string&amp;&#32;text);
+<anchor xml:id="__token_8h_source_1l00075"/>00075 
+<anchor xml:id="__token_8h_source_1l00076"/>00076 <emphasis role="keyword">static</emphasis>&#32;<emphasis role="keywordtype">bool</emphasis>&#32;<link linkend="__token_8cpp_1a38a3bc682b32b85fc40cda646569d271">isTokenStringContained</link>(<emphasis role="keyword">const</emphasis>&#32;std::string&amp;&#32;text);
+<anchor xml:id="__token_8h_source_1l00077"/>00077 
+<anchor xml:id="__token_8h_source_1l00078"/>00078 std::string&#32;<link linkend="__token_8h_1a426cbd25cc7742ac6cface09364031ba">getStringLiteral</link>(std::string&amp;&#32;text);
+<anchor xml:id="__token_8h_source_1l00079"/><link linkend="__token_8h_1ad8ed01ff3ff33333d8e19db4d2818bb6">00079</link> <emphasis role="keyword">enum&#32;class</emphasis>&#32;<link linkend="__token_8h_1ad8ed01ff3ff33333d8e19db4d2818bb6">DataType</link>&#32;{
+<anchor xml:id="__token_8h_source_1l00080"/>00080 &#32;&#32;&#32;&#32;<link linkend="__token_8h_1ad8ed01ff3ff33333d8e19db4d2818bb6ab50339a10e1de285ac99d4c3990b8693">NONE</link>,&#32;<link linkend="__token_8h_1ad8ed01ff3ff33333d8e19db4d2818bb6a6a977bf6454341ccb0b79c3d0900db91">COORD</link>,&#32;<link linkend="__token_8h_1ad8ed01ff3ff33333d8e19db4d2818bb6a1d23cac77df97a722cd2ec7767a06e06">ZONE</link>,&#32;<link linkend="__token_8h_1ad8ed01ff3ff33333d8e19db4d2818bb6a63b588d5559f64f89a416e656880b949">STRING</link>,&#32;<link linkend="__token_8h_1ad8ed01ff3ff33333d8e19db4d2818bb6a823d5f6b867f6d6adec93ad4999bae9f">DIRECTION</link>,&#32;<link linkend="__token_8h_1ad8ed01ff3ff33333d8e19db4d2818bb6ae738c26bf4ce1037fa81b039a915cbf6">FLOAT</link>,&#32;<link linkend="__token_8h_1ad8ed01ff3ff33333d8e19db4d2818bb6a53f93baa3057821107c750323892fa92">INT</link>,&#32;<link linkend="__token_8h_1ad8ed01ff3ff33333d8e19db4d2818bb6aa97b2c144243b2b9d2c593ec268b62f5">BOOL</link>,&#32;<link linkend="__token_8h_1ad8ed01ff3ff33333d8e19db4d2818bb6af03689713d1683f6872267046e6de33c">TIMETYPE</link>,<link linkend="__token_8h_1ad8ed01ff3ff33333d8e19db4d2818bb6a02ff2101e64dbed6c34c715aa8d5cfea">DATATYPE</link>
+<anchor xml:id="__token_8h_source_1l00081"/>00081 };
+<anchor xml:id="__token_8h_source_1l00082"/><link linkend="__token_8h_1acbd1e63c605cbb3dbe67c7411841b46c">00082</link> <emphasis role="keyword">enum&#32;class</emphasis>&#32;<link linkend="__token_8h_1acbd1e63c605cbb3dbe67c7411841b46c">TokenVALUE</link>&#32;{
+<anchor xml:id="__token_8h_source_1l00083"/>00083 &#32;&#32;&#32;&#32;<link linkend="__token_8h_1acbd1e63c605cbb3dbe67c7411841b46ca10df3d67626099df882920ba6552f16d">NOT</link>,&#32;<link linkend="__token_8h_1acbd1e63c605cbb3dbe67c7411841b46ca94c8aa2452bccd82ee129b46f7c4be79">TOKEN</link>,&#32;<link linkend="__token_8h_1acbd1e63c605cbb3dbe67c7411841b46ca696b031073e74bf2cb98e5ef201d4aa3">UNKNOWN</link>,&#32;<link linkend="__token_8h_1acbd1e63c605cbb3dbe67c7411841b46caf7193622145fd3c92db6f1b14f175dc0">QUOTATION</link>,&#32;<link linkend="__token_8h_1acbd1e63c605cbb3dbe67c7411841b46ca09d62a98aa0b2c29e66b3f81c3641657">OPENANGLEBRACKETS</link>,&#32;<link linkend="__token_8h_1acbd1e63c605cbb3dbe67c7411841b46cad473a02cda3fb53f1def18c632bf4e9d">CLOSEANGLEBRACKETS</link>,&#32;<link linkend="__token_8h_1acbd1e63c605cbb3dbe67c7411841b46ca38b13c5b8b7fa5cdbe5e49dbea3cd5b1">FLOW</link>,&#32;<link linkend="__token_8h_1acbd1e63c605cbb3dbe67c7411841b46ca4d9b3e9fc12849d060371eb65154c751">COMMA</link>,&#32;<link linkend="__token_8h_1acbd1e63c605cbb3dbe67c7411841b46cabaaceccc27b1d4e0968c999583f97de5">SEMICOLON</link>,&#32;<link linkend="__token_8h_1acbd1e63c605cbb3dbe67c7411841b46cab22f521f17b09d0fd389e231f8f6d66d">NUMERIC</link>,&#32;<link linkend="__token_8h_1acbd1e63c605cbb3dbe67c7411841b46ca6fcc416051346daca31c571646af127a">IDENTIFIER</link>,&#32;<link linkend="__token_8h_1acbd1e63c605cbb3dbe67c7411841b46caf62b7b10a36ac4ff1386de6dc9c3ec13">CLOSEBRACKETS</link>,&#32;<link linkend="__token_8h_1acbd1e63c605cbb3dbe67c7411841b46ca56d9d72077d098fe411d4f715c339e92">OPENBRACKETS</link>,&#32;<link linkend="__token_8h_1acbd1e63c605cbb3dbe67c7411841b46caab5f2c1029696d0fa27db2acf531e951">OPENPARENTHESIS</link>,&#32;<link linkend="__token_8h_1acbd1e63c605cbb3dbe67c7411841b46cab658c0ab7888b812782bb032dbf4815c">CLOSEPARENTHESIS</link>,&#32;<link linkend="__token_8h_1acbd1e63c605cbb3dbe67c7411841b46cace7e8413589722ee650cbce0ea040f86">STRINGLITERAL</link>,&#32;<link linkend="__token_8h_1acbd1e63c605cbb3dbe67c7411841b46cad36335449b5720a1384868719f487119">TRUELITERAL</link>,&#32;<link linkend="__token_8h_1acbd1e63c605cbb3dbe67c7411841b46ca3667ab316297387f31aa717670424e7b">FALSELITERAL</link>,&#32;<link linkend="__token_8h_1acbd1e63c605cbb3dbe67c7411841b46ca2200becb80f0019c4a2ccecec350d0db">SECOND</link>,&#32;<link linkend="__token_8h_1acbd1e63c605cbb3dbe67c7411841b46ca52f1e315372b38db1b8f4e3666c4f721">WHITESPACE</link>,&#32;<link linkend="__token_8h_1acbd1e63c605cbb3dbe67c7411841b46ca46bda4cde2f10bdb9e51e3bbefa4a2bf">MINUTE</link>,&#32;<link linkend="__token_8h_1acbd1e63c605cbb3dbe67c7411841b46ca241d7907de05ad50c011812e927cd671">MILLISECOND</link>,&#32;<link linkend="__token_8h_1acbd1e63c605cbb3dbe67c7411841b46ca5d5cd46919fa987731fb2edefe0f2a0c">INTEGER</link>,&#32;<link linkend="__token_8h_1acbd1e63c605cbb3dbe67c7411841b46cad5cc6a0064b5c25ba37826aa3fda910c">WAIT</link>,&#32;<link linkend="__token_8h_1ad8ed01ff3ff33333d8e19db4d2818bb6ae738c26bf4ce1037fa81b039a915cbf6">FLOAT</link>,&#32;<link linkend="__token_8h_1ad8ed01ff3ff33333d8e19db4d2818bb6aa97b2c144243b2b9d2c593ec268b62f5">BOOL</link>,&#32;<link linkend="__token_8h_1acbd1e63c605cbb3dbe67c7411841b46ca558ffc8f5770d8e4f95f51d822685532">AND</link>,&#32;<link linkend="__token_8h_1acbd1e63c605cbb3dbe67c7411841b46ca1d00e7dce692e8dc3f6877f035e3a616">OR</link>,&#32;<link linkend="__token_8h_1acbd1e63c605cbb3dbe67c7411841b46cafee1f202df8193b3ba65f00ad61efcef">COMPARE</link>,&#32;<link linkend="__token_8h_1ad8ed01ff3ff33333d8e19db4d2818bb6a63b588d5559f64f89a416e656880b949">STRING</link>,&#32;<link linkend="__token_8h_1ad8ed01ff3ff33333d8e19db4d2818bb6a6a977bf6454341ccb0b79c3d0900db91">COORD</link>,&#32;<link linkend="__token_8h_1ad8ed01ff3ff33333d8e19db4d2818bb6a823d5f6b867f6d6adec93ad4999bae9f">DIRECTION</link>,&#32;<link linkend="__token_8h_1ad8ed01ff3ff33333d8e19db4d2818bb6a1d23cac77df97a722cd2ec7767a06e06">ZONE</link>,&#32;<link linkend="__token_8h_1acbd1e63c605cbb3dbe67c7411841b46ca298cb25408234de02baf2085803a464a">LIST</link>,&#32;<link linkend="__token_8h_1acbd1e63c605cbb3dbe67c7411841b46cade6ee2b5d856295add4d5e3631fbfb93">IF</link>,&#32;<link linkend="__token_8h_1acbd1e63c605cbb3dbe67c7411841b46ca9159b3578e4e1eb31ffdf90acd6f6e40">LOOP</link>,&#32;<link linkend="__token_8h_1acbd1e63c605cbb3dbe67c7411841b46ca94682254f1edc02f9576916290a5fddd">DOLOOP</link>,&#32;<link linkend="__token_8h_1acbd1e63c605cbb3dbe67c7411841b46ca4239f063a3d4fb9d38a0182be6e39e76">SWITCH</link>,&#32;<link linkend="__token_8h_1acbd1e63c605cbb3dbe67c7411841b46ca5b39c8b553c821e7cddc6da64b5bd2ee">DEFAULT</link>,&#32;<link linkend="__token_8h_1acbd1e63c605cbb3dbe67c7411841b46ca778537b0acce06229cb78d5f72c907ab">ELSE</link>,&#32;<link linkend="__token_8h_1acbd1e63c605cbb3dbe67c7411841b46ca722462c878f454d0872804374ef77c95">ELIF</link>,&#32;<link linkend="__token_8h_1acbd1e63c605cbb3dbe67c7411841b46ca14d6a3e0201f58bfe7c01e775973e80e">BREAK</link>,&#32;<link linkend="__token_8h_1acbd1e63c605cbb3dbe67c7411841b46ca2f453cfe638e57e27bb0c9512436111e">CONTINUE</link>,&#32;<link linkend="__token_8h_1acbd1e63c605cbb3dbe67c7411841b46cabea5438a9521adc1b23a9117024bbb43">CASE</link>,&#32;<link linkend="__token_8h_1acbd1e63c605cbb3dbe67c7411841b46ca3cfba54f6873dfd55b0b09d32910b20e">STORE</link>,&#32;<link linkend="__token_8h_1acbd1e63c605cbb3dbe67c7411841b46ca186495f7da296bf880df3a22a492b378">MAIN</link>,&#32;<link linkend="__token_8h_1acbd1e63c605cbb3dbe67c7411841b46caf96eee4e48ee90430f17fb3a8388507b">PRINT</link>
+<anchor xml:id="__token_8h_source_1l00084"/>00084 };
+<anchor xml:id="__token_8h_source_1l00085"/>00085 
+<anchor xml:id="__token_8h_source_1l00086"/><link linkend="_class_arguments">00086</link> <emphasis role="keyword">class&#32;</emphasis><link linkend="_class_arguments">Arguments</link>&#32;{
+<anchor xml:id="__token_8h_source_1l00087"/>00087 <emphasis role="keyword">public</emphasis>:
+<anchor xml:id="__token_8h_source_1l00088"/>00088 &#32;&#32;&#32;&#32;<link linkend="_class_arguments_1afe56d8477bfae32c239771056c233311">Arguments</link>();
+<anchor xml:id="__token_8h_source_1l00089"/>00089 &#32;&#32;&#32;&#32;<link linkend="_class_arguments_1afe56d8477bfae32c239771056c233311">Arguments</link>(<link linkend="__token_8h_1ad8ed01ff3ff33333d8e19db4d2818bb6">DataType</link>&#32;type,<emphasis role="keywordtype">bool</emphasis>&#32;infinite);
+<anchor xml:id="__token_8h_source_1l00090"/>00090 &#32;&#32;&#32;&#32;<link linkend="_class_arguments_1afe56d8477bfae32c239771056c233311">Arguments</link>(std::vector&lt;DataType&gt;&#32;listTypes);
+<anchor xml:id="__token_8h_source_1l00091"/>00091 &#32;&#32;&#32;&#32;std::vector&lt;DataType&gt;&#32;<link linkend="_class_arguments_1a7df7d548b729e703fce328951a68be9b">getArgsTypes</link>();
+<anchor xml:id="__token_8h_source_1l00092"/>00092 &#32;&#32;&#32;&#32;<emphasis role="keywordtype">void</emphasis>&#32;<link linkend="_class_arguments_1a8a88bd6135f23a11ce75239ca8593223">next</link>();
+<anchor xml:id="__token_8h_source_1l00093"/>00093 &#32;&#32;&#32;&#32;<emphasis role="keywordtype">bool</emphasis>&#32;<link linkend="_class_arguments_1a19ddf4e45cbd1f97228ba672be9d373e">ended</link>()<emphasis role="keyword">const</emphasis>;
+<anchor xml:id="__token_8h_source_1l00094"/>00094 &#32;&#32;&#32;&#32;<emphasis role="keywordtype">int</emphasis>&#32;<link linkend="_class_arguments_1a518743549f5e7b43a05b7f34e004e217">size</link>();
+<anchor xml:id="__token_8h_source_1l00095"/>00095 &#32;&#32;&#32;&#32;<emphasis role="keywordtype">bool</emphasis>&#32;<link linkend="_class_arguments_1a0f434af83c0987022c83ab365af88f72">empty</link>();
+<anchor xml:id="__token_8h_source_1l00096"/>00096 &#32;&#32;&#32;&#32;<link linkend="__token_8h_1ad8ed01ff3ff33333d8e19db4d2818bb6">DataType</link>&#32;<link linkend="_class_arguments_1aea159bb8540c3e3cdd25abca54d77ce6">at</link>(<emphasis role="keywordtype">int</emphasis>&#32;i);
+<anchor xml:id="__token_8h_source_1l00097"/>00097 &#32;&#32;&#32;&#32;<emphasis role="keywordtype">bool</emphasis>&#32;<link linkend="_class_arguments_1a2b023fdc0b17ed727222775843dab401">approveType</link>(<emphasis role="keyword">const</emphasis>&#32;<link linkend="__token_8h_1ad8ed01ff3ff33333d8e19db4d2818bb6">DataType</link>&amp;&#32;type);
+<anchor xml:id="__token_8h_source_1l00098"/>00098 &#32;&#32;&#32;&#32;<link linkend="__token_8h_1ad8ed01ff3ff33333d8e19db4d2818bb6">DataType</link>&#32;<link linkend="_class_arguments_1a6e1034236428ba4e248db47e93183e06">getCurrentDataType</link>();
+<anchor xml:id="__token_8h_source_1l00099"/>00099 &#32;&#32;&#32;&#32;<emphasis role="keywordtype">bool</emphasis>&#32;<link linkend="_class_arguments_1aa4b9bed6a87bba4757e6802492b2acb1">isRepeatable</link>();
+<anchor xml:id="__token_8h_source_1l00100"/>00100 &#32;&#32;&#32;&#32;<emphasis role="keywordtype">bool</emphasis>&#32;<link linkend="_class_arguments_1a3c09f2f740566f2ac6abe10e5048806a">isValid</link>()<emphasis role="keyword">const</emphasis>;
+<anchor xml:id="__token_8h_source_1l00101"/>00101 &#32;&#32;&#32;&#32;<emphasis role="keywordtype">bool</emphasis>&#32;<link linkend="_class_arguments_1a648df045d979401752e058e0ce1a645c">isCompleted</link>();
+<anchor xml:id="__token_8h_source_1l00102"/>00102 &#32;&#32;&#32;&#32;<emphasis role="keywordtype">bool</emphasis>&#32;<link linkend="_class_arguments_1ab783108d7f8759a29f939710b115130d">isEqual</link>(<link linkend="_class_arguments">Arguments</link>&#32;args);
+<anchor xml:id="__token_8h_source_1l00103"/>00103 <emphasis role="keyword">protected</emphasis>:
+<anchor xml:id="__token_8h_source_1l00104"/><link linkend="_class_arguments_1a291a05bded903e2165030b35dd1575ee">00104</link> &#32;&#32;&#32;&#32;<link linkend="__token_8h_1ad8ed01ff3ff33333d8e19db4d2818bb6">DataType</link>&#32;<link linkend="_class_arguments_1a291a05bded903e2165030b35dd1575ee">repeatedType</link>;
+<anchor xml:id="__token_8h_source_1l00105"/><link linkend="_class_arguments_1a24f7692626c53fa4a2e739ec2ec02f54">00105</link> &#32;&#32;&#32;&#32;<emphasis role="keywordtype">bool</emphasis>&#32;<link linkend="_class_arguments_1a24f7692626c53fa4a2e739ec2ec02f54">repeatable</link>;
+<anchor xml:id="__token_8h_source_1l00106"/><link linkend="_class_arguments_1ab6cf147a44f3f9677a27fd7ece39aa87">00106</link> &#32;&#32;&#32;&#32;<emphasis role="keywordtype">bool</emphasis>&#32;<link linkend="_class_arguments_1ab6cf147a44f3f9677a27fd7ece39aa87">stillValid</link>;
+<anchor xml:id="__token_8h_source_1l00107"/><link linkend="_class_arguments_1a0dc7c6ec89eeb3826accccdeba73a5f9">00107</link> &#32;&#32;&#32;&#32;<emphasis role="keywordtype">bool</emphasis>&#32;<link linkend="_class_arguments_1a0dc7c6ec89eeb3826accccdeba73a5f9">completed</link>;
+<anchor xml:id="__token_8h_source_1l00108"/><link linkend="_class_arguments_1a12069712a9d060259c41422fe97192fd">00108</link> &#32;&#32;&#32;&#32;std::vector&lt;DataType&gt;&#32;<link linkend="_class_arguments_1a12069712a9d060259c41422fe97192fd">listArgsTypes</link>;
+<anchor xml:id="__token_8h_source_1l00109"/><link linkend="_class_arguments_1a7b21382c82038b5ba0ff52f0b742f132">00109</link> &#32;&#32;&#32;&#32;<emphasis role="keywordtype">int</emphasis>&#32;<link linkend="_class_arguments_1a7b21382c82038b5ba0ff52f0b742f132">currentIndex</link>;
+<anchor xml:id="__token_8h_source_1l00110"/>00110 };
+<anchor xml:id="__token_8h_source_1l00111"/>00111 
+<anchor xml:id="__token_8h_source_1l00112"/><link linkend="_class_arguments_overload">00112</link> <emphasis role="keyword">class&#32;</emphasis><link linkend="_class_arguments_overload">ArgumentsOverload</link>&#32;{
+<anchor xml:id="__token_8h_source_1l00113"/>00113 <emphasis role="keyword">public</emphasis>:
+<anchor xml:id="__token_8h_source_1l00114"/>00114 &#32;&#32;&#32;&#32;<link linkend="_class_arguments_overload_1aca5482a0169922f217e7c6633b477320">ArgumentsOverload</link>();
+<anchor xml:id="__token_8h_source_1l00115"/>00115 &#32;&#32;&#32;&#32;<emphasis role="keywordtype">bool</emphasis>&#32;<link linkend="_class_arguments_overload_1a1dfc9815d235cec325412121bea6b559">isPresent</link>(<link linkend="_class_arguments">Arguments</link>&#32;args);
+<anchor xml:id="__token_8h_source_1l00116"/>00116 &#32;&#32;&#32;&#32;<emphasis role="keywordtype">void</emphasis>&#32;<link linkend="_class_arguments_overload_1a17fba6858e03080178ab2cf098861e5f">addArgs</link>(<link linkend="_class_arguments">Arguments</link>&#32;args,<emphasis role="keywordtype">int</emphasis>&#32;index);
+<anchor xml:id="__token_8h_source_1l00117"/>00117 &#32;&#32;&#32;&#32;<emphasis role="keywordtype">void</emphasis>&#32;<link linkend="_class_arguments_overload_1a4fc9b2ef6a2ec9c3f963ddcb44621794">initTabs</link>();
+<anchor xml:id="__token_8h_source_1l00118"/>00118 &#32;&#32;&#32;&#32;<emphasis role="keywordtype">void</emphasis>&#32;<link linkend="_class_arguments_overload_1a44c9abfe32ebc098862157d7ddf22b19">next</link>();
+<anchor xml:id="__token_8h_source_1l00119"/>00119 &#32;&#32;&#32;&#32;<emphasis role="keywordtype">bool</emphasis>&#32;<link linkend="_class_arguments_overload_1aaed90f32011643050b1440daed30c168">approveType</link>(<emphasis role="keyword">const</emphasis>&#32;<link linkend="__token_8h_1ad8ed01ff3ff33333d8e19db4d2818bb6">DataType</link>&amp;&#32;type);
+<anchor xml:id="__token_8h_source_1l00120"/>00120 &#32;&#32;&#32;&#32;std::vector&lt;DataType&gt;&#32;<link linkend="_class_arguments_overload_1a2dfe47467795bfb57a900505d61ed556">getPossibleDataTypes</link>();
+<anchor xml:id="__token_8h_source_1l00121"/>00121 &#32;&#32;&#32;&#32;std::map&lt;int,&#32;std::shared_ptr&lt;Arguments&gt;&gt;&#32;<link linkend="_class_arguments_overload_1af2ae8a9da94819490744df19ebf5e115">getValidArguments</link>();
+<anchor xml:id="__token_8h_source_1l00122"/>00122 &#32;&#32;&#32;&#32;std::map&lt;int,&#32;std::shared_ptr&lt;Arguments&gt;&gt;&#32;<link linkend="_class_arguments_overload_1ab7709e65ce6926230400a3ed8b9483ac">getCompletedArgs</link>();
+<anchor xml:id="__token_8h_source_1l00123"/>00123 &#32;&#32;&#32;&#32;<emphasis role="keywordtype">bool</emphasis>&#32;<link linkend="_class_arguments_overload_1a8f4306c5b1ec186eb4bd10149f744cb2">ended</link>();
+<anchor xml:id="__token_8h_source_1l00124"/>00124 &#32;&#32;&#32;&#32;<emphasis role="keywordtype">int</emphasis>&#32;<link linkend="_class_arguments_overload_1a38609197ba50525af302bc2a35600f30">size</link>();
+<anchor xml:id="__token_8h_source_1l00125"/>00125 &#32;&#32;&#32;&#32;<emphasis role="keywordtype">bool</emphasis>&#32;<link linkend="_class_arguments_overload_1a120a10d2b4285ae672db3cea058b714d">empty</link>();
+<anchor xml:id="__token_8h_source_1l00126"/>00126 &#32;&#32;&#32;&#32;<emphasis role="keywordtype">bool</emphasis>&#32;<link linkend="_class_arguments_overload_1a6869935a40b96521a68ae6ddacb22bac">hasValidArg</link>();
+<anchor xml:id="__token_8h_source_1l00127"/>00127 &#32;&#32;&#32;&#32;<emphasis role="keywordtype">bool</emphasis>&#32;<link linkend="_class_arguments_overload_1a65ea1970c75fddd5990ac66a1475a63f">hasCompletedArguments</link>();
+<anchor xml:id="__token_8h_source_1l00128"/>00128 &#32;&#32;&#32;&#32;<emphasis role="keywordtype">void</emphasis>&#32;<link linkend="_class_arguments_overload_1a6b65e84a1deed85e8403721df4358b9e">updateCompletedArguments</link>();
+<anchor xml:id="__token_8h_source_1l00129"/>00129 &#32;&#32;&#32;&#32;<emphasis role="keywordtype">void</emphasis>&#32;<link linkend="_class_arguments_overload_1adf2f990572f8ba98d4f45fec3181bca1">updateValidArguments</link>();
+<anchor xml:id="__token_8h_source_1l00130"/>00130 &#32;&#32;&#32;&#32;<emphasis role="keywordtype">void</emphasis>&#32;<link linkend="_class_arguments_overload_1a0316dfe033593e31fe4f754e9fc2ea3a">updateTabs</link>();
+<anchor xml:id="__token_8h_source_1l00131"/>00131 &#32;&#32;&#32;&#32;<emphasis role="keywordtype">unsigned</emphasis>&#32;<emphasis role="keywordtype">int</emphasis>&#32;<link linkend="_class_arguments_overload_1a1620cfd1f2662ca030c5caf9bc5f5777">getID</link>();
+<anchor xml:id="__token_8h_source_1l00132"/>00132 &#32;&#32;&#32;&#32;<emphasis role="keywordtype">void</emphasis>&#32;<link linkend="_class_arguments_overload_1ab26f7552e32582556f6c7c6132e355cf">setCompleteIndex</link>();
+<anchor xml:id="__token_8h_source_1l00133"/>00133 <emphasis role="keyword">protected</emphasis>:
+<anchor xml:id="__token_8h_source_1l00134"/><link linkend="_class_arguments_overload_1aaedae5a04d3fb0f4742a5243b18c4999">00134</link> &#32;&#32;&#32;&#32;std::map&lt;int,&#32;std::shared_ptr&lt;Arguments&gt;&gt;&#32;<link linkend="_class_arguments_overload_1aaedae5a04d3fb0f4742a5243b18c4999">validArguments</link>;
+<anchor xml:id="__token_8h_source_1l00135"/><link linkend="_class_arguments_overload_1ad8da4644bf5c7597ec73958b67324593">00135</link> &#32;&#32;&#32;&#32;std::map&lt;int,&#32;std::shared_ptr&lt;Arguments&gt;&gt;&#32;<link linkend="_class_arguments_overload_1ad8da4644bf5c7597ec73958b67324593">completedArguments</link>;
+<anchor xml:id="__token_8h_source_1l00136"/><link linkend="_class_arguments_overload_1ab6a918495a27c781bef999bafb8f5b44">00136</link> &#32;&#32;&#32;&#32;std::vector&lt;DataType&gt;&#32;<link linkend="_class_arguments_overload_1ab6a918495a27c781bef999bafb8f5b44">currentDataTypes</link>;
+<anchor xml:id="__token_8h_source_1l00137"/><link linkend="_class_arguments_overload_1a36e0acb2fe2bb4e32f71ff4dcf632648">00137</link> &#32;&#32;&#32;&#32;std::map&lt;int,&#32;std::shared_ptr&lt;Arguments&gt;&gt;&#32;<link linkend="_class_arguments_overload_1a36e0acb2fe2bb4e32f71ff4dcf632648">mapArguments</link>;
+<anchor xml:id="__token_8h_source_1l00138"/><link linkend="_class_arguments_overload_1ae415f15bad3da58f96988327fdcf0e68">00138</link> &#32;&#32;&#32;&#32;<emphasis role="keywordtype">unsigned</emphasis>&#32;<emphasis role="keywordtype">int</emphasis>&#32;<link linkend="_class_arguments_overload_1ae415f15bad3da58f96988327fdcf0e68">completeIndex</link>;
+<anchor xml:id="__token_8h_source_1l00139"/>00139 };
+<anchor xml:id="__token_8h_source_1l00140"/>00140 
+<anchor xml:id="__token_8h_source_1l00141"/>00141 
+<anchor xml:id="__token_8h_source_1l00142"/><link linkend="__token_8h_1ab0df38968e4f03a3f1f6d6df0f31f45a">00142</link> <emphasis role="keyword">enum&#32;class</emphasis>&#32;<link linkend="__token_8h_1ab0df38968e4f03a3f1f6d6df0f31f45a">ErrorType</link>&#32;{&#32;<link linkend="__token_8h_1ad8ed01ff3ff33333d8e19db4d2818bb6a02ff2101e64dbed6c34c715aa8d5cfea">DATATYPE</link>,&#32;<link linkend="__token_8h_1ab0df38968e4f03a3f1f6d6df0f31f45aa10d1208b485425756fcc932229386b02">MISSING</link>,&#32;<link linkend="__token_8h_1ab0df38968e4f03a3f1f6d6df0f31f45aa79c6a788549c6275055c935df474f0e7">UNEXPECTED</link>&#32;};
+<anchor xml:id="__token_8h_source_1l00143"/>00143 
+<anchor xml:id="__token_8h_source_1l00144"/><link linkend="_class_error">00144</link> <emphasis role="keyword">class&#32;</emphasis><link linkend="_class_error">Error</link>&#32;{
+<anchor xml:id="__token_8h_source_1l00145"/>00145 <emphasis role="keyword">public</emphasis>:
+<anchor xml:id="__token_8h_source_1l00146"/>00146 &#32;&#32;&#32;&#32;<link linkend="_class_error_1aca339d00ad8481fb4c184f0ece42698b">Error</link>();
+<anchor xml:id="__token_8h_source_1l00147"/>00147 &#32;&#32;&#32;&#32;<link linkend="_class_error_1aca339d00ad8481fb4c184f0ece42698b">Error</link>(<emphasis role="keywordtype">int</emphasis>&#32;el,&#32;<link linkend="__token_8h_1acbd1e63c605cbb3dbe67c7411841b46c">TokenVALUE</link>&#32;tv,&#32;<link linkend="__token_8h_1ab0df38968e4f03a3f1f6d6df0f31f45a">ErrorType</link>&#32;et&#32;=&#32;<link linkend="__token_8h_1ab0df38968e4f03a3f1f6d6df0f31f45aa10d1208b485425756fcc932229386b02">ErrorType::MISSING</link>);
+<anchor xml:id="__token_8h_source_1l00148"/>00148 &#32;&#32;&#32;&#32;<link linkend="_class_error_1aca339d00ad8481fb4c184f0ece42698b">Error</link>(<emphasis role="keywordtype">int</emphasis>&#32;el,&#32;<link linkend="__token_8h_1ad8ed01ff3ff33333d8e19db4d2818bb6">DataType</link>&#32;<link linkend="_class_error_1a69186124b4acc75df505345de7b934a1">dType</link>);
+<anchor xml:id="__token_8h_source_1l00149"/>00149 &#32;&#32;&#32;&#32;<emphasis role="keywordtype">void</emphasis>&#32;<link linkend="_class_error_1a690b81205a544b44f91746f086b752d2">showError</link>();
+<anchor xml:id="__token_8h_source_1l00150"/>00150 <emphasis role="keyword">protected</emphasis>:
+<anchor xml:id="__token_8h_source_1l00151"/>00151 
+<anchor xml:id="__token_8h_source_1l00152"/><link linkend="_class_error_1a435fcafbddc8eb133017119c555a2ed0">00152</link> &#32;&#32;&#32;&#32;<link linkend="__token_8h_1ab0df38968e4f03a3f1f6d6df0f31f45a">ErrorType</link>&#32;<link linkend="_class_error_1a435fcafbddc8eb133017119c555a2ed0">errorType</link>;
+<anchor xml:id="__token_8h_source_1l00153"/><link linkend="_class_error_1ad04a7a6376aba5b6337b3865648ef8ba">00153</link> &#32;&#32;&#32;&#32;<link linkend="__token_8h_1acbd1e63c605cbb3dbe67c7411841b46c">TokenVALUE</link>&#32;<link linkend="_class_error_1ad04a7a6376aba5b6337b3865648ef8ba">errorValue</link>;
+<anchor xml:id="__token_8h_source_1l00154"/><link linkend="_class_error_1a69186124b4acc75df505345de7b934a1">00154</link> &#32;&#32;&#32;&#32;<link linkend="__token_8h_1ad8ed01ff3ff33333d8e19db4d2818bb6">DataType</link>&#32;<link linkend="_class_error_1a69186124b4acc75df505345de7b934a1">dType</link>;
+<anchor xml:id="__token_8h_source_1l00155"/><link linkend="_class_error_1acbea8a404e63977dc75c9f5e615fabe5">00155</link> &#32;&#32;&#32;&#32;<emphasis role="keywordtype">int</emphasis>&#32;<link linkend="_class_error_1acbea8a404e63977dc75c9f5e615fabe5">errorLine</link>;
+<anchor xml:id="__token_8h_source_1l00156"/>00156 };
+<anchor xml:id="__token_8h_source_1l00157"/>00157 
+<anchor xml:id="__token_8h_source_1l00158"/><link linkend="_class_token_result">00158</link> <emphasis role="keyword">class&#32;</emphasis><link linkend="_class_token_result">TokenResult</link>&#32;{
+<anchor xml:id="__token_8h_source_1l00159"/>00159 <emphasis role="keyword">public</emphasis>:
+<anchor xml:id="__token_8h_source_1l00160"/>00160 &#32;&#32;&#32;&#32;<link linkend="_class_token_result_1ac49cd5f7a236cd78ac5633df0144e54b">TokenResult</link>();
+<anchor xml:id="__token_8h_source_1l00161"/>00161 &#32;&#32;&#32;&#32;<link linkend="_class_token_result_1ac49cd5f7a236cd78ac5633df0144e54b">TokenResult</link>(<link linkend="__token_8h_1acbd1e63c605cbb3dbe67c7411841b46c">TokenVALUE</link>&#32;value,&#32;<emphasis role="keywordtype">int</emphasis>&#32;l);
+<anchor xml:id="__token_8h_source_1l00162"/>00162 &#32;&#32;&#32;&#32;<emphasis role="keywordtype">void</emphasis>&#32;<link linkend="_class_token_result_1a1b90cbf9042a502868ffbb657399f5bf">showErrors</link>();
+<anchor xml:id="__token_8h_source_1l00163"/>00163 &#32;&#32;&#32;&#32;<emphasis role="keywordtype">void</emphasis>&#32;<link linkend="_class_token_result_1af997915a62dcb5643b9d61b78a22c9f4">addError</link>(<emphasis role="keywordtype">int</emphasis>&#32;l,<link linkend="__token_8h_1acbd1e63c605cbb3dbe67c7411841b46c">TokenVALUE</link>&#32;value,&#32;<link linkend="__token_8h_1ab0df38968e4f03a3f1f6d6df0f31f45a">ErrorType</link>&#32;et=<link linkend="__token_8h_1ab0df38968e4f03a3f1f6d6df0f31f45aa10d1208b485425756fcc932229386b02">ErrorType::MISSING</link>);
+<anchor xml:id="__token_8h_source_1l00164"/>00164 &#32;&#32;&#32;&#32;<emphasis role="keywordtype">void</emphasis>&#32;<link linkend="_class_token_result_1af997915a62dcb5643b9d61b78a22c9f4">addError</link>(<emphasis role="keywordtype">int</emphasis>&#32;l,<link linkend="__token_8h_1ad8ed01ff3ff33333d8e19db4d2818bb6">DataType</link>&#32;type);
+<anchor xml:id="__token_8h_source_1l00165"/>00165 &#32;&#32;&#32;&#32;<emphasis role="keywordtype">void</emphasis>&#32;<link linkend="_class_token_result_1af997915a62dcb5643b9d61b78a22c9f4">addError</link>(<emphasis role="keyword">const</emphasis>&#32;<link linkend="_class_token_result">TokenResult</link>&amp;&#32;tokRes);
+<anchor xml:id="__token_8h_source_1l00166"/>00166 &#32;&#32;&#32;&#32;<emphasis role="keywordtype">void</emphasis>&#32;<link linkend="_class_token_result_1acfc405b7a0e288b9463f24fd105931cf">addVar</link>(<emphasis role="keyword">const</emphasis>&#32;std::string&amp;&#32;name,&#32;<emphasis role="keyword">const</emphasis>&#32;<link linkend="__token_8h_1ad8ed01ff3ff33333d8e19db4d2818bb6">DataType</link>&amp;&#32;type);
+<anchor xml:id="__token_8h_source_1l00167"/>00167 &#32;&#32;&#32;&#32;<emphasis role="keywordtype">bool</emphasis>&#32;<link linkend="_class_token_result_1aa4c6c97f68ddda0e5a14a2c5bc51fbff">success</link>();
+<anchor xml:id="__token_8h_source_1l00168"/>00168 &#32;&#32;&#32;&#32;std::map&lt;std::string,&#32;DataType&gt;&#32;<link linkend="_class_token_result_1a9dd11c802bde0c755168f74b134e5cbc">getVarTable</link>();
+<anchor xml:id="__token_8h_source_1l00169"/>00169 <emphasis role="keyword">protected</emphasis>:
+<anchor xml:id="__token_8h_source_1l00170"/>00170 
+<anchor xml:id="__token_8h_source_1l00171"/>00171 
+<anchor xml:id="__token_8h_source_1l00172"/><link linkend="_class_token_result_1aa1a7a63f6db6f6b21efb96a3d0719612">00172</link> &#32;&#32;&#32;&#32;std::map&lt;std::string,&#32;DataType&gt;&#32;<link linkend="_class_token_result_1aa1a7a63f6db6f6b21efb96a3d0719612">varTable</link>;
+<anchor xml:id="__token_8h_source_1l00173"/><link linkend="_class_token_result_1aaee92ea30db77e26bc0461db5908367a">00173</link> &#32;&#32;&#32;&#32;std::vector&lt;Error&gt;&#32;<link linkend="_class_token_result_1aaee92ea30db77e26bc0461db5908367a">listErrors</link>;
+<anchor xml:id="__token_8h_source_1l00174"/>00174 };
+<anchor xml:id="__token_8h_source_1l00175"/>00175 
+<anchor xml:id="__token_8h_source_1l00176"/>00176 
+<anchor xml:id="__token_8h_source_1l00177"/>00177 
+<anchor xml:id="__token_8h_source_1l00178"/>00178 <emphasis role="keyword">template</emphasis>&#32;&lt;<emphasis role="keyword">typename</emphasis>&#32;T&gt;
+<anchor xml:id="__token_8h_source_1l00179"/><link linkend="_class_iterator_list">00179</link> <emphasis role="keyword">class&#32;</emphasis><link linkend="_class_iterator_list">IteratorList</link>&#32;{
+<anchor xml:id="__token_8h_source_1l00180"/>00180 <emphasis role="keyword">public</emphasis>:
+<anchor xml:id="__token_8h_source_1l00181"/>00181 
+<anchor xml:id="__token_8h_source_1l00182"/><link linkend="_class_iterator_list_1ac84f1df8a81719e605831cdf5e8ca2be">00182</link> &#32;&#32;&#32;&#32;<link linkend="_class_iterator_list_1ac84f1df8a81719e605831cdf5e8ca2be">IteratorList</link>()&#32;{
+<anchor xml:id="__token_8h_source_1l00183"/>00183 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<link linkend="_class_iterator_list_1af59aaed33fc08d91967d6b67e3aea521">current</link>&#32;=&#32;0;
+<anchor xml:id="__token_8h_source_1l00184"/>00184 &#32;&#32;&#32;&#32;}
+<anchor xml:id="__token_8h_source_1l00185"/><link linkend="_class_iterator_list_1aa2e38b07218344321979abe6669565c3">00185</link> &#32;&#32;&#32;&#32;<link linkend="_class_iterator_list_1aa2e38b07218344321979abe6669565c3">IteratorList</link>(std::vector&lt;std::shared_ptr&lt;T&gt;&gt;&#32;nextTokens)&#32;:<link linkend="_class_iterator_list">IteratorList</link>()&#32;{
+<anchor xml:id="__token_8h_source_1l00186"/>00186 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;this-&gt;<link linkend="_class_iterator_list_1addde1813f5ee757317b2c430d6e993f4">listTokens</link>&#32;=&#32;nextTokens;
+<anchor xml:id="__token_8h_source_1l00187"/>00187 &#32;&#32;&#32;&#32;}
+<anchor xml:id="__token_8h_source_1l00188"/><link linkend="_class_iterator_list_1a2e78b6999e918edaeb61714296a195ff">00188</link> &#32;&#32;&#32;&#32;std::vector&lt;std::shared_ptr&lt;T&gt;&gt;&#32;<link linkend="_class_iterator_list_1a2e78b6999e918edaeb61714296a195ff">getTokens</link>()&#32;{
+<anchor xml:id="__token_8h_source_1l00189"/>00189 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">return</emphasis>&#32;<link linkend="_class_iterator_list_1addde1813f5ee757317b2c430d6e993f4">listTokens</link>;
+<anchor xml:id="__token_8h_source_1l00190"/>00190 &#32;&#32;&#32;&#32;}
+<anchor xml:id="__token_8h_source_1l00191"/><link linkend="_class_iterator_list_1abf379455656b776b4e100dba9d4d7ccc">00191</link> &#32;&#32;&#32;&#32;std::shared_ptr&lt;T&gt;&#32;<link linkend="_class_iterator_list_1abf379455656b776b4e100dba9d4d7ccc">getFirst</link>()&#32;{
+<anchor xml:id="__token_8h_source_1l00192"/>00192 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">return</emphasis>&#32;<link linkend="_class_iterator_list_1addde1813f5ee757317b2c430d6e993f4">listTokens</link>.front();
+<anchor xml:id="__token_8h_source_1l00193"/>00193 &#32;&#32;&#32;&#32;}
+<anchor xml:id="__token_8h_source_1l00194"/><link linkend="_class_iterator_list_1a47139a087ca9af560c2001e08c4d3f83">00194</link> &#32;&#32;&#32;&#32;<emphasis role="keywordtype">size_t</emphasis>&#32;<link linkend="_class_iterator_list_1a47139a087ca9af560c2001e08c4d3f83">size</link>()&#32;{
+<anchor xml:id="__token_8h_source_1l00195"/>00195 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">return</emphasis>&#32;<link linkend="_class_iterator_list_1addde1813f5ee757317b2c430d6e993f4">listTokens</link>.size();
+<anchor xml:id="__token_8h_source_1l00196"/>00196 &#32;&#32;&#32;&#32;}
+<anchor xml:id="__token_8h_source_1l00197"/><link linkend="_class_iterator_list_1ad207131e5d995b00c00118fa4ac6a21d">00197</link> &#32;&#32;&#32;&#32;<emphasis role="keywordtype">bool</emphasis>&#32;<link linkend="_class_iterator_list_1ad207131e5d995b00c00118fa4ac6a21d">empty</link>()&#32;{
+<anchor xml:id="__token_8h_source_1l00198"/>00198 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">return</emphasis>&#32;<link linkend="_class_iterator_list_1addde1813f5ee757317b2c430d6e993f4">listTokens</link>.empty();
+<anchor xml:id="__token_8h_source_1l00199"/>00199 &#32;&#32;&#32;&#32;}
+<anchor xml:id="__token_8h_source_1l00200"/><link linkend="_class_iterator_list_1af5c370ccb8698e2a9fb0714782d57203">00200</link> &#32;&#32;&#32;&#32;<emphasis role="keywordtype">void</emphasis>&#32;<link linkend="_class_iterator_list_1af5c370ccb8698e2a9fb0714782d57203">next</link>()&#32;{
+<anchor xml:id="__token_8h_source_1l00201"/>00201 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;++<link linkend="_class_iterator_list_1af59aaed33fc08d91967d6b67e3aea521">current</link>;
+<anchor xml:id="__token_8h_source_1l00202"/>00202 &#32;&#32;&#32;&#32;}
+<anchor xml:id="__token_8h_source_1l00203"/><link linkend="_class_iterator_list_1a2ebc1118094754b7d333b0a9d257d12b">00203</link> &#32;&#32;&#32;&#32;<emphasis role="keywordtype">bool</emphasis>&#32;<link linkend="_class_iterator_list_1a2ebc1118094754b7d333b0a9d257d12b">ended</link>()&#32;{
+<anchor xml:id="__token_8h_source_1l00204"/>00204 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">return</emphasis>&#32;<link linkend="_class_iterator_list_1af59aaed33fc08d91967d6b67e3aea521">current</link>&#32;&gt;=&#32;<link linkend="_class_iterator_list_1addde1813f5ee757317b2c430d6e993f4">listTokens</link>.size();
+<anchor xml:id="__token_8h_source_1l00205"/>00205 &#32;&#32;&#32;&#32;}
+<anchor xml:id="__token_8h_source_1l00206"/><link linkend="_class_iterator_list_1a4acf162e4a194bddd3c2fe26b073f45a">00206</link> &#32;&#32;&#32;&#32;std::shared_ptr&lt;T&gt;&#32;<link linkend="_class_iterator_list_1a4acf162e4a194bddd3c2fe26b073f45a">currentToken</link>()&#32;{
+<anchor xml:id="__token_8h_source_1l00207"/>00207 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">return</emphasis>&#32;<link linkend="_class_iterator_list_1addde1813f5ee757317b2c430d6e993f4">listTokens</link>.at(<link linkend="_class_iterator_list_1af59aaed33fc08d91967d6b67e3aea521">current</link>);
+<anchor xml:id="__token_8h_source_1l00208"/>00208 &#32;&#32;&#32;&#32;}
+<anchor xml:id="__token_8h_source_1l00209"/>00209 <emphasis role="keyword">protected</emphasis>:
+<anchor xml:id="__token_8h_source_1l00210"/>00210 
+<anchor xml:id="__token_8h_source_1l00211"/>00211 
+<anchor xml:id="__token_8h_source_1l00212"/>00212 
+<anchor xml:id="__token_8h_source_1l00213"/><link linkend="_class_iterator_list_1addde1813f5ee757317b2c430d6e993f4">00213</link> &#32;&#32;&#32;&#32;std::vector&lt;std::shared_ptr&lt;T&gt;&gt;&#32;<link linkend="_class_iterator_list_1addde1813f5ee757317b2c430d6e993f4">listTokens</link>;
+<anchor xml:id="__token_8h_source_1l00214"/><link linkend="_class_iterator_list_1af59aaed33fc08d91967d6b67e3aea521">00214</link> &#32;&#32;&#32;&#32;<emphasis role="keywordtype">int</emphasis>&#32;<link linkend="_class_iterator_list_1af59aaed33fc08d91967d6b67e3aea521">current</link>;
+<anchor xml:id="__token_8h_source_1l00215"/>00215 };
+<anchor xml:id="__token_8h_source_1l00216"/>00216 
+<anchor xml:id="__token_8h_source_1l00217"/><link linkend="_class_token">00217</link> <emphasis role="keyword">class&#32;</emphasis><link linkend="_class_token">Token</link>&#32;{
+<anchor xml:id="__token_8h_source_1l00218"/>00218 <emphasis role="keyword">public</emphasis>:
+<anchor xml:id="__token_8h_source_1l00219"/>00219 &#32;&#32;&#32;&#32;<link linkend="_class_token_1aa3c5868ba4115f3189df6b2ac5b36f39">Token</link>();
+<anchor xml:id="__token_8h_source_1l00220"/>00220 &#32;&#32;&#32;&#32;<emphasis role="keyword">virtual</emphasis>&#32;<link linkend="__token_8h_1ad8ed01ff3ff33333d8e19db4d2818bb6">DataType</link>&#32;<link linkend="_class_token_1ace668259c90b6fd2acc2f61d0e141565">getDataType</link>(<link linkend="_class_token_result">TokenResult</link>&amp;&#32;tRes);
+<anchor xml:id="__token_8h_source_1l00221"/>00221 &#32;&#32;&#32;&#32;<emphasis role="keyword">virtual</emphasis>&#32;<emphasis role="keywordtype">void</emphasis>&#32;<link linkend="_class_token_1abd61b776070d98e2e1b748831a8ae85e">showTokenTree</link>(<emphasis role="keyword">const</emphasis>&#32;<emphasis role="keywordtype">int</emphasis>&#32;nestedLayer);
+<anchor xml:id="__token_8h_source_1l00222"/>00222 &#32;&#32;&#32;&#32;<link linkend="__token_8h_1acbd1e63c605cbb3dbe67c7411841b46c">TokenVALUE</link>&#32;<link linkend="_class_token_1a0dec1385788e690b5dc30cd99a1ed3c8">getValue</link>();
+<anchor xml:id="__token_8h_source_1l00223"/>00223 &#32;&#32;&#32;&#32;<emphasis role="keywordtype">bool</emphasis>&#32;<link linkend="_class_token_1ade47ed51e2f495f6d847c1bff9fe8db6">addError</link>(<link linkend="_class_token_result">TokenResult</link>&amp;&#32;tRes,<link linkend="__token_8h_1acbd1e63c605cbb3dbe67c7411841b46c">TokenVALUE</link>&#32;value,&#32;<link linkend="__token_8h_1ab0df38968e4f03a3f1f6d6df0f31f45a">ErrorType</link>&#32;et=<link linkend="__token_8h_1ab0df38968e4f03a3f1f6d6df0f31f45aa10d1208b485425756fcc932229386b02">ErrorType::MISSING</link>);
+<anchor xml:id="__token_8h_source_1l00224"/>00224 &#32;&#32;&#32;&#32;<emphasis role="keywordtype">bool</emphasis>&#32;<link linkend="_class_token_1ade47ed51e2f495f6d847c1bff9fe8db6">addError</link>(<link linkend="_class_token_result">TokenResult</link>&amp;&#32;tRes,<link linkend="__token_8h_1ad8ed01ff3ff33333d8e19db4d2818bb6">DataType</link>&#32;type);
+<anchor xml:id="__token_8h_source_1l00225"/>00225 &#32;&#32;&#32;&#32;std::string&#32;<link linkend="_class_token_1a2643198d67a19ce0bd8102b4379d9d12">getTokenText</link>();
+<anchor xml:id="__token_8h_source_1l00226"/>00226 &#32;&#32;&#32;&#32;<emphasis role="keywordtype">int</emphasis>&#32;<link linkend="_class_token_1a0fe3c8022c8c5f6143c7dd3fba9408fe">getLine</link>();
+<anchor xml:id="__token_8h_source_1l00227"/>00227 &#32;&#32;&#32;&#32;<emphasis role="keywordtype">bool</emphasis>&#32;<link linkend="_class_token_1ad3fb88977cc7e687450f46e4f9d80a05">hasValue</link>(<link linkend="__token_8h_1acbd1e63c605cbb3dbe67c7411841b46c">TokenVALUE</link>&#32;value)<emphasis role="keyword">const</emphasis>;
+<anchor xml:id="__token_8h_source_1l00228"/>00228 &#32;&#32;&#32;&#32;<emphasis role="keyword">virtual</emphasis>&#32;<emphasis role="keywordtype">bool</emphasis>&#32;<link linkend="_class_token_1ad69955a02eaf8f332b8898a1855c7a28">addTokens</link>(<link linkend="_class_iterator_list">IteratorList&lt;Token&gt;</link>&amp;&#32;tl,&#32;<link linkend="_class_token_result">TokenResult</link>&amp;&#32;tRes);
+<anchor xml:id="__token_8h_source_1l00229"/>00229 &#32;&#32;&#32;&#32;<emphasis role="keyword">virtual</emphasis>&#32;std::shared_ptr&lt;Tag&gt;&#32;<link linkend="_class_token_1aea759b8376bff558791fdc1f2f70f4fb">execute</link>();
+<anchor xml:id="__token_8h_source_1l00230"/>00230 <emphasis role="keyword">protected</emphasis>:
+<anchor xml:id="__token_8h_source_1l00231"/><link linkend="_class_token_1a8b3faba4c73c28d11fec73758a0302b2">00231</link> &#32;&#32;&#32;&#32;std::string&#32;<link linkend="_class_token_1a8b3faba4c73c28d11fec73758a0302b2">tokenText</link>;
+<anchor xml:id="__token_8h_source_1l00232"/><link linkend="_class_token_1a4c8ce9cf1eecbc7e49650307eea6a862">00232</link> &#32;&#32;&#32;&#32;<link linkend="__token_8h_1acbd1e63c605cbb3dbe67c7411841b46c">TokenVALUE</link>&#32;<link linkend="_class_token_1a4c8ce9cf1eecbc7e49650307eea6a862">tValue</link>;
+<anchor xml:id="__token_8h_source_1l00233"/><link linkend="_class_token_1a4b96c2a31d7c374fd2bd1986794f80dd">00233</link> &#32;&#32;&#32;&#32;<emphasis role="keywordtype">int</emphasis>&#32;<link linkend="_class_token_1a4b96c2a31d7c374fd2bd1986794f80dd">line</link>;
+<anchor xml:id="__token_8h_source_1l00234"/>00234 
+<anchor xml:id="__token_8h_source_1l00235"/>00235 };&#32;
+<anchor xml:id="__token_8h_source_1l00236"/>00236 
+<anchor xml:id="__token_8h_source_1l00237"/>00237 
+<anchor xml:id="__token_8h_source_1l00238"/><link linkend="_class_flow_token">00238</link> <emphasis role="keyword">class&#32;</emphasis><link linkend="_class_flow_token">FlowToken</link>&#32;{
+<anchor xml:id="__token_8h_source_1l00239"/>00239 <emphasis role="keyword">public</emphasis>:
+<anchor xml:id="__token_8h_source_1l00240"/>00240 &#32;&#32;&#32;&#32;<emphasis role="keywordtype">bool</emphasis>&#32;<link linkend="_class_flow_token_1a3a3cb964ee95cd5e565a009e4d6aabca">addError</link>(<link linkend="_class_token_result">TokenResult</link>&amp;&#32;tRes,&#32;<link linkend="__token_8h_1acbd1e63c605cbb3dbe67c7411841b46c">TokenVALUE</link>&#32;value,&#32;<link linkend="__token_8h_1ab0df38968e4f03a3f1f6d6df0f31f45a">ErrorType</link>&#32;et&#32;=&#32;<link linkend="__token_8h_1ab0df38968e4f03a3f1f6d6df0f31f45aa10d1208b485425756fcc932229386b02">ErrorType::MISSING</link>);
+<anchor xml:id="__token_8h_source_1l00241"/>00241 &#32;&#32;&#32;&#32;<emphasis role="keywordtype">bool</emphasis>&#32;<link linkend="_class_flow_token_1a3a3cb964ee95cd5e565a009e4d6aabca">addError</link>(<link linkend="_class_token_result">TokenResult</link>&amp;&#32;tRes,&#32;<link linkend="__token_8h_1ad8ed01ff3ff33333d8e19db4d2818bb6">DataType</link>&#32;type);
+<anchor xml:id="__token_8h_source_1l00242"/>00242 &#32;&#32;&#32;&#32;<link linkend="_class_flow_token_1aa69e84b8a62c2aa66bc8b3a0e6b18664">FlowToken</link>();
+<anchor xml:id="__token_8h_source_1l00243"/>00243 &#32;&#32;&#32;&#32;<link linkend="_class_flow_token_1aa69e84b8a62c2aa66bc8b3a0e6b18664">FlowToken</link>(<emphasis role="keywordtype">int</emphasis>&#32;line);
+<anchor xml:id="__token_8h_source_1l00244"/>00244 &#32;&#32;&#32;&#32;<emphasis role="keywordtype">void</emphasis>&#32;<link linkend="_class_flow_token_1a8998fbb1c5e25b91be1936ff7ecbdc88">showTokenTree</link>(<emphasis role="keyword">const</emphasis>&#32;<emphasis role="keywordtype">int</emphasis>&#32;nestedLayer);
+<anchor xml:id="__token_8h_source_1l00245"/>00245 &#32;&#32;&#32;&#32;<emphasis role="keywordtype">bool</emphasis>&#32;<link linkend="_class_flow_token_1adca9213b63d564c72ec40a97f0af8210">addToken</link>(<link linkend="__token_8h_1acbd1e63c605cbb3dbe67c7411841b46c">TokenVALUE</link>&#32;tVal,&#32;<link linkend="_class_iterator_list">IteratorList&lt;Token&gt;</link>&amp;&#32;tl,&#32;<link linkend="_class_token_result">TokenResult</link>&amp;&#32;tRes);
+<anchor xml:id="__token_8h_source_1l00246"/>00246 &#32;&#32;&#32;&#32;<emphasis role="keywordtype">bool</emphasis>&#32;<link linkend="_class_flow_token_1a98297ec8d7ba95e69743afe1859b6eba">addType</link>(<link linkend="__token_8h_1ad8ed01ff3ff33333d8e19db4d2818bb6">DataType</link>&#32;tVal,&#32;<link linkend="_class_iterator_list">IteratorList&lt;Token&gt;</link>&amp;&#32;tl,&#32;<link linkend="_class_token_result">TokenResult</link>&amp;&#32;tRes);
+<anchor xml:id="__token_8h_source_1l00247"/>00247 &#32;&#32;&#32;&#32;<emphasis role="keywordtype">bool</emphasis>&#32;<link linkend="_class_flow_token_1a98297ec8d7ba95e69743afe1859b6eba">addType</link>(std::vector&lt;DataType&gt;&#32;listTypes,&#32;<link linkend="_class_iterator_list">IteratorList&lt;Token&gt;</link>&amp;&#32;tl,&#32;<link linkend="_class_token_result">TokenResult</link>&amp;&#32;tRes);
+<anchor xml:id="__token_8h_source_1l00248"/>00248 <emphasis role="keyword">protected</emphasis>:
+<anchor xml:id="__token_8h_source_1l00249"/>00249 &#32;&#32;&#32;&#32;<emphasis role="comment">//Implemented</emphasis>
+<anchor xml:id="__token_8h_source_1l00250"/>00250 &#32;&#32;&#32;&#32;<emphasis role="keywordtype">void</emphasis>&#32;<link linkend="_class_flow_token_1a5beb3e184d04cac91394633c7c33cc3d">printTabs</link>(<emphasis role="keyword">const</emphasis>&#32;<emphasis role="keywordtype">int</emphasis>&#32;nestedLayer);
+<anchor xml:id="__token_8h_source_1l00251"/><link linkend="_class_flow_token_1a983bda19879009577e51360d9bdc93da">00251</link> &#32;&#32;&#32;&#32;std::vector&lt;std::shared_ptr&lt;Token&gt;&gt;&#32;<link linkend="_class_flow_token_1a983bda19879009577e51360d9bdc93da">nestedTokens</link>;
+<anchor xml:id="__token_8h_source_1l00252"/>00252 &#32;&#32;&#32;&#32;<emphasis role="keywordtype">bool</emphasis>&#32;<link linkend="_class_flow_token_1a7403770ae8bbe3efb6ec95608a5318be">addOb</link>(<link linkend="_class_iterator_list">IteratorList&lt;Token&gt;</link>&amp;&#32;tl,&#32;<link linkend="_class_token_result">TokenResult</link>&amp;&#32;tRes);
+<anchor xml:id="__token_8h_source_1l00253"/>00253 &#32;&#32;&#32;&#32;<emphasis role="keywordtype">bool</emphasis>&#32;<link linkend="_class_flow_token_1a1bbf1118c555638aca5acb0e758f8c87">addCb</link>(<link linkend="_class_iterator_list">IteratorList&lt;Token&gt;</link>&amp;&#32;tl,&#32;<link linkend="_class_token_result">TokenResult</link>&amp;&#32;tRes);
+<anchor xml:id="__token_8h_source_1l00254"/>00254 &#32;&#32;&#32;&#32;<emphasis role="keywordtype">bool</emphasis>&#32;<link linkend="_class_flow_token_1adf13c232a8b5279ae0027df6859fdd12">addNestedTokens</link>(<link linkend="_class_iterator_list">IteratorList&lt;Token&gt;</link>&amp;&#32;tl,&#32;<link linkend="_class_token_result">TokenResult</link>&amp;&#32;tRes);
+<anchor xml:id="__token_8h_source_1l00255"/>00255 &#32;&#32;&#32;&#32;<emphasis role="keywordtype">bool</emphasis>&#32;<link linkend="_class_flow_token_1abb30bac4dada1a3372776680719d517c">addBody</link>(<link linkend="_class_iterator_list">IteratorList&lt;Token&gt;</link>&amp;&#32;tl,&#32;<link linkend="_class_token_result">TokenResult</link>&amp;&#32;tRes);
+<anchor xml:id="__token_8h_source_1l00256"/>00256 &#32;&#32;&#32;&#32;<emphasis role="comment">//Not&#32;Implemented</emphasis>
+<anchor xml:id="__token_8h_source_1l00257"/><link linkend="_class_flow_token_1ae59bc263c0116e67191479c41e72a1b7">00257</link> &#32;&#32;&#32;&#32;<emphasis role="keywordtype">int</emphasis>&#32;<link linkend="_class_flow_token_1ae59bc263c0116e67191479c41e72a1b7">lineFlow</link>;
+<anchor xml:id="__token_8h_source_1l00258"/>00258 };
+<anchor xml:id="__token_8h_source_1l00259"/>00259 
+<anchor xml:id="__token_8h_source_1l00260"/><link linkend="_class_template_token">00260</link> <emphasis role="keyword">class&#32;</emphasis><link linkend="_class_template_token">TemplateToken</link>&#32;{
+<anchor xml:id="__token_8h_source_1l00261"/>00261 <emphasis role="keyword">public</emphasis>:
+<anchor xml:id="__token_8h_source_1l00262"/>00262 
+<anchor xml:id="__token_8h_source_1l00263"/>00263 &#32;&#32;&#32;&#32;<link linkend="_class_template_token_1ae1b395c24b28116b2b20429e8b87f2fc">TemplateToken</link>();
+<anchor xml:id="__token_8h_source_1l00264"/>00264 &#32;&#32;&#32;&#32;<link linkend="_class_template_token_1ae1b395c24b28116b2b20429e8b87f2fc">TemplateToken</link>(<emphasis role="keywordtype">int</emphasis>&#32;<link linkend="_class_template_token_1a44271a10cbc74eea133ed9e92897012e">line</link>);
+<anchor xml:id="__token_8h_source_1l00265"/>00265 &#32;&#32;&#32;&#32;<emphasis role="keywordtype">bool</emphasis>&#32;<link linkend="_class_template_token_1a3d79f7926bda1d8b49a3f12d6ff615b0">addToken</link>(<link linkend="__token_8h_1acbd1e63c605cbb3dbe67c7411841b46c">TokenVALUE</link>&#32;tVal,&#32;<link linkend="_class_iterator_list">IteratorList&lt;Token&gt;</link>&amp;&#32;tl,&#32;<link linkend="_class_token_result">TokenResult</link>&amp;&#32;<link linkend="_class_template_token_1a8da6ae9664056d2441190c30cd332aca">tRes</link>);
+<anchor xml:id="__token_8h_source_1l00266"/>00266 &#32;&#32;&#32;&#32;<emphasis role="keywordtype">bool</emphasis>&#32;<link linkend="_class_template_token_1ac4146f0f59ba02482abb40679265e21d">addType</link>(<link linkend="__token_8h_1ad8ed01ff3ff33333d8e19db4d2818bb6">DataType</link>&#32;tVal,&#32;<link linkend="_class_iterator_list">IteratorList&lt;Token&gt;</link>&amp;&#32;tl,&#32;<link linkend="_class_token_result">TokenResult</link>&amp;&#32;<link linkend="_class_template_token_1a8da6ae9664056d2441190c30cd332aca">tRes</link>);
+<anchor xml:id="__token_8h_source_1l00267"/>00267 &#32;&#32;&#32;&#32;<emphasis role="keywordtype">bool</emphasis>&#32;<link linkend="_class_template_token_1ac4146f0f59ba02482abb40679265e21d">addType</link>(std::vector&lt;DataType&gt;&#32;listTypes,&#32;<link linkend="_class_iterator_list">IteratorList&lt;Token&gt;</link>&amp;&#32;tl,&#32;<link linkend="_class_token_result">TokenResult</link>&amp;&#32;<link linkend="_class_template_token_1a8da6ae9664056d2441190c30cd332aca">tRes</link>);
+<anchor xml:id="__token_8h_source_1l00268"/>00268 &#32;&#32;&#32;&#32;<emphasis role="keywordtype">bool</emphasis>&#32;<link linkend="_class_template_token_1aeab3bb725b06c1368626903bda4431ba">addOab</link>(<link linkend="_class_iterator_list">IteratorList&lt;Token&gt;</link>&amp;&#32;tl,<link linkend="_class_token_result">TokenResult</link>&amp;&#32;<link linkend="_class_template_token_1a8da6ae9664056d2441190c30cd332aca">tRes</link>);
+<anchor xml:id="__token_8h_source_1l00269"/>00269 &#32;&#32;&#32;&#32;<emphasis role="keywordtype">bool</emphasis>&#32;<link linkend="_class_template_token_1a7e5256636f4c968720a56ef5ee868274">addCab</link>(<link linkend="_class_iterator_list">IteratorList&lt;Token&gt;</link>&amp;&#32;tl,&#32;<link linkend="_class_token_result">TokenResult</link>&amp;&#32;<link linkend="_class_template_token_1a8da6ae9664056d2441190c30cd332aca">tRes</link>);
+<anchor xml:id="__token_8h_source_1l00270"/>00270 &#32;&#32;&#32;&#32;<emphasis role="keywordtype">bool</emphasis>&#32;<link linkend="_class_template_token_1a6fa9056c91c1a555678b264f4e3e7508">addNumber</link>(<link linkend="_class_iterator_list">IteratorList&lt;Token&gt;</link>&amp;&#32;tl,&#32;<link linkend="_class_token_result">TokenResult</link>&amp;&#32;<link linkend="_class_template_token_1a8da6ae9664056d2441190c30cd332aca">tRes</link>);
+<anchor xml:id="__token_8h_source_1l00271"/>00271 &#32;&#32;&#32;&#32;<emphasis role="keywordtype">bool</emphasis>&#32;<link linkend="_class_template_token_1ae5409c200682323bbd3ab7952ef4b4f5">addDataType</link>(<link linkend="_class_iterator_list">IteratorList&lt;Token&gt;</link>&amp;&#32;tl,&#32;<link linkend="_class_token_result">TokenResult</link>&amp;&#32;<link linkend="_class_template_token_1a8da6ae9664056d2441190c30cd332aca">tRes</link>);
+<anchor xml:id="__token_8h_source_1l00272"/>00272 &#32;&#32;&#32;&#32;<emphasis role="keywordtype">bool</emphasis>&#32;<link linkend="_class_template_token_1a96ca35999c1a6551e66bb77922cac8aa">addInteger</link>(<link linkend="_class_iterator_list">IteratorList&lt;Token&gt;</link>&amp;&#32;tl,&#32;<link linkend="_class_token_result">TokenResult</link>&amp;&#32;<link linkend="_class_template_token_1a8da6ae9664056d2441190c30cd332aca">tRes</link>);
+<anchor xml:id="__token_8h_source_1l00273"/>00273 &#32;&#32;&#32;&#32;<emphasis role="keywordtype">bool</emphasis>&#32;<link linkend="_class_template_token_1a8d9b343f2012524731d7cc7d657b30bc">addFloat</link>(<link linkend="_class_iterator_list">IteratorList&lt;Token&gt;</link>&amp;&#32;tl,&#32;<link linkend="_class_token_result">TokenResult</link>&amp;&#32;<link linkend="_class_template_token_1a8da6ae9664056d2441190c30cd332aca">tRes</link>);
+<anchor xml:id="__token_8h_source_1l00274"/>00274 &#32;&#32;&#32;&#32;<emphasis role="keywordtype">bool</emphasis>&#32;<link linkend="_class_template_token_1aaffa06b318ca9e8b874a6598d721e424">addCoord</link>(<link linkend="_class_iterator_list">IteratorList&lt;Token&gt;</link>&amp;&#32;tl,&#32;<link linkend="_class_token_result">TokenResult</link>&amp;&#32;<link linkend="_class_template_token_1a8da6ae9664056d2441190c30cd332aca">tRes</link>);
+<anchor xml:id="__token_8h_source_1l00275"/>00275 &#32;&#32;&#32;&#32;<emphasis role="keywordtype">bool</emphasis>&#32;<link linkend="_class_template_token_1a277108b785df33d49c4957aaf14d7935">addZone</link>(<link linkend="_class_iterator_list">IteratorList&lt;Token&gt;</link>&amp;&#32;tl,&#32;<link linkend="_class_token_result">TokenResult</link>&amp;&#32;<link linkend="_class_template_token_1a8da6ae9664056d2441190c30cd332aca">tRes</link>);
+<anchor xml:id="__token_8h_source_1l00276"/>00276 &#32;&#32;&#32;&#32;<emphasis role="keywordtype">bool</emphasis>&#32;<link linkend="_class_template_token_1a6eb3afbfb157bc54af838a654d570d00">addBool</link>(<link linkend="_class_iterator_list">IteratorList&lt;Token&gt;</link>&amp;&#32;tl,&#32;<link linkend="_class_token_result">TokenResult</link>&amp;&#32;<link linkend="_class_template_token_1a8da6ae9664056d2441190c30cd332aca">tRes</link>);
+<anchor xml:id="__token_8h_source_1l00277"/>00277 &#32;&#32;&#32;&#32;<emphasis role="keywordtype">bool</emphasis>&#32;<link linkend="_class_template_token_1abb2f4c81dfdde0b3579d039279191d0a">addIdentifier</link>(<link linkend="_class_iterator_list">IteratorList&lt;Token&gt;</link>&amp;&#32;tl,&#32;<link linkend="_class_token_result">TokenResult</link>&amp;&#32;<link linkend="_class_template_token_1a8da6ae9664056d2441190c30cd332aca">tRes</link>);
+<anchor xml:id="__token_8h_source_1l00278"/>00278 &#32;&#32;&#32;&#32;<emphasis role="keywordtype">bool</emphasis>&#32;<link linkend="_class_template_token_1adb300eb290123fa430ce7aaff136a46d">addString</link>(<link linkend="_class_iterator_list">IteratorList&lt;Token&gt;</link>&amp;&#32;tl,&#32;<link linkend="_class_token_result">TokenResult</link>&amp;&#32;<link linkend="_class_template_token_1a8da6ae9664056d2441190c30cd332aca">tRes</link>);
+<anchor xml:id="__token_8h_source_1l00279"/>00279 &#32;&#32;&#32;&#32;<emphasis role="keywordtype">bool</emphasis>&#32;<link linkend="_class_template_token_1a0564dddc4f77b9d92efd80c1f6bab565">addComma</link>(<link linkend="_class_iterator_list">IteratorList&lt;Token&gt;</link>&amp;&#32;tl,&#32;<link linkend="_class_token_result">TokenResult</link>&amp;&#32;<link linkend="_class_template_token_1a8da6ae9664056d2441190c30cd332aca">tRes</link>);
+<anchor xml:id="__token_8h_source_1l00280"/>00280 &#32;&#32;&#32;&#32;<emphasis role="keywordtype">bool</emphasis>&#32;<link linkend="_class_template_token_1aa3148f8f737edb75778c19616148ee48">addTimeType</link>(<link linkend="_class_iterator_list">IteratorList&lt;Token&gt;</link>&amp;&#32;tl,&#32;<link linkend="_class_token_result">TokenResult</link>&amp;&#32;<link linkend="_class_template_token_1a8da6ae9664056d2441190c30cd332aca">tRes</link>);
+<anchor xml:id="__token_8h_source_1l00281"/>00281 &#32;&#32;&#32;&#32;<emphasis role="keyword">virtual</emphasis>&#32;<emphasis role="keywordtype">bool</emphasis>&#32;<link linkend="_class_template_token_1aa8277d6487df4d96660b6e60dea21ce1">addTemplatedTypes</link>(<link linkend="_class_iterator_list">IteratorList&lt;Token&gt;</link>&amp;&#32;tl,&#32;<link linkend="_class_token_result">TokenResult</link>&#32;<link linkend="_class_template_token_1a8da6ae9664056d2441190c30cd332aca">tRes</link>);
+<anchor xml:id="__token_8h_source_1l00282"/>00282 &#32;&#32;&#32;&#32;<emphasis role="keywordtype">bool</emphasis>&#32;<link linkend="_class_template_token_1a4f803a24960bab2671effe0c746d1b8e">addTokens</link>(<link linkend="_class_iterator_list">IteratorList&lt;Token&gt;</link>&amp;&#32;tl,&#32;<link linkend="_class_token_result">TokenResult</link>&amp;&#32;<link linkend="_class_template_token_1a8da6ae9664056d2441190c30cd332aca">tRes</link>);
+<anchor xml:id="__token_8h_source_1l00283"/>00283 &#32;&#32;&#32;&#32;<emphasis role="keywordtype">bool</emphasis>&#32;<link linkend="_class_template_token_1ad981d8ad4aeb0162d344d334ff3ac0f3">addError</link>(<link linkend="_class_token_result">TokenResult</link>&amp;&#32;<link linkend="_class_template_token_1a8da6ae9664056d2441190c30cd332aca">tRes</link>,&#32;<link linkend="__token_8h_1acbd1e63c605cbb3dbe67c7411841b46c">TokenVALUE</link>&#32;value,&#32;<link linkend="__token_8h_1ab0df38968e4f03a3f1f6d6df0f31f45a">ErrorType</link>&#32;et&#32;=&#32;<link linkend="__token_8h_1ab0df38968e4f03a3f1f6d6df0f31f45aa10d1208b485425756fcc932229386b02">ErrorType::MISSING</link>);
+<anchor xml:id="__token_8h_source_1l00284"/>00284 &#32;&#32;&#32;&#32;<emphasis role="keywordtype">bool</emphasis>&#32;<link linkend="_class_template_token_1ad981d8ad4aeb0162d344d334ff3ac0f3">addError</link>(<link linkend="_class_token_result">TokenResult</link>&amp;&#32;<link linkend="_class_template_token_1a8da6ae9664056d2441190c30cd332aca">tRes</link>,&#32;<link linkend="__token_8h_1ad8ed01ff3ff33333d8e19db4d2818bb6">DataType</link>&#32;type);
+<anchor xml:id="__token_8h_source_1l00285"/>00285 <emphasis role="keyword">protected</emphasis>:
+<anchor xml:id="__token_8h_source_1l00286"/><link linkend="_class_template_token_1a3ebc30ff8cce2739928a9a646d5d654f">00286</link> &#32;&#32;&#32;&#32;<link linkend="_class_arguments_overload">ArgumentsOverload</link>&#32;<link linkend="_class_template_token_1a3ebc30ff8cce2739928a9a646d5d654f">templateArguments</link>;
+<anchor xml:id="__token_8h_source_1l00287"/><link linkend="_class_template_token_1a8da6ae9664056d2441190c30cd332aca">00287</link> &#32;&#32;&#32;&#32;<link linkend="_class_token_result">TokenResult</link>&#32;<link linkend="_class_template_token_1a8da6ae9664056d2441190c30cd332aca">tRes</link>;
+<anchor xml:id="__token_8h_source_1l00288"/><link linkend="_class_template_token_1a44271a10cbc74eea133ed9e92897012e">00288</link> &#32;&#32;&#32;&#32;<emphasis role="keywordtype">int</emphasis>&#32;<link linkend="_class_template_token_1a44271a10cbc74eea133ed9e92897012e">line</link>;
+<anchor xml:id="__token_8h_source_1l00289"/>00289 
+<anchor xml:id="__token_8h_source_1l00290"/>00290 };
+<anchor xml:id="__token_8h_source_1l00291"/>00291 
+<anchor xml:id="__token_8h_source_1l00292"/>00292 
+<anchor xml:id="__token_8h_source_1l00293"/>00293 
+<anchor xml:id="__token_8h_source_1l00294"/><link linkend="_class_k_token">00294</link> <emphasis role="keyword">class&#32;</emphasis><link linkend="_class_k_token">KToken</link>&#32;:<emphasis role="keyword">public</emphasis>&#32;<link linkend="_class_token">Token</link>&#32;{
+<anchor xml:id="__token_8h_source_1l00295"/>00295 <emphasis role="keyword">public</emphasis>:
+<anchor xml:id="__token_8h_source_1l00296"/>00296 <emphasis role="keyword">protected</emphasis>:
+<anchor xml:id="__token_8h_source_1l00297"/>00297 
+<anchor xml:id="__token_8h_source_1l00298"/>00298 &#32;&#32;&#32;&#32;<emphasis role="keywordtype">bool</emphasis>&#32;<link linkend="_class_k_token_1aa70f9690ec470ceece17f9641bc9fb96">addTokens</link>(<link linkend="_class_iterator_list">IteratorList&lt;Token&gt;</link>&amp;&#32;tl,&#32;<link linkend="_class_token_result">TokenResult</link>&amp;&#32;tRes)<emphasis role="keyword">override</emphasis>;
+<anchor xml:id="__token_8h_source_1l00299"/>00299 
+<anchor xml:id="__token_8h_source_1l00300"/>00300 };
+<anchor xml:id="__token_8h_source_1l00301"/>00301 
+<anchor xml:id="__token_8h_source_1l00302"/>00302 <emphasis role="comment">//Flow&#32;Control&#32;Keyword&#32;with&#32;no&#32;arguments</emphasis>
+<anchor xml:id="__token_8h_source_1l00303"/><link linkend="_class_flow_k_token">00303</link> <emphasis role="keyword">class&#32;</emphasis><link linkend="_class_flow_k_token">FlowKToken</link>&#32;:<emphasis role="keyword">public</emphasis>&#32;<link linkend="_class_k_token">KToken</link>,&#32;<emphasis role="keyword">public</emphasis>&#32;<link linkend="_class_flow_token">FlowToken</link>&#32;{
+<anchor xml:id="__token_8h_source_1l00304"/>00304 <emphasis role="keyword">public</emphasis>:
+<anchor xml:id="__token_8h_source_1l00305"/>00305 &#32;&#32;&#32;&#32;<link linkend="_class_flow_k_token_1a1520ab9f311f4f2a5dc06189f7349d07">FlowKToken</link>();
+<anchor xml:id="__token_8h_source_1l00306"/>00306 &#32;&#32;&#32;&#32;<emphasis role="keywordtype">void</emphasis>&#32;<link linkend="_class_flow_k_token_1a0fdf55d3a11ad097700e6de32c8ede96">showTokenTree</link>(<emphasis role="keyword">const</emphasis>&#32;<emphasis role="keywordtype">int</emphasis>&#32;nestedLayer)<emphasis role="keyword">override</emphasis>;
+<anchor xml:id="__token_8h_source_1l00307"/>00307 <emphasis role="keyword">protected</emphasis>:
+<anchor xml:id="__token_8h_source_1l00308"/>00308 &#32;&#32;&#32;&#32;<emphasis role="keywordtype">bool</emphasis>&#32;<link linkend="_class_flow_k_token_1a61c9d0279bdf37b161af7c4153e92e98">addTokens</link>(<link linkend="_class_iterator_list">IteratorList&lt;Token&gt;</link>&amp;&#32;tl,&#32;<link linkend="_class_token_result">TokenResult</link>&amp;&#32;tRes)<emphasis role="keyword">override</emphasis>;
+<anchor xml:id="__token_8h_source_1l00309"/>00309 &#32;&#32;&#32;&#32;<emphasis role="comment">//Not&#32;Implemented</emphasis>
+<anchor xml:id="__token_8h_source_1l00310"/>00310 };
+<anchor xml:id="__token_8h_source_1l00311"/>00311 
+<anchor xml:id="__token_8h_source_1l00312"/>00312 <emphasis role="comment">//Keyword&#32;token&#32;with&#32;arguments</emphasis>
+<anchor xml:id="__token_8h_source_1l00313"/><link linkend="_class_p_k_token">00313</link> <emphasis role="keyword">class&#32;</emphasis><link linkend="_class_p_k_token">PKToken</link>&#32;:<emphasis role="keyword">public</emphasis>&#32;<link linkend="_class_k_token">KToken</link>&#32;{
+<anchor xml:id="__token_8h_source_1l00314"/>00314 <emphasis role="keyword">public</emphasis>:
+<anchor xml:id="__token_8h_source_1l00315"/>00315 &#32;&#32;&#32;&#32;<link linkend="_class_p_k_token_1a3af43a7a3050bf9e446938692be33262">PKToken</link>();
+<anchor xml:id="__token_8h_source_1l00316"/>00316 &#32;&#32;&#32;&#32;<emphasis role="keywordtype">void</emphasis>&#32;<link linkend="_class_p_k_token_1a53a1431d31066e66aac1c2ea99245c0a">showTokenTree</link>(<emphasis role="keyword">const</emphasis>&#32;<emphasis role="keywordtype">int</emphasis>&#32;nestedLayer)<emphasis role="keyword">override</emphasis>;
+<anchor xml:id="__token_8h_source_1l00317"/>00317 &#32;&#32;&#32;&#32;<emphasis role="keywordtype">bool</emphasis>&#32;<link linkend="_class_p_k_token_1a533aa21d507b12c9682e3babc83c4396">addTokens</link>(<link linkend="_class_iterator_list">IteratorList&lt;Token&gt;</link>&amp;&#32;tl,&#32;<link linkend="_class_token_result">TokenResult</link>&amp;&#32;tRes)<emphasis role="keyword">override</emphasis>;
+<anchor xml:id="__token_8h_source_1l00318"/>00318 <emphasis role="keyword">protected</emphasis>:
+<anchor xml:id="__token_8h_source_1l00319"/><link linkend="_class_p_k_token_1a42553332bc9d8bb3f267bf3cba36240c">00319</link> &#32;&#32;&#32;&#32;<link linkend="_class_arguments_overload">ArgumentsOverload</link>&#32;<link linkend="_class_p_k_token_1a42553332bc9d8bb3f267bf3cba36240c">argsOverload</link>;
+<anchor xml:id="__token_8h_source_1l00320"/>00320 &#32;&#32;&#32;&#32;<emphasis role="comment">//Implemented</emphasis>
+<anchor xml:id="__token_8h_source_1l00321"/>00321 &#32;&#32;&#32;&#32;<emphasis role="keywordtype">bool</emphasis>&#32;<link linkend="_class_p_k_token_1a6161b28490f22a80ba2898bcc3fab9d8">addToken</link>(<link linkend="__token_8h_1acbd1e63c605cbb3dbe67c7411841b46c">TokenVALUE</link>&#32;tVal,&#32;<link linkend="_class_iterator_list">IteratorList&lt;Token&gt;</link>&amp;&#32;tl,&#32;<link linkend="_class_token_result">TokenResult</link>&amp;&#32;tRes);
+<anchor xml:id="__token_8h_source_1l00322"/>00322 &#32;&#32;&#32;&#32;<emphasis role="keywordtype">bool</emphasis>&#32;<link linkend="_class_p_k_token_1ae8d5672d16cc994d3d0d3f73e240cec4">addType</link>(<link linkend="__token_8h_1ad8ed01ff3ff33333d8e19db4d2818bb6">DataType</link>&#32;tVal,&#32;<link linkend="_class_iterator_list">IteratorList&lt;Token&gt;</link>&amp;&#32;tl,&#32;<link linkend="_class_token_result">TokenResult</link>&amp;&#32;tRes);
+<anchor xml:id="__token_8h_source_1l00323"/>00323 &#32;&#32;&#32;&#32;<emphasis role="keywordtype">bool</emphasis>&#32;<link linkend="_class_p_k_token_1ae8d5672d16cc994d3d0d3f73e240cec4">addType</link>(std::vector&lt;DataType&gt;&#32;listTypes,&#32;<link linkend="_class_iterator_list">IteratorList&lt;Token&gt;</link>&amp;&#32;tl,&#32;<link linkend="_class_token_result">TokenResult</link>&amp;&#32;tRes);
+<anchor xml:id="__token_8h_source_1l00324"/>00324 &#32;&#32;&#32;&#32;<emphasis role="keywordtype">bool</emphasis>&#32;<link linkend="_class_p_k_token_1ae1cc35c4987621ced09326fe94d07e88">addNumber</link>(<link linkend="_class_iterator_list">IteratorList&lt;Token&gt;</link>&amp;&#32;tl,&#32;<link linkend="_class_token_result">TokenResult</link>&amp;&#32;tRes);
+<anchor xml:id="__token_8h_source_1l00325"/>00325 &#32;&#32;&#32;&#32;<emphasis role="keywordtype">bool</emphasis>&#32;<link linkend="_class_p_k_token_1abcee4a278fbc864a01ce17a7fe2871b7">addDataType</link>(<link linkend="_class_iterator_list">IteratorList&lt;Token&gt;</link>&amp;&#32;tl,&#32;<link linkend="_class_token_result">TokenResult</link>&amp;&#32;tRes);
+<anchor xml:id="__token_8h_source_1l00326"/>00326 &#32;&#32;&#32;&#32;<emphasis role="keywordtype">bool</emphasis>&#32;<link linkend="_class_p_k_token_1a93e03c8505eb71b40a996f895ea0a8a1">addInteger</link>(<link linkend="_class_iterator_list">IteratorList&lt;Token&gt;</link>&amp;&#32;tl,&#32;<link linkend="_class_token_result">TokenResult</link>&amp;&#32;tRes);
+<anchor xml:id="__token_8h_source_1l00327"/>00327 &#32;&#32;&#32;&#32;<emphasis role="keywordtype">bool</emphasis>&#32;<link linkend="_class_p_k_token_1ac1c11a5ce856f6705bec792cb9417f16">addFloat</link>(<link linkend="_class_iterator_list">IteratorList&lt;Token&gt;</link>&amp;&#32;tl,&#32;<link linkend="_class_token_result">TokenResult</link>&amp;&#32;tRes);
+<anchor xml:id="__token_8h_source_1l00328"/>00328 &#32;&#32;&#32;&#32;<emphasis role="keywordtype">bool</emphasis>&#32;<link linkend="_class_p_k_token_1a00080a1fa3e1ff14ff53f523acf09770">addCoord</link>(<link linkend="_class_iterator_list">IteratorList&lt;Token&gt;</link>&amp;&#32;tl,&#32;<link linkend="_class_token_result">TokenResult</link>&amp;&#32;tRes);
+<anchor xml:id="__token_8h_source_1l00329"/>00329 &#32;&#32;&#32;&#32;<emphasis role="keywordtype">bool</emphasis>&#32;<link linkend="_class_p_k_token_1a32ca841c2a6ae8e213d15babbc4a27f9">addZone</link>(<link linkend="_class_iterator_list">IteratorList&lt;Token&gt;</link>&amp;&#32;tl,&#32;<link linkend="_class_token_result">TokenResult</link>&amp;&#32;tRes);
+<anchor xml:id="__token_8h_source_1l00330"/>00330 &#32;&#32;&#32;&#32;<emphasis role="keywordtype">bool</emphasis>&#32;<link linkend="_class_p_k_token_1a62f5f46f8befb663543c117d6ed92fc9">addBool</link>(<link linkend="_class_iterator_list">IteratorList&lt;Token&gt;</link>&amp;&#32;tl,&#32;<link linkend="_class_token_result">TokenResult</link>&amp;&#32;tRes);
+<anchor xml:id="__token_8h_source_1l00331"/>00331 &#32;&#32;&#32;&#32;<emphasis role="keywordtype">bool</emphasis>&#32;<link linkend="_class_p_k_token_1a97e1183958a6dabeb6652340bfe4a1f7">addIdentifier</link>(<link linkend="_class_iterator_list">IteratorList&lt;Token&gt;</link>&amp;&#32;tl,&#32;<link linkend="_class_token_result">TokenResult</link>&amp;&#32;tRes);
+<anchor xml:id="__token_8h_source_1l00332"/>00332 &#32;&#32;&#32;&#32;<emphasis role="keywordtype">bool</emphasis>&#32;<link linkend="_class_p_k_token_1a6cf23e694a6bf9e4c08a72d3cc48d899">addString</link>(<link linkend="_class_iterator_list">IteratorList&lt;Token&gt;</link>&amp;&#32;tl,&#32;<link linkend="_class_token_result">TokenResult</link>&amp;&#32;tRes);
+<anchor xml:id="__token_8h_source_1l00333"/>00333 &#32;&#32;&#32;&#32;<emphasis role="keywordtype">bool</emphasis>&#32;<link linkend="_class_p_k_token_1a9bd07a9eaf2728560d1aa29bcc13bba9">addComma</link>(<link linkend="_class_iterator_list">IteratorList&lt;Token&gt;</link>&amp;&#32;tl,&#32;<link linkend="_class_token_result">TokenResult</link>&amp;&#32;tRes);
+<anchor xml:id="__token_8h_source_1l00334"/>00334 &#32;&#32;&#32;&#32;<emphasis role="keywordtype">bool</emphasis>&#32;<link linkend="_class_p_k_token_1abf2772818107f39c995f40f698630539">addTimeType</link>(<link linkend="_class_iterator_list">IteratorList&lt;Token&gt;</link>&amp;&#32;tl,&#32;<link linkend="_class_token_result">TokenResult</link>&amp;&#32;tRes);
+<anchor xml:id="__token_8h_source_1l00335"/>00335 &#32;&#32;&#32;&#32;<emphasis role="keywordtype">bool</emphasis>&#32;<link linkend="_class_p_k_token_1aa0d39255200f157dcead5e02815c0345">addOp</link>(<link linkend="_class_iterator_list">IteratorList&lt;Token&gt;</link>&amp;&#32;tl,&#32;<link linkend="_class_token_result">TokenResult</link>&amp;&#32;tRes);
+<anchor xml:id="__token_8h_source_1l00336"/>00336 &#32;&#32;&#32;&#32;<emphasis role="keywordtype">bool</emphasis>&#32;<link linkend="_class_p_k_token_1a2a1e90c3b769f9125740c05de9da7499">addCp</link>(<link linkend="_class_iterator_list">IteratorList&lt;Token&gt;</link>&amp;&#32;tl,&#32;<link linkend="_class_token_result">TokenResult</link>&amp;&#32;tRes);
+<anchor xml:id="__token_8h_source_1l00337"/>00337 &#32;&#32;&#32;&#32;<emphasis role="keyword">virtual</emphasis>&#32;<emphasis role="keywordtype">bool</emphasis>&#32;<link linkend="_class_p_k_token_1ab964c1ed5353551fafcab7d9f0053a86">handleArguments</link>(<link linkend="_class_iterator_list">IteratorList&lt;Token&gt;</link>&amp;&#32;tl,&#32;<link linkend="_class_token_result">TokenResult</link>&amp;&#32;tRes);
+<anchor xml:id="__token_8h_source_1l00338"/>00338 &#32;&#32;&#32;&#32;<emphasis role="keyword">virtual</emphasis>&#32;<emphasis role="keywordtype">void</emphasis>&#32;<link linkend="_class_p_k_token_1a6b73584776ba004968c2273a7466e62c">setOverloads</link>();
+<anchor xml:id="__token_8h_source_1l00339"/>00339 &#32;&#32;&#32;&#32;<emphasis role="keyword">virtual</emphasis>&#32;<emphasis role="keywordtype">void</emphasis>&#32;<link linkend="_class_p_k_token_1a64d744e4cf4b113bc458eb03f15ba69d">dispatchArguments</link>();
+<anchor xml:id="__token_8h_source_1l00340"/><link linkend="_class_p_k_token_1a4d20bfdc555a0c45d45465b9ab26d1ec">00340</link> &#32;&#32;&#32;&#32;std::vector&lt;std::shared_ptr&lt;Token&gt;&gt;&#32;<link linkend="_class_p_k_token_1a4d20bfdc555a0c45d45465b9ab26d1ec">argTokens</link>;
+<anchor xml:id="__token_8h_source_1l00341"/>00341 &#32;&#32;&#32;&#32;<emphasis role="comment">//Not&#32;Implemented</emphasis>
+<anchor xml:id="__token_8h_source_1l00342"/>00342 &#32;&#32;&#32;&#32;<emphasis role="keyword">virtual</emphasis>&#32;<emphasis role="keywordtype">void</emphasis>&#32;<link linkend="_class_p_k_token_1a5aebdb70c18806f9119694e027202396">showArguments</link>(<emphasis role="keyword">const</emphasis>&#32;<emphasis role="keywordtype">int</emphasis>&#32;nestedLayer);
+<anchor xml:id="__token_8h_source_1l00343"/>00343 };
+<anchor xml:id="__token_8h_source_1l00344"/>00344 <emphasis role="comment">//Flow&#32;Control&#32;Keyword&#32;with&#32;arguments</emphasis>
+<anchor xml:id="__token_8h_source_1l00345"/><link linkend="_class_flow_p_k_token">00345</link> <emphasis role="keyword">class&#32;</emphasis><link linkend="_class_flow_p_k_token">FlowPKToken</link>&#32;:<emphasis role="keyword">public</emphasis>&#32;<link linkend="_class_p_k_token">PKToken</link>,&#32;<emphasis role="keyword">public</emphasis>&#32;<link linkend="_class_flow_token">FlowToken</link>&#32;{
+<anchor xml:id="__token_8h_source_1l00346"/>00346 <emphasis role="keyword">public</emphasis>:
+<anchor xml:id="__token_8h_source_1l00347"/>00347 &#32;&#32;&#32;&#32;<link linkend="_class_flow_p_k_token_1abeff75e4199efaa80fe90f23efd06865">FlowPKToken</link>();
+<anchor xml:id="__token_8h_source_1l00348"/>00348 &#32;&#32;&#32;&#32;<emphasis role="keywordtype">void</emphasis>&#32;<link linkend="_class_flow_p_k_token_1a0304d54103cabfd59b980cc9e999bac6">showTokenTree</link>(<emphasis role="keyword">const</emphasis>&#32;<emphasis role="keywordtype">int</emphasis>&#32;nestedLayer)<emphasis role="keyword">override</emphasis>;
+<anchor xml:id="__token_8h_source_1l00349"/>00349 <emphasis role="keyword">protected</emphasis>:
+<anchor xml:id="__token_8h_source_1l00350"/>00350 &#32;&#32;&#32;&#32;<emphasis role="comment">//Implemented</emphasis>
+<anchor xml:id="__token_8h_source_1l00351"/>00351 &#32;&#32;&#32;&#32;<emphasis role="keywordtype">bool</emphasis>&#32;<link linkend="_class_flow_p_k_token_1a03998327bfce2d536cf666aaa29950da">addTokens</link>(<link linkend="_class_iterator_list">IteratorList&lt;Token&gt;</link>&amp;&#32;tl,&#32;<link linkend="_class_token_result">TokenResult</link>&amp;&#32;tRes)<emphasis role="keyword">override</emphasis>;
+<anchor xml:id="__token_8h_source_1l00352"/>00352 
+<anchor xml:id="__token_8h_source_1l00353"/>00353 
+<anchor xml:id="__token_8h_source_1l00354"/>00354 &#32;&#32;&#32;&#32;<emphasis role="comment">//Not&#32;Implemented</emphasis>
+<anchor xml:id="__token_8h_source_1l00355"/>00355 };
+<anchor xml:id="__token_8h_source_1l00356"/>00356 
+<anchor xml:id="__token_8h_source_1l00357"/>00357 
+<anchor xml:id="__token_8h_source_1l00358"/>00358 <emphasis role="comment">//Keyword&#32;token&#32;with&#32;arguments</emphasis>
+<anchor xml:id="__token_8h_source_1l00359"/><link linkend="_class_m_p_k_token">00359</link> <emphasis role="keyword">class&#32;</emphasis><link linkend="_class_m_p_k_token">MPKToken</link>&#32;:<emphasis role="keyword">public</emphasis>&#32;<link linkend="_class_p_k_token">PKToken</link>&#32;{
+<anchor xml:id="__token_8h_source_1l00360"/>00360 <emphasis role="keyword">public</emphasis>:
+<anchor xml:id="__token_8h_source_1l00361"/>00361 &#32;&#32;&#32;&#32;<link linkend="_class_m_p_k_token_1a02776677c87410903882f8655cbfbb7b">MPKToken</link>();
+<anchor xml:id="__token_8h_source_1l00362"/>00362 &#32;&#32;&#32;&#32;<emphasis role="keywordtype">bool</emphasis>&#32;<link linkend="_class_m_p_k_token_1a9a5cbbc3269d1601a414e3dd25bfeb63">addTokens</link>(<link linkend="_class_iterator_list">IteratorList&lt;Token&gt;</link>&amp;&#32;tl,&#32;<link linkend="_class_token_result">TokenResult</link>&amp;&#32;tRes)<emphasis role="keyword">override</emphasis>;
+<anchor xml:id="__token_8h_source_1l00363"/>00363 <emphasis role="keyword">protected</emphasis>:
+<anchor xml:id="__token_8h_source_1l00364"/>00364 &#32;&#32;&#32;&#32;<emphasis role="keywordtype">void</emphasis>&#32;<link linkend="_class_m_p_k_token_1a11f6e83467f2cfef75d5b0d6affca054">showArguments</link>(<emphasis role="keyword">const</emphasis>&#32;<emphasis role="keywordtype">int</emphasis>&#32;nestedLayer)<emphasis role="keyword">override</emphasis>;
+<anchor xml:id="__token_8h_source_1l00365"/>00365 
+<anchor xml:id="__token_8h_source_1l00366"/>00366 };
+<anchor xml:id="__token_8h_source_1l00367"/>00367 
+<anchor xml:id="__token_8h_source_1l00368"/><link linkend="_class_b_m_p_k_token">00368</link> <emphasis role="keyword">class&#32;</emphasis><link linkend="_class_b_m_p_k_token">BMPKToken</link>&#32;:<emphasis role="keyword">public</emphasis>&#32;<link linkend="_class_m_p_k_token">MPKToken</link>&#32;{
+<anchor xml:id="__token_8h_source_1l00369"/>00369 <emphasis role="keyword">public</emphasis>:
+<anchor xml:id="__token_8h_source_1l00370"/>00370 &#32;&#32;&#32;&#32;<link linkend="_class_b_m_p_k_token_1aaf92958b3e169f50d0f9d15605f17efe">BMPKToken</link>();
+<anchor xml:id="__token_8h_source_1l00371"/>00371 &#32;&#32;&#32;&#32;<emphasis role="keywordtype">void</emphasis>&#32;<link linkend="_class_b_m_p_k_token_1a7ca2b30d87d777d1b086ef885069cfb6">setOverloads</link>()<emphasis role="keyword">final</emphasis>;
+<anchor xml:id="__token_8h_source_1l00372"/>00372 &#32;&#32;&#32;&#32;<link linkend="__token_8h_1ad8ed01ff3ff33333d8e19db4d2818bb6">DataType</link>&#32;<link linkend="_class_b_m_p_k_token_1ae198e473b9fa0da89ed741cb7e5373ae">getDataType</link>(<link linkend="_class_token_result">TokenResult</link>&amp;&#32;tRes)<emphasis role="keyword">override</emphasis>;
+<anchor xml:id="__token_8h_source_1l00373"/>00373 &#32;&#32;&#32;&#32;<emphasis role="keywordtype">bool</emphasis>&#32;<link linkend="_class_b_m_p_k_token_1aace2b852d50d884dd6da841c3fab113c">addTokens</link>(<link linkend="_class_iterator_list">IteratorList&lt;Token&gt;</link>&amp;&#32;tl,&#32;<link linkend="_class_token_result">TokenResult</link>&amp;&#32;tRes)<emphasis role="keyword">override</emphasis>;
+<anchor xml:id="__token_8h_source_1l00374"/>00374 <emphasis role="keyword">protected</emphasis>:
+<anchor xml:id="__token_8h_source_1l00375"/>00375 
+<anchor xml:id="__token_8h_source_1l00376"/>00376 };
+<anchor xml:id="__token_8h_source_1l00377"/>00377 
+<anchor xml:id="__token_8h_source_1l00378"/><link linkend="_class_u_p_k_token">00378</link> <emphasis role="keyword">class&#32;</emphasis><link linkend="_class_u_p_k_token">UPKToken</link>&#32;:&#32;<emphasis role="keyword">public</emphasis>&#32;<link linkend="_class_p_k_token">PKToken</link>&#32;{
+<anchor xml:id="__token_8h_source_1l00379"/>00379 <emphasis role="keyword">public</emphasis>:
+<anchor xml:id="__token_8h_source_1l00380"/>00380 &#32;&#32;&#32;&#32;<link linkend="_class_u_p_k_token_1a8b97a9ffde76bf9ca5938e98c91c5a40">UPKToken</link>();
+<anchor xml:id="__token_8h_source_1l00381"/>00381 &#32;&#32;&#32;&#32;<emphasis role="keywordtype">void</emphasis>&#32;<link linkend="_class_u_p_k_token_1ab96afbaa766bc09f25fee4a0a8c8098f">dispatchArguments</link>()<emphasis role="keyword">override</emphasis>;
+<anchor xml:id="__token_8h_source_1l00382"/>00382 &#32;&#32;&#32;&#32;<emphasis role="keywordtype">bool</emphasis>&#32;<link linkend="_class_u_p_k_token_1a17fe15dac3bae5361799314d76a63800">addTokens</link>(<link linkend="_class_iterator_list">IteratorList&lt;Token&gt;</link>&amp;&#32;tl,&#32;<link linkend="_class_token_result">TokenResult</link>&amp;&#32;tRes)<emphasis role="keyword">override</emphasis>;
+<anchor xml:id="__token_8h_source_1l00383"/>00383 <emphasis role="keyword">protected</emphasis>:
+<anchor xml:id="__token_8h_source_1l00384"/><link linkend="_class_u_p_k_token_1a1c9dbf2a5f4096f4891d57ece8e97288">00384</link> &#32;&#32;&#32;&#32;std::shared_ptr&lt;Token&gt;&#32;<link linkend="_class_u_p_k_token_1a1c9dbf2a5f4096f4891d57ece8e97288">uniqueToken</link>;
+<anchor xml:id="__token_8h_source_1l00385"/>00385 &#32;&#32;&#32;&#32;<emphasis role="keywordtype">void</emphasis>&#32;<link linkend="_class_u_p_k_token_1a001ffd8e4e33029fe1aa8e0a4cc3eaac">showArguments</link>(<emphasis role="keyword">const</emphasis>&#32;<emphasis role="keywordtype">int</emphasis>&#32;nestedLayer)<emphasis role="keyword">override</emphasis>;
+<anchor xml:id="__token_8h_source_1l00386"/>00386 };
+<anchor xml:id="__token_8h_source_1l00387"/>00387 
+<anchor xml:id="__token_8h_source_1l00388"/>00388 
+<anchor xml:id="__token_8h_source_1l00389"/>00389 <emphasis role="comment">//Keyword&#32;token&#32;with&#32;1&#32;boolean&#32;argument</emphasis>
+<anchor xml:id="__token_8h_source_1l00390"/><link linkend="_class_c_k_token">00390</link> <emphasis role="keyword">class&#32;</emphasis><link linkend="_class_c_k_token">CKToken</link>&#32;:&#32;<emphasis role="keyword">public</emphasis>&#32;<link linkend="_class_u_p_k_token">UPKToken</link>&#32;{
+<anchor xml:id="__token_8h_source_1l00391"/>00391 <emphasis role="keyword">public</emphasis>:
+<anchor xml:id="__token_8h_source_1l00392"/>00392 &#32;&#32;&#32;&#32;<link linkend="_class_c_k_token_1a3ba21d2fa5758ff97e963e338b90a4e1">CKToken</link>();
+<anchor xml:id="__token_8h_source_1l00393"/>00393 &#32;&#32;&#32;&#32;<emphasis role="keywordtype">void</emphasis>&#32;<link linkend="_class_c_k_token_1a826b592efb9b09d8f3110f134671ec4b">setOverloads</link>()<emphasis role="keyword">final</emphasis>;&#32;&#32;&#32;
+<anchor xml:id="__token_8h_source_1l00394"/>00394 &#32;&#32;&#32;&#32;<emphasis role="keyword">virtual</emphasis>&#32;<emphasis role="keywordtype">void</emphasis>&#32;<link linkend="_class_c_k_token_1a2d3563d0c427c2f88fbd7ddd118efe78">dispatchArguments</link>();
+<anchor xml:id="__token_8h_source_1l00395"/>00395 &#32;&#32;&#32;&#32;<link linkend="__token_8h_1ad8ed01ff3ff33333d8e19db4d2818bb6">DataType</link>&#32;<link linkend="_class_c_k_token_1a2b63ca034c3575ae1fdb559599a74d04">getDataType</link>(<link linkend="_class_token_result">TokenResult</link>&amp;&#32;tRes)<emphasis role="keyword">override</emphasis>;
+<anchor xml:id="__token_8h_source_1l00396"/>00396 <emphasis role="keyword">protected</emphasis>:
+<anchor xml:id="__token_8h_source_1l00397"/>00397 };
+<anchor xml:id="__token_8h_source_1l00398"/>00398 
+<anchor xml:id="__token_8h_source_1l00399"/>00399 <emphasis role="comment">//Flow&#32;Control&#32;Keyword&#32;with&#32;1&#32;boolean&#32;argument</emphasis>
+<anchor xml:id="__token_8h_source_1l00400"/><link linkend="_class_flow_c_k_token">00400</link> <emphasis role="keyword">class&#32;</emphasis><link linkend="_class_flow_c_k_token">FlowCKToken</link>&#32;:<emphasis role="keyword">public</emphasis>&#32;<link linkend="_class_c_k_token">CKToken</link>,&#32;<emphasis role="keyword">public</emphasis>&#32;<link linkend="_class_flow_token">FlowToken</link>&#32;{
+<anchor xml:id="__token_8h_source_1l00401"/>00401 <emphasis role="keyword">public</emphasis>:
+<anchor xml:id="__token_8h_source_1l00402"/>00402 &#32;&#32;&#32;&#32;<link linkend="_class_flow_c_k_token_1ae708c7fca0ffbbbd66b1b2c7983f5463">FlowCKToken</link>();
+<anchor xml:id="__token_8h_source_1l00403"/>00403 <emphasis role="keyword">protected</emphasis>:
+<anchor xml:id="__token_8h_source_1l00404"/>00404 
+<anchor xml:id="__token_8h_source_1l00405"/>00405 
+<anchor xml:id="__token_8h_source_1l00406"/>00406 &#32;&#32;&#32;&#32;<emphasis role="keywordtype">bool</emphasis>&#32;<link linkend="_class_flow_c_k_token_1a7ae11748e61f332a8c987399804a67ca">addCondition</link>(<link linkend="_class_iterator_list">IteratorList&lt;Token&gt;</link>&amp;&#32;tl,&#32;<link linkend="_class_token_result">TokenResult</link>&#32;tRes);
+<anchor xml:id="__token_8h_source_1l00407"/>00407 &#32;&#32;&#32;&#32;<emphasis role="keywordtype">bool</emphasis>&#32;<link linkend="_class_flow_c_k_token_1a70e9e870b981aca2c2995a7fcceac2ac">addTokens</link>(<link linkend="_class_iterator_list">IteratorList&lt;Token&gt;</link>&amp;&#32;tl,&#32;<link linkend="_class_token_result">TokenResult</link>&amp;&#32;tRes)<emphasis role="keyword">override</emphasis>;
+<anchor xml:id="__token_8h_source_1l00408"/>00408 &#32;&#32;&#32;&#32;<emphasis role="keywordtype">void</emphasis>&#32;<link linkend="_class_flow_c_k_token_1a697e625af9e4d7a142b87242d5179d3b">showArguments</link>(<emphasis role="keyword">const</emphasis>&#32;<emphasis role="keywordtype">int</emphasis>&#32;nestedLayer)<emphasis role="keyword">override</emphasis>;
+<anchor xml:id="__token_8h_source_1l00409"/>00409 };
+<anchor xml:id="__token_8h_source_1l00410"/>00410 
+<anchor xml:id="__token_8h_source_1l00411"/>00411 
+<anchor xml:id="__token_8h_source_1l00412"/>00412 
+<anchor xml:id="__token_8h_source_1l00413"/>00413 
+<anchor xml:id="__token_8h_source_1l00414"/>00414 
+<anchor xml:id="__token_8h_source_1l00415"/>00415 
+<anchor xml:id="__token_8h_source_1l00416"/>00416 
+<anchor xml:id="__token_8h_source_1l00417"/>00417 
+<anchor xml:id="__token_8h_source_1l00418"/><link linkend="_class_identifier_token">00418</link> <emphasis role="keyword">class&#32;</emphasis><link linkend="_class_identifier_token">IdentifierToken</link>&#32;:<emphasis role="keyword">public</emphasis>&#32;<link linkend="_class_token">Token</link>&#32;{
+<anchor xml:id="__token_8h_source_1l00419"/>00419 <emphasis role="keyword">public</emphasis>:
+<anchor xml:id="__token_8h_source_1l00420"/>00420 &#32;&#32;&#32;&#32;<link linkend="_class_identifier_token_1a7be51f313dff6ce44902faddf3e0c8a1">IdentifierToken</link>(<emphasis role="keyword">const</emphasis>&#32;std::string&amp;&#32;varName);
+<anchor xml:id="__token_8h_source_1l00421"/>00421 &#32;&#32;&#32;&#32;<link linkend="__token_8h_1ad8ed01ff3ff33333d8e19db4d2818bb6">DataType</link>&#32;<link linkend="_class_identifier_token_1a2998f6143008f3133e60a0cd997c255c">getDataType</link>(<link linkend="_class_token_result">TokenResult</link>&amp;&#32;tRes)<emphasis role="keyword">override</emphasis>;
+<anchor xml:id="__token_8h_source_1l00422"/>00422 <emphasis role="keyword">protected</emphasis>:
+<anchor xml:id="__token_8h_source_1l00423"/>00423 
+<anchor xml:id="__token_8h_source_1l00424"/>00424 &#32;&#32;&#32;&#32;<emphasis role="keywordtype">bool</emphasis>&#32;<link linkend="_class_identifier_token_1a0ddba0337e1b1858a5d067c9dc902d44">addTokens</link>(<link linkend="_class_iterator_list">IteratorList&lt;Token&gt;</link>&amp;&#32;tl,&#32;<link linkend="_class_token_result">TokenResult</link>&amp;&#32;tRes)<emphasis role="keyword">override</emphasis>;
+<anchor xml:id="__token_8h_source_1l00425"/>00425 };
+<anchor xml:id="__token_8h_source_1l00426"/>00426 
+<anchor xml:id="__token_8h_source_1l00427"/><link linkend="_class_unknown_token">00427</link> <emphasis role="keyword">class&#32;</emphasis><link linkend="_class_unknown_token">UnknownToken</link>&#32;:&#32;<emphasis role="keyword">public</emphasis>&#32;<link linkend="_class_token">Token</link>&#32;{
+<anchor xml:id="__token_8h_source_1l00428"/>00428 <emphasis role="keyword">public</emphasis>:
+<anchor xml:id="__token_8h_source_1l00429"/>00429 &#32;&#32;&#32;&#32;<link linkend="_class_unknown_token_1ac37d05a7251a0636f36a703cc69bbc69">UnknownToken</link>();
+<anchor xml:id="__token_8h_source_1l00430"/>00430 <emphasis role="keyword">protected</emphasis>:
+<anchor xml:id="__token_8h_source_1l00431"/>00431 };
+<anchor xml:id="__token_8h_source_1l00432"/>00432 
+<anchor xml:id="__token_8h_source_1l00433"/>00433 <emphasis role="comment">//each&#32;.act&#32;file&#32;will&#32;have&#32;a&#32;mainToken&#32;with&#32;differents&#32;arguments</emphasis>
+<anchor xml:id="__token_8h_source_1l00434"/><link linkend="_class_main_token">00434</link> <emphasis role="keyword">class&#32;</emphasis><link linkend="_class_main_token">MainToken</link>&#32;:<emphasis role="keyword">public</emphasis>&#32;<link linkend="_class_flow_p_k_token">FlowPKToken</link>&#32;{
+<anchor xml:id="__token_8h_source_1l00435"/>00435 <emphasis role="keyword">public</emphasis>:
+<anchor xml:id="__token_8h_source_1l00436"/>00436 &#32;&#32;&#32;&#32;<link linkend="_class_main_token_1a1c3f66d8b2aed831a6c1f7098aad4bc3">MainToken</link>();
+<anchor xml:id="__token_8h_source_1l00437"/>00437 &#32;&#32;&#32;&#32;<emphasis role="keywordtype">void</emphasis>&#32;<link linkend="_class_main_token_1ae9247cca379895ee8c033482c1beab9e">setOverloads</link>()<emphasis role="keyword">override</emphasis>;
+<anchor xml:id="__token_8h_source_1l00438"/>00438 &#32;&#32;&#32;&#32;std::shared_ptr&lt;Tag&gt;&#32;<link linkend="_class_main_token_1a7903f95481d0b435c6f1f01b17695b40">execute</link>()<emphasis role="keyword">override</emphasis>;
+<anchor xml:id="__token_8h_source_1l00439"/>00439 &#32;&#32;&#32;&#32;<emphasis role="keywordtype">bool</emphasis>&#32;<link linkend="_class_main_token_1a4d466f7e8e8a0e9c7fa3eba722f51bcd">addTokens</link>(<link linkend="_class_iterator_list">IteratorList&lt;Token&gt;</link>&amp;&#32;tl,&#32;<link linkend="_class_token_result">TokenResult</link>&amp;&#32;tRes)<emphasis role="keyword">override</emphasis>;
+<anchor xml:id="__token_8h_source_1l00440"/>00440 <emphasis role="keyword">protected</emphasis>:
+<anchor xml:id="__token_8h_source_1l00441"/>00441 };
+<anchor xml:id="__token_8h_source_1l00442"/>00442 
+<anchor xml:id="__token_8h_source_1l00443"/><link linkend="_class_do_loop_token">00443</link> <emphasis role="keyword">class&#32;</emphasis><link linkend="_class_do_loop_token">DoLoopToken</link>&#32;:<emphasis role="keyword">public</emphasis>&#32;<link linkend="_class_flow_c_k_token">FlowCKToken</link>&#32;{
+<anchor xml:id="__token_8h_source_1l00444"/>00444 <emphasis role="keyword">public</emphasis>:
+<anchor xml:id="__token_8h_source_1l00445"/>00445 &#32;&#32;&#32;&#32;<link linkend="_class_do_loop_token_1adb97a09bf62c4d496cd2d693c9ed3cf9">DoLoopToken</link>();
+<anchor xml:id="__token_8h_source_1l00446"/>00446 &#32;&#32;&#32;&#32;std::shared_ptr&lt;Tag&gt;&#32;<link linkend="_class_do_loop_token_1a98c55d62059c3f6d6956e6c52a249ee8">execute</link>()<emphasis role="keyword">override</emphasis>;
+<anchor xml:id="__token_8h_source_1l00447"/>00447 <emphasis role="keyword">protected</emphasis>:
+<anchor xml:id="__token_8h_source_1l00448"/>00448 &#32;&#32;&#32;&#32;
+<anchor xml:id="__token_8h_source_1l00449"/>00449 };
+<anchor xml:id="__token_8h_source_1l00450"/>00450 
+<anchor xml:id="__token_8h_source_1l00451"/><link linkend="_class_if_token">00451</link> <emphasis role="keyword">class&#32;</emphasis><link linkend="_class_if_token">IfToken</link>&#32;:<emphasis role="keyword">public</emphasis>&#32;<link linkend="_class_flow_c_k_token">FlowCKToken</link>&#32;{
+<anchor xml:id="__token_8h_source_1l00452"/>00452 <emphasis role="keyword">public</emphasis>:
+<anchor xml:id="__token_8h_source_1l00453"/>00453 &#32;&#32;&#32;&#32;<link linkend="_class_if_token_1acba71a2f073560d50a15417ce40b739c">IfToken</link>();
+<anchor xml:id="__token_8h_source_1l00454"/>00454 &#32;&#32;&#32;&#32;std::shared_ptr&lt;Tag&gt;&#32;<link linkend="_class_if_token_1ac6a6d93dfcadc5348593bcc2350834f5">execute</link>()<emphasis role="keyword">override</emphasis>;
+<anchor xml:id="__token_8h_source_1l00455"/>00455 <emphasis role="keyword">protected</emphasis>:
+<anchor xml:id="__token_8h_source_1l00456"/>00456 };
+<anchor xml:id="__token_8h_source_1l00457"/>00457 
+<anchor xml:id="__token_8h_source_1l00458"/><link linkend="_class_else_token">00458</link> <emphasis role="keyword">class&#32;</emphasis><link linkend="_class_else_token">ElseToken</link>&#32;:<emphasis role="keyword">public</emphasis>&#32;<link linkend="_class_flow_k_token">FlowKToken</link>&#32;{
+<anchor xml:id="__token_8h_source_1l00459"/>00459 <emphasis role="keyword">public</emphasis>:
+<anchor xml:id="__token_8h_source_1l00460"/>00460 &#32;&#32;&#32;&#32;<link linkend="_class_else_token_1a41f4dc1b51e7bab3d583b0684b387879">ElseToken</link>();
+<anchor xml:id="__token_8h_source_1l00461"/>00461 &#32;&#32;&#32;&#32;std::shared_ptr&lt;Tag&gt;&#32;<link linkend="_class_else_token_1a04c498b5b90ae54baec24cff3c93fa84">execute</link>()<emphasis role="keyword">override</emphasis>;
+<anchor xml:id="__token_8h_source_1l00462"/>00462 <emphasis role="keyword">protected</emphasis>:
+<anchor xml:id="__token_8h_source_1l00463"/>00463 };
+<anchor xml:id="__token_8h_source_1l00464"/>00464 
+<anchor xml:id="__token_8h_source_1l00465"/><link linkend="_class_elif_token">00465</link> <emphasis role="keyword">class&#32;</emphasis><link linkend="_class_elif_token">ElifToken</link>&#32;:<emphasis role="keyword">public</emphasis>&#32;<link linkend="_class_flow_c_k_token">FlowCKToken</link>&#32;{
+<anchor xml:id="__token_8h_source_1l00466"/>00466 <emphasis role="keyword">public</emphasis>:
+<anchor xml:id="__token_8h_source_1l00467"/>00467 &#32;&#32;&#32;&#32;<link linkend="_class_elif_token_1a877b2c5a0fc06e8d50b0a84adf0a848b">ElifToken</link>();
+<anchor xml:id="__token_8h_source_1l00468"/>00468 &#32;&#32;&#32;&#32;std::shared_ptr&lt;Tag&gt;&#32;<link linkend="_class_elif_token_1a7d4b264b0c023e44f7edc2b5781482f7">execute</link>()<emphasis role="keyword">override</emphasis>;
+<anchor xml:id="__token_8h_source_1l00469"/>00469 <emphasis role="keyword">protected</emphasis>:
+<anchor xml:id="__token_8h_source_1l00470"/>00470 };
+<anchor xml:id="__token_8h_source_1l00471"/>00471 
+<anchor xml:id="__token_8h_source_1l00472"/><link linkend="_class_loop_token">00472</link> <emphasis role="keyword">class&#32;</emphasis><link linkend="_class_loop_token">LoopToken</link>&#32;:<emphasis role="keyword">public</emphasis>&#32;<link linkend="_class_flow_c_k_token">FlowCKToken</link>&#32;{
+<anchor xml:id="__token_8h_source_1l00473"/>00473 <emphasis role="keyword">public</emphasis>:
+<anchor xml:id="__token_8h_source_1l00474"/>00474 &#32;&#32;&#32;&#32;<link linkend="_class_loop_token_1a461d7fb8e702cd1af27236ef796c1491">LoopToken</link>();
+<anchor xml:id="__token_8h_source_1l00475"/>00475 &#32;&#32;&#32;&#32;std::shared_ptr&lt;Tag&gt;&#32;<link linkend="_class_loop_token_1aaf2ed4676012f15ef2b551241f2957aa">execute</link>()<emphasis role="keyword">override</emphasis>;
+<anchor xml:id="__token_8h_source_1l00476"/>00476 <emphasis role="keyword">protected</emphasis>:
+<anchor xml:id="__token_8h_source_1l00477"/>00477 };
+<anchor xml:id="__token_8h_source_1l00478"/>00478 
+<anchor xml:id="__token_8h_source_1l00479"/>00479 
+<anchor xml:id="__token_8h_source_1l00480"/><link linkend="_class_wait_token">00480</link> <emphasis role="keyword">class&#32;</emphasis><link linkend="_class_wait_token">WaitToken</link>&#32;:<emphasis role="keyword">public</emphasis>&#32;<link linkend="_class_m_p_k_token">MPKToken</link>&#32;{
+<anchor xml:id="__token_8h_source_1l00481"/>00481 <emphasis role="keyword">public</emphasis>:
+<anchor xml:id="__token_8h_source_1l00482"/>00482 &#32;&#32;&#32;&#32;<link linkend="_class_wait_token_1aba6c9c4c6466b72c1ff3a545feb10050">WaitToken</link>();
+<anchor xml:id="__token_8h_source_1l00483"/>00483 &#32;&#32;&#32;&#32;<emphasis role="keywordtype">void</emphasis>&#32;<link linkend="_class_wait_token_1ab8a24eb04c56c85111816352fcee3381">setOverloads</link>()<emphasis role="keyword">final</emphasis>;
+<anchor xml:id="__token_8h_source_1l00484"/>00484 &#32;&#32;&#32;&#32;<emphasis role="keywordtype">void</emphasis>&#32;<link linkend="_class_wait_token_1a639055be7ce0426127e3441ffcb28652">dispatchArguments</link>()<emphasis role="keyword">override</emphasis>;
+<anchor xml:id="__token_8h_source_1l00485"/>00485 &#32;&#32;&#32;&#32;std::shared_ptr&lt;Tag&gt;&#32;<link linkend="_class_wait_token_1afdc303d17be95afa35bbee3b36936303">execute</link>()<emphasis role="keyword">override</emphasis>;
+<anchor xml:id="__token_8h_source_1l00486"/>00486 &#32;&#32;&#32;&#32;<emphasis role="keywordtype">bool</emphasis>&#32;<link linkend="_class_wait_token_1a0c7c5e917c640de13ee85f0361f73fb1">addTokens</link>(<link linkend="_class_iterator_list">IteratorList&lt;Token&gt;</link>&amp;&#32;tl,&#32;<link linkend="_class_token_result">TokenResult</link>&amp;&#32;tRes)<emphasis role="keyword">override</emphasis>;
+<anchor xml:id="__token_8h_source_1l00487"/>00487 <emphasis role="keyword">protected</emphasis>:
+<anchor xml:id="__token_8h_source_1l00488"/><link linkend="_class_wait_token_1aed3ec2a75d33295a16081a881b7ecad6">00488</link> &#32;&#32;&#32;&#32;std::shared_ptr&lt;Token&gt;&#32;<link linkend="_class_wait_token_1aed3ec2a75d33295a16081a881b7ecad6">numberToken</link>;
+<anchor xml:id="__token_8h_source_1l00489"/><link linkend="_class_wait_token_1a63c9a4570f8bc923927db941bdbb4b80">00489</link> &#32;&#32;&#32;&#32;std::shared_ptr&lt;Token&gt;&#32;<link linkend="_class_wait_token_1a63c9a4570f8bc923927db941bdbb4b80">timeTypeToken</link>;
+<anchor xml:id="__token_8h_source_1l00490"/>00490 };
+<anchor xml:id="__token_8h_source_1l00491"/>00491 
+<anchor xml:id="__token_8h_source_1l00492"/><link linkend="_class_and_token">00492</link> <emphasis role="keyword">class&#32;</emphasis><link linkend="_class_and_token">AndToken</link>&#32;:<emphasis role="keyword">public</emphasis>&#32;<link linkend="_class_b_m_p_k_token">BMPKToken</link>&#32;{
+<anchor xml:id="__token_8h_source_1l00493"/>00493 <emphasis role="keyword">public</emphasis>:
+<anchor xml:id="__token_8h_source_1l00494"/>00494 &#32;&#32;&#32;&#32;<link linkend="_class_and_token_1ad19dda0405dae7acad6ff7d1276b55d0">AndToken</link>();
+<anchor xml:id="__token_8h_source_1l00495"/>00495 &#32;&#32;&#32;&#32;std::shared_ptr&lt;Tag&gt;&#32;<link linkend="_class_and_token_1a8412cc2be91843dbcec6bde30b06d146">execute</link>()<emphasis role="keyword">override</emphasis>;
+<anchor xml:id="__token_8h_source_1l00496"/>00496 <emphasis role="keyword">protected</emphasis>:
+<anchor xml:id="__token_8h_source_1l00497"/>00497 };
+<anchor xml:id="__token_8h_source_1l00498"/>00498 
+<anchor xml:id="__token_8h_source_1l00499"/><link linkend="_class_or_token">00499</link> <emphasis role="keyword">class&#32;</emphasis><link linkend="_class_or_token">OrToken</link>&#32;:<emphasis role="keyword">public</emphasis>&#32;<link linkend="_class_b_m_p_k_token">BMPKToken</link>&#32;{
+<anchor xml:id="__token_8h_source_1l00500"/>00500 <emphasis role="keyword">public</emphasis>:
+<anchor xml:id="__token_8h_source_1l00501"/>00501 &#32;&#32;&#32;&#32;<link linkend="_class_or_token_1a7c85002ad97533e99a9512267eede569">OrToken</link>();
+<anchor xml:id="__token_8h_source_1l00502"/>00502 &#32;&#32;&#32;&#32;std::shared_ptr&lt;Tag&gt;&#32;<link linkend="_class_or_token_1ad079040ecd6dc5384d817249f80eed65">execute</link>()<emphasis role="keyword">override</emphasis>;
+<anchor xml:id="__token_8h_source_1l00503"/>00503 <emphasis role="keyword">protected</emphasis>:
+<anchor xml:id="__token_8h_source_1l00504"/>00504 };
+<anchor xml:id="__token_8h_source_1l00505"/>00505 
+<anchor xml:id="__token_8h_source_1l00506"/><link linkend="_class_not_token">00506</link> <emphasis role="keyword">class&#32;</emphasis><link linkend="_class_not_token">NotToken</link>&#32;:<emphasis role="keyword">public</emphasis>&#32;<link linkend="_class_c_k_token">CKToken</link>&#32;{
+<anchor xml:id="__token_8h_source_1l00507"/>00507 <emphasis role="keyword">public</emphasis>:
+<anchor xml:id="__token_8h_source_1l00508"/>00508 &#32;&#32;&#32;&#32;<link linkend="_class_not_token_1a9a532a1f09a418d06d923114deebb5e9">NotToken</link>();
+<anchor xml:id="__token_8h_source_1l00509"/>00509 &#32;&#32;&#32;&#32;std::shared_ptr&lt;Tag&gt;&#32;<link linkend="_class_not_token_1a6c122b3073499f07b79eed8e8576ab2a">execute</link>()<emphasis role="keyword">override</emphasis>;
+<anchor xml:id="__token_8h_source_1l00510"/>00510 <emphasis role="keyword">protected</emphasis>:
+<anchor xml:id="__token_8h_source_1l00511"/>00511 };
+<anchor xml:id="__token_8h_source_1l00512"/>00512 
+<anchor xml:id="__token_8h_source_1l00513"/>00513 
+<anchor xml:id="__token_8h_source_1l00514"/>00514 
+<anchor xml:id="__token_8h_source_1l00515"/>00515 
+<anchor xml:id="__token_8h_source_1l00516"/>00516 
+<anchor xml:id="__token_8h_source_1l00517"/><link linkend="_class_list_token">00517</link> <emphasis role="keyword">class&#32;</emphasis><link linkend="_class_list_token">ListToken</link>&#32;:<emphasis role="keyword">public</emphasis>&#32;<link linkend="_class_m_p_k_token">MPKToken</link>,<emphasis role="keyword">public</emphasis>&#32;<link linkend="_class_template_token">TemplateToken</link>&#32;{
+<anchor xml:id="__token_8h_source_1l00518"/>00518 <emphasis role="keyword">public</emphasis>:
+<anchor xml:id="__token_8h_source_1l00519"/>00519 &#32;&#32;&#32;&#32;<link linkend="_class_list_token_1a6f8b1c210bafe2fe677ddb92726567aa">ListToken</link>();
+<anchor xml:id="__token_8h_source_1l00520"/>00520 &#32;&#32;&#32;&#32;<emphasis role="keywordtype">void</emphasis>&#32;<link linkend="_class_list_token_1a7d31a5d4d920fbdaaa0073c76d9051a3">setOverloads</link>()<emphasis role="keyword">final</emphasis>;
+<anchor xml:id="__token_8h_source_1l00521"/>00521 &#32;&#32;&#32;&#32;<emphasis role="keywordtype">bool</emphasis>&#32;<link linkend="_class_list_token_1a9003dd872c19760212536f6197d70f51">addTokens</link>(<link linkend="_class_iterator_list">IteratorList&lt;Token&gt;</link>&amp;&#32;tl,&#32;<link linkend="_class_token_result">TokenResult</link>&amp;&#32;<link linkend="_class_template_token_1a8da6ae9664056d2441190c30cd332aca">tRes</link>)<emphasis role="keyword">override</emphasis>;
+<anchor xml:id="__token_8h_source_1l00522"/>00522 &#32;&#32;&#32;&#32;std::shared_ptr&lt;Tag&gt;&#32;<link linkend="_class_list_token_1a7fe18acce7131bdfb768b8a8977173d3">execute</link>()<emphasis role="keyword">override</emphasis>;
+<anchor xml:id="__token_8h_source_1l00523"/>00523 <emphasis role="keyword">protected</emphasis>:
+<anchor xml:id="__token_8h_source_1l00524"/><link linkend="_class_list_token_1ac099c58eaacdd550708afdfb00eb8ba1">00524</link> &#32;&#32;&#32;&#32;<link linkend="__token_8h_1ad8ed01ff3ff33333d8e19db4d2818bb6">DataType</link>&#32;<link linkend="_class_list_token_1ac099c58eaacdd550708afdfb00eb8ba1">dType</link>;
+<anchor xml:id="__token_8h_source_1l00525"/><link linkend="_class_list_token_1aa261f2c9074d7aa9e3e9aff9dcf4fce0">00525</link> &#32;&#32;&#32;&#32;std::vector&lt;std::shared_ptr&lt;Token&gt;&gt;&#32;<link linkend="_class_list_token_1aa261f2c9074d7aa9e3e9aff9dcf4fce0">listToken</link>;
+<anchor xml:id="__token_8h_source_1l00526"/>00526 };
+<anchor xml:id="__token_8h_source_1l00527"/>00527 
+<anchor xml:id="__token_8h_source_1l00528"/><link linkend="_class_store_token">00528</link> <emphasis role="keyword">class&#32;</emphasis><link linkend="_class_store_token">StoreToken</link>&#32;:<emphasis role="keyword">public</emphasis>&#32;<link linkend="_class_m_p_k_token">MPKToken</link>&#32;{
+<anchor xml:id="__token_8h_source_1l00529"/>00529 <emphasis role="keyword">public</emphasis>:
+<anchor xml:id="__token_8h_source_1l00530"/>00530 &#32;&#32;&#32;&#32;<link linkend="_class_store_token_1afacb2d9d11cafbf437764c86753029b4">StoreToken</link>();
+<anchor xml:id="__token_8h_source_1l00531"/>00531 &#32;&#32;&#32;&#32;<emphasis role="keywordtype">void</emphasis>&#32;<link linkend="_class_store_token_1a153770d480bad3f9c611084e64641a78">setOverloads</link>()<emphasis role="keyword">final</emphasis>;
+<anchor xml:id="__token_8h_source_1l00532"/>00532 &#32;&#32;&#32;&#32;<emphasis role="keywordtype">void</emphasis>&#32;<link linkend="_class_store_token_1ab7dd1b936a3f820ab3b06091496f434d">dispatchArguments</link>()<emphasis role="keyword">override</emphasis>;
+<anchor xml:id="__token_8h_source_1l00533"/>00533 &#32;&#32;&#32;&#32;std::shared_ptr&lt;Tag&gt;&#32;<link linkend="_class_store_token_1a431a003fb845c3562c1ebab9b2b40bcd">execute</link>()<emphasis role="keyword">override</emphasis>;
+<anchor xml:id="__token_8h_source_1l00534"/>00534 <emphasis role="keyword">protected</emphasis>:
+<anchor xml:id="__token_8h_source_1l00535"/>00535 &#32;&#32;&#32;&#32;<emphasis role="keyword">template</emphasis>&lt;<emphasis role="keyword">typename</emphasis>&#32;T&gt;
+<anchor xml:id="__token_8h_source_1l00536"/>00536 &#32;&#32;&#32;&#32;std::vector&lt;T&gt;&#32;<link linkend="_class_store_token_1a892ce9443572572d7e3a2062d845d06f">test</link>(<emphasis role="keywordtype">int</emphasis>&#32;i);
+<anchor xml:id="__token_8h_source_1l00537"/><link linkend="_class_store_token_1ac688bd71a918146db1def1a415b80863">00537</link> &#32;&#32;&#32;&#32;std::shared_ptr&lt;Token&gt;&#32;<link linkend="_class_store_token_1ac688bd71a918146db1def1a415b80863">identifierToken</link>;
+<anchor xml:id="__token_8h_source_1l00538"/><link linkend="_class_store_token_1afd9ad7493758a02837af451ddb4fec2d">00538</link> &#32;&#32;&#32;&#32;std::shared_ptr&lt;Token&gt;&#32;<link linkend="_class_store_token_1afd9ad7493758a02837af451ddb4fec2d">valueToken</link>;
+<anchor xml:id="__token_8h_source_1l00539"/>00539 &#32;&#32;&#32;&#32;<emphasis role="keywordtype">bool</emphasis>&#32;<link linkend="_class_store_token_1ad522e07a350fe2a104fb6de9fa21e70b">addValue</link>(<link linkend="_class_iterator_list">IteratorList&lt;Token&gt;</link>&amp;&#32;tl,&#32;<link linkend="_class_token_result">TokenResult</link>&#32;tRes);
+<anchor xml:id="__token_8h_source_1l00540"/>00540 &#32;&#32;&#32;&#32;<emphasis role="keywordtype">bool</emphasis>&#32;<link linkend="_class_store_token_1a42ebff8fa5aa531bfa439cf4b9fd7613">addTokens</link>(<link linkend="_class_iterator_list">IteratorList&lt;Token&gt;</link>&amp;&#32;tl,&#32;<link linkend="_class_token_result">TokenResult</link>&amp;&#32;tRes)<emphasis role="keyword">override</emphasis>;
+<anchor xml:id="__token_8h_source_1l00541"/>00541 };
+<anchor xml:id="__token_8h_source_1l00542"/>00542 
+<anchor xml:id="__token_8h_source_1l00543"/>00543 <emphasis role="comment">//empty&#32;or&#32;1&#32;parameter&#32;token</emphasis>
+<anchor xml:id="__token_8h_source_1l00544"/><link linkend="_class_integer_token">00544</link> <emphasis role="keyword">class&#32;</emphasis><link linkend="_class_integer_token">IntegerToken</link>&#32;:<emphasis role="keyword">public</emphasis>&#32;<link linkend="_class_u_p_k_token">UPKToken</link>&#32;{
+<anchor xml:id="__token_8h_source_1l00545"/>00545 <emphasis role="keyword">public</emphasis>:
+<anchor xml:id="__token_8h_source_1l00546"/>00546 &#32;&#32;&#32;&#32;<link linkend="_class_integer_token_1ab1ee2a5de4630d98a7d9cd6351947927">IntegerToken</link>();
+<anchor xml:id="__token_8h_source_1l00547"/>00547 &#32;&#32;&#32;&#32;<emphasis role="keywordtype">void</emphasis>&#32;<link linkend="_class_integer_token_1a30a0007432b5d56252b4a3f703569801">setOverloads</link>()<emphasis role="keyword">final</emphasis>;
+<anchor xml:id="__token_8h_source_1l00548"/>00548 &#32;&#32;&#32;&#32;<link linkend="__token_8h_1ad8ed01ff3ff33333d8e19db4d2818bb6">DataType</link>&#32;<link linkend="_class_integer_token_1a44d105511a638a28a59916f91059d2cd">getDataType</link>(<link linkend="_class_token_result">TokenResult</link>&amp;&#32;tRes)<emphasis role="keyword">override</emphasis>;
+<anchor xml:id="__token_8h_source_1l00549"/>00549 &#32;&#32;&#32;&#32;std::shared_ptr&lt;Tag&gt;&#32;<link linkend="_class_integer_token_1a33e827ea234b1c0b5b305b5857331960">execute</link>()<emphasis role="keyword">override</emphasis>;
+<anchor xml:id="__token_8h_source_1l00550"/>00550 <emphasis role="keyword">protected</emphasis>:
+<anchor xml:id="__token_8h_source_1l00551"/>00551 
+<anchor xml:id="__token_8h_source_1l00552"/>00552 };
+<anchor xml:id="__token_8h_source_1l00553"/>00553 
+<anchor xml:id="__token_8h_source_1l00554"/>00554 
+<anchor xml:id="__token_8h_source_1l00555"/>00555 
+<anchor xml:id="__token_8h_source_1l00556"/><link linkend="_class_float_token">00556</link> <emphasis role="keyword">class&#32;</emphasis><link linkend="_class_float_token">FloatToken</link>&#32;:<emphasis role="keyword">public</emphasis>&#32;<link linkend="_class_u_p_k_token">UPKToken</link>&#32;{
+<anchor xml:id="__token_8h_source_1l00557"/>00557 <emphasis role="keyword">public</emphasis>:
+<anchor xml:id="__token_8h_source_1l00558"/>00558 &#32;&#32;&#32;&#32;<link linkend="_class_float_token_1ac8c34bb808d391d316bcd3a7094bc98a">FloatToken</link>();
+<anchor xml:id="__token_8h_source_1l00559"/>00559 &#32;&#32;&#32;&#32;<emphasis role="keywordtype">void</emphasis>&#32;<link linkend="_class_float_token_1a0f59e32a7fff30d2b09e509a69126305">setOverloads</link>()<emphasis role="keyword">final</emphasis>;
+<anchor xml:id="__token_8h_source_1l00560"/>00560 &#32;&#32;&#32;&#32;<link linkend="__token_8h_1ad8ed01ff3ff33333d8e19db4d2818bb6">DataType</link>&#32;<link linkend="_class_float_token_1a65675fb958678b0a82f17bc6ba8eb82b">getDataType</link>(<link linkend="_class_token_result">TokenResult</link>&amp;&#32;tRes)<emphasis role="keyword">override</emphasis>;
+<anchor xml:id="__token_8h_source_1l00561"/>00561 &#32;&#32;&#32;&#32;std::shared_ptr&lt;Tag&gt;&#32;<link linkend="_class_float_token_1af10a6ccf3e8f957f3926d837160bc429">execute</link>()<emphasis role="keyword">override</emphasis>;
+<anchor xml:id="__token_8h_source_1l00562"/>00562 <emphasis role="keyword">protected</emphasis>:
+<anchor xml:id="__token_8h_source_1l00563"/>00563 
+<anchor xml:id="__token_8h_source_1l00564"/>00564 };
+<anchor xml:id="__token_8h_source_1l00565"/>00565 
+<anchor xml:id="__token_8h_source_1l00566"/><link linkend="_class_bool_token">00566</link> <emphasis role="keyword">class&#32;</emphasis><link linkend="_class_bool_token">BoolToken</link>&#32;:<emphasis role="keyword">public</emphasis>&#32;<link linkend="_class_c_k_token">CKToken</link>&#32;{
+<anchor xml:id="__token_8h_source_1l00567"/>00567 <emphasis role="keyword">public</emphasis>:
+<anchor xml:id="__token_8h_source_1l00568"/>00568 &#32;&#32;&#32;&#32;<link linkend="_class_bool_token_1a230b4c663f336dfe394307a4f5eaf4c9">BoolToken</link>();
+<anchor xml:id="__token_8h_source_1l00569"/>00569 &#32;&#32;&#32;&#32;<link linkend="__token_8h_1ad8ed01ff3ff33333d8e19db4d2818bb6">DataType</link>&#32;<link linkend="_class_bool_token_1a4023134033edc2d4df317ab3c52d5d0c">getDataType</link>(<link linkend="_class_token_result">TokenResult</link>&amp;&#32;tRes)<emphasis role="keyword">override</emphasis>;
+<anchor xml:id="__token_8h_source_1l00570"/>00570 &#32;&#32;&#32;&#32;std::shared_ptr&lt;Tag&gt;&#32;<link linkend="_class_bool_token_1ae9094e6512fb1f196d3ee7b456556e69">execute</link>()<emphasis role="keyword">override</emphasis>;
+<anchor xml:id="__token_8h_source_1l00571"/>00571 <emphasis role="keyword">protected</emphasis>:
+<anchor xml:id="__token_8h_source_1l00572"/>00572 
+<anchor xml:id="__token_8h_source_1l00573"/>00573 };
+<anchor xml:id="__token_8h_source_1l00574"/><link linkend="_class_string_token">00574</link> <emphasis role="keyword">class&#32;</emphasis><link linkend="_class_string_token">StringToken</link>&#32;:<emphasis role="keyword">public</emphasis>&#32;<link linkend="_class_u_p_k_token">UPKToken</link>&#32;{
+<anchor xml:id="__token_8h_source_1l00575"/>00575 <emphasis role="keyword">public</emphasis>:
+<anchor xml:id="__token_8h_source_1l00576"/>00576 &#32;&#32;&#32;&#32;<link linkend="_class_string_token_1a4d387ee58a3492caf7cc5b5c69ea1577">StringToken</link>();
+<anchor xml:id="__token_8h_source_1l00577"/>00577 &#32;&#32;&#32;&#32;<link linkend="__token_8h_1ad8ed01ff3ff33333d8e19db4d2818bb6">DataType</link>&#32;<link linkend="_class_string_token_1ab187083803bf50b09787ed3eb1d4424d">getDataType</link>(<link linkend="_class_token_result">TokenResult</link>&amp;&#32;tRes)<emphasis role="keyword">override</emphasis>;
+<anchor xml:id="__token_8h_source_1l00578"/>00578 &#32;&#32;&#32;&#32;<emphasis role="keywordtype">void</emphasis>&#32;<link linkend="_class_string_token_1a5f90b2ff445397ebeb3ae09dbbc749f5">setOverloads</link>()<emphasis role="keyword">final</emphasis>;
+<anchor xml:id="__token_8h_source_1l00579"/>00579 &#32;&#32;&#32;&#32;std::shared_ptr&lt;Tag&gt;&#32;<link linkend="_class_string_token_1a1dbc21181980b768c55acb13d0213601">execute</link>()<emphasis role="keyword">override</emphasis>;
+<anchor xml:id="__token_8h_source_1l00580"/>00580 <emphasis role="keyword">protected</emphasis>:
+<anchor xml:id="__token_8h_source_1l00581"/>00581 };
+<anchor xml:id="__token_8h_source_1l00582"/><link linkend="_class_coord_token">00582</link> <emphasis role="keyword">class&#32;</emphasis><link linkend="_class_coord_token">CoordToken</link>&#32;:<emphasis role="keyword">public</emphasis>&#32;<link linkend="_class_p_k_token">PKToken</link>&#32;{
+<anchor xml:id="__token_8h_source_1l00583"/>00583 <emphasis role="keyword">public</emphasis>:
+<anchor xml:id="__token_8h_source_1l00584"/>00584 &#32;&#32;&#32;&#32;<emphasis role="keywordtype">void</emphasis>&#32;<link linkend="_class_coord_token_1a9f04020eee6553e459eaef139ad0ba66">showArguments</link>(<emphasis role="keyword">const</emphasis>&#32;<emphasis role="keywordtype">int</emphasis>&#32;nestedLayer)<emphasis role="keyword">override</emphasis>;
+<anchor xml:id="__token_8h_source_1l00585"/>00585 &#32;&#32;&#32;&#32;<link linkend="_class_coord_token_1a3540101def18b72bc447578fa6efc39f">CoordToken</link>();
+<anchor xml:id="__token_8h_source_1l00586"/>00586 &#32;&#32;&#32;&#32;<emphasis role="keywordtype">void</emphasis>&#32;<link linkend="_class_coord_token_1a6cc138e57660c753a4b96c335c6105a4">setOverloads</link>()<emphasis role="keyword">final</emphasis>;
+<anchor xml:id="__token_8h_source_1l00587"/>00587 &#32;&#32;&#32;&#32;<emphasis role="keywordtype">void</emphasis>&#32;<link linkend="_class_coord_token_1a427329931b6beea89e89eb777290e0b3">dispatchArguments</link>()<emphasis role="keyword">final</emphasis>;
+<anchor xml:id="__token_8h_source_1l00588"/>00588 &#32;&#32;&#32;&#32;<link linkend="__token_8h_1ad8ed01ff3ff33333d8e19db4d2818bb6">DataType</link>&#32;<link linkend="_class_coord_token_1ad5cc8975263d8b2bfa1222fc1eaa1f6c">getDataType</link>(<link linkend="_class_token_result">TokenResult</link>&amp;&#32;tRes)<emphasis role="keyword">override</emphasis>;
+<anchor xml:id="__token_8h_source_1l00589"/>00589 <emphasis role="keyword">protected</emphasis>:
+<anchor xml:id="__token_8h_source_1l00590"/><link linkend="_class_coord_token_1a21470f2dfdc0677999da55c3731c1b4a">00590</link> &#32;&#32;&#32;&#32;std::shared_ptr&lt;Token&gt;&#32;<link linkend="_class_coord_token_1a21470f2dfdc0677999da55c3731c1b4a">xPoint</link>;
+<anchor xml:id="__token_8h_source_1l00591"/><link linkend="_class_coord_token_1ac1290944990250ad960c7004a7eef459">00591</link> &#32;&#32;&#32;&#32;std::shared_ptr&lt;Token&gt;&#32;<link linkend="_class_coord_token_1ac1290944990250ad960c7004a7eef459">yPoint</link>;
+<anchor xml:id="__token_8h_source_1l00592"/><link linkend="_class_coord_token_1a1da90086131fc87de755754d41ecbf41">00592</link> &#32;&#32;&#32;&#32;std::shared_ptr&lt;Token&gt;&#32;<link linkend="_class_coord_token_1a1da90086131fc87de755754d41ecbf41">coordToken</link>;
+<anchor xml:id="__token_8h_source_1l00593"/>00593 
+<anchor xml:id="__token_8h_source_1l00594"/>00594 &#32;&#32;&#32;&#32;std::shared_ptr&lt;Tag&gt;&#32;<link linkend="_class_coord_token_1a3399a3cb18d077bb51dbfc13b12bf642">execute</link>()<emphasis role="keyword">override</emphasis>;
+<anchor xml:id="__token_8h_source_1l00595"/>00595 };
+<anchor xml:id="__token_8h_source_1l00596"/>00596 
+<anchor xml:id="__token_8h_source_1l00597"/><link linkend="_class_zone_token">00597</link> <emphasis role="keyword">class&#32;</emphasis><link linkend="_class_zone_token">ZoneToken</link>&#32;:<emphasis role="keyword">public</emphasis>&#32;<link linkend="_class_p_k_token">PKToken</link>&#32;{
+<anchor xml:id="__token_8h_source_1l00598"/>00598 <emphasis role="keyword">public</emphasis>:
+<anchor xml:id="__token_8h_source_1l00599"/>00599 &#32;&#32;&#32;&#32;<link linkend="_class_zone_token_1aa3c56031d3943698209e5e5b16fca705">ZoneToken</link>();
+<anchor xml:id="__token_8h_source_1l00600"/>00600 &#32;&#32;&#32;&#32;<emphasis role="keywordtype">void</emphasis>&#32;<link linkend="_class_zone_token_1a0ecbf706cef317c8fa0234cbb9006824">setOverloads</link>()<emphasis role="keyword">final</emphasis>;
+<anchor xml:id="__token_8h_source_1l00601"/>00601 &#32;&#32;&#32;&#32;<emphasis role="keywordtype">void</emphasis>&#32;<link linkend="_class_zone_token_1a7ebcb70f7ef89bc1cd193e86f337022a">dispatchArguments</link>()<emphasis role="keyword">final</emphasis>;
+<anchor xml:id="__token_8h_source_1l00602"/>00602 &#32;&#32;&#32;&#32;<emphasis role="keywordtype">void</emphasis>&#32;<link linkend="_class_zone_token_1af424617eb2ad025c9e4b9d470cf5d46f">showArguments</link>(<emphasis role="keyword">const</emphasis>&#32;<emphasis role="keywordtype">int</emphasis>&#32;nestedLayer)<emphasis role="keyword">override</emphasis>;
+<anchor xml:id="__token_8h_source_1l00603"/>00603 &#32;&#32;&#32;&#32;<link linkend="__token_8h_1ad8ed01ff3ff33333d8e19db4d2818bb6">DataType</link>&#32;<link linkend="_class_zone_token_1a0871bf05e2a5e772993e723f7c9f3027">getDataType</link>(<link linkend="_class_token_result">TokenResult</link>&amp;&#32;tRes)<emphasis role="keyword">override</emphasis>;
+<anchor xml:id="__token_8h_source_1l00604"/>00604 <emphasis role="keyword">protected</emphasis>:
+<anchor xml:id="__token_8h_source_1l00605"/><link linkend="_class_zone_token_1ab04473b2a544a8c989cc36636a0ca1fe">00605</link> &#32;&#32;&#32;&#32;std::shared_ptr&lt;Token&gt;&#32;<link linkend="_class_zone_token_1ab04473b2a544a8c989cc36636a0ca1fe">topLeft</link>;
+<anchor xml:id="__token_8h_source_1l00606"/><link linkend="_class_zone_token_1a470e67610ee539fb9ef8116c7b11674f">00606</link> &#32;&#32;&#32;&#32;std::shared_ptr&lt;Token&gt;&#32;<link linkend="_class_zone_token_1a470e67610ee539fb9ef8116c7b11674f">bottomRight</link>;
+<anchor xml:id="__token_8h_source_1l00607"/><link linkend="_class_zone_token_1a6393e6a8f503370941ecde68361e1f4f">00607</link> &#32;&#32;&#32;&#32;std::shared_ptr&lt;Token&gt;&#32;<link linkend="_class_zone_token_1a6393e6a8f503370941ecde68361e1f4f">zoneToken</link>;
+<anchor xml:id="__token_8h_source_1l00608"/>00608 
+<anchor xml:id="__token_8h_source_1l00609"/>00609 &#32;&#32;&#32;&#32;std::shared_ptr&lt;Tag&gt;&#32;<link linkend="_class_zone_token_1a9c4b24525c5f7b3b6a502662d3a4f31c">execute</link>()<emphasis role="keyword">override</emphasis>;
+<anchor xml:id="__token_8h_source_1l00610"/>00610 };
+<anchor xml:id="__token_8h_source_1l00611"/>00611 
+<anchor xml:id="__token_8h_source_1l00612"/><link linkend="_class_direction_token">00612</link> <emphasis role="keyword">class&#32;</emphasis><link linkend="_class_direction_token">DirectionToken</link>&#32;:<emphasis role="keyword">public</emphasis>&#32;<link linkend="_class_u_p_k_token">UPKToken</link>&#32;{
+<anchor xml:id="__token_8h_source_1l00613"/>00613 <emphasis role="keyword">public</emphasis>:
+<anchor xml:id="__token_8h_source_1l00614"/>00614 &#32;&#32;&#32;&#32;<link linkend="_class_direction_token_1aa4defb606ee71a120de033877d441b7f">DirectionToken</link>();
+<anchor xml:id="__token_8h_source_1l00615"/>00615 &#32;&#32;&#32;&#32;<emphasis role="keywordtype">void</emphasis>&#32;<link linkend="_class_direction_token_1a0a49d672e7b1c45ed5a67db29dc35955">setOverloads</link>()<emphasis role="keyword">final</emphasis>;
+<anchor xml:id="__token_8h_source_1l00616"/>00616 &#32;&#32;&#32;&#32;<link linkend="__token_8h_1ad8ed01ff3ff33333d8e19db4d2818bb6">DataType</link>&#32;<link linkend="_class_direction_token_1a6e02336bb4bb7f426c0cdf85ea02d8f8">getDataType</link>(<link linkend="_class_token_result">TokenResult</link>&amp;&#32;tRes)<emphasis role="keyword">override</emphasis>;
+<anchor xml:id="__token_8h_source_1l00617"/>00617 <emphasis role="keyword">protected</emphasis>:
+<anchor xml:id="__token_8h_source_1l00618"/>00618 &#32;&#32;&#32;&#32;std::shared_ptr&lt;Tag&gt;&#32;<link linkend="_class_direction_token_1a124c7609d3a4d859d6ef466cf03034b6">execute</link>()<emphasis role="keyword">override</emphasis>;
+<anchor xml:id="__token_8h_source_1l00619"/>00619 };
+<anchor xml:id="__token_8h_source_1l00620"/>00620 
+<anchor xml:id="__token_8h_source_1l00621"/><link linkend="_class_compare_token">00621</link> <emphasis role="keyword">class&#32;</emphasis><link linkend="_class_compare_token">CompareToken</link>&#32;:<emphasis role="keyword">public</emphasis>&#32;<link linkend="_class_p_k_token">PKToken</link>,&#32;<emphasis role="keyword">public</emphasis>&#32;<link linkend="_class_template_token">TemplateToken</link>&#32;{
+<anchor xml:id="__token_8h_source_1l00622"/>00622 <emphasis role="keyword">public</emphasis>:
+<anchor xml:id="__token_8h_source_1l00623"/>00623 &#32;&#32;&#32;&#32;<link linkend="_class_compare_token_1a20829f6e8ec72cd4c9c239f20ac795b3">CompareToken</link>();
+<anchor xml:id="__token_8h_source_1l00624"/>00624 &#32;&#32;&#32;&#32;<emphasis role="keywordtype">void</emphasis>&#32;<link linkend="_class_compare_token_1a518feb2d1f82dab200d49538bd303ad7">setOverloads</link>()<emphasis role="keyword">final</emphasis>;
+<anchor xml:id="__token_8h_source_1l00625"/>00625 &#32;&#32;&#32;&#32;<link linkend="__token_8h_1ad8ed01ff3ff33333d8e19db4d2818bb6">DataType</link>&#32;<link linkend="_class_compare_token_1ac38f0593eae04726ebe2fed589176916">getDataType</link>(<link linkend="_class_token_result">TokenResult</link>&amp;&#32;<link linkend="_class_template_token_1a8da6ae9664056d2441190c30cd332aca">tRes</link>)<emphasis role="keyword">override</emphasis>;
+<anchor xml:id="__token_8h_source_1l00626"/>00626 <emphasis role="keyword">protected</emphasis>:
+<anchor xml:id="__token_8h_source_1l00627"/><link linkend="_class_compare_token_1ae5422bfa00705d74664db93db1b04c4f">00627</link> &#32;&#32;&#32;&#32;std::vector&lt;std::shared_ptr&lt;Token&gt;&gt;&#32;<link linkend="_class_compare_token_1ae5422bfa00705d74664db93db1b04c4f">listTokens</link>;
+<anchor xml:id="__token_8h_source_1l00628"/><link linkend="_class_compare_token_1af14333d1e73b5ca964889bb43455010a">00628</link> &#32;&#32;&#32;&#32;<link linkend="__tags_8h_1afbc5396d9a88c41d6aeb522b9f06f426">CompareType</link>&#32;<link linkend="_class_compare_token_1af14333d1e73b5ca964889bb43455010a">cmpType</link>;
+<anchor xml:id="__token_8h_source_1l00629"/><link linkend="_class_compare_token_1a03488c79224ca6dd3c1e824a1ee13198">00629</link> &#32;&#32;&#32;&#32;<link linkend="__token_8h_1ad8ed01ff3ff33333d8e19db4d2818bb6">DataType</link>&#32;<link linkend="_class_compare_token_1a03488c79224ca6dd3c1e824a1ee13198">valuesType</link>;
+<anchor xml:id="__token_8h_source_1l00630"/>00630 &#32;&#32;&#32;&#32;std::shared_ptr&lt;Tag&gt;&#32;<link linkend="_class_compare_token_1ac71c9bacc5349631b6e4972746934d48">execute</link>()<emphasis role="keyword">override</emphasis>;
+<anchor xml:id="__token_8h_source_1l00631"/>00631 };
+<anchor xml:id="__token_8h_source_1l00632"/>00632 
+<anchor xml:id="__token_8h_source_1l00633"/>00633 
+<anchor xml:id="__token_8h_source_1l00634"/>00634 
+<anchor xml:id="__token_8h_source_1l00635"/><link linkend="_class_print_token">00635</link> <emphasis role="keyword">class&#32;</emphasis><link linkend="_class_print_token">PrintToken</link>&#32;:<emphasis role="keyword">public</emphasis>&#32;<link linkend="_class_u_p_k_token">UPKToken</link>&#32;{
+<anchor xml:id="__token_8h_source_1l00636"/>00636 <emphasis role="keyword">public</emphasis>:
+<anchor xml:id="__token_8h_source_1l00637"/>00637 &#32;&#32;&#32;&#32;<link linkend="_class_print_token_1a3a58305f4f8a92f90fcca62aa4544db8">PrintToken</link>();
+<anchor xml:id="__token_8h_source_1l00638"/>00638 &#32;&#32;&#32;&#32;<emphasis role="keywordtype">void</emphasis>&#32;<link linkend="_class_print_token_1a0901d022b06f4b6cee86160bac8b8bb5">setOverloads</link>()<emphasis role="keyword">final</emphasis>;
+<anchor xml:id="__token_8h_source_1l00639"/>00639 <emphasis role="keyword">protected</emphasis>:
+<anchor xml:id="__token_8h_source_1l00640"/>00640 &#32;&#32;&#32;&#32;std::shared_ptr&lt;Tag&gt;&#32;<link linkend="_class_print_token_1a9e4931aa23c45ae8947c9a2258981fa3">execute</link>()<emphasis role="keyword">override</emphasis>;
+<anchor xml:id="__token_8h_source_1l00641"/>00641 };
+<anchor xml:id="__token_8h_source_1l00642"/>00642 
+<anchor xml:id="__token_8h_source_1l00643"/><link linkend="_class_break_token">00643</link> <emphasis role="keyword">class&#32;</emphasis><link linkend="_class_break_token">BreakToken</link>&#32;:<emphasis role="keyword">public</emphasis>&#32;<link linkend="_class_k_token">KToken</link>&#32;{
+<anchor xml:id="__token_8h_source_1l00644"/>00644 <emphasis role="keyword">public</emphasis>:
+<anchor xml:id="__token_8h_source_1l00645"/>00645 &#32;&#32;&#32;&#32;<link linkend="_class_break_token_1a87c201c9b7d271136bd63d7256a62b19">BreakToken</link>();
+<anchor xml:id="__token_8h_source_1l00646"/>00646 <emphasis role="keyword">protected</emphasis>:
+<anchor xml:id="__token_8h_source_1l00647"/>00647 &#32;&#32;&#32;&#32;<emphasis role="keyword">virtual</emphasis>&#32;std::shared_ptr&lt;Tag&gt;&#32;<link linkend="_class_break_token_1a623e413d2ea0c720de427739602b2002">execute</link>()<emphasis role="keyword">override</emphasis>;
+<anchor xml:id="__token_8h_source_1l00648"/>00648 };
+<anchor xml:id="__token_8h_source_1l00649"/>00649 
+<anchor xml:id="__token_8h_source_1l00650"/><link linkend="_class_continue_token">00650</link> <emphasis role="keyword">class&#32;</emphasis><link linkend="_class_continue_token">ContinueToken</link>&#32;:<emphasis role="keyword">public</emphasis>&#32;<link linkend="_class_k_token">KToken</link>&#32;{
+<anchor xml:id="__token_8h_source_1l00651"/>00651 <emphasis role="keyword">public</emphasis>:
+<anchor xml:id="__token_8h_source_1l00652"/>00652 &#32;&#32;&#32;&#32;<link linkend="_class_continue_token_1a13d28523acec8f04193ce06919127a0a">ContinueToken</link>();
+<anchor xml:id="__token_8h_source_1l00653"/>00653 <emphasis role="keyword">protected</emphasis>:
+<anchor xml:id="__token_8h_source_1l00654"/>00654 &#32;&#32;&#32;&#32;<emphasis role="keyword">virtual</emphasis>&#32;std::shared_ptr&lt;Tag&gt;&#32;<link linkend="_class_continue_token_1aa9fad99e91e2fb23af6fed27c815b01f">execute</link>()<emphasis role="keyword">override</emphasis>;
+<anchor xml:id="__token_8h_source_1l00655"/>00655 };
+<anchor xml:id="__token_8h_source_1l00656"/>00656 
+<anchor xml:id="__token_8h_source_1l00657"/><link linkend="_class_p_token">00657</link> <emphasis role="keyword">class&#32;</emphasis><link linkend="_class_p_token">PToken</link>&#32;:<emphasis role="keyword">public</emphasis>&#32;<link linkend="_class_token">Token</link>&#32;{
+<anchor xml:id="__token_8h_source_1l00658"/>00658 <emphasis role="keyword">public</emphasis>:
+<anchor xml:id="__token_8h_source_1l00659"/>00659 <emphasis role="keyword">protected</emphasis>:
+<anchor xml:id="__token_8h_source_1l00660"/>00660 };
+<anchor xml:id="__token_8h_source_1l00661"/>00661 
+<anchor xml:id="__token_8h_source_1l00662"/><link linkend="_class_l_token">00662</link> <emphasis role="keyword">class&#32;</emphasis><link linkend="_class_l_token">LToken</link>&#32;:<emphasis role="keyword">public</emphasis>&#32;<link linkend="_class_token">Token</link>&#32;{
+<anchor xml:id="__token_8h_source_1l00663"/>00663 <emphasis role="keyword">public</emphasis>:
+<anchor xml:id="__token_8h_source_1l00664"/>00664 <emphasis role="keyword">protected</emphasis>:
+<anchor xml:id="__token_8h_source_1l00665"/>00665 };
+<anchor xml:id="__token_8h_source_1l00666"/>00666 
+<anchor xml:id="__token_8h_source_1l00667"/>00667 
+<anchor xml:id="__token_8h_source_1l00668"/><link linkend="_class_open_parenthesis_token">00668</link> <emphasis role="keyword">class&#32;</emphasis><link linkend="_class_open_parenthesis_token">OpenParenthesisToken</link>&#32;:<emphasis role="keyword">public</emphasis>&#32;<link linkend="_class_p_token">PToken</link>&#32;{
+<anchor xml:id="__token_8h_source_1l00669"/>00669 <emphasis role="keyword">public</emphasis>:
+<anchor xml:id="__token_8h_source_1l00670"/>00670 &#32;&#32;&#32;&#32;<link linkend="_class_open_parenthesis_token_1a47a89050befd5ba73d4742338688584f">OpenParenthesisToken</link>();
+<anchor xml:id="__token_8h_source_1l00671"/>00671 <emphasis role="keyword">protected</emphasis>:
+<anchor xml:id="__token_8h_source_1l00672"/>00672 };
+<anchor xml:id="__token_8h_source_1l00673"/>00673 
+<anchor xml:id="__token_8h_source_1l00674"/><link linkend="_class_close_parenthesis_token">00674</link> <emphasis role="keyword">class&#32;</emphasis><link linkend="_class_close_parenthesis_token">CloseParenthesisToken</link>&#32;:<emphasis role="keyword">public</emphasis>&#32;<link linkend="_class_p_token">PToken</link>&#32;{
+<anchor xml:id="__token_8h_source_1l00675"/>00675 <emphasis role="keyword">public</emphasis>:
+<anchor xml:id="__token_8h_source_1l00676"/>00676 &#32;&#32;&#32;&#32;<link linkend="_class_close_parenthesis_token_1a19722cdf09d45d79725d6e8227ccd2ce">CloseParenthesisToken</link>();
+<anchor xml:id="__token_8h_source_1l00677"/>00677 <emphasis role="keyword">protected</emphasis>:
+<anchor xml:id="__token_8h_source_1l00678"/>00678 };
+<anchor xml:id="__token_8h_source_1l00679"/>00679 
+<anchor xml:id="__token_8h_source_1l00680"/><link linkend="_class_close_brackets_token">00680</link> <emphasis role="keyword">class&#32;</emphasis><link linkend="_class_close_brackets_token">CloseBracketsToken</link>&#32;:<emphasis role="keyword">public</emphasis>&#32;<link linkend="_class_p_token">PToken</link>&#32;{
+<anchor xml:id="__token_8h_source_1l00681"/>00681 <emphasis role="keyword">public</emphasis>:
+<anchor xml:id="__token_8h_source_1l00682"/>00682 &#32;&#32;&#32;&#32;<link linkend="_class_close_brackets_token_1a804df0a59ddcffeff2c90a25e036f672">CloseBracketsToken</link>();
+<anchor xml:id="__token_8h_source_1l00683"/>00683 <emphasis role="keyword">protected</emphasis>:
+<anchor xml:id="__token_8h_source_1l00684"/>00684 };
+<anchor xml:id="__token_8h_source_1l00685"/>00685 
+<anchor xml:id="__token_8h_source_1l00686"/><link linkend="_class_open_brackets_token">00686</link> <emphasis role="keyword">class&#32;</emphasis><link linkend="_class_open_brackets_token">OpenBracketsToken</link>&#32;:<emphasis role="keyword">public</emphasis>&#32;<link linkend="_class_p_token">PToken</link>&#32;{
+<anchor xml:id="__token_8h_source_1l00687"/>00687 <emphasis role="keyword">public</emphasis>:
+<anchor xml:id="__token_8h_source_1l00688"/>00688 &#32;&#32;&#32;&#32;<link linkend="_class_open_brackets_token_1abe41351997882bec5477c775f5bc1673">OpenBracketsToken</link>();
+<anchor xml:id="__token_8h_source_1l00689"/>00689 <emphasis role="keyword">protected</emphasis>:
+<anchor xml:id="__token_8h_source_1l00690"/>00690 };
+<anchor xml:id="__token_8h_source_1l00691"/>00691 
+<anchor xml:id="__token_8h_source_1l00692"/><link linkend="_class_close_angle_brackets_token">00692</link> <emphasis role="keyword">class&#32;</emphasis><link linkend="_class_close_angle_brackets_token">CloseAngleBracketsToken</link>&#32;:<emphasis role="keyword">public</emphasis>&#32;<link linkend="_class_p_token">PToken</link>&#32;{
+<anchor xml:id="__token_8h_source_1l00693"/>00693 <emphasis role="keyword">public</emphasis>:
+<anchor xml:id="__token_8h_source_1l00694"/>00694 &#32;&#32;&#32;&#32;<link linkend="_class_close_angle_brackets_token_1a2009810627062cc4676f13c689e5c383">CloseAngleBracketsToken</link>();
+<anchor xml:id="__token_8h_source_1l00695"/>00695 <emphasis role="keyword">protected</emphasis>:
+<anchor xml:id="__token_8h_source_1l00696"/>00696 };
+<anchor xml:id="__token_8h_source_1l00697"/>00697 
+<anchor xml:id="__token_8h_source_1l00698"/><link linkend="_class_open_angle_brackets_token">00698</link> <emphasis role="keyword">class&#32;</emphasis><link linkend="_class_open_angle_brackets_token">OpenAngleBracketsToken</link>&#32;:<emphasis role="keyword">public</emphasis>&#32;<link linkend="_class_p_token">PToken</link>&#32;{
+<anchor xml:id="__token_8h_source_1l00699"/>00699 <emphasis role="keyword">public</emphasis>:
+<anchor xml:id="__token_8h_source_1l00700"/>00700 &#32;&#32;&#32;&#32;<link linkend="_class_open_angle_brackets_token_1a64a65c59aebef72567fcb68046362e9f">OpenAngleBracketsToken</link>();
+<anchor xml:id="__token_8h_source_1l00701"/>00701 <emphasis role="keyword">protected</emphasis>:
+<anchor xml:id="__token_8h_source_1l00702"/>00702 };
+<anchor xml:id="__token_8h_source_1l00703"/>00703 
+<anchor xml:id="__token_8h_source_1l00704"/><link linkend="_class_comma_token">00704</link> <emphasis role="keyword">class&#32;</emphasis><link linkend="_class_comma_token">CommaToken</link>&#32;:<emphasis role="keyword">public</emphasis>&#32;<link linkend="_class_p_token">PToken</link>&#32;{
+<anchor xml:id="__token_8h_source_1l00705"/>00705 <emphasis role="keyword">public</emphasis>:
+<anchor xml:id="__token_8h_source_1l00706"/>00706 &#32;&#32;&#32;&#32;<link linkend="_class_comma_token_1abc5636c6b36a649ebed92d14ab3e6419">CommaToken</link>();
+<anchor xml:id="__token_8h_source_1l00707"/>00707 <emphasis role="keyword">protected</emphasis>:
+<anchor xml:id="__token_8h_source_1l00708"/>00708 };
+<anchor xml:id="__token_8h_source_1l00709"/>00709 
+<anchor xml:id="__token_8h_source_1l00710"/>00710 
+<anchor xml:id="__token_8h_source_1l00711"/>00711 
+<anchor xml:id="__token_8h_source_1l00712"/>00712 
+<anchor xml:id="__token_8h_source_1l00713"/><link linkend="_class_false_token">00713</link> <emphasis role="keyword">class&#32;</emphasis><link linkend="_class_false_token">FalseToken</link>&#32;:<emphasis role="keyword">public</emphasis>&#32;<link linkend="_class_l_token">LToken</link>&#32;{
+<anchor xml:id="__token_8h_source_1l00714"/>00714 <emphasis role="keyword">public</emphasis>:
+<anchor xml:id="__token_8h_source_1l00715"/>00715 &#32;&#32;&#32;&#32;<link linkend="_class_false_token_1a4cc46b13ce0b957d44cdcfd648ce00bc">FalseToken</link>();
+<anchor xml:id="__token_8h_source_1l00716"/>00716 &#32;&#32;&#32;&#32;<link linkend="__token_8h_1ad8ed01ff3ff33333d8e19db4d2818bb6">DataType</link>&#32;<link linkend="_class_false_token_1a1f60433402f09076e28d93b7a8ab176e">getDataType</link>(<link linkend="_class_token_result">TokenResult</link>&amp;&#32;tRes)<emphasis role="keyword">override</emphasis>;
+<anchor xml:id="__token_8h_source_1l00717"/>00717 <emphasis role="keyword">protected</emphasis>:
+<anchor xml:id="__token_8h_source_1l00718"/>00718 };
+<anchor xml:id="__token_8h_source_1l00719"/>00719 
+<anchor xml:id="__token_8h_source_1l00720"/><link linkend="_class_true_token">00720</link> <emphasis role="keyword">class&#32;</emphasis><link linkend="_class_true_token">TrueToken</link>&#32;:<emphasis role="keyword">public</emphasis>&#32;<link linkend="_class_l_token">LToken</link>&#32;{
+<anchor xml:id="__token_8h_source_1l00721"/>00721 <emphasis role="keyword">public</emphasis>:
+<anchor xml:id="__token_8h_source_1l00722"/>00722 &#32;&#32;&#32;&#32;<link linkend="_class_true_token_1a08aca6511e1fbde286a4776207b2d9c1">TrueToken</link>();
+<anchor xml:id="__token_8h_source_1l00723"/>00723 &#32;&#32;&#32;&#32;<link linkend="__token_8h_1ad8ed01ff3ff33333d8e19db4d2818bb6">DataType</link>&#32;<link linkend="_class_true_token_1af3740cd45b792953be794e45d84125e2">getDataType</link>(<link linkend="_class_token_result">TokenResult</link>&amp;&#32;tRes)<emphasis role="keyword">override</emphasis>;
+<anchor xml:id="__token_8h_source_1l00724"/>00724 <emphasis role="keyword">protected</emphasis>:
+<anchor xml:id="__token_8h_source_1l00725"/>00725 };
+<anchor xml:id="__token_8h_source_1l00726"/>00726 
+<anchor xml:id="__token_8h_source_1l00727"/><link linkend="_class_second_token">00727</link> <emphasis role="keyword">class&#32;</emphasis><link linkend="_class_second_token">SecondToken</link>&#32;:<emphasis role="keyword">public</emphasis>&#32;<link linkend="_class_l_token">LToken</link>&#32;{
+<anchor xml:id="__token_8h_source_1l00728"/>00728 <emphasis role="keyword">public</emphasis>:
+<anchor xml:id="__token_8h_source_1l00729"/>00729 &#32;&#32;&#32;&#32;<link linkend="_class_second_token_1adf8fe7d7c5ae3fc0f72dd5035f7fa317">SecondToken</link>();
+<anchor xml:id="__token_8h_source_1l00730"/>00730 &#32;&#32;&#32;&#32;<link linkend="__token_8h_1ad8ed01ff3ff33333d8e19db4d2818bb6">DataType</link>&#32;<link linkend="_class_second_token_1a0d07e77bec144d89937bd841521f7e23">getDataType</link>(<link linkend="_class_token_result">TokenResult</link>&amp;&#32;tRes)<emphasis role="keyword">override</emphasis>;
+<anchor xml:id="__token_8h_source_1l00731"/>00731 <emphasis role="keyword">protected</emphasis>:
+<anchor xml:id="__token_8h_source_1l00732"/>00732 };
+<anchor xml:id="__token_8h_source_1l00733"/><link linkend="_class_milli_second_token">00733</link> <emphasis role="keyword">class&#32;</emphasis><link linkend="_class_milli_second_token">MilliSecondToken</link>&#32;:<emphasis role="keyword">public</emphasis>&#32;<link linkend="_class_l_token">LToken</link>&#32;{
+<anchor xml:id="__token_8h_source_1l00734"/>00734 <emphasis role="keyword">public</emphasis>:&#32;<link linkend="_class_milli_second_token_1a0a728a23e8a29752ba7e999143741fd3">MilliSecondToken</link>();
+<anchor xml:id="__token_8h_source_1l00735"/>00735 &#32;&#32;&#32;&#32;&#32;&#32;<link linkend="__token_8h_1ad8ed01ff3ff33333d8e19db4d2818bb6">DataType</link>&#32;<link linkend="_class_milli_second_token_1a50a6415a61ced0fd046edf1f1060ec10">getDataType</link>(<link linkend="_class_token_result">TokenResult</link>&amp;&#32;tRes)<emphasis role="keyword">override</emphasis>;
+<anchor xml:id="__token_8h_source_1l00736"/>00736 <emphasis role="keyword">protected</emphasis>:
+<anchor xml:id="__token_8h_source_1l00737"/>00737 
+<anchor xml:id="__token_8h_source_1l00738"/>00738 };
+<anchor xml:id="__token_8h_source_1l00739"/><link linkend="_class_minute_token">00739</link> <emphasis role="keyword">class&#32;</emphasis><link linkend="_class_minute_token">MinuteToken</link>&#32;:<emphasis role="keyword">public</emphasis>&#32;<link linkend="_class_l_token">LToken</link>&#32;{
+<anchor xml:id="__token_8h_source_1l00740"/>00740 <emphasis role="keyword">public</emphasis>:&#32;<link linkend="_class_minute_token_1a7aecee81b39ae555fe1c231c3c80df17">MinuteToken</link>();
+<anchor xml:id="__token_8h_source_1l00741"/>00741 &#32;&#32;&#32;&#32;&#32;&#32;<link linkend="__token_8h_1ad8ed01ff3ff33333d8e19db4d2818bb6">DataType</link>&#32;<link linkend="_class_minute_token_1a5403bb0e7b0bb4e5895c4347b9f6fb13">getDataType</link>(<link linkend="_class_token_result">TokenResult</link>&amp;&#32;tRes)<emphasis role="keyword">override</emphasis>;
+<anchor xml:id="__token_8h_source_1l00742"/>00742 <emphasis role="keyword">protected</emphasis>:
+<anchor xml:id="__token_8h_source_1l00743"/>00743 
+<anchor xml:id="__token_8h_source_1l00744"/>00744 };
+<anchor xml:id="__token_8h_source_1l00745"/>00745 
+<anchor xml:id="__token_8h_source_1l00746"/><link linkend="_class_numeric_token">00746</link> <emphasis role="keyword">class&#32;</emphasis><link linkend="_class_numeric_token">NumericToken</link>&#32;:<emphasis role="keyword">public</emphasis>&#32;<link linkend="_class_l_token">LToken</link>&#32;{
+<anchor xml:id="__token_8h_source_1l00747"/>00747 <emphasis role="keyword">public</emphasis>:
+<anchor xml:id="__token_8h_source_1l00748"/>00748 &#32;&#32;&#32;&#32;<link linkend="_class_numeric_token_1a7f1b43277fb39aeab23502635e8a0126">NumericToken</link>(<emphasis role="keyword">const</emphasis>&#32;std::string&amp;&#32;nb);
+<anchor xml:id="__token_8h_source_1l00749"/>00749 &#32;&#32;&#32;&#32;<link linkend="__token_8h_1ad8ed01ff3ff33333d8e19db4d2818bb6">DataType</link>&#32;<link linkend="_class_numeric_token_1a1f22f3c47b7b5a167915b0a706415d7f">getDataType</link>(<link linkend="_class_token_result">TokenResult</link>&amp;&#32;tRes)<emphasis role="keyword">override</emphasis>;
+<anchor xml:id="__token_8h_source_1l00750"/>00750 <emphasis role="keyword">protected</emphasis>:
+<anchor xml:id="__token_8h_source_1l00751"/>00751 
+<anchor xml:id="__token_8h_source_1l00752"/><link linkend="_class_numeric_token_1a3349ba56e3f951e3c3473b66fcf195ee">00752</link> &#32;&#32;&#32;&#32;<emphasis role="keywordtype">int</emphasis>&#32;<link linkend="_class_numeric_token_1a3349ba56e3f951e3c3473b66fcf195ee">number</link>;
+<anchor xml:id="__token_8h_source_1l00753"/>00753 };
+<anchor xml:id="__token_8h_source_1l00754"/>00754 
+<anchor xml:id="__token_8h_source_1l00755"/><link linkend="_class_string_literal_token">00755</link> <emphasis role="keyword">class&#32;</emphasis><link linkend="_class_string_literal_token">StringLiteralToken</link>&#32;:<emphasis role="keyword">public</emphasis>&#32;<link linkend="_class_l_token">LToken</link>&#32;{
+<anchor xml:id="__token_8h_source_1l00756"/>00756 <emphasis role="keyword">public</emphasis>:
+<anchor xml:id="__token_8h_source_1l00757"/>00757 &#32;&#32;&#32;&#32;<link linkend="_class_string_literal_token_1af17431409d177d987b1e7e2851658e04">StringLiteralToken</link>(<emphasis role="keyword">const</emphasis>&#32;std::string&amp;&#32;content);
+<anchor xml:id="__token_8h_source_1l00758"/>00758 &#32;&#32;&#32;&#32;<link linkend="__token_8h_1ad8ed01ff3ff33333d8e19db4d2818bb6">DataType</link>&#32;<link linkend="_class_string_literal_token_1a5326912d8172c27505120fcac4d3977b">getDataType</link>(<link linkend="_class_token_result">TokenResult</link>&amp;&#32;tRes)<emphasis role="keyword">override</emphasis>;
+<anchor xml:id="__token_8h_source_1l00759"/>00759 <emphasis role="keyword">protected</emphasis>:
+<anchor xml:id="__token_8h_source_1l00760"/>00760 &#32;&#32;&#32;&#32;std::shared_ptr&lt;Tag&gt;&#32;<link linkend="_class_string_literal_token_1a9f1db1ae9a350867f394676d5b809be3">execute</link>()<emphasis role="keyword">override</emphasis>;
+<anchor xml:id="__token_8h_source_1l00761"/>00761 };
+<anchor xml:id="__token_8h_source_1l00762"/>00762 
+<anchor xml:id="__token_8h_source_1l00763"/>00763 <emphasis role="keyword">template</emphasis>&lt;<emphasis role="keyword">typename</emphasis>&#32;T&gt;
+<anchor xml:id="__token_8h_source_1l00764"/><link linkend="_class_store_token_1a892ce9443572572d7e3a2062d845d06f">00764</link> <emphasis role="keyword">inline</emphasis>&#32;std::vector&lt;T&gt;&#32;<link linkend="_class_store_token_1a892ce9443572572d7e3a2062d845d06f">StoreToken::test</link>(<emphasis role="keywordtype">int</emphasis>&#32;depth)
+<anchor xml:id="__token_8h_source_1l00765"/>00765 {
+<anchor xml:id="__token_8h_source_1l00766"/>00766 &#32;&#32;&#32;&#32;<emphasis role="keywordflow">if</emphasis>&#32;(depth&#32;&gt;&#32;0)&#32;{
+<anchor xml:id="__token_8h_source_1l00767"/>00767 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="comment">//&#32;Create&#32;a&#32;vector&#32;containing&#32;the&#32;result&#32;of&#32;a&#32;recursive&#32;call&#32;for&#32;the&#32;next&#32;layer</emphasis>
+<anchor xml:id="__token_8h_source_1l00768"/>00768 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">return</emphasis>&#32;<link linkend="_class_store_token_1a892ce9443572572d7e3a2062d845d06f">test&lt;std::vector&lt;T&gt;</link>&gt;(depth&#32;-&#32;1);
+<anchor xml:id="__token_8h_source_1l00769"/>00769 &#32;&#32;&#32;&#32;}
+<anchor xml:id="__token_8h_source_1l00770"/>00770 &#32;&#32;&#32;&#32;
+<anchor xml:id="__token_8h_source_1l00771"/>00771 }
+</programlisting></section>

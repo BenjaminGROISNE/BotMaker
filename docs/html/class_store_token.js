@@ -1,10 +1,12 @@
 var class_store_token =
 [
     [ "StoreToken", "class_store_token.html#afacb2d9d11cafbf437764c86753029b4", null ],
-    [ "addIdentifier", "class_store_token.html#abbb9193503dd3dc6f03f96be9f71b45a", null ],
-    [ "addTokens", "class_store_token.html#ada7a74bb6d2f11f78f026be0554183e9", null ],
-    [ "addValue", "class_store_token.html#a477dcacce7acf5a3c4ff14ff5e4f95fd", null ],
+    [ "addTokens", "class_store_token.html#a42ebff8fa5aa531bfa439cf4b9fd7613", null ],
+    [ "addValue", "class_store_token.html#ad522e07a350fe2a104fb6de9fa21e70b", null ],
+    [ "dispatchArguments", "class_store_token.html#ab7dd1b936a3f820ab3b06091496f434d", null ],
     [ "execute", "class_store_token.html#a431a003fb845c3562c1ebab9b2b40bcd", null ],
+    [ "setOverloads", "class_store_token.html#a153770d480bad3f9c611084e64641a78", null ],
+    [ "test", "class_store_token.html#a892ce9443572572d7e3a2062d845d06f", null ],
     [ "identifierToken", "class_store_token.html#ac688bd71a918146db1def1a415b80863", null ],
     [ "valueToken", "class_store_token.html#afd9ad7493758a02837af451ddb4fec2d", null ]
 ];

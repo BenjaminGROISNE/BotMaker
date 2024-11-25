@@ -33,7 +33,7 @@ Collaboration diagram for UserVariables:<para>
 <section>
 <title>Detailed Description</title>
 <para>
-Definition at line <link linkend="__tags_8h_source_1l00081">81</link> of file <link linkend="__tags_8h_source">Tags.h</link>.</para>
+Definition at line <link linkend="__tags_8h_source_1l00084">84</link> of file <link linkend="__tags_8h_source">Tags.h</link>.</para>
 </section>
 <section>
 <title>Member Function Documentation</title>
@@ -42,14 +42,14 @@ Definition at line <link linkend="__tags_8h_source_1l00081">81</link> of file <l
 <indexterm><primary>addVariable</primary><secondary>UserVariables</secondary></indexterm>
 <indexterm><primary>UserVariables</primary><secondary>addVariable</secondary></indexterm>
 <computeroutput>template&lt;typename <link linkend="__units_8h_1a2b350cb683584e1f7db6c78f698c161ba21f40778b7db9343a6ca75ec2c41ccce">T</link> &gt; </computeroutput><para><computeroutput>void UserVariables::addVariable (std::string name, <link linkend="__units_8h_1a2b350cb683584e1f7db6c78f698c161ba21f40778b7db9343a6ca75ec2c41ccce">T</link> value)</computeroutput></para><para>
-Definition at line <link linkend="__tags_8h_source_1l00092">92</link> of file <link linkend="__tags_8h_source">Tags.h</link>.</para>
+Definition at line <link linkend="__tags_8h_source_1l00095">95</link> of file <link linkend="__tags_8h_source">Tags.h</link>.</para>
 </section>
 <anchor xml:id="_struct_user_variables_1a326009aee9af0b9d7fd34232207842ad"/><section>
     <title>getValue()</title>
 <indexterm><primary>getValue</primary><secondary>UserVariables</secondary></indexterm>
 <indexterm><primary>UserVariables</primary><secondary>getValue</secondary></indexterm>
 <computeroutput>template&lt;typename <link linkend="__units_8h_1a2b350cb683584e1f7db6c78f698c161ba21f40778b7db9343a6ca75ec2c41ccce">T</link> &gt; </computeroutput><para><computeroutput><link linkend="__units_8h_1a2b350cb683584e1f7db6c78f698c161ba21f40778b7db9343a6ca75ec2c41ccce">T</link> UserVariables::getValue (std::string name)</computeroutput></para><para>
-Definition at line <link linkend="__tags_8h_source_1l00097">97</link> of file <link linkend="__tags_8h_source">Tags.h</link>.</para>
+Definition at line <link linkend="__tags_8h_source_1l00100">100</link> of file <link linkend="__tags_8h_source">Tags.h</link>.</para>
 Here is the caller graph for this function:<para>
     <informalfigure>
         <mediaobject>
@@ -68,7 +68,7 @@ Here is the caller graph for this function:<para>
 <indexterm><primary>variables</primary><secondary>UserVariables</secondary></indexterm>
 <indexterm><primary>UserVariables</primary><secondary>variables</secondary></indexterm>
 <para><computeroutput>std::map&lt;std::string, void*&gt; UserVariables::variables</computeroutput></para><para>
-Definition at line <link linkend="__tags_8h_source_1l00082">82</link> of file <link linkend="__tags_8h_source">Tags.h</link>.</para>
+Definition at line <link linkend="__tags_8h_source_1l00085">85</link> of file <link linkend="__tags_8h_source">Tags.h</link>.</para>
 </section>
 <para>
 The documentation for this struct was generated from the following file:</para>

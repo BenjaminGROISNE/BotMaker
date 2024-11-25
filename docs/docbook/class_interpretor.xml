@@ -19,45 +19,39 @@ Collaboration diagram for Interpretor:<para>
         <itemizedlist>
             <listitem><para><link linkend="_class_interpretor_1ae1c703a0f32d7f063dd5f46f89018255">Interpretor</link> ()</para>
 </listitem>
-            <listitem><para><link linkend="_class_interpretor_1affe2b72c181142948c20980f1449a263">Interpretor</link> (std::string folder)</para>
+            <listitem><para><link linkend="_class_interpretor_1a9a3e5a7eee398fc9fb9d7dbd46844f74">Interpretor</link> (const std::string &amp;folder)</para>
 </listitem>
             <listitem><para><link linkend="_class_interpretor_1a9592d800744d237aea6a91dbf44bdb80">~Interpretor</link> ()</para>
 </listitem>
-            <listitem><para>void <link linkend="_class_interpretor_1a860d7cc665a3202f6f462dc1293fe5e6">readActivityFile</link> (std::string ActivityName)</para>
+            <listitem><para>std::shared_ptr&lt; <link linkend="_class_tag">Tag</link> &gt; <link linkend="_class_interpretor_1a6e04dd33cb518270ae83197706689a2e">readActivityFile</link> (const std::string &amp;ActivityName)</para>
 </listitem>
-            <listitem><para>std::string <link linkend="_class_interpretor_1a61ecb8df4ca776f58573955153f1b842">copyActivity</link> (std::filesystem::path ActivityName)</para>
+            <listitem><para>std::string <link linkend="_class_interpretor_1a9dc6ba1dacc8671e9b9fdf0f30911c6e">copyActivity</link> (const std::string &amp;ActivityName)</para>
 </listitem>
-            <listitem><para>std::shared_ptr&lt; <link linkend="_class_tag">Tag</link> &gt; <link linkend="_class_interpretor_1a51befa58f2bca099b38ee074be359f3d">getActivityTag</link> ()</para>
+            <listitem><para><link linkend="_class_iterator_list">IteratorList</link>&lt; <link linkend="_class_token">Token</link> &gt; <link linkend="_class_interpretor_1a213dd04d8ca9dbb188f29e2284fcbc5a">getTokens</link> (std::string &amp;text)</para>
 </listitem>
-            <listitem><para>void <link linkend="_class_interpretor_1aa49f073000719629567f5563fc487836">createMainTag</link> (const std::string &amp;text)</para>
+            <listitem><para>std::shared_ptr&lt; <link linkend="_class_token">Token</link> &gt; <link linkend="_class_interpretor_1a832cf788bcaca68a99ca43db0bd448d7">executeTokens</link> (<link linkend="_class_iterator_list">IteratorList</link>&lt; <link linkend="_class_token">Token</link> &gt; &amp;tl)</para>
+</listitem>
+            <listitem><para>std::shared_ptr&lt; <link linkend="_class_tag">Tag</link> &gt; <link linkend="_class_interpretor_1ace593d79758b37f81ca8cf9d0d8ed386">executeTags</link> (std::shared_ptr&lt; <link linkend="_class_token">Token</link> &gt; mainToken)</para>
+</listitem>
+            <listitem><para>std::shared_ptr&lt; <link linkend="_class_token">Token</link> &gt; <link linkend="_class_interpretor_1a73bdd0d1c2896aa2039bdccde17c0fa1">compileTokens</link> (std::string &amp;text)</para>
+</listitem>
+            <listitem><para>std::shared_ptr&lt; <link linkend="_class_tag">Tag</link> &gt; <link linkend="_class_interpretor_1ad464f7beab8778df1253377d8084325c">compileTags</link> (std::string &amp;text)</para>
+</listitem>
+            <listitem><para>void <link linkend="_class_interpretor_1a885b425a60dd2467089fc680f4528f03">doUnitTests</link> ()</para>
 </listitem>
         </itemizedlist>
 </simplesect>
 <simplesect>
     <title>Public Attributes    </title>
         <itemizedlist>
-            <listitem><para>std::shared_ptr&lt; <link linkend="_class_main_token">MainToken</link> &gt; <link linkend="_class_interpretor_1a6047e27b007f05c73a917a1acbb9e4e6">mainToken</link></para>
-</listitem>
-            <listitem><para>std::shared_ptr&lt; <link linkend="_class_main_tag">MainTag</link> &gt; <link linkend="_class_interpretor_1a9f3b79e228492d9b54ab4f96dc068bac">mainTag</link></para>
-</listitem>
-            <listitem><para>std::shared_ptr&lt; <link linkend="_class_lexer">Lexer</link> &gt; <link linkend="_class_interpretor_1abac4c2fa228b8056804feb6498a75798">mainStack</link></para>
-</listitem>
-            <listitem><para><link linkend="_struct_user_variables">UserVariables</link> <link linkend="_class_interpretor_1a3478998b0244a81ee6fc8c51baec47d6">uv</link></para>
-</listitem>
-            <listitem><para>std::shared_ptr&lt; <link linkend="_class_token_result">TokenResult</link> &gt; <link linkend="_class_interpretor_1a822ce37652e007c938ad45edc3e7a1bb">tr</link></para>
-</listitem>
-            <listitem><para><link linkend="_class_iterator_list">IteratorList</link>&lt; <link linkend="_class_token">Token</link> &gt; <link linkend="_class_interpretor_1a4cd759828967910afe67c7f4ddd1bbda">tl</link></para>
-</listitem>
-            <listitem><para><link linkend="_class_lexer">Lexer</link> <link linkend="_class_interpretor_1ab6858c07200eaab9b1060663149aefee">lex</link></para>
-</listitem>
-            <listitem><para>std::filesystem::path <link linkend="_class_interpretor_1a84426d5bbc8f8cabc1a21458a9eb04ad">ActivityFolder</link></para>
+            <listitem><para>std::string <link linkend="_class_interpretor_1ab16ef500fc920b646d7a1879e61e0615">ActivityFolder</link></para>
 </listitem>
         </itemizedlist>
 </simplesect>
 <section>
 <title>Detailed Description</title>
 <para>
-Definition at line <link linkend="__interpretor_8h_source_1l00556">556</link> of file <link linkend="__interpretor_8h_source">Interpretor.h</link>.</para>
+Definition at line <link linkend="__interpretor_8h_source_1l00014">14</link> of file <link linkend="__interpretor_8h_source">Interpretor.h</link>.</para>
 </section>
 <section>
 <title>Constructor &amp; Destructor Documentation</title>
@@ -66,36 +60,86 @@ Definition at line <link linkend="__interpretor_8h_source_1l00556">556</link> of
 <indexterm><primary>Interpretor</primary><secondary>Interpretor</secondary></indexterm>
 <indexterm><primary>Interpretor</primary><secondary>Interpretor</secondary></indexterm>
 <para><computeroutput>Interpretor::Interpretor ( )</computeroutput></para><para>
-Definition at line <link linkend="__interpretor_8cpp_source_1l01096">1096</link> of file <link linkend="__interpretor_8cpp_source">Interpretor.cpp</link>.</para>
+Definition at line <link linkend="__interpretor_8cpp_source_1l00046">46</link> of file <link linkend="__interpretor_8cpp_source">Interpretor.cpp</link>.</para>
 </section>
-<anchor xml:id="_class_interpretor_1affe2b72c181142948c20980f1449a263"/><section>
+<anchor xml:id="_class_interpretor_1a9a3e5a7eee398fc9fb9d7dbd46844f74"/><section>
     <title>Interpretor()<computeroutput>[2/2]</computeroutput></title>
 <indexterm><primary>Interpretor</primary><secondary>Interpretor</secondary></indexterm>
 <indexterm><primary>Interpretor</primary><secondary>Interpretor</secondary></indexterm>
-<para><computeroutput>Interpretor::Interpretor (std::string folder)</computeroutput></para><para>
-Definition at line <link linkend="__interpretor_8cpp_source_1l01100">1100</link> of file <link linkend="__interpretor_8cpp_source">Interpretor.cpp</link>.</para>
+<para><computeroutput>Interpretor::Interpretor (const std::string &amp; folder)</computeroutput></para><para>
+Definition at line <link linkend="__interpretor_8cpp_source_1l00050">50</link> of file <link linkend="__interpretor_8cpp_source">Interpretor.cpp</link>.</para>
 </section>
 <anchor xml:id="_class_interpretor_1a9592d800744d237aea6a91dbf44bdb80"/><section>
     <title>~Interpretor()</title>
 <indexterm><primary>~Interpretor</primary><secondary>Interpretor</secondary></indexterm>
 <indexterm><primary>Interpretor</primary><secondary>~Interpretor</secondary></indexterm>
 <para><computeroutput>Interpretor::~Interpretor ( )</computeroutput></para><para>
-Definition at line <link linkend="__interpretor_8cpp_source_1l01105">1105</link> of file <link linkend="__interpretor_8cpp_source">Interpretor.cpp</link>.</para>
+Definition at line <link linkend="__interpretor_8cpp_source_1l00055">55</link> of file <link linkend="__interpretor_8cpp_source">Interpretor.cpp</link>.</para>
 </section>
 </section>
 <section>
 <title>Member Function Documentation</title>
-<anchor xml:id="_class_interpretor_1a61ecb8df4ca776f58573955153f1b842"/><section>
+<anchor xml:id="_class_interpretor_1ad464f7beab8778df1253377d8084325c"/><section>
+    <title>compileTags()</title>
+<indexterm><primary>compileTags</primary><secondary>Interpretor</secondary></indexterm>
+<indexterm><primary>Interpretor</primary><secondary>compileTags</secondary></indexterm>
+<para><computeroutput>std::shared_ptr&lt; <link linkend="_class_tag">Tag</link> &gt; Interpretor::compileTags (std::string &amp; text)</computeroutput></para><para>
+Definition at line <link linkend="__interpretor_8cpp_source_1l00034">34</link> of file <link linkend="__interpretor_8cpp_source">Interpretor.cpp</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_interpretor_ad464f7beab8778df1253377d8084325c_cgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+Here is the caller graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_interpretor_ad464f7beab8778df1253377d8084325c_icgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_class_interpretor_1a73bdd0d1c2896aa2039bdccde17c0fa1"/><section>
+    <title>compileTokens()</title>
+<indexterm><primary>compileTokens</primary><secondary>Interpretor</secondary></indexterm>
+<indexterm><primary>Interpretor</primary><secondary>compileTokens</secondary></indexterm>
+<para><computeroutput>std::shared_ptr&lt; <link linkend="_class_token">Token</link> &gt; Interpretor::compileTokens (std::string &amp; text)</computeroutput></para><para>
+Definition at line <link linkend="__interpretor_8cpp_source_1l00028">28</link> of file <link linkend="__interpretor_8cpp_source">Interpretor.cpp</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_interpretor_a73bdd0d1c2896aa2039bdccde17c0fa1_cgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+Here is the caller graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_interpretor_a73bdd0d1c2896aa2039bdccde17c0fa1_icgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_class_interpretor_1a9dc6ba1dacc8671e9b9fdf0f30911c6e"/><section>
     <title>copyActivity()</title>
 <indexterm><primary>copyActivity</primary><secondary>Interpretor</secondary></indexterm>
 <indexterm><primary>Interpretor</primary><secondary>copyActivity</secondary></indexterm>
-<para><computeroutput>std::string Interpretor::copyActivity (std::filesystem::path ActivityName)</computeroutput></para><para>
-Definition at line <link linkend="__interpretor_8cpp_source_1l01114">1114</link> of file <link linkend="__interpretor_8cpp_source">Interpretor.cpp</link>.</para>
+<para><computeroutput>std::string Interpretor::copyActivity (const std::string &amp; ActivityName)</computeroutput></para><para>
+Definition at line <link linkend="__interpretor_8cpp_source_1l00137">137</link> of file <link linkend="__interpretor_8cpp_source">Interpretor.cpp</link>.</para>
 Here is the call graph for this function:<para>
     <informalfigure>
         <mediaobject>
             <imageobject>
-                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_interpretor_a61ecb8df4ca776f58573955153f1b842_cgraph.svg"></imagedata>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_interpretor_a9dc6ba1dacc8671e9b9fdf0f30911c6e_cgraph.svg"></imagedata>
             </imageobject>
         </mediaobject>
     </informalfigure>
@@ -104,23 +148,23 @@ Here is the caller graph for this function:<para>
     <informalfigure>
         <mediaobject>
             <imageobject>
-                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_interpretor_a61ecb8df4ca776f58573955153f1b842_icgraph.svg"></imagedata>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_interpretor_a9dc6ba1dacc8671e9b9fdf0f30911c6e_icgraph.svg"></imagedata>
             </imageobject>
         </mediaobject>
     </informalfigure>
 </para>
 </section>
-<anchor xml:id="_class_interpretor_1aa49f073000719629567f5563fc487836"/><section>
-    <title>createMainTag()</title>
-<indexterm><primary>createMainTag</primary><secondary>Interpretor</secondary></indexterm>
-<indexterm><primary>Interpretor</primary><secondary>createMainTag</secondary></indexterm>
-<para><computeroutput>void Interpretor::createMainTag (const std::string &amp; text)</computeroutput></para><para>
-Definition at line <link linkend="__interpretor_8cpp_source_1l01124">1124</link> of file <link linkend="__interpretor_8cpp_source">Interpretor.cpp</link>.</para>
+<anchor xml:id="_class_interpretor_1a885b425a60dd2467089fc680f4528f03"/><section>
+    <title>doUnitTests()</title>
+<indexterm><primary>doUnitTests</primary><secondary>Interpretor</secondary></indexterm>
+<indexterm><primary>Interpretor</primary><secondary>doUnitTests</secondary></indexterm>
+<para><computeroutput>void Interpretor::doUnitTests ( )</computeroutput></para><para>
+Definition at line <link linkend="__interpretor_8cpp_source_1l00059">59</link> of file <link linkend="__interpretor_8cpp_source">Interpretor.cpp</link>.</para>
 Here is the call graph for this function:<para>
     <informalfigure>
         <mediaobject>
             <imageobject>
-                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_interpretor_aa49f073000719629567f5563fc487836_cgraph.svg"></imagedata>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_interpretor_a885b425a60dd2467089fc680f4528f03_cgraph.svg"></imagedata>
             </imageobject>
         </mediaobject>
     </informalfigure>
@@ -129,39 +173,89 @@ Here is the caller graph for this function:<para>
     <informalfigure>
         <mediaobject>
             <imageobject>
-                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_interpretor_aa49f073000719629567f5563fc487836_icgraph.svg"></imagedata>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_interpretor_a885b425a60dd2467089fc680f4528f03_icgraph.svg"></imagedata>
             </imageobject>
         </mediaobject>
     </informalfigure>
 </para>
 </section>
-<anchor xml:id="_class_interpretor_1a51befa58f2bca099b38ee074be359f3d"/><section>
-    <title>getActivityTag()</title>
-<indexterm><primary>getActivityTag</primary><secondary>Interpretor</secondary></indexterm>
-<indexterm><primary>Interpretor</primary><secondary>getActivityTag</secondary></indexterm>
-<para><computeroutput>std::shared_ptr&lt; <link linkend="_class_tag">Tag</link> &gt; Interpretor::getActivityTag ( )</computeroutput></para><para>
-Definition at line <link linkend="__interpretor_8cpp_source_1l01119">1119</link> of file <link linkend="__interpretor_8cpp_source">Interpretor.cpp</link>.</para>
+<anchor xml:id="_class_interpretor_1ace593d79758b37f81ca8cf9d0d8ed386"/><section>
+    <title>executeTags()</title>
+<indexterm><primary>executeTags</primary><secondary>Interpretor</secondary></indexterm>
+<indexterm><primary>Interpretor</primary><secondary>executeTags</secondary></indexterm>
+<para><computeroutput>std::shared_ptr&lt; <link linkend="_class_tag">Tag</link> &gt; Interpretor::executeTags (std::shared_ptr&lt; <link linkend="_class_token">Token</link> &gt; mainToken)</computeroutput></para><para>
+Definition at line <link linkend="__interpretor_8cpp_source_1l00023">23</link> of file <link linkend="__interpretor_8cpp_source">Interpretor.cpp</link>.</para>
 Here is the caller graph for this function:<para>
     <informalfigure>
         <mediaobject>
             <imageobject>
-                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_interpretor_a51befa58f2bca099b38ee074be359f3d_icgraph.svg"></imagedata>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_interpretor_ace593d79758b37f81ca8cf9d0d8ed386_icgraph.svg"></imagedata>
             </imageobject>
         </mediaobject>
     </informalfigure>
 </para>
 </section>
-<anchor xml:id="_class_interpretor_1a860d7cc665a3202f6f462dc1293fe5e6"/><section>
+<anchor xml:id="_class_interpretor_1a832cf788bcaca68a99ca43db0bd448d7"/><section>
+    <title>executeTokens()</title>
+<indexterm><primary>executeTokens</primary><secondary>Interpretor</secondary></indexterm>
+<indexterm><primary>Interpretor</primary><secondary>executeTokens</secondary></indexterm>
+<para><computeroutput>std::shared_ptr&lt; <link linkend="_class_token">Token</link> &gt; Interpretor::executeTokens (<link linkend="_class_iterator_list">IteratorList</link>&lt; <link linkend="_class_token">Token</link> &gt; &amp; tl)</computeroutput></para><para>
+Definition at line <link linkend="__interpretor_8cpp_source_1l00009">9</link> of file <link linkend="__interpretor_8cpp_source">Interpretor.cpp</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_interpretor_a832cf788bcaca68a99ca43db0bd448d7_cgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+Here is the caller graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_interpretor_a832cf788bcaca68a99ca43db0bd448d7_icgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_class_interpretor_1a213dd04d8ca9dbb188f29e2284fcbc5a"/><section>
+    <title>getTokens()</title>
+<indexterm><primary>getTokens</primary><secondary>Interpretor</secondary></indexterm>
+<indexterm><primary>Interpretor</primary><secondary>getTokens</secondary></indexterm>
+<para><computeroutput><link linkend="_class_iterator_list">IteratorList</link>&lt; <link linkend="_class_token">Token</link> &gt; Interpretor::getTokens (std::string &amp; text)</computeroutput></para><para>
+Definition at line <link linkend="__interpretor_8cpp_source_1l00003">3</link> of file <link linkend="__interpretor_8cpp_source">Interpretor.cpp</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_interpretor_a213dd04d8ca9dbb188f29e2284fcbc5a_cgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+Here is the caller graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_interpretor_a213dd04d8ca9dbb188f29e2284fcbc5a_icgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_class_interpretor_1a6e04dd33cb518270ae83197706689a2e"/><section>
     <title>readActivityFile()</title>
 <indexterm><primary>readActivityFile</primary><secondary>Interpretor</secondary></indexterm>
 <indexterm><primary>Interpretor</primary><secondary>readActivityFile</secondary></indexterm>
-<para><computeroutput>void Interpretor::readActivityFile (std::string ActivityName)</computeroutput></para><para>
-Definition at line <link linkend="__interpretor_8cpp_source_1l01109">1109</link> of file <link linkend="__interpretor_8cpp_source">Interpretor.cpp</link>.</para>
+<para><computeroutput>std::shared_ptr&lt; <link linkend="_class_tag">Tag</link> &gt; Interpretor::readActivityFile (const std::string &amp; ActivityName)</computeroutput></para><para>
+Definition at line <link linkend="__interpretor_8cpp_source_1l00130">130</link> of file <link linkend="__interpretor_8cpp_source">Interpretor.cpp</link>.</para>
 Here is the call graph for this function:<para>
     <informalfigure>
         <mediaobject>
             <imageobject>
-                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_interpretor_a860d7cc665a3202f6f462dc1293fe5e6_cgraph.svg"></imagedata>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_interpretor_a6e04dd33cb518270ae83197706689a2e_cgraph.svg"></imagedata>
             </imageobject>
         </mediaobject>
     </informalfigure>
@@ -170,7 +264,7 @@ Here is the caller graph for this function:<para>
     <informalfigure>
         <mediaobject>
             <imageobject>
-                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_interpretor_a860d7cc665a3202f6f462dc1293fe5e6_icgraph.svg"></imagedata>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_interpretor_a6e04dd33cb518270ae83197706689a2e_icgraph.svg"></imagedata>
             </imageobject>
         </mediaobject>
     </informalfigure>
@@ -179,61 +273,12 @@ Here is the caller graph for this function:<para>
 </section>
 <section>
 <title>Member Data Documentation</title>
-<anchor xml:id="_class_interpretor_1a84426d5bbc8f8cabc1a21458a9eb04ad"/><section>
+<anchor xml:id="_class_interpretor_1ab16ef500fc920b646d7a1879e61e0615"/><section>
     <title>ActivityFolder</title>
 <indexterm><primary>ActivityFolder</primary><secondary>Interpretor</secondary></indexterm>
 <indexterm><primary>Interpretor</primary><secondary>ActivityFolder</secondary></indexterm>
-<para><computeroutput>std::filesystem::path Interpretor::ActivityFolder</computeroutput></para><para>
-Definition at line <link linkend="__interpretor_8h_source_1l00574">574</link> of file <link linkend="__interpretor_8h_source">Interpretor.h</link>.</para>
-</section>
-<anchor xml:id="_class_interpretor_1ab6858c07200eaab9b1060663149aefee"/><section>
-    <title>lex</title>
-<indexterm><primary>lex</primary><secondary>Interpretor</secondary></indexterm>
-<indexterm><primary>Interpretor</primary><secondary>lex</secondary></indexterm>
-<para><computeroutput><link linkend="_class_lexer">Lexer</link> Interpretor::lex</computeroutput></para><para>
-Definition at line <link linkend="__interpretor_8h_source_1l00573">573</link> of file <link linkend="__interpretor_8h_source">Interpretor.h</link>.</para>
-</section>
-<anchor xml:id="_class_interpretor_1abac4c2fa228b8056804feb6498a75798"/><section>
-    <title>mainStack</title>
-<indexterm><primary>mainStack</primary><secondary>Interpretor</secondary></indexterm>
-<indexterm><primary>Interpretor</primary><secondary>mainStack</secondary></indexterm>
-<para><computeroutput>std::shared_ptr&lt;<link linkend="_class_lexer">Lexer</link>&gt; Interpretor::mainStack</computeroutput></para><para>
-Definition at line <link linkend="__interpretor_8h_source_1l00569">569</link> of file <link linkend="__interpretor_8h_source">Interpretor.h</link>.</para>
-</section>
-<anchor xml:id="_class_interpretor_1a9f3b79e228492d9b54ab4f96dc068bac"/><section>
-    <title>mainTag</title>
-<indexterm><primary>mainTag</primary><secondary>Interpretor</secondary></indexterm>
-<indexterm><primary>Interpretor</primary><secondary>mainTag</secondary></indexterm>
-<para><computeroutput>std::shared_ptr&lt;<link linkend="_class_main_tag">MainTag</link>&gt; Interpretor::mainTag</computeroutput></para><para>
-Definition at line <link linkend="__interpretor_8h_source_1l00568">568</link> of file <link linkend="__interpretor_8h_source">Interpretor.h</link>.</para>
-</section>
-<anchor xml:id="_class_interpretor_1a6047e27b007f05c73a917a1acbb9e4e6"/><section>
-    <title>mainToken</title>
-<indexterm><primary>mainToken</primary><secondary>Interpretor</secondary></indexterm>
-<indexterm><primary>Interpretor</primary><secondary>mainToken</secondary></indexterm>
-<para><computeroutput>std::shared_ptr&lt;<link linkend="_class_main_token">MainToken</link>&gt; Interpretor::mainToken</computeroutput></para><para>
-Definition at line <link linkend="__interpretor_8h_source_1l00567">567</link> of file <link linkend="__interpretor_8h_source">Interpretor.h</link>.</para>
-</section>
-<anchor xml:id="_class_interpretor_1a4cd759828967910afe67c7f4ddd1bbda"/><section>
-    <title>tl</title>
-<indexterm><primary>tl</primary><secondary>Interpretor</secondary></indexterm>
-<indexterm><primary>Interpretor</primary><secondary>tl</secondary></indexterm>
-<para><computeroutput><link linkend="_class_iterator_list">IteratorList</link>&lt;<link linkend="_class_token">Token</link>&gt; Interpretor::tl</computeroutput></para><para>
-Definition at line <link linkend="__interpretor_8h_source_1l00572">572</link> of file <link linkend="__interpretor_8h_source">Interpretor.h</link>.</para>
-</section>
-<anchor xml:id="_class_interpretor_1a822ce37652e007c938ad45edc3e7a1bb"/><section>
-    <title>tr</title>
-<indexterm><primary>tr</primary><secondary>Interpretor</secondary></indexterm>
-<indexterm><primary>Interpretor</primary><secondary>tr</secondary></indexterm>
-<para><computeroutput>std::shared_ptr&lt;<link linkend="_class_token_result">TokenResult</link>&gt; Interpretor::tr</computeroutput></para><para>
-Definition at line <link linkend="__interpretor_8h_source_1l00571">571</link> of file <link linkend="__interpretor_8h_source">Interpretor.h</link>.</para>
-</section>
-<anchor xml:id="_class_interpretor_1a3478998b0244a81ee6fc8c51baec47d6"/><section>
-    <title>uv</title>
-<indexterm><primary>uv</primary><secondary>Interpretor</secondary></indexterm>
-<indexterm><primary>Interpretor</primary><secondary>uv</secondary></indexterm>
-<para><computeroutput><link linkend="_struct_user_variables">UserVariables</link> Interpretor::uv</computeroutput></para><para>
-Definition at line <link linkend="__interpretor_8h_source_1l00570">570</link> of file <link linkend="__interpretor_8h_source">Interpretor.h</link>.</para>
+<para><computeroutput>std::string Interpretor::ActivityFolder</computeroutput></para><para>
+Definition at line <link linkend="__interpretor_8h_source_1l00030">30</link> of file <link linkend="__interpretor_8h_source">Interpretor.h</link>.</para>
 </section>
 <para>
 The documentation for this class was generated from the following files:</para>

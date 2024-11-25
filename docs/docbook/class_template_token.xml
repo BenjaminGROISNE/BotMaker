@@ -1,0 +1,503 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<section xmlns="http://docbook.org/ns/docbook" version="5.0" xmlns:xlink="http://www.w3.org/1999/xlink" xml:id="_class_template_token" xml:lang="en-US">
+<title>TemplateToken Class Reference</title>
+<indexterm><primary>TemplateToken</primary></indexterm>
+<para>
+<computeroutput>#include &lt;Token.h&gt;</computeroutput>
+</para>
+Inheritance diagram for TemplateToken:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_template_token__inherit__graph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+Collaboration diagram for TemplateToken:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_template_token__coll__graph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+<simplesect>
+    <title>Public Member Functions    </title>
+        <itemizedlist>
+            <listitem><para><link linkend="_class_template_token_1ae1b395c24b28116b2b20429e8b87f2fc">TemplateToken</link> ()</para>
+</listitem>
+            <listitem><para><link linkend="_class_template_token_1ad1a78fec4529c4cf2aec6350a82b351a">TemplateToken</link> (int <link linkend="_class_template_token_1a44271a10cbc74eea133ed9e92897012e">line</link>)</para>
+</listitem>
+            <listitem><para>bool <link linkend="_class_template_token_1a3d79f7926bda1d8b49a3f12d6ff615b0">addToken</link> (<link linkend="__token_8h_1acbd1e63c605cbb3dbe67c7411841b46c">TokenVALUE</link> tVal, <link linkend="_class_iterator_list">IteratorList</link>&lt; <link linkend="_class_token">Token</link> &gt; &amp;tl, <link linkend="_class_token_result">TokenResult</link> &amp;<link linkend="_class_template_token_1a8da6ae9664056d2441190c30cd332aca">tRes</link>)</para>
+</listitem>
+            <listitem><para>bool <link linkend="_class_template_token_1ac4146f0f59ba02482abb40679265e21d">addType</link> (<link linkend="__token_8h_1ad8ed01ff3ff33333d8e19db4d2818bb6">DataType</link> tVal, <link linkend="_class_iterator_list">IteratorList</link>&lt; <link linkend="_class_token">Token</link> &gt; &amp;tl, <link linkend="_class_token_result">TokenResult</link> &amp;<link linkend="_class_template_token_1a8da6ae9664056d2441190c30cd332aca">tRes</link>)</para>
+</listitem>
+            <listitem><para>bool <link linkend="_class_template_token_1a23f3e763a82c043ee0e4e211680eab24">addType</link> (std::vector&lt; <link linkend="__token_8h_1ad8ed01ff3ff33333d8e19db4d2818bb6">DataType</link> &gt; listTypes, <link linkend="_class_iterator_list">IteratorList</link>&lt; <link linkend="_class_token">Token</link> &gt; &amp;tl, <link linkend="_class_token_result">TokenResult</link> &amp;<link linkend="_class_template_token_1a8da6ae9664056d2441190c30cd332aca">tRes</link>)</para>
+</listitem>
+            <listitem><para>bool <link linkend="_class_template_token_1aeab3bb725b06c1368626903bda4431ba">addOab</link> (<link linkend="_class_iterator_list">IteratorList</link>&lt; <link linkend="_class_token">Token</link> &gt; &amp;tl, <link linkend="_class_token_result">TokenResult</link> &amp;<link linkend="_class_template_token_1a8da6ae9664056d2441190c30cd332aca">tRes</link>)</para>
+</listitem>
+            <listitem><para>bool <link linkend="_class_template_token_1a7e5256636f4c968720a56ef5ee868274">addCab</link> (<link linkend="_class_iterator_list">IteratorList</link>&lt; <link linkend="_class_token">Token</link> &gt; &amp;tl, <link linkend="_class_token_result">TokenResult</link> &amp;<link linkend="_class_template_token_1a8da6ae9664056d2441190c30cd332aca">tRes</link>)</para>
+</listitem>
+            <listitem><para>bool <link linkend="_class_template_token_1a6fa9056c91c1a555678b264f4e3e7508">addNumber</link> (<link linkend="_class_iterator_list">IteratorList</link>&lt; <link linkend="_class_token">Token</link> &gt; &amp;tl, <link linkend="_class_token_result">TokenResult</link> &amp;<link linkend="_class_template_token_1a8da6ae9664056d2441190c30cd332aca">tRes</link>)</para>
+</listitem>
+            <listitem><para>bool <link linkend="_class_template_token_1ae5409c200682323bbd3ab7952ef4b4f5">addDataType</link> (<link linkend="_class_iterator_list">IteratorList</link>&lt; <link linkend="_class_token">Token</link> &gt; &amp;tl, <link linkend="_class_token_result">TokenResult</link> &amp;<link linkend="_class_template_token_1a8da6ae9664056d2441190c30cd332aca">tRes</link>)</para>
+</listitem>
+            <listitem><para>bool <link linkend="_class_template_token_1a96ca35999c1a6551e66bb77922cac8aa">addInteger</link> (<link linkend="_class_iterator_list">IteratorList</link>&lt; <link linkend="_class_token">Token</link> &gt; &amp;tl, <link linkend="_class_token_result">TokenResult</link> &amp;<link linkend="_class_template_token_1a8da6ae9664056d2441190c30cd332aca">tRes</link>)</para>
+</listitem>
+            <listitem><para>bool <link linkend="_class_template_token_1a8d9b343f2012524731d7cc7d657b30bc">addFloat</link> (<link linkend="_class_iterator_list">IteratorList</link>&lt; <link linkend="_class_token">Token</link> &gt; &amp;tl, <link linkend="_class_token_result">TokenResult</link> &amp;<link linkend="_class_template_token_1a8da6ae9664056d2441190c30cd332aca">tRes</link>)</para>
+</listitem>
+            <listitem><para>bool <link linkend="_class_template_token_1aaffa06b318ca9e8b874a6598d721e424">addCoord</link> (<link linkend="_class_iterator_list">IteratorList</link>&lt; <link linkend="_class_token">Token</link> &gt; &amp;tl, <link linkend="_class_token_result">TokenResult</link> &amp;<link linkend="_class_template_token_1a8da6ae9664056d2441190c30cd332aca">tRes</link>)</para>
+</listitem>
+            <listitem><para>bool <link linkend="_class_template_token_1a277108b785df33d49c4957aaf14d7935">addZone</link> (<link linkend="_class_iterator_list">IteratorList</link>&lt; <link linkend="_class_token">Token</link> &gt; &amp;tl, <link linkend="_class_token_result">TokenResult</link> &amp;<link linkend="_class_template_token_1a8da6ae9664056d2441190c30cd332aca">tRes</link>)</para>
+</listitem>
+            <listitem><para>bool <link linkend="_class_template_token_1a6eb3afbfb157bc54af838a654d570d00">addBool</link> (<link linkend="_class_iterator_list">IteratorList</link>&lt; <link linkend="_class_token">Token</link> &gt; &amp;tl, <link linkend="_class_token_result">TokenResult</link> &amp;<link linkend="_class_template_token_1a8da6ae9664056d2441190c30cd332aca">tRes</link>)</para>
+</listitem>
+            <listitem><para>bool <link linkend="_class_template_token_1abb2f4c81dfdde0b3579d039279191d0a">addIdentifier</link> (<link linkend="_class_iterator_list">IteratorList</link>&lt; <link linkend="_class_token">Token</link> &gt; &amp;tl, <link linkend="_class_token_result">TokenResult</link> &amp;<link linkend="_class_template_token_1a8da6ae9664056d2441190c30cd332aca">tRes</link>)</para>
+</listitem>
+            <listitem><para>bool <link linkend="_class_template_token_1adb300eb290123fa430ce7aaff136a46d">addString</link> (<link linkend="_class_iterator_list">IteratorList</link>&lt; <link linkend="_class_token">Token</link> &gt; &amp;tl, <link linkend="_class_token_result">TokenResult</link> &amp;<link linkend="_class_template_token_1a8da6ae9664056d2441190c30cd332aca">tRes</link>)</para>
+</listitem>
+            <listitem><para>bool <link linkend="_class_template_token_1a0564dddc4f77b9d92efd80c1f6bab565">addComma</link> (<link linkend="_class_iterator_list">IteratorList</link>&lt; <link linkend="_class_token">Token</link> &gt; &amp;tl, <link linkend="_class_token_result">TokenResult</link> &amp;<link linkend="_class_template_token_1a8da6ae9664056d2441190c30cd332aca">tRes</link>)</para>
+</listitem>
+            <listitem><para>bool <link linkend="_class_template_token_1aa3148f8f737edb75778c19616148ee48">addTimeType</link> (<link linkend="_class_iterator_list">IteratorList</link>&lt; <link linkend="_class_token">Token</link> &gt; &amp;tl, <link linkend="_class_token_result">TokenResult</link> &amp;<link linkend="_class_template_token_1a8da6ae9664056d2441190c30cd332aca">tRes</link>)</para>
+</listitem>
+            <listitem><para>virtual bool <link linkend="_class_template_token_1aa8277d6487df4d96660b6e60dea21ce1">addTemplatedTypes</link> (<link linkend="_class_iterator_list">IteratorList</link>&lt; <link linkend="_class_token">Token</link> &gt; &amp;tl, <link linkend="_class_token_result">TokenResult</link> <link linkend="_class_template_token_1a8da6ae9664056d2441190c30cd332aca">tRes</link>)</para>
+</listitem>
+            <listitem><para>bool <link linkend="_class_template_token_1a4f803a24960bab2671effe0c746d1b8e">addTokens</link> (<link linkend="_class_iterator_list">IteratorList</link>&lt; <link linkend="_class_token">Token</link> &gt; &amp;tl, <link linkend="_class_token_result">TokenResult</link> &amp;<link linkend="_class_template_token_1a8da6ae9664056d2441190c30cd332aca">tRes</link>)</para>
+</listitem>
+            <listitem><para>bool <link linkend="_class_template_token_1ad981d8ad4aeb0162d344d334ff3ac0f3">addError</link> (<link linkend="_class_token_result">TokenResult</link> &amp;<link linkend="_class_template_token_1a8da6ae9664056d2441190c30cd332aca">tRes</link>, <link linkend="__token_8h_1acbd1e63c605cbb3dbe67c7411841b46c">TokenVALUE</link> value, <link linkend="__token_8h_1ab0df38968e4f03a3f1f6d6df0f31f45a">ErrorType</link> et=<link linkend="__token_8h_1ab0df38968e4f03a3f1f6d6df0f31f45aa10d1208b485425756fcc932229386b02">ErrorType::MISSING</link>)</para>
+</listitem>
+            <listitem><para>bool <link linkend="_class_template_token_1a2d06e59a5bfc0a7a1a56dc7496f3d2e3">addError</link> (<link linkend="_class_token_result">TokenResult</link> &amp;<link linkend="_class_template_token_1a8da6ae9664056d2441190c30cd332aca">tRes</link>, <link linkend="__token_8h_1ad8ed01ff3ff33333d8e19db4d2818bb6">DataType</link> type)</para>
+</listitem>
+        </itemizedlist>
+</simplesect>
+<simplesect>
+    <title>Protected Attributes    </title>
+        <itemizedlist>
+            <listitem><para><link linkend="_class_arguments_overload">ArgumentsOverload</link> <link linkend="_class_template_token_1a3ebc30ff8cce2739928a9a646d5d654f">templateArguments</link></para>
+</listitem>
+            <listitem><para><link linkend="_class_token_result">TokenResult</link> <link linkend="_class_template_token_1a8da6ae9664056d2441190c30cd332aca">tRes</link></para>
+</listitem>
+            <listitem><para>int <link linkend="_class_template_token_1a44271a10cbc74eea133ed9e92897012e">line</link></para>
+</listitem>
+        </itemizedlist>
+</simplesect>
+<section>
+<title>Detailed Description</title>
+<para>
+Definition at line <link linkend="__token_8h_source_1l00260">260</link> of file <link linkend="__token_8h_source">Token.h</link>.</para>
+</section>
+<section>
+<title>Constructor &amp; Destructor Documentation</title>
+<anchor xml:id="_class_template_token_1ae1b395c24b28116b2b20429e8b87f2fc"/><section>
+    <title>TemplateToken()<computeroutput>[1/2]</computeroutput></title>
+<indexterm><primary>TemplateToken</primary><secondary>TemplateToken</secondary></indexterm>
+<indexterm><primary>TemplateToken</primary><secondary>TemplateToken</secondary></indexterm>
+<para><computeroutput>TemplateToken::TemplateToken ( )</computeroutput></para><para>
+Definition at line <link linkend="__token_8cpp_source_1l01733">1733</link> of file <link linkend="__token_8cpp_source">Token.cpp</link>.</para>
+</section>
+<anchor xml:id="_class_template_token_1ad1a78fec4529c4cf2aec6350a82b351a"/><section>
+    <title>TemplateToken()<computeroutput>[2/2]</computeroutput></title>
+<indexterm><primary>TemplateToken</primary><secondary>TemplateToken</secondary></indexterm>
+<indexterm><primary>TemplateToken</primary><secondary>TemplateToken</secondary></indexterm>
+<para><computeroutput>TemplateToken::TemplateToken (int line)</computeroutput></para><para>
+Definition at line <link linkend="__token_8cpp_source_1l01738">1738</link> of file <link linkend="__token_8cpp_source">Token.cpp</link>.</para>
+</section>
+</section>
+<section>
+<title>Member Function Documentation</title>
+<anchor xml:id="_class_template_token_1a6eb3afbfb157bc54af838a654d570d00"/><section>
+    <title>addBool()</title>
+<indexterm><primary>addBool</primary><secondary>TemplateToken</secondary></indexterm>
+<indexterm><primary>TemplateToken</primary><secondary>addBool</secondary></indexterm>
+<para><computeroutput>bool TemplateToken::addBool (<link linkend="_class_iterator_list">IteratorList</link>&lt; <link linkend="_class_token">Token</link> &gt; &amp; tl, <link linkend="_class_token_result">TokenResult</link> &amp; tRes)</computeroutput></para><para>
+Definition at line <link linkend="__token_8cpp_source_1l00410">410</link> of file <link linkend="__token_8cpp_source">Token.cpp</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_template_token_a6eb3afbfb157bc54af838a654d570d00_cgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_class_template_token_1a7e5256636f4c968720a56ef5ee868274"/><section>
+    <title>addCab()</title>
+<indexterm><primary>addCab</primary><secondary>TemplateToken</secondary></indexterm>
+<indexterm><primary>TemplateToken</primary><secondary>addCab</secondary></indexterm>
+<para><computeroutput>bool TemplateToken::addCab (<link linkend="_class_iterator_list">IteratorList</link>&lt; <link linkend="_class_token">Token</link> &gt; &amp; tl, <link linkend="_class_token_result">TokenResult</link> &amp; tRes)</computeroutput></para><para>
+Definition at line <link linkend="__token_8cpp_source_1l01748">1748</link> of file <link linkend="__token_8cpp_source">Token.cpp</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_template_token_a7e5256636f4c968720a56ef5ee868274_cgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+Here is the caller graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_template_token_a7e5256636f4c968720a56ef5ee868274_icgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_class_template_token_1a0564dddc4f77b9d92efd80c1f6bab565"/><section>
+    <title>addComma()</title>
+<indexterm><primary>addComma</primary><secondary>TemplateToken</secondary></indexterm>
+<indexterm><primary>TemplateToken</primary><secondary>addComma</secondary></indexterm>
+<para><computeroutput>bool TemplateToken::addComma (<link linkend="_class_iterator_list">IteratorList</link>&lt; <link linkend="_class_token">Token</link> &gt; &amp; tl, <link linkend="_class_token_result">TokenResult</link> &amp; tRes)</computeroutput></para><para>
+Definition at line <link linkend="__token_8cpp_source_1l00402">402</link> of file <link linkend="__token_8cpp_source">Token.cpp</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_template_token_a0564dddc4f77b9d92efd80c1f6bab565_cgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_class_template_token_1aaffa06b318ca9e8b874a6598d721e424"/><section>
+    <title>addCoord()</title>
+<indexterm><primary>addCoord</primary><secondary>TemplateToken</secondary></indexterm>
+<indexterm><primary>TemplateToken</primary><secondary>addCoord</secondary></indexterm>
+<para><computeroutput>bool TemplateToken::addCoord (<link linkend="_class_iterator_list">IteratorList</link>&lt; <link linkend="_class_token">Token</link> &gt; &amp; tl, <link linkend="_class_token_result">TokenResult</link> &amp; tRes)</computeroutput></para><para>
+Definition at line <link linkend="__token_8cpp_source_1l00391">391</link> of file <link linkend="__token_8cpp_source">Token.cpp</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_template_token_aaffa06b318ca9e8b874a6598d721e424_cgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_class_template_token_1ae5409c200682323bbd3ab7952ef4b4f5"/><section>
+    <title>addDataType()</title>
+<indexterm><primary>addDataType</primary><secondary>TemplateToken</secondary></indexterm>
+<indexterm><primary>TemplateToken</primary><secondary>addDataType</secondary></indexterm>
+<para><computeroutput>bool TemplateToken::addDataType (<link linkend="_class_iterator_list">IteratorList</link>&lt; <link linkend="_class_token">Token</link> &gt; &amp; tl, <link linkend="_class_token_result">TokenResult</link> &amp; tRes)</computeroutput></para><para>
+Definition at line <link linkend="__token_8cpp_source_1l00380">380</link> of file <link linkend="__token_8cpp_source">Token.cpp</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_template_token_ae5409c200682323bbd3ab7952ef4b4f5_cgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_class_template_token_1a2d06e59a5bfc0a7a1a56dc7496f3d2e3"/><section>
+    <title>addError()<computeroutput>[1/2]</computeroutput></title>
+<indexterm><primary>addError</primary><secondary>TemplateToken</secondary></indexterm>
+<indexterm><primary>TemplateToken</primary><secondary>addError</secondary></indexterm>
+<para><computeroutput>bool TemplateToken::addError (<link linkend="_class_token_result">TokenResult</link> &amp; tRes, <link linkend="__token_8h_1ad8ed01ff3ff33333d8e19db4d2818bb6">DataType</link> type)</computeroutput></para><para>
+Definition at line <link linkend="__token_8cpp_source_1l01772">1772</link> of file <link linkend="__token_8cpp_source">Token.cpp</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_template_token_a2d06e59a5bfc0a7a1a56dc7496f3d2e3_cgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_class_template_token_1ad981d8ad4aeb0162d344d334ff3ac0f3"/><section>
+    <title>addError()<computeroutput>[2/2]</computeroutput></title>
+<indexterm><primary>addError</primary><secondary>TemplateToken</secondary></indexterm>
+<indexterm><primary>TemplateToken</primary><secondary>addError</secondary></indexterm>
+<para><computeroutput>bool TemplateToken::addError (<link linkend="_class_token_result">TokenResult</link> &amp; tRes, <link linkend="__token_8h_1acbd1e63c605cbb3dbe67c7411841b46c">TokenVALUE</link> value, <link linkend="__token_8h_1ab0df38968e4f03a3f1f6d6df0f31f45a">ErrorType</link> et = <computeroutput><link linkend="__token_8h_1ab0df38968e4f03a3f1f6d6df0f31f45aa10d1208b485425756fcc932229386b02">ErrorType::MISSING</link></computeroutput>
+)</computeroutput></para><para>
+Definition at line <link linkend="__token_8cpp_source_1l01766">1766</link> of file <link linkend="__token_8cpp_source">Token.cpp</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_template_token_ad981d8ad4aeb0162d344d334ff3ac0f3_cgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+Here is the caller graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_template_token_ad981d8ad4aeb0162d344d334ff3ac0f3_icgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_class_template_token_1a8d9b343f2012524731d7cc7d657b30bc"/><section>
+    <title>addFloat()</title>
+<indexterm><primary>addFloat</primary><secondary>TemplateToken</secondary></indexterm>
+<indexterm><primary>TemplateToken</primary><secondary>addFloat</secondary></indexterm>
+<para><computeroutput>bool TemplateToken::addFloat (<link linkend="_class_iterator_list">IteratorList</link>&lt; <link linkend="_class_token">Token</link> &gt; &amp; tl, <link linkend="_class_token_result">TokenResult</link> &amp; tRes)</computeroutput></para><para>
+Definition at line <link linkend="__token_8cpp_source_1l00387">387</link> of file <link linkend="__token_8cpp_source">Token.cpp</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_template_token_a8d9b343f2012524731d7cc7d657b30bc_cgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_class_template_token_1abb2f4c81dfdde0b3579d039279191d0a"/><section>
+    <title>addIdentifier()</title>
+<indexterm><primary>addIdentifier</primary><secondary>TemplateToken</secondary></indexterm>
+<indexterm><primary>TemplateToken</primary><secondary>addIdentifier</secondary></indexterm>
+<para><computeroutput>bool TemplateToken::addIdentifier (<link linkend="_class_iterator_list">IteratorList</link>&lt; <link linkend="_class_token">Token</link> &gt; &amp; tl, <link linkend="_class_token_result">TokenResult</link> &amp; tRes)</computeroutput></para><para>
+Definition at line <link linkend="__token_8cpp_source_1l00414">414</link> of file <link linkend="__token_8cpp_source">Token.cpp</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_template_token_abb2f4c81dfdde0b3579d039279191d0a_cgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_class_template_token_1a96ca35999c1a6551e66bb77922cac8aa"/><section>
+    <title>addInteger()</title>
+<indexterm><primary>addInteger</primary><secondary>TemplateToken</secondary></indexterm>
+<indexterm><primary>TemplateToken</primary><secondary>addInteger</secondary></indexterm>
+<para><computeroutput>bool TemplateToken::addInteger (<link linkend="_class_iterator_list">IteratorList</link>&lt; <link linkend="_class_token">Token</link> &gt; &amp; tl, <link linkend="_class_token_result">TokenResult</link> &amp; tRes)</computeroutput></para><para>
+Definition at line <link linkend="__token_8cpp_source_1l00383">383</link> of file <link linkend="__token_8cpp_source">Token.cpp</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_template_token_a96ca35999c1a6551e66bb77922cac8aa_cgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_class_template_token_1a6fa9056c91c1a555678b264f4e3e7508"/><section>
+    <title>addNumber()</title>
+<indexterm><primary>addNumber</primary><secondary>TemplateToken</secondary></indexterm>
+<indexterm><primary>TemplateToken</primary><secondary>addNumber</secondary></indexterm>
+<para><computeroutput>bool TemplateToken::addNumber (<link linkend="_class_iterator_list">IteratorList</link>&lt; <link linkend="_class_token">Token</link> &gt; &amp; tl, <link linkend="_class_token_result">TokenResult</link> &amp; tRes)</computeroutput></para><para>
+Definition at line <link linkend="__token_8cpp_source_1l00270">270</link> of file <link linkend="__token_8cpp_source">Token.cpp</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_template_token_a6fa9056c91c1a555678b264f4e3e7508_cgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_class_template_token_1aeab3bb725b06c1368626903bda4431ba"/><section>
+    <title>addOab()</title>
+<indexterm><primary>addOab</primary><secondary>TemplateToken</secondary></indexterm>
+<indexterm><primary>TemplateToken</primary><secondary>addOab</secondary></indexterm>
+<para><computeroutput>bool TemplateToken::addOab (<link linkend="_class_iterator_list">IteratorList</link>&lt; <link linkend="_class_token">Token</link> &gt; &amp; tl, <link linkend="_class_token_result">TokenResult</link> &amp; tRes)</computeroutput></para><para>
+Definition at line <link linkend="__token_8cpp_source_1l01743">1743</link> of file <link linkend="__token_8cpp_source">Token.cpp</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_template_token_aeab3bb725b06c1368626903bda4431ba_cgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+Here is the caller graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_template_token_aeab3bb725b06c1368626903bda4431ba_icgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_class_template_token_1adb300eb290123fa430ce7aaff136a46d"/><section>
+    <title>addString()</title>
+<indexterm><primary>addString</primary><secondary>TemplateToken</secondary></indexterm>
+<indexterm><primary>TemplateToken</primary><secondary>addString</secondary></indexterm>
+<para><computeroutput>bool TemplateToken::addString (<link linkend="_class_iterator_list">IteratorList</link>&lt; <link linkend="_class_token">Token</link> &gt; &amp; tl, <link linkend="_class_token_result">TokenResult</link> &amp; tRes)</computeroutput></para><para>
+Definition at line <link linkend="__token_8cpp_source_1l00399">399</link> of file <link linkend="__token_8cpp_source">Token.cpp</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_template_token_adb300eb290123fa430ce7aaff136a46d_cgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_class_template_token_1aa8277d6487df4d96660b6e60dea21ce1"/><section>
+    <title>addTemplatedTypes()</title>
+<indexterm><primary>addTemplatedTypes</primary><secondary>TemplateToken</secondary></indexterm>
+<indexterm><primary>TemplateToken</primary><secondary>addTemplatedTypes</secondary></indexterm>
+<para><computeroutput>bool TemplateToken::addTemplatedTypes (<link linkend="_class_iterator_list">IteratorList</link>&lt; <link linkend="_class_token">Token</link> &gt; &amp; tl, <link linkend="_class_token_result">TokenResult</link> tRes)<computeroutput>[virtual]</computeroutput></computeroutput></para><para>
+Definition at line <link linkend="__token_8cpp_source_1l01753">1753</link> of file <link linkend="__token_8cpp_source">Token.cpp</link>.</para>
+</section>
+<anchor xml:id="_class_template_token_1aa3148f8f737edb75778c19616148ee48"/><section>
+    <title>addTimeType()</title>
+<indexterm><primary>addTimeType</primary><secondary>TemplateToken</secondary></indexterm>
+<indexterm><primary>TemplateToken</primary><secondary>addTimeType</secondary></indexterm>
+<para><computeroutput>bool TemplateToken::addTimeType (<link linkend="_class_iterator_list">IteratorList</link>&lt; <link linkend="_class_token">Token</link> &gt; &amp; tl, <link linkend="_class_token_result">TokenResult</link> &amp; tRes)</computeroutput></para><para>
+Definition at line <link linkend="__token_8cpp_source_1l00406">406</link> of file <link linkend="__token_8cpp_source">Token.cpp</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_template_token_aa3148f8f737edb75778c19616148ee48_cgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_class_template_token_1a3d79f7926bda1d8b49a3f12d6ff615b0"/><section>
+    <title>addToken()</title>
+<indexterm><primary>addToken</primary><secondary>TemplateToken</secondary></indexterm>
+<indexterm><primary>TemplateToken</primary><secondary>addToken</secondary></indexterm>
+<para><computeroutput>bool TemplateToken::addToken (<link linkend="__token_8h_1acbd1e63c605cbb3dbe67c7411841b46c">TokenVALUE</link> tVal, <link linkend="_class_iterator_list">IteratorList</link>&lt; <link linkend="_class_token">Token</link> &gt; &amp; tl, <link linkend="_class_token_result">TokenResult</link> &amp; tRes)</computeroutput></para><para>
+Definition at line <link linkend="__token_8cpp_source_1l00289">289</link> of file <link linkend="__token_8cpp_source">Token.cpp</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_template_token_a3d79f7926bda1d8b49a3f12d6ff615b0_cgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+Here is the caller graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_template_token_a3d79f7926bda1d8b49a3f12d6ff615b0_icgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_class_template_token_1a4f803a24960bab2671effe0c746d1b8e"/><section>
+    <title>addTokens()</title>
+<indexterm><primary>addTokens</primary><secondary>TemplateToken</secondary></indexterm>
+<indexterm><primary>TemplateToken</primary><secondary>addTokens</secondary></indexterm>
+<para><computeroutput>bool TemplateToken::addTokens (<link linkend="_class_iterator_list">IteratorList</link>&lt; <link linkend="_class_token">Token</link> &gt; &amp; tl, <link linkend="_class_token_result">TokenResult</link> &amp; tRes)</computeroutput></para><para>
+Definition at line <link linkend="__token_8cpp_source_1l01758">1758</link> of file <link linkend="__token_8cpp_source">Token.cpp</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_template_token_a4f803a24960bab2671effe0c746d1b8e_cgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+Here is the caller graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_template_token_a4f803a24960bab2671effe0c746d1b8e_icgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_class_template_token_1ac4146f0f59ba02482abb40679265e21d"/><section>
+    <title>addType()<computeroutput>[1/2]</computeroutput></title>
+<indexterm><primary>addType</primary><secondary>TemplateToken</secondary></indexterm>
+<indexterm><primary>TemplateToken</primary><secondary>addType</secondary></indexterm>
+<para><computeroutput>bool TemplateToken::addType (<link linkend="__token_8h_1ad8ed01ff3ff33333d8e19db4d2818bb6">DataType</link> tVal, <link linkend="_class_iterator_list">IteratorList</link>&lt; <link linkend="_class_token">Token</link> &gt; &amp; tl, <link linkend="_class_token_result">TokenResult</link> &amp; tRes)</computeroutput></para><para>
+Definition at line <link linkend="__token_8cpp_source_1l00317">317</link> of file <link linkend="__token_8cpp_source">Token.cpp</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_template_token_ac4146f0f59ba02482abb40679265e21d_cgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+Here is the caller graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_template_token_ac4146f0f59ba02482abb40679265e21d_icgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_class_template_token_1a23f3e763a82c043ee0e4e211680eab24"/><section>
+    <title>addType()<computeroutput>[2/2]</computeroutput></title>
+<indexterm><primary>addType</primary><secondary>TemplateToken</secondary></indexterm>
+<indexterm><primary>TemplateToken</primary><secondary>addType</secondary></indexterm>
+<para><computeroutput>bool TemplateToken::addType (std::vector&lt; <link linkend="__token_8h_1ad8ed01ff3ff33333d8e19db4d2818bb6">DataType</link> &gt; listTypes, <link linkend="_class_iterator_list">IteratorList</link>&lt; <link linkend="_class_token">Token</link> &gt; &amp; tl, <link linkend="_class_token_result">TokenResult</link> &amp; tRes)</computeroutput></para><para>
+Definition at line <link linkend="__token_8cpp_source_1l00327">327</link> of file <link linkend="__token_8cpp_source">Token.cpp</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_template_token_a23f3e763a82c043ee0e4e211680eab24_cgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_class_template_token_1a277108b785df33d49c4957aaf14d7935"/><section>
+    <title>addZone()</title>
+<indexterm><primary>addZone</primary><secondary>TemplateToken</secondary></indexterm>
+<indexterm><primary>TemplateToken</primary><secondary>addZone</secondary></indexterm>
+<para><computeroutput>bool TemplateToken::addZone (<link linkend="_class_iterator_list">IteratorList</link>&lt; <link linkend="_class_token">Token</link> &gt; &amp; tl, <link linkend="_class_token_result">TokenResult</link> &amp; tRes)</computeroutput></para><para>
+Definition at line <link linkend="__token_8cpp_source_1l00395">395</link> of file <link linkend="__token_8cpp_source">Token.cpp</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_template_token_a277108b785df33d49c4957aaf14d7935_cgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+</section>
+<section>
+<title>Member Data Documentation</title>
+<anchor xml:id="_class_template_token_1a44271a10cbc74eea133ed9e92897012e"/><section>
+    <title>line</title>
+<indexterm><primary>line</primary><secondary>TemplateToken</secondary></indexterm>
+<indexterm><primary>TemplateToken</primary><secondary>line</secondary></indexterm>
+<para><computeroutput>int TemplateToken::line<computeroutput>[protected]</computeroutput></computeroutput></para><para>
+Definition at line <link linkend="__token_8h_source_1l00288">288</link> of file <link linkend="__token_8h_source">Token.h</link>.</para>
+</section>
+<anchor xml:id="_class_template_token_1a3ebc30ff8cce2739928a9a646d5d654f"/><section>
+    <title>templateArguments</title>
+<indexterm><primary>templateArguments</primary><secondary>TemplateToken</secondary></indexterm>
+<indexterm><primary>TemplateToken</primary><secondary>templateArguments</secondary></indexterm>
+<para><computeroutput><link linkend="_class_arguments_overload">ArgumentsOverload</link> TemplateToken::templateArguments<computeroutput>[protected]</computeroutput></computeroutput></para><para>
+Definition at line <link linkend="__token_8h_source_1l00286">286</link> of file <link linkend="__token_8h_source">Token.h</link>.</para>
+</section>
+<anchor xml:id="_class_template_token_1a8da6ae9664056d2441190c30cd332aca"/><section>
+    <title>tRes</title>
+<indexterm><primary>tRes</primary><secondary>TemplateToken</secondary></indexterm>
+<indexterm><primary>TemplateToken</primary><secondary>tRes</secondary></indexterm>
+<para><computeroutput><link linkend="_class_token_result">TokenResult</link> TemplateToken::tRes<computeroutput>[protected]</computeroutput></computeroutput></para><para>
+Definition at line <link linkend="__token_8h_source_1l00287">287</link> of file <link linkend="__token_8h_source">Token.h</link>.</para>
+</section>
+<para>
+The documentation for this class was generated from the following files:</para>
+src/<link linkend="__token_8h">Token.h</link>src/<link linkend="__token_8cpp">Token.cpp</link></section>
+</section>

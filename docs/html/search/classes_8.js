@@ -9,6 +9,5 @@ var searchData=
   ['interactions_6',['Interactions',['../class_interactions.html',1,'']]],
   ['interpretor_7',['Interpretor',['../class_interpretor.html',1,'']]],
   ['inttag_8',['IntTag',['../class_int_tag.html',1,'']]],
-  ['iteratorlist_9',['IteratorList',['../class_iterator_list.html',1,'']]],
-  ['iteratorlist_3c_20token_20_3e_10',['IteratorList&lt; Token &gt;',['../class_iterator_list.html',1,'']]]
+  ['iteratorlist_9',['IteratorList',['../class_iterator_list.html',1,'']]]
 ];

@@ -27,9 +27,8 @@
  <tbody>
  <tr id="projectrow">
   <td id="projectalign">
-   <div id="projectname">BotMaker<span id="projectnumber">&#160;beta</span>
+   <div id="projectname">BotMaker
    </div>
-   <div id="projectbrief">Tool to create bots on Bluestacks</div>
   </td>
  </tr>
  </tbody>
@@ -99,12 +98,13 @@ $(function(){initNavTree('class_break_token.html',''); initResizable(true); });
 <div class="header">
   <div class="summary">
 <a href="#pub-methods">Public Member Functions</a> &#124;
+<a href="#pro-methods">Protected Member Functions</a> &#124;
 <a href="class_break_token-members.html">List of all members</a>  </div>
   <div class="headertitle"><div class="title">BreakToken Class Reference</div></div>
 </div><!--header-->
 <div class="contents">
 
-<p><code>#include &lt;<a class="el" href="_interpretor_8h_source.html">Interpretor.h</a>&gt;</code></p>
+<p><code>#include &lt;<a class="el" href="_token_8h_source.html">Token.h</a>&gt;</code></p>
 <div class="dynheader">
 Inheritance diagram for BreakToken:</div>
 <div class="dyncontent">
@@ -120,39 +120,47 @@ Collaboration diagram for BreakToken:</div>
 Public Member Functions</h2></td></tr>
 <tr class="memitem:a87c201c9b7d271136bd63d7256a62b19" id="r_a87c201c9b7d271136bd63d7256a62b19"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a87c201c9b7d271136bd63d7256a62b19">BreakToken</a> ()</td></tr>
 <tr class="separator:a87c201c9b7d271136bd63d7256a62b19"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af33466835286c8736861de37184073e9" id="r_af33466835286c8736861de37184073e9"><td class="memItemLeft" align="right" valign="top">std::shared_ptr&lt; <a class="el" href="class_token_result.html">TokenResult</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#af33466835286c8736861de37184073e9">addTokens</a> (<a class="el" href="class_iterator_list.html">IteratorList</a>&lt; <a class="el" href="class_token.html">Token</a> &gt; &amp;tl, std::shared_ptr&lt; <a class="el" href="class_token_result.html">TokenResult</a> &gt; <a class="el" href="class_token.html#a374f334f070a5a07daf0bbde3be02ced">tRes</a>) override</td></tr>
-<tr class="separator:af33466835286c8736861de37184073e9"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a623e413d2ea0c720de427739602b2002" id="r_a623e413d2ea0c720de427739602b2002"><td class="memItemLeft" align="right" valign="top">virtual std::shared_ptr&lt; <a class="el" href="class_tag.html">Tag</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a623e413d2ea0c720de427739602b2002">execute</a> () override</td></tr>
-<tr class="separator:a623e413d2ea0c720de427739602b2002"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_methods_class_token"><td colspan="2" onclick="javascript:dynsection.toggleInherit('pub_methods_class_token')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="class_token.html">Token</a></td></tr>
 <tr class="memitem:aa3c5868ba4115f3189df6b2ac5b36f39 inherit pub_methods_class_token" id="r_aa3c5868ba4115f3189df6b2ac5b36f39"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_token.html#aa3c5868ba4115f3189df6b2ac5b36f39">Token</a> ()</td></tr>
 <tr class="separator:aa3c5868ba4115f3189df6b2ac5b36f39 inherit pub_methods_class_token"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af13c7d494e5fe273558cb37286fa7185 inherit pub_methods_class_token" id="r_af13c7d494e5fe273558cb37286fa7185"><td class="memItemLeft" align="right" valign="top">std::shared_ptr&lt; <a class="el" href="class_token_result.html">TokenResult</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_token.html#af13c7d494e5fe273558cb37286fa7185">updateRes</a> (std::shared_ptr&lt; <a class="el" href="class_token_result.html">TokenResult</a> &gt; <a class="el" href="class_token.html#a374f334f070a5a07daf0bbde3be02ced">tRes</a>)</td></tr>
-<tr class="separator:af13c7d494e5fe273558cb37286fa7185 inherit pub_methods_class_token"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4c0f84a84656f0b5e28c4193c3c13ea3 inherit pub_methods_class_token" id="r_a4c0f84a84656f0b5e28c4193c3c13ea3"><td class="memItemLeft" align="right" valign="top">std::shared_ptr&lt; <a class="el" href="class_token_result.html">TokenResult</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_token.html#a4c0f84a84656f0b5e28c4193c3c13ea3">addError</a> (<a class="el" href="_interpretor_8h.html#acbd1e63c605cbb3dbe67c7411841b46c">TokenVALUE</a> value, <a class="el" href="_interpretor_8h.html#ab0df38968e4f03a3f1f6d6df0f31f45a">ErrorType</a> et=<a class="el" href="_interpretor_8h.html#ab0df38968e4f03a3f1f6d6df0f31f45aa10d1208b485425756fcc932229386b02">ErrorType::MISSING</a>)</td></tr>
-<tr class="separator:a4c0f84a84656f0b5e28c4193c3c13ea3 inherit pub_methods_class_token"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a97d36ac6f4a4d06cdf931f4240c6472c inherit pub_methods_class_token" id="r_a97d36ac6f4a4d06cdf931f4240c6472c"><td class="memItemLeft" align="right" valign="top">std::shared_ptr&lt; <a class="el" href="class_token_result.html">TokenResult</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_token.html#a97d36ac6f4a4d06cdf931f4240c6472c">addError</a> (const std::shared_ptr&lt; <a class="el" href="class_token_result.html">TokenResult</a> &gt; &amp;tr)</td></tr>
-<tr class="separator:a97d36ac6f4a4d06cdf931f4240c6472c inherit pub_methods_class_token"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a342eebc35a823997d3fe2a6c66f9cbe1 inherit pub_methods_class_token" id="r_a342eebc35a823997d3fe2a6c66f9cbe1"><td class="memItemLeft" align="right" valign="top">std::shared_ptr&lt; <a class="el" href="class_token_result.html">TokenResult</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_token.html#a342eebc35a823997d3fe2a6c66f9cbe1">addError</a> (<a class="el" href="_interpretor_8h.html#ad8ed01ff3ff33333d8e19db4d2818bb6">DataType</a> type, <a class="el" href="_interpretor_8h.html#ab0df38968e4f03a3f1f6d6df0f31f45a">ErrorType</a> et=<a class="el" href="_interpretor_8h.html#ab0df38968e4f03a3f1f6d6df0f31f45aad5edacc5c1724ff7055e7db625117c71">ErrorType::REPLACED</a>)</td></tr>
-<tr class="separator:a342eebc35a823997d3fe2a6c66f9cbe1 inherit pub_methods_class_token"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a41ebddd1a5ac42b80e3bd916e1f8e472 inherit pub_methods_class_token" id="r_a41ebddd1a5ac42b80e3bd916e1f8e472"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="_interpretor_8h.html#ad8ed01ff3ff33333d8e19db4d2818bb6">DataType</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_token.html#a41ebddd1a5ac42b80e3bd916e1f8e472">getDataType</a> ()</td></tr>
-<tr class="separator:a41ebddd1a5ac42b80e3bd916e1f8e472 inherit pub_methods_class_token"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ace668259c90b6fd2acc2f61d0e141565 inherit pub_methods_class_token" id="r_ace668259c90b6fd2acc2f61d0e141565"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="_token_8h.html#ad8ed01ff3ff33333d8e19db4d2818bb6">DataType</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_token.html#ace668259c90b6fd2acc2f61d0e141565">getDataType</a> (<a class="el" href="class_token_result.html">TokenResult</a> &amp;tRes)</td></tr>
+<tr class="separator:ace668259c90b6fd2acc2f61d0e141565 inherit pub_methods_class_token"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abd61b776070d98e2e1b748831a8ae85e inherit pub_methods_class_token" id="r_abd61b776070d98e2e1b748831a8ae85e"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_token.html#abd61b776070d98e2e1b748831a8ae85e">showTokenTree</a> (const int nestedLayer)</td></tr>
+<tr class="separator:abd61b776070d98e2e1b748831a8ae85e inherit pub_methods_class_token"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0dec1385788e690b5dc30cd99a1ed3c8 inherit pub_methods_class_token" id="r_a0dec1385788e690b5dc30cd99a1ed3c8"><td class="memItemLeft" align="right" valign="top"><a class="el" href="_token_8h.html#acbd1e63c605cbb3dbe67c7411841b46c">TokenVALUE</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_token.html#a0dec1385788e690b5dc30cd99a1ed3c8">getValue</a> ()</td></tr>
+<tr class="separator:a0dec1385788e690b5dc30cd99a1ed3c8 inherit pub_methods_class_token"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ade47ed51e2f495f6d847c1bff9fe8db6 inherit pub_methods_class_token" id="r_ade47ed51e2f495f6d847c1bff9fe8db6"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_token.html#ade47ed51e2f495f6d847c1bff9fe8db6">addError</a> (<a class="el" href="class_token_result.html">TokenResult</a> &amp;tRes, <a class="el" href="_token_8h.html#acbd1e63c605cbb3dbe67c7411841b46c">TokenVALUE</a> value, <a class="el" href="_token_8h.html#ab0df38968e4f03a3f1f6d6df0f31f45a">ErrorType</a> et=<a class="el" href="_token_8h.html#ab0df38968e4f03a3f1f6d6df0f31f45aa10d1208b485425756fcc932229386b02">ErrorType::MISSING</a>)</td></tr>
+<tr class="separator:ade47ed51e2f495f6d847c1bff9fe8db6 inherit pub_methods_class_token"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a61f4575ae9e05b93b8812ae9cbacc0f0 inherit pub_methods_class_token" id="r_a61f4575ae9e05b93b8812ae9cbacc0f0"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_token.html#a61f4575ae9e05b93b8812ae9cbacc0f0">addError</a> (<a class="el" href="class_token_result.html">TokenResult</a> &amp;tRes, <a class="el" href="_token_8h.html#ad8ed01ff3ff33333d8e19db4d2818bb6">DataType</a> type)</td></tr>
+<tr class="separator:a61f4575ae9e05b93b8812ae9cbacc0f0 inherit pub_methods_class_token"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2643198d67a19ce0bd8102b4379d9d12 inherit pub_methods_class_token" id="r_a2643198d67a19ce0bd8102b4379d9d12"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_token.html#a2643198d67a19ce0bd8102b4379d9d12">getTokenText</a> ()</td></tr>
+<tr class="separator:a2643198d67a19ce0bd8102b4379d9d12 inherit pub_methods_class_token"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0fe3c8022c8c5f6143c7dd3fba9408fe inherit pub_methods_class_token" id="r_a0fe3c8022c8c5f6143c7dd3fba9408fe"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_token.html#a0fe3c8022c8c5f6143c7dd3fba9408fe">getLine</a> ()</td></tr>
+<tr class="separator:a0fe3c8022c8c5f6143c7dd3fba9408fe inherit pub_methods_class_token"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad3fb88977cc7e687450f46e4f9d80a05 inherit pub_methods_class_token" id="r_ad3fb88977cc7e687450f46e4f9d80a05"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_token.html#ad3fb88977cc7e687450f46e4f9d80a05">hasValue</a> (<a class="el" href="_token_8h.html#acbd1e63c605cbb3dbe67c7411841b46c">TokenVALUE</a> value) const</td></tr>
+<tr class="separator:ad3fb88977cc7e687450f46e4f9d80a05 inherit pub_methods_class_token"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pro-methods" name="pro-methods"></a>
+Protected Member Functions</h2></td></tr>
+<tr class="memitem:a623e413d2ea0c720de427739602b2002" id="r_a623e413d2ea0c720de427739602b2002"><td class="memItemLeft" align="right" valign="top">virtual std::shared_ptr&lt; <a class="el" href="class_tag.html">Tag</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a623e413d2ea0c720de427739602b2002">execute</a> () override</td></tr>
+<tr class="separator:a623e413d2ea0c720de427739602b2002"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="inherit_header pro_methods_class_k_token"><td colspan="2" onclick="javascript:dynsection.toggleInherit('pro_methods_class_k_token')"><img src="closed.png" alt="-"/>&#160;Protected Member Functions inherited from <a class="el" href="class_k_token.html">KToken</a></td></tr>
+<tr class="memitem:aa70f9690ec470ceece17f9641bc9fb96 inherit pro_methods_class_k_token" id="r_aa70f9690ec470ceece17f9641bc9fb96"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_k_token.html#aa70f9690ec470ceece17f9641bc9fb96">addTokens</a> (<a class="el" href="class_iterator_list.html">IteratorList</a>&lt; <a class="el" href="class_token.html">Token</a> &gt; &amp;tl, <a class="el" href="class_token_result.html">TokenResult</a> &amp;tRes) override</td></tr>
+<tr class="separator:aa70f9690ec470ceece17f9641bc9fb96 inherit pro_methods_class_k_token"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="inherited" name="inherited"></a>
 Additional Inherited Members</h2></td></tr>
-<tr class="inherit_header pub_attribs_class_token"><td colspan="2" onclick="javascript:dynsection.toggleInherit('pub_attribs_class_token')"><img src="closed.png" alt="-"/>&#160;Public Attributes inherited from <a class="el" href="class_token.html">Token</a></td></tr>
-<tr class="memitem:a8b3faba4c73c28d11fec73758a0302b2 inherit pub_attribs_class_token" id="r_a8b3faba4c73c28d11fec73758a0302b2"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_token.html#a8b3faba4c73c28d11fec73758a0302b2">tokenText</a></td></tr>
-<tr class="separator:a8b3faba4c73c28d11fec73758a0302b2 inherit pub_attribs_class_token"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4c8ce9cf1eecbc7e49650307eea6a862 inherit pub_attribs_class_token" id="r_a4c8ce9cf1eecbc7e49650307eea6a862"><td class="memItemLeft" align="right" valign="top"><a class="el" href="_interpretor_8h.html#acbd1e63c605cbb3dbe67c7411841b46c">TokenVALUE</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_token.html#a4c8ce9cf1eecbc7e49650307eea6a862">tValue</a></td></tr>
-<tr class="separator:a4c8ce9cf1eecbc7e49650307eea6a862 inherit pub_attribs_class_token"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a374f334f070a5a07daf0bbde3be02ced inherit pub_attribs_class_token" id="r_a374f334f070a5a07daf0bbde3be02ced"><td class="memItemLeft" align="right" valign="top">std::shared_ptr&lt; <a class="el" href="class_token_result.html">TokenResult</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_token.html#a374f334f070a5a07daf0bbde3be02ced">tRes</a></td></tr>
-<tr class="separator:a374f334f070a5a07daf0bbde3be02ced inherit pub_attribs_class_token"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4b96c2a31d7c374fd2bd1986794f80dd inherit pub_attribs_class_token" id="r_a4b96c2a31d7c374fd2bd1986794f80dd"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_token.html#a4b96c2a31d7c374fd2bd1986794f80dd">line</a></td></tr>
-<tr class="separator:a4b96c2a31d7c374fd2bd1986794f80dd inherit pub_attribs_class_token"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="inherit_header pro_attribs_class_token"><td colspan="2" onclick="javascript:dynsection.toggleInherit('pro_attribs_class_token')"><img src="closed.png" alt="-"/>&#160;Protected Attributes inherited from <a class="el" href="class_token.html">Token</a></td></tr>
+<tr class="memitem:a8b3faba4c73c28d11fec73758a0302b2 inherit pro_attribs_class_token" id="r_a8b3faba4c73c28d11fec73758a0302b2"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_token.html#a8b3faba4c73c28d11fec73758a0302b2">tokenText</a></td></tr>
+<tr class="separator:a8b3faba4c73c28d11fec73758a0302b2 inherit pro_attribs_class_token"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4c8ce9cf1eecbc7e49650307eea6a862 inherit pro_attribs_class_token" id="r_a4c8ce9cf1eecbc7e49650307eea6a862"><td class="memItemLeft" align="right" valign="top"><a class="el" href="_token_8h.html#acbd1e63c605cbb3dbe67c7411841b46c">TokenVALUE</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_token.html#a4c8ce9cf1eecbc7e49650307eea6a862">tValue</a></td></tr>
+<tr class="separator:a4c8ce9cf1eecbc7e49650307eea6a862 inherit pro_attribs_class_token"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4b96c2a31d7c374fd2bd1986794f80dd inherit pro_attribs_class_token" id="r_a4b96c2a31d7c374fd2bd1986794f80dd"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_token.html#a4b96c2a31d7c374fd2bd1986794f80dd">line</a></td></tr>
+<tr class="separator:a4b96c2a31d7c374fd2bd1986794f80dd inherit pro_attribs_class_token"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock">
-<p class="definition">Definition at line <a class="el" href="_interpretor_8h_source.html#l00479">479</a> of file <a class="el" href="_interpretor_8h_source.html">Interpretor.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_token_8h_source.html#l00643">643</a> of file <a class="el" href="_token_8h_source.html">Token.h</a>.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="a87c201c9b7d271136bd63d7256a62b19" name="a87c201c9b7d271136bd63d7256a62b19"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a87c201c9b7d271136bd63d7256a62b19">&#9670;&#160;</a></span>BreakToken()</h2>
@@ -169,49 +177,11 @@ Additional Inherited Members</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_interpretor_8cpp_source.html#l01440">1440</a> of file <a class="el" href="_interpretor_8cpp_source.html">Interpretor.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_token_8cpp_source.html#l00828">828</a> of file <a class="el" href="_token_8cpp_source.html">Token.cpp</a>.</p>
 
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
-<a id="af33466835286c8736861de37184073e9" name="af33466835286c8736861de37184073e9"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#af33466835286c8736861de37184073e9">&#9670;&#160;</a></span>addTokens()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">std::shared_ptr&lt; <a class="el" href="class_token_result.html">TokenResult</a> &gt; BreakToken::addTokens </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="class_iterator_list.html">IteratorList</a>&lt; <a class="el" href="class_token.html">Token</a> &gt; &amp;</td>          <td class="paramname"><span class="paramname"><em>tl</em></span>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">std::shared_ptr&lt; <a class="el" href="class_token_result.html">TokenResult</a> &gt;</td>          <td class="paramname"><span class="paramname"><em>tRes</em></span>&#160;)</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">override</span><span class="mlabel">virtual</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Reimplemented from <a class="el" href="class_token.html#ad692018745d72ed2bc87f1f6a8dbf156">Token</a>.</p>
-
-<p class="definition">Definition at line <a class="el" href="_interpretor_8cpp_source.html#l01446">1446</a> of file <a class="el" href="_interpretor_8cpp_source.html">Interpretor.cpp</a>.</p>
-<div class="dynheader">
-Here is the call graph for this function:</div>
-<div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="class_break_token_af33466835286c8736861de37184073e9_cgraph.svg" width="348" height="88"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
-</div>
-
-</div>
-</div>
 <a id="a623e413d2ea0c720de427739602b2002" name="a623e413d2ea0c720de427739602b2002"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a623e413d2ea0c720de427739602b2002">&#9670;&#160;</a></span>execute()</h2>
 
@@ -230,20 +200,20 @@ Here is the call graph for this function:</div>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">override</span><span class="mlabel">virtual</span></span>  </td>
+<span class="mlabels"><span class="mlabel">override</span><span class="mlabel">protected</span><span class="mlabel">virtual</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
 
 <p>Reimplemented from <a class="el" href="class_token.html#aea759b8376bff558791fdc1f2f70f4fb">Token</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="_interpretor_8cpp_source.html#l01452">1452</a> of file <a class="el" href="_interpretor_8cpp_source.html">Interpretor.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_token_8cpp_source.html#l00835">835</a> of file <a class="el" href="_token_8cpp_source.html">Token.cpp</a>.</p>
 
 </div>
 </div>
 <hr/>The documentation for this class was generated from the following files:<ul>
-<li>src/<a class="el" href="_interpretor_8h_source.html">Interpretor.h</a></li>
-<li>src/<a class="el" href="_interpretor_8cpp_source.html">Interpretor.cpp</a></li>
+<li>src/<a class="el" href="_token_8h_source.html">Token.h</a></li>
+<li>src/<a class="el" href="_token_8cpp_source.html">Token.cpp</a></li>
 </ul>
 </div><!-- contents -->
 </div><!-- doc-content -->

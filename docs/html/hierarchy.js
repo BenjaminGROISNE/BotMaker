@@ -1,6 +1,8 @@
 var hierarchy =
 [
     [ "AllEmulators", "struct_all_emulators.html", null ],
+    [ "Arguments", "class_arguments.html", null ],
+    [ "ArgumentsOverload", "class_arguments_overload.html", null ],
     [ "BotConfig", "class_bot_config.html", null ],
     [ "Coord", "struct_coord.html", null ],
     [ "CustomNumber", "struct_custom_number.html", null ],
@@ -14,6 +16,20 @@ var hierarchy =
     [ "std::exception", null, [
       [ "RebootException", "struct_reboot_exception.html", null ],
       [ "endBotException", "structend_bot_exception.html", null ]
+    ] ],
+    [ "FlowToken", "class_flow_token.html", [
+      [ "FlowCKToken", "class_flow_c_k_token.html", [
+        [ "DoLoopToken", "class_do_loop_token.html", null ],
+        [ "ElifToken", "class_elif_token.html", null ],
+        [ "IfToken", "class_if_token.html", null ],
+        [ "LoopToken", "class_loop_token.html", null ]
+      ] ],
+      [ "FlowKToken", "class_flow_k_token.html", [
+        [ "ElseToken", "class_else_token.html", null ]
+      ] ],
+      [ "FlowPKToken", "class_flow_p_k_token.html", [
+        [ "MainToken", "class_main_token.html", null ]
+      ] ]
     ] ],
     [ "fsfml", "classfsfml.html", null ],
     [ "Instance", "class_instance.html", [
@@ -45,7 +61,6 @@ var hierarchy =
     ] ],
     [ "Interpretor", "class_interpretor.html", null ],
     [ "IteratorList< T >", "class_iterator_list.html", null ],
-    [ "IteratorList< Token >", "class_iterator_list.html", null ],
     [ "Lexer", "class_lexer.html", null ],
     [ "Line", "struct_line.html", null ],
     [ "Number", "struct_number.html", null ],
@@ -97,41 +112,42 @@ var hierarchy =
     [ "Template", "struct_template.html", [
       [ "Popup", "struct_popup.html", null ]
     ] ],
+    [ "TemplateToken", "class_template_token.html", [
+      [ "CompareToken", "class_compare_token.html", null ],
+      [ "ListToken", "class_list_token.html", null ]
+    ] ],
     [ "Token", "class_token.html", [
       [ "IdentifierToken", "class_identifier_token.html", null ],
       [ "KToken", "class_k_token.html", [
         [ "BreakToken", "class_break_token.html", null ],
         [ "ContinueToken", "class_continue_token.html", null ],
-        [ "FlowKToken", "class_flow_k_token.html", [
-          [ "ElseToken", "class_else_token.html", null ]
-        ] ],
-        [ "KPToken", "class_k_p_token.html", [
-          [ "AndToken", "class_and_token.html", null ],
+        [ "FlowKToken", "class_flow_k_token.html", null ],
+        [ "PKToken", "class_p_k_token.html", [
           [ "CompareToken", "class_compare_token.html", null ],
-          [ "EKPToken", "class_e_k_p_token.html", [
-            [ "BoolToken", "class_bool_token.html", null ],
-            [ "CoordToken", "class_coord_token.html", null ],
+          [ "CoordToken", "class_coord_token.html", null ],
+          [ "FlowPKToken", "class_flow_p_k_token.html", null ],
+          [ "MPKToken", "class_m_p_k_token.html", [
+            [ "BMPKToken", "class_b_m_p_k_token.html", [
+              [ "AndToken", "class_and_token.html", null ],
+              [ "OrToken", "class_or_token.html", null ]
+            ] ],
+            [ "ListToken", "class_list_token.html", null ],
+            [ "StoreToken", "class_store_token.html", null ],
+            [ "WaitToken", "class_wait_token.html", null ]
+          ] ],
+          [ "UPKToken", "class_u_p_k_token.html", [
+            [ "CKToken", "class_c_k_token.html", [
+              [ "BoolToken", "class_bool_token.html", null ],
+              [ "FlowCKToken", "class_flow_c_k_token.html", null ],
+              [ "NotToken", "class_not_token.html", null ]
+            ] ],
             [ "DirectionToken", "class_direction_token.html", null ],
             [ "FloatToken", "class_float_token.html", null ],
             [ "IntegerToken", "class_integer_token.html", null ],
-            [ "StringToken", "class_string_token.html", null ],
-            [ "ZoneToken", "class_zone_token.html", null ]
+            [ "PrintToken", "class_print_token.html", null ],
+            [ "StringToken", "class_string_token.html", null ]
           ] ],
-          [ "FlowKPToken", "class_flow_k_p_token.html", [
-            [ "DoLoopToken", "class_do_loop_token.html", null ],
-            [ "FlowKCToken", "class_flow_k_c_token.html", [
-              [ "ElifToken", "class_elif_token.html", null ],
-              [ "IfToken", "class_if_token.html", null ],
-              [ "LoopToken", "class_loop_token.html", null ]
-            ] ],
-            [ "MainToken", "class_main_token.html", null ]
-          ] ],
-          [ "ListToken", "class_list_token.html", null ],
-          [ "NotToken", "class_not_token.html", null ],
-          [ "OrToken", "class_or_token.html", null ],
-          [ "PrintToken", "class_print_token.html", null ],
-          [ "StoreToken", "class_store_token.html", null ],
-          [ "WaitToken", "class_wait_token.html", null ]
+          [ "ZoneToken", "class_zone_token.html", null ]
         ] ]
       ] ],
       [ "LToken", "class_l_token.html", [
@@ -143,7 +159,6 @@ var hierarchy =
         [ "StringLiteralToken", "class_string_literal_token.html", null ],
         [ "TrueToken", "class_true_token.html", null ]
       ] ],
-      [ "OToken", "class_o_token.html", null ],
       [ "PToken", "class_p_token.html", [
         [ "CloseAngleBracketsToken", "class_close_angle_brackets_token.html", null ],
         [ "CloseBracketsToken", "class_close_brackets_token.html", null ],

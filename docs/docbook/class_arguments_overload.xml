@@ -1,0 +1,421 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<section xmlns="http://docbook.org/ns/docbook" version="5.0" xmlns:xlink="http://www.w3.org/1999/xlink" xml:id="_class_arguments_overload" xml:lang="en-US">
+<title>ArgumentsOverload Class Reference</title>
+<indexterm><primary>ArgumentsOverload</primary></indexterm>
+<para>
+<computeroutput>#include &lt;Token.h&gt;</computeroutput>
+</para>
+Collaboration diagram for ArgumentsOverload:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_arguments_overload__coll__graph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+<simplesect>
+    <title>Public Member Functions    </title>
+        <itemizedlist>
+            <listitem><para><link linkend="_class_arguments_overload_1aca5482a0169922f217e7c6633b477320">ArgumentsOverload</link> ()</para>
+</listitem>
+            <listitem><para>bool <link linkend="_class_arguments_overload_1a1dfc9815d235cec325412121bea6b559">isPresent</link> (<link linkend="_class_arguments">Arguments</link> args)</para>
+</listitem>
+            <listitem><para>void <link linkend="_class_arguments_overload_1a17fba6858e03080178ab2cf098861e5f">addArgs</link> (<link linkend="_class_arguments">Arguments</link> args, int index)</para>
+</listitem>
+            <listitem><para>void <link linkend="_class_arguments_overload_1a4fc9b2ef6a2ec9c3f963ddcb44621794">initTabs</link> ()</para>
+</listitem>
+            <listitem><para>void <link linkend="_class_arguments_overload_1a44c9abfe32ebc098862157d7ddf22b19">next</link> ()</para>
+</listitem>
+            <listitem><para>bool <link linkend="_class_arguments_overload_1aaed90f32011643050b1440daed30c168">approveType</link> (const <link linkend="__token_8h_1ad8ed01ff3ff33333d8e19db4d2818bb6">DataType</link> &amp;type)</para>
+</listitem>
+            <listitem><para>std::vector&lt; <link linkend="__token_8h_1ad8ed01ff3ff33333d8e19db4d2818bb6">DataType</link> &gt; <link linkend="_class_arguments_overload_1a2dfe47467795bfb57a900505d61ed556">getPossibleDataTypes</link> ()</para>
+</listitem>
+            <listitem><para>std::map&lt; int, std::shared_ptr&lt; <link linkend="_class_arguments">Arguments</link> &gt; &gt; <link linkend="_class_arguments_overload_1af2ae8a9da94819490744df19ebf5e115">getValidArguments</link> ()</para>
+</listitem>
+            <listitem><para>std::map&lt; int, std::shared_ptr&lt; <link linkend="_class_arguments">Arguments</link> &gt; &gt; <link linkend="_class_arguments_overload_1ab7709e65ce6926230400a3ed8b9483ac">getCompletedArgs</link> ()</para>
+</listitem>
+            <listitem><para>bool <link linkend="_class_arguments_overload_1a8f4306c5b1ec186eb4bd10149f744cb2">ended</link> ()</para>
+</listitem>
+            <listitem><para>int <link linkend="_class_arguments_overload_1a38609197ba50525af302bc2a35600f30">size</link> ()</para>
+</listitem>
+            <listitem><para>bool <link linkend="_class_arguments_overload_1a120a10d2b4285ae672db3cea058b714d">empty</link> ()</para>
+</listitem>
+            <listitem><para>bool <link linkend="_class_arguments_overload_1a6869935a40b96521a68ae6ddacb22bac">hasValidArg</link> ()</para>
+</listitem>
+            <listitem><para>bool <link linkend="_class_arguments_overload_1a65ea1970c75fddd5990ac66a1475a63f">hasCompletedArguments</link> ()</para>
+</listitem>
+            <listitem><para>void <link linkend="_class_arguments_overload_1a6b65e84a1deed85e8403721df4358b9e">updateCompletedArguments</link> ()</para>
+</listitem>
+            <listitem><para>void <link linkend="_class_arguments_overload_1adf2f990572f8ba98d4f45fec3181bca1">updateValidArguments</link> ()</para>
+</listitem>
+            <listitem><para>void <link linkend="_class_arguments_overload_1a0316dfe033593e31fe4f754e9fc2ea3a">updateTabs</link> ()</para>
+</listitem>
+            <listitem><para>unsigned int <link linkend="_class_arguments_overload_1a1620cfd1f2662ca030c5caf9bc5f5777">getID</link> ()</para>
+</listitem>
+            <listitem><para>void <link linkend="_class_arguments_overload_1ab26f7552e32582556f6c7c6132e355cf">setCompleteIndex</link> ()</para>
+</listitem>
+        </itemizedlist>
+</simplesect>
+<simplesect>
+    <title>Protected Attributes    </title>
+        <itemizedlist>
+            <listitem><para>std::map&lt; int, std::shared_ptr&lt; <link linkend="_class_arguments">Arguments</link> &gt; &gt; <link linkend="_class_arguments_overload_1aaedae5a04d3fb0f4742a5243b18c4999">validArguments</link></para>
+</listitem>
+            <listitem><para>std::map&lt; int, std::shared_ptr&lt; <link linkend="_class_arguments">Arguments</link> &gt; &gt; <link linkend="_class_arguments_overload_1ad8da4644bf5c7597ec73958b67324593">completedArguments</link></para>
+</listitem>
+            <listitem><para>std::vector&lt; <link linkend="__token_8h_1ad8ed01ff3ff33333d8e19db4d2818bb6">DataType</link> &gt; <link linkend="_class_arguments_overload_1ab6a918495a27c781bef999bafb8f5b44">currentDataTypes</link></para>
+</listitem>
+            <listitem><para>std::map&lt; int, std::shared_ptr&lt; <link linkend="_class_arguments">Arguments</link> &gt; &gt; <link linkend="_class_arguments_overload_1a36e0acb2fe2bb4e32f71ff4dcf632648">mapArguments</link></para>
+</listitem>
+            <listitem><para>unsigned int <link linkend="_class_arguments_overload_1ae415f15bad3da58f96988327fdcf0e68">completeIndex</link></para>
+</listitem>
+        </itemizedlist>
+</simplesect>
+<section>
+<title>Detailed Description</title>
+<para>
+Definition at line <link linkend="__token_8h_source_1l00112">112</link> of file <link linkend="__token_8h_source">Token.h</link>.</para>
+</section>
+<section>
+<title>Constructor &amp; Destructor Documentation</title>
+<anchor xml:id="_class_arguments_overload_1aca5482a0169922f217e7c6633b477320"/><section>
+    <title>ArgumentsOverload()</title>
+<indexterm><primary>ArgumentsOverload</primary><secondary>ArgumentsOverload</secondary></indexterm>
+<indexterm><primary>ArgumentsOverload</primary><secondary>ArgumentsOverload</secondary></indexterm>
+<para><computeroutput>ArgumentsOverload::ArgumentsOverload ( )</computeroutput></para><para>
+Definition at line <link linkend="__token_8cpp_source_1l01639">1639</link> of file <link linkend="__token_8cpp_source">Token.cpp</link>.</para>
+</section>
+</section>
+<section>
+<title>Member Function Documentation</title>
+<anchor xml:id="_class_arguments_overload_1a17fba6858e03080178ab2cf098861e5f"/><section>
+    <title>addArgs()</title>
+<indexterm><primary>addArgs</primary><secondary>ArgumentsOverload</secondary></indexterm>
+<indexterm><primary>ArgumentsOverload</primary><secondary>addArgs</secondary></indexterm>
+<para><computeroutput>void ArgumentsOverload::addArgs (<link linkend="_class_arguments">Arguments</link> args, int index)</computeroutput></para><para>
+Definition at line <link linkend="__token_8cpp_source_1l01654">1654</link> of file <link linkend="__token_8cpp_source">Token.cpp</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_arguments_overload_a17fba6858e03080178ab2cf098861e5f_cgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+Here is the caller graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_arguments_overload_a17fba6858e03080178ab2cf098861e5f_icgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_class_arguments_overload_1aaed90f32011643050b1440daed30c168"/><section>
+    <title>approveType()</title>
+<indexterm><primary>approveType</primary><secondary>ArgumentsOverload</secondary></indexterm>
+<indexterm><primary>ArgumentsOverload</primary><secondary>approveType</secondary></indexterm>
+<para><computeroutput>bool ArgumentsOverload::approveType (const <link linkend="__token_8h_1ad8ed01ff3ff33333d8e19db4d2818bb6">DataType</link> &amp; type)</computeroutput></para><para>
+Definition at line <link linkend="__token_8cpp_source_1l01683">1683</link> of file <link linkend="__token_8cpp_source">Token.cpp</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_arguments_overload_aaed90f32011643050b1440daed30c168_cgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+Here is the caller graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_arguments_overload_aaed90f32011643050b1440daed30c168_icgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_class_arguments_overload_1a120a10d2b4285ae672db3cea058b714d"/><section>
+    <title>empty()</title>
+<indexterm><primary>empty</primary><secondary>ArgumentsOverload</secondary></indexterm>
+<indexterm><primary>ArgumentsOverload</primary><secondary>empty</secondary></indexterm>
+<para><computeroutput>bool ArgumentsOverload::empty ( )</computeroutput></para><para>
+Definition at line <link linkend="__token_8cpp_source_1l01728">1728</link> of file <link linkend="__token_8cpp_source">Token.cpp</link>.</para>
+</section>
+<anchor xml:id="_class_arguments_overload_1a8f4306c5b1ec186eb4bd10149f744cb2"/><section>
+    <title>ended()</title>
+<indexterm><primary>ended</primary><secondary>ArgumentsOverload</secondary></indexterm>
+<indexterm><primary>ArgumentsOverload</primary><secondary>ended</secondary></indexterm>
+<para><computeroutput>bool ArgumentsOverload::ended ( )</computeroutput></para><para>
+Definition at line <link linkend="__token_8cpp_source_1l01715">1715</link> of file <link linkend="__token_8cpp_source">Token.cpp</link>.</para>
+</section>
+<anchor xml:id="_class_arguments_overload_1ab7709e65ce6926230400a3ed8b9483ac"/><section>
+    <title>getCompletedArgs()</title>
+<indexterm><primary>getCompletedArgs</primary><secondary>ArgumentsOverload</secondary></indexterm>
+<indexterm><primary>ArgumentsOverload</primary><secondary>getCompletedArgs</secondary></indexterm>
+<para><computeroutput>std::map&lt; int, std::shared_ptr&lt; <link linkend="_class_arguments">Arguments</link> &gt; &gt; ArgumentsOverload::getCompletedArgs ( )</computeroutput></para><para>
+Definition at line <link linkend="__token_8cpp_source_1l01708">1708</link> of file <link linkend="__token_8cpp_source">Token.cpp</link>.</para>
+Here is the caller graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_arguments_overload_ab7709e65ce6926230400a3ed8b9483ac_icgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_class_arguments_overload_1a1620cfd1f2662ca030c5caf9bc5f5777"/><section>
+    <title>getID()</title>
+<indexterm><primary>getID</primary><secondary>ArgumentsOverload</secondary></indexterm>
+<indexterm><primary>ArgumentsOverload</primary><secondary>getID</secondary></indexterm>
+<para><computeroutput>unsigned int ArgumentsOverload::getID ( )</computeroutput></para><para>
+Definition at line <link linkend="__token_8cpp_source_1l01693">1693</link> of file <link linkend="__token_8cpp_source">Token.cpp</link>.</para>
+Here is the caller graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_arguments_overload_a1620cfd1f2662ca030c5caf9bc5f5777_icgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_class_arguments_overload_1a2dfe47467795bfb57a900505d61ed556"/><section>
+    <title>getPossibleDataTypes()</title>
+<indexterm><primary>getPossibleDataTypes</primary><secondary>ArgumentsOverload</secondary></indexterm>
+<indexterm><primary>ArgumentsOverload</primary><secondary>getPossibleDataTypes</secondary></indexterm>
+<para><computeroutput>std::vector&lt; <link linkend="__token_8h_1ad8ed01ff3ff33333d8e19db4d2818bb6">DataType</link> &gt; ArgumentsOverload::getPossibleDataTypes ( )</computeroutput></para><para>
+Definition at line <link linkend="__token_8cpp_source_1l01669">1669</link> of file <link linkend="__token_8cpp_source">Token.cpp</link>.</para>
+</section>
+<anchor xml:id="_class_arguments_overload_1af2ae8a9da94819490744df19ebf5e115"/><section>
+    <title>getValidArguments()</title>
+<indexterm><primary>getValidArguments</primary><secondary>ArgumentsOverload</secondary></indexterm>
+<indexterm><primary>ArgumentsOverload</primary><secondary>getValidArguments</secondary></indexterm>
+<para><computeroutput>std::map&lt; int, std::shared_ptr&lt; <link linkend="_class_arguments">Arguments</link> &gt; &gt; ArgumentsOverload::getValidArguments ( )</computeroutput></para><para>
+Definition at line <link linkend="__token_8cpp_source_1l01703">1703</link> of file <link linkend="__token_8cpp_source">Token.cpp</link>.</para>
+Here is the caller graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_arguments_overload_af2ae8a9da94819490744df19ebf5e115_icgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_class_arguments_overload_1a65ea1970c75fddd5990ac66a1475a63f"/><section>
+    <title>hasCompletedArguments()</title>
+<indexterm><primary>hasCompletedArguments</primary><secondary>ArgumentsOverload</secondary></indexterm>
+<indexterm><primary>ArgumentsOverload</primary><secondary>hasCompletedArguments</secondary></indexterm>
+<para><computeroutput>bool ArgumentsOverload::hasCompletedArguments ( )</computeroutput></para><para>
+Definition at line <link linkend="__token_8cpp_source_1l01603">1603</link> of file <link linkend="__token_8cpp_source">Token.cpp</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_arguments_overload_a65ea1970c75fddd5990ac66a1475a63f_cgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+Here is the caller graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_arguments_overload_a65ea1970c75fddd5990ac66a1475a63f_icgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_class_arguments_overload_1a6869935a40b96521a68ae6ddacb22bac"/><section>
+    <title>hasValidArg()</title>
+<indexterm><primary>hasValidArg</primary><secondary>ArgumentsOverload</secondary></indexterm>
+<indexterm><primary>ArgumentsOverload</primary><secondary>hasValidArg</secondary></indexterm>
+<para><computeroutput>bool ArgumentsOverload::hasValidArg ( )</computeroutput></para><para>
+Definition at line <link linkend="__token_8cpp_source_1l01598">1598</link> of file <link linkend="__token_8cpp_source">Token.cpp</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_arguments_overload_a6869935a40b96521a68ae6ddacb22bac_cgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_class_arguments_overload_1a4fc9b2ef6a2ec9c3f963ddcb44621794"/><section>
+    <title>initTabs()</title>
+<indexterm><primary>initTabs</primary><secondary>ArgumentsOverload</secondary></indexterm>
+<indexterm><primary>ArgumentsOverload</primary><secondary>initTabs</secondary></indexterm>
+<para><computeroutput>void ArgumentsOverload::initTabs ( )</computeroutput></para><para>
+Definition at line <link linkend="__token_8cpp_source_1l01661">1661</link> of file <link linkend="__token_8cpp_source">Token.cpp</link>.</para>
+Here is the caller graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_arguments_overload_a4fc9b2ef6a2ec9c3f963ddcb44621794_icgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_class_arguments_overload_1a1dfc9815d235cec325412121bea6b559"/><section>
+    <title>isPresent()</title>
+<indexterm><primary>isPresent</primary><secondary>ArgumentsOverload</secondary></indexterm>
+<indexterm><primary>ArgumentsOverload</primary><secondary>isPresent</secondary></indexterm>
+<para><computeroutput>bool ArgumentsOverload::isPresent (<link linkend="_class_arguments">Arguments</link> args)</computeroutput></para><para>
+Definition at line <link linkend="__token_8cpp_source_1l01646">1646</link> of file <link linkend="__token_8cpp_source">Token.cpp</link>.</para>
+Here is the caller graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_arguments_overload_a1dfc9815d235cec325412121bea6b559_icgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_class_arguments_overload_1a44c9abfe32ebc098862157d7ddf22b19"/><section>
+    <title>next()</title>
+<indexterm><primary>next</primary><secondary>ArgumentsOverload</secondary></indexterm>
+<indexterm><primary>ArgumentsOverload</primary><secondary>next</secondary></indexterm>
+<para><computeroutput>void ArgumentsOverload::next ( )</computeroutput></para><para>
+Definition at line <link linkend="__token_8cpp_source_1l01678">1678</link> of file <link linkend="__token_8cpp_source">Token.cpp</link>.</para>
+Here is the caller graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_arguments_overload_a44c9abfe32ebc098862157d7ddf22b19_icgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_class_arguments_overload_1ab26f7552e32582556f6c7c6132e355cf"/><section>
+    <title>setCompleteIndex()</title>
+<indexterm><primary>setCompleteIndex</primary><secondary>ArgumentsOverload</secondary></indexterm>
+<indexterm><primary>ArgumentsOverload</primary><secondary>setCompleteIndex</secondary></indexterm>
+<para><computeroutput>void ArgumentsOverload::setCompleteIndex ( )</computeroutput></para><para>
+Definition at line <link linkend="__token_8cpp_source_1l01698">1698</link> of file <link linkend="__token_8cpp_source">Token.cpp</link>.</para>
+Here is the caller graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_arguments_overload_ab26f7552e32582556f6c7c6132e355cf_icgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_class_arguments_overload_1a38609197ba50525af302bc2a35600f30"/><section>
+    <title>size()</title>
+<indexterm><primary>size</primary><secondary>ArgumentsOverload</secondary></indexterm>
+<indexterm><primary>ArgumentsOverload</primary><secondary>size</secondary></indexterm>
+<para><computeroutput>int ArgumentsOverload::size ( )</computeroutput></para><para>
+Definition at line <link linkend="__token_8cpp_source_1l01723">1723</link> of file <link linkend="__token_8cpp_source">Token.cpp</link>.</para>
+</section>
+<anchor xml:id="_class_arguments_overload_1a6b65e84a1deed85e8403721df4358b9e"/><section>
+    <title>updateCompletedArguments()</title>
+<indexterm><primary>updateCompletedArguments</primary><secondary>ArgumentsOverload</secondary></indexterm>
+<indexterm><primary>ArgumentsOverload</primary><secondary>updateCompletedArguments</secondary></indexterm>
+<para><computeroutput>void ArgumentsOverload::updateCompletedArguments ( )</computeroutput></para><para>
+Definition at line <link linkend="__token_8cpp_source_1l01608">1608</link> of file <link linkend="__token_8cpp_source">Token.cpp</link>.</para>
+Here is the caller graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_arguments_overload_a6b65e84a1deed85e8403721df4358b9e_icgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_class_arguments_overload_1a0316dfe033593e31fe4f754e9fc2ea3a"/><section>
+    <title>updateTabs()</title>
+<indexterm><primary>updateTabs</primary><secondary>ArgumentsOverload</secondary></indexterm>
+<indexterm><primary>ArgumentsOverload</primary><secondary>updateTabs</secondary></indexterm>
+<para><computeroutput>void ArgumentsOverload::updateTabs ( )</computeroutput></para><para>
+Definition at line <link linkend="__token_8cpp_source_1l01633">1633</link> of file <link linkend="__token_8cpp_source">Token.cpp</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_arguments_overload_a0316dfe033593e31fe4f754e9fc2ea3a_cgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+Here is the caller graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_arguments_overload_a0316dfe033593e31fe4f754e9fc2ea3a_icgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_class_arguments_overload_1adf2f990572f8ba98d4f45fec3181bca1"/><section>
+    <title>updateValidArguments()</title>
+<indexterm><primary>updateValidArguments</primary><secondary>ArgumentsOverload</secondary></indexterm>
+<indexterm><primary>ArgumentsOverload</primary><secondary>updateValidArguments</secondary></indexterm>
+<para><computeroutput>void ArgumentsOverload::updateValidArguments ( )</computeroutput></para><para>
+Definition at line <link linkend="__token_8cpp_source_1l01622">1622</link> of file <link linkend="__token_8cpp_source">Token.cpp</link>.</para>
+Here is the caller graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_arguments_overload_adf2f990572f8ba98d4f45fec3181bca1_icgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+</section>
+<section>
+<title>Member Data Documentation</title>
+<anchor xml:id="_class_arguments_overload_1ad8da4644bf5c7597ec73958b67324593"/><section>
+    <title>completedArguments</title>
+<indexterm><primary>completedArguments</primary><secondary>ArgumentsOverload</secondary></indexterm>
+<indexterm><primary>ArgumentsOverload</primary><secondary>completedArguments</secondary></indexterm>
+<para><computeroutput>std::map&lt;int, std::shared_ptr&lt;<link linkend="_class_arguments">Arguments</link>&gt; &gt; ArgumentsOverload::completedArguments<computeroutput>[protected]</computeroutput></computeroutput></para><para>
+Definition at line <link linkend="__token_8h_source_1l00135">135</link> of file <link linkend="__token_8h_source">Token.h</link>.</para>
+</section>
+<anchor xml:id="_class_arguments_overload_1ae415f15bad3da58f96988327fdcf0e68"/><section>
+    <title>completeIndex</title>
+<indexterm><primary>completeIndex</primary><secondary>ArgumentsOverload</secondary></indexterm>
+<indexterm><primary>ArgumentsOverload</primary><secondary>completeIndex</secondary></indexterm>
+<para><computeroutput>unsigned int ArgumentsOverload::completeIndex<computeroutput>[protected]</computeroutput></computeroutput></para><para>
+Definition at line <link linkend="__token_8h_source_1l00138">138</link> of file <link linkend="__token_8h_source">Token.h</link>.</para>
+</section>
+<anchor xml:id="_class_arguments_overload_1ab6a918495a27c781bef999bafb8f5b44"/><section>
+    <title>currentDataTypes</title>
+<indexterm><primary>currentDataTypes</primary><secondary>ArgumentsOverload</secondary></indexterm>
+<indexterm><primary>ArgumentsOverload</primary><secondary>currentDataTypes</secondary></indexterm>
+<para><computeroutput>std::vector&lt;<link linkend="__token_8h_1ad8ed01ff3ff33333d8e19db4d2818bb6">DataType</link>&gt; ArgumentsOverload::currentDataTypes<computeroutput>[protected]</computeroutput></computeroutput></para><para>
+Definition at line <link linkend="__token_8h_source_1l00136">136</link> of file <link linkend="__token_8h_source">Token.h</link>.</para>
+</section>
+<anchor xml:id="_class_arguments_overload_1a36e0acb2fe2bb4e32f71ff4dcf632648"/><section>
+    <title>mapArguments</title>
+<indexterm><primary>mapArguments</primary><secondary>ArgumentsOverload</secondary></indexterm>
+<indexterm><primary>ArgumentsOverload</primary><secondary>mapArguments</secondary></indexterm>
+<para><computeroutput>std::map&lt;int, std::shared_ptr&lt;<link linkend="_class_arguments">Arguments</link>&gt; &gt; ArgumentsOverload::mapArguments<computeroutput>[protected]</computeroutput></computeroutput></para><para>
+Definition at line <link linkend="__token_8h_source_1l00137">137</link> of file <link linkend="__token_8h_source">Token.h</link>.</para>
+</section>
+<anchor xml:id="_class_arguments_overload_1aaedae5a04d3fb0f4742a5243b18c4999"/><section>
+    <title>validArguments</title>
+<indexterm><primary>validArguments</primary><secondary>ArgumentsOverload</secondary></indexterm>
+<indexterm><primary>ArgumentsOverload</primary><secondary>validArguments</secondary></indexterm>
+<para><computeroutput>std::map&lt;int, std::shared_ptr&lt;<link linkend="_class_arguments">Arguments</link>&gt; &gt; ArgumentsOverload::validArguments<computeroutput>[protected]</computeroutput></computeroutput></para><para>
+Definition at line <link linkend="__token_8h_source_1l00134">134</link> of file <link linkend="__token_8h_source">Token.h</link>.</para>
+</section>
+<para>
+The documentation for this class was generated from the following files:</para>
+src/<link linkend="__token_8h">Token.h</link>src/<link linkend="__token_8cpp">Token.cpp</link></section>
+</section>

@@ -7,5 +7,7 @@ var searchData=
   ['andtag_4',['AndTag',['../class_and_tag.html',1,'']]],
   ['andtoken_5',['AndToken',['../class_and_token.html',1,'']]],
   ['arena_6',['Arena',['../class_arena.html',1,'']]],
-  ['assistant_7',['Assistant',['../class_assistant.html',1,'']]]
+  ['arguments_7',['Arguments',['../class_arguments.html',1,'']]],
+  ['argumentsoverload_8',['ArgumentsOverload',['../class_arguments_overload.html',1,'']]],
+  ['assistant_9',['Assistant',['../class_assistant.html',1,'']]]
 ];

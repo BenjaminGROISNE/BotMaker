@@ -1,7 +1,7 @@
 var searchData=
 [
   ['w_0',['W',['../_units_8h.html#a224b9163917ac32fc95a60d8c1eec3aaab722ceeb601c72cd78fbd35f3581fdf7',1,'Units.h']]],
-  ['wait_1',['WAIT',['../_interpretor_8h.html#acbd1e63c605cbb3dbe67c7411841b46cad5cc6a0064b5c25ba37826aa3fda910c',1,'Interpretor.h']]],
+  ['wait_1',['WAIT',['../_token_8h.html#acbd1e63c605cbb3dbe67c7411841b46cad5cc6a0064b5c25ba37826aa3fda910c',1,'Token.h']]],
   ['wait_2',['wait',['../class_interactions.html#abd5b5d8a44970e1333e3611e302f166c',1,'Interactions']]],
   ['waitbootdevice_3',['waitBootDevice',['../class_bot_config.html#a2a28f19b68e5d8a4b8fa52f9d4f2fbbe',1,'BotConfig']]],
   ['waitfordevice_4',['waitForDevice',['../fadb_8cpp.html#a8a395fe7bffcb7ecdfa451b5b7d8a764',1,'waitForDevice(const std::string adbId):&#160;fadb.cpp'],['../fadb_8h.html#a9db0b8f0962c92eb36d47fbadc76127c',1,'waitForDevice(const std::string adbId=&quot;&quot;):&#160;fadb.cpp']]],
@@ -21,7 +21,7 @@ var searchData=
   ['weeklyevent_18',['WeeklyEvent',['../paths_8cpp.html#a6f03497708b1e04167b9cae65f3bbafd',1,'WeeklyEvent:&#160;paths.cpp'],['../paths_8h.html#a6f03497708b1e04167b9cae65f3bbafd',1,'WeeklyEvent:&#160;paths.cpp']]],
   ['weeklyevent_19',['weeklyevent',['../paths_8cpp.html#a372b4722f6757f45db2c7258d834482f',1,'weeklyevent:&#160;paths.cpp'],['../paths_8h.html#a372b4722f6757f45db2c7258d834482f',1,'weeklyevent:&#160;paths.cpp']]],
   ['weeklypack_20',['weeklypack',['../paths_8cpp.html#aa8f758a4dc6c5c02eacd425cd05fc87b',1,'weeklypack:&#160;paths.cpp'],['../paths_8h.html#aa8f758a4dc6c5c02eacd425cd05fc87b',1,'weeklypack:&#160;paths.cpp']]],
-  ['whitespace_21',['WHITESPACE',['../_interpretor_8h.html#acbd1e63c605cbb3dbe67c7411841b46ca52f1e315372b38db1b8f4e3666c4f721',1,'Interpretor.h']]],
+  ['whitespace_21',['WHITESPACE',['../_token_8h.html#acbd1e63c605cbb3dbe67c7411841b46ca52f1e315372b38db1b8f4e3666c4f721',1,'Token.h']]],
   ['width_22',['width',['../struct_element.html#a74179c56b3b79fa82bee05f7a9993060',1,'Element::width'],['../struct_line.html#a81e4c001fe6ef45172bd6b6eb9a23df4',1,'Line::width'],['../class_instance.html#ae9cb37b80e1b2586ea1136552f5471c7',1,'Instance::width'],['../struct_zone.html#a0cac8e2fef885e8c3cea77c8fe31f126',1,'Zone::width'],['../struct_template.html#ab59f2a046fc791a75b0aba9b2ff9707d',1,'Template::width']]],
   ['window_23',['window',['../classfsfml.html#a290647b737e9c2952f20f2772ee8abe8',1,'fsfml']]],
   ['windowheight_24',['windowHeight',['../classfsfml.html#a95eae1061bc6c6264e760245a0a947d6',1,'fsfml']]],

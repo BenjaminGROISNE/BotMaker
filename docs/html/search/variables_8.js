@@ -18,12 +18,10 @@ var searchData=
   ['instancepath_15',['instancePath',['../class_bluestacks_instance.html#a1dcc0c6ec94fbe1a73689d76e12ad8d7',1,'BluestacksInstance']]],
   ['inte_16',['inte',['../class_activities.html#ab7e97671a57608531aeefec046ab9f86',1,'Activities']]],
   ['integer_17',['integer',['../struct_number.html#a81cc49933167da9c6fd34f4db4a7e859',1,'Number']]],
-  ['integertoken_18',['integerToken',['../class_wait_token.html#aa4d5a469d180186cc08223eb42fa7a40',1,'WaitToken']]],
-  ['inttag_19',['intTag',['../class_int_tag.html#a456098bb5fd8acef2f27441c262a8887',1,'IntTag']]],
-  ['inttoken_20',['intToken',['../class_integer_token.html#ae2125154d69dda08817a461786e8b9c6',1,'IntegerToken']]],
-  ['invitebanquet_21',['invitebanquet',['../paths_8cpp.html#a61505f135a5bfbd8684853aa52c7e7e1',1,'invitebanquet:&#160;paths.cpp'],['../paths_8h.html#a61505f135a5bfbd8684853aa52c7e7e1',1,'invitebanquet:&#160;paths.cpp']]],
-  ['ishovering_22',['isHovering',['../class_tag_panel.html#ab9e4fd9beea1943bb1fb664bf4b0f876',1,'TagPanel']]],
-  ['isinserting_23',['isInserting',['../class_tag_panel.html#a57f33df8ee51553bbb6a1f4b4f727d82',1,'TagPanel']]],
-  ['isinstalled_24',['isInstalled',['../class_emulator.html#ac9479705b6bbc1003055bc1e7786989f',1,'Emulator']]],
-  ['isvisible_25',['isVisible',['../struct_element.html#a07e1e91123c32209a98fc7530e55a541',1,'Element']]]
+  ['inttag_18',['intTag',['../class_int_tag.html#a456098bb5fd8acef2f27441c262a8887',1,'IntTag']]],
+  ['invitebanquet_19',['invitebanquet',['../paths_8cpp.html#a61505f135a5bfbd8684853aa52c7e7e1',1,'invitebanquet:&#160;paths.cpp'],['../paths_8h.html#a61505f135a5bfbd8684853aa52c7e7e1',1,'invitebanquet:&#160;paths.cpp']]],
+  ['ishovering_20',['isHovering',['../class_tag_panel.html#ab9e4fd9beea1943bb1fb664bf4b0f876',1,'TagPanel']]],
+  ['isinserting_21',['isInserting',['../class_tag_panel.html#a57f33df8ee51553bbb6a1f4b4f727d82',1,'TagPanel']]],
+  ['isinstalled_22',['isInstalled',['../class_emulator.html#ac9479705b6bbc1003055bc1e7786989f',1,'Emulator']]],
+  ['isvisible_23',['isVisible',['../struct_element.html#a07e1e91123c32209a98fc7530e55a541',1,'Element']]]
 ];

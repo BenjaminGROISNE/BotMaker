@@ -163,7 +163,7 @@ Here is the call graph for this function:<para>
 <indexterm><primary>fadb.h</primary><secondary>connectLocalhost</secondary></indexterm>
 <para><computeroutput>void connectLocalhost (const std::string adbId = <computeroutput>&quot;&quot;</computeroutput>
 )</computeroutput></para><para>
-Definition at line <link linkend="_fadb_8cpp_source_1l00113">113</link> of file <link linkend="_fadb_8cpp_source">fadb.cpp</link>.</para>
+Definition at line <link linkend="_fadb_8cpp_source_1l00114">114</link> of file <link linkend="_fadb_8cpp_source">fadb.cpp</link>.</para>
 Here is the call graph for this function:<para>
     <informalfigure>
         <mediaobject>
@@ -180,7 +180,7 @@ Here is the call graph for this function:<para>
 <indexterm><primary>fadb.h</primary><secondary>currentFocus</secondary></indexterm>
 <para><computeroutput>std::string currentFocus (const std::string adbId = <computeroutput>&quot;&quot;</computeroutput>
 )</computeroutput></para><para>
-Definition at line <link linkend="_fadb_8cpp_source_1l00166">166</link> of file <link linkend="_fadb_8cpp_source">fadb.cpp</link>.</para>
+Definition at line <link linkend="_fadb_8cpp_source_1l00167">167</link> of file <link linkend="_fadb_8cpp_source">fadb.cpp</link>.</para>
 Here is the call graph for this function:<para>
     <informalfigure>
         <mediaobject>
@@ -231,7 +231,7 @@ Here is the caller graph for this function:<para>
 <indexterm><primary>fadb.h</primary><secondary>disconnectLocalhost</secondary></indexterm>
 <para><computeroutput>void disconnectLocalhost (const std::string adbId = <computeroutput>&quot;&quot;</computeroutput>
 )</computeroutput></para><para>
-Definition at line <link linkend="_fadb_8cpp_source_1l00119">119</link> of file <link linkend="_fadb_8cpp_source">fadb.cpp</link>.</para>
+Definition at line <link linkend="_fadb_8cpp_source_1l00120">120</link> of file <link linkend="_fadb_8cpp_source">fadb.cpp</link>.</para>
 Here is the call graph for this function:<para>
     <informalfigure>
         <mediaobject>
@@ -265,7 +265,7 @@ Here is the call graph for this function:<para>
 <indexterm><primary>fadb.h</primary><secondary>getMultPid</secondary></indexterm>
 <para><computeroutput>std::vector&lt; int &gt; getMultPid (const std::string &amp; process, const std::string adbId = <computeroutput>&quot;&quot;</computeroutput>
 )</computeroutput></para><para>
-Definition at line <link linkend="_fadb_8cpp_source_1l00144">144</link> of file <link linkend="_fadb_8cpp_source">fadb.cpp</link>.</para>
+Definition at line <link linkend="_fadb_8cpp_source_1l00145">145</link> of file <link linkend="_fadb_8cpp_source">fadb.cpp</link>.</para>
 Here is the call graph for this function:<para>
     <informalfigure>
         <mediaobject>
@@ -291,7 +291,7 @@ Here is the caller graph for this function:<para>
 <indexterm><primary>fadb.h</primary><secondary>getPid</secondary></indexterm>
 <para><computeroutput>int getPid (const std::string &amp; processn, const std::string adbId = <computeroutput>&quot;&quot;</computeroutput>
 )</computeroutput></para><para>
-Definition at line <link linkend="_fadb_8cpp_source_1l00136">136</link> of file <link linkend="_fadb_8cpp_source">fadb.cpp</link>.</para>
+Definition at line <link linkend="_fadb_8cpp_source_1l00137">137</link> of file <link linkend="_fadb_8cpp_source">fadb.cpp</link>.</para>
 Here is the call graph for this function:<para>
     <informalfigure>
         <mediaobject>
@@ -385,7 +385,7 @@ Here is the caller graph for this function:<para>
 <indexterm><primary>killAdb</primary><secondary>fadb.h</secondary></indexterm>
 <indexterm><primary>fadb.h</primary><secondary>killAdb</secondary></indexterm>
 <para><computeroutput>void killAdb ( )</computeroutput></para><para>
-Definition at line <link linkend="_fadb_8cpp_source_1l00132">132</link> of file <link linkend="_fadb_8cpp_source">fadb.cpp</link>.</para>
+Definition at line <link linkend="_fadb_8cpp_source_1l00133">133</link> of file <link linkend="_fadb_8cpp_source">fadb.cpp</link>.</para>
 Here is the call graph for this function:<para>
     <informalfigure>
         <mediaobject>
@@ -402,7 +402,7 @@ Here is the call graph for this function:<para>
 <indexterm><primary>fadb.h</primary><secondary>killLogcat</secondary></indexterm>
 <para><computeroutput>void killLogcat (const std::string adbId = <computeroutput>&quot;&quot;</computeroutput>
 )</computeroutput></para><para>
-Definition at line <link linkend="_fadb_8cpp_source_1l00177">177</link> of file <link linkend="_fadb_8cpp_source">fadb.cpp</link>.</para>
+Definition at line <link linkend="_fadb_8cpp_source_1l00178">178</link> of file <link linkend="_fadb_8cpp_source">fadb.cpp</link>.</para>
 Here is the call graph for this function:<para>
     <informalfigure>
         <mediaobject>
@@ -419,7 +419,7 @@ Here is the call graph for this function:<para>
 <indexterm><primary>fadb.h</primary><secondary>killPid</secondary></indexterm>
 <para><computeroutput>void killPid (int pid, const std::string adbId = <computeroutput>&quot;&quot;</computeroutput>
 )</computeroutput></para><para>
-Definition at line <link linkend="_fadb_8cpp_source_1l00172">172</link> of file <link linkend="_fadb_8cpp_source">fadb.cpp</link>.</para>
+Definition at line <link linkend="_fadb_8cpp_source_1l00173">173</link> of file <link linkend="_fadb_8cpp_source">fadb.cpp</link>.</para>
 Here is the call graph for this function:<para>
     <informalfigure>
         <mediaobject>
@@ -471,7 +471,7 @@ Here is the caller graph for this function:<para>
 <indexterm><primary>fadb.h</primary><secondary>onPackage</secondary></indexterm>
 <para><computeroutput>bool onPackage (std::string package, const std::string adbId = <computeroutput>&quot;&quot;</computeroutput>
 )</computeroutput></para><para>
-Definition at line <link linkend="_fadb_8cpp_source_1l00195">195</link> of file <link linkend="_fadb_8cpp_source">fadb.cpp</link>.</para>
+Definition at line <link linkend="_fadb_8cpp_source_1l00196">196</link> of file <link linkend="_fadb_8cpp_source">fadb.cpp</link>.</para>
 Here is the call graph for this function:<para>
     <informalfigure>
         <mediaobject>
@@ -497,7 +497,7 @@ Here is the caller graph for this function:<para>
 <indexterm><primary>fadb.h</primary><secondary>packageRunning</secondary></indexterm>
 <para><computeroutput>bool packageRunning (std::string package, const std::string adbId = <computeroutput>&quot;&quot;</computeroutput>
 )</computeroutput></para><para>
-Definition at line <link linkend="_fadb_8cpp_source_1l00187">187</link> of file <link linkend="_fadb_8cpp_source">fadb.cpp</link>.</para>
+Definition at line <link linkend="_fadb_8cpp_source_1l00188">188</link> of file <link linkend="_fadb_8cpp_source">fadb.cpp</link>.</para>
 Here is the call graph for this function:<para>
     <informalfigure>
         <mediaobject>
@@ -539,7 +539,7 @@ Here is the caller graph for this function:<para>
 <indexterm><primary>reconnect</primary><secondary>fadb.h</secondary></indexterm>
 <indexterm><primary>fadb.h</primary><secondary>reconnect</secondary></indexterm>
 <para><computeroutput>void reconnect ( )</computeroutput></para><para>
-Definition at line <link linkend="_fadb_8cpp_source_1l00103">103</link> of file <link linkend="_fadb_8cpp_source">fadb.cpp</link>.</para>
+Definition at line <link linkend="_fadb_8cpp_source_1l00104">104</link> of file <link linkend="_fadb_8cpp_source">fadb.cpp</link>.</para>
 Here is the call graph for this function:<para>
     <informalfigure>
         <mediaobject>
@@ -668,7 +668,7 @@ Here is the caller graph for this function:<para>
 <indexterm><primary>fadb.h</primary><secondary>setResolution</secondary></indexterm>
 <para><computeroutput>void setResolution (int x, int y, int dpi, const std::string adbId = <computeroutput>&quot;&quot;</computeroutput>
 )</computeroutput></para><para>
-Definition at line <link linkend="_fadb_8cpp_source_1l00123">123</link> of file <link linkend="_fadb_8cpp_source">fadb.cpp</link>.</para>
+Definition at line <link linkend="_fadb_8cpp_source_1l00124">124</link> of file <link linkend="_fadb_8cpp_source">fadb.cpp</link>.</para>
 Here is the call graph for this function:<para>
     <informalfigure>
         <mediaobject>
@@ -684,7 +684,7 @@ Here is the call graph for this function:<para>
 <indexterm><primary>startServer</primary><secondary>fadb.h</secondary></indexterm>
 <indexterm><primary>fadb.h</primary><secondary>startServer</secondary></indexterm>
 <para><computeroutput>void startServer ( )</computeroutput></para><para>
-Definition at line <link linkend="_fadb_8cpp_source_1l00108">108</link> of file <link linkend="_fadb_8cpp_source">fadb.cpp</link>.</para>
+Definition at line <link linkend="_fadb_8cpp_source_1l00109">109</link> of file <link linkend="_fadb_8cpp_source">fadb.cpp</link>.</para>
 Here is the call graph for this function:<para>
     <informalfigure>
         <mediaobject>

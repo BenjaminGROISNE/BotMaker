@@ -57,10 +57,10 @@ var searchData=
   ['statictagname_54',['staticTagName',['../class_tag_panel.html#a0decd0f2236551f78024b107a5ed2e5f',1,'TagPanel']]],
   ['statpillmat_55',['statpillmat',['../paths_8cpp.html#ac8bc566056fab732d355b823645e029f',1,'statpillmat:&#160;paths.cpp'],['../paths_8h.html#ac8bc566056fab732d355b823645e029f',1,'statpillmat:&#160;paths.cpp']]],
   ['statspet_56',['statspet',['../paths_8cpp.html#a314d743112eaf32d4305eaef1e4825d3',1,'statspet:&#160;paths.cpp'],['../paths_8h.html#a314d743112eaf32d4305eaef1e4825d3',1,'statspet:&#160;paths.cpp']]],
-  ['stopassistant_57',['stopassistant',['../paths_8cpp.html#a41a87827d0b273bf0161eca39640f7f8',1,'stopassistant:&#160;paths.cpp'],['../paths_8h.html#a41a87827d0b273bf0161eca39640f7f8',1,'stopassistant:&#160;paths.cpp']]],
-  ['string_58',['string',['../class_short_cut.html#aa4b09467a97ff509d9c4e80212143629',1,'ShortCut']]],
-  ['stringtag_59',['stringTag',['../class_string_tag.html#af67011aecf9702cc16299cb5cc834fce',1,'StringTag']]],
-  ['stringtoken_60',['stringToken',['../class_string_token.html#ab768b8533ae582f827befc327bb4387e',1,'StringToken']]],
+  ['stillvalid_57',['stillValid',['../class_arguments.html#ab6cf147a44f3f9677a27fd7ece39aa87',1,'Arguments']]],
+  ['stopassistant_58',['stopassistant',['../paths_8cpp.html#a41a87827d0b273bf0161eca39640f7f8',1,'stopassistant:&#160;paths.cpp'],['../paths_8h.html#a41a87827d0b273bf0161eca39640f7f8',1,'stopassistant:&#160;paths.cpp']]],
+  ['string_59',['string',['../class_short_cut.html#aa4b09467a97ff509d9c4e80212143629',1,'ShortCut']]],
+  ['stringtag_60',['stringTag',['../class_string_tag.html#af67011aecf9702cc16299cb5cc834fce',1,'StringTag']]],
   ['strive_61',['strive',['../paths_8cpp.html#a3db12561332b8d08abec2f6ff8b8b334',1,'strive:&#160;paths.cpp'],['../paths_8h.html#a3db12561332b8d08abec2f6ff8b8b334',1,'strive:&#160;paths.cpp']]],
   ['symbolpill_62',['symbolpill',['../paths_8cpp.html#a007853e182705e5d8b3456a09f6c83f6',1,'symbolpill:&#160;paths.cpp'],['../paths_8h.html#a007853e182705e5d8b3456a09f6c83f6',1,'symbolpill:&#160;paths.cpp']]]
 ];

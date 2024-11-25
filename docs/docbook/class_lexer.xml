@@ -3,7 +3,7 @@
 <title>Lexer Class Reference</title>
 <indexterm><primary>Lexer</primary></indexterm>
 <para>
-<computeroutput>#include &lt;Interpretor.h&gt;</computeroutput>
+<computeroutput>#include &lt;Lexer.h&gt;</computeroutput>
 </para>
 Collaboration diagram for Lexer:<para>
     <informalfigure>
@@ -21,11 +21,29 @@ Collaboration diagram for Lexer:<para>
 </listitem>
             <listitem><para><link linkend="_class_lexer_1a41f107194b3a9ed49a43abdb9fbcad24">Lexer</link> (const std::string &amp;text)</para>
 </listitem>
-            <listitem><para>bool <link linkend="_class_lexer_1a142db843cfdc2ef25cf8e59c7b209861">empty</link> ()</para>
+            <listitem><para>std::shared_ptr&lt; <link linkend="_class_token">Token</link> &gt; <link linkend="_class_lexer_1a6d58c8a031d7f7dd28c3501984b4eab6">getToken</link> (const std::string &amp;text)</para>
 </listitem>
-            <listitem><para>void <link linkend="_class_lexer_1ab0ca8b5adc1af3cdec4855fba11491c1">extractTokens</link> (const std::string &amp;text)</para>
+            <listitem><para>std::shared_ptr&lt; <link linkend="_class_token">Token</link> &gt; <link linkend="_class_lexer_1af2728233573db8a7bbd5b49bed311c5f">getToken</link> (const <link linkend="__token_8h_1acbd1e63c605cbb3dbe67c7411841b46c">TokenVALUE</link> &amp;tValue, const std::string &amp;text)</para>
 </listitem>
-            <listitem><para>std::string <link linkend="_class_lexer_1a5a008a99eb5bc34590b62a99ea9065c3">showAllTokens</link> ()</para>
+            <listitem><para>void <link linkend="_class_lexer_1a38487c80f0fe8c7f35a2a495015945be">extractStringLiteral</link> (std::string &amp;newText, std::string &amp;nextTokenString)</para>
+</listitem>
+            <listitem><para>std::vector&lt; std::shared_ptr&lt; <link linkend="_class_token">Token</link> &gt; &gt; <link linkend="_class_lexer_1acf897fb607a542d5c7c8cd4b0dcb1d18">extractTokens</link> (const std::string &amp;text)</para>
+</listitem>
+            <listitem><para><link linkend="__token_8h_1acbd1e63c605cbb3dbe67c7411841b46c">TokenVALUE</link> <link linkend="_class_lexer_1a142bd017adf2e3df1522e0cce7a3fb0c">getTokenValue</link> (const std::string &amp;text)</para>
+</listitem>
+            <listitem><para>std::string <link linkend="_class_lexer_1a672065ac17bf0b701e71c78917882441">getTokenString</link> (<link linkend="__token_8h_1acbd1e63c605cbb3dbe67c7411841b46c">TokenVALUE</link> value)</para>
+</listitem>
+            <listitem><para>std::string <link linkend="_class_lexer_1aeea59528280fc24aaf8a24d0182df826">getNextPunctuationToken</link> (const std::string &amp;str)</para>
+</listitem>
+            <listitem><para>std::string <link linkend="_class_lexer_1a243227232c190f441498270efa40ccb8">getNextTokenString</link> (const std::string &amp;text)</para>
+</listitem>
+            <listitem><para>void <link linkend="_class_lexer_1a6d27c5679af8fff9df7b0885ecceb9ac">skipTokenString</link> (std::string &amp;text, const std::string tokenText)</para>
+</listitem>
+            <listitem><para>void <link linkend="_class_lexer_1acdefc721d12021beb50dab91162e46fa">skipStringLiteral</link> (std::string &amp;text, const std::string tokenText)</para>
+</listitem>
+            <listitem><para><link linkend="__token_8h_1acbd1e63c605cbb3dbe67c7411841b46c">TokenVALUE</link> <link linkend="_class_lexer_1a67add67d465e634d6820b6dcc711708a">getNextTokenValue</link> (const std::string &amp;text)</para>
+</listitem>
+            <listitem><para>std::string <link linkend="_class_lexer_1a700cefa90ab90db3e3db38cc6334abba">showAllTokens</link> (std::vector&lt; std::shared_ptr&lt; <link linkend="_class_token">Token</link> &gt; &gt;)</para>
 </listitem>
         </itemizedlist>
 </simplesect>
@@ -38,16 +56,19 @@ Collaboration diagram for Lexer:<para>
 </listitem>
             <listitem><para>std::string <link linkend="_class_lexer_1a5aaf781571efdb75f4f689ec4c219fc0">updatedContent</link></para>
 </listitem>
+        </itemizedlist>
+</simplesect>
+<simplesect>
+    <title>Protected Attributes    </title>
+        <itemizedlist>
             <listitem><para>std::vector&lt; std::shared_ptr&lt; <link linkend="_class_token">Token</link> &gt; &gt; <link linkend="_class_lexer_1a5147254cee0022d532a50e683a3fa688">listTokens</link></para>
-</listitem>
-            <listitem><para><link linkend="_struct_user_variables">UserVariables</link> * <link linkend="_class_lexer_1a3fea0d83414fdefc952e215be92e756e">uv</link></para>
 </listitem>
         </itemizedlist>
 </simplesect>
 <section>
 <title>Detailed Description</title>
 <para>
-Definition at line <link linkend="__interpretor_8h_source_1l00539">539</link> of file <link linkend="__interpretor_8h_source">Interpretor.h</link>.</para>
+Definition at line <link linkend="__lexer_8h_source_1l00010">10</link> of file <link linkend="__lexer_8h_source">Lexer.h</link>.</para>
 </section>
 <section>
 <title>Constructor &amp; Destructor Documentation</title>
@@ -56,36 +77,29 @@ Definition at line <link linkend="__interpretor_8h_source_1l00539">539</link> of
 <indexterm><primary>Lexer</primary><secondary>Lexer</secondary></indexterm>
 <indexterm><primary>Lexer</primary><secondary>Lexer</secondary></indexterm>
 <para><computeroutput>Lexer::Lexer ( )</computeroutput></para><para>
-Definition at line <link linkend="__interpretor_8cpp_source_1l00528">528</link> of file <link linkend="__interpretor_8cpp_source">Interpretor.cpp</link>.</para>
+Definition at line <link linkend="__lexer_8cpp_source_1l00317">317</link> of file <link linkend="__lexer_8cpp_source">Lexer.cpp</link>.</para>
 </section>
 <anchor xml:id="_class_lexer_1a41f107194b3a9ed49a43abdb9fbcad24"/><section>
     <title>Lexer()<computeroutput>[2/2]</computeroutput></title>
 <indexterm><primary>Lexer</primary><secondary>Lexer</secondary></indexterm>
 <indexterm><primary>Lexer</primary><secondary>Lexer</secondary></indexterm>
 <para><computeroutput>Lexer::Lexer (const std::string &amp; text)</computeroutput></para><para>
-Definition at line <link linkend="__interpretor_8cpp_source_1l00532">532</link> of file <link linkend="__interpretor_8cpp_source">Interpretor.cpp</link>.</para>
+Definition at line <link linkend="__lexer_8cpp_source_1l00322">322</link> of file <link linkend="__lexer_8cpp_source">Lexer.cpp</link>.</para>
 </section>
 </section>
 <section>
 <title>Member Function Documentation</title>
-<anchor xml:id="_class_lexer_1a142db843cfdc2ef25cf8e59c7b209861"/><section>
-    <title>empty()</title>
-<indexterm><primary>empty</primary><secondary>Lexer</secondary></indexterm>
-<indexterm><primary>Lexer</primary><secondary>empty</secondary></indexterm>
-<para><computeroutput>bool Lexer::empty ( )</computeroutput></para><para>
-Definition at line <link linkend="__interpretor_8cpp_source_1l00543">543</link> of file <link linkend="__interpretor_8cpp_source">Interpretor.cpp</link>.</para>
-</section>
-<anchor xml:id="_class_lexer_1ab0ca8b5adc1af3cdec4855fba11491c1"/><section>
-    <title>extractTokens()</title>
-<indexterm><primary>extractTokens</primary><secondary>Lexer</secondary></indexterm>
-<indexterm><primary>Lexer</primary><secondary>extractTokens</secondary></indexterm>
-<para><computeroutput>void Lexer::extractTokens (const std::string &amp; text)</computeroutput></para><para>
-Definition at line <link linkend="__interpretor_8cpp_source_1l00203">203</link> of file <link linkend="__interpretor_8cpp_source">Interpretor.cpp</link>.</para>
+<anchor xml:id="_class_lexer_1a38487c80f0fe8c7f35a2a495015945be"/><section>
+    <title>extractStringLiteral()</title>
+<indexterm><primary>extractStringLiteral</primary><secondary>Lexer</secondary></indexterm>
+<indexterm><primary>Lexer</primary><secondary>extractStringLiteral</secondary></indexterm>
+<para><computeroutput>void Lexer::extractStringLiteral (std::string &amp; newText, std::string &amp; nextTokenString)</computeroutput></para><para>
+Definition at line <link linkend="__lexer_8cpp_source_1l00389">389</link> of file <link linkend="__lexer_8cpp_source">Lexer.cpp</link>.</para>
 Here is the call graph for this function:<para>
     <informalfigure>
         <mediaobject>
             <imageobject>
-                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_lexer_ab0ca8b5adc1af3cdec4855fba11491c1_cgraph.svg"></imagedata>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_lexer_a38487c80f0fe8c7f35a2a495015945be_cgraph.svg"></imagedata>
             </imageobject>
         </mediaobject>
     </informalfigure>
@@ -94,23 +108,201 @@ Here is the caller graph for this function:<para>
     <informalfigure>
         <mediaobject>
             <imageobject>
-                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_lexer_ab0ca8b5adc1af3cdec4855fba11491c1_icgraph.svg"></imagedata>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_lexer_a38487c80f0fe8c7f35a2a495015945be_icgraph.svg"></imagedata>
             </imageobject>
         </mediaobject>
     </informalfigure>
 </para>
 </section>
-<anchor xml:id="_class_lexer_1a5a008a99eb5bc34590b62a99ea9065c3"/><section>
-    <title>showAllTokens()</title>
-<indexterm><primary>showAllTokens</primary><secondary>Lexer</secondary></indexterm>
-<indexterm><primary>Lexer</primary><secondary>showAllTokens</secondary></indexterm>
-<para><computeroutput>std::string Lexer::showAllTokens ( )</computeroutput></para><para>
-Definition at line <link linkend="__interpretor_8cpp_source_1l00553">553</link> of file <link linkend="__interpretor_8cpp_source">Interpretor.cpp</link>.</para>
+<anchor xml:id="_class_lexer_1acf897fb607a542d5c7c8cd4b0dcb1d18"/><section>
+    <title>extractTokens()</title>
+<indexterm><primary>extractTokens</primary><secondary>Lexer</secondary></indexterm>
+<indexterm><primary>Lexer</primary><secondary>extractTokens</secondary></indexterm>
+<para><computeroutput>std::vector&lt; std::shared_ptr&lt; <link linkend="_class_token">Token</link> &gt; &gt; Lexer::extractTokens (const std::string &amp; text)</computeroutput></para><para>
+Definition at line <link linkend="__lexer_8cpp_source_1l00397">397</link> of file <link linkend="__lexer_8cpp_source">Lexer.cpp</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_lexer_acf897fb607a542d5c7c8cd4b0dcb1d18_cgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
 Here is the caller graph for this function:<para>
     <informalfigure>
         <mediaobject>
             <imageobject>
-                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_lexer_a5a008a99eb5bc34590b62a99ea9065c3_icgraph.svg"></imagedata>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_lexer_acf897fb607a542d5c7c8cd4b0dcb1d18_icgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_class_lexer_1aeea59528280fc24aaf8a24d0182df826"/><section>
+    <title>getNextPunctuationToken()</title>
+<indexterm><primary>getNextPunctuationToken</primary><secondary>Lexer</secondary></indexterm>
+<indexterm><primary>Lexer</primary><secondary>getNextPunctuationToken</secondary></indexterm>
+<para><computeroutput>std::string Lexer::getNextPunctuationToken (const std::string &amp; str)</computeroutput></para><para>
+Definition at line <link linkend="__lexer_8cpp_source_1l00343">343</link> of file <link linkend="__lexer_8cpp_source">Lexer.cpp</link>.</para>
+Here is the caller graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_lexer_aeea59528280fc24aaf8a24d0182df826_icgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_class_lexer_1a243227232c190f441498270efa40ccb8"/><section>
+    <title>getNextTokenString()</title>
+<indexterm><primary>getNextTokenString</primary><secondary>Lexer</secondary></indexterm>
+<indexterm><primary>Lexer</primary><secondary>getNextTokenString</secondary></indexterm>
+<para><computeroutput>std::string Lexer::getNextTokenString (const std::string &amp; text)</computeroutput></para><para>
+Definition at line <link linkend="__lexer_8cpp_source_1l00360">360</link> of file <link linkend="__lexer_8cpp_source">Lexer.cpp</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_lexer_a243227232c190f441498270efa40ccb8_cgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+Here is the caller graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_lexer_a243227232c190f441498270efa40ccb8_icgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_class_lexer_1a67add67d465e634d6820b6dcc711708a"/><section>
+    <title>getNextTokenValue()</title>
+<indexterm><primary>getNextTokenValue</primary><secondary>Lexer</secondary></indexterm>
+<indexterm><primary>Lexer</primary><secondary>getNextTokenValue</secondary></indexterm>
+<para><computeroutput><link linkend="__token_8h_1acbd1e63c605cbb3dbe67c7411841b46c">TokenVALUE</link> Lexer::getNextTokenValue (const std::string &amp; text)</computeroutput></para><para>
+Definition at line <link linkend="__lexer_8cpp_source_1l00383">383</link> of file <link linkend="__lexer_8cpp_source">Lexer.cpp</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_lexer_a67add67d465e634d6820b6dcc711708a_cgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_class_lexer_1a6d58c8a031d7f7dd28c3501984b4eab6"/><section>
+    <title>getToken()<computeroutput>[1/2]</computeroutput></title>
+<indexterm><primary>getToken</primary><secondary>Lexer</secondary></indexterm>
+<indexterm><primary>Lexer</primary><secondary>getToken</secondary></indexterm>
+<para><computeroutput>std::shared_ptr&lt; <link linkend="_class_token">Token</link> &gt; Lexer::getToken (const std::string &amp; text)</computeroutput></para><para>
+Definition at line <link linkend="__lexer_8cpp_source_1l00231">231</link> of file <link linkend="__lexer_8cpp_source">Lexer.cpp</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_lexer_a6d58c8a031d7f7dd28c3501984b4eab6_cgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+Here is the caller graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_lexer_a6d58c8a031d7f7dd28c3501984b4eab6_icgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_class_lexer_1af2728233573db8a7bbd5b49bed311c5f"/><section>
+    <title>getToken()<computeroutput>[2/2]</computeroutput></title>
+<indexterm><primary>getToken</primary><secondary>Lexer</secondary></indexterm>
+<indexterm><primary>Lexer</primary><secondary>getToken</secondary></indexterm>
+<para><computeroutput>std::shared_ptr&lt; <link linkend="_class_token">Token</link> &gt; Lexer::getToken (const <link linkend="__token_8h_1acbd1e63c605cbb3dbe67c7411841b46c">TokenVALUE</link> &amp; tValue, const std::string &amp; text)</computeroutput></para><para>
+Definition at line <link linkend="__lexer_8cpp_source_1l00234">234</link> of file <link linkend="__lexer_8cpp_source">Lexer.cpp</link>.</para>
+</section>
+<anchor xml:id="_class_lexer_1a672065ac17bf0b701e71c78917882441"/><section>
+    <title>getTokenString()</title>
+<indexterm><primary>getTokenString</primary><secondary>Lexer</secondary></indexterm>
+<indexterm><primary>Lexer</primary><secondary>getTokenString</secondary></indexterm>
+<para><computeroutput>std::string Lexer::getTokenString (<link linkend="__token_8h_1acbd1e63c605cbb3dbe67c7411841b46c">TokenVALUE</link> value)</computeroutput></para><para>
+Definition at line <link linkend="__lexer_8cpp_source_1l00147">147</link> of file <link linkend="__lexer_8cpp_source">Lexer.cpp</link>.</para>
+</section>
+<anchor xml:id="_class_lexer_1a142bd017adf2e3df1522e0cce7a3fb0c"/><section>
+    <title>getTokenValue()</title>
+<indexterm><primary>getTokenValue</primary><secondary>Lexer</secondary></indexterm>
+<indexterm><primary>Lexer</primary><secondary>getTokenValue</secondary></indexterm>
+<para><computeroutput><link linkend="__token_8h_1acbd1e63c605cbb3dbe67c7411841b46c">TokenVALUE</link> Lexer::getTokenValue (const std::string &amp; text)</computeroutput></para><para>
+Definition at line <link linkend="__lexer_8cpp_source_1l00021">21</link> of file <link linkend="__lexer_8cpp_source">Lexer.cpp</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_lexer_a142bd017adf2e3df1522e0cce7a3fb0c_cgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+Here is the caller graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_lexer_a142bd017adf2e3df1522e0cce7a3fb0c_icgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_class_lexer_1a700cefa90ab90db3e3db38cc6334abba"/><section>
+    <title>showAllTokens()</title>
+<indexterm><primary>showAllTokens</primary><secondary>Lexer</secondary></indexterm>
+<indexterm><primary>Lexer</primary><secondary>showAllTokens</secondary></indexterm>
+<para><computeroutput>std::string Lexer::showAllTokens (std::vector&lt; std::shared_ptr&lt; <link linkend="_class_token">Token</link> &gt; &gt; listTokens)</computeroutput></para><para>
+Definition at line <link linkend="__lexer_8cpp_source_1l00329">329</link> of file <link linkend="__lexer_8cpp_source">Lexer.cpp</link>.</para>
+</section>
+<anchor xml:id="_class_lexer_1acdefc721d12021beb50dab91162e46fa"/><section>
+    <title>skipStringLiteral()</title>
+<indexterm><primary>skipStringLiteral</primary><secondary>Lexer</secondary></indexterm>
+<indexterm><primary>Lexer</primary><secondary>skipStringLiteral</secondary></indexterm>
+<para><computeroutput>void Lexer::skipStringLiteral (std::string &amp; text, const std::string tokenText)</computeroutput></para><para>
+Definition at line <link linkend="__lexer_8cpp_source_1l00378">378</link> of file <link linkend="__lexer_8cpp_source">Lexer.cpp</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_lexer_acdefc721d12021beb50dab91162e46fa_cgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_class_lexer_1a6d27c5679af8fff9df7b0885ecceb9ac"/><section>
+    <title>skipTokenString()</title>
+<indexterm><primary>skipTokenString</primary><secondary>Lexer</secondary></indexterm>
+<indexterm><primary>Lexer</primary><secondary>skipTokenString</secondary></indexterm>
+<para><computeroutput>void Lexer::skipTokenString (std::string &amp; text, const std::string tokenText)</computeroutput></para><para>
+Definition at line <link linkend="__lexer_8cpp_source_1l00373">373</link> of file <link linkend="__lexer_8cpp_source">Lexer.cpp</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_lexer_a6d27c5679af8fff9df7b0885ecceb9ac_cgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+Here is the caller graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_lexer_a6d27c5679af8fff9df7b0885ecceb9ac_icgraph.svg"></imagedata>
             </imageobject>
         </mediaobject>
     </informalfigure>
@@ -123,38 +315,31 @@ Here is the caller graph for this function:<para>
     <title>listTokens</title>
 <indexterm><primary>listTokens</primary><secondary>Lexer</secondary></indexterm>
 <indexterm><primary>Lexer</primary><secondary>listTokens</secondary></indexterm>
-<para><computeroutput>std::vector&lt;std::shared_ptr&lt;<link linkend="_class_token">Token</link>&gt; &gt; Lexer::listTokens</computeroutput></para><para>
-Definition at line <link linkend="__interpretor_8h_source_1l00548">548</link> of file <link linkend="__interpretor_8h_source">Interpretor.h</link>.</para>
+<para><computeroutput>std::vector&lt;std::shared_ptr&lt;<link linkend="_class_token">Token</link>&gt; &gt; Lexer::listTokens<computeroutput>[protected]</computeroutput></computeroutput></para><para>
+Definition at line <link linkend="__lexer_8h_source_1l00030">30</link> of file <link linkend="__lexer_8h_source">Lexer.h</link>.</para>
 </section>
 <anchor xml:id="_class_lexer_1a4a8dcaa4abeabbfb67122d79b861d6de"/><section>
     <title>nameToken</title>
 <indexterm><primary>nameToken</primary><secondary>Lexer</secondary></indexterm>
 <indexterm><primary>Lexer</primary><secondary>nameToken</secondary></indexterm>
 <para><computeroutput>std::string Lexer::nameToken</computeroutput></para><para>
-Definition at line <link linkend="__interpretor_8h_source_1l00543">543</link> of file <link linkend="__interpretor_8h_source">Interpretor.h</link>.</para>
+Definition at line <link linkend="__lexer_8h_source_1l00014">14</link> of file <link linkend="__lexer_8h_source">Lexer.h</link>.</para>
 </section>
 <anchor xml:id="_class_lexer_1a8a81c9e13952e5afda794af56ba46455"/><section>
     <title>totalContent</title>
 <indexterm><primary>totalContent</primary><secondary>Lexer</secondary></indexterm>
 <indexterm><primary>Lexer</primary><secondary>totalContent</secondary></indexterm>
 <para><computeroutput>std::string Lexer::totalContent</computeroutput></para><para>
-Definition at line <link linkend="__interpretor_8h_source_1l00544">544</link> of file <link linkend="__interpretor_8h_source">Interpretor.h</link>.</para>
+Definition at line <link linkend="__lexer_8h_source_1l00015">15</link> of file <link linkend="__lexer_8h_source">Lexer.h</link>.</para>
 </section>
 <anchor xml:id="_class_lexer_1a5aaf781571efdb75f4f689ec4c219fc0"/><section>
     <title>updatedContent</title>
 <indexterm><primary>updatedContent</primary><secondary>Lexer</secondary></indexterm>
 <indexterm><primary>Lexer</primary><secondary>updatedContent</secondary></indexterm>
 <para><computeroutput>std::string Lexer::updatedContent</computeroutput></para><para>
-Definition at line <link linkend="__interpretor_8h_source_1l00545">545</link> of file <link linkend="__interpretor_8h_source">Interpretor.h</link>.</para>
-</section>
-<anchor xml:id="_class_lexer_1a3fea0d83414fdefc952e215be92e756e"/><section>
-    <title>uv</title>
-<indexterm><primary>uv</primary><secondary>Lexer</secondary></indexterm>
-<indexterm><primary>Lexer</primary><secondary>uv</secondary></indexterm>
-<para><computeroutput><link linkend="_struct_user_variables">UserVariables</link>* Lexer::uv</computeroutput></para><para>
-Definition at line <link linkend="__interpretor_8h_source_1l00550">550</link> of file <link linkend="__interpretor_8h_source">Interpretor.h</link>.</para>
+Definition at line <link linkend="__lexer_8h_source_1l00016">16</link> of file <link linkend="__lexer_8h_source">Lexer.h</link>.</para>
 </section>
 <para>
 The documentation for this class was generated from the following files:</para>
-src/<link linkend="__interpretor_8h">Interpretor.h</link>src/<link linkend="__interpretor_8cpp">Interpretor.cpp</link></section>
+src/<link linkend="__lexer_8h">Lexer.h</link>src/<link linkend="__lexer_8cpp">Lexer.cpp</link></section>
 </section>

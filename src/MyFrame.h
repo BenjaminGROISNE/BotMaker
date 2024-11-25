@@ -55,7 +55,7 @@ private:
     wxFont mainChoiceFont;
     wxFont subChoiceFont;
     std::shared_ptr<MainTag> mainTag;
-    Interpretor* myInterpretor;
+    Interpretor myInterpretor;
 
     wxPanel* mainPanel;
     wxBoxSizer* mainSizer;

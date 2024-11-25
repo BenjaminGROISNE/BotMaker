@@ -244,8 +244,8 @@ std::string getStringUntil(const std::string& text, const size_t& pos)
 
 std::string getStringStarting(const std::string& text, const size_t& pos)
 {
-    size_t start = 0;
-    if (text.length() > pos)start = pos;
+    size_t start = pos;
+    if (pos>text.length())start = 0;
     return text.substr(start);
 }
 

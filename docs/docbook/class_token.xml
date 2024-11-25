@@ -3,7 +3,7 @@
 <title>Token Class Reference</title>
 <indexterm><primary>Token</primary></indexterm>
 <para>
-<computeroutput>#include &lt;Interpretor.h&gt;</computeroutput>
+<computeroutput>#include &lt;Token.h&gt;</computeroutput>
 </para>
 Inheritance diagram for Token:<para>
     <informalfigure>
@@ -28,30 +28,34 @@ Collaboration diagram for Token:<para>
         <itemizedlist>
             <listitem><para><link linkend="_class_token_1aa3c5868ba4115f3189df6b2ac5b36f39">Token</link> ()</para>
 </listitem>
-            <listitem><para>std::shared_ptr&lt; <link linkend="_class_token_result">TokenResult</link> &gt; <link linkend="_class_token_1af13c7d494e5fe273558cb37286fa7185">updateRes</link> (std::shared_ptr&lt; <link linkend="_class_token_result">TokenResult</link> &gt; <link linkend="_class_token_1a374f334f070a5a07daf0bbde3be02ced">tRes</link>)</para>
+            <listitem><para>virtual <link linkend="__token_8h_1ad8ed01ff3ff33333d8e19db4d2818bb6">DataType</link> <link linkend="_class_token_1ace668259c90b6fd2acc2f61d0e141565">getDataType</link> (<link linkend="_class_token_result">TokenResult</link> &amp;tRes)</para>
 </listitem>
-            <listitem><para>std::shared_ptr&lt; <link linkend="_class_token_result">TokenResult</link> &gt; <link linkend="_class_token_1a4c0f84a84656f0b5e28c4193c3c13ea3">addError</link> (<link linkend="__interpretor_8h_1acbd1e63c605cbb3dbe67c7411841b46c">TokenVALUE</link> value, <link linkend="__interpretor_8h_1ab0df38968e4f03a3f1f6d6df0f31f45a">ErrorType</link> et=<link linkend="__interpretor_8h_1ab0df38968e4f03a3f1f6d6df0f31f45aa10d1208b485425756fcc932229386b02">ErrorType::MISSING</link>)</para>
+            <listitem><para>virtual void <link linkend="_class_token_1abd61b776070d98e2e1b748831a8ae85e">showTokenTree</link> (const int nestedLayer)</para>
 </listitem>
-            <listitem><para>std::shared_ptr&lt; <link linkend="_class_token_result">TokenResult</link> &gt; <link linkend="_class_token_1a97d36ac6f4a4d06cdf931f4240c6472c">addError</link> (const std::shared_ptr&lt; <link linkend="_class_token_result">TokenResult</link> &gt; &amp;tr)</para>
+            <listitem><para><link linkend="__token_8h_1acbd1e63c605cbb3dbe67c7411841b46c">TokenVALUE</link> <link linkend="_class_token_1a0dec1385788e690b5dc30cd99a1ed3c8">getValue</link> ()</para>
 </listitem>
-            <listitem><para>std::shared_ptr&lt; <link linkend="_class_token_result">TokenResult</link> &gt; <link linkend="_class_token_1a342eebc35a823997d3fe2a6c66f9cbe1">addError</link> (<link linkend="__interpretor_8h_1ad8ed01ff3ff33333d8e19db4d2818bb6">DataType</link> type, <link linkend="__interpretor_8h_1ab0df38968e4f03a3f1f6d6df0f31f45a">ErrorType</link> et=<link linkend="__interpretor_8h_1ab0df38968e4f03a3f1f6d6df0f31f45aad5edacc5c1724ff7055e7db625117c71">ErrorType::REPLACED</link>)</para>
+            <listitem><para>bool <link linkend="_class_token_1ade47ed51e2f495f6d847c1bff9fe8db6">addError</link> (<link linkend="_class_token_result">TokenResult</link> &amp;tRes, <link linkend="__token_8h_1acbd1e63c605cbb3dbe67c7411841b46c">TokenVALUE</link> value, <link linkend="__token_8h_1ab0df38968e4f03a3f1f6d6df0f31f45a">ErrorType</link> et=<link linkend="__token_8h_1ab0df38968e4f03a3f1f6d6df0f31f45aa10d1208b485425756fcc932229386b02">ErrorType::MISSING</link>)</para>
 </listitem>
-            <listitem><para>virtual <link linkend="__interpretor_8h_1ad8ed01ff3ff33333d8e19db4d2818bb6">DataType</link> <link linkend="_class_token_1a41ebddd1a5ac42b80e3bd916e1f8e472">getDataType</link> ()</para>
+            <listitem><para>bool <link linkend="_class_token_1a61f4575ae9e05b93b8812ae9cbacc0f0">addError</link> (<link linkend="_class_token_result">TokenResult</link> &amp;tRes, <link linkend="__token_8h_1ad8ed01ff3ff33333d8e19db4d2818bb6">DataType</link> type)</para>
 </listitem>
-            <listitem><para>virtual std::shared_ptr&lt; <link linkend="_class_token_result">TokenResult</link> &gt; <link linkend="_class_token_1ad692018745d72ed2bc87f1f6a8dbf156">addTokens</link> (<link linkend="_class_iterator_list">IteratorList</link>&lt; <link linkend="_class_token">Token</link> &gt; &amp;tl, std::shared_ptr&lt; <link linkend="_class_token_result">TokenResult</link> &gt; <link linkend="_class_token_1a374f334f070a5a07daf0bbde3be02ced">tRes</link>)</para>
+            <listitem><para>std::string <link linkend="_class_token_1a2643198d67a19ce0bd8102b4379d9d12">getTokenText</link> ()</para>
+</listitem>
+            <listitem><para>int <link linkend="_class_token_1a0fe3c8022c8c5f6143c7dd3fba9408fe">getLine</link> ()</para>
+</listitem>
+            <listitem><para>bool <link linkend="_class_token_1ad3fb88977cc7e687450f46e4f9d80a05">hasValue</link> (<link linkend="__token_8h_1acbd1e63c605cbb3dbe67c7411841b46c">TokenVALUE</link> value) const</para>
+</listitem>
+            <listitem><para>virtual bool <link linkend="_class_token_1ad69955a02eaf8f332b8898a1855c7a28">addTokens</link> (<link linkend="_class_iterator_list">IteratorList</link>&lt; <link linkend="_class_token">Token</link> &gt; &amp;tl, <link linkend="_class_token_result">TokenResult</link> &amp;tRes)</para>
 </listitem>
             <listitem><para>virtual std::shared_ptr&lt; <link linkend="_class_tag">Tag</link> &gt; <link linkend="_class_token_1aea759b8376bff558791fdc1f2f70f4fb">execute</link> ()</para>
 </listitem>
         </itemizedlist>
 </simplesect>
 <simplesect>
-    <title>Public Attributes    </title>
+    <title>Protected Attributes    </title>
         <itemizedlist>
             <listitem><para>std::string <link linkend="_class_token_1a8b3faba4c73c28d11fec73758a0302b2">tokenText</link></para>
 </listitem>
-            <listitem><para><link linkend="__interpretor_8h_1acbd1e63c605cbb3dbe67c7411841b46c">TokenVALUE</link> <link linkend="_class_token_1a4c8ce9cf1eecbc7e49650307eea6a862">tValue</link></para>
-</listitem>
-            <listitem><para>std::shared_ptr&lt; <link linkend="_class_token_result">TokenResult</link> &gt; <link linkend="_class_token_1a374f334f070a5a07daf0bbde3be02ced">tRes</link></para>
+            <listitem><para><link linkend="__token_8h_1acbd1e63c605cbb3dbe67c7411841b46c">TokenVALUE</link> <link linkend="_class_token_1a4c8ce9cf1eecbc7e49650307eea6a862">tValue</link></para>
 </listitem>
             <listitem><para>int <link linkend="_class_token_1a4b96c2a31d7c374fd2bd1986794f80dd">line</link></para>
 </listitem>
@@ -60,7 +64,7 @@ Collaboration diagram for Token:<para>
 <section>
 <title>Detailed Description</title>
 <para>
-Definition at line <link linkend="__interpretor_8h_source_1l00152">152</link> of file <link linkend="__interpretor_8h_source">Interpretor.h</link>.</para>
+Definition at line <link linkend="__token_8h_source_1l00217">217</link> of file <link linkend="__token_8h_source">Token.h</link>.</para>
 </section>
 <section>
 <title>Constructor &amp; Destructor Documentation</title>
@@ -69,56 +73,66 @@ Definition at line <link linkend="__interpretor_8h_source_1l00152">152</link> of
 <indexterm><primary>Token</primary><secondary>Token</secondary></indexterm>
 <indexterm><primary>Token</primary><secondary>Token</secondary></indexterm>
 <para><computeroutput>Token::Token ( )</computeroutput></para><para>
-Definition at line <link linkend="__interpretor_8cpp_source_1l01026">1026</link> of file <link linkend="__interpretor_8cpp_source">Interpretor.cpp</link>.</para>
+Definition at line <link linkend="__token_8cpp_source_1l01282">1282</link> of file <link linkend="__token_8cpp_source">Token.cpp</link>.</para>
 </section>
 </section>
 <section>
 <title>Member Function Documentation</title>
-<anchor xml:id="_class_token_1a97d36ac6f4a4d06cdf931f4240c6472c"/><section>
-    <title>addError()<computeroutput>[1/3]</computeroutput></title>
+<anchor xml:id="_class_token_1a61f4575ae9e05b93b8812ae9cbacc0f0"/><section>
+    <title>addError()<computeroutput>[1/2]</computeroutput></title>
 <indexterm><primary>addError</primary><secondary>Token</secondary></indexterm>
 <indexterm><primary>Token</primary><secondary>addError</secondary></indexterm>
-<para><computeroutput>std::shared_ptr&lt; <link linkend="_class_token_result">TokenResult</link> &gt; Token::addError (const std::shared_ptr&lt; <link linkend="_class_token_result">TokenResult</link> &gt; &amp; tr)</computeroutput></para><para>
-Definition at line <link linkend="__interpretor_8cpp_source_1l01068">1068</link> of file <link linkend="__interpretor_8cpp_source">Interpretor.cpp</link>.</para>
-</section>
-<anchor xml:id="_class_token_1a342eebc35a823997d3fe2a6c66f9cbe1"/><section>
-    <title>addError()<computeroutput>[2/3]</computeroutput></title>
-<indexterm><primary>addError</primary><secondary>Token</secondary></indexterm>
-<indexterm><primary>Token</primary><secondary>addError</secondary></indexterm>
-<para><computeroutput>std::shared_ptr&lt; <link linkend="_class_token_result">TokenResult</link> &gt; Token::addError (<link linkend="__interpretor_8h_1ad8ed01ff3ff33333d8e19db4d2818bb6">DataType</link> type, <link linkend="__interpretor_8h_1ab0df38968e4f03a3f1f6d6df0f31f45a">ErrorType</link> et = <computeroutput><link linkend="__interpretor_8h_1ab0df38968e4f03a3f1f6d6df0f31f45aad5edacc5c1724ff7055e7db625117c71">ErrorType::REPLACED</link></computeroutput>
-)</computeroutput></para><para>
-Definition at line <link linkend="__interpretor_8cpp_source_1l01074">1074</link> of file <link linkend="__interpretor_8cpp_source">Interpretor.cpp</link>.</para>
-</section>
-<anchor xml:id="_class_token_1a4c0f84a84656f0b5e28c4193c3c13ea3"/><section>
-    <title>addError()<computeroutput>[3/3]</computeroutput></title>
-<indexterm><primary>addError</primary><secondary>Token</secondary></indexterm>
-<indexterm><primary>Token</primary><secondary>addError</secondary></indexterm>
-<para><computeroutput>std::shared_ptr&lt; <link linkend="_class_token_result">TokenResult</link> &gt; Token::addError (<link linkend="__interpretor_8h_1acbd1e63c605cbb3dbe67c7411841b46c">TokenVALUE</link> value, <link linkend="__interpretor_8h_1ab0df38968e4f03a3f1f6d6df0f31f45a">ErrorType</link> et = <computeroutput><link linkend="__interpretor_8h_1ab0df38968e4f03a3f1f6d6df0f31f45aa10d1208b485425756fcc932229386b02">ErrorType::MISSING</link></computeroutput>
-)</computeroutput></para><para>
-Definition at line <link linkend="__interpretor_8cpp_source_1l01062">1062</link> of file <link linkend="__interpretor_8cpp_source">Interpretor.cpp</link>.</para>
-Here is the caller graph for this function:<para>
+<para><computeroutput>bool Token::addError (<link linkend="_class_token_result">TokenResult</link> &amp; tRes, <link linkend="__token_8h_1ad8ed01ff3ff33333d8e19db4d2818bb6">DataType</link> type)</computeroutput></para><para>
+Definition at line <link linkend="__token_8cpp_source_1l01319">1319</link> of file <link linkend="__token_8cpp_source">Token.cpp</link>.</para>
+Here is the call graph for this function:<para>
     <informalfigure>
         <mediaobject>
             <imageobject>
-                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_token_a4c0f84a84656f0b5e28c4193c3c13ea3_icgraph.svg"></imagedata>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_token_a61f4575ae9e05b93b8812ae9cbacc0f0_cgraph.svg"></imagedata>
             </imageobject>
         </mediaobject>
     </informalfigure>
 </para>
 </section>
-<anchor xml:id="_class_token_1ad692018745d72ed2bc87f1f6a8dbf156"/><section>
-    <title>addTokens()</title>
-<indexterm><primary>addTokens</primary><secondary>Token</secondary></indexterm>
-<indexterm><primary>Token</primary><secondary>addTokens</secondary></indexterm>
-<para><computeroutput>std::shared_ptr&lt; <link linkend="_class_token_result">TokenResult</link> &gt; Token::addTokens (<link linkend="_class_iterator_list">IteratorList</link>&lt; <link linkend="_class_token">Token</link> &gt; &amp; tl, std::shared_ptr&lt; <link linkend="_class_token_result">TokenResult</link> &gt; tRes)<computeroutput>[virtual]</computeroutput></computeroutput></para><para>
-Reimplemented in <link linkend="_class_break_token_1af33466835286c8736861de37184073e9">BreakToken</link>, <link linkend="_class_continue_token_1a139b728b49c813acb14f990a31054f5e">ContinueToken</link>, <link linkend="_class_do_loop_token_1a7990e235e81ba0ffe31c5fa9af52ac92">DoLoopToken</link>, <link linkend="_class_e_k_p_token_1a710d49b38ba2eff3d0f4221e30d687b2">EKPToken</link>, <link linkend="_class_elif_token_1a9b61f58f6728377b662938a34c9edcf9">ElifToken</link>, <link linkend="_class_flow_k_c_token_1aabbf4019cb69b07eb25b11bd070824fc">FlowKCToken</link>, <link linkend="_class_flow_k_p_token_1afb97e689d4a475e1c20b5ae2a6732c62">FlowKPToken</link>, <link linkend="_class_flow_k_token_1a23ed367b143107ff3085178a6c30dbd4">FlowKToken</link>, <link linkend="_class_identifier_token_1aedcfa4072f22665a7e9fc872ef9dbcbb">IdentifierToken</link>, <link linkend="_class_if_token_1a01465e20c31d5d3bdbc0248209f4c3f4">IfToken</link>, <link linkend="_class_k_p_token_1a7d6892f81389e89ec9f255ab1032758d">KPToken</link>, <link linkend="_class_list_token_1ad933b167a7d348852edf2700a8c2985b">ListToken</link>, <link linkend="_class_main_token_1afe612ccf1e5346401b2fff76d029bbbe">MainToken</link>, <link linkend="_class_not_token_1acdcf74ae5a8e5aa08e5226b7943cc192">NotToken</link>, <link linkend="_class_store_token_1ada7a74bb6d2f11f78f026be0554183e9">StoreToken</link>, and <link linkend="_class_wait_token_1a025496a739c85ce044f303b38fee7608">WaitToken</link>.</para>
-<para>
-Definition at line <link linkend="__interpretor_8cpp_source_1l01085">1085</link> of file <link linkend="__interpretor_8cpp_source">Interpretor.cpp</link>.</para>
+<anchor xml:id="_class_token_1ade47ed51e2f495f6d847c1bff9fe8db6"/><section>
+    <title>addError()<computeroutput>[2/2]</computeroutput></title>
+<indexterm><primary>addError</primary><secondary>Token</secondary></indexterm>
+<indexterm><primary>Token</primary><secondary>addError</secondary></indexterm>
+<para><computeroutput>bool Token::addError (<link linkend="_class_token_result">TokenResult</link> &amp; tRes, <link linkend="__token_8h_1acbd1e63c605cbb3dbe67c7411841b46c">TokenVALUE</link> value, <link linkend="__token_8h_1ab0df38968e4f03a3f1f6d6df0f31f45a">ErrorType</link> et = <computeroutput><link linkend="__token_8h_1ab0df38968e4f03a3f1f6d6df0f31f45aa10d1208b485425756fcc932229386b02">ErrorType::MISSING</link></computeroutput>
+)</computeroutput></para><para>
+Definition at line <link linkend="__token_8cpp_source_1l01313">1313</link> of file <link linkend="__token_8cpp_source">Token.cpp</link>.</para>
 Here is the call graph for this function:<para>
     <informalfigure>
         <mediaobject>
             <imageobject>
-                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_token_ad692018745d72ed2bc87f1f6a8dbf156_cgraph.svg"></imagedata>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_token_ade47ed51e2f495f6d847c1bff9fe8db6_cgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+Here is the caller graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_token_ade47ed51e2f495f6d847c1bff9fe8db6_icgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_class_token_1ad69955a02eaf8f332b8898a1855c7a28"/><section>
+    <title>addTokens()</title>
+<indexterm><primary>addTokens</primary><secondary>Token</secondary></indexterm>
+<indexterm><primary>Token</primary><secondary>addTokens</secondary></indexterm>
+<para><computeroutput>bool Token::addTokens (<link linkend="_class_iterator_list">IteratorList</link>&lt; <link linkend="_class_token">Token</link> &gt; &amp; tl, <link linkend="_class_token_result">TokenResult</link> &amp; tRes)<computeroutput>[virtual]</computeroutput></computeroutput></para><para>
+Reimplemented in <link linkend="_class_b_m_p_k_token_1aace2b852d50d884dd6da841c3fab113c">BMPKToken</link>, <link linkend="_class_flow_c_k_token_1a70e9e870b981aca2c2995a7fcceac2ac">FlowCKToken</link>, <link linkend="_class_flow_k_token_1a61c9d0279bdf37b161af7c4153e92e98">FlowKToken</link>, <link linkend="_class_flow_p_k_token_1a03998327bfce2d536cf666aaa29950da">FlowPKToken</link>, <link linkend="_class_identifier_token_1a0ddba0337e1b1858a5d067c9dc902d44">IdentifierToken</link>, <link linkend="_class_k_token_1aa70f9690ec470ceece17f9641bc9fb96">KToken</link>, <link linkend="_class_list_token_1a9003dd872c19760212536f6197d70f51">ListToken</link>, <link linkend="_class_main_token_1a4d466f7e8e8a0e9c7fa3eba722f51bcd">MainToken</link>, <link linkend="_class_m_p_k_token_1a9a5cbbc3269d1601a414e3dd25bfeb63">MPKToken</link>, <link linkend="_class_p_k_token_1a533aa21d507b12c9682e3babc83c4396">PKToken</link>, <link linkend="_class_store_token_1a42ebff8fa5aa531bfa439cf4b9fd7613">StoreToken</link>, <link linkend="_class_u_p_k_token_1a17fe15dac3bae5361799314d76a63800">UPKToken</link>, and <link linkend="_class_wait_token_1a0c7c5e917c640de13ee85f0361f73fb1">WaitToken</link>.</para>
+<para>
+Definition at line <link linkend="__token_8cpp_source_1l00193">193</link> of file <link linkend="__token_8cpp_source">Token.cpp</link>.</para>
+Here is the caller graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_token_ad69955a02eaf8f332b8898a1855c7a28_icgraph.svg"></imagedata>
             </imageobject>
         </mediaobject>
     </informalfigure>
@@ -131,28 +145,58 @@ Here is the call graph for this function:<para>
 <para><computeroutput>std::shared_ptr&lt; <link linkend="_class_tag">Tag</link> &gt; Token::execute ( )<computeroutput>[virtual]</computeroutput></computeroutput></para><para>
 Reimplemented in <link linkend="_class_and_token_1a8412cc2be91843dbcec6bde30b06d146">AndToken</link>, <link linkend="_class_bool_token_1ae9094e6512fb1f196d3ee7b456556e69">BoolToken</link>, <link linkend="_class_break_token_1a623e413d2ea0c720de427739602b2002">BreakToken</link>, <link linkend="_class_compare_token_1ac71c9bacc5349631b6e4972746934d48">CompareToken</link>, <link linkend="_class_continue_token_1aa9fad99e91e2fb23af6fed27c815b01f">ContinueToken</link>, <link linkend="_class_coord_token_1a3399a3cb18d077bb51dbfc13b12bf642">CoordToken</link>, <link linkend="_class_direction_token_1a124c7609d3a4d859d6ef466cf03034b6">DirectionToken</link>, <link linkend="_class_do_loop_token_1a98c55d62059c3f6d6956e6c52a249ee8">DoLoopToken</link>, <link linkend="_class_elif_token_1a7d4b264b0c023e44f7edc2b5781482f7">ElifToken</link>, <link linkend="_class_else_token_1a04c498b5b90ae54baec24cff3c93fa84">ElseToken</link>, <link linkend="_class_float_token_1af10a6ccf3e8f957f3926d837160bc429">FloatToken</link>, <link linkend="_class_if_token_1ac6a6d93dfcadc5348593bcc2350834f5">IfToken</link>, <link linkend="_class_integer_token_1a33e827ea234b1c0b5b305b5857331960">IntegerToken</link>, <link linkend="_class_list_token_1a7fe18acce7131bdfb768b8a8977173d3">ListToken</link>, <link linkend="_class_loop_token_1aaf2ed4676012f15ef2b551241f2957aa">LoopToken</link>, <link linkend="_class_main_token_1a7903f95481d0b435c6f1f01b17695b40">MainToken</link>, <link linkend="_class_not_token_1a6c122b3073499f07b79eed8e8576ab2a">NotToken</link>, <link linkend="_class_or_token_1ad079040ecd6dc5384d817249f80eed65">OrToken</link>, <link linkend="_class_print_token_1a9e4931aa23c45ae8947c9a2258981fa3">PrintToken</link>, <link linkend="_class_store_token_1a431a003fb845c3562c1ebab9b2b40bcd">StoreToken</link>, <link linkend="_class_string_literal_token_1a9f1db1ae9a350867f394676d5b809be3">StringLiteralToken</link>, <link linkend="_class_string_token_1a1dbc21181980b768c55acb13d0213601">StringToken</link>, <link linkend="_class_wait_token_1afdc303d17be95afa35bbee3b36936303">WaitToken</link>, and <link linkend="_class_zone_token_1a9c4b24525c5f7b3b6a502662d3a4f31c">ZoneToken</link>.</para>
 <para>
-Definition at line <link linkend="__interpretor_8cpp_source_1l01091">1091</link> of file <link linkend="__interpretor_8cpp_source">Interpretor.cpp</link>.</para>
+Definition at line <link linkend="__token_8cpp_source_1l01417">1417</link> of file <link linkend="__token_8cpp_source">Token.cpp</link>.</para>
 </section>
-<anchor xml:id="_class_token_1a41ebddd1a5ac42b80e3bd916e1f8e472"/><section>
+<anchor xml:id="_class_token_1ace668259c90b6fd2acc2f61d0e141565"/><section>
     <title>getDataType()</title>
 <indexterm><primary>getDataType</primary><secondary>Token</secondary></indexterm>
 <indexterm><primary>Token</primary><secondary>getDataType</secondary></indexterm>
-<para><computeroutput><link linkend="__interpretor_8h_1ad8ed01ff3ff33333d8e19db4d2818bb6">DataType</link> Token::getDataType ( )<computeroutput>[virtual]</computeroutput></computeroutput></para><para>
-Reimplemented in <link linkend="_class_and_token_1a42000f1686aca243ba7f5092fec77887">AndToken</link>, <link linkend="_class_bool_token_1ac36af9eaf07bd532297437ee0290da30">BoolToken</link>, <link linkend="_class_compare_token_1aa97ce5363e522dab34e83c34c45d8be1">CompareToken</link>, <link linkend="_class_coord_token_1ab48d66922a8f08a8cf2f84b8d626e085">CoordToken</link>, <link linkend="_class_direction_token_1a6666932ae4f403b4ce21ea406e633f97">DirectionToken</link>, <link linkend="_class_false_token_1a1f5193ea1cf36b142e8e822a578632e5">FalseToken</link>, <link linkend="_class_float_token_1a298ff5025132041ec4356af92e79a1bc">FloatToken</link>, <link linkend="_class_identifier_token_1ad9da654f9973551c59750220e2016120">IdentifierToken</link>, <link linkend="_class_integer_token_1a879058f4e3d138165efd66bcf46cfdf7">IntegerToken</link>, <link linkend="_class_milli_second_token_1a648c3017582444e693a59bef9b3a5d71">MilliSecondToken</link>, <link linkend="_class_minute_token_1af9875f90d35c8034c5a8f073c1b27b43">MinuteToken</link>, <link linkend="_class_not_token_1a7e2dd6fce2e6f2b3791a2dfd02231959">NotToken</link>, <link linkend="_class_numeric_token_1af1967ab001cb9d95aba3de02e9fd78c5">NumericToken</link>, <link linkend="_class_or_token_1af570d875bf11afa30430cf12dc37623b">OrToken</link>, <link linkend="_class_second_token_1aa4d852983520e6d5fd31aadffe80d8e4">SecondToken</link>, <link linkend="_class_true_token_1a1bbbceed5cfcad7e022df9925ca8b4cf">TrueToken</link>, and <link linkend="_class_zone_token_1adbf3a11a1bcecda9ede8f5b43fdfdb56">ZoneToken</link>.</para>
+<para><computeroutput><link linkend="__token_8h_1ad8ed01ff3ff33333d8e19db4d2818bb6">DataType</link> Token::getDataType (<link linkend="_class_token_result">TokenResult</link> &amp; tRes)<computeroutput>[virtual]</computeroutput></computeroutput></para><para>
+Reimplemented in <link linkend="_class_b_m_p_k_token_1ae198e473b9fa0da89ed741cb7e5373ae">BMPKToken</link>, <link linkend="_class_bool_token_1a4023134033edc2d4df317ab3c52d5d0c">BoolToken</link>, <link linkend="_class_c_k_token_1a2b63ca034c3575ae1fdb559599a74d04">CKToken</link>, <link linkend="_class_compare_token_1ac38f0593eae04726ebe2fed589176916">CompareToken</link>, <link linkend="_class_coord_token_1ad5cc8975263d8b2bfa1222fc1eaa1f6c">CoordToken</link>, <link linkend="_class_direction_token_1a6e02336bb4bb7f426c0cdf85ea02d8f8">DirectionToken</link>, <link linkend="_class_false_token_1a1f60433402f09076e28d93b7a8ab176e">FalseToken</link>, <link linkend="_class_float_token_1a65675fb958678b0a82f17bc6ba8eb82b">FloatToken</link>, <link linkend="_class_identifier_token_1a2998f6143008f3133e60a0cd997c255c">IdentifierToken</link>, <link linkend="_class_integer_token_1a44d105511a638a28a59916f91059d2cd">IntegerToken</link>, <link linkend="_class_milli_second_token_1a50a6415a61ced0fd046edf1f1060ec10">MilliSecondToken</link>, <link linkend="_class_minute_token_1a5403bb0e7b0bb4e5895c4347b9f6fb13">MinuteToken</link>, <link linkend="_class_numeric_token_1a1f22f3c47b7b5a167915b0a706415d7f">NumericToken</link>, <link linkend="_class_second_token_1a0d07e77bec144d89937bd841521f7e23">SecondToken</link>, <link linkend="_class_string_literal_token_1a5326912d8172c27505120fcac4d3977b">StringLiteralToken</link>, <link linkend="_class_string_token_1ab187083803bf50b09787ed3eb1d4424d">StringToken</link>, <link linkend="_class_true_token_1af3740cd45b792953be794e45d84125e2">TrueToken</link>, and <link linkend="_class_zone_token_1a0871bf05e2a5e772993e723f7c9f3027">ZoneToken</link>.</para>
 <para>
-Definition at line <link linkend="__interpretor_8cpp_source_1l01080">1080</link> of file <link linkend="__interpretor_8cpp_source">Interpretor.cpp</link>.</para>
+Definition at line <link linkend="__token_8cpp_source_1l01409">1409</link> of file <link linkend="__token_8cpp_source">Token.cpp</link>.</para>
 </section>
-<anchor xml:id="_class_token_1af13c7d494e5fe273558cb37286fa7185"/><section>
-    <title>updateRes()</title>
-<indexterm><primary>updateRes</primary><secondary>Token</secondary></indexterm>
-<indexterm><primary>Token</primary><secondary>updateRes</secondary></indexterm>
-<para><computeroutput>std::shared_ptr&lt; <link linkend="_class_token_result">TokenResult</link> &gt; Token::updateRes (std::shared_ptr&lt; <link linkend="_class_token_result">TokenResult</link> &gt; tRes)</computeroutput></para><para>
-Definition at line <link linkend="__interpretor_8cpp_source_1l01056">1056</link> of file <link linkend="__interpretor_8cpp_source">Interpretor.cpp</link>.</para>
+<anchor xml:id="_class_token_1a0fe3c8022c8c5f6143c7dd3fba9408fe"/><section>
+    <title>getLine()</title>
+<indexterm><primary>getLine</primary><secondary>Token</secondary></indexterm>
+<indexterm><primary>Token</primary><secondary>getLine</secondary></indexterm>
+<para><computeroutput>int Token::getLine ( )</computeroutput></para><para>
+Definition at line <link linkend="__token_8cpp_source_1l01343">1343</link> of file <link linkend="__token_8cpp_source">Token.cpp</link>.</para>
+</section>
+<anchor xml:id="_class_token_1a2643198d67a19ce0bd8102b4379d9d12"/><section>
+    <title>getTokenText()</title>
+<indexterm><primary>getTokenText</primary><secondary>Token</secondary></indexterm>
+<indexterm><primary>Token</primary><secondary>getTokenText</secondary></indexterm>
+<para><computeroutput>std::string Token::getTokenText ( )</computeroutput></para><para>
+Definition at line <link linkend="__token_8cpp_source_1l01338">1338</link> of file <link linkend="__token_8cpp_source">Token.cpp</link>.</para>
+</section>
+<anchor xml:id="_class_token_1a0dec1385788e690b5dc30cd99a1ed3c8"/><section>
+    <title>getValue()</title>
+<indexterm><primary>getValue</primary><secondary>Token</secondary></indexterm>
+<indexterm><primary>Token</primary><secondary>getValue</secondary></indexterm>
+<para><computeroutput><link linkend="__token_8h_1acbd1e63c605cbb3dbe67c7411841b46c">TokenVALUE</link> Token::getValue ( )</computeroutput></para><para>
+Definition at line <link linkend="__token_8cpp_source_1l01404">1404</link> of file <link linkend="__token_8cpp_source">Token.cpp</link>.</para>
+</section>
+<anchor xml:id="_class_token_1ad3fb88977cc7e687450f46e4f9d80a05"/><section>
+    <title>hasValue()</title>
+<indexterm><primary>hasValue</primary><secondary>Token</secondary></indexterm>
+<indexterm><primary>Token</primary><secondary>hasValue</secondary></indexterm>
+<para><computeroutput>bool Token::hasValue (<link linkend="__token_8h_1acbd1e63c605cbb3dbe67c7411841b46c">TokenVALUE</link> value) const</computeroutput></para><para>
+Definition at line <link linkend="__token_8cpp_source_1l01348">1348</link> of file <link linkend="__token_8cpp_source">Token.cpp</link>.</para>
+</section>
+<anchor xml:id="_class_token_1abd61b776070d98e2e1b748831a8ae85e"/><section>
+    <title>showTokenTree()</title>
+<indexterm><primary>showTokenTree</primary><secondary>Token</secondary></indexterm>
+<indexterm><primary>Token</primary><secondary>showTokenTree</secondary></indexterm>
+<para><computeroutput>void Token::showTokenTree (const int nestedLayer)<computeroutput>[virtual]</computeroutput></computeroutput></para><para>
+Reimplemented in <link linkend="_class_flow_k_token_1a0fdf55d3a11ad097700e6de32c8ede96">FlowKToken</link>, <link linkend="_class_flow_p_k_token_1a0304d54103cabfd59b980cc9e999bac6">FlowPKToken</link>, and <link linkend="_class_p_k_token_1a53a1431d31066e66aac1c2ea99245c0a">PKToken</link>.</para>
+<para>
+Definition at line <link linkend="__token_8cpp_source_1l01399">1399</link> of file <link linkend="__token_8cpp_source">Token.cpp</link>.</para>
 Here is the caller graph for this function:<para>
     <informalfigure>
         <mediaobject>
             <imageobject>
-                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_token_af13c7d494e5fe273558cb37286fa7185_icgraph.svg"></imagedata>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_token_abd61b776070d98e2e1b748831a8ae85e_icgraph.svg"></imagedata>
             </imageobject>
         </mediaobject>
     </informalfigure>
@@ -165,31 +209,24 @@ Here is the caller graph for this function:<para>
     <title>line</title>
 <indexterm><primary>line</primary><secondary>Token</secondary></indexterm>
 <indexterm><primary>Token</primary><secondary>line</secondary></indexterm>
-<para><computeroutput>int Token::line</computeroutput></para><para>
-Definition at line <link linkend="__interpretor_8h_source_1l00162">162</link> of file <link linkend="__interpretor_8h_source">Interpretor.h</link>.</para>
+<para><computeroutput>int Token::line<computeroutput>[protected]</computeroutput></computeroutput></para><para>
+Definition at line <link linkend="__token_8h_source_1l00233">233</link> of file <link linkend="__token_8h_source">Token.h</link>.</para>
 </section>
 <anchor xml:id="_class_token_1a8b3faba4c73c28d11fec73758a0302b2"/><section>
     <title>tokenText</title>
 <indexterm><primary>tokenText</primary><secondary>Token</secondary></indexterm>
 <indexterm><primary>Token</primary><secondary>tokenText</secondary></indexterm>
-<para><computeroutput>std::string Token::tokenText</computeroutput></para><para>
-Definition at line <link linkend="__interpretor_8h_source_1l00155">155</link> of file <link linkend="__interpretor_8h_source">Interpretor.h</link>.</para>
-</section>
-<anchor xml:id="_class_token_1a374f334f070a5a07daf0bbde3be02ced"/><section>
-    <title>tRes</title>
-<indexterm><primary>tRes</primary><secondary>Token</secondary></indexterm>
-<indexterm><primary>Token</primary><secondary>tRes</secondary></indexterm>
-<para><computeroutput>std::shared_ptr&lt;<link linkend="_class_token_result">TokenResult</link>&gt; Token::tRes</computeroutput></para><para>
-Definition at line <link linkend="__interpretor_8h_source_1l00157">157</link> of file <link linkend="__interpretor_8h_source">Interpretor.h</link>.</para>
+<para><computeroutput>std::string Token::tokenText<computeroutput>[protected]</computeroutput></computeroutput></para><para>
+Definition at line <link linkend="__token_8h_source_1l00231">231</link> of file <link linkend="__token_8h_source">Token.h</link>.</para>
 </section>
 <anchor xml:id="_class_token_1a4c8ce9cf1eecbc7e49650307eea6a862"/><section>
     <title>tValue</title>
 <indexterm><primary>tValue</primary><secondary>Token</secondary></indexterm>
 <indexterm><primary>Token</primary><secondary>tValue</secondary></indexterm>
-<para><computeroutput><link linkend="__interpretor_8h_1acbd1e63c605cbb3dbe67c7411841b46c">TokenVALUE</link> Token::tValue</computeroutput></para><para>
-Definition at line <link linkend="__interpretor_8h_source_1l00156">156</link> of file <link linkend="__interpretor_8h_source">Interpretor.h</link>.</para>
+<para><computeroutput><link linkend="__token_8h_1acbd1e63c605cbb3dbe67c7411841b46c">TokenVALUE</link> Token::tValue<computeroutput>[protected]</computeroutput></computeroutput></para><para>
+Definition at line <link linkend="__token_8h_source_1l00232">232</link> of file <link linkend="__token_8h_source">Token.h</link>.</para>
 </section>
 <para>
 The documentation for this class was generated from the following files:</para>
-src/<link linkend="__interpretor_8h">Interpretor.h</link>src/<link linkend="__interpretor_8cpp">Interpretor.cpp</link></section>
+src/<link linkend="__token_8h">Token.h</link>src/<link linkend="__token_8cpp">Token.cpp</link></section>
 </section>

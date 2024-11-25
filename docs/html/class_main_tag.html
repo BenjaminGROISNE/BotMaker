@@ -27,9 +27,8 @@
  <tbody>
  <tr id="projectrow">
   <td id="projectalign">
-   <div id="projectname">BotMaker<span id="projectnumber">&#160;beta</span>
+   <div id="projectname">BotMaker
    </div>
-   <div id="projectbrief">Tool to create bots on Bluestacks</div>
   </td>
  </tr>
  </tbody>
@@ -123,6 +122,8 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:a78d5543dafe277cb3d92a7dc81d4a1a9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0e708aab6c532a7f544203a52885eb25" id="r_a0e708aab6c532a7f544203a52885eb25"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a0e708aab6c532a7f544203a52885eb25">MainTag</a> (const <a class="el" href="class_main_tag.html">MainTag</a> &amp;toCopy)</td></tr>
 <tr class="separator:a0e708aab6c532a7f544203a52885eb25"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa34cb8e47a02b0d94c9d4ef0ff36e310" id="r_aa34cb8e47a02b0d94c9d4ef0ff36e310"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aa34cb8e47a02b0d94c9d4ef0ff36e310">MainTag</a> (std::shared_ptr&lt; <a class="el" href="class_tag.html">Tag</a> &gt; innerTag)</td></tr>
+<tr class="separator:aa34cb8e47a02b0d94c9d4ef0ff36e310"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aca93f098bb94af3ab20b7ab1f67ef527" id="r_aca93f098bb94af3ab20b7ab1f67ef527"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aca93f098bb94af3ab20b7ab1f67ef527">MainTag</a> (const std::vector&lt; std::shared_ptr&lt; <a class="el" href="class_tag.html">Tag</a> &gt; &gt; &amp;tags)</td></tr>
 <tr class="separator:aca93f098bb94af3ab20b7ab1f67ef527"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8d32cbe9f42813c0b131575b8a0f7663" id="r_a8d32cbe9f42813c0b131575b8a0f7663"><td class="memItemLeft" align="right" valign="top">std::shared_ptr&lt; <a class="el" href="class_main_tag.html">MainTag</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a8d32cbe9f42813c0b131575b8a0f7663">clone</a> ()</td></tr>
@@ -185,10 +186,10 @@ Public Attributes</h2></td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock">
-<p class="definition">Definition at line <a class="el" href="_tags_8h_source.html#l00141">141</a> of file <a class="el" href="_tags_8h_source.html">Tags.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_tags_8h_source.html#l00144">144</a> of file <a class="el" href="_tags_8h_source.html">Tags.h</a>.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="a78d5543dafe277cb3d92a7dc81d4a1a9" name="a78d5543dafe277cb3d92a7dc81d4a1a9"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a78d5543dafe277cb3d92a7dc81d4a1a9">&#9670;&#160;</a></span>MainTag() <span class="overload">[1/3]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a78d5543dafe277cb3d92a7dc81d4a1a9">&#9670;&#160;</a></span>MainTag() <span class="overload">[1/4]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -202,12 +203,12 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_tags_8cpp_source.html#l01522">1522</a> of file <a class="el" href="_tags_8cpp_source.html">Tags.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_tags_8cpp_source.html#l01527">1527</a> of file <a class="el" href="_tags_8cpp_source.html">Tags.cpp</a>.</p>
 
 </div>
 </div>
 <a id="a0e708aab6c532a7f544203a52885eb25" name="a0e708aab6c532a7f544203a52885eb25"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a0e708aab6c532a7f544203a52885eb25">&#9670;&#160;</a></span>MainTag() <span class="overload">[2/3]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a0e708aab6c532a7f544203a52885eb25">&#9670;&#160;</a></span>MainTag() <span class="overload">[2/4]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -225,8 +226,27 @@ Public Attributes</h2></td></tr>
 
 </div>
 </div>
+<a id="aa34cb8e47a02b0d94c9d4ef0ff36e310" name="aa34cb8e47a02b0d94c9d4ef0ff36e310"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa34cb8e47a02b0d94c9d4ef0ff36e310">&#9670;&#160;</a></span>MainTag() <span class="overload">[3/4]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">MainTag::MainTag </td>
+          <td>(</td>
+          <td class="paramtype">std::shared_ptr&lt; <a class="el" href="class_tag.html">Tag</a> &gt;</td>          <td class="paramname"><span class="paramname"><em>innerTag</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="_tags_8cpp_source.html#l00148">148</a> of file <a class="el" href="_tags_8cpp_source.html">Tags.cpp</a>.</p>
+
+</div>
+</div>
 <a id="aca93f098bb94af3ab20b7ab1f67ef527" name="aca93f098bb94af3ab20b7ab1f67ef527"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aca93f098bb94af3ab20b7ab1f67ef527">&#9670;&#160;</a></span>MainTag() <span class="overload">[3/3]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#aca93f098bb94af3ab20b7ab1f67ef527">&#9670;&#160;</a></span>MainTag() <span class="overload">[4/4]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -240,7 +260,7 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_tags_8cpp_source.html#l01540">1540</a> of file <a class="el" href="_tags_8cpp_source.html">Tags.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_tags_8cpp_source.html#l01545">1545</a> of file <a class="el" href="_tags_8cpp_source.html">Tags.cpp</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -294,7 +314,7 @@ Here is the call graph for this function:</div>
 
 <p>Reimplemented from <a class="el" href="class_tag.html#a54054f3c9db4decb422972460bbb34c3">Tag</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="_tags_8cpp_source.html#l01528">1528</a> of file <a class="el" href="_tags_8cpp_source.html">Tags.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_tags_8cpp_source.html#l01533">1533</a> of file <a class="el" href="_tags_8cpp_source.html">Tags.cpp</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -316,7 +336,7 @@ Here is the call graph for this function:</div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_tags_8h_source.html#l00146">146</a> of file <a class="el" href="_tags_8h_source.html">Tags.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_tags_8h_source.html#l00150">150</a> of file <a class="el" href="_tags_8h_source.html">Tags.h</a>.</p>
 
 </div>
 </div>

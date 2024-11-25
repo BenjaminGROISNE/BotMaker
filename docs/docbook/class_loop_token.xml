@@ -3,7 +3,7 @@
 <title>LoopToken Class Reference</title>
 <indexterm><primary>LoopToken</primary></indexterm>
 <para>
-<computeroutput>#include &lt;Interpretor.h&gt;</computeroutput>
+<computeroutput>#include &lt;Token.h&gt;</computeroutput>
 </para>
 Inheritance diagram for LoopToken:<para>
     <informalfigure>
@@ -32,96 +32,159 @@ Collaboration diagram for LoopToken:<para>
 </listitem>
         </itemizedlist>
 </simplesect>
+Public Member Functions inherited from <link linkend="_class_flow_c_k_token">FlowCKToken</link>        <itemizedlist>
+            <listitem><para><link linkend="_class_flow_c_k_token_1ae708c7fca0ffbbbd66b1b2c7983f5463">FlowCKToken</link> ()</para>
+</listitem>
+        </itemizedlist>
+Public Member Functions inherited from <link linkend="_class_c_k_token">CKToken</link>        <itemizedlist>
+            <listitem><para><link linkend="_class_c_k_token_1a3ba21d2fa5758ff97e963e338b90a4e1">CKToken</link> ()</para>
+</listitem>
+            <listitem><para>void <link linkend="_class_c_k_token_1a826b592efb9b09d8f3110f134671ec4b">setOverloads</link> () final</para>
+</listitem>
+            <listitem><para>virtual void <link linkend="_class_c_k_token_1a2d3563d0c427c2f88fbd7ddd118efe78">dispatchArguments</link> ()</para>
+</listitem>
+            <listitem><para><link linkend="__token_8h_1ad8ed01ff3ff33333d8e19db4d2818bb6">DataType</link> <link linkend="_class_c_k_token_1a2b63ca034c3575ae1fdb559599a74d04">getDataType</link> (<link linkend="_class_token_result">TokenResult</link> &amp;tRes) override</para>
+</listitem>
+        </itemizedlist>
+Public Member Functions inherited from <link linkend="_class_u_p_k_token">UPKToken</link>        <itemizedlist>
+            <listitem><para><link linkend="_class_u_p_k_token_1a8b97a9ffde76bf9ca5938e98c91c5a40">UPKToken</link> ()</para>
+</listitem>
+            <listitem><para>void <link linkend="_class_u_p_k_token_1ab96afbaa766bc09f25fee4a0a8c8098f">dispatchArguments</link> () override</para>
+</listitem>
+            <listitem><para>bool <link linkend="_class_u_p_k_token_1a17fe15dac3bae5361799314d76a63800">addTokens</link> (<link linkend="_class_iterator_list">IteratorList</link>&lt; <link linkend="_class_token">Token</link> &gt; &amp;tl, <link linkend="_class_token_result">TokenResult</link> &amp;tRes) override</para>
+</listitem>
+        </itemizedlist>
+Public Member Functions inherited from <link linkend="_class_p_k_token">PKToken</link>        <itemizedlist>
+            <listitem><para><link linkend="_class_p_k_token_1a3af43a7a3050bf9e446938692be33262">PKToken</link> ()</para>
+</listitem>
+            <listitem><para>void <link linkend="_class_p_k_token_1a53a1431d31066e66aac1c2ea99245c0a">showTokenTree</link> (const int nestedLayer) override</para>
+</listitem>
+        </itemizedlist>
 Public Member Functions inherited from <link linkend="_class_token">Token</link>        <itemizedlist>
             <listitem><para><link linkend="_class_token_1aa3c5868ba4115f3189df6b2ac5b36f39">Token</link> ()</para>
 </listitem>
-            <listitem><para>std::shared_ptr&lt; <link linkend="_class_token_result">TokenResult</link> &gt; <link linkend="_class_token_1af13c7d494e5fe273558cb37286fa7185">updateRes</link> (std::shared_ptr&lt; <link linkend="_class_token_result">TokenResult</link> &gt; <link linkend="_class_token_1a374f334f070a5a07daf0bbde3be02ced">tRes</link>)</para>
+            <listitem><para><link linkend="__token_8h_1acbd1e63c605cbb3dbe67c7411841b46c">TokenVALUE</link> <link linkend="_class_token_1a0dec1385788e690b5dc30cd99a1ed3c8">getValue</link> ()</para>
 </listitem>
-            <listitem><para>std::shared_ptr&lt; <link linkend="_class_token_result">TokenResult</link> &gt; <link linkend="_class_token_1a4c0f84a84656f0b5e28c4193c3c13ea3">addError</link> (<link linkend="__interpretor_8h_1acbd1e63c605cbb3dbe67c7411841b46c">TokenVALUE</link> value, <link linkend="__interpretor_8h_1ab0df38968e4f03a3f1f6d6df0f31f45a">ErrorType</link> et=<link linkend="__interpretor_8h_1ab0df38968e4f03a3f1f6d6df0f31f45aa10d1208b485425756fcc932229386b02">ErrorType::MISSING</link>)</para>
+            <listitem><para>bool <link linkend="_class_token_1ade47ed51e2f495f6d847c1bff9fe8db6">addError</link> (<link linkend="_class_token_result">TokenResult</link> &amp;tRes, <link linkend="__token_8h_1acbd1e63c605cbb3dbe67c7411841b46c">TokenVALUE</link> value, <link linkend="__token_8h_1ab0df38968e4f03a3f1f6d6df0f31f45a">ErrorType</link> et=<link linkend="__token_8h_1ab0df38968e4f03a3f1f6d6df0f31f45aa10d1208b485425756fcc932229386b02">ErrorType::MISSING</link>)</para>
 </listitem>
-            <listitem><para>std::shared_ptr&lt; <link linkend="_class_token_result">TokenResult</link> &gt; <link linkend="_class_token_1a97d36ac6f4a4d06cdf931f4240c6472c">addError</link> (const std::shared_ptr&lt; <link linkend="_class_token_result">TokenResult</link> &gt; &amp;tr)</para>
+            <listitem><para>bool <link linkend="_class_token_1a61f4575ae9e05b93b8812ae9cbacc0f0">addError</link> (<link linkend="_class_token_result">TokenResult</link> &amp;tRes, <link linkend="__token_8h_1ad8ed01ff3ff33333d8e19db4d2818bb6">DataType</link> type)</para>
 </listitem>
-            <listitem><para>std::shared_ptr&lt; <link linkend="_class_token_result">TokenResult</link> &gt; <link linkend="_class_token_1a342eebc35a823997d3fe2a6c66f9cbe1">addError</link> (<link linkend="__interpretor_8h_1ad8ed01ff3ff33333d8e19db4d2818bb6">DataType</link> type, <link linkend="__interpretor_8h_1ab0df38968e4f03a3f1f6d6df0f31f45a">ErrorType</link> et=<link linkend="__interpretor_8h_1ab0df38968e4f03a3f1f6d6df0f31f45aad5edacc5c1724ff7055e7db625117c71">ErrorType::REPLACED</link>)</para>
+            <listitem><para>std::string <link linkend="_class_token_1a2643198d67a19ce0bd8102b4379d9d12">getTokenText</link> ()</para>
 </listitem>
-            <listitem><para>virtual <link linkend="__interpretor_8h_1ad8ed01ff3ff33333d8e19db4d2818bb6">DataType</link> <link linkend="_class_token_1a41ebddd1a5ac42b80e3bd916e1f8e472">getDataType</link> ()</para>
+            <listitem><para>int <link linkend="_class_token_1a0fe3c8022c8c5f6143c7dd3fba9408fe">getLine</link> ()</para>
 </listitem>
-        </itemizedlist>
-<simplesect>
-    <title>Public Attributes    </title>
-        <itemizedlist>
-            <listitem><para>std::shared_ptr&lt; <link linkend="_class_token">Token</link> &gt; <link linkend="_class_loop_token_1a31a461ebcf1f5deea6a66276c7772513">conditionToken</link></para>
+            <listitem><para>bool <link linkend="_class_token_1ad3fb88977cc7e687450f46e4f9d80a05">hasValue</link> (<link linkend="__token_8h_1acbd1e63c605cbb3dbe67c7411841b46c">TokenVALUE</link> value) const</para>
 </listitem>
         </itemizedlist>
-</simplesect>
-Public Attributes inherited from <link linkend="_class_token">Token</link>        <itemizedlist>
-            <listitem><para>std::string <link linkend="_class_token_1a8b3faba4c73c28d11fec73758a0302b2">tokenText</link></para>
+Public Member Functions inherited from <link linkend="_class_flow_token">FlowToken</link>        <itemizedlist>
+            <listitem><para>bool <link linkend="_class_flow_token_1a3a3cb964ee95cd5e565a009e4d6aabca">addError</link> (<link linkend="_class_token_result">TokenResult</link> &amp;tRes, <link linkend="__token_8h_1acbd1e63c605cbb3dbe67c7411841b46c">TokenVALUE</link> value, <link linkend="__token_8h_1ab0df38968e4f03a3f1f6d6df0f31f45a">ErrorType</link> et=<link linkend="__token_8h_1ab0df38968e4f03a3f1f6d6df0f31f45aa10d1208b485425756fcc932229386b02">ErrorType::MISSING</link>)</para>
 </listitem>
-            <listitem><para><link linkend="__interpretor_8h_1acbd1e63c605cbb3dbe67c7411841b46c">TokenVALUE</link> <link linkend="_class_token_1a4c8ce9cf1eecbc7e49650307eea6a862">tValue</link></para>
+            <listitem><para>bool <link linkend="_class_flow_token_1a36e9173c9de4db214cd2fc5fb46b2c33">addError</link> (<link linkend="_class_token_result">TokenResult</link> &amp;tRes, <link linkend="__token_8h_1ad8ed01ff3ff33333d8e19db4d2818bb6">DataType</link> type)</para>
 </listitem>
-            <listitem><para>std::shared_ptr&lt; <link linkend="_class_token_result">TokenResult</link> &gt; <link linkend="_class_token_1a374f334f070a5a07daf0bbde3be02ced">tRes</link></para>
+            <listitem><para><link linkend="_class_flow_token_1aa69e84b8a62c2aa66bc8b3a0e6b18664">FlowToken</link> ()</para>
 </listitem>
-            <listitem><para>int <link linkend="_class_token_1a4b96c2a31d7c374fd2bd1986794f80dd">line</link></para>
+            <listitem><para><link linkend="_class_flow_token_1a5d10627ebe6ec8a5c023f249b31ecdd0">FlowToken</link> (int line)</para>
+</listitem>
+            <listitem><para>void <link linkend="_class_flow_token_1a8998fbb1c5e25b91be1936ff7ecbdc88">showTokenTree</link> (const int nestedLayer)</para>
+</listitem>
+            <listitem><para>bool <link linkend="_class_flow_token_1adca9213b63d564c72ec40a97f0af8210">addToken</link> (<link linkend="__token_8h_1acbd1e63c605cbb3dbe67c7411841b46c">TokenVALUE</link> tVal, <link linkend="_class_iterator_list">IteratorList</link>&lt; <link linkend="_class_token">Token</link> &gt; &amp;tl, <link linkend="_class_token_result">TokenResult</link> &amp;tRes)</para>
+</listitem>
+            <listitem><para>bool <link linkend="_class_flow_token_1a98297ec8d7ba95e69743afe1859b6eba">addType</link> (<link linkend="__token_8h_1ad8ed01ff3ff33333d8e19db4d2818bb6">DataType</link> tVal, <link linkend="_class_iterator_list">IteratorList</link>&lt; <link linkend="_class_token">Token</link> &gt; &amp;tl, <link linkend="_class_token_result">TokenResult</link> &amp;tRes)</para>
+</listitem>
+            <listitem><para>bool <link linkend="_class_flow_token_1ad835b1ba757e719a4a40a4ddfd13f8e1">addType</link> (std::vector&lt; <link linkend="__token_8h_1ad8ed01ff3ff33333d8e19db4d2818bb6">DataType</link> &gt; listTypes, <link linkend="_class_iterator_list">IteratorList</link>&lt; <link linkend="_class_token">Token</link> &gt; &amp;tl, <link linkend="_class_token_result">TokenResult</link> &amp;tRes)</para>
 </listitem>
         </itemizedlist>
 <simplesect>
     <title>Additional Inherited Members    </title>
-Protected Member Functions inherited from <link linkend="_class_flow_k_c_token">FlowKCToken</link>        <itemizedlist>
-            <listitem><para><link linkend="_class_flow_k_c_token_1a49224042869042f190daaea38ac73ad1">FlowKCToken</link> ()</para>
+Protected Member Functions inherited from <link linkend="_class_flow_c_k_token">FlowCKToken</link>        <itemizedlist>
+            <listitem><para>bool <link linkend="_class_flow_c_k_token_1a7ae11748e61f332a8c987399804a67ca">addCondition</link> (<link linkend="_class_iterator_list">IteratorList</link>&lt; <link linkend="_class_token">Token</link> &gt; &amp;tl, <link linkend="_class_token_result">TokenResult</link> tRes)</para>
 </listitem>
-            <listitem><para>std::shared_ptr&lt; <link linkend="_class_token">Token</link> &gt; <link linkend="_class_flow_k_c_token_1aa8e871c7b557b02746ffad16e531a567">addCondition</link> (<link linkend="_class_iterator_list">IteratorList</link>&lt; <link linkend="_class_token">Token</link> &gt; &amp;tl, std::shared_ptr&lt; <link linkend="_class_token_result">TokenResult</link> &gt; <link linkend="_class_token_1a374f334f070a5a07daf0bbde3be02ced">tRes</link>)</para>
+            <listitem><para>bool <link linkend="_class_flow_c_k_token_1a70e9e870b981aca2c2995a7fcceac2ac">addTokens</link> (<link linkend="_class_iterator_list">IteratorList</link>&lt; <link linkend="_class_token">Token</link> &gt; &amp;tl, <link linkend="_class_token_result">TokenResult</link> &amp;tRes) override</para>
 </listitem>
-            <listitem><para>std::shared_ptr&lt; <link linkend="_class_token_result">TokenResult</link> &gt; <link linkend="_class_flow_k_c_token_1aabbf4019cb69b07eb25b11bd070824fc">addTokens</link> (<link linkend="_class_iterator_list">IteratorList</link>&lt; <link linkend="_class_token">Token</link> &gt; &amp;tl, std::shared_ptr&lt; <link linkend="_class_token_result">TokenResult</link> &gt; <link linkend="_class_token_1a374f334f070a5a07daf0bbde3be02ced">tRes</link>) override</para>
+            <listitem><para>void <link linkend="_class_flow_c_k_token_1a697e625af9e4d7a142b87242d5179d3b">showArguments</link> (const int nestedLayer) override</para>
 </listitem>
         </itemizedlist>
 </simplesect>
-Protected Member Functions inherited from <link linkend="_class_flow_k_p_token">FlowKPToken</link>        <itemizedlist>
-            <listitem><para><link linkend="_class_flow_k_p_token_1a81a6a11e3248c8b9387670d0f7915659">FlowKPToken</link> ()</para>
-</listitem>
-            <listitem><para>std::shared_ptr&lt; <link linkend="_class_token">Token</link> &gt; <link linkend="_class_flow_k_p_token_1a2a3c69d4e82ac4a76c1f39ea505a64e7">addOb</link> (<link linkend="_class_iterator_list">IteratorList</link>&lt; <link linkend="_class_token">Token</link> &gt; &amp;tl)</para>
-</listitem>
-            <listitem><para>std::shared_ptr&lt; <link linkend="_class_token">Token</link> &gt; <link linkend="_class_flow_k_p_token_1ab25c9519d5389e5abbda0b6b378ef9ad">addCb</link> (<link linkend="_class_iterator_list">IteratorList</link>&lt; <link linkend="_class_token">Token</link> &gt; &amp;tl, std::shared_ptr&lt; <link linkend="_class_token_result">TokenResult</link> &gt; <link linkend="_class_token_1a374f334f070a5a07daf0bbde3be02ced">tRes</link>)</para>
-</listitem>
-            <listitem><para>std::shared_ptr&lt; <link linkend="_class_token_result">TokenResult</link> &gt; <link linkend="_class_flow_k_p_token_1afb97e689d4a475e1c20b5ae2a6732c62">addTokens</link> (<link linkend="_class_iterator_list">IteratorList</link>&lt; <link linkend="_class_token">Token</link> &gt; &amp;tl, std::shared_ptr&lt; <link linkend="_class_token_result">TokenResult</link> &gt; <link linkend="_class_token_1a374f334f070a5a07daf0bbde3be02ced">tRes</link>) override</para>
+Protected Member Functions inherited from <link linkend="_class_u_p_k_token">UPKToken</link>        <itemizedlist>
+            <listitem><para>void <link linkend="_class_u_p_k_token_1a001ffd8e4e33029fe1aa8e0a4cc3eaac">showArguments</link> (const int nestedLayer) override</para>
 </listitem>
         </itemizedlist>
-Protected Member Functions inherited from <link linkend="_class_k_p_token">KPToken</link>        <itemizedlist>
-            <listitem><para><link linkend="_class_k_p_token_1abb5c3e0fd2d70e45246277e7b4e6229f">KPToken</link> ()</para>
+Protected Member Functions inherited from <link linkend="_class_p_k_token">PKToken</link>        <itemizedlist>
+            <listitem><para>bool <link linkend="_class_p_k_token_1a6161b28490f22a80ba2898bcc3fab9d8">addToken</link> (<link linkend="__token_8h_1acbd1e63c605cbb3dbe67c7411841b46c">TokenVALUE</link> tVal, <link linkend="_class_iterator_list">IteratorList</link>&lt; <link linkend="_class_token">Token</link> &gt; &amp;tl, <link linkend="_class_token_result">TokenResult</link> &amp;tRes)</para>
 </listitem>
-            <listitem><para>std::shared_ptr&lt; <link linkend="_class_token_result">TokenResult</link> &gt; <link linkend="_class_k_p_token_1a7d6892f81389e89ec9f255ab1032758d">addTokens</link> (<link linkend="_class_iterator_list">IteratorList</link>&lt; <link linkend="_class_token">Token</link> &gt; &amp;tl, std::shared_ptr&lt; <link linkend="_class_token_result">TokenResult</link> &gt; <link linkend="_class_token_1a374f334f070a5a07daf0bbde3be02ced">tRes</link>) override</para>
+            <listitem><para>bool <link linkend="_class_p_k_token_1ae8d5672d16cc994d3d0d3f73e240cec4">addType</link> (<link linkend="__token_8h_1ad8ed01ff3ff33333d8e19db4d2818bb6">DataType</link> tVal, <link linkend="_class_iterator_list">IteratorList</link>&lt; <link linkend="_class_token">Token</link> &gt; &amp;tl, <link linkend="_class_token_result">TokenResult</link> &amp;tRes)</para>
 </listitem>
-            <listitem><para>std::shared_ptr&lt; <link linkend="_class_token">Token</link> &gt; <link linkend="_class_k_p_token_1a35b0aee206a6f3296d01adb8597ea331">addNumber</link> (<link linkend="_class_iterator_list">IteratorList</link>&lt; <link linkend="_class_token">Token</link> &gt; &amp;tl, std::shared_ptr&lt; <link linkend="_class_token_result">TokenResult</link> &gt; <link linkend="_class_token_1a374f334f070a5a07daf0bbde3be02ced">tRes</link>)</para>
+            <listitem><para>bool <link linkend="_class_p_k_token_1addbc260740c6abb048dbe063fc52eb67">addType</link> (std::vector&lt; <link linkend="__token_8h_1ad8ed01ff3ff33333d8e19db4d2818bb6">DataType</link> &gt; listTypes, <link linkend="_class_iterator_list">IteratorList</link>&lt; <link linkend="_class_token">Token</link> &gt; &amp;tl, <link linkend="_class_token_result">TokenResult</link> &amp;tRes)</para>
 </listitem>
-            <listitem><para>std::shared_ptr&lt; <link linkend="_class_token">Token</link> &gt; <link linkend="_class_k_p_token_1aa9f011132395d98cbf2563233b16a510">addInteger</link> (<link linkend="_class_iterator_list">IteratorList</link>&lt; <link linkend="_class_token">Token</link> &gt; &amp;tl, std::shared_ptr&lt; <link linkend="_class_token_result">TokenResult</link> &gt; <link linkend="_class_token_1a374f334f070a5a07daf0bbde3be02ced">tRes</link>)</para>
+            <listitem><para>bool <link linkend="_class_p_k_token_1ae1cc35c4987621ced09326fe94d07e88">addNumber</link> (<link linkend="_class_iterator_list">IteratorList</link>&lt; <link linkend="_class_token">Token</link> &gt; &amp;tl, <link linkend="_class_token_result">TokenResult</link> &amp;tRes)</para>
 </listitem>
-            <listitem><para>std::shared_ptr&lt; <link linkend="_class_token">Token</link> &gt; <link linkend="_class_k_p_token_1af0e2ae4f677dc0ac40543384c090afca">addFloat</link> (<link linkend="_class_iterator_list">IteratorList</link>&lt; <link linkend="_class_token">Token</link> &gt; &amp;tl, std::shared_ptr&lt; <link linkend="_class_token_result">TokenResult</link> &gt; <link linkend="_class_token_1a374f334f070a5a07daf0bbde3be02ced">tRes</link>)</para>
+            <listitem><para>bool <link linkend="_class_p_k_token_1abcee4a278fbc864a01ce17a7fe2871b7">addDataType</link> (<link linkend="_class_iterator_list">IteratorList</link>&lt; <link linkend="_class_token">Token</link> &gt; &amp;tl, <link linkend="_class_token_result">TokenResult</link> &amp;tRes)</para>
 </listitem>
-            <listitem><para>std::shared_ptr&lt; <link linkend="_class_token">Token</link> &gt; <link linkend="_class_k_p_token_1a9cd65bfbd30b7157eff902f162a45553">addCoord</link> (<link linkend="_class_iterator_list">IteratorList</link>&lt; <link linkend="_class_token">Token</link> &gt; &amp;tl, std::shared_ptr&lt; <link linkend="_class_token_result">TokenResult</link> &gt; <link linkend="_class_token_1a374f334f070a5a07daf0bbde3be02ced">tRes</link>)</para>
+            <listitem><para>bool <link linkend="_class_p_k_token_1a93e03c8505eb71b40a996f895ea0a8a1">addInteger</link> (<link linkend="_class_iterator_list">IteratorList</link>&lt; <link linkend="_class_token">Token</link> &gt; &amp;tl, <link linkend="_class_token_result">TokenResult</link> &amp;tRes)</para>
 </listitem>
-            <listitem><para>std::shared_ptr&lt; <link linkend="_class_token">Token</link> &gt; <link linkend="_class_k_p_token_1a79d7487ddc6918bf30349557f379fc04">addString</link> (<link linkend="_class_iterator_list">IteratorList</link>&lt; <link linkend="_class_token">Token</link> &gt; &amp;tl, std::shared_ptr&lt; <link linkend="_class_token_result">TokenResult</link> &gt; <link linkend="_class_token_1a374f334f070a5a07daf0bbde3be02ced">tRes</link>)</para>
+            <listitem><para>bool <link linkend="_class_p_k_token_1ac1c11a5ce856f6705bec792cb9417f16">addFloat</link> (<link linkend="_class_iterator_list">IteratorList</link>&lt; <link linkend="_class_token">Token</link> &gt; &amp;tl, <link linkend="_class_token_result">TokenResult</link> &amp;tRes)</para>
 </listitem>
-            <listitem><para>std::shared_ptr&lt; <link linkend="_class_token">Token</link> &gt; <link linkend="_class_k_p_token_1a53794cd4c78b5873550ca3f5a457f346">addComma</link> (<link linkend="_class_iterator_list">IteratorList</link>&lt; <link linkend="_class_token">Token</link> &gt; &amp;tl)</para>
+            <listitem><para>bool <link linkend="_class_p_k_token_1a00080a1fa3e1ff14ff53f523acf09770">addCoord</link> (<link linkend="_class_iterator_list">IteratorList</link>&lt; <link linkend="_class_token">Token</link> &gt; &amp;tl, <link linkend="_class_token_result">TokenResult</link> &amp;tRes)</para>
 </listitem>
-            <listitem><para>std::shared_ptr&lt; <link linkend="_class_token">Token</link> &gt; <link linkend="_class_k_p_token_1acbaa6483144d6800ad8ffa2df21392d2">addTimeType</link> (<link linkend="_class_iterator_list">IteratorList</link>&lt; <link linkend="_class_token">Token</link> &gt; &amp;tl, std::shared_ptr&lt; <link linkend="_class_token_result">TokenResult</link> &gt; <link linkend="_class_token_1a374f334f070a5a07daf0bbde3be02ced">tRes</link>)</para>
+            <listitem><para>bool <link linkend="_class_p_k_token_1a32ca841c2a6ae8e213d15babbc4a27f9">addZone</link> (<link linkend="_class_iterator_list">IteratorList</link>&lt; <link linkend="_class_token">Token</link> &gt; &amp;tl, <link linkend="_class_token_result">TokenResult</link> &amp;tRes)</para>
 </listitem>
-            <listitem><para>std::shared_ptr&lt; <link linkend="_class_token">Token</link> &gt; <link linkend="_class_k_p_token_1a0d6ee24aa23095edb2b1c9ba4baedc03">addOp</link> (<link linkend="_class_iterator_list">IteratorList</link>&lt; <link linkend="_class_token">Token</link> &gt; &amp;tl)</para>
+            <listitem><para>bool <link linkend="_class_p_k_token_1a62f5f46f8befb663543c117d6ed92fc9">addBool</link> (<link linkend="_class_iterator_list">IteratorList</link>&lt; <link linkend="_class_token">Token</link> &gt; &amp;tl, <link linkend="_class_token_result">TokenResult</link> &amp;tRes)</para>
 </listitem>
-            <listitem><para>std::shared_ptr&lt; <link linkend="_class_token">Token</link> &gt; <link linkend="_class_k_p_token_1a0a95e55ef2440fbaa21cd74442eb3c65">addCp</link> (<link linkend="_class_iterator_list">IteratorList</link>&lt; <link linkend="_class_token">Token</link> &gt; &amp;tl, std::shared_ptr&lt; <link linkend="_class_token_result">TokenResult</link> &gt; <link linkend="_class_token_1a374f334f070a5a07daf0bbde3be02ced">tRes</link>)</para>
+            <listitem><para>bool <link linkend="_class_p_k_token_1a97e1183958a6dabeb6652340bfe4a1f7">addIdentifier</link> (<link linkend="_class_iterator_list">IteratorList</link>&lt; <link linkend="_class_token">Token</link> &gt; &amp;tl, <link linkend="_class_token_result">TokenResult</link> &amp;tRes)</para>
 </listitem>
-            <listitem><para>virtual std::shared_ptr&lt; <link linkend="_class_token">Token</link> &gt; <link linkend="_class_k_p_token_1a87c8af27b17d6ecbc8f7338d1f7737a7">handleCp</link> (<link linkend="_class_iterator_list">IteratorList</link>&lt; <link linkend="_class_token">Token</link> &gt; &amp;tl, std::shared_ptr&lt; <link linkend="_class_token_result">TokenResult</link> &gt; <link linkend="_class_token_1a374f334f070a5a07daf0bbde3be02ced">tRes</link>)</para>
+            <listitem><para>bool <link linkend="_class_p_k_token_1a6cf23e694a6bf9e4c08a72d3cc48d899">addString</link> (<link linkend="_class_iterator_list">IteratorList</link>&lt; <link linkend="_class_token">Token</link> &gt; &amp;tl, <link linkend="_class_token_result">TokenResult</link> &amp;tRes)</para>
+</listitem>
+            <listitem><para>bool <link linkend="_class_p_k_token_1a9bd07a9eaf2728560d1aa29bcc13bba9">addComma</link> (<link linkend="_class_iterator_list">IteratorList</link>&lt; <link linkend="_class_token">Token</link> &gt; &amp;tl, <link linkend="_class_token_result">TokenResult</link> &amp;tRes)</para>
+</listitem>
+            <listitem><para>bool <link linkend="_class_p_k_token_1abf2772818107f39c995f40f698630539">addTimeType</link> (<link linkend="_class_iterator_list">IteratorList</link>&lt; <link linkend="_class_token">Token</link> &gt; &amp;tl, <link linkend="_class_token_result">TokenResult</link> &amp;tRes)</para>
+</listitem>
+            <listitem><para>bool <link linkend="_class_p_k_token_1aa0d39255200f157dcead5e02815c0345">addOp</link> (<link linkend="_class_iterator_list">IteratorList</link>&lt; <link linkend="_class_token">Token</link> &gt; &amp;tl, <link linkend="_class_token_result">TokenResult</link> &amp;tRes)</para>
+</listitem>
+            <listitem><para>bool <link linkend="_class_p_k_token_1a2a1e90c3b769f9125740c05de9da7499">addCp</link> (<link linkend="_class_iterator_list">IteratorList</link>&lt; <link linkend="_class_token">Token</link> &gt; &amp;tl, <link linkend="_class_token_result">TokenResult</link> &amp;tRes)</para>
+</listitem>
+            <listitem><para>virtual bool <link linkend="_class_p_k_token_1ab964c1ed5353551fafcab7d9f0053a86">handleArguments</link> (<link linkend="_class_iterator_list">IteratorList</link>&lt; <link linkend="_class_token">Token</link> &gt; &amp;tl, <link linkend="_class_token_result">TokenResult</link> &amp;tRes)</para>
 </listitem>
         </itemizedlist>
-Protected Attributes inherited from <link linkend="_class_flow_k_c_token">FlowKCToken</link>        <itemizedlist>
-            <listitem><para>std::shared_ptr&lt; <link linkend="_class_token">Token</link> &gt; <link linkend="_class_flow_k_c_token_1a4f78286ec5e4f3116d6cb152fa75ec92">condition</link></para>
+Protected Member Functions inherited from <link linkend="_class_k_token">KToken</link>Protected Member Functions inherited from <link linkend="_class_flow_token">FlowToken</link>        <itemizedlist>
+            <listitem><para>void <link linkend="_class_flow_token_1a5beb3e184d04cac91394633c7c33cc3d">printTabs</link> (const int nestedLayer)</para>
+</listitem>
+            <listitem><para>bool <link linkend="_class_flow_token_1a7403770ae8bbe3efb6ec95608a5318be">addOb</link> (<link linkend="_class_iterator_list">IteratorList</link>&lt; <link linkend="_class_token">Token</link> &gt; &amp;tl, <link linkend="_class_token_result">TokenResult</link> &amp;tRes)</para>
+</listitem>
+            <listitem><para>bool <link linkend="_class_flow_token_1a1bbf1118c555638aca5acb0e758f8c87">addCb</link> (<link linkend="_class_iterator_list">IteratorList</link>&lt; <link linkend="_class_token">Token</link> &gt; &amp;tl, <link linkend="_class_token_result">TokenResult</link> &amp;tRes)</para>
+</listitem>
+            <listitem><para>bool <link linkend="_class_flow_token_1adf13c232a8b5279ae0027df6859fdd12">addNestedTokens</link> (<link linkend="_class_iterator_list">IteratorList</link>&lt; <link linkend="_class_token">Token</link> &gt; &amp;tl, <link linkend="_class_token_result">TokenResult</link> &amp;tRes)</para>
+</listitem>
+            <listitem><para>bool <link linkend="_class_flow_token_1abb30bac4dada1a3372776680719d517c">addBody</link> (<link linkend="_class_iterator_list">IteratorList</link>&lt; <link linkend="_class_token">Token</link> &gt; &amp;tl, <link linkend="_class_token_result">TokenResult</link> &amp;tRes)</para>
 </listitem>
         </itemizedlist>
-Protected Attributes inherited from <link linkend="_class_flow_k_p_token">FlowKPToken</link>        <itemizedlist>
-            <listitem><para>std::vector&lt; std::shared_ptr&lt; <link linkend="_class_token">Token</link> &gt; &gt; <link linkend="_class_flow_k_p_token_1aa45da600dc21ac842a04f7f7c51ece11">nestedTokens</link></para>
+Protected Attributes inherited from <link linkend="_class_u_p_k_token">UPKToken</link>        <itemizedlist>
+            <listitem><para>std::shared_ptr&lt; <link linkend="_class_token">Token</link> &gt; <link linkend="_class_u_p_k_token_1a1c9dbf2a5f4096f4891d57ece8e97288">uniqueToken</link></para>
+</listitem>
+        </itemizedlist>
+Protected Attributes inherited from <link linkend="_class_p_k_token">PKToken</link>        <itemizedlist>
+            <listitem><para><link linkend="_class_arguments_overload">ArgumentsOverload</link> <link linkend="_class_p_k_token_1a42553332bc9d8bb3f267bf3cba36240c">argsOverload</link></para>
+</listitem>
+            <listitem><para>std::vector&lt; std::shared_ptr&lt; <link linkend="_class_token">Token</link> &gt; &gt; <link linkend="_class_p_k_token_1a4d20bfdc555a0c45d45465b9ab26d1ec">argTokens</link></para>
+</listitem>
+        </itemizedlist>
+Protected Attributes inherited from <link linkend="_class_token">Token</link>        <itemizedlist>
+            <listitem><para>std::string <link linkend="_class_token_1a8b3faba4c73c28d11fec73758a0302b2">tokenText</link></para>
+</listitem>
+            <listitem><para><link linkend="__token_8h_1acbd1e63c605cbb3dbe67c7411841b46c">TokenVALUE</link> <link linkend="_class_token_1a4c8ce9cf1eecbc7e49650307eea6a862">tValue</link></para>
+</listitem>
+            <listitem><para>int <link linkend="_class_token_1a4b96c2a31d7c374fd2bd1986794f80dd">line</link></para>
+</listitem>
+        </itemizedlist>
+Protected Attributes inherited from <link linkend="_class_flow_token">FlowToken</link>        <itemizedlist>
+            <listitem><para>std::vector&lt; std::shared_ptr&lt; <link linkend="_class_token">Token</link> &gt; &gt; <link linkend="_class_flow_token_1a983bda19879009577e51360d9bdc93da">nestedTokens</link></para>
+</listitem>
+            <listitem><para>int <link linkend="_class_flow_token_1ae59bc263c0116e67191479c41e72a1b7">lineFlow</link></para>
 </listitem>
         </itemizedlist>
 <section>
 <title>Detailed Description</title>
 <para>
-Definition at line <link linkend="__interpretor_8h_source_1l00277">277</link> of file <link linkend="__interpretor_8h_source">Interpretor.h</link>.</para>
+Definition at line <link linkend="__token_8h_source_1l00472">472</link> of file <link linkend="__token_8h_source">Token.h</link>.</para>
 </section>
 <section>
 <title>Constructor &amp; Destructor Documentation</title>
@@ -130,7 +193,7 @@ Definition at line <link linkend="__interpretor_8h_source_1l00277">277</link> of
 <indexterm><primary>LoopToken</primary><secondary>LoopToken</secondary></indexterm>
 <indexterm><primary>LoopToken</primary><secondary>LoopToken</secondary></indexterm>
 <para><computeroutput>LoopToken::LoopToken ( )</computeroutput></para><para>
-Definition at line <link linkend="__interpretor_8cpp_source_1l01202">1202</link> of file <link linkend="__interpretor_8cpp_source">Interpretor.cpp</link>.</para>
+Definition at line <link linkend="__token_8cpp_source_1l00639">639</link> of file <link linkend="__token_8cpp_source">Token.cpp</link>.</para>
 </section>
 </section>
 <section>
@@ -142,19 +205,9 @@ Definition at line <link linkend="__interpretor_8cpp_source_1l01202">1202</link>
 <para><computeroutput>std::shared_ptr&lt; <link linkend="_class_tag">Tag</link> &gt; LoopToken::execute ( )<computeroutput>[override]</computeroutput>, <computeroutput>[virtual]</computeroutput></computeroutput></para><para>
 Reimplemented from <link linkend="_class_token_1aea759b8376bff558791fdc1f2f70f4fb">Token</link>.</para>
 <para>
-Definition at line <link linkend="__interpretor_8cpp_source_1l01208">1208</link> of file <link linkend="__interpretor_8cpp_source">Interpretor.cpp</link>.</para>
-</section>
-</section>
-<section>
-<title>Member Data Documentation</title>
-<anchor xml:id="_class_loop_token_1a31a461ebcf1f5deea6a66276c7772513"/><section>
-    <title>conditionToken</title>
-<indexterm><primary>conditionToken</primary><secondary>LoopToken</secondary></indexterm>
-<indexterm><primary>LoopToken</primary><secondary>conditionToken</secondary></indexterm>
-<para><computeroutput>std::shared_ptr&lt;<link linkend="_class_token">Token</link>&gt; LoopToken::conditionToken</computeroutput></para><para>
-Definition at line <link linkend="__interpretor_8h_source_1l00280">280</link> of file <link linkend="__interpretor_8h_source">Interpretor.h</link>.</para>
+Definition at line <link linkend="__token_8cpp_source_1l00645">645</link> of file <link linkend="__token_8cpp_source">Token.cpp</link>.</para>
 </section>
 <para>
 The documentation for this class was generated from the following files:</para>
-src/<link linkend="__interpretor_8h">Interpretor.h</link>src/<link linkend="__interpretor_8cpp">Interpretor.cpp</link></section>
+src/<link linkend="__token_8h">Token.h</link>src/<link linkend="__token_8cpp">Token.cpp</link></section>
 </section>

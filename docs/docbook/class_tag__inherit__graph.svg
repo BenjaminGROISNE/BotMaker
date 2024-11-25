@@ -1020,40 +1020,36 @@
 <g id="Node000004" class="node">
 <title>Node4</title>
 <g id="a_Node000004"><a xlink:href="$class_compare_tag.html" xlink:title=" ">
-<polygon fill="white" stroke="none" points="303.88,-268 156.12,-268 156.12,0 303.88,0 303.88,-268"/>
-<text text-anchor="start" x="190.62" y="-254.5" font-family="Helvetica,sans-Serif" font-size="10.00">CompareTag&lt; T &gt;</text>
-<text text-anchor="start" x="160.12" y="-238.5" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
-<text text-anchor="start" x="170.12" y="-238.5" font-family="Helvetica,sans-Serif" font-size="10.00">std::vector&lt; std::shared</text>
-<text text-anchor="start" x="170.12" y="-226.5" font-family="Helvetica,sans-Serif" font-size="10.00">_ptr&lt; Tag &gt; &gt; listTags</text>
-<text text-anchor="start" x="160.12" y="-210.5" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
-<text text-anchor="start" x="170.12" y="-210.5" font-family="Helvetica,sans-Serif" font-size="10.00">CompareType compType</text>
+<polygon fill="white" stroke="none" points="303.88,-252 156.12,-252 156.12,-16 303.88,-16 303.88,-252"/>
+<text text-anchor="start" x="190.62" y="-238.5" font-family="Helvetica,sans-Serif" font-size="10.00">CompareTag&lt; T &gt;</text>
+<text text-anchor="start" x="160.12" y="-222.5" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
+<text text-anchor="start" x="170.12" y="-222.5" font-family="Helvetica,sans-Serif" font-size="10.00">std::vector&lt; std::shared</text>
+<text text-anchor="start" x="170.12" y="-210.5" font-family="Helvetica,sans-Serif" font-size="10.00">_ptr&lt; Tag &gt; &gt; listTags</text>
 <text text-anchor="start" x="160.12" y="-194.5" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
-<text text-anchor="start" x="170.12" y="-194.5" font-family="Helvetica,sans-Serif" font-size="10.00">CompareTag()</text>
+<text text-anchor="start" x="170.12" y="-194.5" font-family="Helvetica,sans-Serif" font-size="10.00">CompareType compType</text>
 <text text-anchor="start" x="160.12" y="-178.5" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
-<text text-anchor="start" x="170.12" y="-178.5" font-family="Helvetica,sans-Serif" font-size="10.00">CompareTag(const Compare</text>
-<text text-anchor="start" x="170.12" y="-166.5" font-family="Helvetica,sans-Serif" font-size="10.00">Tag &amp;toCopy)</text>
-<text text-anchor="start" x="160.12" y="-150.5" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
-<text text-anchor="start" x="170.12" y="-150.5" font-family="Helvetica,sans-Serif" font-size="10.00">CompareTag(const std</text>
-<text text-anchor="start" x="170.12" y="-138.5" font-family="Helvetica,sans-Serif" font-size="10.00">::vector&lt; std::shared</text>
-<text text-anchor="start" x="170.12" y="-126.5" font-family="Helvetica,sans-Serif" font-size="10.00">_ptr&lt; Tag &gt; &gt; &amp;parameters,</text>
-<text text-anchor="start" x="170.12" y="-114.5" font-family="Helvetica,sans-Serif" font-size="10.00"> const CompareType &amp;cType)</text>
-<text text-anchor="start" x="160.12" y="-98.5" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
-<text text-anchor="start" x="170.12" y="-98.5" font-family="Helvetica,sans-Serif" font-size="10.00">std::shared_ptr&lt; Compare</text>
-<text text-anchor="start" x="170.12" y="-86.5" font-family="Helvetica,sans-Serif" font-size="10.00">Tag &gt; clone()</text>
-<text text-anchor="start" x="160.12" y="-70.5" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
-<text text-anchor="start" x="170.12" y="-70.5" font-family="Helvetica,sans-Serif" font-size="10.00">void execute() override</text>
+<text text-anchor="start" x="170.12" y="-178.5" font-family="Helvetica,sans-Serif" font-size="10.00">CompareTag()</text>
+<text text-anchor="start" x="160.12" y="-162.5" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
+<text text-anchor="start" x="170.12" y="-162.5" font-family="Helvetica,sans-Serif" font-size="10.00">CompareTag(const Compare</text>
+<text text-anchor="start" x="170.12" y="-150.5" font-family="Helvetica,sans-Serif" font-size="10.00">Tag &amp;toCopy)</text>
+<text text-anchor="start" x="160.12" y="-134.5" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
+<text text-anchor="start" x="170.12" y="-134.5" font-family="Helvetica,sans-Serif" font-size="10.00">CompareTag(const std</text>
+<text text-anchor="start" x="170.12" y="-122.5" font-family="Helvetica,sans-Serif" font-size="10.00">::vector&lt; std::shared</text>
+<text text-anchor="start" x="170.12" y="-110.5" font-family="Helvetica,sans-Serif" font-size="10.00">_ptr&lt; Tag &gt; &gt; &amp;parameters,</text>
+<text text-anchor="start" x="170.12" y="-98.5" font-family="Helvetica,sans-Serif" font-size="10.00"> const CompareType &amp;cType)</text>
+<text text-anchor="start" x="160.12" y="-82.5" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
+<text text-anchor="start" x="170.12" y="-82.5" font-family="Helvetica,sans-Serif" font-size="10.00">std::shared_ptr&lt; Compare</text>
+<text text-anchor="start" x="170.12" y="-70.5" font-family="Helvetica,sans-Serif" font-size="10.00">Tag &gt; clone()</text>
 <text text-anchor="start" x="160.12" y="-54.5" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
-<text text-anchor="start" x="170.12" y="-54.5" font-family="Helvetica,sans-Serif" font-size="10.00">void execute()</text>
+<text text-anchor="start" x="170.12" y="-54.5" font-family="Helvetica,sans-Serif" font-size="10.00">void execute() override</text>
 <text text-anchor="start" x="160.12" y="-38.5" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
 <text text-anchor="start" x="170.12" y="-38.5" font-family="Helvetica,sans-Serif" font-size="10.00">void execute()</text>
 <text text-anchor="start" x="160.12" y="-22.5" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
 <text text-anchor="start" x="170.12" y="-22.5" font-family="Helvetica,sans-Serif" font-size="10.00">void execute()</text>
-<text text-anchor="start" x="160.12" y="-6.5" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
-<text text-anchor="start" x="170.12" y="-6.5" font-family="Helvetica,sans-Serif" font-size="10.00">void execute()</text>
-<polygon fill="#666666" stroke="#666666" points="156.12,-250 156.12,-250 303.88,-250 303.88,-250 156.12,-250"/>
-<polygon fill="#666666" stroke="#666666" points="156.12,-206 156.12,-206 168.12,-206 168.12,-206 156.12,-206"/>
-<polygon fill="#666666" stroke="#666666" points="168.12,-206 168.12,-206 303.88,-206 303.88,-206 168.12,-206"/>
-<polygon fill="none" stroke="#666666" points="156.12,0 156.12,-268 303.88,-268 303.88,0 156.12,0"/>
+<polygon fill="#666666" stroke="#666666" points="156.12,-234 156.12,-234 303.88,-234 303.88,-234 156.12,-234"/>
+<polygon fill="#666666" stroke="#666666" points="156.12,-190 156.12,-190 168.12,-190 168.12,-190 156.12,-190"/>
+<polygon fill="#666666" stroke="#666666" points="168.12,-190 168.12,-190 303.88,-190 303.88,-190 168.12,-190"/>
+<polygon fill="none" stroke="#666666" points="156.12,-16 156.12,-252 303.88,-252 303.88,-16 156.12,-16"/>
 </a>
 </g>
 </g>
@@ -1061,7 +1057,7 @@
 <g id="edge41_Node000002_Node000004" class="edge">
 <title>Node2&#45;&gt;Node4</title>
 <g id="a_edge41_Node000002_Node000004"><a xlink:title=" ">
-<path fill="none" stroke="#63b8ff" d="M291.41,-444.97C280.59,-390.38 267.58,-324.67 256.31,-267.82"/>
+<path fill="none" stroke="#63b8ff" d="M291.43,-445.09C279.59,-385.29 265.09,-312.14 253.16,-251.91"/>
 <polygon fill="none" stroke="#63b8ff" points="287.94,-445.48 293.32,-454.61 294.81,-444.12 287.94,-445.48"/>
 </a>
 </g>
@@ -1428,29 +1424,32 @@
 <g id="Node000026" class="node">
 <title>Node26</title>
 <g id="a_Node000026"><a xlink:href="$class_main_tag.html" xlink:title=" ">
-<polygon fill="white" stroke="none" points="2257.5,-222 2128.5,-222 2128.5,-46 2257.5,-46 2257.5,-222"/>
-<text text-anchor="start" x="2174.62" y="-208.5" font-family="Helvetica,sans-Serif" font-size="10.00">MainTag</text>
-<text text-anchor="start" x="2132.5" y="-192.5" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
-<text text-anchor="start" x="2142.5" y="-192.5" font-family="Helvetica,sans-Serif" font-size="10.00">std::vector&lt; std::shared</text>
-<text text-anchor="start" x="2142.5" y="-180.5" font-family="Helvetica,sans-Serif" font-size="10.00">_ptr&lt; Tag &gt; &gt; argvTag</text>
-<text text-anchor="start" x="2132.5" y="-164.5" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
-<text text-anchor="start" x="2142.5" y="-164.5" font-family="Helvetica,sans-Serif" font-size="10.00">MainTag()</text>
-<text text-anchor="start" x="2132.5" y="-148.5" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
-<text text-anchor="start" x="2142.5" y="-148.5" font-family="Helvetica,sans-Serif" font-size="10.00">MainTag(const MainTag</text>
-<text text-anchor="start" x="2142.5" y="-136.5" font-family="Helvetica,sans-Serif" font-size="10.00"> &amp;toCopy)</text>
-<text text-anchor="start" x="2132.5" y="-120.5" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
-<text text-anchor="start" x="2142.5" y="-120.5" font-family="Helvetica,sans-Serif" font-size="10.00">MainTag(const std</text>
-<text text-anchor="start" x="2142.5" y="-108.5" font-family="Helvetica,sans-Serif" font-size="10.00">::vector&lt; std::shared</text>
-<text text-anchor="start" x="2142.5" y="-96.5" font-family="Helvetica,sans-Serif" font-size="10.00">_ptr&lt; Tag &gt; &gt; &amp;tags)</text>
-<text text-anchor="start" x="2132.5" y="-80.5" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
-<text text-anchor="start" x="2142.5" y="-80.5" font-family="Helvetica,sans-Serif" font-size="10.00">std::shared_ptr&lt; MainTag</text>
-<text text-anchor="start" x="2142.5" y="-68.5" font-family="Helvetica,sans-Serif" font-size="10.00"> &gt; clone()</text>
-<text text-anchor="start" x="2132.5" y="-52.5" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
-<text text-anchor="start" x="2142.5" y="-52.5" font-family="Helvetica,sans-Serif" font-size="10.00">void execute() override</text>
-<polygon fill="#666666" stroke="#666666" points="2128.5,-204 2128.5,-204 2257.5,-204 2257.5,-204 2128.5,-204"/>
-<polygon fill="#666666" stroke="#666666" points="2128.5,-176 2128.5,-176 2140.5,-176 2140.5,-176 2128.5,-176"/>
-<polygon fill="#666666" stroke="#666666" points="2140.5,-176 2140.5,-176 2257.5,-176 2257.5,-176 2140.5,-176"/>
-<polygon fill="none" stroke="#666666" points="2128.5,-46 2128.5,-222 2257.5,-222 2257.5,-46 2128.5,-46"/>
+<polygon fill="white" stroke="none" points="2257.5,-236 2128.5,-236 2128.5,-32 2257.5,-32 2257.5,-236"/>
+<text text-anchor="start" x="2174.62" y="-222.5" font-family="Helvetica,sans-Serif" font-size="10.00">MainTag</text>
+<text text-anchor="start" x="2132.5" y="-206.5" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
+<text text-anchor="start" x="2142.5" y="-206.5" font-family="Helvetica,sans-Serif" font-size="10.00">std::vector&lt; std::shared</text>
+<text text-anchor="start" x="2142.5" y="-194.5" font-family="Helvetica,sans-Serif" font-size="10.00">_ptr&lt; Tag &gt; &gt; argvTag</text>
+<text text-anchor="start" x="2132.5" y="-178.5" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
+<text text-anchor="start" x="2142.5" y="-178.5" font-family="Helvetica,sans-Serif" font-size="10.00">MainTag()</text>
+<text text-anchor="start" x="2132.5" y="-162.5" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
+<text text-anchor="start" x="2142.5" y="-162.5" font-family="Helvetica,sans-Serif" font-size="10.00">MainTag(const MainTag</text>
+<text text-anchor="start" x="2142.5" y="-150.5" font-family="Helvetica,sans-Serif" font-size="10.00"> &amp;toCopy)</text>
+<text text-anchor="start" x="2132.5" y="-134.5" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
+<text text-anchor="start" x="2142.5" y="-134.5" font-family="Helvetica,sans-Serif" font-size="10.00">MainTag(std::shared</text>
+<text text-anchor="start" x="2142.5" y="-122.5" font-family="Helvetica,sans-Serif" font-size="10.00">_ptr&lt; Tag &gt; innerTag)</text>
+<text text-anchor="start" x="2132.5" y="-106.5" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
+<text text-anchor="start" x="2142.5" y="-106.5" font-family="Helvetica,sans-Serif" font-size="10.00">MainTag(const std</text>
+<text text-anchor="start" x="2142.5" y="-94.5" font-family="Helvetica,sans-Serif" font-size="10.00">::vector&lt; std::shared</text>
+<text text-anchor="start" x="2142.5" y="-82.5" font-family="Helvetica,sans-Serif" font-size="10.00">_ptr&lt; Tag &gt; &gt; &amp;tags)</text>
+<text text-anchor="start" x="2132.5" y="-66.5" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
+<text text-anchor="start" x="2142.5" y="-66.5" font-family="Helvetica,sans-Serif" font-size="10.00">std::shared_ptr&lt; MainTag</text>
+<text text-anchor="start" x="2142.5" y="-54.5" font-family="Helvetica,sans-Serif" font-size="10.00"> &gt; clone()</text>
+<text text-anchor="start" x="2132.5" y="-38.5" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
+<text text-anchor="start" x="2142.5" y="-38.5" font-family="Helvetica,sans-Serif" font-size="10.00">void execute() override</text>
+<polygon fill="#666666" stroke="#666666" points="2128.5,-218 2128.5,-218 2257.5,-218 2257.5,-218 2128.5,-218"/>
+<polygon fill="#666666" stroke="#666666" points="2128.5,-190 2128.5,-190 2140.5,-190 2140.5,-190 2128.5,-190"/>
+<polygon fill="#666666" stroke="#666666" points="2140.5,-190 2140.5,-190 2257.5,-190 2257.5,-190 2140.5,-190"/>
+<polygon fill="none" stroke="#666666" points="2128.5,-32 2128.5,-236 2257.5,-236 2257.5,-32 2128.5,-32"/>
 </a>
 </g>
 </g>
@@ -1458,7 +1457,7 @@
 <g id="edge63_Node000017_Node000026" class="edge">
 <title>Node17&#45;&gt;Node26</title>
 <g id="a_edge63_Node000017_Node000026"><a xlink:title=" ">
-<path fill="none" stroke="#63b8ff" d="M1632.59,-389.53C1643.86,-356.76 1661.28,-325.87 1688,-304 1762.38,-243.13 2038.25,-320.12 2119,-268 2136.43,-256.75 2150.12,-239.89 2160.74,-221.93"/>
+<path fill="none" stroke="#63b8ff" d="M1632.59,-389.53C1643.86,-356.76 1661.28,-325.87 1688,-304 1762.38,-243.13 2038.25,-320.12 2119,-268 2131.88,-259.69 2142.72,-248.32 2151.78,-235.7"/>
 <polygon fill="none" stroke="#63b8ff" points="1629.34,-388.2 1629.61,-398.79 1636.01,-390.35 1629.34,-388.2"/>
 </a>
 </g>

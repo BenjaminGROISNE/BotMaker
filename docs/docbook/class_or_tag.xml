@@ -84,7 +84,7 @@ Public Attributes inherited from <link linkend="_class_tag">Tag</link>        <i
 <section>
 <title>Detailed Description</title>
 <para>
-Definition at line <link linkend="__tags_8h_source_1l00480">480</link> of file <link linkend="__tags_8h_source">Tags.h</link>.</para>
+Definition at line <link linkend="__tags_8h_source_1l00471">471</link> of file <link linkend="__tags_8h_source">Tags.h</link>.</para>
 </section>
 <section>
 <title>Constructor &amp; Destructor Documentation</title>
@@ -93,21 +93,21 @@ Definition at line <link linkend="__tags_8h_source_1l00480">480</link> of file <
 <indexterm><primary>OrTag</primary><secondary>OrTag</secondary></indexterm>
 <indexterm><primary>OrTag</primary><secondary>OrTag</secondary></indexterm>
 <para><computeroutput>OrTag::OrTag ( )</computeroutput></para><para>
-Definition at line <link linkend="__tags_8cpp_source_1l01024">1024</link> of file <link linkend="__tags_8cpp_source">Tags.cpp</link>.</para>
+Definition at line <link linkend="__tags_8cpp_source_1l01029">1029</link> of file <link linkend="__tags_8cpp_source">Tags.cpp</link>.</para>
 </section>
 <anchor xml:id="_class_or_tag_1a9fe50511aa00da97968c3e2e1b950886"/><section>
     <title>OrTag()<computeroutput>[2/3]</computeroutput></title>
 <indexterm><primary>OrTag</primary><secondary>OrTag</secondary></indexterm>
 <indexterm><primary>OrTag</primary><secondary>OrTag</secondary></indexterm>
 <para><computeroutput>OrTag::OrTag (const <link linkend="_class_or_tag">OrTag</link> &amp; toCopy)</computeroutput></para><para>
-Definition at line <link linkend="__tags_8cpp_source_1l00240">240</link> of file <link linkend="__tags_8cpp_source">Tags.cpp</link>.</para>
+Definition at line <link linkend="__tags_8cpp_source_1l00245">245</link> of file <link linkend="__tags_8cpp_source">Tags.cpp</link>.</para>
 </section>
 <anchor xml:id="_class_or_tag_1a557754df14ebca4527227935be71e936"/><section>
     <title>OrTag()<computeroutput>[3/3]</computeroutput></title>
 <indexterm><primary>OrTag</primary><secondary>OrTag</secondary></indexterm>
 <indexterm><primary>OrTag</primary><secondary>OrTag</secondary></indexterm>
 <para><computeroutput>OrTag::OrTag (const std::vector&lt; std::shared_ptr&lt; <link linkend="_class_tag">Tag</link> &gt; &gt; &amp; parameters)</computeroutput></para><para>
-Definition at line <link linkend="__tags_8cpp_source_1l01081">1081</link> of file <link linkend="__tags_8cpp_source">Tags.cpp</link>.</para>
+Definition at line <link linkend="__tags_8cpp_source_1l01086">1086</link> of file <link linkend="__tags_8cpp_source">Tags.cpp</link>.</para>
 </section>
 </section>
 <section>
@@ -126,7 +126,7 @@ Definition at line <link linkend="__tags_8cpp_source_1l00112">112</link> of file
 <para><computeroutput>void OrTag::execute ( )<computeroutput>[override]</computeroutput>, <computeroutput>[virtual]</computeroutput></computeroutput></para><para>
 Reimplemented from <link linkend="_class_bool_tag_1a2695d817dcbf4150f25cec21a453633a">BoolTag</link>.</para>
 <para>
-Definition at line <link linkend="__tags_8cpp_source_1l01086">1086</link> of file <link linkend="__tags_8cpp_source">Tags.cpp</link>.</para>
+Definition at line <link linkend="__tags_8cpp_source_1l01091">1091</link> of file <link linkend="__tags_8cpp_source">Tags.cpp</link>.</para>
 Here is the call graph for this function:<para>
     <informalfigure>
         <mediaobject>
@@ -145,7 +145,7 @@ Here is the call graph for this function:<para>
 <indexterm><primary>listTags</primary><secondary>OrTag</secondary></indexterm>
 <indexterm><primary>OrTag</primary><secondary>listTags</secondary></indexterm>
 <para><computeroutput>std::vector&lt;std::shared_ptr&lt;<link linkend="_class_tag">Tag</link>&gt; &gt; OrTag::listTags</computeroutput></para><para>
-Definition at line <link linkend="__tags_8h_source_1l00485">485</link> of file <link linkend="__tags_8h_source">Tags.h</link>.</para>
+Definition at line <link linkend="__tags_8h_source_1l00476">476</link> of file <link linkend="__tags_8h_source">Tags.h</link>.</para>
 </section>
 <para>
 The documentation for this class was generated from the following files:</para>

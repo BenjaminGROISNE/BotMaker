@@ -81,7 +81,7 @@ Public Attributes inherited from <link linkend="_class_tag">Tag</link>        <i
 <title>Detailed Description</title>
 <simplesect><title>template&lt;typename <link linkend="__units_8h_1a2b350cb683584e1f7db6c78f698c161ba21f40778b7db9343a6ca75ec2c41ccce">T</link>&gt;<?linebreak?>class PrintTag&lt; T &gt;</title></simplesect>
 <para>
-Definition at line <link linkend="__tags_8h_source_1l00404">404</link> of file <link linkend="__tags_8h_source">Tags.h</link>.</para>
+Definition at line <link linkend="__tags_8h_source_1l00402">402</link> of file <link linkend="__tags_8h_source">Tags.h</link>.</para>
 </section>
 <section>
 <title>Constructor &amp; Destructor Documentation</title>
@@ -90,21 +90,21 @@ Definition at line <link linkend="__tags_8h_source_1l00404">404</link> of file <
 <indexterm><primary>PrintTag</primary><secondary>PrintTag&lt; T &gt;</secondary></indexterm>
 <indexterm><primary>PrintTag&lt; T &gt;</primary><secondary>PrintTag</secondary></indexterm>
 <computeroutput>template&lt;typename <link linkend="__units_8h_1a2b350cb683584e1f7db6c78f698c161ba21f40778b7db9343a6ca75ec2c41ccce">T</link> &gt; </computeroutput><para><computeroutput><link linkend="_class_print_tag">PrintTag</link>&lt; <link linkend="__units_8h_1a2b350cb683584e1f7db6c78f698c161ba21f40778b7db9343a6ca75ec2c41ccce">T</link> &gt;<link linkend="_class_print_tag">::PrintTag</link> ( )</computeroutput></para><para>
-Definition at line <link linkend="__tags_8cpp_source_1l01547">1547</link> of file <link linkend="__tags_8cpp_source">Tags.cpp</link>.</para>
+Definition at line <link linkend="__tags_8cpp_source_1l01552">1552</link> of file <link linkend="__tags_8cpp_source">Tags.cpp</link>.</para>
 </section>
 <anchor xml:id="_class_print_tag_1a5031e223b2820e2910df92cf5b6346fc"/><section>
     <title>PrintTag()<computeroutput>[2/3]</computeroutput></title>
 <indexterm><primary>PrintTag</primary><secondary>PrintTag&lt; T &gt;</secondary></indexterm>
 <indexterm><primary>PrintTag&lt; T &gt;</primary><secondary>PrintTag</secondary></indexterm>
 <computeroutput>template&lt;typename <link linkend="__units_8h_1a2b350cb683584e1f7db6c78f698c161ba21f40778b7db9343a6ca75ec2c41ccce">T</link> &gt; </computeroutput><para><computeroutput><link linkend="_class_print_tag">PrintTag</link>&lt; <link linkend="__units_8h_1a2b350cb683584e1f7db6c78f698c161ba21f40778b7db9343a6ca75ec2c41ccce">T</link> &gt;<link linkend="_class_print_tag">::PrintTag</link> (const <link linkend="_class_print_tag">PrintTag</link>&lt; <link linkend="__units_8h_1a2b350cb683584e1f7db6c78f698c161ba21f40778b7db9343a6ca75ec2c41ccce">T</link> &gt; &amp; toCopy)</computeroutput></para><para>
-Definition at line <link linkend="__tags_8cpp_source_1l00216">216</link> of file <link linkend="__tags_8cpp_source">Tags.cpp</link>.</para>
+Definition at line <link linkend="__tags_8cpp_source_1l00221">221</link> of file <link linkend="__tags_8cpp_source">Tags.cpp</link>.</para>
 </section>
 <anchor xml:id="_class_print_tag_1aa3ef6f70c9aa30878aafc279b3a0505b"/><section>
     <title>PrintTag()<computeroutput>[3/3]</computeroutput></title>
 <indexterm><primary>PrintTag</primary><secondary>PrintTag&lt; T &gt;</secondary></indexterm>
 <indexterm><primary>PrintTag&lt; T &gt;</primary><secondary>PrintTag</secondary></indexterm>
 <computeroutput>template&lt;typename <link linkend="__units_8h_1a2b350cb683584e1f7db6c78f698c161ba21f40778b7db9343a6ca75ec2c41ccce">T</link> &gt; </computeroutput><para><computeroutput><link linkend="_class_print_tag">PrintTag</link>&lt; <link linkend="__units_8h_1a2b350cb683584e1f7db6c78f698c161ba21f40778b7db9343a6ca75ec2c41ccce">T</link> &gt;<link linkend="_class_print_tag">::PrintTag</link> (const std::shared_ptr&lt; <link linkend="_class_tag">Tag</link> &gt; &amp; tag)</computeroutput></para><para>
-Definition at line <link linkend="__tags_8cpp_source_1l01554">1554</link> of file <link linkend="__tags_8cpp_source">Tags.cpp</link>.</para>
+Definition at line <link linkend="__tags_8cpp_source_1l01559">1559</link> of file <link linkend="__tags_8cpp_source">Tags.cpp</link>.</para>
 </section>
 </section>
 <section>
@@ -123,7 +123,7 @@ Definition at line <link linkend="__tags_8cpp_source_1l00090">90</link> of file 
 <para><computeroutput>void <link linkend="_class_print_tag">PrintTag</link>&lt; int &gt;::execute ( )<computeroutput>[virtual]</computeroutput></computeroutput></para><para>
 Reimplemented from <link linkend="_class_tag_1a54054f3c9db4decb422972460bbb34c3">Tag</link>.</para>
 <para>
-Definition at line <link linkend="__tags_8cpp_source_1l01619">1619</link> of file <link linkend="__tags_8cpp_source">Tags.cpp</link>.</para>
+Definition at line <link linkend="__tags_8cpp_source_1l01624">1624</link> of file <link linkend="__tags_8cpp_source">Tags.cpp</link>.</para>
 Here is the call graph for this function:<para>
     <informalfigure>
         <mediaobject>
@@ -141,7 +141,7 @@ Here is the call graph for this function:<para>
 <para><computeroutput>void <link linkend="_class_print_tag">PrintTag</link>&lt; float &gt;::execute ( )<computeroutput>[virtual]</computeroutput></computeroutput></para><para>
 Reimplemented from <link linkend="_class_tag_1a54054f3c9db4decb422972460bbb34c3">Tag</link>.</para>
 <para>
-Definition at line <link linkend="__tags_8cpp_source_1l01623">1623</link> of file <link linkend="__tags_8cpp_source">Tags.cpp</link>.</para>
+Definition at line <link linkend="__tags_8cpp_source_1l01628">1628</link> of file <link linkend="__tags_8cpp_source">Tags.cpp</link>.</para>
 Here is the call graph for this function:<para>
     <informalfigure>
         <mediaobject>
@@ -159,7 +159,7 @@ Here is the call graph for this function:<para>
 <para><computeroutput>void <link linkend="_class_print_tag">PrintTag</link>&lt; std::string &gt;::execute ( )<computeroutput>[virtual]</computeroutput></computeroutput></para><para>
 Reimplemented from <link linkend="_class_tag_1a54054f3c9db4decb422972460bbb34c3">Tag</link>.</para>
 <para>
-Definition at line <link linkend="__tags_8cpp_source_1l01627">1627</link> of file <link linkend="__tags_8cpp_source">Tags.cpp</link>.</para>
+Definition at line <link linkend="__tags_8cpp_source_1l01632">1632</link> of file <link linkend="__tags_8cpp_source">Tags.cpp</link>.</para>
 Here is the call graph for this function:<para>
     <informalfigure>
         <mediaobject>
@@ -177,7 +177,7 @@ Here is the call graph for this function:<para>
 <para><computeroutput>void <link linkend="_class_print_tag">PrintTag</link>&lt; bool &gt;::execute ( )<computeroutput>[virtual]</computeroutput></computeroutput></para><para>
 Reimplemented from <link linkend="_class_tag_1a54054f3c9db4decb422972460bbb34c3">Tag</link>.</para>
 <para>
-Definition at line <link linkend="__tags_8cpp_source_1l01631">1631</link> of file <link linkend="__tags_8cpp_source">Tags.cpp</link>.</para>
+Definition at line <link linkend="__tags_8cpp_source_1l01636">1636</link> of file <link linkend="__tags_8cpp_source">Tags.cpp</link>.</para>
 Here is the call graph for this function:<para>
     <informalfigure>
         <mediaobject>
@@ -195,7 +195,7 @@ Here is the call graph for this function:<para>
 <para><computeroutput>void <link linkend="_class_print_tag">PrintTag</link>&lt; <link linkend="_struct_coord">Coord</link> &gt;::execute ( )<computeroutput>[virtual]</computeroutput></computeroutput></para><para>
 Reimplemented from <link linkend="_class_tag_1a54054f3c9db4decb422972460bbb34c3">Tag</link>.</para>
 <para>
-Definition at line <link linkend="__tags_8cpp_source_1l01636">1636</link> of file <link linkend="__tags_8cpp_source">Tags.cpp</link>.</para>
+Definition at line <link linkend="__tags_8cpp_source_1l01641">1641</link> of file <link linkend="__tags_8cpp_source">Tags.cpp</link>.</para>
 Here is the call graph for this function:<para>
     <informalfigure>
         <mediaobject>
@@ -213,7 +213,7 @@ Here is the call graph for this function:<para>
 <para><computeroutput>void <link linkend="_class_print_tag">PrintTag</link>&lt; <link linkend="_struct_zone">Zone</link> &gt;::execute ( )<computeroutput>[virtual]</computeroutput></computeroutput></para><para>
 Reimplemented from <link linkend="_class_tag_1a54054f3c9db4decb422972460bbb34c3">Tag</link>.</para>
 <para>
-Definition at line <link linkend="__tags_8cpp_source_1l01641">1641</link> of file <link linkend="__tags_8cpp_source">Tags.cpp</link>.</para>
+Definition at line <link linkend="__tags_8cpp_source_1l01646">1646</link> of file <link linkend="__tags_8cpp_source">Tags.cpp</link>.</para>
 Here is the call graph for this function:<para>
     <informalfigure>
         <mediaobject>
@@ -231,7 +231,7 @@ Here is the call graph for this function:<para>
 <para><computeroutput>void <link linkend="_class_print_tag">PrintTag</link>&lt; <link linkend="__units_8h_1a224b9163917ac32fc95a60d8c1eec3aa">Direction</link> &gt;::execute ( )<computeroutput>[virtual]</computeroutput></computeroutput></para><para>
 Reimplemented from <link linkend="_class_tag_1a54054f3c9db4decb422972460bbb34c3">Tag</link>.</para>
 <para>
-Definition at line <link linkend="__tags_8cpp_source_1l01645">1645</link> of file <link linkend="__tags_8cpp_source">Tags.cpp</link>.</para>
+Definition at line <link linkend="__tags_8cpp_source_1l01650">1650</link> of file <link linkend="__tags_8cpp_source">Tags.cpp</link>.</para>
 Here is the call graph for this function:<para>
     <informalfigure>
         <mediaobject>
@@ -257,7 +257,7 @@ Reimplemented from <link linkend="_class_tag_1a54054f3c9db4decb422972460bbb34c3"
 <indexterm><primary>toPrintTag</primary><secondary>PrintTag&lt; T &gt;</secondary></indexterm>
 <indexterm><primary>PrintTag&lt; T &gt;</primary><secondary>toPrintTag</secondary></indexterm>
 <computeroutput>template&lt;typename <link linkend="__units_8h_1a2b350cb683584e1f7db6c78f698c161ba21f40778b7db9343a6ca75ec2c41ccce">T</link> &gt; </computeroutput><para><computeroutput>std::shared_ptr&lt;<link linkend="_class_tag">Tag</link>&gt; <link linkend="_class_print_tag">PrintTag</link>&lt; <link linkend="__units_8h_1a2b350cb683584e1f7db6c78f698c161ba21f40778b7db9343a6ca75ec2c41ccce">T</link> &gt;::toPrintTag</computeroutput></para><para>
-Definition at line <link linkend="__tags_8h_source_1l00409">409</link> of file <link linkend="__tags_8h_source">Tags.h</link>.</para>
+Definition at line <link linkend="__tags_8h_source_1l00407">407</link> of file <link linkend="__tags_8h_source">Tags.h</link>.</para>
 </section>
 <para>
 The documentation for this class was generated from the following files:</para>

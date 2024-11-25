@@ -70,7 +70,7 @@ Public Attributes inherited from <link linkend="_class_tag">Tag</link>        <i
 <section>
 <title>Detailed Description</title>
 <para>
-Definition at line <link linkend="__tags_8h_source_1l00422">422</link> of file <link linkend="__tags_8h_source">Tags.h</link>.</para>
+Definition at line <link linkend="__tags_8h_source_1l00413">413</link> of file <link linkend="__tags_8h_source">Tags.h</link>.</para>
 </section>
 <section>
 <title>Constructor &amp; Destructor Documentation</title>
@@ -79,28 +79,28 @@ Definition at line <link linkend="__tags_8h_source_1l00422">422</link> of file <
 <indexterm><primary>BoolTag</primary><secondary>BoolTag</secondary></indexterm>
 <indexterm><primary>BoolTag</primary><secondary>BoolTag</secondary></indexterm>
 <para><computeroutput>BoolTag::BoolTag ( )</computeroutput></para><para>
-Definition at line <link linkend="__tags_8cpp_source_1l01480">1480</link> of file <link linkend="__tags_8cpp_source">Tags.cpp</link>.</para>
+Definition at line <link linkend="__tags_8cpp_source_1l01485">1485</link> of file <link linkend="__tags_8cpp_source">Tags.cpp</link>.</para>
 </section>
 <anchor xml:id="_class_bool_tag_1a8a9c7d5e741c4c4b9a25cd83d45f5939"/><section>
     <title>BoolTag()<computeroutput>[2/4]</computeroutput></title>
 <indexterm><primary>BoolTag</primary><secondary>BoolTag</secondary></indexterm>
 <indexterm><primary>BoolTag</primary><secondary>BoolTag</secondary></indexterm>
 <para><computeroutput>BoolTag::BoolTag (const <link linkend="_class_bool_tag">BoolTag</link> &amp; toCopy)</computeroutput></para><para>
-Definition at line <link linkend="__tags_8cpp_source_1l00220">220</link> of file <link linkend="__tags_8cpp_source">Tags.cpp</link>.</para>
+Definition at line <link linkend="__tags_8cpp_source_1l00225">225</link> of file <link linkend="__tags_8cpp_source">Tags.cpp</link>.</para>
 </section>
 <anchor xml:id="_class_bool_tag_1a16c918890174b92cca2db5f5c7e99f17"/><section>
     <title>BoolTag()<computeroutput>[3/4]</computeroutput></title>
 <indexterm><primary>BoolTag</primary><secondary>BoolTag</secondary></indexterm>
 <indexterm><primary>BoolTag</primary><secondary>BoolTag</secondary></indexterm>
 <para><computeroutput>BoolTag::BoolTag (const std::shared_ptr&lt; <link linkend="_class_tag">Tag</link> &gt; &amp; parameter)</computeroutput></para><para>
-Definition at line <link linkend="__tags_8cpp_source_1l01487">1487</link> of file <link linkend="__tags_8cpp_source">Tags.cpp</link>.</para>
+Definition at line <link linkend="__tags_8cpp_source_1l01492">1492</link> of file <link linkend="__tags_8cpp_source">Tags.cpp</link>.</para>
 </section>
 <anchor xml:id="_class_bool_tag_1ab834422d97f1c364878e8561d39aecfe"/><section>
     <title>BoolTag()<computeroutput>[4/4]</computeroutput></title>
 <indexterm><primary>BoolTag</primary><secondary>BoolTag</secondary></indexterm>
 <indexterm><primary>BoolTag</primary><secondary>BoolTag</secondary></indexterm>
 <para><computeroutput>BoolTag::BoolTag (bool v)</computeroutput></para><para>
-Definition at line <link linkend="__tags_8cpp_source_1l01503">1503</link> of file <link linkend="__tags_8cpp_source">Tags.cpp</link>.</para>
+Definition at line <link linkend="__tags_8cpp_source_1l01508">1508</link> of file <link linkend="__tags_8cpp_source">Tags.cpp</link>.</para>
 </section>
 </section>
 <section>
@@ -119,9 +119,9 @@ Definition at line <link linkend="__tags_8cpp_source_1l00094">94</link> of file 
 <para><computeroutput>void BoolTag::execute ( )<computeroutput>[override]</computeroutput>, <computeroutput>[virtual]</computeroutput></computeroutput></para><para>
 Reimplemented from <link linkend="_class_tag_1a54054f3c9db4decb422972460bbb34c3">Tag</link>.</para>
 <para>
-Reimplemented in <link linkend="_class_compare_tag_1a86f4370ec7c06612dc614d5ee0a80bbc">CompareTag&lt; T &gt;</link>, <link linkend="_class_compare_tag_1a85e20d6d3c66adf2b5835842c36cceb6">CompareTag&lt; T &gt;</link>, <link linkend="_class_compare_tag_1a85e20d6d3c66adf2b5835842c36cceb6">CompareTag&lt; T &gt;</link>, <link linkend="_class_compare_tag_1a86f4370ec7c06612dc614d5ee0a80bbc">CompareTag&lt; T &gt;</link>, <link linkend="_class_compare_tag_1a574c5229cbbc446a28fa2ef1cea813c3">CompareTag&lt; T &gt;</link>, <link linkend="_class_not_tag_1a533ae047d2883863ac8e998326a4037c">NotTag</link>, and <link linkend="_class_or_tag_1a09018c07d9e941c9dcdd1681fb35f396">OrTag</link>.</para>
+Reimplemented in <link linkend="_class_compare_tag_1a86f4370ec7c06612dc614d5ee0a80bbc">CompareTag&lt; T &gt;</link>, <link linkend="_class_compare_tag_1a85e20d6d3c66adf2b5835842c36cceb6">CompareTag&lt; T &gt;</link>, <link linkend="_class_compare_tag_1a574c5229cbbc446a28fa2ef1cea813c3">CompareTag&lt; T &gt;</link>, <link linkend="_class_not_tag_1a533ae047d2883863ac8e998326a4037c">NotTag</link>, and <link linkend="_class_or_tag_1a09018c07d9e941c9dcdd1681fb35f396">OrTag</link>.</para>
 <para>
-Definition at line <link linkend="__tags_8cpp_source_1l01498">1498</link> of file <link linkend="__tags_8cpp_source">Tags.cpp</link>.</para>
+Definition at line <link linkend="__tags_8cpp_source_1l01503">1503</link> of file <link linkend="__tags_8cpp_source">Tags.cpp</link>.</para>
 Here is the call graph for this function:<para>
     <informalfigure>
         <mediaobject>
@@ -140,14 +140,14 @@ Here is the call graph for this function:<para>
 <indexterm><primary>boolTag</primary><secondary>BoolTag</secondary></indexterm>
 <indexterm><primary>BoolTag</primary><secondary>boolTag</secondary></indexterm>
 <para><computeroutput>std::shared_ptr&lt;<link linkend="_class_tag">Tag</link>&gt; BoolTag::boolTag</computeroutput></para><para>
-Definition at line <link linkend="__tags_8h_source_1l00428">428</link> of file <link linkend="__tags_8h_source">Tags.h</link>.</para>
+Definition at line <link linkend="__tags_8h_source_1l00419">419</link> of file <link linkend="__tags_8h_source">Tags.h</link>.</para>
 </section>
 <anchor xml:id="_class_bool_tag_1a533e516d764bce21a79a433ccd0ac1e1"/><section>
     <title>myBool</title>
 <indexterm><primary>myBool</primary><secondary>BoolTag</secondary></indexterm>
 <indexterm><primary>BoolTag</primary><secondary>myBool</secondary></indexterm>
 <para><computeroutput>bool BoolTag::myBool</computeroutput></para><para>
-Definition at line <link linkend="__tags_8h_source_1l00430">430</link> of file <link linkend="__tags_8h_source">Tags.h</link>.</para>
+Definition at line <link linkend="__tags_8h_source_1l00421">421</link> of file <link linkend="__tags_8h_source">Tags.h</link>.</para>
 </section>
 <para>
 The documentation for this class was generated from the following files:</para>

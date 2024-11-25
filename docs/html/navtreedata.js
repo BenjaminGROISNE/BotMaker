@@ -52,18 +52,19 @@ var NAVTREE =
 var NAVTREEINDEX =
 [
 "_activities_8cpp.html",
-"_tags_8h.html#a7c4faef6b7c4a30990ee13030bc51880a86843de677434d772038ccd7f22bc632",
-"class_bool_tag_panel.html#aa99e3e9917820818ad864ac21b7bde53",
-"class_emulator.html#a1e77699004cb878400e0111fbe462343",
-"class_interactions.html#a25a543c2ba74a40f05ee1a47cfe9f40b",
-"class_main_token.html#afe612ccf1e5346401b2fff76d029bbbe",
-"class_tag_panel.html#af2926b62ee8940d7aa87591255623814",
-"fadb_8cpp.html#a735aed1798e65a5276053c44211ce025",
-"globals_vars.html",
-"paths_8cpp.html#a729f877eee8ddb3182f426e49d456821",
-"paths_8cpp.html#afa3efcdbd5c71784f9330f546faadde3",
-"paths_8h.html#a7da0be7132daa2ce9748fdc2c7beb288",
-"struct_all_emulators.html#a710e93eea46e0922c245799d60d1fb95"
+"_text_manager_8h.html#a278c93e4da07307afdf330e31213045a",
+"class_assistant.html",
+"class_direction_tag.html",
+"class_if_tag.html",
+"class_list_tag.html#ae4d69bbe6f70fb5303486e8cb901c0e4",
+"class_string_token.html#a4d387ee58a3492caf7cc5b5c69ea1577",
+"classfsfml.html#a72eb9b81e0f5d518a9d037c4a3610de2",
+"functions_d.html",
+"paths_8cpp.html#a372b4722f6757f45db2c7258d834482f",
+"paths_8cpp.html#ab7012675219e0161c40d294d8598c524",
+"paths_8h.html#a4213d340e587a15ef1fd2913d76095f4",
+"paths_8h.html#ac07a8ac231b859c37c8bc040bbbc0848",
+"struct_template.html#aba025f01ce1f43b4fb9083b8b50087fd"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';

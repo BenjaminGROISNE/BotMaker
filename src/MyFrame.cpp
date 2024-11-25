@@ -9,12 +9,11 @@ MyFrame::MyFrame(const wxString& title)
 
 MyFrame::~MyFrame()
 {
-    delete myInterpretor;
+
 }
 
 void MyFrame::setMainPanel()
 {
-    myInterpretor = new Interpretor;
     srand(time(NULL));
     mainPanel = new wxPanel(this);
     placingTag = false;
@@ -270,9 +269,12 @@ std::shared_ptr<MainTag> MyFrame::getMainTag()
 {
     std::filesystem::path filePath(__FILE__);
     std::filesystem::path activityFolder = filePath.parent_path().parent_path() / "Activities";
-    myInterpretor->ActivityFolder = activityFolder.string();
-    myInterpretor->readActivityFile("short.act");
-    mainTag = std::dynamic_pointer_cast<MainTag>(myInterpretor->getActivityTag());
+
+    myInterpretor.ActivityFolder = activityFolder.string();
+    myInterpretor.doUnitTests();
+    auto tag = myInterpretor.readActivityFile("short.act");
+    mainTag=std::dynamic_pointer_cast<MainTag>(tag);
+    if (!mainTag)mainTag = std::make_shared<MainTag>(tag);
     return mainTag;
 }
 

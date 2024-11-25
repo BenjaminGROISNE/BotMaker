@@ -145,6 +145,11 @@ MainTag::MainTag(const MainTag& toCopy) :FlowTag(toCopy)
 
 }
 
+MainTag::MainTag(std::shared_ptr<Tag> innerTag)
+{
+	this->nestedTags.push_back(innerTag);
+}
+
 DoLoopTag::DoLoopTag(const DoLoopTag& toCopy) :FlowTag(toCopy)
 {
 

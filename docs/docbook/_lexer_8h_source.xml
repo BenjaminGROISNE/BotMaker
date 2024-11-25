@@ -1,0 +1,36 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<section xmlns="http://docbook.org/ns/docbook" version="5.0" xmlns:xlink="http://www.w3.org/1999/xlink" xml:id="__lexer_8h_source" xml:lang="en-US">
+<title>Lexer.h</title>
+<indexterm><primary>src/Lexer.h</primary></indexterm>
+Go to the documentation of this file.<programlisting linenumbering="unnumbered"><anchor xml:id="__lexer_8h_source_1l00001"/>00001 <emphasis role="preprocessor">#pragma&#32;once</emphasis>
+<anchor xml:id="__lexer_8h_source_1l00002"/>00002 <emphasis role="preprocessor">#include&#32;&lt;iostream&gt;</emphasis>
+<anchor xml:id="__lexer_8h_source_1l00003"/>00003 <emphasis role="preprocessor">#include&#32;&lt;fstream&gt;</emphasis>
+<anchor xml:id="__lexer_8h_source_1l00004"/>00004 <emphasis role="preprocessor">#include&#32;&lt;string&gt;</emphasis>
+<anchor xml:id="__lexer_8h_source_1l00005"/>00005 <emphasis role="preprocessor">#include&#32;&lt;vector&gt;</emphasis>
+<anchor xml:id="__lexer_8h_source_1l00006"/>00006 <emphasis role="preprocessor">#include&#32;&quot;<link linkend="__token_8h">Token.h</link>&quot;</emphasis>
+<anchor xml:id="__lexer_8h_source_1l00007"/>00007 
+<anchor xml:id="__lexer_8h_source_1l00008"/>00008 
+<anchor xml:id="__lexer_8h_source_1l00009"/>00009 
+<anchor xml:id="__lexer_8h_source_1l00010"/><link linkend="_class_lexer">00010</link> <emphasis role="keyword">class&#32;</emphasis><link linkend="_class_lexer">Lexer</link>&#32;{
+<anchor xml:id="__lexer_8h_source_1l00011"/>00011 <emphasis role="keyword">public</emphasis>:
+<anchor xml:id="__lexer_8h_source_1l00012"/>00012 &#32;&#32;&#32;&#32;<link linkend="_class_lexer_1a2752a2b16cc1ffbcb8fc3e82e95bf331">Lexer</link>();
+<anchor xml:id="__lexer_8h_source_1l00013"/>00013 &#32;&#32;&#32;&#32;<link linkend="_class_lexer_1a2752a2b16cc1ffbcb8fc3e82e95bf331">Lexer</link>(<emphasis role="keyword">const</emphasis>&#32;std::string&amp;&#32;text);
+<anchor xml:id="__lexer_8h_source_1l00014"/><link linkend="_class_lexer_1a4a8dcaa4abeabbfb67122d79b861d6de">00014</link> &#32;&#32;&#32;&#32;std::string&#32;<link linkend="_class_lexer_1a4a8dcaa4abeabbfb67122d79b861d6de">nameToken</link>;
+<anchor xml:id="__lexer_8h_source_1l00015"/><link linkend="_class_lexer_1a8a81c9e13952e5afda794af56ba46455">00015</link> &#32;&#32;&#32;&#32;std::string&#32;<link linkend="_class_lexer_1a8a81c9e13952e5afda794af56ba46455">totalContent</link>;
+<anchor xml:id="__lexer_8h_source_1l00016"/><link linkend="_class_lexer_1a5aaf781571efdb75f4f689ec4c219fc0">00016</link> &#32;&#32;&#32;&#32;std::string&#32;<link linkend="_class_lexer_1a5aaf781571efdb75f4f689ec4c219fc0">updatedContent</link>;
+<anchor xml:id="__lexer_8h_source_1l00017"/>00017 &#32;&#32;&#32;&#32;std::shared_ptr&lt;Token&gt;&#32;<link linkend="_class_lexer_1a6d58c8a031d7f7dd28c3501984b4eab6">getToken</link>(<emphasis role="keyword">const</emphasis>&#32;std::string&amp;&#32;text);
+<anchor xml:id="__lexer_8h_source_1l00018"/>00018 &#32;&#32;&#32;&#32;std::shared_ptr&lt;Token&gt;&#32;<link linkend="_class_lexer_1a6d58c8a031d7f7dd28c3501984b4eab6">getToken</link>(<emphasis role="keyword">const</emphasis>&#32;<link linkend="__token_8h_1acbd1e63c605cbb3dbe67c7411841b46c">TokenVALUE</link>&amp;&#32;tValue,&#32;<emphasis role="keyword">const</emphasis>&#32;std::string&amp;&#32;text);
+<anchor xml:id="__lexer_8h_source_1l00019"/>00019 &#32;&#32;&#32;&#32;<emphasis role="keywordtype">void</emphasis>&#32;<link linkend="_class_lexer_1a38487c80f0fe8c7f35a2a495015945be">extractStringLiteral</link>(std::string&amp;&#32;newText,&#32;std::string&amp;&#32;nextTokenString);
+<anchor xml:id="__lexer_8h_source_1l00020"/>00020 &#32;&#32;&#32;&#32;std::vector&lt;std::shared_ptr&lt;Token&gt;&gt;&#32;&#32;<link linkend="_class_lexer_1acf897fb607a542d5c7c8cd4b0dcb1d18">extractTokens</link>(<emphasis role="keyword">const</emphasis>&#32;std::string&amp;&#32;text);
+<anchor xml:id="__lexer_8h_source_1l00021"/>00021 &#32;&#32;&#32;&#32;<link linkend="__token_8h_1acbd1e63c605cbb3dbe67c7411841b46c">TokenVALUE</link>&#32;<link linkend="_class_lexer_1a142bd017adf2e3df1522e0cce7a3fb0c">getTokenValue</link>(<emphasis role="keyword">const</emphasis>&#32;std::string&amp;&#32;text);
+<anchor xml:id="__lexer_8h_source_1l00022"/>00022 &#32;&#32;&#32;&#32;std::string&#32;<link linkend="_class_lexer_1a672065ac17bf0b701e71c78917882441">getTokenString</link>(<link linkend="__token_8h_1acbd1e63c605cbb3dbe67c7411841b46c">TokenVALUE</link>&#32;value);
+<anchor xml:id="__lexer_8h_source_1l00023"/>00023 &#32;&#32;&#32;&#32;std::string&#32;<link linkend="_class_lexer_1aeea59528280fc24aaf8a24d0182df826">getNextPunctuationToken</link>(<emphasis role="keyword">const</emphasis>&#32;std::string&amp;&#32;str);
+<anchor xml:id="__lexer_8h_source_1l00024"/>00024 &#32;&#32;&#32;&#32;std::string&#32;<link linkend="_class_lexer_1a243227232c190f441498270efa40ccb8">getNextTokenString</link>(<emphasis role="keyword">const</emphasis>&#32;std::string&amp;&#32;text);
+<anchor xml:id="__lexer_8h_source_1l00025"/>00025 &#32;&#32;&#32;&#32;<emphasis role="keywordtype">void</emphasis>&#32;<link linkend="_class_lexer_1a6d27c5679af8fff9df7b0885ecceb9ac">skipTokenString</link>(std::string&amp;&#32;text,&#32;<emphasis role="keyword">const</emphasis>&#32;std::string&#32;tokenText);
+<anchor xml:id="__lexer_8h_source_1l00026"/>00026 &#32;&#32;&#32;&#32;<emphasis role="keywordtype">void</emphasis>&#32;<link linkend="_class_lexer_1acdefc721d12021beb50dab91162e46fa">skipStringLiteral</link>(std::string&amp;&#32;text,&#32;<emphasis role="keyword">const</emphasis>&#32;std::string&#32;tokenText);
+<anchor xml:id="__lexer_8h_source_1l00027"/>00027 &#32;&#32;&#32;&#32;<link linkend="__token_8h_1acbd1e63c605cbb3dbe67c7411841b46c">TokenVALUE</link>&#32;<link linkend="_class_lexer_1a67add67d465e634d6820b6dcc711708a">getNextTokenValue</link>(<emphasis role="keyword">const</emphasis>&#32;std::string&amp;&#32;text);
+<anchor xml:id="__lexer_8h_source_1l00028"/>00028 &#32;&#32;&#32;&#32;std::string&#32;<link linkend="_class_lexer_1a700cefa90ab90db3e3db38cc6334abba">showAllTokens</link>(std::vector&lt;std::shared_ptr&lt;Token&gt;&gt;);
+<anchor xml:id="__lexer_8h_source_1l00029"/>00029 <emphasis role="keyword">protected</emphasis>:
+<anchor xml:id="__lexer_8h_source_1l00030"/><link linkend="_class_lexer_1a5147254cee0022d532a50e683a3fa688">00030</link> &#32;&#32;&#32;&#32;std::vector&lt;std::shared_ptr&lt;Token&gt;&gt;&#32;<link linkend="_class_lexer_1a5147254cee0022d532a50e683a3fa688">listTokens</link>;
+<anchor xml:id="__lexer_8h_source_1l00031"/>00031 };
+</programlisting></section>

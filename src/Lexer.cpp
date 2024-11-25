@@ -97,9 +97,6 @@ TokenVALUE Lexer::getTokenValue(const std::string& text) {
 	else if (text == waitK) {
 		return TokenVALUE::WAIT;
 	}
-	else if (text == waitK) {
-		return TokenVALUE::WAIT;
-	}
 	else if (text == commaP) {
 		return TokenVALUE::COMMA;
 	}
@@ -328,16 +325,12 @@ Lexer::Lexer(const std::string& text)
 }
 
 
-bool Lexer::empty()
-{
-	return listTokens.empty();
-}
 
-std::string Lexer::showAllTokens()
+std::string Lexer::showAllTokens(std::vector<std::shared_ptr<Token>> listTokens)
 {
 	std::cout << "Console is now available for debugging output!" << std::endl;
 	std::string str;
-	for (auto& s : this->listTokens) {
+	for (auto& s : listTokens) {
 		auto h = s->getTokenText();
 
 		if (s)str.append(h + ' ');
@@ -401,7 +394,7 @@ void Lexer::extractStringLiteral(std::string& newText, std::string& nextTokenStr
 	skipSequence(newText, quotation);
 }
 
-void Lexer::extractTokens(const std::string& text)
+std::vector<std::shared_ptr<Token>> Lexer::extractTokens(const std::string& text)
 {
 	std::string newText = text;
 	while (!newText.empty()) {
@@ -417,4 +410,5 @@ void Lexer::extractTokens(const std::string& text)
 			skipTokenString(newText, nextTokenString);
 		}
 	}
+	return listTokens;
 }

@@ -71,7 +71,7 @@ Public Attributes inherited from <link linkend="_class_tag">Tag</link>        <i
 <title>Detailed Description</title>
 <simplesect><title>template&lt;typename <link linkend="__units_8h_1a2b350cb683584e1f7db6c78f698c161ba21f40778b7db9343a6ca75ec2c41ccce">T</link>&gt;<?linebreak?>class StoreTag&lt; std::vector&lt; T &gt; &gt;</title></simplesect>
 <para>
-Definition at line <link linkend="__tags_8h_source_1l00252">252</link> of file <link linkend="__tags_8h_source">Tags.h</link>.</para>
+Definition at line <link linkend="__tags_8h_source_1l00256">256</link> of file <link linkend="__tags_8h_source">Tags.h</link>.</para>
 </section>
 <section>
 <title>Constructor &amp; Destructor Documentation</title>
@@ -105,7 +105,7 @@ Definition at line <link linkend="__tags_8h_source_1l00252">252</link> of file <
 <computeroutput>template&lt;typename <link linkend="__units_8h_1a2b350cb683584e1f7db6c78f698c161ba21f40778b7db9343a6ca75ec2c41ccce">T</link> &gt; </computeroutput><para><computeroutput>void <link linkend="_class_store_tag">StoreTag</link>&lt; std::vector&lt; <link linkend="__units_8h_1a2b350cb683584e1f7db6c78f698c161ba21f40778b7db9343a6ca75ec2c41ccce">T</link> &gt; &gt;::execute ( )<computeroutput>[override]</computeroutput>, <computeroutput>[virtual]</computeroutput></computeroutput></para><para>
 Reimplemented from <link linkend="_class_tag_1a54054f3c9db4decb422972460bbb34c3">Tag</link>.</para>
 <para>
-Definition at line <link linkend="__tags_8cpp_source_1l00614">614</link> of file <link linkend="__tags_8cpp_source">Tags.cpp</link>.</para>
+Definition at line <link linkend="__tags_8cpp_source_1l00619">619</link> of file <link linkend="__tags_8cpp_source">Tags.cpp</link>.</para>
 Here is the call graph for this function:<para>
     <informalfigure>
         <mediaobject>
@@ -124,21 +124,21 @@ Here is the call graph for this function:<para>
 <indexterm><primary>listValueTags</primary><secondary>StoreTag&lt; std::vector&lt; T &gt; &gt;</secondary></indexterm>
 <indexterm><primary>StoreTag&lt; std::vector&lt; T &gt; &gt;</primary><secondary>listValueTags</secondary></indexterm>
 <computeroutput>template&lt;typename <link linkend="__units_8h_1a2b350cb683584e1f7db6c78f698c161ba21f40778b7db9343a6ca75ec2c41ccce">T</link> &gt; </computeroutput><para><computeroutput>std::vector&lt;std::shared_ptr&lt;<link linkend="_class_tag">Tag</link>&gt; &gt; <link linkend="_class_store_tag">StoreTag</link>&lt; std::vector&lt; <link linkend="__units_8h_1a2b350cb683584e1f7db6c78f698c161ba21f40778b7db9343a6ca75ec2c41ccce">T</link> &gt; &gt;::listValueTags</computeroutput></para><para>
-Definition at line <link linkend="__tags_8h_source_1l00259">259</link> of file <link linkend="__tags_8h_source">Tags.h</link>.</para>
+Definition at line <link linkend="__tags_8h_source_1l00263">263</link> of file <link linkend="__tags_8h_source">Tags.h</link>.</para>
 </section>
 <anchor xml:id="_class_store_tag_3_01std_1_1vector_3_01_t_01_4_01_4_1af98cacd28293a7407e528fe3b3bed308"/><section>
     <title>myVariables</title>
 <indexterm><primary>myVariables</primary><secondary>StoreTag&lt; std::vector&lt; T &gt; &gt;</secondary></indexterm>
 <indexterm><primary>StoreTag&lt; std::vector&lt; T &gt; &gt;</primary><secondary>myVariables</secondary></indexterm>
 <computeroutput>template&lt;typename <link linkend="__units_8h_1a2b350cb683584e1f7db6c78f698c161ba21f40778b7db9343a6ca75ec2c41ccce">T</link> &gt; </computeroutput><para><computeroutput><link linkend="_struct_user_variables">UserVariables</link>* <link linkend="_class_store_tag">StoreTag</link>&lt; std::vector&lt; <link linkend="__units_8h_1a2b350cb683584e1f7db6c78f698c161ba21f40778b7db9343a6ca75ec2c41ccce">T</link> &gt; &gt;::myVariables</computeroutput></para><para>
-Definition at line <link linkend="__tags_8h_source_1l00261">261</link> of file <link linkend="__tags_8h_source">Tags.h</link>.</para>
+Definition at line <link linkend="__tags_8h_source_1l00265">265</link> of file <link linkend="__tags_8h_source">Tags.h</link>.</para>
 </section>
 <anchor xml:id="_class_store_tag_3_01std_1_1vector_3_01_t_01_4_01_4_1abc13e683d4e5037ac4a14e3324919e0b"/><section>
     <title>varName</title>
 <indexterm><primary>varName</primary><secondary>StoreTag&lt; std::vector&lt; T &gt; &gt;</secondary></indexterm>
 <indexterm><primary>StoreTag&lt; std::vector&lt; T &gt; &gt;</primary><secondary>varName</secondary></indexterm>
 <computeroutput>template&lt;typename <link linkend="__units_8h_1a2b350cb683584e1f7db6c78f698c161ba21f40778b7db9343a6ca75ec2c41ccce">T</link> &gt; </computeroutput><para><computeroutput>std::string <link linkend="_class_store_tag">StoreTag</link>&lt; std::vector&lt; <link linkend="__units_8h_1a2b350cb683584e1f7db6c78f698c161ba21f40778b7db9343a6ca75ec2c41ccce">T</link> &gt; &gt;::varName</computeroutput></para><para>
-Definition at line <link linkend="__tags_8h_source_1l00258">258</link> of file <link linkend="__tags_8h_source">Tags.h</link>.</para>
+Definition at line <link linkend="__tags_8h_source_1l00262">262</link> of file <link linkend="__tags_8h_source">Tags.h</link>.</para>
 </section>
 <para>
 The documentation for this class was generated from the following files:</para>

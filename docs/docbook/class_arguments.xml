@@ -1,0 +1,322 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<section xmlns="http://docbook.org/ns/docbook" version="5.0" xmlns:xlink="http://www.w3.org/1999/xlink" xml:id="_class_arguments" xml:lang="en-US">
+<title>Arguments Class Reference</title>
+<indexterm><primary>Arguments</primary></indexterm>
+<para>
+<computeroutput>#include &lt;Token.h&gt;</computeroutput>
+</para>
+Collaboration diagram for Arguments:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_arguments__coll__graph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+<simplesect>
+    <title>Public Member Functions    </title>
+        <itemizedlist>
+            <listitem><para><link linkend="_class_arguments_1afe56d8477bfae32c239771056c233311">Arguments</link> ()</para>
+</listitem>
+            <listitem><para><link linkend="_class_arguments_1aeb6ef0b6ed0d8074a380700aefe59fcc">Arguments</link> (<link linkend="__token_8h_1ad8ed01ff3ff33333d8e19db4d2818bb6">DataType</link> type, bool infinite)</para>
+</listitem>
+            <listitem><para><link linkend="_class_arguments_1a9fd795aaba644b4d852f016544f6f5df">Arguments</link> (std::vector&lt; <link linkend="__token_8h_1ad8ed01ff3ff33333d8e19db4d2818bb6">DataType</link> &gt; listTypes)</para>
+</listitem>
+            <listitem><para>std::vector&lt; <link linkend="__token_8h_1ad8ed01ff3ff33333d8e19db4d2818bb6">DataType</link> &gt; <link linkend="_class_arguments_1a7df7d548b729e703fce328951a68be9b">getArgsTypes</link> ()</para>
+</listitem>
+            <listitem><para>void <link linkend="_class_arguments_1a8a88bd6135f23a11ce75239ca8593223">next</link> ()</para>
+</listitem>
+            <listitem><para>bool <link linkend="_class_arguments_1a19ddf4e45cbd1f97228ba672be9d373e">ended</link> () const</para>
+</listitem>
+            <listitem><para>int <link linkend="_class_arguments_1a518743549f5e7b43a05b7f34e004e217">size</link> ()</para>
+</listitem>
+            <listitem><para>bool <link linkend="_class_arguments_1a0f434af83c0987022c83ab365af88f72">empty</link> ()</para>
+</listitem>
+            <listitem><para><link linkend="__token_8h_1ad8ed01ff3ff33333d8e19db4d2818bb6">DataType</link> <link linkend="_class_arguments_1aea159bb8540c3e3cdd25abca54d77ce6">at</link> (int i)</para>
+</listitem>
+            <listitem><para>bool <link linkend="_class_arguments_1a2b023fdc0b17ed727222775843dab401">approveType</link> (const <link linkend="__token_8h_1ad8ed01ff3ff33333d8e19db4d2818bb6">DataType</link> &amp;type)</para>
+</listitem>
+            <listitem><para><link linkend="__token_8h_1ad8ed01ff3ff33333d8e19db4d2818bb6">DataType</link> <link linkend="_class_arguments_1a6e1034236428ba4e248db47e93183e06">getCurrentDataType</link> ()</para>
+</listitem>
+            <listitem><para>bool <link linkend="_class_arguments_1aa4b9bed6a87bba4757e6802492b2acb1">isRepeatable</link> ()</para>
+</listitem>
+            <listitem><para>bool <link linkend="_class_arguments_1a3c09f2f740566f2ac6abe10e5048806a">isValid</link> () const</para>
+</listitem>
+            <listitem><para>bool <link linkend="_class_arguments_1a648df045d979401752e058e0ce1a645c">isCompleted</link> ()</para>
+</listitem>
+            <listitem><para>bool <link linkend="_class_arguments_1ab783108d7f8759a29f939710b115130d">isEqual</link> (<link linkend="_class_arguments">Arguments</link> args)</para>
+</listitem>
+        </itemizedlist>
+</simplesect>
+<simplesect>
+    <title>Protected Attributes    </title>
+        <itemizedlist>
+            <listitem><para><link linkend="__token_8h_1ad8ed01ff3ff33333d8e19db4d2818bb6">DataType</link> <link linkend="_class_arguments_1a291a05bded903e2165030b35dd1575ee">repeatedType</link></para>
+</listitem>
+            <listitem><para>bool <link linkend="_class_arguments_1a24f7692626c53fa4a2e739ec2ec02f54">repeatable</link></para>
+</listitem>
+            <listitem><para>bool <link linkend="_class_arguments_1ab6cf147a44f3f9677a27fd7ece39aa87">stillValid</link></para>
+</listitem>
+            <listitem><para>bool <link linkend="_class_arguments_1a0dc7c6ec89eeb3826accccdeba73a5f9">completed</link></para>
+</listitem>
+            <listitem><para>std::vector&lt; <link linkend="__token_8h_1ad8ed01ff3ff33333d8e19db4d2818bb6">DataType</link> &gt; <link linkend="_class_arguments_1a12069712a9d060259c41422fe97192fd">listArgsTypes</link></para>
+</listitem>
+            <listitem><para>int <link linkend="_class_arguments_1a7b21382c82038b5ba0ff52f0b742f132">currentIndex</link></para>
+</listitem>
+        </itemizedlist>
+</simplesect>
+<section>
+<title>Detailed Description</title>
+<para>
+Definition at line <link linkend="__token_8h_source_1l00086">86</link> of file <link linkend="__token_8h_source">Token.h</link>.</para>
+</section>
+<section>
+<title>Constructor &amp; Destructor Documentation</title>
+<anchor xml:id="_class_arguments_1afe56d8477bfae32c239771056c233311"/><section>
+    <title>Arguments()<computeroutput>[1/3]</computeroutput></title>
+<indexterm><primary>Arguments</primary><secondary>Arguments</secondary></indexterm>
+<indexterm><primary>Arguments</primary><secondary>Arguments</secondary></indexterm>
+<para><computeroutput>Arguments::Arguments ( )</computeroutput></para><para>
+Definition at line <link linkend="__token_8cpp_source_1l01470">1470</link> of file <link linkend="__token_8cpp_source">Token.cpp</link>.</para>
+</section>
+<anchor xml:id="_class_arguments_1aeb6ef0b6ed0d8074a380700aefe59fcc"/><section>
+    <title>Arguments()<computeroutput>[2/3]</computeroutput></title>
+<indexterm><primary>Arguments</primary><secondary>Arguments</secondary></indexterm>
+<indexterm><primary>Arguments</primary><secondary>Arguments</secondary></indexterm>
+<para><computeroutput>Arguments::Arguments (<link linkend="__token_8h_1ad8ed01ff3ff33333d8e19db4d2818bb6">DataType</link> type, bool infinite)</computeroutput></para><para>
+Definition at line <link linkend="__token_8cpp_source_1l01479">1479</link> of file <link linkend="__token_8cpp_source">Token.cpp</link>.</para>
+</section>
+<anchor xml:id="_class_arguments_1a9fd795aaba644b4d852f016544f6f5df"/><section>
+    <title>Arguments()<computeroutput>[3/3]</computeroutput></title>
+<indexterm><primary>Arguments</primary><secondary>Arguments</secondary></indexterm>
+<indexterm><primary>Arguments</primary><secondary>Arguments</secondary></indexterm>
+<para><computeroutput>Arguments::Arguments (std::vector&lt; <link linkend="__token_8h_1ad8ed01ff3ff33333d8e19db4d2818bb6">DataType</link> &gt; listTypes)</computeroutput></para><para>
+Definition at line <link linkend="__token_8cpp_source_1l01489">1489</link> of file <link linkend="__token_8cpp_source">Token.cpp</link>.</para>
+</section>
+</section>
+<section>
+<title>Member Function Documentation</title>
+<anchor xml:id="_class_arguments_1a2b023fdc0b17ed727222775843dab401"/><section>
+    <title>approveType()</title>
+<indexterm><primary>approveType</primary><secondary>Arguments</secondary></indexterm>
+<indexterm><primary>Arguments</primary><secondary>approveType</secondary></indexterm>
+<para><computeroutput>bool Arguments::approveType (const <link linkend="__token_8h_1ad8ed01ff3ff33333d8e19db4d2818bb6">DataType</link> &amp; type)</computeroutput></para><para>
+Definition at line <link linkend="__token_8cpp_source_1l01529">1529</link> of file <link linkend="__token_8cpp_source">Token.cpp</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_arguments_a2b023fdc0b17ed727222775843dab401_cgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_class_arguments_1aea159bb8540c3e3cdd25abca54d77ce6"/><section>
+    <title>at()</title>
+<indexterm><primary>at</primary><secondary>Arguments</secondary></indexterm>
+<indexterm><primary>Arguments</primary><secondary>at</secondary></indexterm>
+<para><computeroutput><link linkend="__token_8h_1ad8ed01ff3ff33333d8e19db4d2818bb6">DataType</link> Arguments::at (int i)</computeroutput></para><para>
+Definition at line <link linkend="__token_8cpp_source_1l01523">1523</link> of file <link linkend="__token_8cpp_source">Token.cpp</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_arguments_aea159bb8540c3e3cdd25abca54d77ce6_cgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+Here is the caller graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_arguments_aea159bb8540c3e3cdd25abca54d77ce6_icgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_class_arguments_1a0f434af83c0987022c83ab365af88f72"/><section>
+    <title>empty()</title>
+<indexterm><primary>empty</primary><secondary>Arguments</secondary></indexterm>
+<indexterm><primary>Arguments</primary><secondary>empty</secondary></indexterm>
+<para><computeroutput>bool Arguments::empty ( )</computeroutput></para><para>
+Definition at line <link linkend="__token_8cpp_source_1l01518">1518</link> of file <link linkend="__token_8cpp_source">Token.cpp</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_arguments_a0f434af83c0987022c83ab365af88f72_cgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_class_arguments_1a19ddf4e45cbd1f97228ba672be9d373e"/><section>
+    <title>ended()</title>
+<indexterm><primary>ended</primary><secondary>Arguments</secondary></indexterm>
+<indexterm><primary>Arguments</primary><secondary>ended</secondary></indexterm>
+<para><computeroutput>bool Arguments::ended ( ) const</computeroutput></para><para>
+Definition at line <link linkend="__token_8cpp_source_1l01507">1507</link> of file <link linkend="__token_8cpp_source">Token.cpp</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_arguments_a19ddf4e45cbd1f97228ba672be9d373e_cgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+Here is the caller graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_arguments_a19ddf4e45cbd1f97228ba672be9d373e_icgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_class_arguments_1a7df7d548b729e703fce328951a68be9b"/><section>
+    <title>getArgsTypes()</title>
+<indexterm><primary>getArgsTypes</primary><secondary>Arguments</secondary></indexterm>
+<indexterm><primary>Arguments</primary><secondary>getArgsTypes</secondary></indexterm>
+<para><computeroutput>std::vector&lt; <link linkend="__token_8h_1ad8ed01ff3ff33333d8e19db4d2818bb6">DataType</link> &gt; Arguments::getArgsTypes ( )</computeroutput></para><para>
+Definition at line <link linkend="__token_8cpp_source_1l01496">1496</link> of file <link linkend="__token_8cpp_source">Token.cpp</link>.</para>
+Here is the caller graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_arguments_a7df7d548b729e703fce328951a68be9b_icgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_class_arguments_1a6e1034236428ba4e248db47e93183e06"/><section>
+    <title>getCurrentDataType()</title>
+<indexterm><primary>getCurrentDataType</primary><secondary>Arguments</secondary></indexterm>
+<indexterm><primary>Arguments</primary><secondary>getCurrentDataType</secondary></indexterm>
+<para><computeroutput><link linkend="__token_8h_1ad8ed01ff3ff33333d8e19db4d2818bb6">DataType</link> Arguments::getCurrentDataType ( )</computeroutput></para><para>
+Definition at line <link linkend="__token_8cpp_source_1l01545">1545</link> of file <link linkend="__token_8cpp_source">Token.cpp</link>.</para>
+Here is the caller graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_arguments_a6e1034236428ba4e248db47e93183e06_icgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_class_arguments_1a648df045d979401752e058e0ce1a645c"/><section>
+    <title>isCompleted()</title>
+<indexterm><primary>isCompleted</primary><secondary>Arguments</secondary></indexterm>
+<indexterm><primary>Arguments</primary><secondary>isCompleted</secondary></indexterm>
+<para><computeroutput>bool Arguments::isCompleted ( )</computeroutput></para><para>
+Definition at line <link linkend="__token_8cpp_source_1l01561">1561</link> of file <link linkend="__token_8cpp_source">Token.cpp</link>.</para>
+</section>
+<anchor xml:id="_class_arguments_1ab783108d7f8759a29f939710b115130d"/><section>
+    <title>isEqual()</title>
+<indexterm><primary>isEqual</primary><secondary>Arguments</secondary></indexterm>
+<indexterm><primary>Arguments</primary><secondary>isEqual</secondary></indexterm>
+<para><computeroutput>bool Arguments::isEqual (<link linkend="_class_arguments">Arguments</link> args)</computeroutput></para><para>
+Definition at line <link linkend="__token_8cpp_source_1l01566">1566</link> of file <link linkend="__token_8cpp_source">Token.cpp</link>.</para>
+Here is the call graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_arguments_ab783108d7f8759a29f939710b115130d_cgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+<anchor xml:id="_class_arguments_1aa4b9bed6a87bba4757e6802492b2acb1"/><section>
+    <title>isRepeatable()</title>
+<indexterm><primary>isRepeatable</primary><secondary>Arguments</secondary></indexterm>
+<indexterm><primary>Arguments</primary><secondary>isRepeatable</secondary></indexterm>
+<para><computeroutput>bool Arguments::isRepeatable ( )</computeroutput></para><para>
+Definition at line <link linkend="__token_8cpp_source_1l01551">1551</link> of file <link linkend="__token_8cpp_source">Token.cpp</link>.</para>
+</section>
+<anchor xml:id="_class_arguments_1a3c09f2f740566f2ac6abe10e5048806a"/><section>
+    <title>isValid()</title>
+<indexterm><primary>isValid</primary><secondary>Arguments</secondary></indexterm>
+<indexterm><primary>Arguments</primary><secondary>isValid</secondary></indexterm>
+<para><computeroutput>bool Arguments::isValid ( ) const</computeroutput></para><para>
+Definition at line <link linkend="__token_8cpp_source_1l01556">1556</link> of file <link linkend="__token_8cpp_source">Token.cpp</link>.</para>
+</section>
+<anchor xml:id="_class_arguments_1a8a88bd6135f23a11ce75239ca8593223"/><section>
+    <title>next()</title>
+<indexterm><primary>next</primary><secondary>Arguments</secondary></indexterm>
+<indexterm><primary>Arguments</primary><secondary>next</secondary></indexterm>
+<para><computeroutput>void Arguments::next ( )</computeroutput></para><para>
+Definition at line <link linkend="__token_8cpp_source_1l01501">1501</link> of file <link linkend="__token_8cpp_source">Token.cpp</link>.</para>
+</section>
+<anchor xml:id="_class_arguments_1a518743549f5e7b43a05b7f34e004e217"/><section>
+    <title>size()</title>
+<indexterm><primary>size</primary><secondary>Arguments</secondary></indexterm>
+<indexterm><primary>Arguments</primary><secondary>size</secondary></indexterm>
+<para><computeroutput>int Arguments::size ( )</computeroutput></para><para>
+Definition at line <link linkend="__token_8cpp_source_1l01513">1513</link> of file <link linkend="__token_8cpp_source">Token.cpp</link>.</para>
+Here is the caller graph for this function:<para>
+    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_arguments_a518743549f5e7b43a05b7f34e004e217_icgraph.svg"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+</section>
+</section>
+<section>
+<title>Member Data Documentation</title>
+<anchor xml:id="_class_arguments_1a0dc7c6ec89eeb3826accccdeba73a5f9"/><section>
+    <title>completed</title>
+<indexterm><primary>completed</primary><secondary>Arguments</secondary></indexterm>
+<indexterm><primary>Arguments</primary><secondary>completed</secondary></indexterm>
+<para><computeroutput>bool Arguments::completed<computeroutput>[protected]</computeroutput></computeroutput></para><para>
+Definition at line <link linkend="__token_8h_source_1l00107">107</link> of file <link linkend="__token_8h_source">Token.h</link>.</para>
+</section>
+<anchor xml:id="_class_arguments_1a7b21382c82038b5ba0ff52f0b742f132"/><section>
+    <title>currentIndex</title>
+<indexterm><primary>currentIndex</primary><secondary>Arguments</secondary></indexterm>
+<indexterm><primary>Arguments</primary><secondary>currentIndex</secondary></indexterm>
+<para><computeroutput>int Arguments::currentIndex<computeroutput>[protected]</computeroutput></computeroutput></para><para>
+Definition at line <link linkend="__token_8h_source_1l00109">109</link> of file <link linkend="__token_8h_source">Token.h</link>.</para>
+</section>
+<anchor xml:id="_class_arguments_1a12069712a9d060259c41422fe97192fd"/><section>
+    <title>listArgsTypes</title>
+<indexterm><primary>listArgsTypes</primary><secondary>Arguments</secondary></indexterm>
+<indexterm><primary>Arguments</primary><secondary>listArgsTypes</secondary></indexterm>
+<para><computeroutput>std::vector&lt;<link linkend="__token_8h_1ad8ed01ff3ff33333d8e19db4d2818bb6">DataType</link>&gt; Arguments::listArgsTypes<computeroutput>[protected]</computeroutput></computeroutput></para><para>
+Definition at line <link linkend="__token_8h_source_1l00108">108</link> of file <link linkend="__token_8h_source">Token.h</link>.</para>
+</section>
+<anchor xml:id="_class_arguments_1a24f7692626c53fa4a2e739ec2ec02f54"/><section>
+    <title>repeatable</title>
+<indexterm><primary>repeatable</primary><secondary>Arguments</secondary></indexterm>
+<indexterm><primary>Arguments</primary><secondary>repeatable</secondary></indexterm>
+<para><computeroutput>bool Arguments::repeatable<computeroutput>[protected]</computeroutput></computeroutput></para><para>
+Definition at line <link linkend="__token_8h_source_1l00105">105</link> of file <link linkend="__token_8h_source">Token.h</link>.</para>
+</section>
+<anchor xml:id="_class_arguments_1a291a05bded903e2165030b35dd1575ee"/><section>
+    <title>repeatedType</title>
+<indexterm><primary>repeatedType</primary><secondary>Arguments</secondary></indexterm>
+<indexterm><primary>Arguments</primary><secondary>repeatedType</secondary></indexterm>
+<para><computeroutput><link linkend="__token_8h_1ad8ed01ff3ff33333d8e19db4d2818bb6">DataType</link> Arguments::repeatedType<computeroutput>[protected]</computeroutput></computeroutput></para><para>
+Definition at line <link linkend="__token_8h_source_1l00104">104</link> of file <link linkend="__token_8h_source">Token.h</link>.</para>
+</section>
+<anchor xml:id="_class_arguments_1ab6cf147a44f3f9677a27fd7ece39aa87"/><section>
+    <title>stillValid</title>
+<indexterm><primary>stillValid</primary><secondary>Arguments</secondary></indexterm>
+<indexterm><primary>Arguments</primary><secondary>stillValid</secondary></indexterm>
+<para><computeroutput>bool Arguments::stillValid<computeroutput>[protected]</computeroutput></computeroutput></para><para>
+Definition at line <link linkend="__token_8h_source_1l00106">106</link> of file <link linkend="__token_8h_source">Token.h</link>.</para>
+</section>
+<para>
+The documentation for this class was generated from the following files:</para>
+src/<link linkend="__token_8h">Token.h</link>src/<link linkend="__token_8cpp">Token.cpp</link></section>
+</section>

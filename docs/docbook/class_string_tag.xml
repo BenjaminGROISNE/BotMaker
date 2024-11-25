@@ -70,7 +70,7 @@ Public Attributes inherited from <link linkend="_class_tag">Tag</link>        <i
 <section>
 <title>Detailed Description</title>
 <para>
-Definition at line <link linkend="__tags_8h_source_1l00551">551</link> of file <link linkend="__tags_8h_source">Tags.h</link>.</para>
+Definition at line <link linkend="__tags_8h_source_1l00531">531</link> of file <link linkend="__tags_8h_source">Tags.h</link>.</para>
 </section>
 <section>
 <title>Constructor &amp; Destructor Documentation</title>
@@ -79,28 +79,28 @@ Definition at line <link linkend="__tags_8h_source_1l00551">551</link> of file <
 <indexterm><primary>StringTag</primary><secondary>StringTag</secondary></indexterm>
 <indexterm><primary>StringTag</primary><secondary>StringTag</secondary></indexterm>
 <para><computeroutput>StringTag::StringTag ( )</computeroutput></para><para>
-Definition at line <link linkend="__tags_8cpp_source_1l00800">800</link> of file <link linkend="__tags_8cpp_source">Tags.cpp</link>.</para>
+Definition at line <link linkend="__tags_8cpp_source_1l00805">805</link> of file <link linkend="__tags_8cpp_source">Tags.cpp</link>.</para>
 </section>
 <anchor xml:id="_class_string_tag_1a7c356725dd090ecd74df2184d89e2b48"/><section>
     <title>StringTag()<computeroutput>[2/4]</computeroutput></title>
 <indexterm><primary>StringTag</primary><secondary>StringTag</secondary></indexterm>
 <indexterm><primary>StringTag</primary><secondary>StringTag</secondary></indexterm>
 <para><computeroutput>StringTag::StringTag (const <link linkend="_class_string_tag">StringTag</link> &amp; toCopy)</computeroutput></para><para>
-Definition at line <link linkend="__tags_8cpp_source_1l00267">267</link> of file <link linkend="__tags_8cpp_source">Tags.cpp</link>.</para>
+Definition at line <link linkend="__tags_8cpp_source_1l00272">272</link> of file <link linkend="__tags_8cpp_source">Tags.cpp</link>.</para>
 </section>
 <anchor xml:id="_class_string_tag_1ac92c566596e550da81d3c5727c2e9daa"/><section>
     <title>StringTag()<computeroutput>[3/4]</computeroutput></title>
 <indexterm><primary>StringTag</primary><secondary>StringTag</secondary></indexterm>
 <indexterm><primary>StringTag</primary><secondary>StringTag</secondary></indexterm>
 <para><computeroutput>StringTag::StringTag (const std::shared_ptr&lt; <link linkend="_class_tag">Tag</link> &gt; &amp; parameter)</computeroutput></para><para>
-Definition at line <link linkend="__tags_8cpp_source_1l00843">843</link> of file <link linkend="__tags_8cpp_source">Tags.cpp</link>.</para>
+Definition at line <link linkend="__tags_8cpp_source_1l00848">848</link> of file <link linkend="__tags_8cpp_source">Tags.cpp</link>.</para>
 </section>
 <anchor xml:id="_class_string_tag_1ae869ed429e16fdf7d048eb4e61ea6aa7"/><section>
     <title>StringTag()<computeroutput>[4/4]</computeroutput></title>
 <indexterm><primary>StringTag</primary><secondary>StringTag</secondary></indexterm>
 <indexterm><primary>StringTag</primary><secondary>StringTag</secondary></indexterm>
 <para><computeroutput>StringTag::StringTag (std::string v)</computeroutput></para><para>
-Definition at line <link linkend="__tags_8cpp_source_1l00837">837</link> of file <link linkend="__tags_8cpp_source">Tags.cpp</link>.</para>
+Definition at line <link linkend="__tags_8cpp_source_1l00842">842</link> of file <link linkend="__tags_8cpp_source">Tags.cpp</link>.</para>
 </section>
 </section>
 <section>
@@ -119,7 +119,7 @@ Definition at line <link linkend="__tags_8cpp_source_1l00129">129</link> of file
 <para><computeroutput>void StringTag::execute ( )<computeroutput>[override]</computeroutput>, <computeroutput>[virtual]</computeroutput></computeroutput></para><para>
 Reimplemented from <link linkend="_class_tag_1a54054f3c9db4decb422972460bbb34c3">Tag</link>.</para>
 <para>
-Definition at line <link linkend="__tags_8cpp_source_1l00830">830</link> of file <link linkend="__tags_8cpp_source">Tags.cpp</link>.</para>
+Definition at line <link linkend="__tags_8cpp_source_1l00835">835</link> of file <link linkend="__tags_8cpp_source">Tags.cpp</link>.</para>
 Here is the call graph for this function:<para>
     <informalfigure>
         <mediaobject>
@@ -138,14 +138,14 @@ Here is the call graph for this function:<para>
 <indexterm><primary>myString</primary><secondary>StringTag</secondary></indexterm>
 <indexterm><primary>StringTag</primary><secondary>myString</secondary></indexterm>
 <para><computeroutput>std::string StringTag::myString</computeroutput></para><para>
-Definition at line <link linkend="__tags_8h_source_1l00559">559</link> of file <link linkend="__tags_8h_source">Tags.h</link>.</para>
+Definition at line <link linkend="__tags_8h_source_1l00539">539</link> of file <link linkend="__tags_8h_source">Tags.h</link>.</para>
 </section>
 <anchor xml:id="_class_string_tag_1af67011aecf9702cc16299cb5cc834fce"/><section>
     <title>stringTag</title>
 <indexterm><primary>stringTag</primary><secondary>StringTag</secondary></indexterm>
 <indexterm><primary>StringTag</primary><secondary>stringTag</secondary></indexterm>
 <para><computeroutput>std::shared_ptr&lt;<link linkend="_class_tag">Tag</link>&gt; StringTag::stringTag</computeroutput></para><para>
-Definition at line <link linkend="__tags_8h_source_1l00557">557</link> of file <link linkend="__tags_8h_source">Tags.h</link>.</para>
+Definition at line <link linkend="__tags_8h_source_1l00537">537</link> of file <link linkend="__tags_8h_source">Tags.h</link>.</para>
 </section>
 <para>
 The documentation for this class was generated from the following files:</para>

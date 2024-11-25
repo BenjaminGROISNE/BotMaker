@@ -72,7 +72,7 @@ Public Attributes inherited from <link linkend="_class_tag">Tag</link>        <i
 <section>
 <title>Detailed Description</title>
 <para>
-Definition at line <link linkend="__tags_8h_source_1l00390">390</link> of file <link linkend="__tags_8h_source">Tags.h</link>.</para>
+Definition at line <link linkend="__tags_8h_source_1l00388">388</link> of file <link linkend="__tags_8h_source">Tags.h</link>.</para>
 </section>
 <section>
 <title>Constructor &amp; Destructor Documentation</title>
@@ -81,28 +81,28 @@ Definition at line <link linkend="__tags_8h_source_1l00390">390</link> of file <
 <indexterm><primary>WaitTag</primary><secondary>WaitTag</secondary></indexterm>
 <indexterm><primary>WaitTag</primary><secondary>WaitTag</secondary></indexterm>
 <para><computeroutput>WaitTag::WaitTag ( )</computeroutput></para><para>
-Definition at line <link linkend="__tags_8cpp_source_1l00517">517</link> of file <link linkend="__tags_8cpp_source">Tags.cpp</link>.</para>
+Definition at line <link linkend="__tags_8cpp_source_1l00522">522</link> of file <link linkend="__tags_8cpp_source">Tags.cpp</link>.</para>
 </section>
 <anchor xml:id="_class_wait_tag_1ac6588d2741e60040f07f19f6c3e0efcb"/><section>
     <title>WaitTag()<computeroutput>[2/4]</computeroutput></title>
 <indexterm><primary>WaitTag</primary><secondary>WaitTag</secondary></indexterm>
 <indexterm><primary>WaitTag</primary><secondary>WaitTag</secondary></indexterm>
 <para><computeroutput>WaitTag::WaitTag (const <link linkend="_class_wait_tag">WaitTag</link> &amp; toCopy)</computeroutput></para><para>
-Definition at line <link linkend="__tags_8cpp_source_1l00209">209</link> of file <link linkend="__tags_8cpp_source">Tags.cpp</link>.</para>
+Definition at line <link linkend="__tags_8cpp_source_1l00214">214</link> of file <link linkend="__tags_8cpp_source">Tags.cpp</link>.</para>
 </section>
 <anchor xml:id="_class_wait_tag_1aa7c19fd638a7849e356c4bcfa3eccc22"/><section>
     <title>WaitTag()<computeroutput>[3/4]</computeroutput></title>
 <indexterm><primary>WaitTag</primary><secondary>WaitTag</secondary></indexterm>
 <indexterm><primary>WaitTag</primary><secondary>WaitTag</secondary></indexterm>
 <para><computeroutput>WaitTag::WaitTag (const std::shared_ptr&lt; <link linkend="_class_tag">Tag</link> &gt; &amp; parameter, const <link linkend="__tags_8h_1a06411e4b1d6791157bb089cc368b11d3">TimeType</link> &amp; waitType)</computeroutput></para><para>
-Definition at line <link linkend="__tags_8cpp_source_1l00525">525</link> of file <link linkend="__tags_8cpp_source">Tags.cpp</link>.</para>
+Definition at line <link linkend="__tags_8cpp_source_1l00530">530</link> of file <link linkend="__tags_8cpp_source">Tags.cpp</link>.</para>
 </section>
 <anchor xml:id="_class_wait_tag_1aab42cd6a1db188a0637540df54f76c61"/><section>
     <title>WaitTag()<computeroutput>[4/4]</computeroutput></title>
 <indexterm><primary>WaitTag</primary><secondary>WaitTag</secondary></indexterm>
 <indexterm><primary>WaitTag</primary><secondary>WaitTag</secondary></indexterm>
 <para><computeroutput>WaitTag::WaitTag (int time, <link linkend="__tags_8h_1a06411e4b1d6791157bb089cc368b11d3">TimeType</link> waitType)</computeroutput></para><para>
-Definition at line <link linkend="__tags_8cpp_source_1l00531">531</link> of file <link linkend="__tags_8cpp_source">Tags.cpp</link>.</para>
+Definition at line <link linkend="__tags_8cpp_source_1l00536">536</link> of file <link linkend="__tags_8cpp_source">Tags.cpp</link>.</para>
 </section>
 </section>
 <section>
@@ -121,7 +121,7 @@ Definition at line <link linkend="__tags_8cpp_source_1l00085">85</link> of file 
 <para><computeroutput>void WaitTag::execute ( )<computeroutput>[override]</computeroutput>, <computeroutput>[virtual]</computeroutput></computeroutput></para><para>
 Reimplemented from <link linkend="_class_tag_1a54054f3c9db4decb422972460bbb34c3">Tag</link>.</para>
 <para>
-Definition at line <link linkend="__tags_8cpp_source_1l00544">544</link> of file <link linkend="__tags_8cpp_source">Tags.cpp</link>.</para>
+Definition at line <link linkend="__tags_8cpp_source_1l00549">549</link> of file <link linkend="__tags_8cpp_source">Tags.cpp</link>.</para>
 Here is the call graph for this function:<para>
     <informalfigure>
         <mediaobject>
@@ -140,21 +140,21 @@ Here is the call graph for this function:<para>
 <indexterm><primary>time</primary><secondary>WaitTag</secondary></indexterm>
 <indexterm><primary>WaitTag</primary><secondary>time</secondary></indexterm>
 <para><computeroutput>int WaitTag::time</computeroutput></para><para>
-Definition at line <link linkend="__tags_8h_source_1l00399">399</link> of file <link linkend="__tags_8h_source">Tags.h</link>.</para>
+Definition at line <link linkend="__tags_8h_source_1l00397">397</link> of file <link linkend="__tags_8h_source">Tags.h</link>.</para>
 </section>
 <anchor xml:id="_class_wait_tag_1a39cbaed686b7581a6f9d12ef35b4d0c2"/><section>
     <title>timeTag</title>
 <indexterm><primary>timeTag</primary><secondary>WaitTag</secondary></indexterm>
 <indexterm><primary>WaitTag</primary><secondary>timeTag</secondary></indexterm>
 <para><computeroutput>std::shared_ptr&lt;<link linkend="_class_tag">Tag</link>&gt; WaitTag::timeTag</computeroutput></para><para>
-Definition at line <link linkend="__tags_8h_source_1l00397">397</link> of file <link linkend="__tags_8h_source">Tags.h</link>.</para>
+Definition at line <link linkend="__tags_8h_source_1l00395">395</link> of file <link linkend="__tags_8h_source">Tags.h</link>.</para>
 </section>
 <anchor xml:id="_class_wait_tag_1acf52b98bc2b5bfbd8ba23dbcd3b3d3f0"/><section>
     <title>type</title>
 <indexterm><primary>type</primary><secondary>WaitTag</secondary></indexterm>
 <indexterm><primary>WaitTag</primary><secondary>type</secondary></indexterm>
 <para><computeroutput><link linkend="__tags_8h_1a06411e4b1d6791157bb089cc368b11d3">TimeType</link> WaitTag::type</computeroutput></para><para>
-Definition at line <link linkend="__tags_8h_source_1l00398">398</link> of file <link linkend="__tags_8h_source">Tags.h</link>.</para>
+Definition at line <link linkend="__tags_8h_source_1l00396">396</link> of file <link linkend="__tags_8h_source">Tags.h</link>.</para>
 </section>
 <para>
 The documentation for this class was generated from the following files:</para>

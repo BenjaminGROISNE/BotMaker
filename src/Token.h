@@ -112,27 +112,30 @@ protected:
 class ArgumentsOverload {
 public:
 	ArgumentsOverload();
-	ArgumentsOverload(Arguments args);
-	ArgumentsOverload(std::vector<Arguments> ovArgs);
 	bool isPresent(Arguments args);
-	void addArgs(Arguments args);
-	std::vector<DataType> getPossibleDataTypes();
+	void addArgs(Arguments args,int index);
+	void initTabs();
 	void next();
 	bool approveType(const DataType& type);
-	std::vector<Arguments> getAllValidArguments();
-	std::vector<Arguments> getAllCompletedArgs();
+	std::vector<DataType> getPossibleDataTypes();
+	std::map<int, std::shared_ptr<Arguments>> getValidArguments();
+	std::map<int, std::shared_ptr<Arguments>> getCompletedArgs();
 	bool ended();
 	int size();
 	bool empty();
 	bool hasValidArg();
 	bool hasCompletedArguments();
-	Arguments getCompletedArguments();
-	void setCompletedArguments();
+	void updateCompletedArguments();
+	void updateValidArguments();
+	void updateTabs();
+	unsigned int getID();
+	void setCompleteIndex();
 protected:
+	std::map<int, std::shared_ptr<Arguments>> validArguments;
+	std::map<int, std::shared_ptr<Arguments>> completedArguments;
 	std::vector<DataType> currentDataTypes;
-	std::vector<Arguments> listArguments;
-	Arguments completedArguments;
-	int currentIndex;
+	std::map<int, std::shared_ptr<Arguments>> mapArguments;
+	unsigned int completeIndex;
 };
 
 
@@ -225,7 +228,6 @@ public:
 	virtual bool addTokens(IteratorList<Token>& tl, TokenResult& tRes);
 	virtual std::shared_ptr<Tag> execute();
 protected:
-
 	std::string tokenText;
 	TokenVALUE tValue;
 	int line;
@@ -303,8 +305,6 @@ public:
 	FlowKToken();
 	void showTokenTree(const int nestedLayer)override;
 protected:
-	//Implemented
-	std::vector<std::shared_ptr<Token>> nestedTokens;
 	bool addTokens(IteratorList<Token>& tl, TokenResult& tRes)override;
 	//Not Implemented
 };
@@ -336,9 +336,8 @@ protected:
 	bool addCp(IteratorList<Token>& tl, TokenResult& tRes);
 	virtual bool handleArguments(IteratorList<Token>& tl, TokenResult& tRes);
 	virtual void setOverloads();
-	bool addCorrectType(IteratorList<Token>& tl,TokenResult& tRes, DataType correctType, std::shared_ptr<Token> elem);
+	virtual void dispatchArguments();
 	std::vector<std::shared_ptr<Token>> argTokens;
-	bool mustComma, mustEnd,canEnd;
 	//Not Implemented
 	virtual void showArguments(const int nestedLayer);
 };
@@ -346,11 +345,9 @@ protected:
 class FlowPKToken :public PKToken, public FlowToken {
 public:
 	FlowPKToken();
-	void setOverloads()override;
 	void showTokenTree(const int nestedLayer)override;
 protected:
 	//Implemented
-	std::vector<std::shared_ptr<Token>> nestedTokens;
 	bool addTokens(IteratorList<Token>& tl, TokenResult& tRes)override;
 
 
@@ -362,16 +359,9 @@ protected:
 class MPKToken :public PKToken {
 public:
 	MPKToken();
-	void setOverloads()override;
 	bool addTokens(IteratorList<Token>& tl, TokenResult& tRes)override;
 protected:
 	void showArguments(const int nestedLayer)override;
-	//Implemented
-	
-
-
-	std::vector<std::shared_ptr<Token>> argTokens;
-	//Not Implemented
 
 };
 
@@ -388,10 +378,10 @@ protected:
 class UPKToken : public PKToken {
 public:
 	UPKToken();
-	void setOverloads()override;
+	void dispatchArguments()override;
 	bool addTokens(IteratorList<Token>& tl, TokenResult& tRes)override;
 protected:
-
+	std::shared_ptr<Token> uniqueToken;
 	void showArguments(const int nestedLayer)override;
 };
 
@@ -400,7 +390,8 @@ protected:
 class CKToken : public UPKToken {
 public:
 	CKToken();
-	void setOverloads()final;
+	void setOverloads()final;	
+	virtual void dispatchArguments();
 	DataType getDataType(TokenResult& tRes)override;
 protected:
 };
@@ -410,7 +401,8 @@ class FlowCKToken :public CKToken, public FlowToken {
 public:
 	FlowCKToken();
 protected:
-	std::shared_ptr<Token> condition;
+
+
 	bool addCondition(IteratorList<Token>& tl, TokenResult tRes);
 	bool addTokens(IteratorList<Token>& tl, TokenResult& tRes)override;
 	void showArguments(const int nestedLayer)override;
@@ -446,7 +438,6 @@ public:
 	std::shared_ptr<Tag> execute()override;
 	bool addTokens(IteratorList<Token>& tl, TokenResult& tRes)override;
 protected:
-	std::vector<std::shared_ptr<Token>> argvTokens;
 };
 
 class DoLoopToken :public FlowCKToken {
@@ -490,11 +481,12 @@ class WaitToken :public MPKToken {
 public:
 	WaitToken();
 	void setOverloads()final;
+	void dispatchArguments()override;
 	std::shared_ptr<Tag> execute()override;
 	bool addTokens(IteratorList<Token>& tl, TokenResult& tRes)override;
 protected:
-	std::vector<std::shared_ptr<Token>> listToken;
-	std::shared_ptr<Token> integerToken;
+	std::shared_ptr<Token> numberToken;
+	std::shared_ptr<Token> timeTypeToken;
 };
 
 class AndToken :public BMPKToken {
@@ -502,8 +494,6 @@ public:
 	AndToken();
 	std::shared_ptr<Tag> execute()override;
 protected:
-	std::vector<std::shared_ptr<Token>> listBoolToken;
-	void showArguments(const int nestedLayer);
 };
 
 class OrToken :public BMPKToken {
@@ -511,7 +501,6 @@ public:
 	OrToken();
 	std::shared_ptr<Tag> execute()override;
 protected:
-	std::vector<std::shared_ptr<Token>> listBoolToken;
 };
 
 class NotToken :public CKToken {
@@ -519,7 +508,6 @@ public:
 	NotToken();
 	std::shared_ptr<Tag> execute()override;
 protected:
-	std::shared_ptr<Token> boolToken;
 };
 
 
@@ -529,19 +517,19 @@ protected:
 class ListToken :public MPKToken,public TemplateToken {
 public:
 	ListToken();
+	void setOverloads()final;
 	bool addTokens(IteratorList<Token>& tl, TokenResult& tRes)override;
 	std::shared_ptr<Tag> execute()override;
 protected:
 	DataType dType;
-
 	std::vector<std::shared_ptr<Token>> listToken;
 };
 
 class StoreToken :public MPKToken {
 public:
 	StoreToken();
-	StoreToken(DataType type,int tabDim);
 	void setOverloads()final;
+	void dispatchArguments()override;
 	std::shared_ptr<Tag> execute()override;
 protected:
 	template<typename T>
@@ -560,7 +548,7 @@ public:
 	DataType getDataType(TokenResult& tRes)override;
 	std::shared_ptr<Tag> execute()override;
 protected:
-	std::shared_ptr<Token> intToken;
+
 };
 
 
@@ -572,7 +560,7 @@ public:
 	DataType getDataType(TokenResult& tRes)override;
 	std::shared_ptr<Tag> execute()override;
 protected:
-	std::shared_ptr<Token> floatToken;
+
 };
 
 class BoolToken :public CKToken {
@@ -581,21 +569,22 @@ public:
 	DataType getDataType(TokenResult& tRes)override;
 	std::shared_ptr<Tag> execute()override;
 protected:
-	std::shared_ptr<Token> boolToken;
+
 };
 class StringToken :public UPKToken {
 public:
 	StringToken();
+	DataType getDataType(TokenResult& tRes)override;
 	void setOverloads()final;
 	std::shared_ptr<Tag> execute()override;
 protected:
-
-	std::shared_ptr<Token> stringToken;
 };
 class CoordToken :public PKToken {
 public:
+	void showArguments(const int nestedLayer)override;
 	CoordToken();
 	void setOverloads()final;
+	void dispatchArguments()final;
 	DataType getDataType(TokenResult& tRes)override;
 protected:
 	std::shared_ptr<Token> xPoint;
@@ -609,6 +598,8 @@ class ZoneToken :public PKToken {
 public:
 	ZoneToken();
 	void setOverloads()final;
+	void dispatchArguments()final;
+	void showArguments(const int nestedLayer)override;
 	DataType getDataType(TokenResult& tRes)override;
 protected:
 	std::shared_ptr<Token> topLeft;
@@ -624,8 +615,6 @@ public:
 	void setOverloads()final;
 	DataType getDataType(TokenResult& tRes)override;
 protected:
-	std::shared_ptr<Token> dirToken;
-
 	std::shared_ptr<Tag> execute()override;
 };
 
@@ -766,10 +755,10 @@ protected:
 class StringLiteralToken :public LToken {
 public:
 	StringLiteralToken(const std::string& content);
+	DataType getDataType(TokenResult& tRes)override;
 protected:
 	std::shared_ptr<Tag> execute()override;
 };
-bool isBooleanToken(const std::shared_ptr<Token>& token);
 
 template<typename T>
 inline std::vector<T> StoreToken::test(int depth)

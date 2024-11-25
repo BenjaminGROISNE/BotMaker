@@ -4,7 +4,7 @@ var searchData=
   ['ranking_1',['Ranking',['../class_ranking.html',1,'Ranking'],['../class_ranking.html#a7b1142b455d06f3d455d796ed329118f',1,'Ranking::Ranking()'],['../paths_8cpp.html#adab0d3a6737aa1b1dd6691c33e1a8a9c',1,'Ranking:&#160;paths.cpp'],['../paths_8h.html#adab0d3a6737aa1b1dd6691c33e1a8a9c',1,'Ranking:&#160;paths.cpp']]],
   ['ranking_2',['ranking',['../paths_8cpp.html#a0f118ef30ae3559587a12cd244dbf64c',1,'ranking:&#160;paths.cpp'],['../paths_8h.html#a0f118ef30ae3559587a12cd244dbf64c',1,'ranking:&#160;paths.cpp']]],
   ['read_3',['read',['../class_bot_config.html#a1fa99db24f032484c9170eae8345ab06',1,'BotConfig']]],
-  ['readactivityfile_4',['readActivityFile',['../class_interpretor.html#a860d7cc665a3202f6f462dc1293fe5e6',1,'Interpretor']]],
+  ['readactivityfile_4',['readActivityFile',['../class_interpretor.html#a6e04dd33cb518270ae83197706689a2e',1,'Interpretor']]],
   ['readbluestacks_5',['readBluestacks',['../class_bot_config.html#adbc147eff876980c05cd0f08104b69ec',1,'BotConfig']]],
   ['readbluestacksconfig_6',['readBluestacksConfig',['../class_bot_config.html#a0e6d03f4aaf4a056c97882717f03870f',1,'BotConfig']]],
   ['readbluestacksfolder_7',['readBluestacksFolder',['../class_bot_config.html#a47a08f20862705d00d5647b7ba975664',1,'BotConfig']]],
@@ -40,9 +40,9 @@ var searchData=
   ['relatively_37',['RELATIVELY',['../_tags_8h.html#a442abf81d641870057467f30b19b9323aeb3861f1e747cdc9fead087b7f0cd98e',1,'Tags.h']]],
   ['removecharacter_38',['removeCharacter',['../_text_manager_8cpp.html#aa0db2023b135700695842f97f21f2d47',1,'removeCharacter(const std::string &amp;text, const char c):&#160;TextManager.cpp'],['../_text_manager_8cpp.html#a55e73c9c3cfe26561256a7936deb02db',1,'removeCharacter(const std::string &amp;text, const std::vector&lt; char &gt; &amp;cList):&#160;TextManager.cpp'],['../_text_manager_8h.html#aa0db2023b135700695842f97f21f2d47',1,'removeCharacter(const std::string &amp;text, const char c):&#160;TextManager.cpp'],['../_text_manager_8h.html#ab5fd0f2c00f4d540aa147dae25e43471',1,'removeCharacter(const std::string &amp;text, const std::vector&lt; char &gt; &amp;c):&#160;TextManager.cpp']]],
   ['removecontent_39',['removeContent',['../_text_manager_8cpp.html#a5f4889fcc6892114ae5ea80e2fec852e',1,'removeContent(const std::string &amp;text, const std::string &amp;content):&#160;TextManager.cpp'],['../_text_manager_8h.html#a5f4889fcc6892114ae5ea80e2fec852e',1,'removeContent(const std::string &amp;text, const std::string &amp;content):&#160;TextManager.cpp']]],
-  ['removelastoccurence_40',['removeLastOccurence',['../_text_manager_8cpp.html#a6d7c13a554de9db4c8ebc8b3175af417',1,'removeLastOccurence(const std::string &amp;text, const std::string &amp;content):&#160;TextManager.cpp'],['../_text_manager_8h.html#a6d7c13a554de9db4c8ebc8b3175af417',1,'removeLastOccurence(const std::string &amp;text, const std::string &amp;content):&#160;TextManager.cpp']]],
-  ['removetagpanel_41',['RemoveTagPanel',['../class_flow_tag_panel.html#ae49c859a41f499bd84be65ee29f36f73',1,'FlowTagPanel']]],
-  ['replaced_42',['REPLACED',['../_interpretor_8h.html#ab0df38968e4f03a3f1f6d6df0f31f45aad5edacc5c1724ff7055e7db625117c71',1,'Interpretor.h']]],
+  ['removetagpanel_40',['RemoveTagPanel',['../class_flow_tag_panel.html#ae49c859a41f499bd84be65ee29f36f73',1,'FlowTagPanel']]],
+  ['repeatable_41',['repeatable',['../class_arguments.html#a24f7692626c53fa4a2e739ec2ec02f54',1,'Arguments']]],
+  ['repeatedtype_42',['repeatedType',['../class_arguments.html#a291a05bded903e2165030b35dd1575ee',1,'Arguments']]],
   ['reqdimx_43',['reqDimX',['../class_emulator.html#a3c7b1df3adc7ba81a9fa76ce1662fa06',1,'Emulator']]],
   ['reqdimy_44',['reqDimY',['../class_emulator.html#a4db78de463890def4e2296b9da9c0bfb',1,'Emulator']]],
   ['reqdpi_45',['reqDpi',['../class_emulator.html#a99712a1a614fdbca45b8be35747e5f88',1,'Emulator']]],
@@ -70,5 +70,6 @@ var searchData=
   ['rotatesprite_67',['rotateSprite',['../classfsfml.html#a8d52ac7c812248f93f81822eab4580ea',1,'fsfml']]],
   ['runadb_68',['runAdb',['../fadb_8cpp.html#a383ae5fedc9f597a03c74c729a2eb740',1,'runAdb(const std::string &amp;command):&#160;fadb.cpp'],['../fadb_8h.html#a383ae5fedc9f597a03c74c729a2eb740',1,'runAdb(const std::string &amp;command):&#160;fadb.cpp']]],
   ['runadblocalhost_69',['runAdbLocalhost',['../fadb_8cpp.html#ac6339b59ba8238f7483dece7f3fdf51b',1,'runAdbLocalhost(const std::string &amp;command, const std::string adbId):&#160;fadb.cpp'],['../fadb_8h.html#a8f4460f06001ab04100eb0546c72b7be',1,'runAdbLocalhost(const std::string &amp;command, const std::string adbId=&quot;&quot;):&#160;fadb.cpp']]],
-  ['runadblocalhostshell_70',['runAdbLocalhostShell',['../fadb_8cpp.html#a0766d8b572678e0a830d45a4dcfb9d4d',1,'runAdbLocalhostShell(const std::string &amp;command, const std::string adbId):&#160;fadb.cpp'],['../fadb_8h.html#ad3822cd2dc601b43749f59a44d767bee',1,'runAdbLocalhostShell(const std::string &amp;command, const std::string adbId=&quot;&quot;):&#160;fadb.cpp']]]
+  ['runadblocalhostshell_70',['runAdbLocalhostShell',['../fadb_8cpp.html#a0766d8b572678e0a830d45a4dcfb9d4d',1,'runAdbLocalhostShell(const std::string &amp;command, const std::string adbId):&#160;fadb.cpp'],['../fadb_8h.html#ad3822cd2dc601b43749f59a44d767bee',1,'runAdbLocalhostShell(const std::string &amp;command, const std::string adbId=&quot;&quot;):&#160;fadb.cpp']]],
+  ['runtests_71',['runTests',['../_w_x_manager_8cpp.html#a5dcb537699bebb9e9db36ab19c5aacf7',1,'WXManager.cpp']]]
 ];

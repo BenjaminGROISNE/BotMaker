@@ -71,7 +71,7 @@ Public Attributes inherited from <link linkend="_class_tag">Tag</link>        <i
 <title>Detailed Description</title>
 <simplesect><title>template&lt;typename <link linkend="__units_8h_1a2b350cb683584e1f7db6c78f698c161ba21f40778b7db9343a6ca75ec2c41ccce">T</link>&gt;<?linebreak?>class LoadTag&lt; T &gt;</title></simplesect>
 <para>
-Definition at line <link linkend="__tags_8h_source_1l00279">279</link> of file <link linkend="__tags_8h_source">Tags.h</link>.</para>
+Definition at line <link linkend="__tags_8h_source_1l00283">283</link> of file <link linkend="__tags_8h_source">Tags.h</link>.</para>
 </section>
 <section>
 <title>Constructor &amp; Destructor Documentation</title>
@@ -80,21 +80,21 @@ Definition at line <link linkend="__tags_8h_source_1l00279">279</link> of file <
 <indexterm><primary>LoadTag</primary><secondary>LoadTag&lt; T &gt;</secondary></indexterm>
 <indexterm><primary>LoadTag&lt; T &gt;</primary><secondary>LoadTag</secondary></indexterm>
 <computeroutput>template&lt;typename <link linkend="__units_8h_1a2b350cb683584e1f7db6c78f698c161ba21f40778b7db9343a6ca75ec2c41ccce">T</link> &gt; </computeroutput><para><computeroutput><link linkend="_class_load_tag">LoadTag</link>&lt; <link linkend="__units_8h_1a2b350cb683584e1f7db6c78f698c161ba21f40778b7db9343a6ca75ec2c41ccce">T</link> &gt;<link linkend="_class_load_tag">::LoadTag</link> ( )</computeroutput></para><para>
-Definition at line <link linkend="__tags_8cpp_source_1l00569">569</link> of file <link linkend="__tags_8cpp_source">Tags.cpp</link>.</para>
+Definition at line <link linkend="__tags_8cpp_source_1l00574">574</link> of file <link linkend="__tags_8cpp_source">Tags.cpp</link>.</para>
 </section>
 <anchor xml:id="_class_load_tag_1a84ef46fb5d4efe5f57c60166c0b13a4c"/><section>
     <title>LoadTag()<computeroutput>[2/3]</computeroutput></title>
 <indexterm><primary>LoadTag</primary><secondary>LoadTag&lt; T &gt;</secondary></indexterm>
 <indexterm><primary>LoadTag&lt; T &gt;</primary><secondary>LoadTag</secondary></indexterm>
 <computeroutput>template&lt;typename Type &gt; </computeroutput><para><computeroutput><link linkend="_class_load_tag">LoadTag</link>&lt; Type &gt;<link linkend="_class_load_tag">::LoadTag</link> (const <link linkend="_class_load_tag">LoadTag</link>&lt; <link linkend="__units_8h_1a2b350cb683584e1f7db6c78f698c161ba21f40778b7db9343a6ca75ec2c41ccce">T</link> &gt; &amp; toCopy)</computeroutput></para><para>
-Definition at line <link linkend="__tags_8cpp_source_1l00187">187</link> of file <link linkend="__tags_8cpp_source">Tags.cpp</link>.</para>
+Definition at line <link linkend="__tags_8cpp_source_1l00192">192</link> of file <link linkend="__tags_8cpp_source">Tags.cpp</link>.</para>
 </section>
 <anchor xml:id="_class_load_tag_1a8c963ea3529114619091df6381b71d52"/><section>
     <title>LoadTag()<computeroutput>[3/3]</computeroutput></title>
 <indexterm><primary>LoadTag</primary><secondary>LoadTag&lt; T &gt;</secondary></indexterm>
 <indexterm><primary>LoadTag&lt; T &gt;</primary><secondary>LoadTag</secondary></indexterm>
 <computeroutput>template&lt;typename <link linkend="__units_8h_1a2b350cb683584e1f7db6c78f698c161ba21f40778b7db9343a6ca75ec2c41ccce">T</link> &gt; </computeroutput><para><computeroutput><link linkend="_class_load_tag">LoadTag</link>&lt; <link linkend="__units_8h_1a2b350cb683584e1f7db6c78f698c161ba21f40778b7db9343a6ca75ec2c41ccce">T</link> &gt;<link linkend="_class_load_tag">::LoadTag</link> (const std::string &amp; name, <link linkend="_struct_user_variables">UserVariables</link> * uv)</computeroutput></para><para>
-Definition at line <link linkend="__tags_8cpp_source_1l00637">637</link> of file <link linkend="__tags_8cpp_source">Tags.cpp</link>.</para>
+Definition at line <link linkend="__tags_8cpp_source_1l00642">642</link> of file <link linkend="__tags_8cpp_source">Tags.cpp</link>.</para>
 </section>
 </section>
 <section>
@@ -113,7 +113,7 @@ Definition at line <link linkend="__tags_8cpp_source_1l00068">68</link> of file 
 <computeroutput>template&lt;typename <link linkend="__units_8h_1a2b350cb683584e1f7db6c78f698c161ba21f40778b7db9343a6ca75ec2c41ccce">T</link> &gt; </computeroutput><para><computeroutput>void <link linkend="_class_load_tag">LoadTag</link>&lt; <link linkend="__units_8h_1a2b350cb683584e1f7db6c78f698c161ba21f40778b7db9343a6ca75ec2c41ccce">T</link> &gt;::execute ( )<computeroutput>[override]</computeroutput>, <computeroutput>[virtual]</computeroutput></computeroutput></para><para>
 Reimplemented from <link linkend="_class_tag_1a54054f3c9db4decb422972460bbb34c3">Tag</link>.</para>
 <para>
-Definition at line <link linkend="__tags_8cpp_source_1l00643">643</link> of file <link linkend="__tags_8cpp_source">Tags.cpp</link>.</para>
+Definition at line <link linkend="__tags_8cpp_source_1l00648">648</link> of file <link linkend="__tags_8cpp_source">Tags.cpp</link>.</para>
 Here is the call graph for this function:<para>
     <informalfigure>
         <mediaobject>
@@ -132,21 +132,21 @@ Here is the call graph for this function:<para>
 <indexterm><primary>myVariables</primary><secondary>LoadTag&lt; T &gt;</secondary></indexterm>
 <indexterm><primary>LoadTag&lt; T &gt;</primary><secondary>myVariables</secondary></indexterm>
 <computeroutput>template&lt;typename <link linkend="__units_8h_1a2b350cb683584e1f7db6c78f698c161ba21f40778b7db9343a6ca75ec2c41ccce">T</link> &gt; </computeroutput><para><computeroutput><link linkend="_struct_user_variables">UserVariables</link>* <link linkend="_class_load_tag">LoadTag</link>&lt; <link linkend="__units_8h_1a2b350cb683584e1f7db6c78f698c161ba21f40778b7db9343a6ca75ec2c41ccce">T</link> &gt;::myVariables</computeroutput></para><para>
-Definition at line <link linkend="__tags_8h_source_1l00286">286</link> of file <link linkend="__tags_8h_source">Tags.h</link>.</para>
+Definition at line <link linkend="__tags_8h_source_1l00290">290</link> of file <link linkend="__tags_8h_source">Tags.h</link>.</para>
 </section>
 <anchor xml:id="_class_load_tag_1acb509da0702762973fd0fc7909b5402d"/><section>
     <title>value</title>
 <indexterm><primary>value</primary><secondary>LoadTag&lt; T &gt;</secondary></indexterm>
 <indexterm><primary>LoadTag&lt; T &gt;</primary><secondary>value</secondary></indexterm>
 <computeroutput>template&lt;typename <link linkend="__units_8h_1a2b350cb683584e1f7db6c78f698c161ba21f40778b7db9343a6ca75ec2c41ccce">T</link> &gt; </computeroutput><para><computeroutput><link linkend="__units_8h_1a2b350cb683584e1f7db6c78f698c161ba21f40778b7db9343a6ca75ec2c41ccce">T</link> <link linkend="_class_load_tag">LoadTag</link>&lt; <link linkend="__units_8h_1a2b350cb683584e1f7db6c78f698c161ba21f40778b7db9343a6ca75ec2c41ccce">T</link> &gt;::value</computeroutput></para><para>
-Definition at line <link linkend="__tags_8h_source_1l00288">288</link> of file <link linkend="__tags_8h_source">Tags.h</link>.</para>
+Definition at line <link linkend="__tags_8h_source_1l00292">292</link> of file <link linkend="__tags_8h_source">Tags.h</link>.</para>
 </section>
 <anchor xml:id="_class_load_tag_1abf1095e3bec04eae683ee558412993c5"/><section>
     <title>varName</title>
 <indexterm><primary>varName</primary><secondary>LoadTag&lt; T &gt;</secondary></indexterm>
 <indexterm><primary>LoadTag&lt; T &gt;</primary><secondary>varName</secondary></indexterm>
 <computeroutput>template&lt;typename <link linkend="__units_8h_1a2b350cb683584e1f7db6c78f698c161ba21f40778b7db9343a6ca75ec2c41ccce">T</link> &gt; </computeroutput><para><computeroutput>std::string <link linkend="_class_load_tag">LoadTag</link>&lt; <link linkend="__units_8h_1a2b350cb683584e1f7db6c78f698c161ba21f40778b7db9343a6ca75ec2c41ccce">T</link> &gt;::varName</computeroutput></para><para>
-Definition at line <link linkend="__tags_8h_source_1l00285">285</link> of file <link linkend="__tags_8h_source">Tags.h</link>.</para>
+Definition at line <link linkend="__tags_8h_source_1l00289">289</link> of file <link linkend="__tags_8h_source">Tags.h</link>.</para>
 </section>
 <para>
 The documentation for this class was generated from the following files:</para>

@@ -86,7 +86,7 @@ Public Attributes inherited from <link linkend="_class_tag">Tag</link>        <i
 <section>
 <title>Detailed Description</title>
 <para>
-Definition at line <link linkend="__tags_8h_source_1l00470">470</link> of file <link linkend="__tags_8h_source">Tags.h</link>.</para>
+Definition at line <link linkend="__tags_8h_source_1l00461">461</link> of file <link linkend="__tags_8h_source">Tags.h</link>.</para>
 </section>
 <section>
 <title>Constructor &amp; Destructor Documentation</title>
@@ -95,21 +95,21 @@ Definition at line <link linkend="__tags_8h_source_1l00470">470</link> of file <
 <indexterm><primary>AndTag</primary><secondary>AndTag</secondary></indexterm>
 <indexterm><primary>AndTag</primary><secondary>AndTag</secondary></indexterm>
 <para><computeroutput>AndTag::AndTag ( )</computeroutput></para><para>
-Definition at line <link linkend="__tags_8cpp_source_1l01032">1032</link> of file <link linkend="__tags_8cpp_source">Tags.cpp</link>.</para>
+Definition at line <link linkend="__tags_8cpp_source_1l01037">1037</link> of file <link linkend="__tags_8cpp_source">Tags.cpp</link>.</para>
 </section>
 <anchor xml:id="_class_and_tag_1ac5f124cead8ef7d41e276d9e1e5daa43"/><section>
     <title>AndTag()<computeroutput>[2/3]</computeroutput></title>
 <indexterm><primary>AndTag</primary><secondary>AndTag</secondary></indexterm>
 <indexterm><primary>AndTag</primary><secondary>AndTag</secondary></indexterm>
 <para><computeroutput>AndTag::AndTag (const <link linkend="_class_and_tag">AndTag</link> &amp; toCopy)</computeroutput></para><para>
-Definition at line <link linkend="__tags_8cpp_source_1l00237">237</link> of file <link linkend="__tags_8cpp_source">Tags.cpp</link>.</para>
+Definition at line <link linkend="__tags_8cpp_source_1l00242">242</link> of file <link linkend="__tags_8cpp_source">Tags.cpp</link>.</para>
 </section>
 <anchor xml:id="_class_and_tag_1ad9ed5bf2068a82d8c202ceb081ef97bf"/><section>
     <title>AndTag()<computeroutput>[3/3]</computeroutput></title>
 <indexterm><primary>AndTag</primary><secondary>AndTag</secondary></indexterm>
 <indexterm><primary>AndTag</primary><secondary>AndTag</secondary></indexterm>
 <para><computeroutput>AndTag::AndTag (const std::vector&lt; std::shared_ptr&lt; <link linkend="_class_tag">Tag</link> &gt; &gt; &amp; parameters)</computeroutput></para><para>
-Definition at line <link linkend="__tags_8cpp_source_1l01038">1038</link> of file <link linkend="__tags_8cpp_source">Tags.cpp</link>.</para>
+Definition at line <link linkend="__tags_8cpp_source_1l01043">1043</link> of file <link linkend="__tags_8cpp_source">Tags.cpp</link>.</para>
 </section>
 </section>
 <section>
@@ -128,7 +128,7 @@ Definition at line <link linkend="__tags_8cpp_source_1l00108">108</link> of file
 <para><computeroutput>void AndTag::execute ( )<computeroutput>[override]</computeroutput>, <computeroutput>[virtual]</computeroutput></computeroutput></para><para>
 Reimplemented from <link linkend="_class_tag_1a54054f3c9db4decb422972460bbb34c3">Tag</link>.</para>
 <para>
-Definition at line <link linkend="__tags_8cpp_source_1l01048">1048</link> of file <link linkend="__tags_8cpp_source">Tags.cpp</link>.</para>
+Definition at line <link linkend="__tags_8cpp_source_1l01053">1053</link> of file <link linkend="__tags_8cpp_source">Tags.cpp</link>.</para>
 Here is the call graph for this function:<para>
     <informalfigure>
         <mediaobject>
@@ -147,7 +147,7 @@ Here is the call graph for this function:<para>
 <indexterm><primary>listTags</primary><secondary>AndTag</secondary></indexterm>
 <indexterm><primary>AndTag</primary><secondary>listTags</secondary></indexterm>
 <para><computeroutput>std::vector&lt;std::shared_ptr&lt;<link linkend="_class_tag">Tag</link>&gt; &gt; AndTag::listTags</computeroutput></para><para>
-Definition at line <link linkend="__tags_8h_source_1l00475">475</link> of file <link linkend="__tags_8h_source">Tags.h</link>.</para>
+Definition at line <link linkend="__tags_8h_source_1l00466">466</link> of file <link linkend="__tags_8h_source">Tags.h</link>.</para>
 </section>
 <para>
 The documentation for this class was generated from the following files:</para>

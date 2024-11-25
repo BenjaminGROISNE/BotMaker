@@ -84,7 +84,7 @@ std::string getStringLiteral(std::string& text) {
 
 
 
-IdentifierToken::IdentifierToken(const std::string& varName)
+IdentifierToken::IdentifierToken(const std::string& varName):Token()
 {
 	tValue = TokenVALUE::IDENTIFIER;
 	tokenText = varName;
@@ -102,31 +102,34 @@ MainToken::MainToken() :FlowPKToken()
 
 	tValue = TokenVALUE::MAIN;
 	tokenText = mainK;
-	canEnd = true;
+	setOverloads();
 }
 
 void MainToken::setOverloads()
 {
-	argsOverload.addArgs(Arguments());
+	argsOverload.addArgs(Arguments(),0);
 	//Set the functions DataType in a file;
-	argsOverload.addArgs(Arguments());
-}
-
-void PKToken::setOverloads()
-{
+	argsOverload.addArgs(Arguments(),1);
 }
 
 //Leave empty
 bool PKToken::handleArguments(IteratorList<Token>& tl, TokenResult& tRes)
 {
 	bool mustSeparate = false;
+	argsOverload.initTabs();
+	this;
 	while (!tl.ended()) {
 		auto elem = tl.currentToken();
+		if (!elem->addTokens(tl, tRes))return false;
 		if (elem->hasValue(TokenVALUE::CLOSEPARENTHESIS)) {
 			if (!argsOverload.hasCompletedArguments()) {
 				addError(tRes, TokenVALUE::CLOSEPARENTHESIS, ErrorType::UNEXPECTED);
 			}
-			else argsOverload.setCompletedArguments();
+			else {
+				argsOverload.setCompleteIndex();
+				dispatchArguments();
+				return true;
+			}
 		}
 		if (elem->hasValue(TokenVALUE::COMMA)) {
 			if(!mustSeparate)addError(tRes, TokenVALUE::COMMA, ErrorType::UNEXPECTED);
@@ -141,10 +144,19 @@ bool PKToken::handleArguments(IteratorList<Token>& tl, TokenResult& tRes)
 				argTokens.push_back(elem);
 				mustSeparate = true;
 				argsOverload.next();
+				tl.next();
 			}
 			else return addError(tRes, type);
 		}
 	}
+}
+
+void PKToken::setOverloads()
+{
+}
+
+void PKToken::dispatchArguments()
+{
 }
 
 void PKToken::showTokenTree(const int nestedLayer)
@@ -160,12 +172,23 @@ void PKToken::showArguments(const int nestedLayer)
 
 }
 
+void CoordToken::showArguments(const int nestedLayer)
+{
+	if (xPoint && yPoint) {
+		xPoint->showTokenTree(nestedLayer);
+		std::cout << ',';
+		yPoint->showTokenTree(nestedLayer);
+	}
+	else if(coordToken){
+		coordToken->showTokenTree(nestedLayer);
+	}
+}
+
 PKToken::PKToken() :KToken()
 {
-	argsOverload = ArgumentsOverload();
-	mustComma = mustEnd=canEnd = false;
 	setOverloads();
 }
+
 
 bool Token::addTokens(IteratorList<Token>& tl, TokenResult& tRes)
 {
@@ -257,6 +280,7 @@ bool PKToken::addToken(TokenVALUE tVal, IteratorList<Token>& tl, TokenResult& tR
 	if (!tl.ended()) {
 		auto elem = tl.currentToken();
 		if (elem->getValue()==tVal) {
+			tl.next();
 			return elem->addTokens(tl, tRes);
 		}
 	}
@@ -491,10 +515,8 @@ FlowPKToken::FlowPKToken() :PKToken(), FlowToken(line)
 
 }
 
-void FlowPKToken::setOverloads()
-{
-	PKToken::setOverloads();
-}
+
+
 
 
 FlowKToken::FlowKToken() :KToken(), FlowToken(line)
@@ -534,13 +556,14 @@ FlowCKToken::FlowCKToken() :CKToken(), FlowToken(line)
 
 
 
+
 bool FlowCKToken::addCondition(IteratorList<Token>& tl, TokenResult tRes)
 {
 
 	if (!tl.ended()) {
 		auto elem = tl.currentToken();
 		if (addBool(tl, tRes)) {
-			condition = elem;
+			uniqueToken = elem;
 			return true;
 		}
 	}
@@ -551,7 +574,7 @@ bool FlowCKToken::addCondition(IteratorList<Token>& tl, TokenResult tRes)
 
 void FlowCKToken::showArguments(const int nestedLayer)
 {
-	condition->showTokenTree(nestedLayer);
+	uniqueToken->showTokenTree(nestedLayer);
 }
 
 
@@ -624,10 +647,11 @@ std::shared_ptr<Tag> LoopToken::execute()
 	return std::shared_ptr<Tag>();
 }
 
-BoolToken::BoolToken()
+BoolToken::BoolToken() :CKToken()
 {
 	tValue = TokenVALUE::BOOL;
 	tokenText = boolK;
+	setOverloads();
 }
 
 DataType BoolToken::getDataType(TokenResult& tRes)
@@ -644,12 +668,25 @@ WaitToken::WaitToken() :MPKToken()
 {
 	tValue = TokenVALUE::WAIT;
 	tokenText = waitK;
+	setOverloads();
 }
 
 void WaitToken::setOverloads()
 {
-	argsOverload.addArgs(Arguments({ DataType::INT,DataType::TIMETYPE }));
-	argsOverload.addArgs(Arguments({ DataType::FLOAT,DataType::TIMETYPE }));
+	argsOverload.addArgs(Arguments({ DataType::INT,DataType::TIMETYPE }),0);
+	argsOverload.addArgs(Arguments({ DataType::FLOAT,DataType::TIMETYPE }),1);
+}
+
+void WaitToken::dispatchArguments()
+{
+	switch (argsOverload.getID()) {
+	default:
+		if (argTokens.size() > 1) {
+			numberToken = argTokens.front();
+			timeTypeToken = argTokens.at(1);
+		}
+		break;
+	}
 }
 
 
@@ -661,7 +698,6 @@ std::shared_ptr<Tag> WaitToken::execute()
 
 AndToken::AndToken() :BMPKToken()
 {
-
 	tValue = TokenVALUE::AND;
 	tokenText = andK;
 }
@@ -672,12 +708,20 @@ AndToken::AndToken() :BMPKToken()
 
 CKToken::CKToken() :UPKToken()
 {
-
+	setOverloads();
 }
 
 void CKToken::setOverloads()
 {
-	argsOverload.addArgs(Arguments(DataType::BOOL,false));
+	argsOverload.addArgs(Arguments(DataType::BOOL,false),0);
+}
+
+void CKToken::dispatchArguments()
+{
+	switch (argsOverload.getID()) {
+	case 0:
+		if (argTokens.size() > 0)uniqueToken = argTokens.front();
+	}
 }
 
 DataType CKToken::getDataType(TokenResult& tRes)
@@ -691,14 +735,7 @@ std::shared_ptr<Tag> AndToken::execute()
 	return std::shared_ptr<Tag>();
 }
 
-void AndToken::showArguments(const int nestedLayer)
-{
-	for (auto arg : listBoolToken) {
-		arg->showTokenTree(nestedLayer);
-	}
-}
-
-OrToken::OrToken() :BMPKToken()	
+OrToken::OrToken() :BMPKToken()
 {
 	tValue = TokenVALUE::OR;
 	tokenText = orK;
@@ -713,7 +750,7 @@ std::shared_ptr<Tag> OrToken::execute()
 	return std::shared_ptr<Tag>();
 }
 
-NotToken::NotToken()
+NotToken::NotToken() :CKToken()
 {
 	tValue = TokenVALUE::NOT;
 	tokenText = notK;
@@ -770,13 +807,13 @@ OpenBracketsToken::OpenBracketsToken()
 	tokenText = openBracketsP;
 }
 
-CommaToken::CommaToken()
+CommaToken::CommaToken() :PToken()
 {
 	tValue = TokenVALUE::COMMA;
 	tokenText = commaP;
 }
 
-ContinueToken::ContinueToken()
+ContinueToken::ContinueToken() :KToken()
 {
 	tValue = TokenVALUE::CONTINUE;
 	tokenText = continueK;
@@ -788,7 +825,7 @@ std::shared_ptr<Tag> ContinueToken::execute()
 	return std::make_shared<ContinueTag>();
 }
 
-BreakToken::BreakToken()
+BreakToken::BreakToken() :KToken()
 {
 	tValue = TokenVALUE::BREAK;
 	tokenText = breakK;
@@ -800,15 +837,16 @@ std::shared_ptr<Tag> BreakToken::execute()
 	return std::make_shared<BreakTag>();
 }
 
-PrintToken::PrintToken()
+PrintToken::PrintToken() :UPKToken()
 {
 	tValue = TokenVALUE::PRINT;
 	tokenText = printK;
+	setOverloads();
 }
 
 void PrintToken::setOverloads()
 {
-	argsOverload.addArgs(Arguments(DataType::STRING,true));
+	argsOverload.addArgs(Arguments(DataType::STRING,true),0);
 }
 
 std::shared_ptr<Tag> PrintToken::execute()
@@ -816,16 +854,17 @@ std::shared_ptr<Tag> PrintToken::execute()
 	return std::shared_ptr<Tag>();
 }
 
-DirectionToken::DirectionToken()
+DirectionToken::DirectionToken():UPKToken()
 {
 	tValue = TokenVALUE::DIRECTION;
 	tokenText = directionK;
+	setOverloads();
 }
 
 void DirectionToken::setOverloads()
 {
-	argsOverload.addArgs(Arguments());
-	argsOverload.addArgs(Arguments(DataType::DIRECTION, false));
+	argsOverload.addArgs(Arguments(),0);
+	argsOverload.addArgs(Arguments(DataType::DIRECTION, false),1);
 }
 
 
@@ -840,16 +879,47 @@ std::shared_ptr<Tag> DirectionToken::execute()
 	return std::shared_ptr<Tag>();
 }
 
-ZoneToken::ZoneToken()
+ZoneToken::ZoneToken() :PKToken()
 {
 	tokenText = zoneK;
 	tValue = TokenVALUE::ZONE;
+	setOverloads();
 }
 
 void ZoneToken::setOverloads()
 {
-	argsOverload.addArgs(Arguments());
-	argsOverload.addArgs(Arguments(DataType::ZONE, false));
+	argsOverload.addArgs(Arguments(),0);
+	argsOverload.addArgs(Arguments(DataType::ZONE, false),1);
+	argsOverload.addArgs(Arguments({ DataType::COORD,DataType::COORD }), 2);
+}
+
+void ZoneToken::dispatchArguments()
+{
+	switch (argsOverload.getID()) {
+	case 0:
+		topLeft = nullptr;
+		bottomRight = nullptr;
+		break;
+	case 1:
+		zoneToken = argTokens.front();
+		break;
+	case 2:
+		topLeft = argTokens.at(0);
+		bottomRight = argTokens.at(1);
+		break;
+	}
+}
+
+void ZoneToken::showArguments(const int nestedLayer)
+{
+	if (zoneToken) {
+		zoneToken->showTokenTree(nestedLayer);
+	}
+	else if (topLeft && bottomRight) {
+		topLeft->showTokenTree(nestedLayer);
+		std::cout << ',';
+		bottomRight->showTokenTree(nestedLayer);
+	}
 }
 
 DataType ZoneToken::getDataType(TokenResult& tRes)
@@ -864,16 +934,35 @@ std::shared_ptr<Tag> ZoneToken::execute()
 	return std::shared_ptr<Tag>();
 }
 
-CoordToken::CoordToken()
+CoordToken::CoordToken() :PKToken()
 {
 	tokenText = coordK;
 	tValue = TokenVALUE::COORD;
+	setOverloads();
 }
 
 void CoordToken::setOverloads()
 {
-	argsOverload.addArgs(Arguments());
-	argsOverload.addArgs(Arguments(DataType::COORD, false));
+	argsOverload.addArgs(Arguments(),0);
+	argsOverload.addArgs(Arguments(DataType::COORD, false),1);
+	argsOverload.addArgs(Arguments({ DataType::INT, DataType::INT }), 2);
+}
+
+void CoordToken::dispatchArguments()
+{
+	switch (argsOverload.getID()) {
+	case 0:
+		xPoint = nullptr;
+		yPoint = nullptr;
+		break;
+	case 1:
+		coordToken = argTokens.front();
+		break;
+	case 2:
+		xPoint = argTokens.at(0);
+		yPoint = argTokens.at(1);
+		break;
+	}
 }
 
 DataType CoordToken::getDataType(TokenResult& tRes)
@@ -896,35 +985,36 @@ std::shared_ptr<Tag> CoordToken::execute()
 	else return std::make_shared<CoordTag>();
 }
 
-CompareToken::CompareToken()
+CompareToken::CompareToken(): PKToken()
 {
 	tokenText = compareK;
 	tValue = TokenVALUE::COMPARE;
+	setOverloads();
 }
 
 void CompareToken::setOverloads()
 {
 	switch (valuesType) {
 		case DataType::BOOL:
-			argsOverload.addArgs(Arguments(DataType::BOOL,true));
+			argsOverload.addArgs(Arguments(DataType::BOOL,true),0);
 			break;
 		case DataType::COORD:
-			argsOverload.addArgs(Arguments(DataType::COORD, true));
+			argsOverload.addArgs(Arguments(DataType::COORD, true), 1);
 			break;
 		case DataType::DATATYPE:
-			argsOverload.addArgs(Arguments(DataType::DATATYPE, true));
+			argsOverload.addArgs(Arguments(DataType::DATATYPE, true),2);
 			break;
 		case DataType::DIRECTION:
-			argsOverload.addArgs(Arguments(DataType::DIRECTION, true));
+			argsOverload.addArgs(Arguments(DataType::DIRECTION, true),3);
 			break;
 		case DataType::FLOAT:
-			argsOverload.addArgs(Arguments(DataType::FLOAT, true));
+			argsOverload.addArgs(Arguments(DataType::FLOAT, true),4);
 			break;
 		case DataType::INT:
-			argsOverload.addArgs(Arguments(DataType::INT, true));
+			argsOverload.addArgs(Arguments(DataType::INT, true),5);
 			break;
 		case DataType::STRING:
-			argsOverload.addArgs(Arguments(DataType::STRING, true));
+			argsOverload.addArgs(Arguments(DataType::STRING, true),6);
 			break;
 	}
 }
@@ -939,16 +1029,17 @@ std::shared_ptr<Tag> CompareToken::execute()
 	return std::shared_ptr<Tag>();
 }
 
-FloatToken::FloatToken()
+FloatToken::FloatToken() :UPKToken()
 {
 	tokenText = floatK;
 	tValue = TokenVALUE::FLOAT;
+	setOverloads();
 }
 
 void FloatToken::setOverloads()
 {
-	argsOverload.addArgs(Arguments());
-	argsOverload.addArgs(Arguments(DataType::FLOAT, false));
+	argsOverload.addArgs(Arguments(),0);
+	argsOverload.addArgs(Arguments(DataType::FLOAT, false),1);
 }
 
 DataType FloatToken::getDataType(TokenResult& tRes)
@@ -958,20 +1049,23 @@ DataType FloatToken::getDataType(TokenResult& tRes)
 
 std::shared_ptr<Tag> FloatToken::execute()
 {
-	return std::make_shared<FloatTag>(floatToken->execute());
+	return std::make_shared<FloatTag>(uniqueToken->execute());
 }
 
-IntegerToken::IntegerToken()
+IntegerToken::IntegerToken() :UPKToken()
 {
 	tokenText = intK;
 	tValue = TokenVALUE::INTEGER;
+	setOverloads();
 }
 
 void IntegerToken::setOverloads()
 {
-	argsOverload.addArgs(Arguments());
-	argsOverload.addArgs(Arguments(DataType::INT,false));
+	argsOverload.addArgs(Arguments(),0);
+	argsOverload.addArgs(Arguments(DataType::INT,false),1);
 }
+
+
 
 DataType IntegerToken::getDataType(TokenResult& tRes)
 {
@@ -982,35 +1076,41 @@ DataType IntegerToken::getDataType(TokenResult& tRes)
 
 std::shared_ptr<Tag> IntegerToken::execute()
 {
-	return std::make_shared<IntTag>(intToken->execute());
+	return std::make_shared<IntTag>(uniqueToken->execute());
 }
 
-StoreToken::StoreToken()
+StoreToken::StoreToken() :MPKToken()
 {
 	tokenText = storeK;
 	tValue = TokenVALUE::STORE;
-}
-
-StoreToken::StoreToken(DataType type, int tabDim):StoreToken()
-{
-
+	setOverloads();
 }
 
 void StoreToken::setOverloads()
 {
 
 }
+void StoreToken::dispatchArguments()
+{
+}
+
 
 std::shared_ptr<Tag> StoreToken::execute()
 {
 	return std::shared_ptr<Tag>();
 }
 
-ListToken::ListToken()
+ListToken::ListToken() :MPKToken()
 {
 	tokenText = listK;
 	dType = DataType::NONE;
 	tValue = TokenVALUE::LIST;
+	setOverloads();
+}
+
+void ListToken::setOverloads()
+{
+
 }
 
 std::shared_ptr<Tag> ListToken::execute()
@@ -1018,21 +1118,27 @@ std::shared_ptr<Tag> ListToken::execute()
 	return std::shared_ptr<Tag>();
 }
 
-StringToken::StringToken()
+StringToken::StringToken() :UPKToken()
 {
 	tokenText = stringK;
 	tValue = TokenVALUE::STRING;
+	setOverloads();
+}
+
+DataType StringToken::getDataType(TokenResult& tRes)
+{
+	return DataType::STRING;
 }
 
 void StringToken::setOverloads()
 {
-	argsOverload.addArgs(Arguments());
-	argsOverload.addArgs(Arguments(DataType::STRING, false));
+	argsOverload.addArgs(Arguments(),0);
+	argsOverload.addArgs(Arguments(DataType::STRING, false),1);
 }
 
 std::shared_ptr<Tag> StringToken::execute()
 {
-	return std::shared_ptr<Tag>();
+	return std::make_shared<StringTag>();
 }
 
 SecondToken::SecondToken()
@@ -1080,7 +1186,7 @@ DataType NumericToken::getDataType(TokenResult& tRes)
 	return DataType::INT;
 }
 
-UnknownToken::UnknownToken()
+UnknownToken::UnknownToken():Token()
 {
 	tValue = TokenVALUE::UNKNOWN;
 	tokenText = "Unknown";
@@ -1090,6 +1196,11 @@ StringLiteralToken::StringLiteralToken(const std::string& content) :LToken()
 {
 	tokenText = content;
 	tValue = TokenVALUE::STRINGLITERAL;
+}
+
+DataType StringLiteralToken::getDataType(TokenResult& tRes)
+{
+	return DataType::STRING;
 }
 
 
@@ -1173,6 +1284,7 @@ Token::Token()
 	
 	tValue = TokenVALUE::TOKEN;
 	tokenText = "Token";
+	line = 0;
 }
 
 Error::Error()
@@ -1311,9 +1423,19 @@ UPKToken::UPKToken() :PKToken()
 {
 }
 
-void UPKToken::setOverloads()
+void UPKToken::dispatchArguments()
 {
-	PKToken::setOverloads();
+	if (!argTokens.empty()) {
+
+		switch (argsOverload.getID()) {
+		case 0:
+			uniqueToken = nullptr;// will create Basic tag at compile time
+			break;
+		case 1:
+			uniqueToken = argTokens.front();
+			break;
+		}
+	}
 }
 
 
@@ -1328,11 +1450,6 @@ MPKToken::MPKToken() :PKToken()
 
 }
 
-void MPKToken::setOverloads()
-{
-	PKToken::setOverloads();
-}
-
 bool MPKToken::addTokens(IteratorList<Token>& tl, TokenResult& tRes)
 {
 	return PKToken::addTokens(tl, tRes);
@@ -1341,8 +1458,12 @@ bool MPKToken::addTokens(IteratorList<Token>& tl, TokenResult& tRes)
 
 void MPKToken::showArguments(const int nestedLayer)
 {
-	for (auto elem : argTokens) {
+	int i = 0;
+	for (auto& elem : argTokens) {
 		elem->showTokenTree(nestedLayer);
+		
+		if(i<argTokens.size()-1)std::cout << ',';
+		++i;
 	}
 }
 
@@ -1351,6 +1472,8 @@ Arguments::Arguments()
 	currentIndex = 0;
 	stillValid = true;
 	completed = true;
+	repeatable = false;
+	repeatedType = DataType::NONE;
 }
 //repeatable type can be empty
 Arguments::Arguments(DataType type, bool repeat):Arguments()
@@ -1360,6 +1483,7 @@ Arguments::Arguments(DataType type, bool repeat):Arguments()
 		repeatedType = type;
 	}
 	else listArgsTypes.push_back(type);
+	completed = true;
 }
 
 Arguments::Arguments(std::vector<DataType> listTypes) :Arguments()
@@ -1376,12 +1500,14 @@ std::vector<DataType> Arguments::getArgsTypes()
 
 void Arguments::next()
 {
+
 	if(!repeatable)	++currentIndex;
 }
 
 bool Arguments::ended()const
 {
-	return !repeatable || currentIndex >= listArgsTypes.size();
+	if (repeatable)return false;
+	return currentIndex >= listArgsTypes.size();
 }
 
 int Arguments::size()
@@ -1402,7 +1528,7 @@ DataType Arguments::at(int i)
 
 bool Arguments::approveType(const DataType& type)
 {
-	if (!ended()&&isValid()) {
+	if (!ended()&&stillValid) {
 		if (getCurrentDataType() == type) {
 			if (repeatable)completed = true;
 			else if (currentIndex == listArgsTypes.size()-1) {
@@ -1417,8 +1543,9 @@ bool Arguments::approveType(const DataType& type)
 }
 
 DataType Arguments::getCurrentDataType()
-{
-	return listArgsTypes.at(currentIndex);
+{	
+	if (repeatable)return repeatedType;
+	else return listArgsTypes.at(currentIndex);
 }
 
 bool Arguments::isRepeatable()
@@ -1449,12 +1576,14 @@ bool Arguments::isEqual(Arguments args)
 
 BMPKToken::BMPKToken():MPKToken()
 {
+	setOverloads();
 }
 
 void BMPKToken::setOverloads()
 {
-	argsOverload.addArgs(Arguments(DataType::BOOL, true));
+	argsOverload.addArgs(Arguments(DataType::BOOL, true),0);
 }
+
 
 DataType BMPKToken::getDataType(TokenResult& tRes)
 {
@@ -1468,128 +1597,142 @@ bool BMPKToken::addTokens(IteratorList<Token>& tl, TokenResult& tRes)
 
 bool ArgumentsOverload::hasValidArg()
 {
-	return getAllValidArguments().size() > 0;
+	return getValidArguments().size() > 0;
 }
 
 bool ArgumentsOverload::hasCompletedArguments()
 {
-	return !getAllCompletedArgs().empty();
+	return !getCompletedArgs().empty();
 }
 
-void ArgumentsOverload::setCompletedArguments()
+void ArgumentsOverload::updateCompletedArguments()
 {
-	completedArguments = getAllCompletedArgs().front();
+	std::vector<int> toDelete;
+	for (auto& args : completedArguments) {
+		if (!args.second->isValid())toDelete.emplace_back(args.first);
+	}
+	for (int i : toDelete) {
+		completedArguments.erase(i);
+	}
+	for (auto& args : validArguments) {
+		if (args.second->isCompleted())completedArguments.emplace(args);
+	}
+}
+
+void ArgumentsOverload::updateValidArguments()
+{
+	std::vector<int> toDelete;
+	for (auto& args : validArguments) {
+		if (!args.second->isValid())toDelete.emplace_back(args.first);
+	}
+	for (int i : toDelete) {
+		validArguments.erase(i);
+	}
+}
+
+void ArgumentsOverload::updateTabs()
+{
+	updateValidArguments();
+	updateCompletedArguments();
 }
 
 ArgumentsOverload::ArgumentsOverload()
 {
-	currentIndex = 0;
-	listArguments.clear();
+	mapArguments.clear();
 	currentDataTypes.clear();
-}
-
-ArgumentsOverload::ArgumentsOverload(Arguments args):ArgumentsOverload()
-{
-	addArgs(args);
-}
-
-ArgumentsOverload::ArgumentsOverload(std::vector<Arguments> ovArgs):ArgumentsOverload()
-{
-	listArguments  =   ovArgs;
+	completeIndex = 0;
 }
 
 bool ArgumentsOverload::isPresent(Arguments args)
 {
-	for (auto arg : listArguments) {
-		if (arg.isEqual(args))return true;
+	for (auto arg : mapArguments) {
+		if (arg.second->isEqual(args))return true;
+	}
+	return false;
+}
+
+void ArgumentsOverload::addArgs(Arguments args,int index)
+{
+	if (!isPresent(args)) {
+		mapArguments.emplace(std::pair<int, std::shared_ptr<Arguments>>(index, std::make_shared<Arguments>(args)));
 	}
 }
 
-void ArgumentsOverload::addArgs(Arguments args)
+void ArgumentsOverload::initTabs()
 {
-	if (!isPresent(args)) {
-		listArguments.push_back(args);
+	for (auto& args : mapArguments) {
+		if (args.second->isValid())validArguments.emplace(args);
+		if (args.second->isCompleted())completedArguments.emplace(args);
 	}
 }
 
 std::vector<DataType> ArgumentsOverload::getPossibleDataTypes()
 {
 	currentDataTypes.clear();
-	for (auto arg : listArguments) {
-		if (!arg.ended() && arg.isValid()) {
-			currentDataTypes.push_back(arg.getCurrentDataType());
-		}
+	for (auto& arg : validArguments) {
+		currentDataTypes.push_back(arg.second->getCurrentDataType());
 	}
 	return currentDataTypes;
 }
 
 void ArgumentsOverload::next()
 {
-	for (auto arg : listArguments)arg.next();
+	for (auto& arg : mapArguments)arg.second->next();
 }
 
 bool ArgumentsOverload::approveType(const DataType& type)
 {
-	if (hasValidArg()) {
-		for (auto arg : this->listArguments) {
-			arg.approveType(type);
-		}
+	bool res=false;
+	for (auto& arg : validArguments) {
+		if(arg.second->approveType(type))res=true;
 	}
-	return false;
+	updateTabs();
+	return res;
 }
 
-Arguments ArgumentsOverload::getCompletedArguments()
+unsigned int ArgumentsOverload::getID()
+{
+	return completeIndex;
+}
+
+void ArgumentsOverload::setCompleteIndex()
+{
+	completeIndex = completedArguments.begin()->first;
+}
+
+std::map<int, std::shared_ptr<Arguments>> ArgumentsOverload::getValidArguments()
+{
+	return validArguments;
+}
+
+std::map<int, std::shared_ptr<Arguments>> ArgumentsOverload::getCompletedArgs()
 {
 	return completedArguments;
-}
-
-std::vector<Arguments> ArgumentsOverload::getAllValidArguments()
-{
-	std::vector<Arguments> lArgs;
-	for (auto args : listArguments) {
-		if (args.isValid())lArgs.push_back(args);
-	}
-	return lArgs;
-}
-
-std::vector<Arguments> ArgumentsOverload::getAllCompletedArgs()
-{
-	auto completedArgs = [this] {
-		std::vector<Arguments> result;
-		for (const auto& arg : listArguments) {
-			if (arg.isValid() && arg.ended()) { // Example condition
-				result.push_back(arg);
-			}
-		}
-		return result;
-		};
-
-	return completedArgs(); // Call the lambda to execute it
 }
 
 
 
 bool ArgumentsOverload::ended()
 {
-	for (auto arg : listArguments) {
-		if (!arg.ended())return false;
+	for (auto arg : mapArguments) {
+		if (!arg.second->ended())return false;
 	}
 	return true;
 }
 
 int ArgumentsOverload::size()
 {
-	return listArguments.size();
+	return mapArguments.size();
 }
 
 bool ArgumentsOverload::empty()
 {
-	return listArguments.empty();
+	return mapArguments.empty();
 }
 
 TemplateToken::TemplateToken()
 {
-
+	line = 0;
 }
 
 TemplateToken::TemplateToken(int line) :TemplateToken()

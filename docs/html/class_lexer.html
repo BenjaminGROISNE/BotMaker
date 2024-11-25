@@ -27,9 +27,8 @@
  <tbody>
  <tr id="projectrow">
   <td id="projectalign">
-   <div id="projectname">BotMaker<span id="projectnumber">&#160;beta</span>
+   <div id="projectname">BotMaker
    </div>
-   <div id="projectbrief">Tool to create bots on Bluestacks</div>
   </td>
  </tr>
  </tbody>
@@ -100,16 +99,17 @@ $(function(){initNavTree('class_lexer.html',''); initResizable(true); });
   <div class="summary">
 <a href="#pub-methods">Public Member Functions</a> &#124;
 <a href="#pub-attribs">Public Attributes</a> &#124;
+<a href="#pro-attribs">Protected Attributes</a> &#124;
 <a href="class_lexer-members.html">List of all members</a>  </div>
   <div class="headertitle"><div class="title">Lexer Class Reference</div></div>
 </div><!--header-->
 <div class="contents">
 
-<p><code>#include &lt;<a class="el" href="_interpretor_8h_source.html">Interpretor.h</a>&gt;</code></p>
+<p><code>#include &lt;<a class="el" href="_lexer_8h_source.html">Lexer.h</a>&gt;</code></p>
 <div class="dynheader">
 Collaboration diagram for Lexer:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="class_lexer__coll__graph.svg" width="194" height="480"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="class_lexer__coll__graph.svg" width="100%" height="600"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
 </div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
@@ -118,12 +118,30 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:a2752a2b16cc1ffbcb8fc3e82e95bf331"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a41f107194b3a9ed49a43abdb9fbcad24" id="r_a41f107194b3a9ed49a43abdb9fbcad24"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a41f107194b3a9ed49a43abdb9fbcad24">Lexer</a> (const std::string &amp;text)</td></tr>
 <tr class="separator:a41f107194b3a9ed49a43abdb9fbcad24"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a142db843cfdc2ef25cf8e59c7b209861" id="r_a142db843cfdc2ef25cf8e59c7b209861"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a142db843cfdc2ef25cf8e59c7b209861">empty</a> ()</td></tr>
-<tr class="separator:a142db843cfdc2ef25cf8e59c7b209861"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab0ca8b5adc1af3cdec4855fba11491c1" id="r_ab0ca8b5adc1af3cdec4855fba11491c1"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ab0ca8b5adc1af3cdec4855fba11491c1">extractTokens</a> (const std::string &amp;text)</td></tr>
-<tr class="separator:ab0ca8b5adc1af3cdec4855fba11491c1"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a5a008a99eb5bc34590b62a99ea9065c3" id="r_a5a008a99eb5bc34590b62a99ea9065c3"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a5a008a99eb5bc34590b62a99ea9065c3">showAllTokens</a> ()</td></tr>
-<tr class="separator:a5a008a99eb5bc34590b62a99ea9065c3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6d58c8a031d7f7dd28c3501984b4eab6" id="r_a6d58c8a031d7f7dd28c3501984b4eab6"><td class="memItemLeft" align="right" valign="top">std::shared_ptr&lt; <a class="el" href="class_token.html">Token</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a6d58c8a031d7f7dd28c3501984b4eab6">getToken</a> (const std::string &amp;text)</td></tr>
+<tr class="separator:a6d58c8a031d7f7dd28c3501984b4eab6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af2728233573db8a7bbd5b49bed311c5f" id="r_af2728233573db8a7bbd5b49bed311c5f"><td class="memItemLeft" align="right" valign="top">std::shared_ptr&lt; <a class="el" href="class_token.html">Token</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#af2728233573db8a7bbd5b49bed311c5f">getToken</a> (const <a class="el" href="_token_8h.html#acbd1e63c605cbb3dbe67c7411841b46c">TokenVALUE</a> &amp;tValue, const std::string &amp;text)</td></tr>
+<tr class="separator:af2728233573db8a7bbd5b49bed311c5f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a38487c80f0fe8c7f35a2a495015945be" id="r_a38487c80f0fe8c7f35a2a495015945be"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a38487c80f0fe8c7f35a2a495015945be">extractStringLiteral</a> (std::string &amp;newText, std::string &amp;nextTokenString)</td></tr>
+<tr class="separator:a38487c80f0fe8c7f35a2a495015945be"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:acf897fb607a542d5c7c8cd4b0dcb1d18" id="r_acf897fb607a542d5c7c8cd4b0dcb1d18"><td class="memItemLeft" align="right" valign="top">std::vector&lt; std::shared_ptr&lt; <a class="el" href="class_token.html">Token</a> &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#acf897fb607a542d5c7c8cd4b0dcb1d18">extractTokens</a> (const std::string &amp;text)</td></tr>
+<tr class="separator:acf897fb607a542d5c7c8cd4b0dcb1d18"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a142bd017adf2e3df1522e0cce7a3fb0c" id="r_a142bd017adf2e3df1522e0cce7a3fb0c"><td class="memItemLeft" align="right" valign="top"><a class="el" href="_token_8h.html#acbd1e63c605cbb3dbe67c7411841b46c">TokenVALUE</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a142bd017adf2e3df1522e0cce7a3fb0c">getTokenValue</a> (const std::string &amp;text)</td></tr>
+<tr class="separator:a142bd017adf2e3df1522e0cce7a3fb0c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a672065ac17bf0b701e71c78917882441" id="r_a672065ac17bf0b701e71c78917882441"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a672065ac17bf0b701e71c78917882441">getTokenString</a> (<a class="el" href="_token_8h.html#acbd1e63c605cbb3dbe67c7411841b46c">TokenVALUE</a> value)</td></tr>
+<tr class="separator:a672065ac17bf0b701e71c78917882441"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aeea59528280fc24aaf8a24d0182df826" id="r_aeea59528280fc24aaf8a24d0182df826"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aeea59528280fc24aaf8a24d0182df826">getNextPunctuationToken</a> (const std::string &amp;str)</td></tr>
+<tr class="separator:aeea59528280fc24aaf8a24d0182df826"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a243227232c190f441498270efa40ccb8" id="r_a243227232c190f441498270efa40ccb8"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a243227232c190f441498270efa40ccb8">getNextTokenString</a> (const std::string &amp;text)</td></tr>
+<tr class="separator:a243227232c190f441498270efa40ccb8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6d27c5679af8fff9df7b0885ecceb9ac" id="r_a6d27c5679af8fff9df7b0885ecceb9ac"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a6d27c5679af8fff9df7b0885ecceb9ac">skipTokenString</a> (std::string &amp;text, const std::string tokenText)</td></tr>
+<tr class="separator:a6d27c5679af8fff9df7b0885ecceb9ac"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:acdefc721d12021beb50dab91162e46fa" id="r_acdefc721d12021beb50dab91162e46fa"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#acdefc721d12021beb50dab91162e46fa">skipStringLiteral</a> (std::string &amp;text, const std::string tokenText)</td></tr>
+<tr class="separator:acdefc721d12021beb50dab91162e46fa"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a67add67d465e634d6820b6dcc711708a" id="r_a67add67d465e634d6820b6dcc711708a"><td class="memItemLeft" align="right" valign="top"><a class="el" href="_token_8h.html#acbd1e63c605cbb3dbe67c7411841b46c">TokenVALUE</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a67add67d465e634d6820b6dcc711708a">getNextTokenValue</a> (const std::string &amp;text)</td></tr>
+<tr class="separator:a67add67d465e634d6820b6dcc711708a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a700cefa90ab90db3e3db38cc6334abba" id="r_a700cefa90ab90db3e3db38cc6334abba"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a700cefa90ab90db3e3db38cc6334abba">showAllTokens</a> (std::vector&lt; std::shared_ptr&lt; <a class="el" href="class_token.html">Token</a> &gt; &gt;)</td></tr>
+<tr class="separator:a700cefa90ab90db3e3db38cc6334abba"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-attribs" name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
@@ -133,14 +151,15 @@ Public Attributes</h2></td></tr>
 <tr class="separator:a8a81c9e13952e5afda794af56ba46455"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5aaf781571efdb75f4f689ec4c219fc0" id="r_a5aaf781571efdb75f4f689ec4c219fc0"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a5aaf781571efdb75f4f689ec4c219fc0">updatedContent</a></td></tr>
 <tr class="separator:a5aaf781571efdb75f4f689ec4c219fc0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pro-attribs" name="pro-attribs"></a>
+Protected Attributes</h2></td></tr>
 <tr class="memitem:a5147254cee0022d532a50e683a3fa688" id="r_a5147254cee0022d532a50e683a3fa688"><td class="memItemLeft" align="right" valign="top">std::vector&lt; std::shared_ptr&lt; <a class="el" href="class_token.html">Token</a> &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a5147254cee0022d532a50e683a3fa688">listTokens</a></td></tr>
 <tr class="separator:a5147254cee0022d532a50e683a3fa688"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3fea0d83414fdefc952e215be92e756e" id="r_a3fea0d83414fdefc952e215be92e756e"><td class="memItemLeft" align="right" valign="top"><a class="el" href="struct_user_variables.html">UserVariables</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a3fea0d83414fdefc952e215be92e756e">uv</a></td></tr>
-<tr class="separator:a3fea0d83414fdefc952e215be92e756e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock">
-<p class="definition">Definition at line <a class="el" href="_interpretor_8h_source.html#l00539">539</a> of file <a class="el" href="_interpretor_8h_source.html">Interpretor.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_lexer_8h_source.html#l00010">10</a> of file <a class="el" href="_lexer_8h_source.html">Lexer.h</a>.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="a2752a2b16cc1ffbcb8fc3e82e95bf331" name="a2752a2b16cc1ffbcb8fc3e82e95bf331"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a2752a2b16cc1ffbcb8fc3e82e95bf331">&#9670;&#160;</a></span>Lexer() <span class="overload">[1/2]</span></h2>
@@ -157,7 +176,7 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_interpretor_8cpp_source.html#l00528">528</a> of file <a class="el" href="_interpretor_8cpp_source.html">Interpretor.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_lexer_8cpp_source.html#l00317">317</a> of file <a class="el" href="_lexer_8cpp_source.html">Lexer.cpp</a>.</p>
 
 </div>
 </div>
@@ -176,38 +195,52 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_interpretor_8cpp_source.html#l00532">532</a> of file <a class="el" href="_interpretor_8cpp_source.html">Interpretor.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_lexer_8cpp_source.html#l00322">322</a> of file <a class="el" href="_lexer_8cpp_source.html">Lexer.cpp</a>.</p>
 
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
-<a id="a142db843cfdc2ef25cf8e59c7b209861" name="a142db843cfdc2ef25cf8e59c7b209861"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a142db843cfdc2ef25cf8e59c7b209861">&#9670;&#160;</a></span>empty()</h2>
+<a id="a38487c80f0fe8c7f35a2a495015945be" name="a38487c80f0fe8c7f35a2a495015945be"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a38487c80f0fe8c7f35a2a495015945be">&#9670;&#160;</a></span>extractStringLiteral()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">bool Lexer::empty </td>
+          <td class="memname">void Lexer::extractStringLiteral </td>
           <td>(</td>
-          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
+          <td class="paramtype">std::string &amp;</td>          <td class="paramname"><span class="paramname"><em>newText</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
           <td></td>
+          <td class="paramtype">std::string &amp;</td>          <td class="paramname"><span class="paramname"><em>nextTokenString</em></span>&#160;)</td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_interpretor_8cpp_source.html#l00543">543</a> of file <a class="el" href="_interpretor_8cpp_source.html">Interpretor.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_lexer_8cpp_source.html#l00389">389</a> of file <a class="el" href="_lexer_8cpp_source.html">Lexer.cpp</a>.</p>
+<div class="dynheader">
+Here is the call graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="class_lexer_a38487c80f0fe8c7f35a2a495015945be_cgraph.svg" width="100%" height="555"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
+</div>
+<div class="dynheader">
+Here is the caller graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="class_lexer_a38487c80f0fe8c7f35a2a495015945be_icgraph.svg" width="100%" height="366"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
+</div>
 
 </div>
 </div>
-<a id="ab0ca8b5adc1af3cdec4855fba11491c1" name="ab0ca8b5adc1af3cdec4855fba11491c1"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ab0ca8b5adc1af3cdec4855fba11491c1">&#9670;&#160;</a></span>extractTokens()</h2>
+<a id="acf897fb607a542d5c7c8cd4b0dcb1d18" name="acf897fb607a542d5c7c8cd4b0dcb1d18"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#acf897fb607a542d5c7c8cd4b0dcb1d18">&#9670;&#160;</a></span>extractTokens()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">void Lexer::extractTokens </td>
+          <td class="memname">std::vector&lt; std::shared_ptr&lt; <a class="el" href="class_token.html">Token</a> &gt; &gt; Lexer::extractTokens </td>
           <td>(</td>
           <td class="paramtype">const std::string &amp;</td>          <td class="paramname"><span class="paramname"><em>text</em></span></td><td>)</td>
           <td></td>
@@ -215,22 +248,199 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_interpretor_8cpp_source.html#l00203">203</a> of file <a class="el" href="_interpretor_8cpp_source.html">Interpretor.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_lexer_8cpp_source.html#l00397">397</a> of file <a class="el" href="_lexer_8cpp_source.html">Lexer.cpp</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="class_lexer_ab0ca8b5adc1af3cdec4855fba11491c1_cgraph.svg" width="100%" height="498"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
+<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="class_lexer_acf897fb607a542d5c7c8cd4b0dcb1d18_cgraph.svg" width="100%" height="600"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
 </div>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="class_lexer_ab0ca8b5adc1af3cdec4855fba11491c1_icgraph.svg" width="100%" height="300"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
+<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="class_lexer_acf897fb607a542d5c7c8cd4b0dcb1d18_icgraph.svg" width="100%" height="366"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
 </div>
 
 </div>
 </div>
-<a id="a5a008a99eb5bc34590b62a99ea9065c3" name="a5a008a99eb5bc34590b62a99ea9065c3"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a5a008a99eb5bc34590b62a99ea9065c3">&#9670;&#160;</a></span>showAllTokens()</h2>
+<a id="aeea59528280fc24aaf8a24d0182df826" name="aeea59528280fc24aaf8a24d0182df826"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aeea59528280fc24aaf8a24d0182df826">&#9670;&#160;</a></span>getNextPunctuationToken()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::string Lexer::getNextPunctuationToken </td>
+          <td>(</td>
+          <td class="paramtype">const std::string &amp;</td>          <td class="paramname"><span class="paramname"><em>str</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="_lexer_8cpp_source.html#l00343">343</a> of file <a class="el" href="_lexer_8cpp_source.html">Lexer.cpp</a>.</p>
+<div class="dynheader">
+Here is the caller graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="class_lexer_aeea59528280fc24aaf8a24d0182df826_icgraph.svg" width="100%" height="385"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
+</div>
+
+</div>
+</div>
+<a id="a243227232c190f441498270efa40ccb8" name="a243227232c190f441498270efa40ccb8"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a243227232c190f441498270efa40ccb8">&#9670;&#160;</a></span>getNextTokenString()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::string Lexer::getNextTokenString </td>
+          <td>(</td>
+          <td class="paramtype">const std::string &amp;</td>          <td class="paramname"><span class="paramname"><em>text</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="_lexer_8cpp_source.html#l00360">360</a> of file <a class="el" href="_lexer_8cpp_source.html">Lexer.cpp</a>.</p>
+<div class="dynheader">
+Here is the call graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><iframe scrolling="no" frameborder="0" src="class_lexer_a243227232c190f441498270efa40ccb8_cgraph.svg" width="580" height="104"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
+<div class="dynheader">
+Here is the caller graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="class_lexer_a243227232c190f441498270efa40ccb8_icgraph.svg" width="100%" height="385"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
+</div>
+
+</div>
+</div>
+<a id="a67add67d465e634d6820b6dcc711708a" name="a67add67d465e634d6820b6dcc711708a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a67add67d465e634d6820b6dcc711708a">&#9670;&#160;</a></span>getNextTokenValue()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="_token_8h.html#acbd1e63c605cbb3dbe67c7411841b46c">TokenVALUE</a> Lexer::getNextTokenValue </td>
+          <td>(</td>
+          <td class="paramtype">const std::string &amp;</td>          <td class="paramname"><span class="paramname"><em>text</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="_lexer_8cpp_source.html#l00383">383</a> of file <a class="el" href="_lexer_8cpp_source.html">Lexer.cpp</a>.</p>
+<div class="dynheader">
+Here is the call graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="class_lexer_a67add67d465e634d6820b6dcc711708a_cgraph.svg" width="100%" height="473"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
+</div>
+
+</div>
+</div>
+<a id="a6d58c8a031d7f7dd28c3501984b4eab6" name="a6d58c8a031d7f7dd28c3501984b4eab6"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6d58c8a031d7f7dd28c3501984b4eab6">&#9670;&#160;</a></span>getToken() <span class="overload">[1/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::shared_ptr&lt; <a class="el" href="class_token.html">Token</a> &gt; Lexer::getToken </td>
+          <td>(</td>
+          <td class="paramtype">const std::string &amp;</td>          <td class="paramname"><span class="paramname"><em>text</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="_lexer_8cpp_source.html#l00231">231</a> of file <a class="el" href="_lexer_8cpp_source.html">Lexer.cpp</a>.</p>
+<div class="dynheader">
+Here is the call graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="class_lexer_a6d58c8a031d7f7dd28c3501984b4eab6_cgraph.svg" width="100%" height="442"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
+</div>
+<div class="dynheader">
+Here is the caller graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="class_lexer_a6d58c8a031d7f7dd28c3501984b4eab6_icgraph.svg" width="100%" height="366"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
+</div>
+
+</div>
+</div>
+<a id="af2728233573db8a7bbd5b49bed311c5f" name="af2728233573db8a7bbd5b49bed311c5f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af2728233573db8a7bbd5b49bed311c5f">&#9670;&#160;</a></span>getToken() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::shared_ptr&lt; <a class="el" href="class_token.html">Token</a> &gt; Lexer::getToken </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="_token_8h.html#acbd1e63c605cbb3dbe67c7411841b46c">TokenVALUE</a> &amp;</td>          <td class="paramname"><span class="paramname"><em>tValue</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const std::string &amp;</td>          <td class="paramname"><span class="paramname"><em>text</em></span>&#160;)</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="_lexer_8cpp_source.html#l00234">234</a> of file <a class="el" href="_lexer_8cpp_source.html">Lexer.cpp</a>.</p>
+
+</div>
+</div>
+<a id="a672065ac17bf0b701e71c78917882441" name="a672065ac17bf0b701e71c78917882441"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a672065ac17bf0b701e71c78917882441">&#9670;&#160;</a></span>getTokenString()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::string Lexer::getTokenString </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="_token_8h.html#acbd1e63c605cbb3dbe67c7411841b46c">TokenVALUE</a></td>          <td class="paramname"><span class="paramname"><em>value</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="_lexer_8cpp_source.html#l00147">147</a> of file <a class="el" href="_lexer_8cpp_source.html">Lexer.cpp</a>.</p>
+
+</div>
+</div>
+<a id="a142bd017adf2e3df1522e0cce7a3fb0c" name="a142bd017adf2e3df1522e0cce7a3fb0c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a142bd017adf2e3df1522e0cce7a3fb0c">&#9670;&#160;</a></span>getTokenValue()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="_token_8h.html#acbd1e63c605cbb3dbe67c7411841b46c">TokenVALUE</a> Lexer::getTokenValue </td>
+          <td>(</td>
+          <td class="paramtype">const std::string &amp;</td>          <td class="paramname"><span class="paramname"><em>text</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="_lexer_8cpp_source.html#l00021">21</a> of file <a class="el" href="_lexer_8cpp_source.html">Lexer.cpp</a>.</p>
+<div class="dynheader">
+Here is the call graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><iframe scrolling="no" frameborder="0" src="class_lexer_a142bd017adf2e3df1522e0cce7a3fb0c_cgraph.svg" width="618" height="190"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
+<div class="dynheader">
+Here is the caller graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="class_lexer_a142bd017adf2e3df1522e0cce7a3fb0c_icgraph.svg" width="100%" height="403"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
+</div>
+
+</div>
+</div>
+<a id="a700cefa90ab90db3e3db38cc6334abba" name="a700cefa90ab90db3e3db38cc6334abba"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a700cefa90ab90db3e3db38cc6334abba">&#9670;&#160;</a></span>showAllTokens()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -238,17 +448,73 @@ Here is the caller graph for this function:</div>
         <tr>
           <td class="memname">std::string Lexer::showAllTokens </td>
           <td>(</td>
-          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
+          <td class="paramtype">std::vector&lt; std::shared_ptr&lt; <a class="el" href="class_token.html">Token</a> &gt; &gt;</td>          <td class="paramname"><span class="paramname"><em>listTokens</em></span></td><td>)</td>
           <td></td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_interpretor_8cpp_source.html#l00553">553</a> of file <a class="el" href="_interpretor_8cpp_source.html">Interpretor.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_lexer_8cpp_source.html#l00329">329</a> of file <a class="el" href="_lexer_8cpp_source.html">Lexer.cpp</a>.</p>
+
+</div>
+</div>
+<a id="acdefc721d12021beb50dab91162e46fa" name="acdefc721d12021beb50dab91162e46fa"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#acdefc721d12021beb50dab91162e46fa">&#9670;&#160;</a></span>skipStringLiteral()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void Lexer::skipStringLiteral </td>
+          <td>(</td>
+          <td class="paramtype">std::string &amp;</td>          <td class="paramname"><span class="paramname"><em>text</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const std::string</td>          <td class="paramname"><span class="paramname"><em>tokenText</em></span>&#160;)</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="_lexer_8cpp_source.html#l00378">378</a> of file <a class="el" href="_lexer_8cpp_source.html">Lexer.cpp</a>.</p>
+<div class="dynheader">
+Here is the call graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><iframe scrolling="no" frameborder="0" src="class_lexer_acdefc721d12021beb50dab91162e46fa_cgraph.svg" width="650" height="112"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
+
+</div>
+</div>
+<a id="a6d27c5679af8fff9df7b0885ecceb9ac" name="a6d27c5679af8fff9df7b0885ecceb9ac"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6d27c5679af8fff9df7b0885ecceb9ac">&#9670;&#160;</a></span>skipTokenString()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void Lexer::skipTokenString </td>
+          <td>(</td>
+          <td class="paramtype">std::string &amp;</td>          <td class="paramname"><span class="paramname"><em>text</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const std::string</td>          <td class="paramname"><span class="paramname"><em>tokenText</em></span>&#160;)</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="_lexer_8cpp_source.html#l00373">373</a> of file <a class="el" href="_lexer_8cpp_source.html">Lexer.cpp</a>.</p>
+<div class="dynheader">
+Here is the call graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><iframe scrolling="no" frameborder="0" src="class_lexer_a6d27c5679af8fff9df7b0885ecceb9ac_cgraph.svg" width="650" height="112"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="class_lexer_a5a008a99eb5bc34590b62a99ea9065c3_icgraph.svg" width="100%" height="300"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
+<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="class_lexer_a6d27c5679af8fff9df7b0885ecceb9ac_icgraph.svg" width="100%" height="366"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
 </div>
 
 </div>
@@ -259,14 +525,22 @@ Here is the caller graph for this function:</div>
 
 <div class="memitem">
 <div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
       <table class="memname">
         <tr>
           <td class="memname">std::vector&lt;std::shared_ptr&lt;<a class="el" href="class_token.html">Token</a>&gt; &gt; Lexer::listTokens</td>
         </tr>
       </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
+  </tr>
+</table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_interpretor_8h_source.html#l00548">548</a> of file <a class="el" href="_interpretor_8h_source.html">Interpretor.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_lexer_8h_source.html#l00030">30</a> of file <a class="el" href="_lexer_8h_source.html">Lexer.h</a>.</p>
 
 </div>
 </div>
@@ -282,7 +556,7 @@ Here is the caller graph for this function:</div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_interpretor_8h_source.html#l00543">543</a> of file <a class="el" href="_interpretor_8h_source.html">Interpretor.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_lexer_8h_source.html#l00014">14</a> of file <a class="el" href="_lexer_8h_source.html">Lexer.h</a>.</p>
 
 </div>
 </div>
@@ -298,7 +572,7 @@ Here is the caller graph for this function:</div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_interpretor_8h_source.html#l00544">544</a> of file <a class="el" href="_interpretor_8h_source.html">Interpretor.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_lexer_8h_source.html#l00015">15</a> of file <a class="el" href="_lexer_8h_source.html">Lexer.h</a>.</p>
 
 </div>
 </div>
@@ -314,29 +588,13 @@ Here is the caller graph for this function:</div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_interpretor_8h_source.html#l00545">545</a> of file <a class="el" href="_interpretor_8h_source.html">Interpretor.h</a>.</p>
-
-</div>
-</div>
-<a id="a3fea0d83414fdefc952e215be92e756e" name="a3fea0d83414fdefc952e215be92e756e"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a3fea0d83414fdefc952e215be92e756e">&#9670;&#160;</a></span>uv</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="struct_user_variables.html">UserVariables</a>* Lexer::uv</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="_interpretor_8h_source.html#l00550">550</a> of file <a class="el" href="_interpretor_8h_source.html">Interpretor.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_lexer_8h_source.html#l00016">16</a> of file <a class="el" href="_lexer_8h_source.html">Lexer.h</a>.</p>
 
 </div>
 </div>
 <hr/>The documentation for this class was generated from the following files:<ul>
-<li>src/<a class="el" href="_interpretor_8h_source.html">Interpretor.h</a></li>
-<li>src/<a class="el" href="_interpretor_8cpp_source.html">Interpretor.cpp</a></li>
+<li>src/<a class="el" href="_lexer_8h_source.html">Lexer.h</a></li>
+<li>src/<a class="el" href="_lexer_8cpp_source.html">Lexer.cpp</a></li>
 </ul>
 </div><!-- contents -->
 </div><!-- doc-content -->

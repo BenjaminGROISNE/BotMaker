@@ -30,6 +30,8 @@ Collaboration diagram for MainTag:<para>
 </listitem>
             <listitem><para><link linkend="_class_main_tag_1a0e708aab6c532a7f544203a52885eb25">MainTag</link> (const <link linkend="_class_main_tag">MainTag</link> &amp;toCopy)</para>
 </listitem>
+            <listitem><para><link linkend="_class_main_tag_1aa34cb8e47a02b0d94c9d4ef0ff36e310">MainTag</link> (std::shared_ptr&lt; <link linkend="_class_tag">Tag</link> &gt; innerTag)</para>
+</listitem>
             <listitem><para><link linkend="_class_main_tag_1aca93f098bb94af3ab20b7ab1f67ef527">MainTag</link> (const std::vector&lt; std::shared_ptr&lt; <link linkend="_class_tag">Tag</link> &gt; &gt; &amp;tags)</para>
 </listitem>
             <listitem><para>std::shared_ptr&lt; <link linkend="_class_main_tag">MainTag</link> &gt; <link linkend="_class_main_tag_1a8d32cbe9f42813c0b131575b8a0f7663">clone</link> ()</para>
@@ -100,30 +102,37 @@ Public Attributes inherited from <link linkend="_class_tag">Tag</link>        <i
 <section>
 <title>Detailed Description</title>
 <para>
-Definition at line <link linkend="__tags_8h_source_1l00141">141</link> of file <link linkend="__tags_8h_source">Tags.h</link>.</para>
+Definition at line <link linkend="__tags_8h_source_1l00144">144</link> of file <link linkend="__tags_8h_source">Tags.h</link>.</para>
 </section>
 <section>
 <title>Constructor &amp; Destructor Documentation</title>
 <anchor xml:id="_class_main_tag_1a78d5543dafe277cb3d92a7dc81d4a1a9"/><section>
-    <title>MainTag()<computeroutput>[1/3]</computeroutput></title>
+    <title>MainTag()<computeroutput>[1/4]</computeroutput></title>
 <indexterm><primary>MainTag</primary><secondary>MainTag</secondary></indexterm>
 <indexterm><primary>MainTag</primary><secondary>MainTag</secondary></indexterm>
 <para><computeroutput>MainTag::MainTag ( )</computeroutput></para><para>
-Definition at line <link linkend="__tags_8cpp_source_1l01522">1522</link> of file <link linkend="__tags_8cpp_source">Tags.cpp</link>.</para>
+Definition at line <link linkend="__tags_8cpp_source_1l01527">1527</link> of file <link linkend="__tags_8cpp_source">Tags.cpp</link>.</para>
 </section>
 <anchor xml:id="_class_main_tag_1a0e708aab6c532a7f544203a52885eb25"/><section>
-    <title>MainTag()<computeroutput>[2/3]</computeroutput></title>
+    <title>MainTag()<computeroutput>[2/4]</computeroutput></title>
 <indexterm><primary>MainTag</primary><secondary>MainTag</secondary></indexterm>
 <indexterm><primary>MainTag</primary><secondary>MainTag</secondary></indexterm>
 <para><computeroutput>MainTag::MainTag (const <link linkend="_class_main_tag">MainTag</link> &amp; toCopy)</computeroutput></para><para>
 Definition at line <link linkend="__tags_8cpp_source_1l00143">143</link> of file <link linkend="__tags_8cpp_source">Tags.cpp</link>.</para>
 </section>
+<anchor xml:id="_class_main_tag_1aa34cb8e47a02b0d94c9d4ef0ff36e310"/><section>
+    <title>MainTag()<computeroutput>[3/4]</computeroutput></title>
+<indexterm><primary>MainTag</primary><secondary>MainTag</secondary></indexterm>
+<indexterm><primary>MainTag</primary><secondary>MainTag</secondary></indexterm>
+<para><computeroutput>MainTag::MainTag (std::shared_ptr&lt; <link linkend="_class_tag">Tag</link> &gt; innerTag)</computeroutput></para><para>
+Definition at line <link linkend="__tags_8cpp_source_1l00148">148</link> of file <link linkend="__tags_8cpp_source">Tags.cpp</link>.</para>
+</section>
 <anchor xml:id="_class_main_tag_1aca93f098bb94af3ab20b7ab1f67ef527"/><section>
-    <title>MainTag()<computeroutput>[3/3]</computeroutput></title>
+    <title>MainTag()<computeroutput>[4/4]</computeroutput></title>
 <indexterm><primary>MainTag</primary><secondary>MainTag</secondary></indexterm>
 <indexterm><primary>MainTag</primary><secondary>MainTag</secondary></indexterm>
 <para><computeroutput>MainTag::MainTag (const std::vector&lt; std::shared_ptr&lt; <link linkend="_class_tag">Tag</link> &gt; &gt; &amp; tags)</computeroutput></para><para>
-Definition at line <link linkend="__tags_8cpp_source_1l01540">1540</link> of file <link linkend="__tags_8cpp_source">Tags.cpp</link>.</para>
+Definition at line <link linkend="__tags_8cpp_source_1l01545">1545</link> of file <link linkend="__tags_8cpp_source">Tags.cpp</link>.</para>
 Here is the call graph for this function:<para>
     <informalfigure>
         <mediaobject>
@@ -151,7 +160,7 @@ Definition at line <link linkend="__tags_8cpp_source_1l00031">31</link> of file 
 <para><computeroutput>void MainTag::execute ( )<computeroutput>[override]</computeroutput>, <computeroutput>[virtual]</computeroutput></computeroutput></para><para>
 Reimplemented from <link linkend="_class_tag_1a54054f3c9db4decb422972460bbb34c3">Tag</link>.</para>
 <para>
-Definition at line <link linkend="__tags_8cpp_source_1l01528">1528</link> of file <link linkend="__tags_8cpp_source">Tags.cpp</link>.</para>
+Definition at line <link linkend="__tags_8cpp_source_1l01533">1533</link> of file <link linkend="__tags_8cpp_source">Tags.cpp</link>.</para>
 Here is the call graph for this function:<para>
     <informalfigure>
         <mediaobject>
@@ -170,7 +179,7 @@ Here is the call graph for this function:<para>
 <indexterm><primary>argvTag</primary><secondary>MainTag</secondary></indexterm>
 <indexterm><primary>MainTag</primary><secondary>argvTag</secondary></indexterm>
 <para><computeroutput>std::vector&lt;std::shared_ptr&lt;<link linkend="_class_tag">Tag</link>&gt; &gt; MainTag::argvTag</computeroutput></para><para>
-Definition at line <link linkend="__tags_8h_source_1l00146">146</link> of file <link linkend="__tags_8h_source">Tags.h</link>.</para>
+Definition at line <link linkend="__tags_8h_source_1l00150">150</link> of file <link linkend="__tags_8h_source">Tags.h</link>.</para>
 </section>
 <para>
 The documentation for this class was generated from the following files:</para>

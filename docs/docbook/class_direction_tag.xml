@@ -70,7 +70,7 @@ Public Attributes inherited from <link linkend="_class_tag">Tag</link>        <i
 <section>
 <title>Detailed Description</title>
 <para>
-Definition at line <link linkend="__tags_8h_source_1l00539">539</link> of file <link linkend="__tags_8h_source">Tags.h</link>.</para>
+Definition at line <link linkend="__tags_8h_source_1l00519">519</link> of file <link linkend="__tags_8h_source">Tags.h</link>.</para>
 </section>
 <section>
 <title>Constructor &amp; Destructor Documentation</title>
@@ -79,28 +79,28 @@ Definition at line <link linkend="__tags_8h_source_1l00539">539</link> of file <
 <indexterm><primary>DirectionTag</primary><secondary>DirectionTag</secondary></indexterm>
 <indexterm><primary>DirectionTag</primary><secondary>DirectionTag</secondary></indexterm>
 <para><computeroutput>DirectionTag::DirectionTag ( )</computeroutput></para><para>
-Definition at line <link linkend="__tags_8cpp_source_1l00848">848</link> of file <link linkend="__tags_8cpp_source">Tags.cpp</link>.</para>
+Definition at line <link linkend="__tags_8cpp_source_1l00853">853</link> of file <link linkend="__tags_8cpp_source">Tags.cpp</link>.</para>
 </section>
 <anchor xml:id="_class_direction_tag_1a3f8965abfc1349029bc3dbb19eb5edd2"/><section>
     <title>DirectionTag()<computeroutput>[2/4]</computeroutput></title>
 <indexterm><primary>DirectionTag</primary><secondary>DirectionTag</secondary></indexterm>
 <indexterm><primary>DirectionTag</primary><secondary>DirectionTag</secondary></indexterm>
 <para><computeroutput>DirectionTag::DirectionTag (const <link linkend="_class_direction_tag">DirectionTag</link> &amp; toCopy)</computeroutput></para><para>
-Definition at line <link linkend="__tags_8cpp_source_1l00261">261</link> of file <link linkend="__tags_8cpp_source">Tags.cpp</link>.</para>
+Definition at line <link linkend="__tags_8cpp_source_1l00266">266</link> of file <link linkend="__tags_8cpp_source">Tags.cpp</link>.</para>
 </section>
 <anchor xml:id="_class_direction_tag_1a04b8834b4274d7f291dcd58080f1db13"/><section>
     <title>DirectionTag()<computeroutput>[3/4]</computeroutput></title>
 <indexterm><primary>DirectionTag</primary><secondary>DirectionTag</secondary></indexterm>
 <indexterm><primary>DirectionTag</primary><secondary>DirectionTag</secondary></indexterm>
 <para><computeroutput>DirectionTag::DirectionTag (const std::shared_ptr&lt; <link linkend="_class_tag">Tag</link> &gt; &amp; parameter)</computeroutput></para><para>
-Definition at line <link linkend="__tags_8cpp_source_1l00855">855</link> of file <link linkend="__tags_8cpp_source">Tags.cpp</link>.</para>
+Definition at line <link linkend="__tags_8cpp_source_1l00860">860</link> of file <link linkend="__tags_8cpp_source">Tags.cpp</link>.</para>
 </section>
 <anchor xml:id="_class_direction_tag_1a9415387902a3390400b241caef6d83d2"/><section>
     <title>DirectionTag()<computeroutput>[4/4]</computeroutput></title>
 <indexterm><primary>DirectionTag</primary><secondary>DirectionTag</secondary></indexterm>
 <indexterm><primary>DirectionTag</primary><secondary>DirectionTag</secondary></indexterm>
 <para><computeroutput>DirectionTag::DirectionTag (<link linkend="__units_8h_1a224b9163917ac32fc95a60d8c1eec3aa">Direction</link> parameter)</computeroutput></para><para>
-Definition at line <link linkend="__tags_8cpp_source_1l00860">860</link> of file <link linkend="__tags_8cpp_source">Tags.cpp</link>.</para>
+Definition at line <link linkend="__tags_8cpp_source_1l00865">865</link> of file <link linkend="__tags_8cpp_source">Tags.cpp</link>.</para>
 </section>
 </section>
 <section>
@@ -119,7 +119,7 @@ Definition at line <link linkend="__tags_8cpp_source_1l00126">126</link> of file
 <para><computeroutput>void DirectionTag::execute ( )<computeroutput>[override]</computeroutput>, <computeroutput>[virtual]</computeroutput></computeroutput></para><para>
 Reimplemented from <link linkend="_class_tag_1a54054f3c9db4decb422972460bbb34c3">Tag</link>.</para>
 <para>
-Definition at line <link linkend="__tags_8cpp_source_1l00884">884</link> of file <link linkend="__tags_8cpp_source">Tags.cpp</link>.</para>
+Definition at line <link linkend="__tags_8cpp_source_1l00889">889</link> of file <link linkend="__tags_8cpp_source">Tags.cpp</link>.</para>
 Here is the call graph for this function:<para>
     <informalfigure>
         <mediaobject>
@@ -138,14 +138,14 @@ Here is the call graph for this function:<para>
 <indexterm><primary>dirTag</primary><secondary>DirectionTag</secondary></indexterm>
 <indexterm><primary>DirectionTag</primary><secondary>dirTag</secondary></indexterm>
 <para><computeroutput>std::shared_ptr&lt;<link linkend="_class_tag">Tag</link>&gt; DirectionTag::dirTag</computeroutput></para><para>
-Definition at line <link linkend="__tags_8h_source_1l00545">545</link> of file <link linkend="__tags_8h_source">Tags.h</link>.</para>
+Definition at line <link linkend="__tags_8h_source_1l00525">525</link> of file <link linkend="__tags_8h_source">Tags.h</link>.</para>
 </section>
 <anchor xml:id="_class_direction_tag_1a3939708621f78928a521b4ad47d9c4ee"/><section>
     <title>myDir</title>
 <indexterm><primary>myDir</primary><secondary>DirectionTag</secondary></indexterm>
 <indexterm><primary>DirectionTag</primary><secondary>myDir</secondary></indexterm>
 <para><computeroutput><link linkend="__units_8h_1a224b9163917ac32fc95a60d8c1eec3aa">Direction</link> DirectionTag::myDir</computeroutput></para><para>
-Definition at line <link linkend="__tags_8h_source_1l00547">547</link> of file <link linkend="__tags_8h_source">Tags.h</link>.</para>
+Definition at line <link linkend="__tags_8h_source_1l00527">527</link> of file <link linkend="__tags_8h_source">Tags.h</link>.</para>
 </section>
 <para>
 The documentation for this class was generated from the following files:</para>

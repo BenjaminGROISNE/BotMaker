@@ -1,0 +1,419 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<section xmlns="http://docbook.org/ns/docbook" version="5.0" xmlns:xlink="http://www.w3.org/1999/xlink" xml:id="__lexer_8cpp_source" xml:lang="en-US">
+<title>Lexer.cpp</title>
+<indexterm><primary>src/Lexer.cpp</primary></indexterm>
+Go to the documentation of this file.<programlisting linenumbering="unnumbered"><anchor xml:id="__lexer_8cpp_source_1l00001"/>00001 <emphasis role="preprocessor">#include&#32;&quot;<link linkend="__lexer_8h">Lexer.h</link>&quot;</emphasis>
+<anchor xml:id="__lexer_8cpp_source_1l00002"/>00002 
+<anchor xml:id="__lexer_8cpp_source_1l00003"/>00003 
+<anchor xml:id="__lexer_8cpp_source_1l00004"/><link linkend="__lexer_8cpp_1aaa3b01d6b7b6b5bf4b868b37fcf3ac6f">00004</link> <emphasis role="keywordtype">bool</emphasis>&#32;<link linkend="__lexer_8cpp_1aaa3b01d6b7b6b5bf4b868b37fcf3ac6f">isNumber</link>(<emphasis role="keyword">const</emphasis>&#32;std::string&amp;&#32;s)
+<anchor xml:id="__lexer_8cpp_source_1l00005"/>00005 {
+<anchor xml:id="__lexer_8cpp_source_1l00006"/>00006 &#32;&#32;&#32;&#32;std::string::const_iterator&#32;it&#32;=&#32;s.begin();
+<anchor xml:id="__lexer_8cpp_source_1l00007"/>00007 &#32;&#32;&#32;&#32;<emphasis role="keywordflow">while</emphasis>&#32;(it&#32;!=&#32;s.end()&#32;&amp;&amp;&#32;std::isdigit(*it))&#32;++it;
+<anchor xml:id="__lexer_8cpp_source_1l00008"/>00008 &#32;&#32;&#32;&#32;<emphasis role="keywordflow">return</emphasis>&#32;!s.empty()&#32;&amp;&amp;&#32;it&#32;==&#32;s.end();
+<anchor xml:id="__lexer_8cpp_source_1l00009"/>00009 }
+<anchor xml:id="__lexer_8cpp_source_1l00010"/>00010 
+<anchor xml:id="__lexer_8cpp_source_1l00011"/><link linkend="__lexer_8cpp_1a32fa5cbc79c968c5b53e8303ad77091d">00011</link> <emphasis role="keywordtype">bool</emphasis>&#32;<link linkend="__lexer_8cpp_1a32fa5cbc79c968c5b53e8303ad77091d">isIdentifier</link>(<emphasis role="keyword">const</emphasis>&#32;std::string&amp;&#32;s)&#32;{
+<anchor xml:id="__lexer_8cpp_source_1l00012"/>00012 &#32;&#32;&#32;&#32;<emphasis role="keywordtype">bool</emphasis>&#32;notEmpty&#32;=&#32;!s.empty();
+<anchor xml:id="__lexer_8cpp_source_1l00013"/>00013 &#32;&#32;&#32;&#32;<emphasis role="keywordtype">bool</emphasis>&#32;notTokenString&#32;=&#32;!<link linkend="__token_8cpp_1ad42767aaf8252eb57581d009530bd527">isTokenString</link>(s);
+<anchor xml:id="__lexer_8cpp_source_1l00014"/>00014 &#32;&#32;&#32;&#32;<emphasis role="keywordtype">bool</emphasis>&#32;isAlnum&#32;=&#32;<emphasis role="keyword">true</emphasis>;
+<anchor xml:id="__lexer_8cpp_source_1l00015"/>00015 &#32;&#32;&#32;&#32;<emphasis role="keywordflow">for</emphasis>&#32;(<emphasis role="keywordtype">char</emphasis>&#32;i&#32;:&#32;s)&#32;{
+<anchor xml:id="__lexer_8cpp_source_1l00016"/>00016 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">if</emphasis>&#32;(!std::isalnum(i))isAlnum&#32;=&#32;<emphasis role="keyword">false</emphasis>;
+<anchor xml:id="__lexer_8cpp_source_1l00017"/>00017 &#32;&#32;&#32;&#32;}
+<anchor xml:id="__lexer_8cpp_source_1l00018"/>00018 &#32;&#32;&#32;&#32;<emphasis role="keywordflow">return</emphasis>&#32;notEmpty&#32;&amp;&amp;&#32;notTokenString&#32;&amp;&amp;&#32;isAlnum;
+<anchor xml:id="__lexer_8cpp_source_1l00019"/>00019 }
+<anchor xml:id="__lexer_8cpp_source_1l00020"/>00020 
+<anchor xml:id="__lexer_8cpp_source_1l00021"/><link linkend="_class_lexer_1a142bd017adf2e3df1522e0cce7a3fb0c">00021</link> <link linkend="__token_8h_1acbd1e63c605cbb3dbe67c7411841b46c">TokenVALUE</link>&#32;<link linkend="_class_lexer_1a142bd017adf2e3df1522e0cce7a3fb0c">Lexer::getTokenValue</link>(<emphasis role="keyword">const</emphasis>&#32;std::string&amp;&#32;text)&#32;{
+<anchor xml:id="__lexer_8cpp_source_1l00022"/>00022 &#32;&#32;&#32;&#32;<emphasis role="keywordflow">if</emphasis>&#32;(text&#32;==&#32;mainK)&#32;{
+<anchor xml:id="__lexer_8cpp_source_1l00023"/>00023 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">return</emphasis>&#32;<link linkend="__token_8h_1acbd1e63c605cbb3dbe67c7411841b46ca186495f7da296bf880df3a22a492b378">TokenVALUE::MAIN</link>;
+<anchor xml:id="__lexer_8cpp_source_1l00024"/>00024 &#32;&#32;&#32;&#32;}
+<anchor xml:id="__lexer_8cpp_source_1l00025"/>00025 &#32;&#32;&#32;&#32;<emphasis role="keywordflow">else</emphasis>&#32;<emphasis role="keywordflow">if</emphasis>&#32;(text&#32;==&#32;loopK)&#32;{
+<anchor xml:id="__lexer_8cpp_source_1l00026"/>00026 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">return</emphasis>&#32;<link linkend="__token_8h_1acbd1e63c605cbb3dbe67c7411841b46ca9159b3578e4e1eb31ffdf90acd6f6e40">TokenVALUE::LOOP</link>;
+<anchor xml:id="__lexer_8cpp_source_1l00027"/>00027 &#32;&#32;&#32;&#32;}
+<anchor xml:id="__lexer_8cpp_source_1l00028"/>00028 &#32;&#32;&#32;&#32;<emphasis role="keywordflow">else</emphasis>&#32;<emphasis role="keywordflow">if</emphasis>&#32;(text&#32;==&#32;boolK)&#32;{
+<anchor xml:id="__lexer_8cpp_source_1l00029"/>00029 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">return</emphasis>&#32;<link linkend="__token_8h_1acbd1e63c605cbb3dbe67c7411841b46caa97b2c144243b2b9d2c593ec268b62f5">TokenVALUE::BOOL</link>;
+<anchor xml:id="__lexer_8cpp_source_1l00030"/>00030 &#32;&#32;&#32;&#32;}
+<anchor xml:id="__lexer_8cpp_source_1l00031"/>00031 &#32;&#32;&#32;&#32;<emphasis role="keywordflow">else</emphasis>&#32;<emphasis role="keywordflow">if</emphasis>&#32;(text&#32;==&#32;storeK)&#32;{
+<anchor xml:id="__lexer_8cpp_source_1l00032"/>00032 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">return</emphasis>&#32;<link linkend="__token_8h_1acbd1e63c605cbb3dbe67c7411841b46ca3cfba54f6873dfd55b0b09d32910b20e">TokenVALUE::STORE</link>;
+<anchor xml:id="__lexer_8cpp_source_1l00033"/>00033 &#32;&#32;&#32;&#32;}
+<anchor xml:id="__lexer_8cpp_source_1l00034"/>00034 &#32;&#32;&#32;&#32;<emphasis role="keywordflow">else</emphasis>&#32;<emphasis role="keywordflow">if</emphasis>&#32;(text&#32;==&#32;stringK)&#32;{
+<anchor xml:id="__lexer_8cpp_source_1l00035"/>00035 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">return</emphasis>&#32;<link linkend="__token_8h_1acbd1e63c605cbb3dbe67c7411841b46ca63b588d5559f64f89a416e656880b949">TokenVALUE::STRING</link>;
+<anchor xml:id="__lexer_8cpp_source_1l00036"/>00036 &#32;&#32;&#32;&#32;}
+<anchor xml:id="__lexer_8cpp_source_1l00037"/>00037 &#32;&#32;&#32;&#32;<emphasis role="keywordflow">else</emphasis>&#32;<emphasis role="keywordflow">if</emphasis>&#32;(text&#32;==&#32;coordK)&#32;{
+<anchor xml:id="__lexer_8cpp_source_1l00038"/>00038 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">return</emphasis>&#32;<link linkend="__token_8h_1acbd1e63c605cbb3dbe67c7411841b46ca6a977bf6454341ccb0b79c3d0900db91">TokenVALUE::COORD</link>;
+<anchor xml:id="__lexer_8cpp_source_1l00039"/>00039 &#32;&#32;&#32;&#32;}
+<anchor xml:id="__lexer_8cpp_source_1l00040"/>00040 &#32;&#32;&#32;&#32;<emphasis role="keywordflow">else</emphasis>&#32;<emphasis role="keywordflow">if</emphasis>&#32;(text&#32;==&#32;listK)&#32;{
+<anchor xml:id="__lexer_8cpp_source_1l00041"/>00041 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">return</emphasis>&#32;<link linkend="__token_8h_1acbd1e63c605cbb3dbe67c7411841b46ca298cb25408234de02baf2085803a464a">TokenVALUE::LIST</link>;
+<anchor xml:id="__lexer_8cpp_source_1l00042"/>00042 &#32;&#32;&#32;&#32;}
+<anchor xml:id="__lexer_8cpp_source_1l00043"/>00043 &#32;&#32;&#32;&#32;<emphasis role="keywordflow">else</emphasis>&#32;<emphasis role="keywordflow">if</emphasis>&#32;(text&#32;==&#32;intK)&#32;{
+<anchor xml:id="__lexer_8cpp_source_1l00044"/>00044 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">return</emphasis>&#32;<link linkend="__token_8h_1acbd1e63c605cbb3dbe67c7411841b46ca5d5cd46919fa987731fb2edefe0f2a0c">TokenVALUE::INTEGER</link>;
+<anchor xml:id="__lexer_8cpp_source_1l00045"/>00045 &#32;&#32;&#32;&#32;}
+<anchor xml:id="__lexer_8cpp_source_1l00046"/>00046 &#32;&#32;&#32;&#32;<emphasis role="keywordflow">else</emphasis>&#32;<emphasis role="keywordflow">if</emphasis>&#32;(text&#32;==&#32;floatK)&#32;{
+<anchor xml:id="__lexer_8cpp_source_1l00047"/>00047 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">return</emphasis>&#32;<link linkend="__token_8h_1acbd1e63c605cbb3dbe67c7411841b46cae738c26bf4ce1037fa81b039a915cbf6">TokenVALUE::FLOAT</link>;
+<anchor xml:id="__lexer_8cpp_source_1l00048"/>00048 &#32;&#32;&#32;&#32;}
+<anchor xml:id="__lexer_8cpp_source_1l00049"/>00049 &#32;&#32;&#32;&#32;<emphasis role="keywordflow">else</emphasis>&#32;<emphasis role="keywordflow">if</emphasis>&#32;(text&#32;==&#32;compareK)&#32;{
+<anchor xml:id="__lexer_8cpp_source_1l00050"/>00050 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">return</emphasis>&#32;<link linkend="__token_8h_1acbd1e63c605cbb3dbe67c7411841b46cafee1f202df8193b3ba65f00ad61efcef">TokenVALUE::COMPARE</link>;
+<anchor xml:id="__lexer_8cpp_source_1l00051"/>00051 &#32;&#32;&#32;&#32;}
+<anchor xml:id="__lexer_8cpp_source_1l00052"/>00052 &#32;&#32;&#32;&#32;<emphasis role="keywordflow">else</emphasis>&#32;<emphasis role="keywordflow">if</emphasis>&#32;(text&#32;==&#32;zoneK)&#32;{
+<anchor xml:id="__lexer_8cpp_source_1l00053"/>00053 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">return</emphasis>&#32;<link linkend="__token_8h_1acbd1e63c605cbb3dbe67c7411841b46ca1d23cac77df97a722cd2ec7767a06e06">TokenVALUE::ZONE</link>;
+<anchor xml:id="__lexer_8cpp_source_1l00054"/>00054 &#32;&#32;&#32;&#32;}
+<anchor xml:id="__lexer_8cpp_source_1l00055"/>00055 &#32;&#32;&#32;&#32;<emphasis role="keywordflow">else</emphasis>&#32;<emphasis role="keywordflow">if</emphasis>&#32;(text&#32;==&#32;ifK)&#32;{
+<anchor xml:id="__lexer_8cpp_source_1l00056"/>00056 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">return</emphasis>&#32;<link linkend="__token_8h_1acbd1e63c605cbb3dbe67c7411841b46cade6ee2b5d856295add4d5e3631fbfb93">TokenVALUE::IF</link>;
+<anchor xml:id="__lexer_8cpp_source_1l00057"/>00057 &#32;&#32;&#32;&#32;}
+<anchor xml:id="__lexer_8cpp_source_1l00058"/>00058 &#32;&#32;&#32;&#32;<emphasis role="keywordflow">else</emphasis>&#32;<emphasis role="keywordflow">if</emphasis>&#32;(text&#32;==&#32;elseK)&#32;{
+<anchor xml:id="__lexer_8cpp_source_1l00059"/>00059 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">return</emphasis>&#32;<link linkend="__token_8h_1acbd1e63c605cbb3dbe67c7411841b46ca778537b0acce06229cb78d5f72c907ab">TokenVALUE::ELSE</link>;
+<anchor xml:id="__lexer_8cpp_source_1l00060"/>00060 &#32;&#32;&#32;&#32;}
+<anchor xml:id="__lexer_8cpp_source_1l00061"/>00061 &#32;&#32;&#32;&#32;<emphasis role="keywordflow">else</emphasis>&#32;<emphasis role="keywordflow">if</emphasis>&#32;(text&#32;==&#32;elifK)&#32;{
+<anchor xml:id="__lexer_8cpp_source_1l00062"/>00062 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">return</emphasis>&#32;<link linkend="__token_8h_1acbd1e63c605cbb3dbe67c7411841b46ca722462c878f454d0872804374ef77c95">TokenVALUE::ELIF</link>;
+<anchor xml:id="__lexer_8cpp_source_1l00063"/>00063 &#32;&#32;&#32;&#32;}
+<anchor xml:id="__lexer_8cpp_source_1l00064"/>00064 &#32;&#32;&#32;&#32;<emphasis role="keywordflow">else</emphasis>&#32;<emphasis role="keywordflow">if</emphasis>&#32;(text&#32;==&#32;doloopK)&#32;{
+<anchor xml:id="__lexer_8cpp_source_1l00065"/>00065 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">return</emphasis>&#32;<link linkend="__token_8h_1acbd1e63c605cbb3dbe67c7411841b46ca94682254f1edc02f9576916290a5fddd">TokenVALUE::DOLOOP</link>;
+<anchor xml:id="__lexer_8cpp_source_1l00066"/>00066 &#32;&#32;&#32;&#32;}
+<anchor xml:id="__lexer_8cpp_source_1l00067"/>00067 &#32;&#32;&#32;&#32;<emphasis role="keywordflow">else</emphasis>&#32;<emphasis role="keywordflow">if</emphasis>&#32;(text&#32;==&#32;andK)&#32;{
+<anchor xml:id="__lexer_8cpp_source_1l00068"/>00068 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">return</emphasis>&#32;<link linkend="__token_8h_1acbd1e63c605cbb3dbe67c7411841b46ca558ffc8f5770d8e4f95f51d822685532">TokenVALUE::AND</link>;
+<anchor xml:id="__lexer_8cpp_source_1l00069"/>00069 &#32;&#32;&#32;&#32;}
+<anchor xml:id="__lexer_8cpp_source_1l00070"/>00070 &#32;&#32;&#32;&#32;<emphasis role="keywordflow">else</emphasis>&#32;<emphasis role="keywordflow">if</emphasis>&#32;(text&#32;==&#32;notK)&#32;{
+<anchor xml:id="__lexer_8cpp_source_1l00071"/>00071 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">return</emphasis>&#32;<link linkend="__token_8h_1acbd1e63c605cbb3dbe67c7411841b46ca10df3d67626099df882920ba6552f16d">TokenVALUE::NOT</link>;
+<anchor xml:id="__lexer_8cpp_source_1l00072"/>00072 &#32;&#32;&#32;&#32;}
+<anchor xml:id="__lexer_8cpp_source_1l00073"/>00073 &#32;&#32;&#32;&#32;<emphasis role="keywordflow">else</emphasis>&#32;<emphasis role="keywordflow">if</emphasis>&#32;(text&#32;==&#32;orK)&#32;{
+<anchor xml:id="__lexer_8cpp_source_1l00074"/>00074 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">return</emphasis>&#32;<link linkend="__token_8h_1acbd1e63c605cbb3dbe67c7411841b46ca1d00e7dce692e8dc3f6877f035e3a616">TokenVALUE::OR</link>;
+<anchor xml:id="__lexer_8cpp_source_1l00075"/>00075 &#32;&#32;&#32;&#32;}
+<anchor xml:id="__lexer_8cpp_source_1l00076"/>00076 &#32;&#32;&#32;&#32;<emphasis role="keywordflow">else</emphasis>&#32;<emphasis role="keywordflow">if</emphasis>&#32;(text&#32;==&#32;directionK)&#32;{
+<anchor xml:id="__lexer_8cpp_source_1l00077"/>00077 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">return</emphasis>&#32;<link linkend="__token_8h_1acbd1e63c605cbb3dbe67c7411841b46ca823d5f6b867f6d6adec93ad4999bae9f">TokenVALUE::DIRECTION</link>;
+<anchor xml:id="__lexer_8cpp_source_1l00078"/>00078 &#32;&#32;&#32;&#32;}
+<anchor xml:id="__lexer_8cpp_source_1l00079"/>00079 &#32;&#32;&#32;&#32;<emphasis role="keywordflow">else</emphasis>&#32;<emphasis role="keywordflow">if</emphasis>&#32;(text&#32;==&#32;switchK)&#32;{
+<anchor xml:id="__lexer_8cpp_source_1l00080"/>00080 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">return</emphasis>&#32;<link linkend="__token_8h_1acbd1e63c605cbb3dbe67c7411841b46ca4239f063a3d4fb9d38a0182be6e39e76">TokenVALUE::SWITCH</link>;
+<anchor xml:id="__lexer_8cpp_source_1l00081"/>00081 &#32;&#32;&#32;&#32;}
+<anchor xml:id="__lexer_8cpp_source_1l00082"/>00082 &#32;&#32;&#32;&#32;<emphasis role="keywordflow">else</emphasis>&#32;<emphasis role="keywordflow">if</emphasis>&#32;(text&#32;==&#32;defaultK)&#32;{
+<anchor xml:id="__lexer_8cpp_source_1l00083"/>00083 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">return</emphasis>&#32;<link linkend="__token_8h_1acbd1e63c605cbb3dbe67c7411841b46ca5b39c8b553c821e7cddc6da64b5bd2ee">TokenVALUE::DEFAULT</link>;
+<anchor xml:id="__lexer_8cpp_source_1l00084"/>00084 &#32;&#32;&#32;&#32;}
+<anchor xml:id="__lexer_8cpp_source_1l00085"/>00085 &#32;&#32;&#32;&#32;<emphasis role="keywordflow">else</emphasis>&#32;<emphasis role="keywordflow">if</emphasis>&#32;(text&#32;==&#32;breakK)&#32;{
+<anchor xml:id="__lexer_8cpp_source_1l00086"/>00086 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">return</emphasis>&#32;<link linkend="__token_8h_1acbd1e63c605cbb3dbe67c7411841b46ca14d6a3e0201f58bfe7c01e775973e80e">TokenVALUE::BREAK</link>;
+<anchor xml:id="__lexer_8cpp_source_1l00087"/>00087 &#32;&#32;&#32;&#32;}
+<anchor xml:id="__lexer_8cpp_source_1l00088"/>00088 &#32;&#32;&#32;&#32;<emphasis role="keywordflow">else</emphasis>&#32;<emphasis role="keywordflow">if</emphasis>&#32;(text&#32;==&#32;continueK)&#32;{
+<anchor xml:id="__lexer_8cpp_source_1l00089"/>00089 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">return</emphasis>&#32;<link linkend="__token_8h_1acbd1e63c605cbb3dbe67c7411841b46ca2f453cfe638e57e27bb0c9512436111e">TokenVALUE::CONTINUE</link>;
+<anchor xml:id="__lexer_8cpp_source_1l00090"/>00090 &#32;&#32;&#32;&#32;}
+<anchor xml:id="__lexer_8cpp_source_1l00091"/>00091 &#32;&#32;&#32;&#32;<emphasis role="keywordflow">else</emphasis>&#32;<emphasis role="keywordflow">if</emphasis>&#32;(text&#32;==&#32;caseK)&#32;{
+<anchor xml:id="__lexer_8cpp_source_1l00092"/>00092 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">return</emphasis>&#32;<link linkend="__token_8h_1acbd1e63c605cbb3dbe67c7411841b46cabea5438a9521adc1b23a9117024bbb43">TokenVALUE::CASE</link>;
+<anchor xml:id="__lexer_8cpp_source_1l00093"/>00093 &#32;&#32;&#32;&#32;}
+<anchor xml:id="__lexer_8cpp_source_1l00094"/>00094 &#32;&#32;&#32;&#32;<emphasis role="keywordflow">else</emphasis>&#32;<emphasis role="keywordflow">if</emphasis>&#32;(text&#32;==&#32;printK)&#32;{
+<anchor xml:id="__lexer_8cpp_source_1l00095"/>00095 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">return</emphasis>&#32;<link linkend="__token_8h_1acbd1e63c605cbb3dbe67c7411841b46caf96eee4e48ee90430f17fb3a8388507b">TokenVALUE::PRINT</link>;
+<anchor xml:id="__lexer_8cpp_source_1l00096"/>00096 &#32;&#32;&#32;&#32;}
+<anchor xml:id="__lexer_8cpp_source_1l00097"/>00097 &#32;&#32;&#32;&#32;<emphasis role="keywordflow">else</emphasis>&#32;<emphasis role="keywordflow">if</emphasis>&#32;(text&#32;==&#32;waitK)&#32;{
+<anchor xml:id="__lexer_8cpp_source_1l00098"/>00098 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">return</emphasis>&#32;<link linkend="__token_8h_1acbd1e63c605cbb3dbe67c7411841b46cad5cc6a0064b5c25ba37826aa3fda910c">TokenVALUE::WAIT</link>;
+<anchor xml:id="__lexer_8cpp_source_1l00099"/>00099 &#32;&#32;&#32;&#32;}
+<anchor xml:id="__lexer_8cpp_source_1l00100"/>00100 &#32;&#32;&#32;&#32;<emphasis role="keywordflow">else</emphasis>&#32;<emphasis role="keywordflow">if</emphasis>&#32;(text&#32;==&#32;commaP)&#32;{
+<anchor xml:id="__lexer_8cpp_source_1l00101"/>00101 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">return</emphasis>&#32;<link linkend="__token_8h_1acbd1e63c605cbb3dbe67c7411841b46ca4d9b3e9fc12849d060371eb65154c751">TokenVALUE::COMMA</link>;
+<anchor xml:id="__lexer_8cpp_source_1l00102"/>00102 &#32;&#32;&#32;&#32;}
+<anchor xml:id="__lexer_8cpp_source_1l00103"/>00103 &#32;&#32;&#32;&#32;<emphasis role="keywordflow">else</emphasis>&#32;<emphasis role="keywordflow">if</emphasis>&#32;(text&#32;==&#32;openBracketsP)&#32;{
+<anchor xml:id="__lexer_8cpp_source_1l00104"/>00104 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">return</emphasis>&#32;<link linkend="__token_8h_1acbd1e63c605cbb3dbe67c7411841b46ca56d9d72077d098fe411d4f715c339e92">TokenVALUE::OPENBRACKETS</link>;
+<anchor xml:id="__lexer_8cpp_source_1l00105"/>00105 &#32;&#32;&#32;&#32;}
+<anchor xml:id="__lexer_8cpp_source_1l00106"/>00106 &#32;&#32;&#32;&#32;<emphasis role="keywordflow">else</emphasis>&#32;<emphasis role="keywordflow">if</emphasis>&#32;(text&#32;==&#32;closeBracketsP)&#32;{
+<anchor xml:id="__lexer_8cpp_source_1l00107"/>00107 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">return</emphasis>&#32;<link linkend="__token_8h_1acbd1e63c605cbb3dbe67c7411841b46caf62b7b10a36ac4ff1386de6dc9c3ec13">TokenVALUE::CLOSEBRACKETS</link>;
+<anchor xml:id="__lexer_8cpp_source_1l00108"/>00108 &#32;&#32;&#32;&#32;}
+<anchor xml:id="__lexer_8cpp_source_1l00109"/>00109 &#32;&#32;&#32;&#32;<emphasis role="keywordflow">else</emphasis>&#32;<emphasis role="keywordflow">if</emphasis>&#32;(text&#32;==&#32;openAngleBracketsP)&#32;{
+<anchor xml:id="__lexer_8cpp_source_1l00110"/>00110 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">return</emphasis>&#32;<link linkend="__token_8h_1acbd1e63c605cbb3dbe67c7411841b46ca09d62a98aa0b2c29e66b3f81c3641657">TokenVALUE::OPENANGLEBRACKETS</link>;
+<anchor xml:id="__lexer_8cpp_source_1l00111"/>00111 &#32;&#32;&#32;&#32;}
+<anchor xml:id="__lexer_8cpp_source_1l00112"/>00112 &#32;&#32;&#32;&#32;<emphasis role="keywordflow">else</emphasis>&#32;<emphasis role="keywordflow">if</emphasis>&#32;(text&#32;==&#32;closeAngleBracketsP)&#32;{
+<anchor xml:id="__lexer_8cpp_source_1l00113"/>00113 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">return</emphasis>&#32;<link linkend="__token_8h_1acbd1e63c605cbb3dbe67c7411841b46cad473a02cda3fb53f1def18c632bf4e9d">TokenVALUE::CLOSEANGLEBRACKETS</link>;
+<anchor xml:id="__lexer_8cpp_source_1l00114"/>00114 &#32;&#32;&#32;&#32;}
+<anchor xml:id="__lexer_8cpp_source_1l00115"/>00115 &#32;&#32;&#32;&#32;<emphasis role="keywordflow">else</emphasis>&#32;<emphasis role="keywordflow">if</emphasis>&#32;(text&#32;==&#32;openParenthesisP)&#32;{
+<anchor xml:id="__lexer_8cpp_source_1l00116"/>00116 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">return</emphasis>&#32;<link linkend="__token_8h_1acbd1e63c605cbb3dbe67c7411841b46caab5f2c1029696d0fa27db2acf531e951">TokenVALUE::OPENPARENTHESIS</link>;
+<anchor xml:id="__lexer_8cpp_source_1l00117"/>00117 &#32;&#32;&#32;&#32;}
+<anchor xml:id="__lexer_8cpp_source_1l00118"/>00118 &#32;&#32;&#32;&#32;<emphasis role="keywordflow">else</emphasis>&#32;<emphasis role="keywordflow">if</emphasis>&#32;(text&#32;==&#32;closeParenthesisP)&#32;{
+<anchor xml:id="__lexer_8cpp_source_1l00119"/>00119 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">return</emphasis>&#32;<link linkend="__token_8h_1acbd1e63c605cbb3dbe67c7411841b46cab658c0ab7888b812782bb032dbf4815c">TokenVALUE::CLOSEPARENTHESIS</link>;
+<anchor xml:id="__lexer_8cpp_source_1l00120"/>00120 &#32;&#32;&#32;&#32;}
+<anchor xml:id="__lexer_8cpp_source_1l00121"/>00121 &#32;&#32;&#32;&#32;<emphasis role="keywordflow">else</emphasis>&#32;<emphasis role="keywordflow">if</emphasis>&#32;(text&#32;==&#32;falseL)&#32;{
+<anchor xml:id="__lexer_8cpp_source_1l00122"/>00122 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">return</emphasis>&#32;<link linkend="__token_8h_1acbd1e63c605cbb3dbe67c7411841b46ca3667ab316297387f31aa717670424e7b">TokenVALUE::FALSELITERAL</link>;
+<anchor xml:id="__lexer_8cpp_source_1l00123"/>00123 &#32;&#32;&#32;&#32;}
+<anchor xml:id="__lexer_8cpp_source_1l00124"/>00124 &#32;&#32;&#32;&#32;<emphasis role="keywordflow">else</emphasis>&#32;<emphasis role="keywordflow">if</emphasis>&#32;(text&#32;==&#32;trueL)&#32;{
+<anchor xml:id="__lexer_8cpp_source_1l00125"/>00125 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">return</emphasis>&#32;<link linkend="__token_8h_1acbd1e63c605cbb3dbe67c7411841b46cad36335449b5720a1384868719f487119">TokenVALUE::TRUELITERAL</link>;
+<anchor xml:id="__lexer_8cpp_source_1l00126"/>00126 &#32;&#32;&#32;&#32;}
+<anchor xml:id="__lexer_8cpp_source_1l00127"/>00127 &#32;&#32;&#32;&#32;<emphasis role="keywordflow">else</emphasis>&#32;<emphasis role="keywordflow">if</emphasis>&#32;(text&#32;==&#32;millisecondL)&#32;{
+<anchor xml:id="__lexer_8cpp_source_1l00128"/>00128 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">return</emphasis>&#32;<link linkend="__token_8h_1acbd1e63c605cbb3dbe67c7411841b46ca241d7907de05ad50c011812e927cd671">TokenVALUE::MILLISECOND</link>;
+<anchor xml:id="__lexer_8cpp_source_1l00129"/>00129 &#32;&#32;&#32;&#32;}
+<anchor xml:id="__lexer_8cpp_source_1l00130"/>00130 &#32;&#32;&#32;&#32;<emphasis role="keywordflow">else</emphasis>&#32;<emphasis role="keywordflow">if</emphasis>&#32;(text&#32;==&#32;secondL)&#32;{
+<anchor xml:id="__lexer_8cpp_source_1l00131"/>00131 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">return</emphasis>&#32;<link linkend="__token_8h_1acbd1e63c605cbb3dbe67c7411841b46ca2200becb80f0019c4a2ccecec350d0db">TokenVALUE::SECOND</link>;
+<anchor xml:id="__lexer_8cpp_source_1l00132"/>00132 &#32;&#32;&#32;&#32;}
+<anchor xml:id="__lexer_8cpp_source_1l00133"/>00133 &#32;&#32;&#32;&#32;<emphasis role="keywordflow">else</emphasis>&#32;<emphasis role="keywordflow">if</emphasis>&#32;(text&#32;==&#32;minuteL)&#32;{
+<anchor xml:id="__lexer_8cpp_source_1l00134"/>00134 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">return</emphasis>&#32;<link linkend="__token_8h_1acbd1e63c605cbb3dbe67c7411841b46ca46bda4cde2f10bdb9e51e3bbefa4a2bf">TokenVALUE::MINUTE</link>;
+<anchor xml:id="__lexer_8cpp_source_1l00135"/>00135 &#32;&#32;&#32;&#32;}
+<anchor xml:id="__lexer_8cpp_source_1l00136"/>00136 &#32;&#32;&#32;&#32;<emphasis role="keywordflow">else</emphasis>&#32;<emphasis role="keywordflow">if</emphasis>&#32;(text&#32;==&#32;quotation)&#32;{
+<anchor xml:id="__lexer_8cpp_source_1l00137"/>00137 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">return</emphasis>&#32;<link linkend="__token_8h_1acbd1e63c605cbb3dbe67c7411841b46caf7193622145fd3c92db6f1b14f175dc0">TokenVALUE::QUOTATION</link>;
+<anchor xml:id="__lexer_8cpp_source_1l00138"/>00138 &#32;&#32;&#32;&#32;}
+<anchor xml:id="__lexer_8cpp_source_1l00139"/>00139 &#32;&#32;&#32;&#32;<emphasis role="keywordflow">else</emphasis>&#32;<emphasis role="keywordflow">if</emphasis>&#32;(<link linkend="__lexer_8cpp_1aaa3b01d6b7b6b5bf4b868b37fcf3ac6f">isNumber</link>(text))&#32;{
+<anchor xml:id="__lexer_8cpp_source_1l00140"/>00140 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">return</emphasis>&#32;<link linkend="__token_8h_1acbd1e63c605cbb3dbe67c7411841b46cab22f521f17b09d0fd389e231f8f6d66d">TokenVALUE::NUMERIC</link>;
+<anchor xml:id="__lexer_8cpp_source_1l00141"/>00141 &#32;&#32;&#32;&#32;}
+<anchor xml:id="__lexer_8cpp_source_1l00142"/>00142 &#32;&#32;&#32;&#32;<emphasis role="keywordflow">else</emphasis>&#32;<emphasis role="keywordflow">if</emphasis>&#32;(<link linkend="__lexer_8cpp_1a32fa5cbc79c968c5b53e8303ad77091d">isIdentifier</link>(text))&#32;{
+<anchor xml:id="__lexer_8cpp_source_1l00143"/>00143 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">return</emphasis>&#32;<link linkend="__token_8h_1acbd1e63c605cbb3dbe67c7411841b46ca6fcc416051346daca31c571646af127a">TokenVALUE::IDENTIFIER</link>;
+<anchor xml:id="__lexer_8cpp_source_1l00144"/>00144 &#32;&#32;&#32;&#32;}
+<anchor xml:id="__lexer_8cpp_source_1l00145"/>00145 &#32;&#32;&#32;&#32;<emphasis role="keywordflow">else</emphasis>&#32;<emphasis role="keywordflow">return</emphasis>&#32;<link linkend="__token_8h_1acbd1e63c605cbb3dbe67c7411841b46ca696b031073e74bf2cb98e5ef201d4aa3">TokenVALUE::UNKNOWN</link>;
+<anchor xml:id="__lexer_8cpp_source_1l00146"/>00146 }
+<anchor xml:id="__lexer_8cpp_source_1l00147"/><link linkend="_class_lexer_1a672065ac17bf0b701e71c78917882441">00147</link> std::string&#32;<link linkend="_class_lexer_1a672065ac17bf0b701e71c78917882441">Lexer::getTokenString</link>(<link linkend="__token_8h_1acbd1e63c605cbb3dbe67c7411841b46c">TokenVALUE</link>&#32;value)
+<anchor xml:id="__lexer_8cpp_source_1l00148"/>00148 {
+<anchor xml:id="__lexer_8cpp_source_1l00149"/>00149 &#32;&#32;&#32;&#32;<emphasis role="keywordflow">switch</emphasis>&#32;(value)&#32;{
+<anchor xml:id="__lexer_8cpp_source_1l00150"/>00150 &#32;&#32;&#32;&#32;<emphasis role="keywordflow">case</emphasis>&#32;<link linkend="__token_8h_1acbd1e63c605cbb3dbe67c7411841b46ca186495f7da296bf880df3a22a492b378">TokenVALUE::MAIN</link>:
+<anchor xml:id="__lexer_8cpp_source_1l00151"/>00151 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">return</emphasis>&#32;mainK;
+<anchor xml:id="__lexer_8cpp_source_1l00152"/>00152 &#32;&#32;&#32;&#32;<emphasis role="keywordflow">case</emphasis>&#32;<link linkend="__token_8h_1acbd1e63c605cbb3dbe67c7411841b46ca9159b3578e4e1eb31ffdf90acd6f6e40">TokenVALUE::LOOP</link>:
+<anchor xml:id="__lexer_8cpp_source_1l00153"/>00153 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">return</emphasis>&#32;loopK;
+<anchor xml:id="__lexer_8cpp_source_1l00154"/>00154 &#32;&#32;&#32;&#32;<emphasis role="keywordflow">case</emphasis>&#32;<link linkend="__token_8h_1acbd1e63c605cbb3dbe67c7411841b46caa97b2c144243b2b9d2c593ec268b62f5">TokenVALUE::BOOL</link>:
+<anchor xml:id="__lexer_8cpp_source_1l00155"/>00155 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">return</emphasis>&#32;boolK;
+<anchor xml:id="__lexer_8cpp_source_1l00156"/>00156 &#32;&#32;&#32;&#32;<emphasis role="keywordflow">case</emphasis>&#32;<link linkend="__token_8h_1acbd1e63c605cbb3dbe67c7411841b46ca3cfba54f6873dfd55b0b09d32910b20e">TokenVALUE::STORE</link>:
+<anchor xml:id="__lexer_8cpp_source_1l00157"/>00157 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">return</emphasis>&#32;storeK;
+<anchor xml:id="__lexer_8cpp_source_1l00158"/>00158 &#32;&#32;&#32;&#32;<emphasis role="keywordflow">case</emphasis>&#32;<link linkend="__token_8h_1acbd1e63c605cbb3dbe67c7411841b46ca63b588d5559f64f89a416e656880b949">TokenVALUE::STRING</link>:
+<anchor xml:id="__lexer_8cpp_source_1l00159"/>00159 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">return</emphasis>&#32;stringK;
+<anchor xml:id="__lexer_8cpp_source_1l00160"/>00160 &#32;&#32;&#32;&#32;<emphasis role="keywordflow">case</emphasis>&#32;<link linkend="__token_8h_1acbd1e63c605cbb3dbe67c7411841b46ca6a977bf6454341ccb0b79c3d0900db91">TokenVALUE::COORD</link>:
+<anchor xml:id="__lexer_8cpp_source_1l00161"/>00161 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">return</emphasis>&#32;coordK;
+<anchor xml:id="__lexer_8cpp_source_1l00162"/>00162 &#32;&#32;&#32;&#32;<emphasis role="keywordflow">case</emphasis>&#32;<link linkend="__token_8h_1acbd1e63c605cbb3dbe67c7411841b46ca298cb25408234de02baf2085803a464a">TokenVALUE::LIST</link>:
+<anchor xml:id="__lexer_8cpp_source_1l00163"/>00163 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">return</emphasis>&#32;listK;
+<anchor xml:id="__lexer_8cpp_source_1l00164"/>00164 &#32;&#32;&#32;&#32;<emphasis role="keywordflow">case</emphasis>&#32;<link linkend="__token_8h_1acbd1e63c605cbb3dbe67c7411841b46ca5d5cd46919fa987731fb2edefe0f2a0c">TokenVALUE::INTEGER</link>:
+<anchor xml:id="__lexer_8cpp_source_1l00165"/>00165 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">return</emphasis>&#32;intK;
+<anchor xml:id="__lexer_8cpp_source_1l00166"/>00166 &#32;&#32;&#32;&#32;<emphasis role="keywordflow">case</emphasis>&#32;<link linkend="__token_8h_1acbd1e63c605cbb3dbe67c7411841b46cae738c26bf4ce1037fa81b039a915cbf6">TokenVALUE::FLOAT</link>:
+<anchor xml:id="__lexer_8cpp_source_1l00167"/>00167 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">return</emphasis>&#32;floatK;
+<anchor xml:id="__lexer_8cpp_source_1l00168"/>00168 &#32;&#32;&#32;&#32;<emphasis role="keywordflow">case</emphasis>&#32;<link linkend="__token_8h_1acbd1e63c605cbb3dbe67c7411841b46cafee1f202df8193b3ba65f00ad61efcef">TokenVALUE::COMPARE</link>:
+<anchor xml:id="__lexer_8cpp_source_1l00169"/>00169 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">return</emphasis>&#32;compareK;
+<anchor xml:id="__lexer_8cpp_source_1l00170"/>00170 &#32;&#32;&#32;&#32;<emphasis role="keywordflow">case</emphasis>&#32;<link linkend="__token_8h_1acbd1e63c605cbb3dbe67c7411841b46ca1d23cac77df97a722cd2ec7767a06e06">TokenVALUE::ZONE</link>:
+<anchor xml:id="__lexer_8cpp_source_1l00171"/>00171 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">return</emphasis>&#32;zoneK;
+<anchor xml:id="__lexer_8cpp_source_1l00172"/>00172 &#32;&#32;&#32;&#32;<emphasis role="keywordflow">case</emphasis>&#32;<link linkend="__token_8h_1acbd1e63c605cbb3dbe67c7411841b46cade6ee2b5d856295add4d5e3631fbfb93">TokenVALUE::IF</link>:
+<anchor xml:id="__lexer_8cpp_source_1l00173"/>00173 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">return</emphasis>&#32;ifK;
+<anchor xml:id="__lexer_8cpp_source_1l00174"/>00174 &#32;&#32;&#32;&#32;<emphasis role="keywordflow">case</emphasis>&#32;<link linkend="__token_8h_1acbd1e63c605cbb3dbe67c7411841b46ca778537b0acce06229cb78d5f72c907ab">TokenVALUE::ELSE</link>:
+<anchor xml:id="__lexer_8cpp_source_1l00175"/>00175 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">return</emphasis>&#32;elseK;
+<anchor xml:id="__lexer_8cpp_source_1l00176"/>00176 &#32;&#32;&#32;&#32;<emphasis role="keywordflow">case</emphasis>&#32;<link linkend="__token_8h_1acbd1e63c605cbb3dbe67c7411841b46ca722462c878f454d0872804374ef77c95">TokenVALUE::ELIF</link>:
+<anchor xml:id="__lexer_8cpp_source_1l00177"/>00177 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">return</emphasis>&#32;elifK;
+<anchor xml:id="__lexer_8cpp_source_1l00178"/>00178 &#32;&#32;&#32;&#32;<emphasis role="keywordflow">case</emphasis>&#32;<link linkend="__token_8h_1acbd1e63c605cbb3dbe67c7411841b46ca94682254f1edc02f9576916290a5fddd">TokenVALUE::DOLOOP</link>:
+<anchor xml:id="__lexer_8cpp_source_1l00179"/>00179 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">return</emphasis>&#32;doloopK;
+<anchor xml:id="__lexer_8cpp_source_1l00180"/>00180 &#32;&#32;&#32;&#32;<emphasis role="keywordflow">case</emphasis>&#32;<link linkend="__token_8h_1acbd1e63c605cbb3dbe67c7411841b46ca558ffc8f5770d8e4f95f51d822685532">TokenVALUE::AND</link>:
+<anchor xml:id="__lexer_8cpp_source_1l00181"/>00181 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">return</emphasis>&#32;andK;
+<anchor xml:id="__lexer_8cpp_source_1l00182"/>00182 &#32;&#32;&#32;&#32;<emphasis role="keywordflow">case</emphasis>&#32;<link linkend="__token_8h_1acbd1e63c605cbb3dbe67c7411841b46ca10df3d67626099df882920ba6552f16d">TokenVALUE::NOT</link>:
+<anchor xml:id="__lexer_8cpp_source_1l00183"/>00183 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">return</emphasis>&#32;notK;
+<anchor xml:id="__lexer_8cpp_source_1l00184"/>00184 &#32;&#32;&#32;&#32;<emphasis role="keywordflow">case</emphasis>&#32;<link linkend="__token_8h_1acbd1e63c605cbb3dbe67c7411841b46ca1d00e7dce692e8dc3f6877f035e3a616">TokenVALUE::OR</link>:
+<anchor xml:id="__lexer_8cpp_source_1l00185"/>00185 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">return</emphasis>&#32;orK;
+<anchor xml:id="__lexer_8cpp_source_1l00186"/>00186 &#32;&#32;&#32;&#32;<emphasis role="keywordflow">case</emphasis>&#32;<link linkend="__token_8h_1acbd1e63c605cbb3dbe67c7411841b46ca823d5f6b867f6d6adec93ad4999bae9f">TokenVALUE::DIRECTION</link>:
+<anchor xml:id="__lexer_8cpp_source_1l00187"/>00187 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">return</emphasis>&#32;directionK;
+<anchor xml:id="__lexer_8cpp_source_1l00188"/>00188 &#32;&#32;&#32;&#32;<emphasis role="keywordflow">case</emphasis>&#32;<link linkend="__token_8h_1acbd1e63c605cbb3dbe67c7411841b46ca14d6a3e0201f58bfe7c01e775973e80e">TokenVALUE::BREAK</link>:
+<anchor xml:id="__lexer_8cpp_source_1l00189"/>00189 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">return</emphasis>&#32;breakK;
+<anchor xml:id="__lexer_8cpp_source_1l00190"/>00190 &#32;&#32;&#32;&#32;<emphasis role="keywordflow">case</emphasis>&#32;<link linkend="__token_8h_1acbd1e63c605cbb3dbe67c7411841b46ca2f453cfe638e57e27bb0c9512436111e">TokenVALUE::CONTINUE</link>:
+<anchor xml:id="__lexer_8cpp_source_1l00191"/>00191 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">return</emphasis>&#32;continueK;
+<anchor xml:id="__lexer_8cpp_source_1l00192"/>00192 &#32;&#32;&#32;&#32;<emphasis role="keywordflow">case</emphasis>&#32;<link linkend="__token_8h_1acbd1e63c605cbb3dbe67c7411841b46caf96eee4e48ee90430f17fb3a8388507b">TokenVALUE::PRINT</link>:
+<anchor xml:id="__lexer_8cpp_source_1l00193"/>00193 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">return</emphasis>&#32;printK;
+<anchor xml:id="__lexer_8cpp_source_1l00194"/>00194 &#32;&#32;&#32;&#32;<emphasis role="keywordflow">case</emphasis>&#32;<link linkend="__token_8h_1acbd1e63c605cbb3dbe67c7411841b46cad5cc6a0064b5c25ba37826aa3fda910c">TokenVALUE::WAIT</link>:
+<anchor xml:id="__lexer_8cpp_source_1l00195"/>00195 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">return</emphasis>&#32;waitK;
+<anchor xml:id="__lexer_8cpp_source_1l00196"/>00196 &#32;&#32;&#32;&#32;<emphasis role="keywordflow">case</emphasis>&#32;<link linkend="__token_8h_1acbd1e63c605cbb3dbe67c7411841b46caf62b7b10a36ac4ff1386de6dc9c3ec13">TokenVALUE::CLOSEBRACKETS</link>:
+<anchor xml:id="__lexer_8cpp_source_1l00197"/>00197 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">return</emphasis>&#32;closeBracketsP;
+<anchor xml:id="__lexer_8cpp_source_1l00198"/>00198 &#32;&#32;&#32;&#32;<emphasis role="keywordflow">case</emphasis>&#32;<link linkend="__token_8h_1acbd1e63c605cbb3dbe67c7411841b46ca56d9d72077d098fe411d4f715c339e92">TokenVALUE::OPENBRACKETS</link>:
+<anchor xml:id="__lexer_8cpp_source_1l00199"/>00199 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">return</emphasis>&#32;openBracketsP;
+<anchor xml:id="__lexer_8cpp_source_1l00200"/>00200 &#32;&#32;&#32;&#32;<emphasis role="keywordflow">case</emphasis>&#32;<link linkend="__token_8h_1acbd1e63c605cbb3dbe67c7411841b46cad473a02cda3fb53f1def18c632bf4e9d">TokenVALUE::CLOSEANGLEBRACKETS</link>:
+<anchor xml:id="__lexer_8cpp_source_1l00201"/>00201 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">return</emphasis>&#32;closeAngleBracketsP;
+<anchor xml:id="__lexer_8cpp_source_1l00202"/>00202 &#32;&#32;&#32;&#32;<emphasis role="keywordflow">case</emphasis>&#32;<link linkend="__token_8h_1acbd1e63c605cbb3dbe67c7411841b46ca09d62a98aa0b2c29e66b3f81c3641657">TokenVALUE::OPENANGLEBRACKETS</link>:
+<anchor xml:id="__lexer_8cpp_source_1l00203"/>00203 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">return</emphasis>&#32;openAngleBracketsP;
+<anchor xml:id="__lexer_8cpp_source_1l00204"/>00204 &#32;&#32;&#32;&#32;<emphasis role="keywordflow">case</emphasis>&#32;<link linkend="__token_8h_1acbd1e63c605cbb3dbe67c7411841b46cab658c0ab7888b812782bb032dbf4815c">TokenVALUE::CLOSEPARENTHESIS</link>:
+<anchor xml:id="__lexer_8cpp_source_1l00205"/>00205 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">return</emphasis>&#32;closeParenthesisP;
+<anchor xml:id="__lexer_8cpp_source_1l00206"/>00206 &#32;&#32;&#32;&#32;<emphasis role="keywordflow">case</emphasis>&#32;<link linkend="__token_8h_1acbd1e63c605cbb3dbe67c7411841b46caab5f2c1029696d0fa27db2acf531e951">TokenVALUE::OPENPARENTHESIS</link>:
+<anchor xml:id="__lexer_8cpp_source_1l00207"/>00207 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">return</emphasis>&#32;openParenthesisP;
+<anchor xml:id="__lexer_8cpp_source_1l00208"/>00208 &#32;&#32;&#32;&#32;<emphasis role="keywordflow">case</emphasis>&#32;<link linkend="__token_8h_1acbd1e63c605cbb3dbe67c7411841b46ca4d9b3e9fc12849d060371eb65154c751">TokenVALUE::COMMA</link>:
+<anchor xml:id="__lexer_8cpp_source_1l00209"/>00209 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">return</emphasis>&#32;commaP;
+<anchor xml:id="__lexer_8cpp_source_1l00210"/>00210 &#32;&#32;&#32;&#32;<emphasis role="keywordflow">case</emphasis>&#32;<link linkend="__token_8h_1acbd1e63c605cbb3dbe67c7411841b46ca3667ab316297387f31aa717670424e7b">TokenVALUE::FALSELITERAL</link>:
+<anchor xml:id="__lexer_8cpp_source_1l00211"/>00211 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">return</emphasis>&#32;falseL;
+<anchor xml:id="__lexer_8cpp_source_1l00212"/>00212 &#32;&#32;&#32;&#32;<emphasis role="keywordflow">case</emphasis>&#32;<link linkend="__token_8h_1acbd1e63c605cbb3dbe67c7411841b46cad36335449b5720a1384868719f487119">TokenVALUE::TRUELITERAL</link>:
+<anchor xml:id="__lexer_8cpp_source_1l00213"/>00213 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">return</emphasis>&#32;trueL;
+<anchor xml:id="__lexer_8cpp_source_1l00214"/>00214 &#32;&#32;&#32;&#32;<emphasis role="keywordflow">case</emphasis>&#32;<link linkend="__token_8h_1acbd1e63c605cbb3dbe67c7411841b46caf7193622145fd3c92db6f1b14f175dc0">TokenVALUE::QUOTATION</link>:
+<anchor xml:id="__lexer_8cpp_source_1l00215"/>00215 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">return</emphasis>&#32;quotation;
+<anchor xml:id="__lexer_8cpp_source_1l00216"/>00216 &#32;&#32;&#32;&#32;<emphasis role="keywordflow">case</emphasis>&#32;<link linkend="__token_8h_1acbd1e63c605cbb3dbe67c7411841b46ca241d7907de05ad50c011812e927cd671">TokenVALUE::MILLISECOND</link>:
+<anchor xml:id="__lexer_8cpp_source_1l00217"/>00217 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">return</emphasis>&#32;millisecondL;
+<anchor xml:id="__lexer_8cpp_source_1l00218"/>00218 &#32;&#32;&#32;&#32;<emphasis role="keywordflow">case</emphasis>&#32;<link linkend="__token_8h_1acbd1e63c605cbb3dbe67c7411841b46ca2200becb80f0019c4a2ccecec350d0db">TokenVALUE::SECOND</link>:
+<anchor xml:id="__lexer_8cpp_source_1l00219"/>00219 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">return</emphasis>&#32;secondL;
+<anchor xml:id="__lexer_8cpp_source_1l00220"/>00220 &#32;&#32;&#32;&#32;<emphasis role="keywordflow">case</emphasis>&#32;<link linkend="__token_8h_1acbd1e63c605cbb3dbe67c7411841b46ca46bda4cde2f10bdb9e51e3bbefa4a2bf">TokenVALUE::MINUTE</link>:
+<anchor xml:id="__lexer_8cpp_source_1l00221"/>00221 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">return</emphasis>&#32;minuteL;
+<anchor xml:id="__lexer_8cpp_source_1l00222"/>00222 &#32;&#32;&#32;&#32;<emphasis role="keywordflow">case</emphasis>&#32;<link linkend="__token_8h_1acbd1e63c605cbb3dbe67c7411841b46cab22f521f17b09d0fd389e231f8f6d66d">TokenVALUE::NUMERIC</link>:
+<anchor xml:id="__lexer_8cpp_source_1l00223"/>00223 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">return</emphasis>&#32;<emphasis role="stringliteral">&quot;NUMERIC&quot;</emphasis>;
+<anchor xml:id="__lexer_8cpp_source_1l00224"/>00224 &#32;&#32;&#32;&#32;<emphasis role="keywordflow">case</emphasis>&#32;<link linkend="__token_8h_1acbd1e63c605cbb3dbe67c7411841b46ca6fcc416051346daca31c571646af127a">TokenVALUE::IDENTIFIER</link>:
+<anchor xml:id="__lexer_8cpp_source_1l00225"/>00225 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">return</emphasis>&#32;<emphasis role="stringliteral">&quot;ID&quot;</emphasis>;
+<anchor xml:id="__lexer_8cpp_source_1l00226"/>00226 
+<anchor xml:id="__lexer_8cpp_source_1l00227"/>00227 &#32;&#32;&#32;&#32;<emphasis role="keywordflow">default</emphasis>:
+<anchor xml:id="__lexer_8cpp_source_1l00228"/>00228 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">return</emphasis>&#32;<emphasis role="stringliteral">&quot;UNKNOWN&quot;</emphasis>;
+<anchor xml:id="__lexer_8cpp_source_1l00229"/>00229 &#32;&#32;&#32;&#32;}
+<anchor xml:id="__lexer_8cpp_source_1l00230"/>00230 }
+<anchor xml:id="__lexer_8cpp_source_1l00231"/><link linkend="_class_lexer_1a6d58c8a031d7f7dd28c3501984b4eab6">00231</link> std::shared_ptr&lt;Token&gt;&#32;<link linkend="_class_lexer_1a6d58c8a031d7f7dd28c3501984b4eab6">Lexer::getToken</link>(<emphasis role="keyword">const</emphasis>&#32;std::string&amp;&#32;text)&#32;{
+<anchor xml:id="__lexer_8cpp_source_1l00232"/>00232 &#32;&#32;&#32;&#32;<emphasis role="keywordflow">return</emphasis>&#32;<link linkend="_class_lexer_1a6d58c8a031d7f7dd28c3501984b4eab6">getToken</link>(<link linkend="_class_lexer_1a142bd017adf2e3df1522e0cce7a3fb0c">getTokenValue</link>(text),&#32;text);
+<anchor xml:id="__lexer_8cpp_source_1l00233"/>00233 }
+<anchor xml:id="__lexer_8cpp_source_1l00234"/><link linkend="_class_lexer_1af2728233573db8a7bbd5b49bed311c5f">00234</link> std::shared_ptr&lt;Token&gt;&#32;<link linkend="_class_lexer_1a6d58c8a031d7f7dd28c3501984b4eab6">Lexer::getToken</link>(<emphasis role="keyword">const</emphasis>&#32;<link linkend="__token_8h_1acbd1e63c605cbb3dbe67c7411841b46c">TokenVALUE</link>&amp;&#32;tValue,&#32;<emphasis role="keyword">const</emphasis>&#32;std::string&amp;&#32;text)&#32;{
+<anchor xml:id="__lexer_8cpp_source_1l00235"/>00235 &#32;&#32;&#32;&#32;<emphasis role="keywordflow">switch</emphasis>&#32;(tValue)&#32;{
+<anchor xml:id="__lexer_8cpp_source_1l00236"/>00236 &#32;&#32;&#32;&#32;<emphasis role="keywordflow">case</emphasis>&#32;<link linkend="__token_8h_1acbd1e63c605cbb3dbe67c7411841b46ca186495f7da296bf880df3a22a492b378">TokenVALUE::MAIN</link>:
+<anchor xml:id="__lexer_8cpp_source_1l00237"/>00237 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">return</emphasis>&#32;std::make_shared&lt;MainToken&gt;();
+<anchor xml:id="__lexer_8cpp_source_1l00238"/>00238 &#32;&#32;&#32;&#32;<emphasis role="keywordflow">case</emphasis>&#32;<link linkend="__token_8h_1acbd1e63c605cbb3dbe67c7411841b46ca9159b3578e4e1eb31ffdf90acd6f6e40">TokenVALUE::LOOP</link>:
+<anchor xml:id="__lexer_8cpp_source_1l00239"/>00239 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">return</emphasis>&#32;std::make_shared&lt;LoopToken&gt;();
+<anchor xml:id="__lexer_8cpp_source_1l00240"/>00240 &#32;&#32;&#32;&#32;<emphasis role="keywordflow">case</emphasis>&#32;<link linkend="__token_8h_1acbd1e63c605cbb3dbe67c7411841b46caa97b2c144243b2b9d2c593ec268b62f5">TokenVALUE::BOOL</link>:
+<anchor xml:id="__lexer_8cpp_source_1l00241"/>00241 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">return</emphasis>&#32;std::make_shared&lt;BoolToken&gt;();
+<anchor xml:id="__lexer_8cpp_source_1l00242"/>00242 &#32;&#32;&#32;&#32;<emphasis role="keywordflow">case</emphasis>&#32;<link linkend="__token_8h_1acbd1e63c605cbb3dbe67c7411841b46ca3cfba54f6873dfd55b0b09d32910b20e">TokenVALUE::STORE</link>:
+<anchor xml:id="__lexer_8cpp_source_1l00243"/>00243 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">return</emphasis>&#32;std::make_shared&lt;StoreToken&gt;();
+<anchor xml:id="__lexer_8cpp_source_1l00244"/>00244 &#32;&#32;&#32;&#32;<emphasis role="keywordflow">case</emphasis>&#32;<link linkend="__token_8h_1acbd1e63c605cbb3dbe67c7411841b46ca63b588d5559f64f89a416e656880b949">TokenVALUE::STRING</link>:
+<anchor xml:id="__lexer_8cpp_source_1l00245"/>00245 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">return</emphasis>&#32;std::make_shared&lt;StringToken&gt;();
+<anchor xml:id="__lexer_8cpp_source_1l00246"/>00246 &#32;&#32;&#32;&#32;<emphasis role="keywordflow">case</emphasis>&#32;<link linkend="__token_8h_1acbd1e63c605cbb3dbe67c7411841b46ca6a977bf6454341ccb0b79c3d0900db91">TokenVALUE::COORD</link>:
+<anchor xml:id="__lexer_8cpp_source_1l00247"/>00247 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">return</emphasis>&#32;std::make_shared&lt;CoordToken&gt;();
+<anchor xml:id="__lexer_8cpp_source_1l00248"/>00248 &#32;&#32;&#32;&#32;<emphasis role="keywordflow">case</emphasis>&#32;<link linkend="__token_8h_1acbd1e63c605cbb3dbe67c7411841b46ca298cb25408234de02baf2085803a464a">TokenVALUE::LIST</link>:
+<anchor xml:id="__lexer_8cpp_source_1l00249"/>00249 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">return</emphasis>&#32;std::make_shared&lt;ListToken&gt;();
+<anchor xml:id="__lexer_8cpp_source_1l00250"/>00250 &#32;&#32;&#32;&#32;<emphasis role="keywordflow">case</emphasis>&#32;<link linkend="__token_8h_1acbd1e63c605cbb3dbe67c7411841b46ca5d5cd46919fa987731fb2edefe0f2a0c">TokenVALUE::INTEGER</link>:
+<anchor xml:id="__lexer_8cpp_source_1l00251"/>00251 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">return</emphasis>&#32;std::make_shared&lt;IntegerToken&gt;();
+<anchor xml:id="__lexer_8cpp_source_1l00252"/>00252 &#32;&#32;&#32;&#32;<emphasis role="keywordflow">case</emphasis>&#32;<link linkend="__token_8h_1acbd1e63c605cbb3dbe67c7411841b46cae738c26bf4ce1037fa81b039a915cbf6">TokenVALUE::FLOAT</link>:
+<anchor xml:id="__lexer_8cpp_source_1l00253"/>00253 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">return</emphasis>&#32;std::make_shared&lt;FloatToken&gt;();
+<anchor xml:id="__lexer_8cpp_source_1l00254"/>00254 &#32;&#32;&#32;&#32;<emphasis role="keywordflow">case</emphasis>&#32;<link linkend="__token_8h_1acbd1e63c605cbb3dbe67c7411841b46cafee1f202df8193b3ba65f00ad61efcef">TokenVALUE::COMPARE</link>:
+<anchor xml:id="__lexer_8cpp_source_1l00255"/>00255 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">return</emphasis>&#32;std::make_shared&lt;CompareToken&gt;();
+<anchor xml:id="__lexer_8cpp_source_1l00256"/>00256 &#32;&#32;&#32;&#32;<emphasis role="keywordflow">case</emphasis>&#32;<link linkend="__token_8h_1acbd1e63c605cbb3dbe67c7411841b46ca1d23cac77df97a722cd2ec7767a06e06">TokenVALUE::ZONE</link>:
+<anchor xml:id="__lexer_8cpp_source_1l00257"/>00257 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">return</emphasis>&#32;std::make_shared&lt;ZoneToken&gt;();
+<anchor xml:id="__lexer_8cpp_source_1l00258"/>00258 &#32;&#32;&#32;&#32;<emphasis role="keywordflow">case</emphasis>&#32;<link linkend="__token_8h_1acbd1e63c605cbb3dbe67c7411841b46cade6ee2b5d856295add4d5e3631fbfb93">TokenVALUE::IF</link>:
+<anchor xml:id="__lexer_8cpp_source_1l00259"/>00259 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">return</emphasis>&#32;std::make_shared&lt;IfToken&gt;();
+<anchor xml:id="__lexer_8cpp_source_1l00260"/>00260 &#32;&#32;&#32;&#32;<emphasis role="keywordflow">case</emphasis>&#32;<link linkend="__token_8h_1acbd1e63c605cbb3dbe67c7411841b46ca778537b0acce06229cb78d5f72c907ab">TokenVALUE::ELSE</link>:
+<anchor xml:id="__lexer_8cpp_source_1l00261"/>00261 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">return</emphasis>&#32;std::make_shared&lt;ElseToken&gt;();
+<anchor xml:id="__lexer_8cpp_source_1l00262"/>00262 &#32;&#32;&#32;&#32;<emphasis role="keywordflow">case</emphasis>&#32;<link linkend="__token_8h_1acbd1e63c605cbb3dbe67c7411841b46ca722462c878f454d0872804374ef77c95">TokenVALUE::ELIF</link>:
+<anchor xml:id="__lexer_8cpp_source_1l00263"/>00263 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">return</emphasis>&#32;std::make_shared&lt;ElifToken&gt;();
+<anchor xml:id="__lexer_8cpp_source_1l00264"/>00264 &#32;&#32;&#32;&#32;<emphasis role="keywordflow">case</emphasis>&#32;<link linkend="__token_8h_1acbd1e63c605cbb3dbe67c7411841b46ca94682254f1edc02f9576916290a5fddd">TokenVALUE::DOLOOP</link>:
+<anchor xml:id="__lexer_8cpp_source_1l00265"/>00265 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">return</emphasis>&#32;std::make_shared&lt;DoLoopToken&gt;();
+<anchor xml:id="__lexer_8cpp_source_1l00266"/>00266 &#32;&#32;&#32;&#32;<emphasis role="keywordflow">case</emphasis>&#32;<link linkend="__token_8h_1acbd1e63c605cbb3dbe67c7411841b46ca558ffc8f5770d8e4f95f51d822685532">TokenVALUE::AND</link>:
+<anchor xml:id="__lexer_8cpp_source_1l00267"/>00267 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">return</emphasis>&#32;std::make_shared&lt;AndToken&gt;();
+<anchor xml:id="__lexer_8cpp_source_1l00268"/>00268 &#32;&#32;&#32;&#32;<emphasis role="keywordflow">case</emphasis>&#32;<link linkend="__token_8h_1acbd1e63c605cbb3dbe67c7411841b46ca10df3d67626099df882920ba6552f16d">TokenVALUE::NOT</link>:
+<anchor xml:id="__lexer_8cpp_source_1l00269"/>00269 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">return</emphasis>&#32;std::make_shared&lt;NotToken&gt;();
+<anchor xml:id="__lexer_8cpp_source_1l00270"/>00270 &#32;&#32;&#32;&#32;<emphasis role="keywordflow">case</emphasis>&#32;<link linkend="__token_8h_1acbd1e63c605cbb3dbe67c7411841b46ca1d00e7dce692e8dc3f6877f035e3a616">TokenVALUE::OR</link>:
+<anchor xml:id="__lexer_8cpp_source_1l00271"/>00271 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">return</emphasis>&#32;std::make_shared&lt;OrToken&gt;();
+<anchor xml:id="__lexer_8cpp_source_1l00272"/>00272 &#32;&#32;&#32;&#32;<emphasis role="keywordflow">case</emphasis>&#32;<link linkend="__token_8h_1acbd1e63c605cbb3dbe67c7411841b46ca823d5f6b867f6d6adec93ad4999bae9f">TokenVALUE::DIRECTION</link>:
+<anchor xml:id="__lexer_8cpp_source_1l00273"/>00273 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">return</emphasis>&#32;std::make_shared&lt;DirectionToken&gt;();
+<anchor xml:id="__lexer_8cpp_source_1l00274"/>00274 &#32;&#32;&#32;&#32;<emphasis role="keywordflow">case</emphasis>&#32;<link linkend="__token_8h_1acbd1e63c605cbb3dbe67c7411841b46ca14d6a3e0201f58bfe7c01e775973e80e">TokenVALUE::BREAK</link>:
+<anchor xml:id="__lexer_8cpp_source_1l00275"/>00275 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">return</emphasis>&#32;std::make_shared&lt;BreakToken&gt;();
+<anchor xml:id="__lexer_8cpp_source_1l00276"/>00276 &#32;&#32;&#32;&#32;<emphasis role="keywordflow">case</emphasis>&#32;<link linkend="__token_8h_1acbd1e63c605cbb3dbe67c7411841b46ca2f453cfe638e57e27bb0c9512436111e">TokenVALUE::CONTINUE</link>:
+<anchor xml:id="__lexer_8cpp_source_1l00277"/>00277 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">return</emphasis>&#32;std::make_shared&lt;ContinueToken&gt;();
+<anchor xml:id="__lexer_8cpp_source_1l00278"/>00278 &#32;&#32;&#32;&#32;<emphasis role="keywordflow">case</emphasis>&#32;<link linkend="__token_8h_1acbd1e63c605cbb3dbe67c7411841b46caf96eee4e48ee90430f17fb3a8388507b">TokenVALUE::PRINT</link>:
+<anchor xml:id="__lexer_8cpp_source_1l00279"/>00279 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">return</emphasis>&#32;std::make_shared&lt;PrintToken&gt;();
+<anchor xml:id="__lexer_8cpp_source_1l00280"/>00280 &#32;&#32;&#32;&#32;<emphasis role="keywordflow">case</emphasis>&#32;<link linkend="__token_8h_1acbd1e63c605cbb3dbe67c7411841b46cad5cc6a0064b5c25ba37826aa3fda910c">TokenVALUE::WAIT</link>:
+<anchor xml:id="__lexer_8cpp_source_1l00281"/>00281 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">return</emphasis>&#32;std::make_shared&lt;WaitToken&gt;();
+<anchor xml:id="__lexer_8cpp_source_1l00282"/>00282 &#32;&#32;&#32;&#32;<emphasis role="keywordflow">case</emphasis>&#32;<link linkend="__token_8h_1acbd1e63c605cbb3dbe67c7411841b46caf62b7b10a36ac4ff1386de6dc9c3ec13">TokenVALUE::CLOSEBRACKETS</link>:
+<anchor xml:id="__lexer_8cpp_source_1l00283"/>00283 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">return</emphasis>&#32;std::make_shared&lt;CloseBracketsToken&gt;();
+<anchor xml:id="__lexer_8cpp_source_1l00284"/>00284 &#32;&#32;&#32;&#32;<emphasis role="keywordflow">case</emphasis>&#32;<link linkend="__token_8h_1acbd1e63c605cbb3dbe67c7411841b46ca56d9d72077d098fe411d4f715c339e92">TokenVALUE::OPENBRACKETS</link>:
+<anchor xml:id="__lexer_8cpp_source_1l00285"/>00285 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">return</emphasis>&#32;std::make_shared&lt;OpenBracketsToken&gt;();
+<anchor xml:id="__lexer_8cpp_source_1l00286"/>00286 &#32;&#32;&#32;&#32;<emphasis role="keywordflow">case</emphasis>&#32;<link linkend="__token_8h_1acbd1e63c605cbb3dbe67c7411841b46cad473a02cda3fb53f1def18c632bf4e9d">TokenVALUE::CLOSEANGLEBRACKETS</link>:
+<anchor xml:id="__lexer_8cpp_source_1l00287"/>00287 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">return</emphasis>&#32;std::make_shared&lt;CloseAngleBracketsToken&gt;();
+<anchor xml:id="__lexer_8cpp_source_1l00288"/>00288 &#32;&#32;&#32;&#32;<emphasis role="keywordflow">case</emphasis>&#32;<link linkend="__token_8h_1acbd1e63c605cbb3dbe67c7411841b46ca09d62a98aa0b2c29e66b3f81c3641657">TokenVALUE::OPENANGLEBRACKETS</link>:
+<anchor xml:id="__lexer_8cpp_source_1l00289"/>00289 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">return</emphasis>&#32;std::make_shared&lt;OpenAngleBracketsToken&gt;();
+<anchor xml:id="__lexer_8cpp_source_1l00290"/>00290 &#32;&#32;&#32;&#32;<emphasis role="keywordflow">case</emphasis>&#32;<link linkend="__token_8h_1acbd1e63c605cbb3dbe67c7411841b46cab658c0ab7888b812782bb032dbf4815c">TokenVALUE::CLOSEPARENTHESIS</link>:
+<anchor xml:id="__lexer_8cpp_source_1l00291"/>00291 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">return</emphasis>&#32;std::make_shared&lt;CloseParenthesisToken&gt;();
+<anchor xml:id="__lexer_8cpp_source_1l00292"/>00292 &#32;&#32;&#32;&#32;<emphasis role="keywordflow">case</emphasis>&#32;<link linkend="__token_8h_1acbd1e63c605cbb3dbe67c7411841b46caab5f2c1029696d0fa27db2acf531e951">TokenVALUE::OPENPARENTHESIS</link>:
+<anchor xml:id="__lexer_8cpp_source_1l00293"/>00293 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">return</emphasis>&#32;std::make_shared&lt;OpenParenthesisToken&gt;();
+<anchor xml:id="__lexer_8cpp_source_1l00294"/>00294 &#32;&#32;&#32;&#32;<emphasis role="keywordflow">case</emphasis>&#32;<link linkend="__token_8h_1acbd1e63c605cbb3dbe67c7411841b46ca4d9b3e9fc12849d060371eb65154c751">TokenVALUE::COMMA</link>:
+<anchor xml:id="__lexer_8cpp_source_1l00295"/>00295 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">return</emphasis>&#32;std::make_shared&lt;CommaToken&gt;();
+<anchor xml:id="__lexer_8cpp_source_1l00296"/>00296 &#32;&#32;&#32;&#32;<emphasis role="keywordflow">case</emphasis>&#32;<link linkend="__token_8h_1acbd1e63c605cbb3dbe67c7411841b46ca3667ab316297387f31aa717670424e7b">TokenVALUE::FALSELITERAL</link>:
+<anchor xml:id="__lexer_8cpp_source_1l00297"/>00297 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">return</emphasis>&#32;std::make_shared&lt;FalseToken&gt;();
+<anchor xml:id="__lexer_8cpp_source_1l00298"/>00298 &#32;&#32;&#32;&#32;<emphasis role="keywordflow">case</emphasis>&#32;<link linkend="__token_8h_1acbd1e63c605cbb3dbe67c7411841b46cad36335449b5720a1384868719f487119">TokenVALUE::TRUELITERAL</link>:
+<anchor xml:id="__lexer_8cpp_source_1l00299"/>00299 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">return</emphasis>&#32;std::make_shared&lt;TrueToken&gt;();
+<anchor xml:id="__lexer_8cpp_source_1l00300"/>00300 &#32;&#32;&#32;&#32;<emphasis role="keywordflow">case</emphasis>&#32;<link linkend="__token_8h_1acbd1e63c605cbb3dbe67c7411841b46ca241d7907de05ad50c011812e927cd671">TokenVALUE::MILLISECOND</link>:
+<anchor xml:id="__lexer_8cpp_source_1l00301"/>00301 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">return</emphasis>&#32;std::make_shared&lt;MilliSecondToken&gt;();
+<anchor xml:id="__lexer_8cpp_source_1l00302"/>00302 &#32;&#32;&#32;&#32;<emphasis role="keywordflow">case</emphasis>&#32;<link linkend="__token_8h_1acbd1e63c605cbb3dbe67c7411841b46ca2200becb80f0019c4a2ccecec350d0db">TokenVALUE::SECOND</link>:
+<anchor xml:id="__lexer_8cpp_source_1l00303"/>00303 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">return</emphasis>&#32;std::make_shared&lt;SecondToken&gt;();
+<anchor xml:id="__lexer_8cpp_source_1l00304"/>00304 &#32;&#32;&#32;&#32;<emphasis role="keywordflow">case</emphasis>&#32;<link linkend="__token_8h_1acbd1e63c605cbb3dbe67c7411841b46ca46bda4cde2f10bdb9e51e3bbefa4a2bf">TokenVALUE::MINUTE</link>:
+<anchor xml:id="__lexer_8cpp_source_1l00305"/>00305 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">return</emphasis>&#32;std::make_shared&lt;MinuteToken&gt;();
+<anchor xml:id="__lexer_8cpp_source_1l00306"/>00306 &#32;&#32;&#32;&#32;<emphasis role="keywordflow">case</emphasis>&#32;<link linkend="__token_8h_1acbd1e63c605cbb3dbe67c7411841b46cab22f521f17b09d0fd389e231f8f6d66d">TokenVALUE::NUMERIC</link>:
+<anchor xml:id="__lexer_8cpp_source_1l00307"/>00307 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">return</emphasis>&#32;std::make_shared&lt;NumericToken&gt;(text);
+<anchor xml:id="__lexer_8cpp_source_1l00308"/>00308 &#32;&#32;&#32;&#32;<emphasis role="keywordflow">case</emphasis>&#32;<link linkend="__token_8h_1acbd1e63c605cbb3dbe67c7411841b46ca6fcc416051346daca31c571646af127a">TokenVALUE::IDENTIFIER</link>:
+<anchor xml:id="__lexer_8cpp_source_1l00309"/>00309 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">return</emphasis>&#32;std::make_shared&lt;IdentifierToken&gt;(text);
+<anchor xml:id="__lexer_8cpp_source_1l00310"/>00310 &#32;&#32;&#32;&#32;<emphasis role="keywordflow">case</emphasis>&#32;<link linkend="__token_8h_1acbd1e63c605cbb3dbe67c7411841b46cace7e8413589722ee650cbce0ea040f86">TokenVALUE::STRINGLITERAL</link>:
+<anchor xml:id="__lexer_8cpp_source_1l00311"/>00311 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">return</emphasis>&#32;std::make_shared&lt;StringLiteralToken&gt;(text);
+<anchor xml:id="__lexer_8cpp_source_1l00312"/>00312 &#32;&#32;&#32;&#32;<emphasis role="keywordflow">default</emphasis>:
+<anchor xml:id="__lexer_8cpp_source_1l00313"/>00313 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">return</emphasis>&#32;std::make_shared&lt;UnknownToken&gt;();
+<anchor xml:id="__lexer_8cpp_source_1l00314"/>00314 &#32;&#32;&#32;&#32;}
+<anchor xml:id="__lexer_8cpp_source_1l00315"/>00315 }
+<anchor xml:id="__lexer_8cpp_source_1l00316"/>00316 
+<anchor xml:id="__lexer_8cpp_source_1l00317"/><link linkend="_class_lexer_1a2752a2b16cc1ffbcb8fc3e82e95bf331">00317</link> <link linkend="_class_lexer_1a2752a2b16cc1ffbcb8fc3e82e95bf331">Lexer::Lexer</link>()
+<anchor xml:id="__lexer_8cpp_source_1l00318"/>00318 {
+<anchor xml:id="__lexer_8cpp_source_1l00319"/>00319 
+<anchor xml:id="__lexer_8cpp_source_1l00320"/>00320 }
+<anchor xml:id="__lexer_8cpp_source_1l00321"/>00321 
+<anchor xml:id="__lexer_8cpp_source_1l00322"/><link linkend="_class_lexer_1a41f107194b3a9ed49a43abdb9fbcad24">00322</link> <link linkend="_class_lexer_1a2752a2b16cc1ffbcb8fc3e82e95bf331">Lexer::Lexer</link>(<emphasis role="keyword">const</emphasis>&#32;std::string&amp;&#32;text)
+<anchor xml:id="__lexer_8cpp_source_1l00323"/>00323 {
+<anchor xml:id="__lexer_8cpp_source_1l00324"/>00324 &#32;&#32;&#32;&#32;<link linkend="_class_lexer_1a8a81c9e13952e5afda794af56ba46455">totalContent</link>&#32;=&#32;text;
+<anchor xml:id="__lexer_8cpp_source_1l00325"/>00325 }
+<anchor xml:id="__lexer_8cpp_source_1l00326"/>00326 
+<anchor xml:id="__lexer_8cpp_source_1l00327"/>00327 
+<anchor xml:id="__lexer_8cpp_source_1l00328"/>00328 
+<anchor xml:id="__lexer_8cpp_source_1l00329"/><link linkend="_class_lexer_1a700cefa90ab90db3e3db38cc6334abba">00329</link> std::string&#32;<link linkend="_class_lexer_1a700cefa90ab90db3e3db38cc6334abba">Lexer::showAllTokens</link>(std::vector&lt;std::shared_ptr&lt;Token&gt;&gt;&#32;listTokens)
+<anchor xml:id="__lexer_8cpp_source_1l00330"/>00330 {
+<anchor xml:id="__lexer_8cpp_source_1l00331"/>00331 &#32;&#32;&#32;&#32;std::cout&#32;&lt;&lt;&#32;<emphasis role="stringliteral">&quot;Console&#32;is&#32;now&#32;available&#32;for&#32;debugging&#32;output!&quot;</emphasis>&#32;&lt;&lt;&#32;std::endl;
+<anchor xml:id="__lexer_8cpp_source_1l00332"/>00332 &#32;&#32;&#32;&#32;std::string&#32;str;
+<anchor xml:id="__lexer_8cpp_source_1l00333"/>00333 &#32;&#32;&#32;&#32;<emphasis role="keywordflow">for</emphasis>&#32;(<emphasis role="keyword">auto</emphasis>&amp;&#32;s&#32;:&#32;<link linkend="_class_lexer_1a5147254cee0022d532a50e683a3fa688">listTokens</link>)&#32;{
+<anchor xml:id="__lexer_8cpp_source_1l00334"/>00334 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keyword">auto</emphasis>&#32;h&#32;=&#32;s-&gt;getTokenText();
+<anchor xml:id="__lexer_8cpp_source_1l00335"/>00335 
+<anchor xml:id="__lexer_8cpp_source_1l00336"/>00336 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">if</emphasis>&#32;(s)str.append(h&#32;+&#32;<emphasis role="charliteral">&apos;&#32;&apos;</emphasis>);
+<anchor xml:id="__lexer_8cpp_source_1l00337"/>00337 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">if</emphasis>&#32;(h&#32;==&#32;<emphasis role="stringliteral">&quot;{&quot;</emphasis>&#32;||&#32;h&#32;==&#32;<emphasis role="stringliteral">&quot;}&quot;</emphasis>)str.append(<emphasis role="stringliteral">&quot;\n&quot;</emphasis>);
+<anchor xml:id="__lexer_8cpp_source_1l00338"/>00338 &#32;&#32;&#32;&#32;}
+<anchor xml:id="__lexer_8cpp_source_1l00339"/>00339 &#32;&#32;&#32;&#32;<emphasis role="keywordflow">return</emphasis>&#32;str;
+<anchor xml:id="__lexer_8cpp_source_1l00340"/>00340 }
+<anchor xml:id="__lexer_8cpp_source_1l00341"/>00341 
+<anchor xml:id="__lexer_8cpp_source_1l00342"/>00342 
+<anchor xml:id="__lexer_8cpp_source_1l00343"/><link linkend="_class_lexer_1aeea59528280fc24aaf8a24d0182df826">00343</link> std::string&#32;<link linkend="_class_lexer_1aeea59528280fc24aaf8a24d0182df826">Lexer::getNextPunctuationToken</link>(<emphasis role="keyword">const</emphasis>&#32;std::string&amp;&#32;str)&#32;{
+<anchor xml:id="__lexer_8cpp_source_1l00344"/>00344 &#32;&#32;&#32;&#32;<emphasis role="keyword">auto</emphasis>&#32;lowest&#32;=&#32;std::string::npos;
+<anchor xml:id="__lexer_8cpp_source_1l00345"/>00345 &#32;&#32;&#32;&#32;std::string&#32;punc&#32;=&#32;<emphasis role="stringliteral">&quot;&quot;</emphasis>;
+<anchor xml:id="__lexer_8cpp_source_1l00346"/>00346 &#32;&#32;&#32;&#32;<emphasis role="keywordflow">if</emphasis>&#32;(!str.empty())&#32;{
+<anchor xml:id="__lexer_8cpp_source_1l00347"/>00347 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">for</emphasis>&#32;(<emphasis role="keyword">auto</emphasis>&amp;&#32;l&#32;:&#32;allPunctuationsTokensStrings)&#32;{
+<anchor xml:id="__lexer_8cpp_source_1l00348"/>00348 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keyword">auto</emphasis>&#32;k&#32;=&#32;str.find(l);
+<anchor xml:id="__lexer_8cpp_source_1l00349"/>00349 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">if</emphasis>&#32;(k&#32;&lt;&#32;lowest)&#32;{
+<anchor xml:id="__lexer_8cpp_source_1l00350"/>00350 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;lowest&#32;=&#32;k;
+<anchor xml:id="__lexer_8cpp_source_1l00351"/>00351 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;punc&#32;=&#32;l;
+<anchor xml:id="__lexer_8cpp_source_1l00352"/>00352 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;}
+<anchor xml:id="__lexer_8cpp_source_1l00353"/>00353 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;}
+<anchor xml:id="__lexer_8cpp_source_1l00354"/>00354 &#32;&#32;&#32;&#32;}
+<anchor xml:id="__lexer_8cpp_source_1l00355"/>00355 &#32;&#32;&#32;&#32;<emphasis role="keywordflow">if</emphasis>&#32;(lowest&#32;!=&#32;std::string::npos)<emphasis role="keywordflow">return</emphasis>&#32;str.substr(lowest,&#32;punc.size());
+<anchor xml:id="__lexer_8cpp_source_1l00356"/>00356 &#32;&#32;&#32;&#32;<emphasis role="keywordflow">return</emphasis>&#32;std::string();
+<anchor xml:id="__lexer_8cpp_source_1l00357"/>00357 }
+<anchor xml:id="__lexer_8cpp_source_1l00358"/>00358 
+<anchor xml:id="__lexer_8cpp_source_1l00359"/>00359 
+<anchor xml:id="__lexer_8cpp_source_1l00360"/><link linkend="_class_lexer_1a243227232c190f441498270efa40ccb8">00360</link> std::string&#32;<link linkend="_class_lexer_1a243227232c190f441498270efa40ccb8">Lexer::getNextTokenString</link>(<emphasis role="keyword">const</emphasis>&#32;std::string&amp;&#32;text)
+<anchor xml:id="__lexer_8cpp_source_1l00361"/>00361 {
+<anchor xml:id="__lexer_8cpp_source_1l00362"/>00362 &#32;&#32;&#32;&#32;std::string&#32;nextPunc&#32;=&#32;<link linkend="_class_lexer_1aeea59528280fc24aaf8a24d0182df826">getNextPunctuationToken</link>(text);
+<anchor xml:id="__lexer_8cpp_source_1l00363"/>00363 &#32;&#32;&#32;&#32;std::string&#32;contentBefore&#32;=&#32;<link linkend="__text_manager_8cpp_1aff8311b88dbf5f3091f3ac1262543242">getStringBefore</link>(text,&#32;nextPunc);
+<anchor xml:id="__lexer_8cpp_source_1l00364"/>00364 &#32;&#32;&#32;&#32;<emphasis role="keywordflow">if</emphasis>&#32;(!nextPunc.empty())&#32;{
+<anchor xml:id="__lexer_8cpp_source_1l00365"/>00365 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">if</emphasis>&#32;(!contentBefore.empty())&#32;{
+<anchor xml:id="__lexer_8cpp_source_1l00366"/>00366 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">return</emphasis>&#32;contentBefore;
+<anchor xml:id="__lexer_8cpp_source_1l00367"/>00367 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;}
+<anchor xml:id="__lexer_8cpp_source_1l00368"/>00368 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">else</emphasis>&#32;<emphasis role="keywordflow">return</emphasis>&#32;nextPunc;
+<anchor xml:id="__lexer_8cpp_source_1l00369"/>00369 &#32;&#32;&#32;&#32;}
+<anchor xml:id="__lexer_8cpp_source_1l00370"/>00370 &#32;&#32;&#32;&#32;<emphasis role="keywordflow">return</emphasis>&#32;std::string();
+<anchor xml:id="__lexer_8cpp_source_1l00371"/>00371 }
+<anchor xml:id="__lexer_8cpp_source_1l00372"/>00372 
+<anchor xml:id="__lexer_8cpp_source_1l00373"/><link linkend="_class_lexer_1a6d27c5679af8fff9df7b0885ecceb9ac">00373</link> <emphasis role="keywordtype">void</emphasis>&#32;<link linkend="_class_lexer_1a6d27c5679af8fff9df7b0885ecceb9ac">Lexer::skipTokenString</link>(std::string&amp;&#32;text,&#32;<emphasis role="keyword">const</emphasis>&#32;std::string&#32;tokenText)
+<anchor xml:id="__lexer_8cpp_source_1l00374"/>00374 {
+<anchor xml:id="__lexer_8cpp_source_1l00375"/>00375 &#32;&#32;&#32;&#32;text&#32;=&#32;<link linkend="__text_manager_8cpp_1a6956d58559ef67f422247fdeb1c22775">getStringAfter</link>(text,&#32;tokenText);
+<anchor xml:id="__lexer_8cpp_source_1l00376"/>00376 }
+<anchor xml:id="__lexer_8cpp_source_1l00377"/>00377 
+<anchor xml:id="__lexer_8cpp_source_1l00378"/><link linkend="_class_lexer_1acdefc721d12021beb50dab91162e46fa">00378</link> <emphasis role="keywordtype">void</emphasis>&#32;<link linkend="_class_lexer_1acdefc721d12021beb50dab91162e46fa">Lexer::skipStringLiteral</link>(std::string&amp;&#32;text,&#32;<emphasis role="keyword">const</emphasis>&#32;std::string&#32;tokenText)
+<anchor xml:id="__lexer_8cpp_source_1l00379"/>00379 {
+<anchor xml:id="__lexer_8cpp_source_1l00380"/>00380 &#32;&#32;&#32;&#32;text&#32;=&#32;<link linkend="__text_manager_8cpp_1a6956d58559ef67f422247fdeb1c22775">getStringAfter</link>(<link linkend="__text_manager_8cpp_1a6956d58559ef67f422247fdeb1c22775">getStringAfter</link>(text,&#32;tokenText),&#32;quotation);
+<anchor xml:id="__lexer_8cpp_source_1l00381"/>00381 }
+<anchor xml:id="__lexer_8cpp_source_1l00382"/>00382 
+<anchor xml:id="__lexer_8cpp_source_1l00383"/><link linkend="_class_lexer_1a67add67d465e634d6820b6dcc711708a">00383</link> <link linkend="__token_8h_1acbd1e63c605cbb3dbe67c7411841b46c">TokenVALUE</link>&#32;<link linkend="_class_lexer_1a67add67d465e634d6820b6dcc711708a">Lexer::getNextTokenValue</link>(<emphasis role="keyword">const</emphasis>&#32;std::string&amp;&#32;text)
+<anchor xml:id="__lexer_8cpp_source_1l00384"/>00384 {
+<anchor xml:id="__lexer_8cpp_source_1l00385"/>00385 &#32;&#32;&#32;&#32;<emphasis role="keywordflow">return</emphasis>&#32;<link linkend="_class_lexer_1a142bd017adf2e3df1522e0cce7a3fb0c">getTokenValue</link>(<link linkend="_class_lexer_1a243227232c190f441498270efa40ccb8">getNextTokenString</link>(text));
+<anchor xml:id="__lexer_8cpp_source_1l00386"/>00386 }
+<anchor xml:id="__lexer_8cpp_source_1l00387"/>00387 
+<anchor xml:id="__lexer_8cpp_source_1l00388"/>00388 
+<anchor xml:id="__lexer_8cpp_source_1l00389"/><link linkend="_class_lexer_1a38487c80f0fe8c7f35a2a495015945be">00389</link> <emphasis role="keywordtype">void</emphasis>&#32;<link linkend="_class_lexer_1a38487c80f0fe8c7f35a2a495015945be">Lexer::extractStringLiteral</link>(std::string&amp;&#32;newText,&#32;std::string&amp;&#32;nextTokenString)&#32;{
+<anchor xml:id="__lexer_8cpp_source_1l00390"/>00390 &#32;&#32;&#32;&#32;<link linkend="_class_lexer_1a6d27c5679af8fff9df7b0885ecceb9ac">skipTokenString</link>(newText,&#32;nextTokenString);
+<anchor xml:id="__lexer_8cpp_source_1l00391"/>00391 &#32;&#32;&#32;&#32;nextTokenString&#32;=&#32;<link linkend="__token_8cpp_1a426cbd25cc7742ac6cface09364031ba">getStringLiteral</link>(newText);
+<anchor xml:id="__lexer_8cpp_source_1l00392"/>00392 &#32;&#32;&#32;&#32;<link linkend="_class_lexer_1a5147254cee0022d532a50e683a3fa688">listTokens</link>.push_back(<link linkend="_class_lexer_1a6d58c8a031d7f7dd28c3501984b4eab6">getToken</link>(<link linkend="__token_8h_1acbd1e63c605cbb3dbe67c7411841b46cace7e8413589722ee650cbce0ea040f86">TokenVALUE::STRINGLITERAL</link>,&#32;nextTokenString));
+<anchor xml:id="__lexer_8cpp_source_1l00393"/>00393 &#32;&#32;&#32;&#32;<link linkend="_class_lexer_1a6d27c5679af8fff9df7b0885ecceb9ac">skipTokenString</link>(newText,&#32;nextTokenString);
+<anchor xml:id="__lexer_8cpp_source_1l00394"/>00394 &#32;&#32;&#32;&#32;<link linkend="__text_manager_8cpp_1a053e0b36b2796cc4d128150353f13449">skipSequence</link>(newText,&#32;quotation);
+<anchor xml:id="__lexer_8cpp_source_1l00395"/>00395 }
+<anchor xml:id="__lexer_8cpp_source_1l00396"/>00396 
+<anchor xml:id="__lexer_8cpp_source_1l00397"/><link linkend="_class_lexer_1acf897fb607a542d5c7c8cd4b0dcb1d18">00397</link> std::vector&lt;std::shared_ptr&lt;Token&gt;&gt;&#32;<link linkend="_class_lexer_1acf897fb607a542d5c7c8cd4b0dcb1d18">Lexer::extractTokens</link>(<emphasis role="keyword">const</emphasis>&#32;std::string&amp;&#32;text)
+<anchor xml:id="__lexer_8cpp_source_1l00398"/>00398 {
+<anchor xml:id="__lexer_8cpp_source_1l00399"/>00399 &#32;&#32;&#32;&#32;std::string&#32;newText&#32;=&#32;text;
+<anchor xml:id="__lexer_8cpp_source_1l00400"/>00400 &#32;&#32;&#32;&#32;<emphasis role="keywordflow">while</emphasis>&#32;(!newText.empty())&#32;{
+<anchor xml:id="__lexer_8cpp_source_1l00401"/>00401 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;std::string&#32;nextTokenString&#32;=&#32;<link linkend="_class_lexer_1a243227232c190f441498270efa40ccb8">getNextTokenString</link>(newText);
+<anchor xml:id="__lexer_8cpp_source_1l00402"/>00402 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">if</emphasis>&#32;(nextTokenString&#32;==&#32;quotation)&#32;{
+<anchor xml:id="__lexer_8cpp_source_1l00403"/>00403 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<link linkend="_class_lexer_1a38487c80f0fe8c7f35a2a495015945be">extractStringLiteral</link>(newText,&#32;nextTokenString);
+<anchor xml:id="__lexer_8cpp_source_1l00404"/>00404 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;}
+<anchor xml:id="__lexer_8cpp_source_1l00405"/>00405 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">else</emphasis>&#32;<emphasis role="keywordflow">if</emphasis>&#32;(<link linkend="__text_manager_8cpp_1a46d952a72f09b33c8620f9978b962cee">beginsBySpace</link>(nextTokenString))&#32;{
+<anchor xml:id="__lexer_8cpp_source_1l00406"/>00406 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<link linkend="__text_manager_8cpp_1aa6913b7fe272fe20684f1c5c701d54d7">skipSpace</link>(newText);
+<anchor xml:id="__lexer_8cpp_source_1l00407"/>00407 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;}
+<anchor xml:id="__lexer_8cpp_source_1l00408"/>00408 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">else</emphasis>&#32;{
+<anchor xml:id="__lexer_8cpp_source_1l00409"/>00409 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<link linkend="_class_lexer_1a5147254cee0022d532a50e683a3fa688">listTokens</link>.push_back(<link linkend="_class_lexer_1a6d58c8a031d7f7dd28c3501984b4eab6">getToken</link>(nextTokenString));
+<anchor xml:id="__lexer_8cpp_source_1l00410"/>00410 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<link linkend="_class_lexer_1a6d27c5679af8fff9df7b0885ecceb9ac">skipTokenString</link>(newText,&#32;nextTokenString);
+<anchor xml:id="__lexer_8cpp_source_1l00411"/>00411 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;}
+<anchor xml:id="__lexer_8cpp_source_1l00412"/>00412 &#32;&#32;&#32;&#32;}
+<anchor xml:id="__lexer_8cpp_source_1l00413"/>00413 &#32;&#32;&#32;&#32;<emphasis role="keywordflow">return</emphasis>&#32;<link linkend="_class_lexer_1a5147254cee0022d532a50e683a3fa688">listTokens</link>;
+<anchor xml:id="__lexer_8cpp_source_1l00414"/>00414 }
+</programlisting></section>

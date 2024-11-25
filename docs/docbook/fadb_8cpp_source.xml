@@ -101,108 +101,109 @@ Go to the documentation of this file.<programlisting linenumbering="unnumbered">
 <anchor xml:id="_fadb_8cpp_source_1l00097"/><link linkend="_fadb_8cpp_1a79516629b1f513025235d35602e6b1bc">00097</link> <emphasis role="keywordtype">bool</emphasis>&#32;<link linkend="_fadb_8cpp_1a79516629b1f513025235d35602e6b1bc">isDeviceConnected</link>(<emphasis role="keyword">const</emphasis>&#32;std::string&#32;adbId)
 <anchor xml:id="_fadb_8cpp_source_1l00098"/>00098 {
 <anchor xml:id="_fadb_8cpp_source_1l00099"/>00099 &#32;&#32;&#32;&#32;std::string&#32;text&#32;=&#32;<link linkend="_fadb_8cpp_1a7e4823979e9efbb71575a23ed2b20bed">devices</link>();
-<anchor xml:id="_fadb_8cpp_source_1l00100"/>00100 &#32;&#32;&#32;&#32;<emphasis role="keywordflow">return</emphasis>&#32;<link linkend="__text_manager_8cpp_1acd5e438b43d1ea1b3fc41a8badfe635b">findContent</link>(<link linkend="__text_manager_8cpp_1aa61ad4367d44c1e14541c7c1c46da795">extractContent</link>(text,&#32;adbId,&#32;<emphasis role="stringliteral">&quot;\n&quot;</emphasis>),&#32;<emphasis role="stringliteral">&quot;device&quot;</emphasis>);
-<anchor xml:id="_fadb_8cpp_source_1l00101"/>00101 }
-<anchor xml:id="_fadb_8cpp_source_1l00102"/>00102 
-<anchor xml:id="_fadb_8cpp_source_1l00103"/><link linkend="_fadb_8cpp_1a4bcd6ce7d04c38f8c4ff908d1fc50f86">00103</link> <emphasis role="keywordtype">void</emphasis>&#32;<link linkend="_fadb_8cpp_1a4bcd6ce7d04c38f8c4ff908d1fc50f86">reconnect</link>()
-<anchor xml:id="_fadb_8cpp_source_1l00104"/>00104 {
-<anchor xml:id="_fadb_8cpp_source_1l00105"/>00105 &#32;&#32;&#32;&#32;<link linkend="_fadb_8cpp_1a383ae5fedc9f597a03c74c729a2eb740">runAdb</link>(<emphasis role="stringliteral">&quot;reconnect&quot;</emphasis>);
-<anchor xml:id="_fadb_8cpp_source_1l00106"/>00106 }
-<anchor xml:id="_fadb_8cpp_source_1l00107"/>00107 
-<anchor xml:id="_fadb_8cpp_source_1l00108"/><link linkend="_fadb_8cpp_1a581b7b188a852f31975516f81efcc954">00108</link> <emphasis role="keywordtype">void</emphasis>&#32;<link linkend="_fadb_8cpp_1a581b7b188a852f31975516f81efcc954">startServer</link>()
-<anchor xml:id="_fadb_8cpp_source_1l00109"/>00109 {
-<anchor xml:id="_fadb_8cpp_source_1l00110"/>00110 &#32;&#32;&#32;&#32;<link linkend="_fadb_8cpp_1a383ae5fedc9f597a03c74c729a2eb740">runAdb</link>(<emphasis role="stringliteral">&quot;start-server&quot;</emphasis>);
-<anchor xml:id="_fadb_8cpp_source_1l00111"/>00111 }
-<anchor xml:id="_fadb_8cpp_source_1l00112"/>00112 
-<anchor xml:id="_fadb_8cpp_source_1l00113"/><link linkend="_fadb_8cpp_1a2b7530ec89792517b406c517ceb5b9de">00113</link> <emphasis role="keywordtype">void</emphasis>&#32;<link linkend="_fadb_8cpp_1a2b7530ec89792517b406c517ceb5b9de">connectLocalhost</link>(<emphasis role="keyword">const</emphasis>&#32;std::string&#32;adbId)
-<anchor xml:id="_fadb_8cpp_source_1l00114"/>00114 {
-<anchor xml:id="_fadb_8cpp_source_1l00115"/>00115 &#32;&#32;&#32;&#32;<link linkend="_fadb_8cpp_1a383ae5fedc9f597a03c74c729a2eb740">runAdb</link>(<emphasis role="stringliteral">&quot;connect&#32;&quot;</emphasis>&#32;+&#32;adbId);
-<anchor xml:id="_fadb_8cpp_source_1l00116"/>00116 }
-<anchor xml:id="_fadb_8cpp_source_1l00117"/>00117 
+<anchor xml:id="_fadb_8cpp_source_1l00100"/>00100 &#32;&#32;&#32;&#32;std::string&#32;name&#32;=&#32;<link linkend="__text_manager_8cpp_1a85a282af68cca7cf7d69487d1bacdc47">extractBetween</link>(text,&#32;adbId,&#32;<emphasis role="stringliteral">&quot;\n&quot;</emphasis>);
+<anchor xml:id="_fadb_8cpp_source_1l00101"/>00101 &#32;&#32;&#32;&#32;<emphasis role="keywordflow">return</emphasis>&#32;name.find(<emphasis role="stringliteral">&quot;device&quot;</emphasis>);
+<anchor xml:id="_fadb_8cpp_source_1l00102"/>00102 }
+<anchor xml:id="_fadb_8cpp_source_1l00103"/>00103 
+<anchor xml:id="_fadb_8cpp_source_1l00104"/><link linkend="_fadb_8cpp_1a4bcd6ce7d04c38f8c4ff908d1fc50f86">00104</link> <emphasis role="keywordtype">void</emphasis>&#32;<link linkend="_fadb_8cpp_1a4bcd6ce7d04c38f8c4ff908d1fc50f86">reconnect</link>()
+<anchor xml:id="_fadb_8cpp_source_1l00105"/>00105 {
+<anchor xml:id="_fadb_8cpp_source_1l00106"/>00106 &#32;&#32;&#32;&#32;<link linkend="_fadb_8cpp_1a383ae5fedc9f597a03c74c729a2eb740">runAdb</link>(<emphasis role="stringliteral">&quot;reconnect&quot;</emphasis>);
+<anchor xml:id="_fadb_8cpp_source_1l00107"/>00107 }
+<anchor xml:id="_fadb_8cpp_source_1l00108"/>00108 
+<anchor xml:id="_fadb_8cpp_source_1l00109"/><link linkend="_fadb_8cpp_1a581b7b188a852f31975516f81efcc954">00109</link> <emphasis role="keywordtype">void</emphasis>&#32;<link linkend="_fadb_8cpp_1a581b7b188a852f31975516f81efcc954">startServer</link>()
+<anchor xml:id="_fadb_8cpp_source_1l00110"/>00110 {
+<anchor xml:id="_fadb_8cpp_source_1l00111"/>00111 &#32;&#32;&#32;&#32;<link linkend="_fadb_8cpp_1a383ae5fedc9f597a03c74c729a2eb740">runAdb</link>(<emphasis role="stringliteral">&quot;start-server&quot;</emphasis>);
+<anchor xml:id="_fadb_8cpp_source_1l00112"/>00112 }
+<anchor xml:id="_fadb_8cpp_source_1l00113"/>00113 
+<anchor xml:id="_fadb_8cpp_source_1l00114"/><link linkend="_fadb_8cpp_1a2b7530ec89792517b406c517ceb5b9de">00114</link> <emphasis role="keywordtype">void</emphasis>&#32;<link linkend="_fadb_8cpp_1a2b7530ec89792517b406c517ceb5b9de">connectLocalhost</link>(<emphasis role="keyword">const</emphasis>&#32;std::string&#32;adbId)
+<anchor xml:id="_fadb_8cpp_source_1l00115"/>00115 {
+<anchor xml:id="_fadb_8cpp_source_1l00116"/>00116 &#32;&#32;&#32;&#32;<link linkend="_fadb_8cpp_1a383ae5fedc9f597a03c74c729a2eb740">runAdb</link>(<emphasis role="stringliteral">&quot;connect&#32;&quot;</emphasis>&#32;+&#32;adbId);
+<anchor xml:id="_fadb_8cpp_source_1l00117"/>00117 }
 <anchor xml:id="_fadb_8cpp_source_1l00118"/>00118 
-<anchor xml:id="_fadb_8cpp_source_1l00119"/><link linkend="_fadb_8cpp_1a61a06fc0b02921cfefed1012095dba01">00119</link> <emphasis role="keywordtype">void</emphasis>&#32;<link linkend="_fadb_8cpp_1a61a06fc0b02921cfefed1012095dba01">disconnectLocalhost</link>(<emphasis role="keyword">const</emphasis>&#32;std::string&#32;adbId)&#32;{
-<anchor xml:id="_fadb_8cpp_source_1l00120"/>00120 &#32;&#32;&#32;&#32;<link linkend="_fadb_8cpp_1a383ae5fedc9f597a03c74c729a2eb740">runAdb</link>(<emphasis role="stringliteral">&quot;disconnect&#32;&quot;</emphasis>&#32;+&#32;adbId);
-<anchor xml:id="_fadb_8cpp_source_1l00121"/>00121 }
-<anchor xml:id="_fadb_8cpp_source_1l00122"/>00122 
-<anchor xml:id="_fadb_8cpp_source_1l00123"/><link linkend="_fadb_8cpp_1a0a8862e4f5344bdc053e5886f8b7167b">00123</link> <emphasis role="keywordtype">void</emphasis>&#32;<link linkend="_fadb_8cpp_1a0a8862e4f5344bdc053e5886f8b7167b">setResolution</link>(<emphasis role="keywordtype">int</emphasis>&#32;x,&#32;<emphasis role="keywordtype">int</emphasis>&#32;y,&#32;<emphasis role="keywordtype">int</emphasis>&#32;dpi,&#32;<emphasis role="keyword">const</emphasis>&#32;std::string&#32;adbId)
-<anchor xml:id="_fadb_8cpp_source_1l00124"/>00124 {
-<anchor xml:id="_fadb_8cpp_source_1l00125"/>00125 &#32;&#32;&#32;&#32;std::string&#32;command1&#32;=&#32;<emphasis role="stringliteral">&quot;wm&#32;size&#32;&quot;</emphasis>&#32;+&#32;std::to_string(x)&#32;+&#32;<emphasis role="stringliteral">&quot;x&quot;</emphasis>&#32;+&#32;std::to_string(y);
-<anchor xml:id="_fadb_8cpp_source_1l00126"/>00126 &#32;&#32;&#32;&#32;std::string&#32;command2&#32;=&#32;<emphasis role="stringliteral">&quot;wm&#32;density&#32;&quot;</emphasis>&#32;+&#32;std::to_string(dpi);
-<anchor xml:id="_fadb_8cpp_source_1l00127"/>00127 &#32;&#32;&#32;&#32;<link linkend="_fadb_8cpp_1a0766d8b572678e0a830d45a4dcfb9d4d">runAdbLocalhostShell</link>(command1,&#32;adbId);
-<anchor xml:id="_fadb_8cpp_source_1l00128"/>00128 &#32;&#32;&#32;&#32;<link linkend="_fadb_8cpp_1a0766d8b572678e0a830d45a4dcfb9d4d">runAdbLocalhostShell</link>(command2,&#32;adbId);
-<anchor xml:id="_fadb_8cpp_source_1l00129"/>00129 }
-<anchor xml:id="_fadb_8cpp_source_1l00130"/>00130 
+<anchor xml:id="_fadb_8cpp_source_1l00119"/>00119 
+<anchor xml:id="_fadb_8cpp_source_1l00120"/><link linkend="_fadb_8cpp_1a61a06fc0b02921cfefed1012095dba01">00120</link> <emphasis role="keywordtype">void</emphasis>&#32;<link linkend="_fadb_8cpp_1a61a06fc0b02921cfefed1012095dba01">disconnectLocalhost</link>(<emphasis role="keyword">const</emphasis>&#32;std::string&#32;adbId)&#32;{
+<anchor xml:id="_fadb_8cpp_source_1l00121"/>00121 &#32;&#32;&#32;&#32;<link linkend="_fadb_8cpp_1a383ae5fedc9f597a03c74c729a2eb740">runAdb</link>(<emphasis role="stringliteral">&quot;disconnect&#32;&quot;</emphasis>&#32;+&#32;adbId);
+<anchor xml:id="_fadb_8cpp_source_1l00122"/>00122 }
+<anchor xml:id="_fadb_8cpp_source_1l00123"/>00123 
+<anchor xml:id="_fadb_8cpp_source_1l00124"/><link linkend="_fadb_8cpp_1a0a8862e4f5344bdc053e5886f8b7167b">00124</link> <emphasis role="keywordtype">void</emphasis>&#32;<link linkend="_fadb_8cpp_1a0a8862e4f5344bdc053e5886f8b7167b">setResolution</link>(<emphasis role="keywordtype">int</emphasis>&#32;x,&#32;<emphasis role="keywordtype">int</emphasis>&#32;y,&#32;<emphasis role="keywordtype">int</emphasis>&#32;dpi,&#32;<emphasis role="keyword">const</emphasis>&#32;std::string&#32;adbId)
+<anchor xml:id="_fadb_8cpp_source_1l00125"/>00125 {
+<anchor xml:id="_fadb_8cpp_source_1l00126"/>00126 &#32;&#32;&#32;&#32;std::string&#32;command1&#32;=&#32;<emphasis role="stringliteral">&quot;wm&#32;size&#32;&quot;</emphasis>&#32;+&#32;std::to_string(x)&#32;+&#32;<emphasis role="stringliteral">&quot;x&quot;</emphasis>&#32;+&#32;std::to_string(y);
+<anchor xml:id="_fadb_8cpp_source_1l00127"/>00127 &#32;&#32;&#32;&#32;std::string&#32;command2&#32;=&#32;<emphasis role="stringliteral">&quot;wm&#32;density&#32;&quot;</emphasis>&#32;+&#32;std::to_string(dpi);
+<anchor xml:id="_fadb_8cpp_source_1l00128"/>00128 &#32;&#32;&#32;&#32;<link linkend="_fadb_8cpp_1a0766d8b572678e0a830d45a4dcfb9d4d">runAdbLocalhostShell</link>(command1,&#32;adbId);
+<anchor xml:id="_fadb_8cpp_source_1l00129"/>00129 &#32;&#32;&#32;&#32;<link linkend="_fadb_8cpp_1a0766d8b572678e0a830d45a4dcfb9d4d">runAdbLocalhostShell</link>(command2,&#32;adbId);
+<anchor xml:id="_fadb_8cpp_source_1l00130"/>00130 }
 <anchor xml:id="_fadb_8cpp_source_1l00131"/>00131 
-<anchor xml:id="_fadb_8cpp_source_1l00132"/><link linkend="_fadb_8cpp_1a4bf0b4cfcc899e6a2011d2048fce05b6">00132</link> <emphasis role="keywordtype">void</emphasis>&#32;<link linkend="_fadb_8cpp_1a4bf0b4cfcc899e6a2011d2048fce05b6">killAdb</link>()&#32;{
-<anchor xml:id="_fadb_8cpp_source_1l00133"/>00133 &#32;&#32;&#32;&#32;<link linkend="_fadb_8cpp_1a383ae5fedc9f597a03c74c729a2eb740">runAdb</link>(<emphasis role="stringliteral">&quot;kill-server&quot;</emphasis>);
-<anchor xml:id="_fadb_8cpp_source_1l00134"/>00134 }
-<anchor xml:id="_fadb_8cpp_source_1l00135"/>00135 
-<anchor xml:id="_fadb_8cpp_source_1l00136"/><link linkend="_fadb_8cpp_1a1991b2d62ce7597ceaf84533dc65d101">00136</link> <emphasis role="keywordtype">int</emphasis>&#32;<link linkend="_fadb_8cpp_1a1991b2d62ce7597ceaf84533dc65d101">getPid</link>(<emphasis role="keyword">const</emphasis>&#32;std::string&amp;&#32;process,&#32;<emphasis role="keyword">const</emphasis>&#32;std::string&#32;adbId)
-<anchor xml:id="_fadb_8cpp_source_1l00137"/>00137 {
-<anchor xml:id="_fadb_8cpp_source_1l00138"/>00138 &#32;&#32;&#32;&#32;std::string&#32;command&#32;=&#32;<emphasis role="stringliteral">&quot;pidof&#32;&quot;</emphasis>&#32;+&#32;process;
-<anchor xml:id="_fadb_8cpp_source_1l00139"/>00139 &#32;&#32;&#32;&#32;std::string&#32;result&#32;=&#32;<link linkend="_fadb_8cpp_1a0766d8b572678e0a830d45a4dcfb9d4d">runAdbLocalhostShell</link>(command,&#32;adbId);
-<anchor xml:id="_fadb_8cpp_source_1l00140"/>00140 &#32;&#32;&#32;&#32;<emphasis role="keywordflow">if</emphasis>&#32;(result.empty())<emphasis role="keywordflow">return</emphasis>&#32;-1;
-<anchor xml:id="_fadb_8cpp_source_1l00141"/>00141 &#32;&#32;&#32;&#32;<emphasis role="keywordflow">else</emphasis>&#32;<emphasis role="keywordflow">return</emphasis>&#32;stoi(result);
-<anchor xml:id="_fadb_8cpp_source_1l00142"/>00142 }
-<anchor xml:id="_fadb_8cpp_source_1l00143"/>00143 
-<anchor xml:id="_fadb_8cpp_source_1l00144"/><link linkend="_fadb_8cpp_1af214f583b5fa3fd505be34fa3eda9326">00144</link> std::vector&lt;int&gt;&#32;<link linkend="_fadb_8cpp_1af214f583b5fa3fd505be34fa3eda9326">getMultPid</link>(<emphasis role="keyword">const</emphasis>&#32;std::string&amp;&#32;process,&#32;<emphasis role="keyword">const</emphasis>&#32;std::string&#32;adbId)
-<anchor xml:id="_fadb_8cpp_source_1l00145"/>00145 {
-<anchor xml:id="_fadb_8cpp_source_1l00146"/>00146 &#32;&#32;&#32;&#32;std::string&#32;command&#32;=&#32;<emphasis role="stringliteral">&quot;pidof&#32;&quot;</emphasis>&#32;+&#32;process;
-<anchor xml:id="_fadb_8cpp_source_1l00147"/>00147 &#32;&#32;&#32;&#32;std::string&#32;result&#32;=&#32;<link linkend="_fadb_8cpp_1a0766d8b572678e0a830d45a4dcfb9d4d">runAdbLocalhostShell</link>(command,&#32;adbId);
-<anchor xml:id="_fadb_8cpp_source_1l00148"/>00148 &#32;&#32;&#32;&#32;std::vector&lt;int&gt;allpid;
-<anchor xml:id="_fadb_8cpp_source_1l00149"/>00149 &#32;&#32;&#32;&#32;std::string&#32;nb;
-<anchor xml:id="_fadb_8cpp_source_1l00150"/>00150 &#32;&#32;&#32;&#32;<emphasis role="keywordflow">if</emphasis>&#32;(!result.empty())&#32;{
-<anchor xml:id="_fadb_8cpp_source_1l00151"/>00151 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">for</emphasis>&#32;(<emphasis role="keywordtype">int</emphasis>&#32;i&#32;=&#32;0;&#32;i&#32;&lt;&#32;result.size();&#32;++i)&#32;{
-<anchor xml:id="_fadb_8cpp_source_1l00152"/>00152 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">if</emphasis>&#32;(result.at(i)&#32;!=&#32;<emphasis role="charliteral">&apos;&#32;&apos;</emphasis>&#32;&amp;&amp;&#32;result.at(i)&#32;!=&#32;<emphasis role="charliteral">&apos;\n&apos;</emphasis>)&#32;{
-<anchor xml:id="_fadb_8cpp_source_1l00153"/>00153 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;nb.push_back(result.at(i));
-<anchor xml:id="_fadb_8cpp_source_1l00154"/>00154 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;}
-<anchor xml:id="_fadb_8cpp_source_1l00155"/>00155 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">else</emphasis>&#32;<emphasis role="keywordflow">if</emphasis>&#32;(!nb.empty())&#32;{
-<anchor xml:id="_fadb_8cpp_source_1l00156"/>00156 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;allpid.push_back(std::stoi(nb));
-<anchor xml:id="_fadb_8cpp_source_1l00157"/>00157 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;nb.clear();
-<anchor xml:id="_fadb_8cpp_source_1l00158"/>00158 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">if</emphasis>&#32;(result.at(i)&#32;==&#32;<emphasis role="charliteral">&apos;\n&apos;</emphasis>)<emphasis role="keywordflow">break</emphasis>;
-<anchor xml:id="_fadb_8cpp_source_1l00159"/>00159 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;}
-<anchor xml:id="_fadb_8cpp_source_1l00160"/>00160 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;}
-<anchor xml:id="_fadb_8cpp_source_1l00161"/>00161 &#32;&#32;&#32;&#32;}
-<anchor xml:id="_fadb_8cpp_source_1l00162"/>00162 &#32;&#32;&#32;&#32;std::cout&#32;&lt;&lt;&#32;<emphasis role="stringliteral">&quot;stop&quot;</emphasis>;
-<anchor xml:id="_fadb_8cpp_source_1l00163"/>00163 &#32;&#32;&#32;&#32;<emphasis role="keywordflow">return</emphasis>&#32;allpid;
-<anchor xml:id="_fadb_8cpp_source_1l00164"/>00164 }
-<anchor xml:id="_fadb_8cpp_source_1l00165"/>00165 
-<anchor xml:id="_fadb_8cpp_source_1l00166"/><link linkend="_fadb_8cpp_1a96a4fa7238d6acae66790dd58b1724c0">00166</link> std::string&#32;<link linkend="_fadb_8cpp_1a96a4fa7238d6acae66790dd58b1724c0">currentFocus</link>(<emphasis role="keyword">const</emphasis>&#32;std::string&#32;adbId)
-<anchor xml:id="_fadb_8cpp_source_1l00167"/>00167 {
-<anchor xml:id="_fadb_8cpp_source_1l00168"/>00168 &#32;&#32;&#32;&#32;std::string&#32;command&#32;=&#32;<emphasis role="stringliteral">&quot;\&quot;dumpsys&#32;window&#32;windows&#32;|&#32;grep&#32;mCurrentFocus\&quot;&quot;</emphasis>;
-<anchor xml:id="_fadb_8cpp_source_1l00169"/>00169 &#32;&#32;&#32;&#32;<emphasis role="keywordflow">return</emphasis>&#32;<link linkend="_fadb_8cpp_1a0766d8b572678e0a830d45a4dcfb9d4d">runAdbLocalhostShell</link>(command,&#32;adbId);
-<anchor xml:id="_fadb_8cpp_source_1l00170"/>00170 }
-<anchor xml:id="_fadb_8cpp_source_1l00171"/>00171 
-<anchor xml:id="_fadb_8cpp_source_1l00172"/><link linkend="_fadb_8cpp_1a4b3da918d1da1a03af577279b677fd8e">00172</link> <emphasis role="keywordtype">void</emphasis>&#32;<link linkend="_fadb_8cpp_1a4b3da918d1da1a03af577279b677fd8e">killPid</link>(<emphasis role="keywordtype">int</emphasis>&#32;pid,&#32;<emphasis role="keyword">const</emphasis>&#32;std::string&#32;adbId)
-<anchor xml:id="_fadb_8cpp_source_1l00173"/>00173 {
-<anchor xml:id="_fadb_8cpp_source_1l00174"/>00174 &#32;&#32;&#32;&#32;<link linkend="_fadb_8cpp_1a0766d8b572678e0a830d45a4dcfb9d4d">runAdbLocalhostShell</link>(<emphasis role="stringliteral">&quot;kill&#32;&quot;</emphasis>&#32;+&#32;std::to_string(pid),&#32;adbId);
-<anchor xml:id="_fadb_8cpp_source_1l00175"/>00175 }
-<anchor xml:id="_fadb_8cpp_source_1l00176"/>00176 
-<anchor xml:id="_fadb_8cpp_source_1l00177"/><link linkend="_fadb_8cpp_1a12b3b3d1162ff8170e9f5e424bc37aa0">00177</link> <emphasis role="keywordtype">void</emphasis>&#32;<link linkend="_fadb_8cpp_1a12b3b3d1162ff8170e9f5e424bc37aa0">killLogcat</link>(<emphasis role="keyword">const</emphasis>&#32;std::string&#32;adbId)
-<anchor xml:id="_fadb_8cpp_source_1l00178"/>00178 {
-<anchor xml:id="_fadb_8cpp_source_1l00179"/>00179 &#32;&#32;&#32;&#32;std::vector&lt;int&gt;&#32;pids&#32;=&#32;<link linkend="_fadb_8cpp_1af214f583b5fa3fd505be34fa3eda9326">getMultPid</link>(<emphasis role="stringliteral">&quot;logcat&quot;</emphasis>,&#32;adbId);
-<anchor xml:id="_fadb_8cpp_source_1l00180"/>00180 &#32;&#32;&#32;&#32;<emphasis role="keywordflow">for</emphasis>&#32;(<emphasis role="keywordtype">int</emphasis>&#32;i&#32;:&#32;pids)&#32;{
-<anchor xml:id="_fadb_8cpp_source_1l00181"/>00181 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;std::cout&#32;&lt;&lt;&#32;<emphasis role="stringliteral">&quot;Pid:&#32;&quot;</emphasis>&#32;&lt;&lt;&#32;i&#32;&lt;&lt;&#32;std::endl;
-<anchor xml:id="_fadb_8cpp_source_1l00182"/>00182 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<link linkend="_fadb_8cpp_1a4b3da918d1da1a03af577279b677fd8e">killPid</link>(i,&#32;adbId);
-<anchor xml:id="_fadb_8cpp_source_1l00183"/>00183 &#32;&#32;&#32;&#32;}
-<anchor xml:id="_fadb_8cpp_source_1l00184"/>00184 }
-<anchor xml:id="_fadb_8cpp_source_1l00185"/>00185 
+<anchor xml:id="_fadb_8cpp_source_1l00132"/>00132 
+<anchor xml:id="_fadb_8cpp_source_1l00133"/><link linkend="_fadb_8cpp_1a4bf0b4cfcc899e6a2011d2048fce05b6">00133</link> <emphasis role="keywordtype">void</emphasis>&#32;<link linkend="_fadb_8cpp_1a4bf0b4cfcc899e6a2011d2048fce05b6">killAdb</link>()&#32;{
+<anchor xml:id="_fadb_8cpp_source_1l00134"/>00134 &#32;&#32;&#32;&#32;<link linkend="_fadb_8cpp_1a383ae5fedc9f597a03c74c729a2eb740">runAdb</link>(<emphasis role="stringliteral">&quot;kill-server&quot;</emphasis>);
+<anchor xml:id="_fadb_8cpp_source_1l00135"/>00135 }
+<anchor xml:id="_fadb_8cpp_source_1l00136"/>00136 
+<anchor xml:id="_fadb_8cpp_source_1l00137"/><link linkend="_fadb_8cpp_1a1991b2d62ce7597ceaf84533dc65d101">00137</link> <emphasis role="keywordtype">int</emphasis>&#32;<link linkend="_fadb_8cpp_1a1991b2d62ce7597ceaf84533dc65d101">getPid</link>(<emphasis role="keyword">const</emphasis>&#32;std::string&amp;&#32;process,&#32;<emphasis role="keyword">const</emphasis>&#32;std::string&#32;adbId)
+<anchor xml:id="_fadb_8cpp_source_1l00138"/>00138 {
+<anchor xml:id="_fadb_8cpp_source_1l00139"/>00139 &#32;&#32;&#32;&#32;std::string&#32;command&#32;=&#32;<emphasis role="stringliteral">&quot;pidof&#32;&quot;</emphasis>&#32;+&#32;process;
+<anchor xml:id="_fadb_8cpp_source_1l00140"/>00140 &#32;&#32;&#32;&#32;std::string&#32;result&#32;=&#32;<link linkend="_fadb_8cpp_1a0766d8b572678e0a830d45a4dcfb9d4d">runAdbLocalhostShell</link>(command,&#32;adbId);
+<anchor xml:id="_fadb_8cpp_source_1l00141"/>00141 &#32;&#32;&#32;&#32;<emphasis role="keywordflow">if</emphasis>&#32;(result.empty())<emphasis role="keywordflow">return</emphasis>&#32;-1;
+<anchor xml:id="_fadb_8cpp_source_1l00142"/>00142 &#32;&#32;&#32;&#32;<emphasis role="keywordflow">else</emphasis>&#32;<emphasis role="keywordflow">return</emphasis>&#32;stoi(result);
+<anchor xml:id="_fadb_8cpp_source_1l00143"/>00143 }
+<anchor xml:id="_fadb_8cpp_source_1l00144"/>00144 
+<anchor xml:id="_fadb_8cpp_source_1l00145"/><link linkend="_fadb_8cpp_1af214f583b5fa3fd505be34fa3eda9326">00145</link> std::vector&lt;int&gt;&#32;<link linkend="_fadb_8cpp_1af214f583b5fa3fd505be34fa3eda9326">getMultPid</link>(<emphasis role="keyword">const</emphasis>&#32;std::string&amp;&#32;process,&#32;<emphasis role="keyword">const</emphasis>&#32;std::string&#32;adbId)
+<anchor xml:id="_fadb_8cpp_source_1l00146"/>00146 {
+<anchor xml:id="_fadb_8cpp_source_1l00147"/>00147 &#32;&#32;&#32;&#32;std::string&#32;command&#32;=&#32;<emphasis role="stringliteral">&quot;pidof&#32;&quot;</emphasis>&#32;+&#32;process;
+<anchor xml:id="_fadb_8cpp_source_1l00148"/>00148 &#32;&#32;&#32;&#32;std::string&#32;result&#32;=&#32;<link linkend="_fadb_8cpp_1a0766d8b572678e0a830d45a4dcfb9d4d">runAdbLocalhostShell</link>(command,&#32;adbId);
+<anchor xml:id="_fadb_8cpp_source_1l00149"/>00149 &#32;&#32;&#32;&#32;std::vector&lt;int&gt;allpid;
+<anchor xml:id="_fadb_8cpp_source_1l00150"/>00150 &#32;&#32;&#32;&#32;std::string&#32;nb;
+<anchor xml:id="_fadb_8cpp_source_1l00151"/>00151 &#32;&#32;&#32;&#32;<emphasis role="keywordflow">if</emphasis>&#32;(!result.empty())&#32;{
+<anchor xml:id="_fadb_8cpp_source_1l00152"/>00152 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">for</emphasis>&#32;(<emphasis role="keywordtype">int</emphasis>&#32;i&#32;=&#32;0;&#32;i&#32;&lt;&#32;result.size();&#32;++i)&#32;{
+<anchor xml:id="_fadb_8cpp_source_1l00153"/>00153 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">if</emphasis>&#32;(result.at(i)&#32;!=&#32;<emphasis role="charliteral">&apos;&#32;&apos;</emphasis>&#32;&amp;&amp;&#32;result.at(i)&#32;!=&#32;<emphasis role="charliteral">&apos;\n&apos;</emphasis>)&#32;{
+<anchor xml:id="_fadb_8cpp_source_1l00154"/>00154 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;nb.push_back(result.at(i));
+<anchor xml:id="_fadb_8cpp_source_1l00155"/>00155 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;}
+<anchor xml:id="_fadb_8cpp_source_1l00156"/>00156 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">else</emphasis>&#32;<emphasis role="keywordflow">if</emphasis>&#32;(!nb.empty())&#32;{
+<anchor xml:id="_fadb_8cpp_source_1l00157"/>00157 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;allpid.push_back(std::stoi(nb));
+<anchor xml:id="_fadb_8cpp_source_1l00158"/>00158 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;nb.clear();
+<anchor xml:id="_fadb_8cpp_source_1l00159"/>00159 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">if</emphasis>&#32;(result.at(i)&#32;==&#32;<emphasis role="charliteral">&apos;\n&apos;</emphasis>)<emphasis role="keywordflow">break</emphasis>;
+<anchor xml:id="_fadb_8cpp_source_1l00160"/>00160 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;}
+<anchor xml:id="_fadb_8cpp_source_1l00161"/>00161 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;}
+<anchor xml:id="_fadb_8cpp_source_1l00162"/>00162 &#32;&#32;&#32;&#32;}
+<anchor xml:id="_fadb_8cpp_source_1l00163"/>00163 &#32;&#32;&#32;&#32;std::cout&#32;&lt;&lt;&#32;<emphasis role="stringliteral">&quot;stop&quot;</emphasis>;
+<anchor xml:id="_fadb_8cpp_source_1l00164"/>00164 &#32;&#32;&#32;&#32;<emphasis role="keywordflow">return</emphasis>&#32;allpid;
+<anchor xml:id="_fadb_8cpp_source_1l00165"/>00165 }
+<anchor xml:id="_fadb_8cpp_source_1l00166"/>00166 
+<anchor xml:id="_fadb_8cpp_source_1l00167"/><link linkend="_fadb_8cpp_1a96a4fa7238d6acae66790dd58b1724c0">00167</link> std::string&#32;<link linkend="_fadb_8cpp_1a96a4fa7238d6acae66790dd58b1724c0">currentFocus</link>(<emphasis role="keyword">const</emphasis>&#32;std::string&#32;adbId)
+<anchor xml:id="_fadb_8cpp_source_1l00168"/>00168 {
+<anchor xml:id="_fadb_8cpp_source_1l00169"/>00169 &#32;&#32;&#32;&#32;std::string&#32;command&#32;=&#32;<emphasis role="stringliteral">&quot;\&quot;dumpsys&#32;window&#32;windows&#32;|&#32;grep&#32;mCurrentFocus\&quot;&quot;</emphasis>;
+<anchor xml:id="_fadb_8cpp_source_1l00170"/>00170 &#32;&#32;&#32;&#32;<emphasis role="keywordflow">return</emphasis>&#32;<link linkend="_fadb_8cpp_1a0766d8b572678e0a830d45a4dcfb9d4d">runAdbLocalhostShell</link>(command,&#32;adbId);
+<anchor xml:id="_fadb_8cpp_source_1l00171"/>00171 }
+<anchor xml:id="_fadb_8cpp_source_1l00172"/>00172 
+<anchor xml:id="_fadb_8cpp_source_1l00173"/><link linkend="_fadb_8cpp_1a4b3da918d1da1a03af577279b677fd8e">00173</link> <emphasis role="keywordtype">void</emphasis>&#32;<link linkend="_fadb_8cpp_1a4b3da918d1da1a03af577279b677fd8e">killPid</link>(<emphasis role="keywordtype">int</emphasis>&#32;pid,&#32;<emphasis role="keyword">const</emphasis>&#32;std::string&#32;adbId)
+<anchor xml:id="_fadb_8cpp_source_1l00174"/>00174 {
+<anchor xml:id="_fadb_8cpp_source_1l00175"/>00175 &#32;&#32;&#32;&#32;<link linkend="_fadb_8cpp_1a0766d8b572678e0a830d45a4dcfb9d4d">runAdbLocalhostShell</link>(<emphasis role="stringliteral">&quot;kill&#32;&quot;</emphasis>&#32;+&#32;std::to_string(pid),&#32;adbId);
+<anchor xml:id="_fadb_8cpp_source_1l00176"/>00176 }
+<anchor xml:id="_fadb_8cpp_source_1l00177"/>00177 
+<anchor xml:id="_fadb_8cpp_source_1l00178"/><link linkend="_fadb_8cpp_1a12b3b3d1162ff8170e9f5e424bc37aa0">00178</link> <emphasis role="keywordtype">void</emphasis>&#32;<link linkend="_fadb_8cpp_1a12b3b3d1162ff8170e9f5e424bc37aa0">killLogcat</link>(<emphasis role="keyword">const</emphasis>&#32;std::string&#32;adbId)
+<anchor xml:id="_fadb_8cpp_source_1l00179"/>00179 {
+<anchor xml:id="_fadb_8cpp_source_1l00180"/>00180 &#32;&#32;&#32;&#32;std::vector&lt;int&gt;&#32;pids&#32;=&#32;<link linkend="_fadb_8cpp_1af214f583b5fa3fd505be34fa3eda9326">getMultPid</link>(<emphasis role="stringliteral">&quot;logcat&quot;</emphasis>,&#32;adbId);
+<anchor xml:id="_fadb_8cpp_source_1l00181"/>00181 &#32;&#32;&#32;&#32;<emphasis role="keywordflow">for</emphasis>&#32;(<emphasis role="keywordtype">int</emphasis>&#32;i&#32;:&#32;pids)&#32;{
+<anchor xml:id="_fadb_8cpp_source_1l00182"/>00182 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;std::cout&#32;&lt;&lt;&#32;<emphasis role="stringliteral">&quot;Pid:&#32;&quot;</emphasis>&#32;&lt;&lt;&#32;i&#32;&lt;&lt;&#32;std::endl;
+<anchor xml:id="_fadb_8cpp_source_1l00183"/>00183 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<link linkend="_fadb_8cpp_1a4b3da918d1da1a03af577279b677fd8e">killPid</link>(i,&#32;adbId);
+<anchor xml:id="_fadb_8cpp_source_1l00184"/>00184 &#32;&#32;&#32;&#32;}
+<anchor xml:id="_fadb_8cpp_source_1l00185"/>00185 }
 <anchor xml:id="_fadb_8cpp_source_1l00186"/>00186 
-<anchor xml:id="_fadb_8cpp_source_1l00187"/><link linkend="_fadb_8cpp_1a5b99e0ed81e1b5c5fa316b057cfeb04d">00187</link> <emphasis role="keywordtype">bool</emphasis>&#32;<link linkend="_fadb_8cpp_1a5b99e0ed81e1b5c5fa316b057cfeb04d">packageRunning</link>(std::string&#32;package,&#32;<emphasis role="keyword">const</emphasis>&#32;std::string&#32;adbId)
-<anchor xml:id="_fadb_8cpp_source_1l00188"/>00188 {
-<anchor xml:id="_fadb_8cpp_source_1l00189"/>00189 &#32;&#32;&#32;&#32;<emphasis role="keywordtype">int</emphasis>&#32;pid&#32;=&#32;<link linkend="_fadb_8cpp_1a1991b2d62ce7597ceaf84533dc65d101">getPid</link>(package,&#32;adbId);
-<anchor xml:id="_fadb_8cpp_source_1l00190"/>00190 &#32;&#32;&#32;&#32;<emphasis role="keywordflow">if</emphasis>&#32;(pid&#32;!=&#32;-1)<emphasis role="keywordflow">return</emphasis>&#32;<emphasis role="keyword">true</emphasis>;
-<anchor xml:id="_fadb_8cpp_source_1l00191"/>00191 &#32;&#32;&#32;&#32;<emphasis role="keywordflow">else</emphasis>&#32;<emphasis role="keywordflow">return</emphasis>&#32;<emphasis role="keyword">false</emphasis>;
-<anchor xml:id="_fadb_8cpp_source_1l00192"/>00192 
-<anchor xml:id="_fadb_8cpp_source_1l00193"/>00193 }
-<anchor xml:id="_fadb_8cpp_source_1l00194"/>00194 
-<anchor xml:id="_fadb_8cpp_source_1l00195"/><link linkend="_fadb_8cpp_1af7514591ff3da72ae2be4034040ef38d">00195</link> <emphasis role="keywordtype">bool</emphasis>&#32;<link linkend="_fadb_8cpp_1af7514591ff3da72ae2be4034040ef38d">onPackage</link>(std::string&#32;package,&#32;<emphasis role="keyword">const</emphasis>&#32;std::string&#32;adbId)
-<anchor xml:id="_fadb_8cpp_source_1l00196"/>00196 {
-<anchor xml:id="_fadb_8cpp_source_1l00197"/>00197 &#32;&#32;&#32;&#32;std::string&#32;focus&#32;=&#32;<link linkend="_fadb_8cpp_1a96a4fa7238d6acae66790dd58b1724c0">currentFocus</link>(adbId);
-<anchor xml:id="_fadb_8cpp_source_1l00198"/>00198 &#32;&#32;&#32;&#32;<emphasis role="keywordflow">return</emphasis>&#32;(focus.find(package)&#32;!=&#32;std::string::npos);
-<anchor xml:id="_fadb_8cpp_source_1l00199"/>00199 }
-<anchor xml:id="_fadb_8cpp_source_1l00200"/>00200 
+<anchor xml:id="_fadb_8cpp_source_1l00187"/>00187 
+<anchor xml:id="_fadb_8cpp_source_1l00188"/><link linkend="_fadb_8cpp_1a5b99e0ed81e1b5c5fa316b057cfeb04d">00188</link> <emphasis role="keywordtype">bool</emphasis>&#32;<link linkend="_fadb_8cpp_1a5b99e0ed81e1b5c5fa316b057cfeb04d">packageRunning</link>(std::string&#32;package,&#32;<emphasis role="keyword">const</emphasis>&#32;std::string&#32;adbId)
+<anchor xml:id="_fadb_8cpp_source_1l00189"/>00189 {
+<anchor xml:id="_fadb_8cpp_source_1l00190"/>00190 &#32;&#32;&#32;&#32;<emphasis role="keywordtype">int</emphasis>&#32;pid&#32;=&#32;<link linkend="_fadb_8cpp_1a1991b2d62ce7597ceaf84533dc65d101">getPid</link>(package,&#32;adbId);
+<anchor xml:id="_fadb_8cpp_source_1l00191"/>00191 &#32;&#32;&#32;&#32;<emphasis role="keywordflow">if</emphasis>&#32;(pid&#32;!=&#32;-1)<emphasis role="keywordflow">return</emphasis>&#32;<emphasis role="keyword">true</emphasis>;
+<anchor xml:id="_fadb_8cpp_source_1l00192"/>00192 &#32;&#32;&#32;&#32;<emphasis role="keywordflow">else</emphasis>&#32;<emphasis role="keywordflow">return</emphasis>&#32;<emphasis role="keyword">false</emphasis>;
+<anchor xml:id="_fadb_8cpp_source_1l00193"/>00193 
+<anchor xml:id="_fadb_8cpp_source_1l00194"/>00194 }
+<anchor xml:id="_fadb_8cpp_source_1l00195"/>00195 
+<anchor xml:id="_fadb_8cpp_source_1l00196"/><link linkend="_fadb_8cpp_1af7514591ff3da72ae2be4034040ef38d">00196</link> <emphasis role="keywordtype">bool</emphasis>&#32;<link linkend="_fadb_8cpp_1af7514591ff3da72ae2be4034040ef38d">onPackage</link>(std::string&#32;package,&#32;<emphasis role="keyword">const</emphasis>&#32;std::string&#32;adbId)
+<anchor xml:id="_fadb_8cpp_source_1l00197"/>00197 {
+<anchor xml:id="_fadb_8cpp_source_1l00198"/>00198 &#32;&#32;&#32;&#32;std::string&#32;focus&#32;=&#32;<link linkend="_fadb_8cpp_1a96a4fa7238d6acae66790dd58b1724c0">currentFocus</link>(adbId);
+<anchor xml:id="_fadb_8cpp_source_1l00199"/>00199 &#32;&#32;&#32;&#32;<emphasis role="keywordflow">return</emphasis>&#32;(focus.find(package)&#32;!=&#32;std::string::npos);
+<anchor xml:id="_fadb_8cpp_source_1l00200"/>00200 }
 <anchor xml:id="_fadb_8cpp_source_1l00201"/>00201 
 <anchor xml:id="_fadb_8cpp_source_1l00202"/>00202 
 <anchor xml:id="_fadb_8cpp_source_1l00203"/>00203 
+<anchor xml:id="_fadb_8cpp_source_1l00204"/>00204 
 </programlisting></section>
