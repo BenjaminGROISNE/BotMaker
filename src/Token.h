@@ -38,7 +38,8 @@ static const std::string biggerEqualO = ">=";
 static const std::string lesserO = "<";
 static const std::string lesserEqualO = "<=";
 
-static const std::vector<std::string> allOperatorsTokensStrings = { plusO, minusO, divideO, multiplyO, biggerO, biggerEqualO, lesserO, lesserEqualO };
+static const std::vector<std::string> allOperatorsTokensStrings =
+{ plusO, minusO, divideO, multiplyO, biggerO, biggerEqualO, lesserO, lesserEqualO };
 
 
 //Literal Tokens string
@@ -47,7 +48,14 @@ static const std::string falseL = "false";
 static const std::string secondL = "SECOND";
 static const std::string millisecondL = "MILLISECOND";
 static const std::string minuteL = "MINUTE";
-static const std::vector<std::string> allLiteralsTokensStrings = { trueL,falseL,secondL,millisecondL,minuteL };
+static const std::string northL = "NORTH";
+static const std::string southL = "SOUTH";
+static const std::string northwL = "NORTHW";
+static const std::string northeL = "NORTHE";
+static const std::string southwL = "SOUTHW";
+static const std::string southeL = "SOUTHE";
+static const std::vector<std::string> allLiteralsTokensStrings =
+{ trueL,falseL,secondL,millisecondL,minuteL,northL,southL,northwL,northeL,southwL,southeL };
 
 
 // Concatenate all token vectors
@@ -80,7 +88,10 @@ enum class DataType {
 	NONE, COORD, ZONE, STRING, DIRECTION, FLOAT, INT, BOOL, TIMETYPE,DATATYPE
 };
 enum class TokenVALUE {
-	NOT, TOKEN, UNKNOWN, QUOTATION, OPENANGLEBRACKETS, CLOSEANGLEBRACKETS, FLOW, COMMA, SEMICOLON, NUMERIC, IDENTIFIER, CLOSEBRACKETS, OPENBRACKETS, OPENPARENTHESIS, CLOSEPARENTHESIS, STRINGLITERAL, TRUELITERAL, FALSELITERAL, SECOND, WHITESPACE, MINUTE, MILLISECOND, INTEGER, WAIT, FLOAT, BOOL, AND, OR, COMPARE, STRING, COORD, DIRECTION, ZONE, LIST, IF, LOOP, DOLOOP, SWITCH, DEFAULT, ELSE, ELIF, BREAK, CONTINUE, CASE, STORE, MAIN, PRINT
+	NOT, TOKEN, UNKNOWN, QUOTATION, OPENANGLEBRACKETS, CLOSEANGLEBRACKETS, FLOW, COMMA, SEMICOLON, NUMERIC, IDENTIFIER,
+	CLOSEBRACKETS, OPENBRACKETS, OPENPARENTHESIS, CLOSEPARENTHESIS, STRINGLITERAL, TRUELITERAL, FALSELITERAL, SECOND, WHITESPACE,
+	MINUTE, MILLISECOND, INTEGER, WAIT, FLOAT, BOOL, AND, OR, COMPARE, STRING, COORD, DIRECTION, ZONE, LIST, IF, LOOP, DOLOOP,
+	SWITCH, DEFAULT, ELSE, ELIF, BREAK, CONTINUE, CASE, STORE, MAIN, PRINT,NORTH,SOUTH,EAST,WEST,NORTHW,NORTHE,SOUTHW,SOUTHE
 };
 
 class Arguments {
@@ -400,12 +411,10 @@ protected:
 class FlowCKToken :public CKToken, public FlowToken {
 public:
 	FlowCKToken();
+	void showTokenTree(const int nestedLayer);
 protected:
-
-
 	bool addCondition(IteratorList<Token>& tl, TokenResult tRes);
 	bool addTokens(IteratorList<Token>& tl, TokenResult& tRes)override;
-	void showArguments(const int nestedLayer)override;
 };
 
 
@@ -545,6 +554,7 @@ class IntegerToken :public UPKToken {
 public:
 	IntegerToken();
 	void setOverloads()final;
+
 	DataType getDataType(TokenResult& tRes)override;
 	std::shared_ptr<Tag> execute()override;
 protected:
@@ -632,7 +642,7 @@ protected:
 
 
 
-class PrintToken :public UPKToken {
+class PrintToken :public MPKToken {
 public:
 	PrintToken();
 	void setOverloads()final;
@@ -743,6 +753,44 @@ protected:
 
 };
 
+class DirectionLToken :public LToken {
+public:	
+	  DataType getDataType(TokenResult& tRes)final;
+protected:
+
+};
+
+class NorthToken :public DirectionLToken {
+public:
+	NorthToken();
+};
+
+class NorthWToken :public DirectionLToken {
+public:
+	NorthWToken();
+};
+
+class NorthEToken :public DirectionLToken {
+public:
+	NorthEToken();
+};
+
+class SouthToken :public DirectionLToken {
+public:
+	SouthToken();
+};
+
+class SouthWToken :public DirectionLToken {
+public:
+	SouthWToken();
+};
+
+class SouthEToken :public DirectionLToken {
+public:
+	SouthEToken();
+};
+
+
 class NumericToken :public LToken {
 public:
 	NumericToken(const std::string& nb);
@@ -755,6 +803,7 @@ protected:
 class StringLiteralToken :public LToken {
 public:
 	StringLiteralToken(const std::string& content);
+	void showTokenTree(const int nestedLayer)override;
 	DataType getDataType(TokenResult& tRes)override;
 protected:
 	std::shared_ptr<Tag> execute()override;

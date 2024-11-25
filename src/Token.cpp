@@ -554,6 +554,12 @@ FlowCKToken::FlowCKToken() :CKToken(), FlowToken(line)
 {
 }
 
+void FlowCKToken::showTokenTree(const int nestedLayer)
+{
+	CKToken::showTokenTree(nestedLayer);
+	FlowToken::showTokenTree(nestedLayer);
+}
+
 
 
 
@@ -572,10 +578,6 @@ bool FlowCKToken::addCondition(IteratorList<Token>& tl, TokenResult tRes)
 
 
 
-void FlowCKToken::showArguments(const int nestedLayer)
-{
-	uniqueToken->showTokenTree(nestedLayer);
-}
 
 
 
@@ -837,7 +839,7 @@ std::shared_ptr<Tag> BreakToken::execute()
 	return std::make_shared<BreakTag>();
 }
 
-PrintToken::PrintToken() :UPKToken()
+PrintToken::PrintToken() :MPKToken()
 {
 	tValue = TokenVALUE::PRINT;
 	tokenText = printK;
@@ -1040,6 +1042,7 @@ void FloatToken::setOverloads()
 {
 	argsOverload.addArgs(Arguments(),0);
 	argsOverload.addArgs(Arguments(DataType::FLOAT, false),1);
+	argsOverload.addArgs(Arguments(DataType::INT, false),2);
 }
 
 DataType FloatToken::getDataType(TokenResult& tRes)
@@ -1063,6 +1066,7 @@ void IntegerToken::setOverloads()
 {
 	argsOverload.addArgs(Arguments(),0);
 	argsOverload.addArgs(Arguments(DataType::INT,false),1);
+	argsOverload.addArgs(Arguments(DataType::FLOAT, false), 2);
 }
 
 
@@ -1196,6 +1200,13 @@ StringLiteralToken::StringLiteralToken(const std::string& content) :LToken()
 {
 	tokenText = content;
 	tValue = TokenVALUE::STRINGLITERAL;
+}
+
+void StringLiteralToken::showTokenTree(const int nestedLayer)
+{
+	std::cout << '"';
+	Token::showTokenTree(nestedLayer);
+	std::cout << '"';
 }
 
 DataType StringLiteralToken::getDataType(TokenResult& tRes)
@@ -1366,10 +1377,9 @@ void FlowToken::showTokenTree(const int nestedLayer)
 {
 	std::cout << openBracketsP + "\n";
 	printTabs(nestedLayer + 1);
-	for (auto elem : nestedTokens) {
+	for (auto& elem : nestedTokens) {
 		elem->showTokenTree(nestedLayer + 1);
 	}
-	std::cout << '\n';
 	printTabs(nestedLayer);
 	std::cout << closeBracketsP + '\n';
 }
@@ -1442,7 +1452,7 @@ void UPKToken::dispatchArguments()
 
 void UPKToken::showArguments(const int nestedLayer)
 {
-	if (!argTokens.empty())argTokens.front()->showTokenTree(nestedLayer);
+	if (uniqueToken)uniqueToken->showTokenTree(nestedLayer);
 }
 
 MPKToken::MPKToken() :PKToken()
@@ -1773,4 +1783,45 @@ bool TemplateToken::addError(TokenResult& tRes, DataType type)
 {
 	tRes.addError(line,type);
 	return false;
+}
+
+DataType DirectionLToken::getDataType(TokenResult& tRes)
+{
+	return DataType::DIRECTION;
+}
+
+NorthToken::NorthToken()
+{
+	tValue = TokenVALUE::NORTH;
+	tokenText = northL;
+}
+
+NorthWToken::NorthWToken()
+{
+	tValue = TokenVALUE::NORTHW;
+	tokenText = northwL;
+}
+
+NorthEToken::NorthEToken()
+{
+	tValue = TokenVALUE::NORTHE;
+	tokenText = northeL;
+}
+
+SouthToken::SouthToken()
+{
+	tValue = TokenVALUE::SOUTH;
+	tokenText = southL;
+}
+
+SouthWToken::SouthWToken()
+{
+	tValue = TokenVALUE::SOUTHW;
+	tokenText = southwL;
+}
+
+SouthEToken::SouthEToken()
+{
+	tValue = TokenVALUE::SOUTHE;
+	tokenText = southeL;
 }

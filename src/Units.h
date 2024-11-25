@@ -7,7 +7,7 @@
 #include <algorithm>
 #include <opencv2/opencv.hpp>
 
-enum Direction { N, S, W, E, NW, NE, SW, SE };
+enum class Direction { N, S, W, E, NW, NE, SW, SE };
 enum state { disconnect, block, waitTemplate };
 enum Orders { noOrd, K, M, B, T };
 enum day { Monday, Tuesday, Wednesday, Thursday, Friday, Saturday, Sunday };

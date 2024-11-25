@@ -6,15 +6,14 @@ IteratorList<Token> Interpretor::getTokens(std::string& text)
 	return lex.extractTokens(text);
 }
 
-std::shared_ptr<Token> Interpretor::executeTokens(IteratorList<Token>& tl)
+std::shared_ptr<Token> Interpretor::executeTokens(IteratorList<Token>& tl,TokenResult& tRes)
 {
 	std::shared_ptr<Token> mainToken;
 	std::shared_ptr<Tag> mainTag;
-	TokenResult tr;
 	if (!tl.empty()) {
 		mainToken = tl.getFirst();
 		if (tl.size() > 1) {
-			if (mainToken)mainToken->addTokens(tl, tr);
+			if (mainToken)mainToken->addTokens(tl, tRes);
 		}
 	}
 	return mainToken;
@@ -25,16 +24,17 @@ std::shared_ptr<Tag> Interpretor::executeTags(std::shared_ptr<Token> mainToken)
 	if (mainToken)return mainToken->execute();
 }
 
-std::shared_ptr<Token> Interpretor::compileTokens(std::string& text)
+std::shared_ptr<Token> Interpretor::compileTokens(std::string& text, TokenResult& tRes)
 {
 	auto listTokens = getTokens(text);
-	return executeTokens(listTokens);
+	return executeTokens(listTokens, tRes);
 }
 
 std::shared_ptr<Tag> Interpretor::compileTags(std::string& text)
 {
+	TokenResult tRes;
 	auto listTokens = getTokens(text);
-	auto compiledTokens= executeTokens(listTokens);
+	auto compiledTokens= executeTokens(listTokens, tRes);
 	return executeTags(compiledTokens);
 }
 
@@ -58,73 +58,158 @@ Interpretor::~Interpretor()
 
 void Interpretor::doUnitTests()
 {
-	std::string intToken1 = "int(3)";
-	auto rInt1=compileTokens(intToken1);
-	rInt1->showTokenTree(0);	
-	std::cout << "\n";
-	std::string intToken2= "int()";
-	auto rInt2=compileTokens(intToken2);
-	rInt2->showTokenTree(0);
-	std::cout << "\n";
-	std::string stringToken1 = "string(string(\"huhu\"))";
-	auto rString1 = compileTokens(stringToken1);
-	rString1->showTokenTree(0);
-	std::cout << "\n";
-	std::string stringToken2 = "string()";
-	auto rString2 = compileTokens(stringToken2);
-	rString2->showTokenTree(0);
-	std::cout << "\n";
-
-	std::string ct1 = "coord()";
-	auto rc1 = compileTokens(ct1);
-	rc1->showTokenTree(0);
-	std::cout << "\n";
-	std::string ct2 = "coord(int(5),6)";
-	auto rc2 = compileTokens(ct2);
-	rc2->showTokenTree(0);
-	std::cout << "\n";
-
-	std::string zt1 = "zone()";
-	auto zc1 = compileTokens(zt1);
-	zc1->showTokenTree(0);
-	std::cout << "\n";
-
-	std::string zt2 = "zone(zone(coord(3,int(5)),coord()))";
-	auto zc2 = compileTokens(zt2);
-	zc2->showTokenTree(0);
-	std::cout << "\n";
-
-	std::string bt1 = "bool()";
-	auto bc1 = compileTokens(bt1);
-	bc1->showTokenTree(0);
-	std::cout << "\n";
-
-	std::string bt2 = "bool(bool(true))";
-	auto bc2 = compileTokens(bt2);
-	bc2->showTokenTree(0);
-	std::cout << "\n";
-
-	std::string andt1 = "and()";
-	auto andc1 = compileTokens(andt1);
-	andc1->showTokenTree(0);
-	std::cout << "\n";
-
-	std::string andt2 = "and(and(),and(true,and(false,true)))";
-	auto andc2 = compileTokens(andt2);
-	andc2->showTokenTree(0);
-	std::cout << "\n";
-
-	std::string ort1 = "or()";
-	auto orc1 = compileTokens(ort1);
-	orc1->showTokenTree(0);
-	std::cout << "\n";
-
-	std::string ort2 = "or(or(),or(true,or(false,true)))";
-	auto orc2 = compileTokens(ort2);
-	orc2->showTokenTree(0);
-	std::cout << "\n";
-
+	assert(intTest());
+	assert(floatTest());
+	assert(boolTest());
+	assert(andTest());
+	assert(orTest());
+	assert(coordTest());
+	assert(zoneTest());
+	assert(directionTest());
+	assert(printTest());
+	assert(loopTest());
 	volatile int stop = 0;
+}
+
+bool Interpretor::unitTest(std::string& text,TokenResult&tRes){
+	std::cout << "Base text: "+text+"  \n  ";
+	auto comp1 = compileTokens(text, tRes);
+	comp1->showTokenTree(0);
+	std::cout << "\n";
+	return tRes.success();
+}
+
+bool Interpretor::intTest()
+{
+	TokenResult tRes;
+	std::string str1 = "int(3)";
+	unitTest(str1, tRes);
+	std::string str2 = "int()";
+	unitTest(str2, tRes);
+	return tRes.success();
+}
+
+bool Interpretor::floatTest()
+{
+	TokenResult tRes;
+	std::string str1 = "float(4)";
+	unitTest(str1, tRes);
+	std::string str2 = "float()";
+	unitTest(str2, tRes);
+	return tRes.success();
+}
+
+
+bool Interpretor::stringTest()
+{
+	TokenResult tRes;
+	std::string str1 = "string(string(\"coucou\"))";
+	unitTest(str1, tRes);
+	std::string str2 = "string()";
+	unitTest(str2, tRes);
+	return tRes.success();
+}
+bool Interpretor::boolTest()
+{
+	TokenResult tRes;
+	std::string str1 = "bool()";
+	unitTest(str1, tRes);
+	std::string str2 = "bool(bool(true))";
+	unitTest(str2, tRes);
+	return tRes.success();
+}
+
+bool Interpretor::andTest()
+{
+	TokenResult tRes;
+	std::string str1 = "and()";
+	unitTest(str1, tRes);
+	std::string str2 = "and(and(),and(true,and(false,true)))";
+	unitTest(str2, tRes);
+	return tRes.success();
+}
+bool Interpretor::printTest()
+{
+	TokenResult tRes;
+	std::string str1 = "print()";
+	unitTest(str1, tRes);
+	std::string str2 = "print(\"ezezd\")";
+	unitTest(str2, tRes);
+	std::string str3 = "print(\"a\",\"b\",\"c\")";
+	unitTest(str3, tRes);
+	return tRes.success();
+}
+
+bool Interpretor::orTest()
+{
+	TokenResult tRes;
+	std::string str1 = "or()";
+	unitTest(str1, tRes);
+	std::string str2 = "or(or(),or(true,or(false,true)))";
+	unitTest(str2, tRes);
+	return tRes.success();
+}
+
+bool Interpretor::notTest()
+{
+	TokenResult tRes;
+	std::string str1 = "not()";
+	unitTest(str1, tRes);
+	std::string str2 = "not(not(true))";
+	unitTest(str2, tRes);
+	return tRes.success();
+}
+
+bool Interpretor::coordTest()
+{
+
+	TokenResult tRes;
+	std::string str1 = "coord()";
+	unitTest(str1, tRes);
+	std::string str2 = "coord(int(5),6)";
+	unitTest(str2, tRes);
+	return tRes.success();
+}
+
+bool Interpretor::zoneTest()
+{
+	TokenResult tRes;
+	std::string str1 = "zone()";
+	unitTest(str1, tRes);
+	std::string str2 = "zone(zone(coord(3,int(5)),coord()))";
+	unitTest(str2, tRes);
+	return tRes.success();
+}
+
+bool Interpretor::directionTest()
+{
+	TokenResult tRes;
+	std::string str1 = "direction()";
+	unitTest(str1, tRes);
+	std::string str2 = "direction(direction(NORTH))";
+	unitTest(str2, tRes);
+	std::string str3 = "direction(SOUTH)";
+	unitTest(str3, tRes);
+	std::string str4 = "direction(SOUTHW)";
+	unitTest(str4, tRes);
+	std::string str5 = "direction(SOUTHE)";
+	unitTest(str5, tRes);
+	std::string str6 = "direction(NORTHE)";
+	unitTest(str6, tRes);
+	std::string str7 = "direction(NORTHW)";
+	unitTest(str7, tRes);
+	return tRes.success();
+}
+
+bool Interpretor::loopTest()
+{
+	TokenResult tRes;
+	std::string str1 = "loop()";
+	assert(!unitTest(str1, tRes));
+	TokenResult tRes2;
+	std::string str2 = "loop(true){and(or(true,false))print(\"cee\") }";
+	unitTest(str2, tRes2);
+	return tRes2.success()&& !tRes2.success();
 }
 
 std::shared_ptr<Tag> Interpretor::readActivityFile(const std::string& ActivityName)

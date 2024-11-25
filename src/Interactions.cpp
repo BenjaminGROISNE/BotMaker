@@ -535,28 +535,28 @@ bool Interactions::fSwipeA(std::string templ, Direction dir, Zone Z, bool willIn
     if (cvmtfTemplate(Mat, background, Tresult, Z)) {
         found = true;
         switch (dir) {
-        case N:
+        case Direction::N:
             Cend.x = resCoords.x;
             break;
-        case S:
+        case Direction::S:
             Cend.x = dimX;
             break;
-        case E:
+        case Direction::E:
             Cend.x = 0;
             break;
-        case W:
+        case Direction::W:
 			Cend.x = 0;
 			break;
-		case NE:
+		case Direction::NE:
 			Cend.x = dimX;
 			break;
-		case NW:
+		case Direction::NW:
 			Cend.x = 0;
 			break;
-		case SE:
+		case Direction::SE:
 			Cend.x = dimX;
 			break;
-		case SW:
+		case Direction::SW:
 			Cend.x = 0;
 			break;
 		default:
@@ -817,49 +817,49 @@ std::vector<Coord> Interactions::orderCoords(const std::vector<Coord>& coordes, 
     std::vector<Coord> coords = coordes;
 
     switch (dir) {
-    case N:
+    case Direction::N:
         std::sort(coords.begin(), coords.end(), [](const Coord& a, const Coord& b) {
             return a.y < b.y;
             });
         break;
 
-    case S:
+    case Direction::S:
         std::sort(coords.begin(), coords.end(), [](const Coord& a, const Coord& b) {
             return a.y > b.y;
             });
         break;
 
-    case W:
+    case Direction::W:
         std::sort(coords.begin(), coords.end(), [](const Coord& a, const Coord& b) {
             return a.x < b.x;
             });
         break;
 
-    case E:
+    case Direction::E:
         std::sort(coords.begin(), coords.end(), [](const Coord& a, const Coord& b) {
             return a.x > b.x;
             });
         break;
 
-    case NW:
+    case Direction::NW:
         std::sort(coords.begin(), coords.end(), [](const Coord& a, const Coord& b) {
             return a.x + a.y < b.x + b.y;
             });
         break;
 
-    case NE:
+    case Direction::NE:
         std::sort(coords.begin(), coords.end(), [](const Coord& a, const Coord& b) {
             return a.x - a.y > b.x - b.y;
             });
         break;
 
-    case SW:
+    case Direction::SW:
         std::sort(coords.begin(), coords.end(), [](const Coord& a, const Coord& b) {
             return a.y - a.x > b.y - b.x;
             });
         break;
 
-    case SE:
+    case Direction::SE:
         std::sort(coords.begin(), coords.end(), [](const Coord& a, const Coord& b) {
             return a.x + a.y > b.x + b.y;
             });
@@ -874,49 +874,49 @@ std::vector<Template> Interactions::orderTemplates(const std::vector<Template>& 
     std::vector<Template> coords = allTempl;
 
     switch (dir) {
-    case N:
+    case Direction::N:
         std::sort(coords.begin(), coords.end(), [](const Template& a, const Template& b) {
             return a.C.y < b.C.y;
             });
         break;
 
-    case S:
+    case Direction::S:
         std::sort(coords.begin(), coords.end(), [](const Template& a, const Template& b) {
             return a.C.y > b.C.y;
             });
         break;
 
-    case W:
+    case Direction::W:
         std::sort(coords.begin(), coords.end(), [](const Template& a, const Template& b) {
             return a.C.x < b.C.x;
             });
         break;
 
-    case E:
+    case Direction::E:
         std::sort(coords.begin(), coords.end(), [](const Template& a, const Template& b) {
             return a.C.x > b.C.x;
             });
         break;
 
-    case NW:
+    case Direction::NW:
         std::sort(coords.begin(), coords.end(), [](const Template& a, const Template& b) {
             return a.C.x + a.C.y < b.C.x + b.C.y;
             });
         break;
 
-    case NE:
+    case Direction::NE:
         std::sort(coords.begin(), coords.end(), [](const Template& a, const Template& b) {
             return a.C.x - a.C.y > b.C.x - b.C.y;
             });
         break;
 
-    case SW:
+    case Direction::SW:
         std::sort(coords.begin(), coords.end(), [](const Template& a, const Template& b) {
             return a.C.y - a.C.x > b.C.y - b.C.x;
             });
         break;
 
-    case SE:
+    case Direction::SE:
         std::sort(coords.begin(), coords.end(), [](const Template& a, const Template& b) {
             return a.C.x + a.C.y > b.C.x + b.C.y;
             });

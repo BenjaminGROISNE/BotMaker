@@ -9,7 +9,6 @@
 #include "tags.h"
 #include "Lexer.h"
 
-enum class CS{TOKEN,SYNTAX,TAG};
 
 class Interpretor {
 
@@ -21,12 +20,31 @@ class Interpretor {
 	std::shared_ptr<Tag> readActivityFile(const std::string& ActivityName);
 	std::string copyActivity(const std::string& ActivityName);	
 	IteratorList<Token> getTokens(std::string& text);
-	std::shared_ptr<Token> executeTokens(IteratorList<Token>& tl);
+	std::shared_ptr<Token> executeTokens(IteratorList<Token>& tl,TokenResult& tRes);
 	std::shared_ptr<Tag> executeTags(std::shared_ptr<Token> mainToken);
 
-	std::shared_ptr<Token> compileTokens(std::string& text);
+	std::shared_ptr<Token> compileTokens(std::string& text, TokenResult& tRes);
 	std::shared_ptr<Tag> compileTags(std::string& text);
 	void doUnitTests();
+	bool unitTest(std::string& text, TokenResult& tRes);
 	std::string ActivityFolder;
+
+	//Unit tests
+	// 
+	//UPKTokens
+	bool intTest();
+	bool floatTest();
+	bool stringTest();
+	bool boolTest();
+	bool andTest();
+	bool printTest();
+	bool orTest();
+	bool notTest();
+	bool coordTest();
+	bool zoneTest();
+	bool directionTest();
+
+	//FlowCKToken
+	bool loopTest();
 };
 

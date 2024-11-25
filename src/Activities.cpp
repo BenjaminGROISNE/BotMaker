@@ -267,7 +267,7 @@ bool Alchemy::craftBetterPill(std::vector<std::string>craftsdigits, std::vector<
             cancraftmat = false;
         }
         else {
-            fSwipeA(buttonchoosequantity, W);
+            fSwipeA(buttonchoosequantity, Direction::W);
             fcA(confirmpillquantity);
             while (!fcOneTemplateA(goodoutcome));
             cancraftbetterpill = false;
@@ -398,7 +398,7 @@ bool Worldrift::doActivity()
                 fcA(autoworldrift);
             }
             if (!noattempts) {
-                while (!fSwipeA(changenbreincarnation, E));
+                while (!fSwipeA(changenbreincarnation, Direction::E));
                 while (!fcA(tapblank))fcA(autoreincarnationtile, mid);
                 while (fcA(tapblank));
             }
@@ -467,7 +467,7 @@ bool Arena::doActivity()
             Coord topbr, bottombr;
             int nbrefresh = 0;
 
-            fOneTemplateMultipleTemplateA(yinyangarena, S, 0);
+            fOneTemplateMultipleTemplateA(yinyangarena, Direction::S, 0);
             topbr = { resCoords.x ,resCoords.y };
             bottombr = { (int)(topbr.x + 0.182 * dimX),(int)(topbr.y + getMatHeight(yinyangarena)) };
             Zone Tofight = { topbr,bottombr };
@@ -475,7 +475,7 @@ bool Arena::doActivity()
             Number br = fNumberDecimalA(figures, Units, dotarena, Tofight);
             mybr = br.nb;
             while (nbrefresh < 3) {
-                fOneTemplateMultipleTemplateA(yinyangarena, S, 1);
+                fOneTemplateMultipleTemplateA(yinyangarena, Direction::S, 1);
                 topbr = { resCoords.x,resCoords.y };
                 bottombr = { (int)(topbr.x + 0.182 * dimX),(int)(topbr.y + getMatHeight(yinyangarena)) };
                 Tofight = { topbr,bottombr };
@@ -483,7 +483,7 @@ bool Arena::doActivity()
                 br = fNumberDecimalA(figures, Units, dotarena, Tofight);
                 enemybr = br.nb;
                 if (mybr * 1.025 > enemybr) {
-                    while (fcOneTemplateMultipleTemplateA(challengetilearena, S, 0) && !fA(heroinvitationarena));
+                    while (fcOneTemplateMultipleTemplateA(challengetilearena, Direction::S, 0) && !fA(heroinvitationarena));
                     if (fA(heroinvitationarena)) {
                         while (!fcA(back))click(0.5 * dimX, 0.99 * dimY);
                         break;
@@ -536,7 +536,7 @@ bool Assistant::doActivity()
         while (!fcA(back));
         while (!fcA(assistantfatevillion));
         while (fcA(assistantfatevillion));
-        while (!fSwipeA(refreshfatevillion, W));
+        while (!fSwipeA(refreshfatevillion, Direction::W));
         while (!fcA(implement));
         while (!fcA(back));
         while (fcA(back));
@@ -737,7 +737,7 @@ bool Otherworld::doActivity()
         }
         else mypos = 0;
 
-        fOneTemplateMultipleTemplateA(yinyangxserver, S, mypos);
+        fOneTemplateMultipleTemplateA(yinyangxserver, Direction::S, mypos);
         Coord C1br = { resCoords.x + getMatWidth(yinyangxserver),resCoords.y };
         Coord C2br = { C1br.x + getMatWidth(yinyangxserver) * 4,C1br.y + getMatHeight(yinyangxserver) };
         Zone mybrZone = { C1br,C2br };
@@ -748,7 +748,7 @@ bool Otherworld::doActivity()
 
         while (true) {
             bool onlysweep = false;
-            fOneTemplateMultipleTemplateA(yinyangxserver, S, mypos + 1);
+            fOneTemplateMultipleTemplateA(yinyangxserver, Direction::S, mypos + 1);
             Coord C1br = { resCoords.x + getMatWidth(yinyangxserver),resCoords.y };
             Coord C2br = { C1br.x + getMatWidth(yinyangxserver) * 4,C1br.y + getMatHeight(yinyangxserver) };
             Zone enemybrZone = { C1br,C2br };
@@ -766,7 +766,7 @@ bool Otherworld::doActivity()
                 }
 
                 while (retry) {
-                    fcOneTemplateMultipleTemplateA(challengexserver, N, 0);
+                    fcOneTemplateMultipleTemplateA(challengexserver, Direction::N, 0);
                     std::vector<std::string> outcome = { victorytower,defeattower };
                     while (!fOneTemplateA(outcome)) {
                         std::vector<std::string>speed = { speedone,speedtwo,speedthree };
@@ -797,7 +797,7 @@ bool Otherworld::doActivity()
             }
             if (enemyPower.nb < myPower.nb && !onlysweep && retry) {
                 std::cout << "Same power enemies" << std::endl;
-                fcOneTemplateMultipleTemplateA(challengexserver, S, 0);
+                fcOneTemplateMultipleTemplateA(challengexserver, Direction::S, 0);
                 std::vector<std::string> outcome = { victorytower,defeattower };
                 while (!fOneTemplateA(outcome)) {
                     std::vector<std::string>speed = { speedone,speedtwo,speedthree };
@@ -860,8 +860,8 @@ bool Pack::doActivity()
         while (!fA(dailyspecial)) {
             while (!fcOneTemplateA(rcmd));
         }
-        while (!fcOneTemplateMultipleTemplateA(viewrcmd, E, 0));
-        while (fcOneTemplateMultipleTemplateA(viewrcmd, E, 0));
+        while (!fcOneTemplateMultipleTemplateA(viewrcmd, Direction::E, 0));
+        while (fcOneTemplateMultipleTemplateA(viewrcmd, Direction::E, 0));
         std::vector<std::string>freespecialtile = { freedailyspecial,soldoutdailyspecial };
         while (!fcOneTemplateA(freespecialtile))
             while (!fA(dailyspecial)) {

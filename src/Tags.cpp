@@ -853,7 +853,7 @@ StringTag::StringTag(const std::shared_ptr<Tag>& parameter):StringTag()
 DirectionTag::DirectionTag() :Tag()
 {
 	tagText = directionK;
-	myDir = N;
+	myDir = Direction::N;
 	myType = DIRECTIONTAG;
 }
 
@@ -883,7 +883,7 @@ Direction executeDirection(const std::shared_ptr<Tag>& parameter) {
 			break;
 		}
 	}
-	return N;
+	return Direction::N;
 }
 
 void DirectionTag::execute() {
@@ -1563,28 +1563,28 @@ PrintTag<T>::PrintTag(const std::shared_ptr<Tag>& tag) :PrintTag<T>()
 
 std::string getDirection(Direction d) {
 	switch (d) {
-	case N:
+	case Direction::N:
 		return "N";
 		break;
-	case S:
+	case Direction::S:
 		return "S";
 		break;
-	case E:
+	case Direction::E:
 		return "E";
 		break;
-	case W:
+	case Direction::W:
 		return "W";
 		break;
-	case NE:
+	case Direction::NE:
 		return "NE";
 		break;
-	case NW:
+	case Direction::NW:
 		return "NW";
 		break;
-	case SE:
+	case Direction::SE:
 		return "SE";
 		break;
-	case SW:
+	case Direction::SW:
 		return "SW";
 		break;
 	default:
@@ -1594,30 +1594,30 @@ std::string getDirection(Direction d) {
 
 Direction getDirection(std::string d) {
 	if (d == "N") {
-		return N;
+		return Direction::N;
 	}
 	else if (d == "S") {
-		return S;
+		return Direction::S;
 	}
 	else if (d == "E") {
-		return E;
+		return Direction::E;
 	}
 	else if (d == "W") {
-		return W;
+		return Direction::W;
 	}
 	else if (d == "NE") {
-		return NE;
+		return Direction::NE;
 	}
 	else if (d == "NW") {
-		return NW;
+		return Direction::NW;
 	}
 	else if (d == "SE") {
-		return SE;
+		return Direction::SE;
 	}
 	else if (d == "SW") {
-		return SW;
+		return Direction::SW;
 	}
-	else return N;
+	else return Direction::N;
 }
 
 template <>

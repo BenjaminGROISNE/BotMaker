@@ -133,6 +133,24 @@ TokenVALUE Lexer::getTokenValue(const std::string& text) {
 	else if (text == minuteL) {
 		return TokenVALUE::MINUTE;
 	}
+	else if (text == northL) {
+		return TokenVALUE::NORTH;
+	}
+	else if (text == northwL) {
+		return TokenVALUE::NORTHW;
+	}
+	else if (text == northeL) {
+			return TokenVALUE::NORTHE;
+	}
+	else if (text == southL) {
+		return TokenVALUE::SOUTH;
+	}
+	else if (text == southwL) {
+		return TokenVALUE::SOUTHW;
+	}
+	else if (text == southeL) {
+		return TokenVALUE::SOUTHE;
+	}
 	else if (text == quotation) {
 		return TokenVALUE::QUOTATION;
 	}
@@ -219,6 +237,18 @@ std::string Lexer::getTokenString(TokenVALUE value)
 		return secondL;
 	case TokenVALUE::MINUTE:
 		return minuteL;
+	case TokenVALUE::NORTH:
+		return northL;
+	case TokenVALUE::NORTHW:
+		return northwL;
+	case TokenVALUE::NORTHE:
+		return northeL;
+	case TokenVALUE::SOUTH:
+		return southL;
+	case TokenVALUE::SOUTHW:
+		return southwL;
+	case TokenVALUE::SOUTHE:
+		return southeL;
 	case TokenVALUE::NUMERIC:
 		return "NUMERIC";
 	case TokenVALUE::IDENTIFIER:
@@ -303,6 +333,18 @@ std::shared_ptr<Token> Lexer::getToken(const TokenVALUE& tValue, const std::stri
 		return std::make_shared<SecondToken>();
 	case TokenVALUE::MINUTE:
 		return std::make_shared<MinuteToken>();
+	case TokenVALUE::NORTH:
+		return std::make_shared<NorthToken>();
+	case TokenVALUE::NORTHW:
+		return std::make_shared<NorthWToken>();
+	case TokenVALUE::NORTHE:
+		return std::make_shared<NorthEToken>();
+	case TokenVALUE::SOUTH:
+		return std::make_shared<SouthToken>();
+	case TokenVALUE::SOUTHW:
+		return std::make_shared<SouthWToken>();
+	case TokenVALUE::SOUTHE:
+		return std::make_shared<SouthEToken>();
 	case TokenVALUE::NUMERIC:
 		return std::make_shared<NumericToken>(text);
 	case TokenVALUE::IDENTIFIER:
