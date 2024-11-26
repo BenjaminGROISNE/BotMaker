@@ -306,7 +306,6 @@ class KToken :public Token {
 public:
 protected:
 
-	bool addTokens(IteratorList<Token>& tl, TokenResult& tRes)override;
 
 };
 
@@ -390,7 +389,6 @@ class UPKToken : public PKToken {
 public:
 	UPKToken();
 	void dispatchArguments()override;
-	bool addTokens(IteratorList<Token>& tl, TokenResult& tRes)override;
 protected:
 	std::shared_ptr<Token> uniqueToken;
 	void showArguments(const int nestedLayer)override;

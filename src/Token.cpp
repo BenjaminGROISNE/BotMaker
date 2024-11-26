@@ -123,7 +123,7 @@ bool PKToken::handleArguments(IteratorList<Token>& tl, TokenResult& tRes)
 		if (!elem->addTokens(tl, tRes))return false;
 		if (elem->hasValue(TokenVALUE::CLOSEPARENTHESIS)) {
 			if (!argsOverload.hasCompletedArguments()) {
-				addError(tRes, TokenVALUE::CLOSEPARENTHESIS, ErrorType::UNEXPECTED);
+				return addError(tRes, TokenVALUE::CLOSEPARENTHESIS, ErrorType::UNEXPECTED);
 			}
 			else {
 				argsOverload.setCompleteIndex();
@@ -134,7 +134,7 @@ bool PKToken::handleArguments(IteratorList<Token>& tl, TokenResult& tRes)
 		if (elem->hasValue(TokenVALUE::COMMA)) {
 			if(!mustSeparate)addError(tRes, TokenVALUE::COMMA, ErrorType::UNEXPECTED);
 			else {
-				addComma(tl, tRes);
+				//addComma(tl, tRes);
 				mustSeparate = false;
 			}
 		}
@@ -144,7 +144,6 @@ bool PKToken::handleArguments(IteratorList<Token>& tl, TokenResult& tRes)
 				argTokens.push_back(elem);
 				mustSeparate = true;
 				argsOverload.next();
-				tl.next();
 			}
 			else return addError(tRes, type);
 		}
@@ -192,11 +191,6 @@ PKToken::PKToken() :KToken()
 
 bool Token::addTokens(IteratorList<Token>& tl, TokenResult& tRes)
 {
-	return true;
-}
-
-bool KToken::addTokens(IteratorList<Token>& tl, TokenResult& tRes)
-{
 	tl.next();
 	return true;
 }
@@ -210,12 +204,6 @@ bool PKToken::addTokens(IteratorList<Token>& tl, TokenResult& tRes)
 	return false;
 }
 
-
-bool UPKToken::addTokens(IteratorList<Token>& tl, TokenResult& tRes)
-{
-	//same as PKToken, handleArguments gets only 1 token
-	return PKToken::addTokens(tl, tRes);
-}
 bool FlowKToken::addTokens(IteratorList<Token>& tl, TokenResult& tRes)
 {
 	if (KToken::addTokens(tl, tRes)) {
@@ -280,7 +268,6 @@ bool PKToken::addToken(TokenVALUE tVal, IteratorList<Token>& tl, TokenResult& tR
 	if (!tl.ended()) {
 		auto elem = tl.currentToken();
 		if (elem->getValue()==tVal) {
-			tl.next();
 			return elem->addTokens(tl, tRes);
 		}
 	}
@@ -497,15 +484,7 @@ bool FlowToken::addBody(IteratorList<Token>& tl, TokenResult& tRes)
 
 bool FlowToken::addOb(IteratorList<Token>& tl, TokenResult& tRes)
 {
-	if (!tl.ended()) {
-		auto elem = tl.currentToken();
-		if (elem->hasValue( TokenVALUE::OPENBRACKETS)) {
-			tl.next();
-			return false;
-		}
-	}
-	addError(tRes,TokenVALUE::OPENBRACKETS);
-	return false;
+	return addToken(TokenVALUE::OPENBRACKETS, tl, tRes);
 }
 
 
@@ -1375,18 +1354,26 @@ FlowToken::FlowToken(int line):FlowToken()
 
 void FlowToken::showTokenTree(const int nestedLayer)
 {
-	std::cout << openBracketsP + "\n";
-	printTabs(nestedLayer + 1);
+	std::cout << openBracketsP;
 	for (auto& elem : nestedTokens) {
+		std::cout << '\n';
+		printTabs(nestedLayer + 1);
 		elem->showTokenTree(nestedLayer + 1);
 	}
+	std::cout << '\n';
 	printTabs(nestedLayer);
 	std::cout << closeBracketsP + '\n';
 }
 
 bool FlowToken::addToken(TokenVALUE tVal, IteratorList<Token>& tl, TokenResult& tRes)
 {
-	return false;
+	if (!tl.ended()) {
+		auto elem = tl.currentToken();
+		if (elem->getValue() == tVal) {
+			return elem->addTokens(tl, tRes);
+		}
+	}
+	return addError(tRes, tVal);
 }
 
 bool FlowToken::addType(DataType tVal, IteratorList<Token>& tl, TokenResult& tRes)

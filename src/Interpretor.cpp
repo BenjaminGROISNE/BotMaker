@@ -9,12 +9,9 @@ IteratorList<Token> Interpretor::getTokens(std::string& text)
 std::shared_ptr<Token> Interpretor::executeTokens(IteratorList<Token>& tl,TokenResult& tRes)
 {
 	std::shared_ptr<Token> mainToken;
-	std::shared_ptr<Tag> mainTag;
 	if (!tl.empty()) {
 		mainToken = tl.getFirst();
-		if (tl.size() > 1) {
-			if (mainToken)mainToken->addTokens(tl, tRes);
-		}
+		if (mainToken)mainToken->addTokens(tl, tRes);
 	}
 	return mainToken;
 }
@@ -68,6 +65,9 @@ void Interpretor::doUnitTests()
 	assert(directionTest());
 	assert(printTest());
 	assert(loopTest());
+	assert(ifTest());
+	assert(doloopTest());
+	assert(elifTest());
 	volatile int stop = 0;
 }
 
@@ -176,7 +176,7 @@ bool Interpretor::zoneTest()
 	TokenResult tRes;
 	std::string str1 = "zone()";
 	unitTest(str1, tRes);
-	std::string str2 = "zone(zone(coord(3,int(5)),coord()))";
+	std::string str2 = "zone(zone(coord(3,5),coord(1,1)))";
 	unitTest(str2, tRes);
 	return tRes.success();
 }
@@ -209,7 +209,39 @@ bool Interpretor::loopTest()
 	TokenResult tRes2;
 	std::string str2 = "loop(true){and(or(true,false))print(\"cee\") }";
 	unitTest(str2, tRes2);
-	return tRes2.success()&& !tRes2.success();
+	return !tRes.success()&& tRes2.success();
+}
+
+bool Interpretor::ifTest()
+{
+	TokenResult tRes;
+	std::string str1 = "if()";
+	assert(!unitTest(str1, tRes));
+	TokenResult tRes2;
+	std::string str2 = "if(false){and(or(true,false))print(\"cee\") }";
+	unitTest(str2, tRes2);
+	return !tRes.success() && tRes2.success();
+}
+
+bool Interpretor::doloopTest()
+{
+	TokenResult tRes;
+	std::string str1 = "doloop()";
+	assert(!unitTest(str1, tRes));
+	TokenResult tRes2;
+	std::string str2 = "doloop(false){and(or(true,false))print(\"cee\") }";
+	unitTest(str2, tRes2);
+	return !tRes.success() && tRes2.success();
+}
+bool Interpretor::elifTest()
+{
+	TokenResult tRes;
+	std::string str1 = "elif()";
+	assert(!unitTest(str1, tRes));
+	TokenResult tRes2;
+	std::string str2 = "elif(false){and(or(true,false))print(\"cee\") }";
+	unitTest(str2, tRes2);
+	return !tRes.success() && tRes2.success();
 }
 
 std::shared_ptr<Tag> Interpretor::readActivityFile(const std::string& ActivityName)

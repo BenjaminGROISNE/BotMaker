@@ -46,5 +46,8 @@ class Interpretor {
 
 	//FlowCKToken
 	bool loopTest();
+	bool ifTest();
+	bool elifTest();
+	bool doloopTest();
 };
 
