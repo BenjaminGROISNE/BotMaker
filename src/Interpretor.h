@@ -43,11 +43,16 @@ class Interpretor {
 	bool coordTest();
 	bool zoneTest();
 	bool directionTest();
-
+	
 	//FlowCKToken
 	bool loopTest();
 	bool ifTest();
+	bool elseTest();
 	bool elifTest();
 	bool doloopTest();
+
+	//PKToken
+	bool waitTest();
+
 };
 
