@@ -84,6 +84,7 @@ bool isOperatorString(const std::string& text);
 static bool isTokenStringContained(const std::string& text);
 
 std::string getStringLiteral(std::string& text);
+
 enum class DataType {
 	NONE, COORD, ZONE, STRING, DIRECTION, FLOAT, INT, BOOL, TIMETYPE,DATATYPE
 };
@@ -155,13 +156,13 @@ enum class ErrorType { DATATYPE, MISSING, UNEXPECTED };
 class Error {
 public:
 	Error();
-	Error(int el, TokenVALUE tv, ErrorType et = ErrorType::MISSING);
-	Error(int el, DataType dType);
+	Error(TokenVALUE scopeToken, int l, TokenVALUE errorToken, ErrorType et = ErrorType::MISSING);
+	Error(TokenVALUE scopeToken, int l, DataType dType);
 	void showError();
 protected:
-
 	ErrorType errorType;
 	TokenVALUE errorValue;
+	TokenVALUE scopeToken;
 	DataType dType;
 	int errorLine;
 };
@@ -171,9 +172,9 @@ public:
 	TokenResult();
 	TokenResult(TokenVALUE value, int l);
 	void showErrors();
-	void addError(int l,TokenVALUE value, ErrorType et=ErrorType::MISSING);
-	void addError(int l,DataType type);
-	void addError(const TokenResult& tokRes);
+	bool addError(TokenVALUE scopeToken,int l,TokenVALUE errorToken, ErrorType et=ErrorType::MISSING);
+	bool addError(TokenVALUE scopeToken,int l,DataType type);
+	bool addError(const TokenResult& tokRes);
 	void addVar(const std::string& name, const DataType& type);
 	bool success();
 	std::map<std::string, DataType> getVarTable();
@@ -231,8 +232,6 @@ public:
 	virtual DataType getDataType(TokenResult& tRes);
 	virtual void showTokenTree(const int nestedLayer);
 	TokenVALUE getValue();
-	bool addError(TokenResult& tRes,TokenVALUE value, ErrorType et=ErrorType::MISSING);
-	bool addError(TokenResult& tRes,DataType type);
 	std::string getTokenText();
 	int getLine();
 	bool hasValue(TokenVALUE value)const;
@@ -245,23 +244,23 @@ protected:
 
 }; 
 
+bool addToken(std::shared_ptr<Token>& token, TokenVALUE tVal, IteratorList<Token>& tl, TokenResult& tRes);
+bool addType(std::shared_ptr<Token>& token, DataType tData, IteratorList<Token>& tl, TokenResult& tRes);
+bool addType(std::shared_ptr<Token>& token, std::vector<DataType> listTypes, IteratorList<Token>& tl, TokenResult& tRes);
+bool addOb(std::shared_ptr<Token>& token,IteratorList<Token>& tl, TokenResult& tRes);
+bool addCb(IteratorList<Token>& tl, TokenResult& tRes);
+
 
 class FlowToken {
 public:
-	bool addError(TokenResult& tRes, TokenVALUE value, ErrorType et = ErrorType::MISSING);
-	bool addError(TokenResult& tRes, DataType type);
 	FlowToken();
 	FlowToken(int line);
 	void showTokenTree(const int nestedLayer);
-	bool addToken(TokenVALUE tVal, IteratorList<Token>& tl, TokenResult& tRes);
-	bool addType(DataType tVal, IteratorList<Token>& tl, TokenResult& tRes);
-	bool addType(std::vector<DataType> listTypes, IteratorList<Token>& tl, TokenResult& tRes);
 protected:
 	//Implemented
 	void printTabs(const int nestedLayer);
 	std::vector<std::shared_ptr<Token>> nestedTokens;
-	bool addOb(IteratorList<Token>& tl, TokenResult& tRes);
-	bool addCb(IteratorList<Token>& tl, TokenResult& tRes);
+
 	bool addNestedTokens(IteratorList<Token>& tl, TokenResult& tRes);
 	bool addBody(IteratorList<Token>& tl, TokenResult& tRes);
 	//Not Implemented
@@ -273,26 +272,8 @@ public:
 
 	TemplateToken();
 	TemplateToken(int line);
-	bool addToken(TokenVALUE tVal, IteratorList<Token>& tl, TokenResult& tRes);
-	bool addType(DataType tVal, IteratorList<Token>& tl, TokenResult& tRes);
-	bool addType(std::vector<DataType> listTypes, IteratorList<Token>& tl, TokenResult& tRes);
-	bool addOab(IteratorList<Token>& tl,TokenResult& tRes);
-	bool addCab(IteratorList<Token>& tl, TokenResult& tRes);
-	bool addNumber(IteratorList<Token>& tl, TokenResult& tRes);
-	bool addDataType(IteratorList<Token>& tl, TokenResult& tRes);
-	bool addInteger(IteratorList<Token>& tl, TokenResult& tRes);
-	bool addFloat(IteratorList<Token>& tl, TokenResult& tRes);
-	bool addCoord(IteratorList<Token>& tl, TokenResult& tRes);
-	bool addZone(IteratorList<Token>& tl, TokenResult& tRes);
-	bool addBool(IteratorList<Token>& tl, TokenResult& tRes);
-	bool addIdentifier(IteratorList<Token>& tl, TokenResult& tRes);
-	bool addString(IteratorList<Token>& tl, TokenResult& tRes);
-	bool addComma(IteratorList<Token>& tl, TokenResult& tRes);
-	bool addTimeType(IteratorList<Token>& tl, TokenResult& tRes);
 	virtual bool addTemplatedTypes(IteratorList<Token>& tl, TokenResult tRes);
 	bool addTokens(IteratorList<Token>& tl, TokenResult& tRes);
-	bool addError(TokenResult& tRes, TokenVALUE value, ErrorType et = ErrorType::MISSING);
-	bool addError(TokenResult& tRes, DataType type);
 protected:
 	ArgumentsOverload templateArguments;
 	TokenResult tRes;
@@ -328,7 +309,7 @@ public:
 protected:
 	ArgumentsOverload argsOverload;
 	//Implemented
-	bool addToken(TokenVALUE tVal, IteratorList<Token>& tl, TokenResult& tRes);
+
 	bool addType(DataType tVal, IteratorList<Token>& tl, TokenResult& tRes);
 	bool addType(std::vector<DataType> listTypes, IteratorList<Token>& tl, TokenResult& tRes);
 	bool addNumber(IteratorList<Token>& tl, TokenResult& tRes);
@@ -427,8 +408,6 @@ public:
 	IdentifierToken(const std::string& varName);
 	DataType getDataType(TokenResult& tRes)override;
 protected:
-
-	bool addTokens(IteratorList<Token>& tl, TokenResult& tRes)override;
 };
 
 class UnknownToken : public Token {
@@ -547,6 +526,18 @@ protected:
 	bool addTokens(IteratorList<Token>& tl, TokenResult& tRes)override;
 };
 
+class CompareToken :public PKToken, public TemplateToken {
+public:
+	CompareToken();
+	void setOverloads()final;
+	DataType getDataType(TokenResult& tRes)override;
+protected:
+	std::vector<std::shared_ptr<Token>> listTokens;
+	CompareType cmpType;
+	DataType valuesType;
+	std::shared_ptr<Tag> execute()override;
+};
+
 //empty or 1 parameter token
 class IntegerToken :public UPKToken {
 public:
@@ -625,20 +616,6 @@ public:
 protected:
 	std::shared_ptr<Tag> execute()override;
 };
-
-class CompareToken :public PKToken, public TemplateToken {
-public:
-	CompareToken();
-	void setOverloads()final;
-	DataType getDataType(TokenResult& tRes)override;
-protected:
-	std::vector<std::shared_ptr<Token>> listTokens;
-	CompareType cmpType;
-	DataType valuesType;
-	std::shared_ptr<Tag> execute()override;
-};
-
-
 
 class PrintToken :public MPKToken {
 public:

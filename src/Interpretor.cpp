@@ -68,11 +68,14 @@ void Interpretor::doUnitTests()
 	assert(ifTest());
 	assert(doloopTest());
 	assert(elifTest());
+	assert(elseTest());
+	assert(notTest());
+	assert(waitTest());
 	volatile int stop = 0;
 }
 
 bool Interpretor::unitTest(std::string& text,TokenResult&tRes){
-	std::cout << "Base text: "+text+"  \n  ";
+	std::cout << "Base text: "+text+"  \n";
 	auto comp1 = compileTokens(text, tRes);
 	comp1->showTokenTree(0);
 	std::cout << "\n";
@@ -223,6 +226,17 @@ bool Interpretor::ifTest()
 	return !tRes.success() && tRes2.success();
 }
 
+bool Interpretor::elseTest()
+{
+	TokenResult tRes;
+	std::string str1 = "else()";
+	assert(!unitTest(str1, tRes));
+	TokenResult tRes2;
+	std::string str2 = "else{and(or(true,false))print(\"cee\") }";
+	unitTest(str2, tRes2);
+	return !tRes.success() && tRes2.success();
+}
+
 bool Interpretor::doloopTest()
 {
 	TokenResult tRes;
@@ -231,6 +245,20 @@ bool Interpretor::doloopTest()
 	TokenResult tRes2;
 	std::string str2 = "doloop(false){and(or(true,false))print(\"cee\") }";
 	unitTest(str2, tRes2);
+	return !tRes.success() && tRes2.success();
+}
+bool Interpretor::waitTest()
+{
+	TokenResult tRes;
+	std::string str1 = "wait()";
+	assert(!unitTest(str1, tRes));
+	TokenResult tRes2;
+	std::string str2 = "wait(5,SECOND)";
+	unitTest(str2, tRes2);
+	std::string str3 = "wait(5,MILLISECOND)";
+	unitTest(str3, tRes2);
+	std::string str4 = "wait(5,MINUTE)";
+	unitTest(str4, tRes2);
 	return !tRes.success() && tRes2.success();
 }
 bool Interpretor::elifTest()
