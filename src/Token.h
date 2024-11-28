@@ -92,7 +92,8 @@ enum class TokenVALUE {
 	NOT, TOKEN, UNKNOWN, QUOTATION, OPENANGLEBRACKETS, CLOSEANGLEBRACKETS, FLOW, COMMA, SEMICOLON, NUMERIC, IDENTIFIER,
 	CLOSEBRACKETS, OPENBRACKETS, OPENPARENTHESIS, CLOSEPARENTHESIS, STRINGLITERAL, TRUELITERAL, FALSELITERAL, SECOND, WHITESPACE,
 	MINUTE, MILLISECOND, INTEGER, WAIT, FLOAT, BOOL, AND, OR, COMPARE, STRING, COORD, DIRECTION, ZONE, LIST, IF, LOOP, DOLOOP,
-	SWITCH, DEFAULT, ELSE, ELIF, BREAK, CONTINUE, CASE, STORE, MAIN, PRINT,NORTH,SOUTH,EAST,WEST,NORTHW,NORTHE,SOUTHW,SOUTHE
+	SWITCH, DEFAULT, ELSE, ELIF, BREAK, CONTINUE, CASE, STORE, MAIN, PRINT,NORTH,SOUTH,EAST,WEST,NORTHW,NORTHE,SOUTHW,SOUTHE,
+	TEMPLATE
 };
 
 class Arguments {
@@ -244,18 +245,13 @@ protected:
 
 }; 
 
-bool addToken(std::shared_ptr<Token>& token, TokenVALUE tVal, IteratorList<Token>& tl, TokenResult& tRes);
-bool addType(std::shared_ptr<Token>& token, DataType tData, IteratorList<Token>& tl, TokenResult& tRes);
-bool addType(std::shared_ptr<Token>& token, std::vector<DataType> listTypes, IteratorList<Token>& tl, TokenResult& tRes);
-bool addOb(std::shared_ptr<Token>& token,IteratorList<Token>& tl, TokenResult& tRes);
-bool addCb(IteratorList<Token>& tl, TokenResult& tRes);
-
 
 class FlowToken {
 public:
 	FlowToken();
 	FlowToken(int line);
 	void showTokenTree(const int nestedLayer);
+	bool addToken(TokenVALUE tVal, IteratorList<Token>& tl, TokenResult& tRes);
 protected:
 	//Implemented
 	void printTabs(const int nestedLayer);
@@ -272,6 +268,10 @@ public:
 
 	TemplateToken();
 	TemplateToken(int line);
+	bool addToken(TokenVALUE tVal, IteratorList<Token>& tl, TokenResult& tRes);
+	bool addType(DataType tVal, IteratorList<Token>& tl, TokenResult& tRes);
+	bool addTypes(std::vector<DataType> listTypes, IteratorList<Token>& tl, TokenResult& tRes);
+	bool addNumber(IteratorList<Token>& tl, TokenResult& tRes);
 	virtual bool addTemplatedTypes(IteratorList<Token>& tl, TokenResult tRes);
 	bool addTokens(IteratorList<Token>& tl, TokenResult& tRes);
 protected:
@@ -310,21 +310,11 @@ protected:
 	ArgumentsOverload argsOverload;
 	//Implemented
 
+	bool addToken(TokenVALUE tVal, IteratorList<Token>& tl, TokenResult& tRes);
+
 	bool addType(DataType tVal, IteratorList<Token>& tl, TokenResult& tRes);
-	bool addType(std::vector<DataType> listTypes, IteratorList<Token>& tl, TokenResult& tRes);
+	bool addTypes(std::vector<DataType> listTypes, IteratorList<Token>& tl, TokenResult& tRes);
 	bool addNumber(IteratorList<Token>& tl, TokenResult& tRes);
-	bool addDataType(IteratorList<Token>& tl, TokenResult& tRes);
-	bool addInteger(IteratorList<Token>& tl, TokenResult& tRes);
-	bool addFloat(IteratorList<Token>& tl, TokenResult& tRes);
-	bool addCoord(IteratorList<Token>& tl, TokenResult& tRes);
-	bool addZone(IteratorList<Token>& tl, TokenResult& tRes);
-	bool addBool(IteratorList<Token>& tl, TokenResult& tRes);
-	bool addIdentifier(IteratorList<Token>& tl, TokenResult& tRes);
-	bool addString(IteratorList<Token>& tl, TokenResult& tRes);
-	bool addComma(IteratorList<Token>& tl, TokenResult& tRes);
-	bool addTimeType(IteratorList<Token>& tl, TokenResult& tRes);
-	bool addOp(IteratorList<Token>& tl, TokenResult& tRes);
-	bool addCp(IteratorList<Token>& tl, TokenResult& tRes);
 	virtual bool handleArguments(IteratorList<Token>& tl, TokenResult& tRes);
 	virtual void setOverloads();
 	virtual void dispatchArguments();
