@@ -151,6 +151,30 @@ TokenVALUE Lexer::getTokenValue(const std::string& text) {
 	else if (text == southeL) {
 		return TokenVALUE::SOUTHE;
 	}
+	else if (text == boolL) {
+		return TokenVALUE::BOOLTYPE;
+	}
+	else if (text == intL) {
+		return TokenVALUE::INTTYPE;
+	}
+	else if (text == floatL) {
+		return TokenVALUE::FLOATTYPE;
+	}
+	else if (text == coordL) {
+		return TokenVALUE::COORDTYPE;
+	}
+	else if (text == zoneL) {
+		return TokenVALUE::ZONETYPE;
+	}
+	else if (text == directionL) {
+		return TokenVALUE::DIRECTIONTYPE;
+	}
+	else if (text == timetypeL) {
+		return TokenVALUE::TIMETYPE;
+	}
+	else if (text == stringL) {
+		return TokenVALUE::STRINGTYPE;
+	}
 	else if (text == quotation) {
 		return TokenVALUE::QUOTATION;
 	}
@@ -249,6 +273,22 @@ std::string Lexer::getTokenString(TokenVALUE value)
 		return southwL;
 	case TokenVALUE::SOUTHE:
 		return southeL;
+	case TokenVALUE::INTTYPE:
+		return intL;
+	case TokenVALUE::BOOLTYPE:
+		return boolL;
+	case TokenVALUE::FLOATTYPE:
+		return floatL;
+	case TokenVALUE::STRINGTYPE:
+		return stringL;
+	case TokenVALUE::COORDTYPE:
+		return coordL;
+	case TokenVALUE::ZONETYPE:
+		return zoneL;
+	case TokenVALUE::TIMETYPE:
+		return timetypeL;
+	case TokenVALUE::DIRECTIONTYPE:
+		return directionL;
 	case TokenVALUE::NUMERIC:
 		return "NUMERIC";
 	case TokenVALUE::IDENTIFIER:
@@ -345,6 +385,22 @@ std::shared_ptr<Token> Lexer::getToken(const TokenVALUE& tValue, const std::stri
 		return std::make_shared<SouthWToken>();
 	case TokenVALUE::SOUTHE:
 		return std::make_shared<SouthEToken>();
+	case TokenVALUE::BOOLTYPE:
+		return std::make_shared<BoolTypeToken>();
+	case TokenVALUE::INTTYPE:
+		return std::make_shared<IntTypeToken>();
+	case TokenVALUE::FLOATTYPE:
+		return std::make_shared<FloatTypeToken>();
+	case TokenVALUE::STRINGTYPE:
+		return std::make_shared<StringTypeToken>();
+	case TokenVALUE::COORDTYPE:
+		return std::make_shared<CoordTypeToken>();
+	case TokenVALUE::ZONETYPE:
+		return std::make_shared<ZoneTypeToken>();
+	case TokenVALUE::TIMETYPE:
+		return std::make_shared<TimeTypeToken>();
+	case TokenVALUE::DIRECTIONTYPE:
+		return std::make_shared<BoolTypeToken>();
 	case TokenVALUE::NUMERIC:
 		return std::make_shared<NumericToken>(text);
 	case TokenVALUE::IDENTIFIER:

@@ -27,21 +27,6 @@ static const std::string allPunctuations = " <>\",(){}\t\b\n\r";
 
 static const std::vector<std::string> allPunctuationsTokensStrings = { openAngleBracketsP,closeAngleBracketsP, quotation,carriagereturn, newline, whitespace,tabulation,backspace, commaP, openParenthesisP, closeParenthesisP, openBracketsP, closeBracketsP };
 
-//Operators Tokens 
-//string
-static const std::string plusO = "+";
-static const std::string minusO = "-";
-static const std::string divideO = "/";
-static const std::string multiplyO = "*";
-static const std::string biggerO = ">";
-static const std::string biggerEqualO = ">=";
-static const std::string lesserO = "<";
-static const std::string lesserEqualO = "<=";
-
-static const std::vector<std::string> allOperatorsTokensStrings =
-{ plusO, minusO, divideO, multiplyO, biggerO, biggerEqualO, lesserO, lesserEqualO };
-
-
 //Literal Tokens string
 static const std::string trueL = "true";
 static const std::string falseL = "false";
@@ -54,8 +39,16 @@ static const std::string northwL = "NORTHW";
 static const std::string northeL = "NORTHE";
 static const std::string southwL = "SOUTHW";
 static const std::string southeL = "SOUTHE";
+static const std::string intL = "INT";
+static const std::string floatL = "FLOAT";
+static const std::string coordL = "COORD";
+static const std::string zoneL = "ZONE";
+static const std::string boolL = "BOOL";
+static const std::string timetypeL = "TIMETYPE";
+static const std::string directionL = "DIRECTION";
+static const std::string stringL = "STRING";
 static const std::vector<std::string> allLiteralsTokensStrings =
-{ trueL,falseL,secondL,millisecondL,minuteL,northL,southL,northwL,northeL,southwL,southeL };
+{ trueL,falseL,secondL,millisecondL,minuteL,northL,southL,northwL,northeL,southwL,southeL,intL,floatL,coordL,zoneL,boolL,timetypeL,directionL,stringL };
 
 
 // Concatenate all token vectors
@@ -63,12 +56,10 @@ static const std::vector<std::string> allTokensStrings = [] {
 	std::vector<std::string> result;
 	result.reserve(allKeywordsTokensString.size() +
 		allPunctuationsTokensStrings.size() +
-		allOperatorsTokensStrings.size() +
 		allLiteralsTokensStrings.size());
 
 	result.insert(result.end(), allKeywordsTokensString.begin(), allKeywordsTokensString.end());
 	result.insert(result.end(), allPunctuationsTokensStrings.begin(), allPunctuationsTokensStrings.end());
-	result.insert(result.end(), allOperatorsTokensStrings.begin(), allOperatorsTokensStrings.end());
 	result.insert(result.end(), allLiteralsTokensStrings.begin(), allLiteralsTokensStrings.end());
 
 	return result;
@@ -79,7 +70,6 @@ bool isTokenString(const std::string& text);
 bool isKeywordString(const std::string& text);
 bool isLiteralString(const std::string& text);
 bool isPunctuationString(const std::string& text);
-bool isOperatorString(const std::string& text);
 
 static bool isTokenStringContained(const std::string& text);
 
@@ -93,7 +83,7 @@ enum class TokenVALUE {
 	CLOSEBRACKETS, OPENBRACKETS, OPENPARENTHESIS, CLOSEPARENTHESIS, STRINGLITERAL, TRUELITERAL, FALSELITERAL, SECOND, WHITESPACE,
 	MINUTE, MILLISECOND, INTEGER, WAIT, FLOAT, BOOL, AND, OR, COMPARE, STRING, COORD, DIRECTION, ZONE, LIST, IF, LOOP, DOLOOP,
 	SWITCH, DEFAULT, ELSE, ELIF, BREAK, CONTINUE, CASE, STORE, MAIN, PRINT,NORTH,SOUTH,EAST,WEST,NORTHW,NORTHE,SOUTHW,SOUTHE,
-	TEMPLATE
+	TEMPLATE,STRINGTYPE,INTTYPE,FLOATTYPE,COORDTYPE, ZONETYPE,BOOLTYPE,DIRECTIONTYPE,TIMETYPE
 };
 
 class Arguments {
@@ -272,10 +262,11 @@ public:
 	bool addType(DataType tVal, IteratorList<Token>& tl, TokenResult& tRes);
 	bool addTypes(std::vector<DataType> listTypes, IteratorList<Token>& tl, TokenResult& tRes);
 	bool addNumber(IteratorList<Token>& tl, TokenResult& tRes);
-	virtual bool addTemplatedTypes(IteratorList<Token>& tl, TokenResult tRes);
+	bool addTemplatedTypes(IteratorList<Token>& tl, TokenResult tRes);
 	bool addTokens(IteratorList<Token>& tl, TokenResult& tRes);
 protected:
 	ArgumentsOverload templateArguments;
+	std::vector<std::shared_ptr<Token>> templTokens;
 	TokenResult tRes;
 	int line;
 
@@ -289,6 +280,7 @@ protected:
 
 
 };
+
 
 //Flow Control Keyword with no arguments
 class FlowKToken :public KToken, public FlowToken {
@@ -489,7 +481,8 @@ protected:
 
 
 
-
+//list<DATATYPE,INT>()
+//list<STRING, 1>(list<STRING,0>("deed","hukj","oijde"),list<STRING,0>("fezf","zef","zgg"))
 class ListToken :public MPKToken,public TemplateToken {
 public:
 	ListToken();
@@ -498,9 +491,12 @@ public:
 	std::shared_ptr<Tag> execute()override;
 protected:
 	DataType dType;
+	int tabDim;//0 = list of single elem ; 1 list of 1D tab ; 2 list of 2D tabs ; n list of nD tabs. 
 	std::vector<std::shared_ptr<Token>> listToken;
 };
 
+//store<DATATYPE,INT>(IDENTIFIER,VALUE)
+//store<FLOAT,1>(var1,list<FLOAT,0>(4.2,5.3,6))
 class StoreToken :public MPKToken {
 public:
 	StoreToken();
@@ -516,6 +512,8 @@ protected:
 	bool addTokens(IteratorList<Token>& tl, TokenResult& tRes)override;
 };
 
+//compare<DATATYPE,COMPARETYPE>(VALUE1,VALUE2,VALUE3,...,VALUEN)
+//compare<FLOAT,GREATER>(5.3,2.3,1.3,0.6,0.2)
 class CompareToken :public PKToken, public TemplateToken {
 public:
 	CompareToken();
@@ -527,6 +525,10 @@ protected:
 	DataType valuesType;
 	std::shared_ptr<Tag> execute()override;
 };
+
+
+
+
 
 //empty or 1 parameter token
 class IntegerToken :public UPKToken {
@@ -682,9 +684,52 @@ public:
 protected:
 };
 
+class DataTypeToken :public LToken {
+public:
+	DataType getDataType(TokenResult& tRes)final;
+protected:
+};
+class IntTypeToken :public DataTypeToken {
+public:
+	IntTypeToken();
+protected:
+};
 
-
-
+class BoolTypeToken :public DataTypeToken {
+public:
+	BoolTypeToken();
+protected:
+};
+class StringTypeToken :public DataTypeToken {
+public:
+	StringTypeToken();
+protected:
+};
+class FloatTypeToken :public DataTypeToken {
+public:
+	FloatTypeToken();
+protected:
+};
+class CoordTypeToken :public DataTypeToken {
+public:
+	CoordTypeToken();
+protected:
+};
+class ZoneTypeToken :public DataTypeToken {
+public:
+	ZoneTypeToken();
+protected:
+};
+class DirectionTypeToken :public DataTypeToken {
+public:
+	DirectionTypeToken();
+protected:
+};
+class TimeTypeToken :public DataTypeToken {
+public:
+	TimeTypeToken();
+protected:
+};
 class FalseToken :public LToken {
 public:
 	FalseToken();

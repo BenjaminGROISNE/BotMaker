@@ -2,7 +2,7 @@
 
 bool isTokenString(const std::string& text)
 {
-	return isKeywordString(text) || isLiteralString(text) || isPunctuationString(text) || isOperatorString(text);
+	return isKeywordString(text) || isLiteralString(text) || isPunctuationString(text);
 }
 
 bool isKeywordString(const std::string& text)
@@ -33,14 +33,6 @@ bool isLiteralString(const std::string& text)
 bool isPunctuationString(const std::string& text)
 {
 	for (auto& tokenString : allPunctuationsTokensStrings) {
-		if (tokenString.compare(text) == 0)return true;
-	}
-	return false;
-}
-
-bool isOperatorString(const std::string& text)
-{
-	for (auto& tokenString : allOperatorsTokensStrings) {
 		if (tokenString.compare(text) == 0)return true;
 	}
 	return false;
@@ -111,7 +103,6 @@ bool PKToken::handleArguments(IteratorList<Token>& tl, TokenResult& tRes)
 {
 	bool mustSeparate = false;
 	argsOverload.initTabs();
-	this;
 	while (!tl.ended()) {
 		auto elem = tl.currentToken();
 		if (!elem->addTokens(tl, tRes))return false;
@@ -140,6 +131,41 @@ bool PKToken::handleArguments(IteratorList<Token>& tl, TokenResult& tRes)
 				argsOverload.next();
 			}
 			else return tRes.addError(getValue(),line, type);
+		}
+	}
+}
+
+bool TemplateToken::addTemplatedTypes(IteratorList<Token>& tl, TokenResult tRes)
+{
+	bool mustSeparate = false;
+	templateArguments.initTabs();
+	while (!tl.ended()) {
+		auto elem = tl.currentToken();
+		if (!elem->addTokens(tl, tRes))return false;
+		if (elem->hasValue(TokenVALUE::CLOSEANGLEBRACKETS)) {
+			if (!templateArguments.hasCompletedArguments()) {
+				return tRes.addError(TokenVALUE::TEMPLATE, line, TokenVALUE::CLOSEPARENTHESIS, ErrorType::UNEXPECTED);
+			}
+			else {
+				templateArguments.setCompleteIndex();
+				return true;
+			}
+		}
+		if (elem->hasValue(TokenVALUE::COMMA)) {
+			if (!mustSeparate)tRes.addError(TokenVALUE::TEMPLATE, line, TokenVALUE::COMMA, ErrorType::UNEXPECTED);
+			else {
+				//addComma(tl, tRes);
+				mustSeparate = false;
+			}
+		}
+		else {
+			DataType type = elem->getDataType(tRes);
+			if (templateArguments.approveType(type)) {
+				templTokens.push_back(elem);
+				mustSeparate = true;
+				templateArguments.next();
+			}
+			else return tRes.addError(TokenVALUE::TEMPLATE, line, type);
 		}
 	}
 }
@@ -1576,15 +1602,12 @@ bool TemplateToken::addType(DataType tData, IteratorList<Token>& tl, TokenResult
 	return tRes.addError(TokenVALUE::TEMPLATE, line, tData);
 }
 
-bool TemplateToken::addTemplatedTypes(IteratorList<Token>& tl, TokenResult tRes)
-{
-	return false;
-}
+
 
 bool TemplateToken::addTokens(IteratorList<Token>& tl, TokenResult& tRes)
 {
 	if (addToken(TokenVALUE::OPENANGLEBRACKETS,tl,tRes)) {
-		return addToken(TokenVALUE::CLOSEANGLEBRACKETS,tl, tRes);
+		return addTemplatedTypes(tl,tRes);
 	}
 	return false;
 }
@@ -1628,4 +1651,57 @@ SouthEToken::SouthEToken()
 {
 	tValue = TokenVALUE::SOUTHE;
 	tokenText = southeL;
+}
+
+DataType DataTypeToken::getDataType(TokenResult& tRes)
+{
+	return DataType::DATATYPE;
+}
+
+IntTypeToken::IntTypeToken()
+{
+	tValue = TokenVALUE::INTTYPE;
+	tokenText = intL;
+}
+
+BoolTypeToken::BoolTypeToken()
+{
+	tValue = TokenVALUE::BOOLTYPE;
+	tokenText = boolL;
+}
+
+StringTypeToken::StringTypeToken()
+{
+	tValue = TokenVALUE::STRINGTYPE;
+	tokenText = stringL;
+}
+
+FloatTypeToken::FloatTypeToken()
+{
+	tValue = TokenVALUE::FLOATTYPE;
+	tokenText = floatL;
+}
+
+CoordTypeToken::CoordTypeToken()
+{
+	tValue = TokenVALUE::COORDTYPE;
+	tokenText = coordL;
+}
+
+ZoneTypeToken::ZoneTypeToken()
+{
+	tValue = TokenVALUE::ZONETYPE;
+	tokenText = zoneL;
+}
+
+DirectionTypeToken::DirectionTypeToken()
+{
+	tValue = TokenVALUE::DIRECTIONTYPE;
+	tokenText = directionL;
+}
+
+TimeTypeToken::TimeTypeToken()
+{
+	tValue = TokenVALUE::TIMETYPE;
+	tokenText = boolL;
 }
