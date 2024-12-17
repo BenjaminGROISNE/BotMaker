@@ -7,7 +7,10 @@
 #include <unordered_set>
 #include "Tags.h"
 #include "TextManager.h"
-
+bool isTokenString(const std::string& text);
+bool isKeywordString(const std::string& text);
+bool isLiteralString(const std::string& text);
+bool isPunctuationString(const std::string& text);
 
 //Punctuation Tokens string
 static const std::string commaP = ",";
@@ -66,17 +69,14 @@ static const std::vector<std::string> allTokensStrings = [] {
 	}();
 
 
-bool isTokenString(const std::string& text);
-bool isKeywordString(const std::string& text);
-bool isLiteralString(const std::string& text);
-bool isPunctuationString(const std::string& text);
+
 
 static bool isTokenStringContained(const std::string& text);
 
 std::string getStringLiteral(std::string& text);
 
 enum class DataType {
-	NONE, COORD, ZONE, STRING, DIRECTION, FLOAT, INT, BOOL, TIMETYPE,DATATYPE
+	NONE, COORD, ZONE, STRING, DIRECTION, FLOAT, INT, BOOL, TIMETYPE,COMPARETYPE,DATATYPE,IDENTIFIER
 };
 enum class TokenVALUE {
 	NOT, TOKEN, UNKNOWN, QUOTATION, OPENANGLEBRACKETS, CLOSEANGLEBRACKETS, FLOW, COMMA, SEMICOLON, NUMERIC, IDENTIFIER,
@@ -86,29 +86,40 @@ enum class TokenVALUE {
 	TEMPLATE,STRINGTYPE,INTTYPE,FLOATTYPE,COORDTYPE, ZONETYPE,BOOLTYPE,DIRECTIONTYPE,TIMETYPE
 };
 
+class ValueType {
+public:
+	ValueType();
+	ValueType(DataType t, int l = 1);
+	bool equal(const ValueType& vt);
+	DataType type;
+	int layer;
+};
+
 class Arguments {
 public:
 	Arguments();
-	Arguments(DataType type,bool infinite);
-	Arguments(std::vector<DataType> listTypes);
-	std::vector<DataType> getArgsTypes();
+
+		
+	Arguments(ValueType type,bool infinite);
+	Arguments(std::vector<ValueType> listTypes);
+	std::vector<ValueType> getArgsTypes();
 	void next();
 	bool ended()const;
 	int size();
 	bool empty();
-	DataType at(int i);
-	bool approveType(const DataType& type);
-	DataType getCurrentDataType();
+	ValueType at(int i);
+	bool approveType(const ValueType& type);
+	ValueType getCurrentValueType();
 	bool isRepeatable();
 	bool isValid()const;
 	bool isCompleted();
 	bool isEqual(Arguments args);
 protected:
-	DataType repeatedType;
+	ValueType repeatedType;
 	bool repeatable;
 	bool stillValid;
 	bool completed;
-	std::vector<DataType> listArgsTypes;
+	std::vector<ValueType> listArgsTypes;
 	int currentIndex;
 };
 
@@ -119,8 +130,8 @@ public:
 	void addArgs(Arguments args,int index);
 	void initTabs();
 	void next();
-	bool approveType(const DataType& type);
-	std::vector<DataType> getPossibleDataTypes();
+	bool approveType(const ValueType& type);
+	std::vector<ValueType> getPossibleValueTypes();
 	std::map<int, std::shared_ptr<Arguments>> getValidArguments();
 	std::map<int, std::shared_ptr<Arguments>> getCompletedArgs();
 	bool ended();
@@ -136,7 +147,7 @@ public:
 protected:
 	std::map<int, std::shared_ptr<Arguments>> validArguments;
 	std::map<int, std::shared_ptr<Arguments>> completedArguments;
-	std::vector<DataType> currentDataTypes;
+	std::vector<ValueType> currentDataTypes;
 	std::map<int, std::shared_ptr<Arguments>> mapArguments;
 	unsigned int completeIndex;
 };
@@ -148,13 +159,13 @@ class Error {
 public:
 	Error();
 	Error(TokenVALUE scopeToken, int l, TokenVALUE errorToken, ErrorType et = ErrorType::MISSING);
-	Error(TokenVALUE scopeToken, int l, DataType dType);
+	Error(TokenVALUE scopeToken, int l, ValueType dType);
 	void showError();
 protected:
 	ErrorType errorType;
 	TokenVALUE errorValue;
 	TokenVALUE scopeToken;
-	DataType dType;
+	ValueType vType;
 	int errorLine;
 };
 
@@ -164,15 +175,15 @@ public:
 	TokenResult(TokenVALUE value, int l);
 	void showErrors();
 	bool addError(TokenVALUE scopeToken,int l,TokenVALUE errorToken, ErrorType et=ErrorType::MISSING);
-	bool addError(TokenVALUE scopeToken,int l,DataType type);
+	bool addError(TokenVALUE scopeToken,int l, ValueType& type);
 	bool addError(const TokenResult& tokRes);
-	void addVar(const std::string& name, const DataType& type);
+	void addVar(const std::string& name, const ValueType& type);
 	bool success();
-	std::map<std::string, DataType> getVarTable();
+	std::map<std::string, ValueType> getVarTable();
 protected:
 
 
-	std::map<std::string, DataType> varTable;
+	std::map<std::string, ValueType> varTable;
 	std::vector<Error> listErrors;
 };
 
@@ -220,7 +231,7 @@ protected:
 class Token {
 public:
 	Token();
-	virtual DataType getDataType(TokenResult& tRes);
+	virtual ValueType getValueType(TokenResult& tRes);
 	virtual void showTokenTree(const int nestedLayer);
 	TokenVALUE getValue();
 	std::string getTokenText();
@@ -258,11 +269,12 @@ public:
 
 	TemplateToken();
 	TemplateToken(int line);
+	virtual void setTemplateOverload()=0;
 	bool addToken(TokenVALUE tVal, IteratorList<Token>& tl, TokenResult& tRes);
-	bool addType(DataType tVal, IteratorList<Token>& tl, TokenResult& tRes);
-	bool addTypes(std::vector<DataType> listTypes, IteratorList<Token>& tl, TokenResult& tRes);
+	bool addType(ValueType tVal, IteratorList<Token>& tl, TokenResult& tRes);
+	bool addTypes(std::vector<ValueType> listTypes, IteratorList<Token>& tl, TokenResult& tRes);
 	bool addNumber(IteratorList<Token>& tl, TokenResult& tRes);
-	bool addTemplatedTypes(IteratorList<Token>& tl, TokenResult tRes);
+	bool addTemplatedTypes(IteratorList<Token>& tl, TokenResult& tRes);
 	bool addTokens(IteratorList<Token>& tl, TokenResult& tRes);
 protected:
 	ArgumentsOverload templateArguments;
@@ -304,8 +316,8 @@ protected:
 
 	bool addToken(TokenVALUE tVal, IteratorList<Token>& tl, TokenResult& tRes);
 
-	bool addType(DataType tVal, IteratorList<Token>& tl, TokenResult& tRes);
-	bool addTypes(std::vector<DataType> listTypes, IteratorList<Token>& tl, TokenResult& tRes);
+	bool addType(ValueType tVal, IteratorList<Token>& tl, TokenResult& tRes);
+	bool addTypes(std::vector<ValueType> listTypes, IteratorList<Token>& tl, TokenResult& tRes);
 	bool addNumber(IteratorList<Token>& tl, TokenResult& tRes);
 	virtual bool handleArguments(IteratorList<Token>& tl, TokenResult& tRes);
 	virtual void setOverloads();
@@ -342,7 +354,7 @@ class BMPKToken :public MPKToken {
 public:
 	BMPKToken();
 	void setOverloads()final;
-	DataType getDataType(TokenResult& tRes)override;
+	ValueType getValueType(TokenResult& tRes)override;
 	bool addTokens(IteratorList<Token>& tl, TokenResult& tRes)override;
 protected:
 
@@ -364,7 +376,7 @@ public:
 	CKToken();
 	void setOverloads()final;	
 	virtual void dispatchArguments();
-	DataType getDataType(TokenResult& tRes)override;
+	ValueType getValueType(TokenResult& tRes)override;
 protected:
 };
 
@@ -388,7 +400,7 @@ protected:
 class IdentifierToken :public Token {
 public:
 	IdentifierToken(const std::string& varName);
-	DataType getDataType(TokenResult& tRes)override;
+	ValueType getValueType(TokenResult& tRes)override;
 protected:
 };
 
@@ -487,23 +499,27 @@ class ListToken :public MPKToken,public TemplateToken {
 public:
 	ListToken();
 	void setOverloads()final;
+	void setTemplateOverload()final;
 	bool addTokens(IteratorList<Token>& tl, TokenResult& tRes)override;
 	std::shared_ptr<Tag> execute()override;
 protected:
 	DataType dType;
-	int tabDim;//0 = list of single elem ; 1 list of 1D tab ; 2 list of 2D tabs ; n list of nD tabs. 
+	int tabDim;//1 list of single elem ; 2 list of 1D tab ; 3 list of 2D tabs ; n list of (n-1)D tabs. 
 	std::vector<std::shared_ptr<Token>> listToken;
 };
 
 //store<DATATYPE,INT>(IDENTIFIER,VALUE)
 //store<FLOAT,1>(var1,list<FLOAT,0>(4.2,5.3,6))
-class StoreToken :public MPKToken {
+class StoreToken :public MPKToken, public TemplateToken {
 public:
 	StoreToken();
+	void setTemplateOverload()final;
 	void setOverloads()final;
 	void dispatchArguments()override;
 	std::shared_ptr<Tag> execute()override;
 protected:
+	ValueType vType;
+
 	template<typename T>
 	std::vector<T> test(int i);
 	std::shared_ptr<Token> identifierToken;
@@ -518,7 +534,8 @@ class CompareToken :public PKToken, public TemplateToken {
 public:
 	CompareToken();
 	void setOverloads()final;
-	DataType getDataType(TokenResult& tRes)override;
+	void setTemplateOverload()final;
+	ValueType getValueType(TokenResult& tRes)override;
 protected:
 	std::vector<std::shared_ptr<Token>> listTokens;
 	CompareType cmpType;
@@ -536,7 +553,7 @@ public:
 	IntegerToken();
 	void setOverloads()final;
 
-	DataType getDataType(TokenResult& tRes)override;
+	ValueType getValueType(TokenResult& tRes)override;
 	std::shared_ptr<Tag> execute()override;
 protected:
 
@@ -548,7 +565,7 @@ class FloatToken :public UPKToken {
 public:
 	FloatToken();
 	void setOverloads()final;
-	DataType getDataType(TokenResult& tRes)override;
+	ValueType getValueType(TokenResult& tRes)override;
 	std::shared_ptr<Tag> execute()override;
 protected:
 
@@ -557,7 +574,7 @@ protected:
 class BoolToken :public CKToken {
 public:
 	BoolToken();
-	DataType getDataType(TokenResult& tRes)override;
+	ValueType getValueType(TokenResult& tRes)override;
 	std::shared_ptr<Tag> execute()override;
 protected:
 
@@ -565,7 +582,7 @@ protected:
 class StringToken :public UPKToken {
 public:
 	StringToken();
-	DataType getDataType(TokenResult& tRes)override;
+	ValueType getValueType(TokenResult& tRes)override;
 	void setOverloads()final;
 	std::shared_ptr<Tag> execute()override;
 protected:
@@ -576,7 +593,7 @@ public:
 	CoordToken();
 	void setOverloads()final;
 	void dispatchArguments()final;
-	DataType getDataType(TokenResult& tRes)override;
+	ValueType getValueType(TokenResult& tRes)override;
 protected:
 	std::shared_ptr<Token> xPoint;
 	std::shared_ptr<Token> yPoint;
@@ -591,7 +608,7 @@ public:
 	void setOverloads()final;
 	void dispatchArguments()final;
 	void showArguments(const int nestedLayer)override;
-	DataType getDataType(TokenResult& tRes)override;
+	ValueType getValueType(TokenResult& tRes)override;
 protected:
 	std::shared_ptr<Token> topLeft;
 	std::shared_ptr<Token> bottomRight;
@@ -604,7 +621,7 @@ class DirectionToken :public UPKToken {
 public:
 	DirectionToken();
 	void setOverloads()final;
-	DataType getDataType(TokenResult& tRes)override;
+	ValueType getValueType(TokenResult& tRes)override;
 protected:
 	std::shared_ptr<Tag> execute()override;
 };
@@ -686,7 +703,7 @@ protected:
 
 class DataTypeToken :public LToken {
 public:
-	DataType getDataType(TokenResult& tRes)final;
+	ValueType getValueType(TokenResult& tRes)final;
 protected:
 };
 class IntTypeToken :public DataTypeToken {
@@ -733,39 +750,39 @@ protected:
 class FalseToken :public LToken {
 public:
 	FalseToken();
-	DataType getDataType(TokenResult& tRes)override;
+	ValueType getValueType(TokenResult& tRes)override;
 protected:
 };
 
 class TrueToken :public LToken {
 public:
 	TrueToken();
-	DataType getDataType(TokenResult& tRes)override;
+	ValueType getValueType(TokenResult& tRes)override;
 protected:
 };
 
 class SecondToken :public LToken {
 public:
 	SecondToken();
-	DataType getDataType(TokenResult& tRes)override;
+	ValueType getValueType(TokenResult& tRes)override;
 protected:
 };
 class MilliSecondToken :public LToken {
 public:	MilliSecondToken();
-	  DataType getDataType(TokenResult& tRes)override;
+	  ValueType getValueType(TokenResult& tRes)override;
 protected:
 
 };
 class MinuteToken :public LToken {
 public:	MinuteToken();
-	  DataType getDataType(TokenResult& tRes)override;
+	  ValueType getValueType(TokenResult& tRes)override;
 protected:
 
 };
 
 class DirectionLToken :public LToken {
 public:	
-	  DataType getDataType(TokenResult& tRes)final;
+	  ValueType getValueType(TokenResult& tRes)final;
 protected:
 
 };
@@ -804,7 +821,7 @@ public:
 class NumericToken :public LToken {
 public:
 	NumericToken(const std::string& nb);
-	DataType getDataType(TokenResult& tRes)override;
+	ValueType getValueType(TokenResult& tRes)override;
 protected:
 
 	int number;
@@ -814,7 +831,7 @@ class StringLiteralToken :public LToken {
 public:
 	StringLiteralToken(const std::string& content);
 	void showTokenTree(const int nestedLayer)override;
-	DataType getDataType(TokenResult& tRes)override;
+	ValueType getValueType(TokenResult& tRes)override;
 protected:
 	std::shared_ptr<Tag> execute()override;
 };

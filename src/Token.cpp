@@ -16,8 +16,8 @@ bool isKeywordString(const std::string& text)
 //ADD TABLE OF ID + TYPES and then implement search in it
 bool isNumericToken(const std::shared_ptr<Token>& token, TokenResult& tRes) {
 	if (token) {
-		auto d = token->getDataType(tRes);
-		return d == DataType::INT || d == DataType::FLOAT;
+		auto d = token->getValueType(tRes);
+		return d.type == DataType::INT || d.type == DataType::FLOAT;
 	}
 	return false;
 }
@@ -34,13 +34,6 @@ bool isPunctuationString(const std::string& text)
 {
 	for (auto& tokenString : allPunctuationsTokensStrings) {
 		if (tokenString.compare(text) == 0)return true;
-	}
-	return false;
-}
-
-bool isTokenStringContained(const std::string& text) {
-	for (auto& word : allTokensStrings) {
-		if (text.find(word) != std::string::npos)return true;
 	}
 	return false;
 }
@@ -119,12 +112,11 @@ bool PKToken::handleArguments(IteratorList<Token>& tl, TokenResult& tRes)
 		if (elem->hasValue(TokenVALUE::COMMA)) {
 			if(!mustSeparate)tRes.addError(getValue(),line,TokenVALUE::COMMA, ErrorType::UNEXPECTED);
 			else {
-				//addComma(tl, tRes);
 				mustSeparate = false;
 			}
 		}
 		else {
-			DataType type = elem->getDataType(tRes);
+			ValueType type = elem->getValueType(tRes);
 			if (argsOverload.approveType(type)) {
 				argTokens.push_back(elem);
 				mustSeparate = true;
@@ -153,13 +145,10 @@ bool TemplateToken::addTemplatedTypes(IteratorList<Token>& tl, TokenResult tRes)
 		}
 		if (elem->hasValue(TokenVALUE::COMMA)) {
 			if (!mustSeparate)tRes.addError(TokenVALUE::TEMPLATE, line, TokenVALUE::COMMA, ErrorType::UNEXPECTED);
-			else {
-				//addComma(tl, tRes);
-				mustSeparate = false;
-			}
+			else mustSeparate = false;
 		}
 		else {
-			DataType type = elem->getDataType(tRes);
+			ValueType type = elem->getValueType(tRes);
 			if (templateArguments.approveType(type)) {
 				templTokens.push_back(elem);
 				mustSeparate = true;
@@ -294,11 +283,11 @@ bool PKToken::addToken(TokenVALUE tVal, IteratorList<Token>& tl, TokenResult& tR
 	return tRes.addError(getValue(), line, tVal);
 }
 
-bool PKToken::addType(DataType tData, IteratorList<Token>& tl, TokenResult& tRes)
+bool PKToken::addType(ValueType tData, IteratorList<Token>& tl, TokenResult& tRes)
 {
 	if (!tl.ended()) {
 		auto elem = tl.currentToken();
-		if (elem->getDataType(tRes) == tData) {
+		if (elem->getValueType(tRes).equal(tData)) {
 			return elem->addTokens(tl, tRes);
 		}
 	}
@@ -306,7 +295,7 @@ bool PKToken::addType(DataType tData, IteratorList<Token>& tl, TokenResult& tRes
 }
 
 
-bool PKToken::addTypes(std::vector<DataType> listTypes, IteratorList<Token>& tl, TokenResult& tRes)
+bool PKToken::addTypes(std::vector<ValueType> listTypes, IteratorList<Token>& tl, TokenResult& tRes)
 {
 	for (auto& t : listTypes) {
 		if (addType(t, tl, tRes))return true;
@@ -315,7 +304,7 @@ bool PKToken::addTypes(std::vector<DataType> listTypes, IteratorList<Token>& tl,
 }
 
 
-bool TemplateToken::addTypes(std::vector<DataType> listTypes, IteratorList<Token>& tl, TokenResult& tRes)
+bool TemplateToken::addTypes(std::vector<ValueType> listTypes, IteratorList<Token>& tl, TokenResult& tRes)
 {
 	for (auto& t : listTypes) {
 		if (addType(t, tl, tRes))return true;
@@ -323,25 +312,12 @@ bool TemplateToken::addTypes(std::vector<DataType> listTypes, IteratorList<Token
 	return false;
 }
 
-DataType IdentifierToken::getDataType(TokenResult& tRes)
+ValueType IdentifierToken::getValueType(TokenResult& tRes)
 {
 	auto map=tRes.getVarTable();
 	auto elem = map.find(tokenText);
 	if(elem != map.end())return elem->second;
-	return DataType::NONE;
-}
-
-bool isValue(std::shared_ptr<Token> token,TokenResult& tRes) {
-	return token->getDataType(tRes) != DataType::NONE;
-}
-
-bool isType(std::shared_ptr<Token> token) {
-	static const std::unordered_set<TokenVALUE> validTypes = {
-		TokenVALUE::INTEGER, TokenVALUE::FLOAT, TokenVALUE::BOOL,
-		TokenVALUE::COORD, TokenVALUE::ZONE, TokenVALUE::DIRECTION,
-		TokenVALUE::STRING
-	};
-	return validTypes.count(token->getValue()) > 0;
+	return ValueType();
 }
 
 bool StoreToken::addValue(IteratorList<Token>& tl, TokenResult tRes) {
@@ -351,7 +327,7 @@ bool StoreToken::addValue(IteratorList<Token>& tl, TokenResult tRes) {
 	//	if (res.success()) {
 	//		if (isValue(elem)) {
 	//			valueToken = elem;
-	//			tRes.addVar(identifierToken->getTokenText(), valueToken->getDataType());
+	//			tRes.addVar(identifierToken->getTokenText(), valueToken->getValueType());
 	//			return elem;
 	//		}
 	//	}
@@ -504,9 +480,9 @@ BoolToken::BoolToken() :CKToken()
 	setOverloads();
 }
 
-DataType BoolToken::getDataType(TokenResult& tRes)
+ValueType BoolToken::getValueType(TokenResult& tRes)
 {
-	return DataType::BOOL;
+	return ValueType(DataType::BOOL);
 }
 
 std::shared_ptr<Tag> BoolToken::execute()
@@ -574,7 +550,7 @@ void CKToken::dispatchArguments()
 	}
 }
 
-DataType CKToken::getDataType(TokenResult& tRes)
+ValueType CKToken::getValueType(TokenResult& tRes)
 {
 	return DataType::BOOL;
 }
@@ -617,7 +593,7 @@ FalseToken::FalseToken()
 	tokenText = falseL;
 }
 
-DataType FalseToken::getDataType(TokenResult& tRes)
+ValueType FalseToken::getValueType(TokenResult& tRes)
 {
 	return DataType::BOOL;
 }
@@ -628,7 +604,7 @@ TrueToken::TrueToken()
 	tokenText = trueL;
 }
 
-DataType TrueToken::getDataType(TokenResult& tRes)
+ValueType TrueToken::getValueType(TokenResult& tRes)
 {
 	return DataType::BOOL;
 }
@@ -719,7 +695,7 @@ void DirectionToken::setOverloads()
 
 
 
-DataType DirectionToken::getDataType(TokenResult& tRes)
+ValueType DirectionToken::getValueType(TokenResult& tRes)
 {
 	return DataType::DIRECTION;
 }
@@ -772,7 +748,7 @@ void ZoneToken::showArguments(const int nestedLayer)
 	}
 }
 
-DataType ZoneToken::getDataType(TokenResult& tRes)
+ValueType ZoneToken::getValueType(TokenResult& tRes)
 {
 	return DataType::ZONE;
 }
@@ -815,7 +791,7 @@ void CoordToken::dispatchArguments()
 	}
 }
 
-DataType CoordToken::getDataType(TokenResult& tRes)
+ValueType CoordToken::getValueType(TokenResult& tRes)
 {
 	return DataType::COORD;
 }
@@ -869,7 +845,12 @@ void CompareToken::setOverloads()
 	}
 }
 
-DataType CompareToken::getDataType(TokenResult& tRes)
+void CompareToken::setTemplateOverload()
+{
+	templateArguments.addArgs(Arguments({ DataType::DATATYPE,DataType::COMPARETYPE }), 0);
+}
+
+ValueType CompareToken::getValueType(TokenResult& tRes)
 {
 	return DataType::BOOL;
 }
@@ -893,7 +874,7 @@ void FloatToken::setOverloads()
 	argsOverload.addArgs(Arguments(DataType::INT, false),2);
 }
 
-DataType FloatToken::getDataType(TokenResult& tRes)
+ValueType FloatToken::getValueType(TokenResult& tRes)
 {
 	return DataType::FLOAT;
 }
@@ -919,7 +900,7 @@ void IntegerToken::setOverloads()
 
 
 
-DataType IntegerToken::getDataType(TokenResult& tRes)
+ValueType IntegerToken::getValueType(TokenResult& tRes)
 {
 	return DataType::INT;
 }
@@ -938,9 +919,14 @@ StoreToken::StoreToken() :MPKToken()
 	setOverloads();
 }
 
+void StoreToken::setTemplateOverload()
+{
+	templateArguments.addArgs(Arguments({ DataType::DATATYPE,DataType::INT }), 0);
+}
+
 void StoreToken::setOverloads()
 {
-
+	argsOverload.addArgs(Arguments({ DataType::IDENTIFIER,vType}), 0);
 }
 void StoreToken::dispatchArguments()
 {
@@ -965,6 +951,11 @@ void ListToken::setOverloads()
 
 }
 
+void ListToken::setTemplateOverload()
+{
+	templateArguments.addArgs(Arguments({ DataType::DATATYPE,DataType::INT }), 0);
+}
+
 std::shared_ptr<Tag> ListToken::execute()
 {
 	return std::shared_ptr<Tag>();
@@ -977,7 +968,7 @@ StringToken::StringToken() :UPKToken()
 	setOverloads();
 }
 
-DataType StringToken::getDataType(TokenResult& tRes)
+ValueType StringToken::getValueType(TokenResult& tRes)
 {
 	return DataType::STRING;
 }
@@ -999,7 +990,7 @@ SecondToken::SecondToken()
 	tValue = TokenVALUE::SECOND;
 }
 
-DataType SecondToken::getDataType(TokenResult& tRes)
+ValueType SecondToken::getValueType(TokenResult& tRes)
 {
 	return DataType::TIMETYPE;
 }
@@ -1010,7 +1001,7 @@ MilliSecondToken::MilliSecondToken()
 	tValue = TokenVALUE::MILLISECOND;
 }
 
-DataType MilliSecondToken::getDataType(TokenResult& tRes)
+ValueType MilliSecondToken::getValueType(TokenResult& tRes)
 {
 	return DataType::TIMETYPE;
 }
@@ -1021,7 +1012,7 @@ MinuteToken::MinuteToken()
 	tValue = TokenVALUE::MINUTE;
 }
 
-DataType MinuteToken::getDataType(TokenResult& tRes)
+ValueType MinuteToken::getValueType(TokenResult& tRes)
 {
 	return DataType::TIMETYPE;
 }
@@ -1033,7 +1024,7 @@ NumericToken::NumericToken(const std::string& nb)
 	number = std::stoi(nb);
 }
 
-DataType NumericToken::getDataType(TokenResult& tRes)
+ValueType NumericToken::getValueType(TokenResult& tRes)
 {
 	return DataType::INT;
 }
@@ -1057,7 +1048,7 @@ void StringLiteralToken::showTokenTree(const int nestedLayer)
 	std::cout << '"';
 }
 
-DataType StringLiteralToken::getDataType(TokenResult& tRes)
+ValueType StringLiteralToken::getValueType(TokenResult& tRes)
 {
 	return DataType::STRING;
 }
@@ -1093,7 +1084,7 @@ OpenAngleBracketsToken::OpenAngleBracketsToken()
 
 TokenResult::TokenResult()
 {
-	varTable = std::map<std::string, DataType>();
+	varTable = std::map<std::string, ValueType>();
 	listErrors = std::vector<Error>();
 }
 
@@ -1114,7 +1105,7 @@ bool TokenResult::addError(TokenVALUE scopeToken, int l, TokenVALUE errorToken, 
 	return false;
 }
 
-bool TokenResult::addError(TokenVALUE scopeToken,int l,DataType type)
+bool TokenResult::addError(TokenVALUE scopeToken,int l, ValueType& type)
 {
 	listErrors.push_back(Error(scopeToken,l,type));
 	return false;
@@ -1126,9 +1117,9 @@ bool TokenResult::addError(const TokenResult& tRes)
 	return false;
 }
 
-void TokenResult::addVar(const std::string& name, const DataType& type)
+void TokenResult::addVar(const std::string& name, const ValueType& type)
 {
-	varTable.insert(std::pair<std::string, DataType>(name, type));
+	varTable.insert(std::pair<std::string, ValueType>(name, type));
 }
 
 bool TokenResult::success()
@@ -1136,7 +1127,7 @@ bool TokenResult::success()
 	return listErrors.empty();
 }
 
-std::map<std::string, DataType> TokenResult::getVarTable()
+std::map<std::string, ValueType> TokenResult::getVarTable()
 {
 	return varTable;
 }
@@ -1151,7 +1142,7 @@ Token::Token()
 
 Error::Error()
 {
-	dType = DataType::NONE;
+	vType = DataType::NONE;
 	errorType = ErrorType::DATATYPE;
 }
 
@@ -1163,10 +1154,10 @@ Error::Error(TokenVALUE scToken,int el, TokenVALUE tv, ErrorType et) :Error()
 	scopeToken = scToken;
 }
 
-Error::Error(TokenVALUE scToken,int el, DataType dType) :Error()
+Error::Error(TokenVALUE scToken,int el, ValueType vType) :Error()
 {
 	errorLine = el;
-	this->dType = dType;
+	this->vType = vType;
 	scopeToken = scToken;
 }
 
@@ -1246,7 +1237,7 @@ TokenVALUE Token::getValue()
 	return this->tValue;
 }
 
-DataType Token::getDataType(TokenResult& tRes)
+ValueType Token::getValueType(TokenResult& tRes)
 {
 	return DataType::NONE;
 }
@@ -1316,7 +1307,7 @@ Arguments::Arguments()
 	repeatedType = DataType::NONE;
 }
 //repeatable type can be empty
-Arguments::Arguments(DataType type, bool repeat):Arguments()
+Arguments::Arguments(ValueType type, bool repeat):Arguments()
 {
 	if (repeat) {
 		repeatable = true;
@@ -1326,14 +1317,15 @@ Arguments::Arguments(DataType type, bool repeat):Arguments()
 	completed = true;
 }
 
-Arguments::Arguments(std::vector<DataType> listTypes) :Arguments()
+
+Arguments::Arguments(std::vector<ValueType> listTypes) :Arguments()
 {
 	listArgsTypes = listTypes;
 	if (!listArgsTypes.empty())completed = false;
 }
 
 
-std::vector<DataType> Arguments::getArgsTypes()
+std::vector<ValueType> Arguments::getArgsTypes()
 {
 	return listArgsTypes;
 }
@@ -1360,16 +1352,16 @@ bool Arguments::empty()
 	return getArgsTypes().empty();
 }
 
-DataType Arguments::at(int i)
+ValueType Arguments::at(int i)
 {
 	if (repeatable)return repeatedType;
 	else if (i < size())return listArgsTypes.at(i);
 }
 
-bool Arguments::approveType(const DataType& type)
+bool Arguments::approveType(const ValueType& type)
 {
 	if (!ended()&&stillValid) {
-		if (getCurrentDataType() == type) {
+		if (getCurrentValueType().equal(type)) {
 			if (repeatable)completed = true;
 			else if (currentIndex == listArgsTypes.size()-1) {
 				completed = true;
@@ -1382,7 +1374,7 @@ bool Arguments::approveType(const DataType& type)
 	return false;
 }
 
-DataType Arguments::getCurrentDataType()
+ValueType Arguments::getCurrentValueType()
 {	
 	if (repeatable)return repeatedType;
 	else return listArgsTypes.at(currentIndex);
@@ -1409,7 +1401,7 @@ bool Arguments::isEqual(Arguments args)
 	if (args.size() != size())return false;
 
 	for (int i = 0; i < args.size(); ++i) {
-		if (args.at(i) != at(i))return false;
+		if (!args.at(i).equal(at(i)))return false;
 	}
 	return true;
 }
@@ -1425,9 +1417,9 @@ void BMPKToken::setOverloads()
 }
 
 
-DataType BMPKToken::getDataType(TokenResult& tRes)
+ValueType BMPKToken::getValueType(TokenResult& tRes)
 {
-	return DataType::BOOL;
+	return ValueType(DataType::BOOL);
 }
 
 bool BMPKToken::addTokens(IteratorList<Token>& tl, TokenResult& tRes)
@@ -1506,11 +1498,11 @@ void ArgumentsOverload::initTabs()
 	}
 }
 
-std::vector<DataType> ArgumentsOverload::getPossibleDataTypes()
+std::vector<ValueType> ArgumentsOverload::getPossibleValueTypes()
 {
 	currentDataTypes.clear();
 	for (auto& arg : validArguments) {
-		currentDataTypes.push_back(arg.second->getCurrentDataType());
+		currentDataTypes.push_back(arg.second->getCurrentValueType());
 	}
 	return currentDataTypes;
 }
@@ -1520,7 +1512,7 @@ void ArgumentsOverload::next()
 	for (auto& arg : mapArguments)arg.second->next();
 }
 
-bool ArgumentsOverload::approveType(const DataType& type)
+bool ArgumentsOverload::approveType(const ValueType& type)
 {
 	bool res=false;
 	for (auto& arg : validArguments) {
@@ -1591,11 +1583,11 @@ bool TemplateToken::addToken(TokenVALUE tVal, IteratorList<Token>& tl, TokenResu
 	return tRes.addError(TokenVALUE::TEMPLATE, line, tVal);
 }
 
-bool TemplateToken::addType(DataType tData, IteratorList<Token>& tl, TokenResult& tRes)
+bool TemplateToken::addType(ValueType tData, IteratorList<Token>& tl, TokenResult& tRes)
 {
 	if (!tl.ended()) {
 		auto elem = tl.currentToken();
-		if (elem->getDataType(tRes) == tData) {
+		if (elem->getValueType(tRes).equal(tData)) {
 			return elem->addTokens(tl, tRes);
 		}
 	}
@@ -1612,7 +1604,7 @@ bool TemplateToken::addTokens(IteratorList<Token>& tl, TokenResult& tRes)
 	return false;
 }
 
-DataType DirectionLToken::getDataType(TokenResult& tRes)
+ValueType DirectionLToken::getValueType(TokenResult& tRes)
 {
 	return DataType::DIRECTION;
 }
@@ -1653,7 +1645,7 @@ SouthEToken::SouthEToken()
 	tokenText = southeL;
 }
 
-DataType DataTypeToken::getDataType(TokenResult& tRes)
+ValueType DataTypeToken::getValueType(TokenResult& tRes)
 {
 	return DataType::DATATYPE;
 }
@@ -1704,4 +1696,21 @@ TimeTypeToken::TimeTypeToken()
 {
 	tValue = TokenVALUE::TIMETYPE;
 	tokenText = boolL;
+}
+
+ValueType::ValueType()
+{
+	type = DataType::NONE;
+	layer = 1;
+}
+
+ValueType::ValueType(DataType t, int l)
+{
+	layer = l;
+	type = t;
+}
+
+bool ValueType::equal(const ValueType& vt)
+{
+	return vt.type==type&&vt.layer==layer;
 }
