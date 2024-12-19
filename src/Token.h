@@ -13,7 +13,7 @@ bool isLiteralString(const std::string& text);
 bool isPunctuationString(const std::string& text);
 
 //Punctuation Tokens string
-static const std::string commaP = ",";
+extern const std::string commaP = ",";
 static const std::string openParenthesisP = "(";
 static const std::string closeParenthesisP = ")";
 static const std::string openBracketsP = "{";
@@ -50,9 +50,58 @@ static const std::string boolL = "BOOL";
 static const std::string timetypeL = "TIMETYPE";
 static const std::string directionL = "DIRECTION";
 static const std::string stringL = "STRING";
-static const std::vector<std::string> allLiteralsTokensStrings =
-{ trueL,falseL,secondL,millisecondL,minuteL,northL,southL,northwL,northeL,southwL,southeL,intL,floatL,coordL,zoneL,boolL,timetypeL,directionL,stringL };
+static const std::string datatypeL = "DATATYPE";
+static const std::string comparetypeL = "COMPARETYPE";
+static const std::string comparetypeL = "COMPARETYPE";
 
+
+
+
+
+
+static const std::vector<std::string> allLiteralsTokensStrings =
+{ trueL,falseL,secondL,millisecondL,minuteL,northL,southL,northwL,northeL,southwL,southeL,intL,floatL,coordL,zoneL,boolL,timetypeL,directionL,stringL,datatypeL };
+
+static std::string storeK = "store";
+static std::string clickK = "click";
+static std::string swipeK = "swipe";
+static std::string waitK = "wait";
+static std::string ifK = "if";
+static std::string elseK = "else";
+static std::string elifK = "elif";
+static std::string notK = "not";
+static std::string floatK = "float";
+static std::string intK = "int";
+static std::string coordK = "coord";
+static std::string zoneK = "zone";
+static std::string andK = "and";
+static std::string orK = "or";
+static std::string loopK = "loop";
+static std::string listK = "list";
+static std::string stringK = "string";
+static std::string directionK = "direction";
+static std::string findswipeK = "findswipe";
+static std::string findclickK = "findclick";
+static std::string findK = "find";
+static std::string breakK = "break";
+static std::string continueK = "continue";
+static std::string doloopK = "doloop";
+static std::string functionK = "function";
+static std::string switchK = "switch";
+static std::string caseK = "case";
+static std::string defaultK = "default";
+static std::string compareK = "compare";
+static std::string mainK = "main";
+static std::string boolK = "bool";
+static std::string printK = "print";
+static std::string returnK = "return";
+static std::string voidK = "void";
+static std::string addK = "add";
+static std::string subK = "sub";
+static std::string multK = "mult";
+
+
+static const std::vector<std::string> allKeywordsTokensString = { storeK,clickK,swipeK,waitK,ifK,elseK,elifK,notK,floatK,intK,coordK,zoneK,andK,orK,loopK,listK,stringK,directionK,findswipeK,findclickK,findK,breakK,continueK,doloopK,functionK,switchK,caseK,defaultK,compareK,mainK,boolK,printK,returnK,voidK, };
 
 // Concatenate all token vectors
 static const std::vector<std::string> allTokensStrings = [] {
@@ -70,26 +119,27 @@ static const std::vector<std::string> allTokensStrings = [] {
 
 
 
-
-static bool isTokenStringContained(const std::string& text);
-
 std::string getStringLiteral(std::string& text);
 
 enum class DataType {
 	NONE, COORD, ZONE, STRING, DIRECTION, FLOAT, INT, BOOL, TIMETYPE,COMPARETYPE,DATATYPE,IDENTIFIER
 };
+
 enum class TokenVALUE {
 	NOT, TOKEN, UNKNOWN, QUOTATION, OPENANGLEBRACKETS, CLOSEANGLEBRACKETS, FLOW, COMMA, SEMICOLON, NUMERIC, IDENTIFIER,
 	CLOSEBRACKETS, OPENBRACKETS, OPENPARENTHESIS, CLOSEPARENTHESIS, STRINGLITERAL, TRUELITERAL, FALSELITERAL, SECOND, WHITESPACE,
 	MINUTE, MILLISECOND, INTEGER, WAIT, FLOAT, BOOL, AND, OR, COMPARE, STRING, COORD, DIRECTION, ZONE, LIST, IF, LOOP, DOLOOP,
-	SWITCH, DEFAULT, ELSE, ELIF, BREAK, CONTINUE, CASE, STORE, MAIN, PRINT,NORTH,SOUTH,EAST,WEST,NORTHW,NORTHE,SOUTHW,SOUTHE,
-	TEMPLATE,STRINGTYPE,INTTYPE,FLOATTYPE,COORDTYPE, ZONETYPE,BOOLTYPE,DIRECTIONTYPE,TIMETYPE
+	SWITCH, DEFAULT, ELSE, ELIF, BREAK, CONTINUE, CASE, STORE, MAIN, PRINT, NORTH, SOUTH, EAST, WEST, NORTHW, NORTHE, SOUTHW, SOUTHE,
+	TEMPLATE, STRINGTYPE, INTTYPE, FLOATTYPE, COORDTYPE, ZONETYPE, BOOLTYPE, DIRECTIONTYPE, TIMETYPE,DATATYPE, 
+	COMPARETYPE,GREATER,LESSER,GREATEREQUAL,LESSEREQUAL,EQUAL,NOTEQUAL
 };
+
 
 class ValueType {
 public:
 	ValueType();
-	ValueType(DataType t, int l = 1);
+	ValueType(DataType t, int l = 0);
+	ValueType(const ValueType& vt);
 	bool equal(const ValueType& vt);
 	DataType type;
 	int layer;
@@ -270,6 +320,7 @@ public:
 	TemplateToken();
 	TemplateToken(int line);
 	virtual void setTemplateOverload()=0;
+	virtual void dispatchTemplateArguments()=0;
 	bool addToken(TokenVALUE tVal, IteratorList<Token>& tl, TokenResult& tRes);
 	bool addType(ValueType tVal, IteratorList<Token>& tl, TokenResult& tRes);
 	bool addTypes(std::vector<ValueType> listTypes, IteratorList<Token>& tl, TokenResult& tRes);
@@ -280,7 +331,7 @@ protected:
 	ArgumentsOverload templateArguments;
 	std::vector<std::shared_ptr<Token>> templTokens;
 	TokenResult tRes;
-	int line;
+	int templLine;
 
 };
 
@@ -500,10 +551,11 @@ public:
 	ListToken();
 	void setOverloads()final;
 	void setTemplateOverload()final;
+	void dispatchTemplateArguments()final;
 	bool addTokens(IteratorList<Token>& tl, TokenResult& tRes)override;
 	std::shared_ptr<Tag> execute()override;
 protected:
-	DataType dType;
+	ValueType vType;
 	int tabDim;//1 list of single elem ; 2 list of 1D tab ; 3 list of 2D tabs ; n list of (n-1)D tabs. 
 	std::vector<std::shared_ptr<Token>> listToken;
 };
@@ -516,10 +568,10 @@ public:
 	void setTemplateOverload()final;
 	void setOverloads()final;
 	void dispatchArguments()override;
+	void dispatchTemplateArguments()override;
 	std::shared_ptr<Tag> execute()override;
 protected:
 	ValueType vType;
-
 	template<typename T>
 	std::vector<T> test(int i);
 	std::shared_ptr<Token> identifierToken;
@@ -535,11 +587,13 @@ public:
 	CompareToken();
 	void setOverloads()final;
 	void setTemplateOverload()final;
+	void dispatchTemplateArguments()final;
+	void dispatchArguments()final;
 	ValueType getValueType(TokenResult& tRes)override;
 protected:
 	std::vector<std::shared_ptr<Token>> listTokens;
 	CompareType cmpType;
-	DataType valuesType;
+	ValueType vType;
 	std::shared_ptr<Tag> execute()override;
 };
 
@@ -701,52 +755,76 @@ public:
 protected:
 };
 
+ValueType getDescribedType(const std::shared_ptr<Token>& t);
+
+
 class DataTypeToken :public LToken {
 public:
+	DataTypeToken();
 	ValueType getValueType(TokenResult& tRes)final;
 protected:
 };
+//INT
 class IntTypeToken :public DataTypeToken {
 public:
 	IntTypeToken();
 protected:
 };
-
+//BOOL
 class BoolTypeToken :public DataTypeToken {
 public:
 	BoolTypeToken();
 protected:
 };
+//STRING
 class StringTypeToken :public DataTypeToken {
 public:
 	StringTypeToken();
 protected:
 };
+//FLOAT
 class FloatTypeToken :public DataTypeToken {
 public:
 	FloatTypeToken();
 protected:
 };
+//COORD
 class CoordTypeToken :public DataTypeToken {
 public:
 	CoordTypeToken();
 protected:
 };
+//ZONE
 class ZoneTypeToken :public DataTypeToken {
 public:
 	ZoneTypeToken();
 protected:
 };
+//DIRECTION
 class DirectionTypeToken :public DataTypeToken {
 public:
 	DirectionTypeToken();
 protected:
 };
+//TIMETYPE
 class TimeTypeToken :public DataTypeToken {
 public:
 	TimeTypeToken();
+};
+class CompareTypeToken :public DataTypeToken {
+public:
+	CompareTypeToken();
+	CompareType getCmpType();
 protected:
 };
+
+class GreaterToken :public CompareTypeToken {
+public:
+	GreaterToken();
+
+protected:
+};
+
 class FalseToken :public LToken {
 public:
 	FalseToken();

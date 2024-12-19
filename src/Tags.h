@@ -8,48 +8,8 @@
 #include <typeinfo>
 #include <algorithm>
 
-static std::string storeK		= "store";
-static std::string clickK		= "click";
-static std::string swipeK		= "swipe";
-static std::string waitK		= "wait";
-static std::string ifK			= "if";
-static std::string elseK		= "else";
-static std::string elifK		= "elif";
-static std::string notK			= "not";
-static std::string floatK		= "float";
-static std::string intK			= "int";
-static std::string coordK		= "coord";
-static std::string zoneK		= "zone";
-static std::string andK			= "and";
-static std::string orK			= "or";
-static std::string loopK		= "loop";
-static std::string listK		= "list";
-static std::string stringK		= "string";
-static std::string directionK	= "direction";
-static std::string findswipeK	= "findswipe";
-static std::string findclickK	= "findclick";
-static std::string findK		= "find";
-static std::string breakK		= "break";
-static std::string continueK	= "continue";
-static std::string doloopK		= "doloop";
-static std::string functionK	= "function";
-static std::string switchK		= "switch";
-static std::string caseK		= "case";
-static std::string defaultK		= "default";
-static std::string compareK		= "compare";
-static std::string mainK		= "main";
-static std::string boolK		= "bool";
-static std::string printK		= "print";
-static std::string returnK		= "return";
-static std::string voidK		= "void";
-static std::string addK		= "add";
-static std::string subK		= "sub";
-static std::string multK		= "mult";
 
 
-
-
-static const std::vector<std::string> allKeywordsTokensString = { storeK,clickK,swipeK,waitK,ifK,elseK,elifK,notK,floatK,intK,coordK,zoneK,andK,orK,loopK,listK,stringK,directionK,findswipeK,findclickK,findK,breakK,continueK,doloopK,functionK,switchK,caseK,defaultK,compareK,mainK,boolK,printK,returnK,voidK, };
 
 enum ReturnType {
 	ONE, MULTIPLE

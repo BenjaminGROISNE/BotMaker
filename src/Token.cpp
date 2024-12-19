@@ -65,6 +65,30 @@ std::string getStringLiteral(std::string& text) {
 	else return temp;
 }
 
+ValueType getDescribedType(const std::shared_ptr<Token>& t)
+{
+	switch (t->getValue()) {
+	case TokenVALUE::INTTYPE:
+			return DataType::INT;
+	case TokenVALUE::FLOATTYPE:
+		return DataType::FLOAT;
+	case TokenVALUE::STRINGTYPE:
+		return DataType::STRING;
+	case TokenVALUE::COORDTYPE:
+		return DataType::COORD;
+	case TokenVALUE::ZONETYPE:
+		return DataType::ZONE;
+	case TokenVALUE::DIRECTIONTYPE:
+		return DataType::DIRECTION;
+	case TokenVALUE::TIMETYPE:
+		return DataType::TIMETYPE;
+	case TokenVALUE::BOOLTYPE:
+		return DataType::BOOL;
+	default:
+		return DataType::NONE;
+	}
+}
+
 
 
 
@@ -127,7 +151,7 @@ bool PKToken::handleArguments(IteratorList<Token>& tl, TokenResult& tRes)
 	}
 }
 
-bool TemplateToken::addTemplatedTypes(IteratorList<Token>& tl, TokenResult tRes)
+bool TemplateToken::addTemplatedTypes(IteratorList<Token>& tl, TokenResult& tRes)
 {
 	bool mustSeparate = false;
 	templateArguments.initTabs();
@@ -136,15 +160,16 @@ bool TemplateToken::addTemplatedTypes(IteratorList<Token>& tl, TokenResult tRes)
 		if (!elem->addTokens(tl, tRes))return false;
 		if (elem->hasValue(TokenVALUE::CLOSEANGLEBRACKETS)) {
 			if (!templateArguments.hasCompletedArguments()) {
-				return tRes.addError(TokenVALUE::TEMPLATE, line, TokenVALUE::CLOSEPARENTHESIS, ErrorType::UNEXPECTED);
+				return tRes.addError(TokenVALUE::TEMPLATE, templLine, TokenVALUE::CLOSEPARENTHESIS, ErrorType::UNEXPECTED);
 			}
 			else {
 				templateArguments.setCompleteIndex();
+				dispatchTemplateArguments();
 				return true;
 			}
 		}
 		if (elem->hasValue(TokenVALUE::COMMA)) {
-			if (!mustSeparate)tRes.addError(TokenVALUE::TEMPLATE, line, TokenVALUE::COMMA, ErrorType::UNEXPECTED);
+			if (!mustSeparate)tRes.addError(TokenVALUE::TEMPLATE, templLine, TokenVALUE::COMMA, ErrorType::UNEXPECTED);
 			else mustSeparate = false;
 		}
 		else {
@@ -154,7 +179,7 @@ bool TemplateToken::addTemplatedTypes(IteratorList<Token>& tl, TokenResult tRes)
 				mustSeparate = true;
 				templateArguments.next();
 			}
-			else return tRes.addError(TokenVALUE::TEMPLATE, line, type);
+			else return tRes.addError(TokenVALUE::TEMPLATE, templLine, type);
 		}
 	}
 }
@@ -317,7 +342,7 @@ ValueType IdentifierToken::getValueType(TokenResult& tRes)
 	auto map=tRes.getVarTable();
 	auto elem = map.find(tokenText);
 	if(elem != map.end())return elem->second;
-	return ValueType();
+	return ValueType(DataType::IDENTIFIER,0);
 }
 
 bool StoreToken::addValue(IteratorList<Token>& tl, TokenResult tRes) {
@@ -811,54 +836,7 @@ std::shared_ptr<Tag> CoordToken::execute()
 	else return std::make_shared<CoordTag>();
 }
 
-CompareToken::CompareToken(): PKToken()
-{
-	tokenText = compareK;
-	tValue = TokenVALUE::COMPARE;
-	setOverloads();
-}
 
-void CompareToken::setOverloads()
-{
-	switch (valuesType) {
-		case DataType::BOOL:
-			argsOverload.addArgs(Arguments(DataType::BOOL,true),0);
-			break;
-		case DataType::COORD:
-			argsOverload.addArgs(Arguments(DataType::COORD, true), 1);
-			break;
-		case DataType::DATATYPE:
-			argsOverload.addArgs(Arguments(DataType::DATATYPE, true),2);
-			break;
-		case DataType::DIRECTION:
-			argsOverload.addArgs(Arguments(DataType::DIRECTION, true),3);
-			break;
-		case DataType::FLOAT:
-			argsOverload.addArgs(Arguments(DataType::FLOAT, true),4);
-			break;
-		case DataType::INT:
-			argsOverload.addArgs(Arguments(DataType::INT, true),5);
-			break;
-		case DataType::STRING:
-			argsOverload.addArgs(Arguments(DataType::STRING, true),6);
-			break;
-	}
-}
-
-void CompareToken::setTemplateOverload()
-{
-	templateArguments.addArgs(Arguments({ DataType::DATATYPE,DataType::COMPARETYPE }), 0);
-}
-
-ValueType CompareToken::getValueType(TokenResult& tRes)
-{
-	return DataType::BOOL;
-}
-
-std::shared_ptr<Tag> CompareToken::execute()
-{
-	return std::shared_ptr<Tag>();
-}
 
 FloatToken::FloatToken() :UPKToken()
 {
@@ -912,11 +890,10 @@ std::shared_ptr<Tag> IntegerToken::execute()
 	return std::make_shared<IntTag>(uniqueToken->execute());
 }
 
-StoreToken::StoreToken() :MPKToken()
+StoreToken::StoreToken() :MPKToken(), TemplateToken(line)
 {
 	tokenText = storeK;
 	tValue = TokenVALUE::STORE;
-	setOverloads();
 }
 
 void StoreToken::setTemplateOverload()
@@ -930,6 +907,27 @@ void StoreToken::setOverloads()
 }
 void StoreToken::dispatchArguments()
 {
+	if (!argsOverload.empty()) {
+		switch (argsOverload.getID()) {
+		case 0:
+			identifierToken = argTokens.at(0);
+			valueToken = argTokens.at(1);
+			break;
+		}
+	}
+}
+
+void StoreToken::dispatchTemplateArguments()
+{
+	if (!templateArguments.empty()) {
+
+		switch (templateArguments.getID()) {
+		case 0:	
+			vType = ValueType(getDescribedType(templTokens.at(0)).type, stoi(templTokens.at(1)->getTokenText()));//Only expect a number, not a variable
+			setOverloads();
+			break;
+		}
+	}
 }
 
 
@@ -938,17 +936,17 @@ std::shared_ptr<Tag> StoreToken::execute()
 	return std::shared_ptr<Tag>();
 }
 
-ListToken::ListToken() :MPKToken()
+ListToken::ListToken() :MPKToken(),TemplateToken(line)
 {
 	tokenText = listK;
-	dType = DataType::NONE;
 	tValue = TokenVALUE::LIST;
-	setOverloads();
 }
 
 void ListToken::setOverloads()
 {
-
+	ValueType containedType (vType);
+	containedType.layer--;
+	argsOverload.addArgs(Arguments(containedType,true), 0);
 }
 
 void ListToken::setTemplateOverload()
@@ -956,10 +954,91 @@ void ListToken::setTemplateOverload()
 	templateArguments.addArgs(Arguments({ DataType::DATATYPE,DataType::INT }), 0);
 }
 
+void ListToken::dispatchTemplateArguments()
+{
+	if (!templateArguments.empty()) {
+		switch (templateArguments.getID()) {
+		case 0:
+			vType = ValueType(getDescribedType(templTokens.at(0)).type, stoi(templTokens.at(1)->getTokenText()));//Only expect a number, not a variable
+			setOverloads();
+			break;
+		}
+	}
+}
+
 std::shared_ptr<Tag> ListToken::execute()
 {
 	return std::shared_ptr<Tag>();
 }
+
+CompareToken::CompareToken() : PKToken()
+{
+	tokenText = compareK;
+	tValue = TokenVALUE::COMPARE;
+	setOverloads();
+}
+
+void CompareToken::setOverloads()
+{
+	switch (valuesType.type) {
+	case DataType::BOOL:
+		argsOverload.addArgs(Arguments(DataType::BOOL, true), 0);
+		break;
+	case DataType::COORD:
+		argsOverload.addArgs(Arguments(DataType::COORD, true), 1);
+		break;
+	case DataType::DATATYPE:
+		argsOverload.addArgs(Arguments(DataType::DATATYPE, true), 2);
+		break;
+	case DataType::DIRECTION:
+		argsOverload.addArgs(Arguments(DataType::DIRECTION, true), 3);
+		break;
+	case DataType::FLOAT:
+		argsOverload.addArgs(Arguments(DataType::FLOAT, true), 4);
+		break;
+	case DataType::INT:
+		argsOverload.addArgs(Arguments(DataType::INT, true), 5);
+		break;
+	case DataType::STRING:
+		argsOverload.addArgs(Arguments(DataType::STRING, true), 6);
+		break;
+	}
+}
+
+void CompareToken::setTemplateOverload()
+{
+	templateArguments.addArgs(Arguments({ DataType::DATATYPE,DataType::COMPARETYPE }), 0);
+}
+
+void CompareToken::dispatchTemplateArguments()
+{
+	if (!templateArguments.empty()) {
+
+		switch (templateArguments.getID()) {
+		case 0:
+			cmpType = templTokens.at(1);
+			vType = getDescribedType(templTokens.at(0));
+			vType = ValueType(getDescribedType(templTokens.at(0)).type, stoi(templTokens.at(1)->getTokenText()));//Only expect a number, not a variable
+			setOverloads();
+			break;
+		}
+	}
+}
+
+void CompareToken::dispatchArguments()
+{
+}
+
+ValueType CompareToken::getValueType(TokenResult& tRes)
+{
+	return DataType::BOOL;
+}
+
+std::shared_ptr<Tag> CompareToken::execute()
+{
+	return std::shared_ptr<Tag>();
+}
+
 
 StringToken::StringToken() :UPKToken()
 {
@@ -1564,12 +1643,13 @@ bool ArgumentsOverload::empty()
 
 TemplateToken::TemplateToken()
 {
-	line = 0;
+	templLine = 0;
 }
 
 TemplateToken::TemplateToken(int line) :TemplateToken()
 {
-	this->line = line;
+	this->templLine = line;
+	this->setTemplateOverload();
 }
 
 bool TemplateToken::addToken(TokenVALUE tVal, IteratorList<Token>& tl, TokenResult& tRes)
@@ -1580,7 +1660,7 @@ bool TemplateToken::addToken(TokenVALUE tVal, IteratorList<Token>& tl, TokenResu
 			return elem->addTokens(tl, tRes);
 		}
 	}
-	return tRes.addError(TokenVALUE::TEMPLATE, line, tVal);
+	return tRes.addError(TokenVALUE::TEMPLATE, templLine, tVal);
 }
 
 bool TemplateToken::addType(ValueType tData, IteratorList<Token>& tl, TokenResult& tRes)
@@ -1591,7 +1671,7 @@ bool TemplateToken::addType(ValueType tData, IteratorList<Token>& tl, TokenResul
 			return elem->addTokens(tl, tRes);
 		}
 	}
-	return tRes.addError(TokenVALUE::TEMPLATE, line, tData);
+	return tRes.addError(TokenVALUE::TEMPLATE, templLine, tData);
 }
 
 
@@ -1645,6 +1725,12 @@ SouthEToken::SouthEToken()
 	tokenText = southeL;
 }
 
+DataTypeToken::DataTypeToken()
+{
+	tValue = TokenVALUE::DATATYPE;
+	tokenText = datatypeL;
+}
+
 ValueType DataTypeToken::getValueType(TokenResult& tRes)
 {
 	return DataType::DATATYPE;
@@ -1695,13 +1781,13 @@ DirectionTypeToken::DirectionTypeToken()
 TimeTypeToken::TimeTypeToken()
 {
 	tValue = TokenVALUE::TIMETYPE;
-	tokenText = boolL;
+	tokenText = timetypeL;
 }
 
 ValueType::ValueType()
 {
 	type = DataType::NONE;
-	layer = 1;
+	layer = 0;
 }
 
 ValueType::ValueType(DataType t, int l)
@@ -1710,7 +1796,31 @@ ValueType::ValueType(DataType t, int l)
 	type = t;
 }
 
+ValueType::ValueType(const ValueType& vt)
+{
+	layer = vt.layer;
+	type = vt.type;
+}
+
 bool ValueType::equal(const ValueType& vt)
 {
 	return vt.type==type&&vt.layer==layer;
+}
+
+CompareTypeToken::CompareTypeToken()
+{
+	tValue = TokenVALUE::COMPARETYPE;
+	tokenText = comparetypeL;
+}
+
+CompareType CompareTypeToken::getCmpType()
+{
+	switch (tValue) {
+	case GREATER:
+
+	}
+}
+
+GreaterToken::GreaterToken()
+{
 }
