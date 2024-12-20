@@ -54,5 +54,7 @@ class Interpretor {
 	//PKToken
 	bool waitTest();
 
+	bool compareTest();
+
 };
 

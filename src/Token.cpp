@@ -894,6 +894,7 @@ StoreToken::StoreToken() :MPKToken(), TemplateToken(line)
 {
 	tokenText = storeK;
 	tValue = TokenVALUE::STORE;
+	setTemplateOverload();
 }
 
 void StoreToken::setTemplateOverload()
@@ -940,12 +941,13 @@ ListToken::ListToken() :MPKToken(),TemplateToken(line)
 {
 	tokenText = listK;
 	tValue = TokenVALUE::LIST;
+	setTemplateOverload();
 }
 
 void ListToken::setOverloads()
 {
 	ValueType containedType (vType);
-	containedType.layer--;
+	containedType.dim--;
 	argsOverload.addArgs(Arguments(containedType,true), 0);
 }
 
@@ -975,12 +977,12 @@ CompareToken::CompareToken() : PKToken()
 {
 	tokenText = compareK;
 	tValue = TokenVALUE::COMPARE;
-	setOverloads();
+	setTemplateOverload();
 }
 
 void CompareToken::setOverloads()
 {
-	switch (valuesType.type) {
+	switch (vType.type) {
 	case DataType::BOOL:
 		argsOverload.addArgs(Arguments(DataType::BOOL, true), 0);
 		break;
@@ -1016,9 +1018,9 @@ void CompareToken::dispatchTemplateArguments()
 
 		switch (templateArguments.getID()) {
 		case 0:
-			cmpType = templTokens.at(1);
 			vType = getDescribedType(templTokens.at(0));
-			vType = ValueType(getDescribedType(templTokens.at(0)).type, stoi(templTokens.at(1)->getTokenText()));//Only expect a number, not a variable
+			auto ctt = std::dynamic_pointer_cast<CompareTypeToken>(templTokens.at(1));
+			if(ctt)cmpType = ctt->getCmpType();
 			setOverloads();
 			break;
 		}
@@ -1649,7 +1651,7 @@ TemplateToken::TemplateToken()
 TemplateToken::TemplateToken(int line) :TemplateToken()
 {
 	this->templLine = line;
-	this->setTemplateOverload();
+//	this->setTemplateOverload();
 }
 
 bool TemplateToken::addToken(TokenVALUE tVal, IteratorList<Token>& tl, TokenResult& tRes)
@@ -1787,24 +1789,24 @@ TimeTypeToken::TimeTypeToken()
 ValueType::ValueType()
 {
 	type = DataType::NONE;
-	layer = 0;
+	dim = 0;
 }
 
 ValueType::ValueType(DataType t, int l)
 {
-	layer = l;
+	dim = l;
 	type = t;
 }
 
 ValueType::ValueType(const ValueType& vt)
 {
-	layer = vt.layer;
+	dim = vt.dim;
 	type = vt.type;
 }
 
 bool ValueType::equal(const ValueType& vt)
 {
-	return vt.type==type&&vt.layer==layer;
+	return vt.type==type&&vt.dim==dim;
 }
 
 CompareTypeToken::CompareTypeToken()
@@ -1816,11 +1818,55 @@ CompareTypeToken::CompareTypeToken()
 CompareType CompareTypeToken::getCmpType()
 {
 	switch (tValue) {
-	case GREATER:
-
+	case TokenVALUE::GREATER:
+		return CompareType::GREATER;
+	case TokenVALUE::LESSER:
+		return CompareType::LESSER;
+	case TokenVALUE::EQUAL:
+		return CompareType::EQUAL;
+	case TokenVALUE::NOTEQUAL:
+		return CompareType::NOTEQUAL;
+	case TokenVALUE::LESSEREQUAL:
+		return CompareType::LESSEREQUAL;
+	case TokenVALUE::GREATEREQUAL:
+		return CompareType::GREATEREQUAL;
+	default:
+		return CompareType::NONE;
 	}
 }
 
 GreaterToken::GreaterToken()
 {
+	tValue = TokenVALUE::GREATER;
+	tokenText = greaterL;
+}
+
+LesserToken::LesserToken()
+{
+	tValue = TokenVALUE::LESSER;
+	tokenText = lesserL;
+}
+
+GreaterequalToken::GreaterequalToken()
+{
+	tValue = TokenVALUE::GREATEREQUAL;
+	tokenText = greaterequalL;
+}
+
+LesserequalToken::LesserequalToken()
+{
+	tValue = TokenVALUE::LESSEREQUAL;
+	tokenText = lesserequalL;
+}
+
+EqualToken::EqualToken()
+{
+	tValue = TokenVALUE::EQUAL;
+	tokenText = equalL;
+}
+
+NotequalToken::NotequalToken()
+{
+	tValue = TokenVALUE::NOTEQUAL;
+	tokenText = notequalL;
 }

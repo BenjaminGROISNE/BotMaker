@@ -8,20 +8,122 @@
 #include <typeinfo>
 #include <algorithm>
 
+bool isTokenString(const std::string& text);
+bool isKeywordString(const std::string& text);
+bool isLiteralString(const std::string& text);
+bool isPunctuationString(const std::string& text);
+
+//Punctuation Tokens string
+static const std::string commaP = ",";
+static const std::string openParenthesisP = "(";
+static const std::string closeParenthesisP = ")";
+static const std::string openBracketsP = "{";
+static const std::string closeBracketsP = "}";
+static const std::string openAngleBracketsP = "<";
+static const std::string closeAngleBracketsP = ">";
+static const std::string quotation = "\"";
+static const std::string whitespace = " ";
+static const std::string tabulation = "\t";
+static const std::string backspace = "\b";
+static const std::string newline = "\n";
+static const std::string carriagereturn = "\r";
+static const std::string allPunctuations = " <>\",(){}\t\b\n\r";
+
+static const std::vector<std::string> allPunctuationsTokensStrings = { openAngleBracketsP,closeAngleBracketsP, quotation,carriagereturn, newline, whitespace,tabulation,backspace, commaP, openParenthesisP, closeParenthesisP, openBracketsP, closeBracketsP };
+
+//Literal Tokens string
+static const std::string trueL = "true";
+static const std::string falseL = "false";
+static const std::string secondL = "SECOND";
+static const std::string millisecondL = "MILLISECOND";
+static const std::string minuteL = "MINUTE";
+static const std::string northL = "NORTH";
+static const std::string southL = "SOUTH";
+static const std::string northwL = "NORTHW";
+static const std::string northeL = "NORTHE";
+static const std::string southwL = "SOUTHW";
+static const std::string southeL = "SOUTHE";
+static const std::string intL = "INT";
+static const std::string floatL = "FLOAT";
+static const std::string coordL = "COORD";
+static const std::string zoneL = "ZONE";
+static const std::string boolL = "BOOL";
+static const std::string timetypeL = "TIMETYPE";
+static const std::string directionL = "DIRECTION";
+static const std::string stringL = "STRING";
+static const std::string datatypeL = "DATATYPE";
+static const std::string comparetypeL = "COMPARETYPE";
+static const std::string greaterL = "GREATER";
+static const std::string lesserL = "LESSER";
+static const std::string equalL = "EQUAL";
+static const std::string notequalL = "NOTEQUAL";
+static const std::string greaterequalL = "GREATEREQUAL";
+static const std::string lesserequalL = "LESSEREQUAL";
 
 
 
-enum ReturnType {
-	ONE, MULTIPLE
-};
 
-enum SearchType {
-	COMPARE, NORMAL
-};
 
-enum SwipeType {
-	RELATIVELY, ABSOLUTELY,
-};
+
+static const std::vector<std::string> allLiteralsTokensStrings =
+{ trueL,falseL,secondL,millisecondL,minuteL,northL,southL,northwL,northeL,southwL,southeL,intL,floatL,coordL,zoneL,boolL,timetypeL,directionL,stringL,datatypeL };
+
+static std::string storeK = "store";
+static std::string clickK = "click";
+static std::string swipeK = "swipe";
+static std::string waitK = "wait";
+static std::string ifK = "if";
+static std::string elseK = "else";
+static std::string elifK = "elif";
+static std::string notK = "not";
+static std::string floatK = "float";
+static std::string intK = "int";
+static std::string coordK = "coord";
+static std::string zoneK = "zone";
+static std::string andK = "and";
+static std::string orK = "or";
+static std::string loopK = "loop";
+static std::string listK = "list";
+static std::string stringK = "string";
+static std::string directionK = "direction";
+static std::string findswipeK = "findswipe";
+static std::string findclickK = "findclick";
+static std::string findK = "find";
+static std::string breakK = "break";
+static std::string continueK = "continue";
+static std::string doloopK = "doloop";
+static std::string functionK = "function";
+static std::string switchK = "switch";
+static std::string caseK = "case";
+static std::string defaultK = "default";
+static std::string compareK = "compare";
+static std::string mainK = "main";
+static std::string boolK = "bool";
+static std::string printK = "print";
+static std::string returnK = "return";
+static std::string voidK = "void";
+static std::string addK = "add";
+static std::string subK = "sub";
+static std::string multK = "mult";
+
+
+static const std::vector<std::string> allKeywordsTokensString = { storeK,clickK,swipeK,waitK,ifK,elseK,elifK,notK,floatK,intK,coordK,zoneK,andK,orK,loopK,listK,stringK,directionK,findswipeK,findclickK,findK,breakK,continueK,doloopK,functionK,switchK,caseK,defaultK,compareK,mainK,boolK,printK,returnK,voidK, };
+
+// Concatenate all token vectors
+static const std::vector<std::string> allTokensStrings = [] {
+	std::vector<std::string> result;
+	result.reserve(allKeywordsTokensString.size() +
+		allPunctuationsTokensStrings.size() +
+		allLiteralsTokensStrings.size());
+
+	result.insert(result.end(), allKeywordsTokensString.begin(), allKeywordsTokensString.end());
+	result.insert(result.end(), allPunctuationsTokensStrings.begin(), allPunctuationsTokensStrings.end());
+	result.insert(result.end(), allLiteralsTokensStrings.begin(), allLiteralsTokensStrings.end());
+
+	return result;
+	}();
+
+
 
 
 enum Dimensions {
@@ -32,12 +134,12 @@ enum TagType {
 	TAG,FLOWTAG,DATATYPETAG,COMPARETYPETAG,TIMETYPETAG,DIMENSIONTAG, INTEGERTAG, FLOATTAG, BOOLTAG, ANDTAG, NOTTAG, ORTAG, COMPARETAG,WAITTAG, STRINGTAG,COORDSTAG,DIRECTIONTAG,ZONETAG,LISTTAG,IFTAG,LOOPTAG, DOLOOPTAG, SWITCHTAG, DEFAULTTAG, ELSETAG, ELIFTAG, BREAKTAG, CONTINUETAG, CASETAG,LOADTAG,STORETAG,MAINTAG,PRINTTAG
 };
 
-enum TimeType {
+enum class TimeType {
 	MINUTE, SECOND, MILLISECOND
 };
 
-enum CompareType {
-	EQUAL, NOTEQUAL, GREATER, LESSER, GREATEREQUAL, LESSEREQUAL
+enum class CompareType {
+	NONE,EQUAL, NOTEQUAL, GREATER, LESSER, GREATEREQUAL, LESSEREQUAL
 };
 
 

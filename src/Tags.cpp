@@ -214,7 +214,7 @@ ListTag<Type>::ListTag(const ListTag& toCopy) :Tag(toCopy)
 WaitTag::WaitTag(const WaitTag& toCopy) :Tag(toCopy)
 {
 	type = toCopy.type;
-	time = toCopy.type;
+	time = toCopy.time;
 }
 
 template <typename T>
@@ -522,7 +522,7 @@ SwipeTag::SwipeTag() :Tag()
 WaitTag::WaitTag() :Tag()
 {
 	time = 0;
-	this->type = SECOND;
+	this->type = TimeType::SECOND;
 	tagText = waitK;
 	myType = WAITTAG;
 }
@@ -550,13 +550,13 @@ void WaitTag::execute()
 {
 	time = executeInt(timeTag);
 	switch (type) {
-	case MILLISECOND:
+	case TimeType::MILLISECOND:
 		std::this_thread::sleep_for(std::chrono::milliseconds(time));
 		break;
-	case SECOND:
+	case TimeType::SECOND:
 		std::this_thread::sleep_for(std::chrono::seconds(time));
 		break;
-	case MINUTE:
+	case TimeType::MINUTE:
 		std::this_thread::sleep_for(std::chrono::minutes(time));
 		break;
 	default:
@@ -1267,7 +1267,7 @@ template <typename T>
 CompareTag<T>::CompareTag() :BoolTag()
 {
 	tagText = compareK;
-	compType = EQUAL;
+	compType = CompareType::EQUAL;
 	myBool = false;
 	myType = COMPARETAG;
 }
@@ -1369,10 +1369,10 @@ void CompareTag<T>::execute()
 	listtag.execute();
 	auto listValues = listtag.myList;
 	switch (compType) {
-	case EQUAL:
+	case CompareType::EQUAL:
 		myBool = CompareEqual(listValues);
 		break;
-	case NOTEQUAL:
+	case CompareType::NOTEQUAL:
 		myBool = CompareNotEqual(listValues);
 		break;
 	}
@@ -1386,22 +1386,22 @@ void CompareTag<int>::execute()
 	listtag.execute();
 	auto listValues = listtag.myList;
 	switch (compType) {
-	case EQUAL:
+	case CompareType::EQUAL:
 		myBool = CompareEqual(listValues);
 		break;
-	case NOTEQUAL:
+	case CompareType::NOTEQUAL:
 		myBool = CompareNotEqual(listValues);
 		break;
-	case LESSER:
+	case CompareType::LESSER:
 		myBool = CompareLesser(listValues);
 		break;
-	case GREATER:
+	case CompareType::GREATER:
 		myBool = CompareGreater(listValues);
 		break;
-	case LESSEREQUAL:
+	case CompareType::LESSEREQUAL:
 		myBool = CompareLesserEqual(listValues);
 		break;
-	case GREATEREQUAL:
+	case CompareType::GREATEREQUAL:
 		myBool = CompareGreaterEqual(listValues);
 		break;
 	}
@@ -1414,22 +1414,22 @@ void CompareTag<float>::execute()
 	listtag.execute();
 	auto listValues = listtag.myList;
 	switch (compType) {
-	case EQUAL:
+	case CompareType::EQUAL:
 		myBool = CompareEqual(listValues);
 		break;
-	case NOTEQUAL:
+	case CompareType::NOTEQUAL:
 		myBool = CompareNotEqual(listValues);
 		break;
-	case LESSER:
+	case CompareType::LESSER:
 		myBool = CompareLesser(listValues);
 		break;
-	case GREATER:
+	case CompareType::GREATER:
 		myBool = CompareGreater(listValues);
 		break;
-	case LESSEREQUAL:
+	case CompareType::LESSEREQUAL:
 		myBool = CompareLesserEqual(listValues);
 		break;
-	case GREATEREQUAL:
+	case CompareType::GREATEREQUAL:
 		myBool = CompareGreaterEqual(listValues);
 		break;
 	}

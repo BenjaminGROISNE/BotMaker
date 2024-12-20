@@ -18,165 +18,74 @@ bool isIdentifier(const std::string& s) {
 	return notEmpty && notTokenString && isAlnum;
 }
 
+// Define the map to store the mappings between token strings and TokenVALUE enums
+static const std::unordered_map<std::string, TokenVALUE> tokenMap = {
+	{mainK, TokenVALUE::MAIN},
+	{loopK, TokenVALUE::LOOP},
+	{boolK, TokenVALUE::BOOL},
+	{storeK, TokenVALUE::STORE},
+	{stringK, TokenVALUE::STRING},
+	{coordK, TokenVALUE::COORD},
+	{listK, TokenVALUE::LIST},
+	{intK, TokenVALUE::INTEGER},
+	{floatK, TokenVALUE::FLOAT},
+	{compareK, TokenVALUE::COMPARE},
+	{zoneK, TokenVALUE::ZONE},
+	{ifK, TokenVALUE::IF},
+	{elseK, TokenVALUE::ELSE},
+	{elifK, TokenVALUE::ELIF},
+	{doloopK, TokenVALUE::DOLOOP},
+	{andK, TokenVALUE::AND},
+	{notK, TokenVALUE::NOT},
+	{orK, TokenVALUE::OR},
+	{directionK, TokenVALUE::DIRECTION},
+	{switchK, TokenVALUE::SWITCH},
+	{defaultK, TokenVALUE::DEFAULT},
+	{breakK, TokenVALUE::BREAK},
+	{continueK, TokenVALUE::CONTINUE},
+	{caseK, TokenVALUE::CASE},
+	{printK, TokenVALUE::PRINT},
+	{waitK, TokenVALUE::WAIT},
+	{commaP, TokenVALUE::COMMA},
+	{openBracketsP, TokenVALUE::OPENBRACKETS},
+	{closeBracketsP, TokenVALUE::CLOSEBRACKETS},
+	{openAngleBracketsP, TokenVALUE::OPENANGLEBRACKETS},
+	{closeAngleBracketsP, TokenVALUE::CLOSEANGLEBRACKETS},
+	{openParenthesisP, TokenVALUE::OPENPARENTHESIS},
+	{closeParenthesisP, TokenVALUE::CLOSEPARENTHESIS},
+	{falseL, TokenVALUE::FALSELITERAL},
+	{trueL, TokenVALUE::TRUELITERAL},
+	{millisecondL, TokenVALUE::MILLISECOND},
+	{secondL, TokenVALUE::SECOND},
+	{minuteL, TokenVALUE::MINUTE},
+	{northL, TokenVALUE::NORTH},
+	{northwL, TokenVALUE::NORTHW},
+	{northeL, TokenVALUE::NORTHE},
+	{southL, TokenVALUE::SOUTH},
+	{southwL, TokenVALUE::SOUTHW},
+	{southeL, TokenVALUE::SOUTHE},
+	{boolL, TokenVALUE::BOOLTYPE},
+	{intL, TokenVALUE::INTTYPE},
+	{floatL, TokenVALUE::FLOATTYPE},
+	{coordL, TokenVALUE::COORDTYPE},
+	{zoneL, TokenVALUE::ZONETYPE},
+	{directionL, TokenVALUE::DIRECTIONTYPE},
+	{timetypeL, TokenVALUE::TIMETYPE},
+	{stringL, TokenVALUE::STRINGTYPE},
+	{comparetypeL, TokenVALUE::COMPARETYPE},
+	{greaterL, TokenVALUE::GREATER},
+	{lesserL, TokenVALUE::LESSER},
+	{greaterequalL, TokenVALUE::GREATEREQUAL},
+	{lesserequalL, TokenVALUE::LESSEREQUAL},
+	{equalL, TokenVALUE::EQUAL},
+	{notequalL, TokenVALUE::NOTEQUAL},
+	{quotation, TokenVALUE::QUOTATION}
+};
+
 TokenVALUE Lexer::getTokenValue(const std::string& text) {
-	if (text == mainK) {
-		return TokenVALUE::MAIN;
-	}
-	else if (text == loopK) {
-		return TokenVALUE::LOOP;
-	}
-	else if (text == boolK) {
-		return TokenVALUE::BOOL;
-	}
-	else if (text == storeK) {
-		return TokenVALUE::STORE;
-	}
-	else if (text == stringK) {
-		return TokenVALUE::STRING;
-	}
-	else if (text == coordK) {
-		return TokenVALUE::COORD;
-	}
-	else if (text == listK) {
-		return TokenVALUE::LIST;
-	}
-	else if (text == intK) {
-		return TokenVALUE::INTEGER;
-	}
-	else if (text == floatK) {
-		return TokenVALUE::FLOAT;
-	}
-	else if (text == compareK) {
-		return TokenVALUE::COMPARE;
-	}
-	else if (text == zoneK) {
-		return TokenVALUE::ZONE;
-	}
-	else if (text == ifK) {
-		return TokenVALUE::IF;
-	}
-	else if (text == elseK) {
-		return TokenVALUE::ELSE;
-	}
-	else if (text == elifK) {
-		return TokenVALUE::ELIF;
-	}
-	else if (text == doloopK) {
-		return TokenVALUE::DOLOOP;
-	}
-	else if (text == andK) {
-		return TokenVALUE::AND;
-	}
-	else if (text == notK) {
-		return TokenVALUE::NOT;
-	}
-	else if (text == orK) {
-		return TokenVALUE::OR;
-	}
-	else if (text == directionK) {
-		return TokenVALUE::DIRECTION;
-	}
-	else if (text == switchK) {
-		return TokenVALUE::SWITCH;
-	}
-	else if (text == defaultK) {
-		return TokenVALUE::DEFAULT;
-	}
-	else if (text == breakK) {
-		return TokenVALUE::BREAK;
-	}
-	else if (text == continueK) {
-		return TokenVALUE::CONTINUE;
-	}
-	else if (text == caseK) {
-		return TokenVALUE::CASE;
-	}
-	else if (text == printK) {
-		return TokenVALUE::PRINT;
-	}
-	else if (text == waitK) {
-		return TokenVALUE::WAIT;
-	}
-	else if (text == commaP) {
-		return TokenVALUE::COMMA;
-	}
-	else if (text == openBracketsP) {
-		return TokenVALUE::OPENBRACKETS;
-	}
-	else if (text == closeBracketsP) {
-		return TokenVALUE::CLOSEBRACKETS;
-	}
-	else if (text == openAngleBracketsP) {
-		return TokenVALUE::OPENANGLEBRACKETS;
-	}
-	else if (text == closeAngleBracketsP) {
-		return TokenVALUE::CLOSEANGLEBRACKETS;
-	}
-	else if (text == openParenthesisP) {
-		return TokenVALUE::OPENPARENTHESIS;
-	}
-	else if (text == closeParenthesisP) {
-		return TokenVALUE::CLOSEPARENTHESIS;
-	}
-	else if (text == falseL) {
-		return TokenVALUE::FALSELITERAL;
-	}
-	else if (text == trueL) {
-		return TokenVALUE::TRUELITERAL;
-	}
-	else if (text == millisecondL) {
-		return TokenVALUE::MILLISECOND;
-	}
-	else if (text == secondL) {
-		return TokenVALUE::SECOND;
-	}
-	else if (text == minuteL) {
-		return TokenVALUE::MINUTE;
-	}
-	else if (text == northL) {
-		return TokenVALUE::NORTH;
-	}
-	else if (text == northwL) {
-		return TokenVALUE::NORTHW;
-	}
-	else if (text == northeL) {
-			return TokenVALUE::NORTHE;
-	}
-	else if (text == southL) {
-		return TokenVALUE::SOUTH;
-	}
-	else if (text == southwL) {
-		return TokenVALUE::SOUTHW;
-	}
-	else if (text == southeL) {
-		return TokenVALUE::SOUTHE;
-	}
-	else if (text == boolL) {
-		return TokenVALUE::BOOLTYPE;
-	}
-	else if (text == intL) {
-		return TokenVALUE::INTTYPE;
-	}
-	else if (text == floatL) {
-		return TokenVALUE::FLOATTYPE;
-	}
-	else if (text == coordL) {
-		return TokenVALUE::COORDTYPE;
-	}
-	else if (text == zoneL) {
-		return TokenVALUE::ZONETYPE;
-	}
-	else if (text == directionL) {
-		return TokenVALUE::DIRECTIONTYPE;
-	}
-	else if (text == timetypeL) {
-		return TokenVALUE::TIMETYPE;
-	}
-	else if (text == stringL) {
-		return TokenVALUE::STRINGTYPE;
-	}
-	else if (text == quotation) {
-		return TokenVALUE::QUOTATION;
+	auto it = tokenMap.find(text);
+	if (it != tokenMap.end()) {
+		return it->second;
 	}
 	else if (isNumber(text)) {
 		return TokenVALUE::NUMERIC;
@@ -184,232 +93,93 @@ TokenVALUE Lexer::getTokenValue(const std::string& text) {
 	else if (isIdentifier(text)) {
 		return TokenVALUE::IDENTIFIER;
 	}
-	else return TokenVALUE::UNKNOWN;
-}
-std::string Lexer::getTokenString(TokenVALUE value)
-{
-	switch (value) {
-	case TokenVALUE::MAIN:
-		return mainK;
-	case TokenVALUE::LOOP:
-		return loopK;
-	case TokenVALUE::BOOL:
-		return boolK;
-	case TokenVALUE::STORE:
-		return storeK;
-	case TokenVALUE::STRING:
-		return stringK;
-	case TokenVALUE::COORD:
-		return coordK;
-	case TokenVALUE::LIST:
-		return listK;
-	case TokenVALUE::INTEGER:
-		return intK;
-	case TokenVALUE::FLOAT:
-		return floatK;
-	case TokenVALUE::COMPARE:
-		return compareK;
-	case TokenVALUE::ZONE:
-		return zoneK;
-	case TokenVALUE::IF:
-		return ifK;
-	case TokenVALUE::ELSE:
-		return elseK;
-	case TokenVALUE::ELIF:
-		return elifK;
-	case TokenVALUE::DOLOOP:
-		return doloopK;
-	case TokenVALUE::AND:
-		return andK;
-	case TokenVALUE::NOT:
-		return notK;
-	case TokenVALUE::OR:
-		return orK;
-	case TokenVALUE::DIRECTION:
-		return directionK;
-	case TokenVALUE::BREAK:
-		return breakK;
-	case TokenVALUE::CONTINUE:
-		return continueK;
-	case TokenVALUE::PRINT:
-		return printK;
-	case TokenVALUE::WAIT:
-		return waitK;
-	case TokenVALUE::CLOSEBRACKETS:
-		return closeBracketsP;
-	case TokenVALUE::OPENBRACKETS:
-		return openBracketsP;
-	case TokenVALUE::CLOSEANGLEBRACKETS:
-		return closeAngleBracketsP;
-	case TokenVALUE::OPENANGLEBRACKETS:
-		return openAngleBracketsP;
-	case TokenVALUE::CLOSEPARENTHESIS:
-		return closeParenthesisP;
-	case TokenVALUE::OPENPARENTHESIS:
-		return openParenthesisP;
-	case TokenVALUE::COMMA:
-		return commaP;
-	case TokenVALUE::FALSELITERAL:
-		return falseL;
-	case TokenVALUE::TRUELITERAL:
-		return trueL;
-	case TokenVALUE::QUOTATION:
-		return quotation;
-	case TokenVALUE::MILLISECOND:
-		return millisecondL;
-	case TokenVALUE::SECOND:
-		return secondL;
-	case TokenVALUE::MINUTE:
-		return minuteL;
-	case TokenVALUE::NORTH:
-		return northL;
-	case TokenVALUE::NORTHW:
-		return northwL;
-	case TokenVALUE::NORTHE:
-		return northeL;
-	case TokenVALUE::SOUTH:
-		return southL;
-	case TokenVALUE::SOUTHW:
-		return southwL;
-	case TokenVALUE::SOUTHE:
-		return southeL;
-	case TokenVALUE::INTTYPE:
-		return intL;
-	case TokenVALUE::BOOLTYPE:
-		return boolL;
-	case TokenVALUE::FLOATTYPE:
-		return floatL;
-	case TokenVALUE::STRINGTYPE:
-		return stringL;
-	case TokenVALUE::COORDTYPE:
-		return coordL;
-	case TokenVALUE::ZONETYPE:
-		return zoneL;
-	case TokenVALUE::TIMETYPE:
-		return timetypeL;
-	case TokenVALUE::DIRECTIONTYPE:
-		return directionL;
-	case TokenVALUE::NUMERIC:
-		return "NUMERIC";
-	case TokenVALUE::IDENTIFIER:
-		return "ID";
-
-	default:
-		return "UNKNOWN";
+	else {
+		return TokenVALUE::UNKNOWN;
 	}
 }
+// Define a macro to generate the mappings
+#define TOKEN_FACTORY(tokenValue, tokenClass) { tokenValue, []() { return std::make_shared<tokenClass>(); } }
+#define TOKEN_FACTORY_STR(tokenValue, tokenClass) { tokenValue, [](const std::string& text) { return std::make_shared<tokenClass>(text); } }
+
+// Define the map to store the mappings between TokenVALUE enums and token creation functions
+static const std::unordered_map<TokenVALUE, std::function<std::shared_ptr<Token>(const std::string&)>> tokenFactoryMapStr = {
+	TOKEN_FACTORY_STR(TokenVALUE::NUMERIC, NumericToken),
+	TOKEN_FACTORY_STR(TokenVALUE::IDENTIFIER, IdentifierToken),
+	TOKEN_FACTORY_STR(TokenVALUE::STRINGLITERAL, StringLiteralToken)
+};
+
+static const std::unordered_map<TokenVALUE, std::function<std::shared_ptr<Token>()>> tokenFactoryMap = {
+	TOKEN_FACTORY(TokenVALUE::MAIN, MainToken),
+	TOKEN_FACTORY(TokenVALUE::LOOP, LoopToken),
+	TOKEN_FACTORY(TokenVALUE::BOOL, BoolToken),
+	TOKEN_FACTORY(TokenVALUE::STORE, StoreToken),
+	TOKEN_FACTORY(TokenVALUE::STRING, StringToken),
+	TOKEN_FACTORY(TokenVALUE::COORD, CoordToken),
+	TOKEN_FACTORY(TokenVALUE::LIST, ListToken),
+	TOKEN_FACTORY(TokenVALUE::INTEGER, IntegerToken),
+	TOKEN_FACTORY(TokenVALUE::FLOAT, FloatToken),
+	TOKEN_FACTORY(TokenVALUE::COMPARE, CompareToken),
+	TOKEN_FACTORY(TokenVALUE::ZONE, ZoneToken),
+	TOKEN_FACTORY(TokenVALUE::IF, IfToken),
+	TOKEN_FACTORY(TokenVALUE::ELSE, ElseToken),
+	TOKEN_FACTORY(TokenVALUE::ELIF, ElifToken),
+	TOKEN_FACTORY(TokenVALUE::DOLOOP, DoLoopToken),
+	TOKEN_FACTORY(TokenVALUE::AND, AndToken),
+	TOKEN_FACTORY(TokenVALUE::NOT, NotToken),
+	TOKEN_FACTORY(TokenVALUE::OR, OrToken),
+	TOKEN_FACTORY(TokenVALUE::DIRECTION, DirectionToken),
+	TOKEN_FACTORY(TokenVALUE::BREAK, BreakToken),
+	TOKEN_FACTORY(TokenVALUE::CONTINUE, ContinueToken),
+	TOKEN_FACTORY(TokenVALUE::PRINT, PrintToken),
+	TOKEN_FACTORY(TokenVALUE::WAIT, WaitToken),
+	TOKEN_FACTORY(TokenVALUE::CLOSEBRACKETS, CloseBracketsToken),
+	TOKEN_FACTORY(TokenVALUE::OPENBRACKETS, OpenBracketsToken),
+	TOKEN_FACTORY(TokenVALUE::CLOSEANGLEBRACKETS, CloseAngleBracketsToken),
+	TOKEN_FACTORY(TokenVALUE::OPENANGLEBRACKETS, OpenAngleBracketsToken),
+	TOKEN_FACTORY(TokenVALUE::CLOSEPARENTHESIS, CloseParenthesisToken),
+	TOKEN_FACTORY(TokenVALUE::OPENPARENTHESIS, OpenParenthesisToken),
+	TOKEN_FACTORY(TokenVALUE::COMMA, CommaToken),
+	TOKEN_FACTORY(TokenVALUE::FALSELITERAL, FalseToken),
+	TOKEN_FACTORY(TokenVALUE::TRUELITERAL, TrueToken),
+	TOKEN_FACTORY(TokenVALUE::MILLISECOND, MilliSecondToken),
+	TOKEN_FACTORY(TokenVALUE::SECOND, SecondToken),
+	TOKEN_FACTORY(TokenVALUE::MINUTE, MinuteToken),
+	TOKEN_FACTORY(TokenVALUE::NORTH, NorthToken),
+	TOKEN_FACTORY(TokenVALUE::NORTHW, NorthWToken),
+	TOKEN_FACTORY(TokenVALUE::NORTHE, NorthEToken),
+	TOKEN_FACTORY(TokenVALUE::SOUTH, SouthToken),
+	TOKEN_FACTORY(TokenVALUE::SOUTHW, SouthWToken),
+	TOKEN_FACTORY(TokenVALUE::SOUTHE, SouthEToken),
+	TOKEN_FACTORY(TokenVALUE::BOOLTYPE, BoolTypeToken),
+	TOKEN_FACTORY(TokenVALUE::INTTYPE, IntTypeToken),
+	TOKEN_FACTORY(TokenVALUE::FLOATTYPE, FloatTypeToken),
+	TOKEN_FACTORY(TokenVALUE::STRINGTYPE, StringTypeToken),
+	TOKEN_FACTORY(TokenVALUE::COORDTYPE, CoordTypeToken),
+	TOKEN_FACTORY(TokenVALUE::ZONETYPE, ZoneTypeToken),
+	TOKEN_FACTORY(TokenVALUE::TIMETYPE, TimeTypeToken),
+	TOKEN_FACTORY(TokenVALUE::DIRECTIONTYPE, DirectionTypeToken)
+};
+
+std::shared_ptr<Token> Lexer::getToken(const TokenVALUE& tValue, const std::string& text) {
+	auto it1 = tokenFactoryMap.find(tValue);
+	if (it1 != tokenFactoryMap.end()) {
+		return it1->second();
+	}
+	else {
+		auto it2 = tokenFactoryMapStr.find(tValue);
+		if (it2 != tokenFactoryMapStr.end()) {
+			return it2->second(text);
+		}
+		else {
+			assert(false);
+			return std::make_shared<UnknownToken>();
+		}
+	}
+}
+
+
 std::shared_ptr<Token> Lexer::getToken(const std::string& text) {
 	return getToken(getTokenValue(text), text);
-}
-std::shared_ptr<Token> Lexer::getToken(const TokenVALUE& tValue, const std::string& text) {
-	switch (tValue) {
-	case TokenVALUE::MAIN:
-		return std::make_shared<MainToken>();
-	case TokenVALUE::LOOP:
-		return std::make_shared<LoopToken>();
-	case TokenVALUE::BOOL:
-		return std::make_shared<BoolToken>();
-	case TokenVALUE::STORE:
-		return std::make_shared<StoreToken>();
-	case TokenVALUE::STRING:
-		return std::make_shared<StringToken>();
-	case TokenVALUE::COORD:
-		return std::make_shared<CoordToken>();
-	case TokenVALUE::LIST:
-		return std::make_shared<ListToken>();
-	case TokenVALUE::INTEGER:
-		return std::make_shared<IntegerToken>();
-	case TokenVALUE::FLOAT:
-		return std::make_shared<FloatToken>();
-	case TokenVALUE::COMPARE:
-		return std::make_shared<CompareToken>();
-	case TokenVALUE::ZONE:
-		return std::make_shared<ZoneToken>();
-	case TokenVALUE::IF:
-		return std::make_shared<IfToken>();
-	case TokenVALUE::ELSE:
-		return std::make_shared<ElseToken>();
-	case TokenVALUE::ELIF:
-		return std::make_shared<ElifToken>();
-	case TokenVALUE::DOLOOP:
-		return std::make_shared<DoLoopToken>();
-	case TokenVALUE::AND:
-		return std::make_shared<AndToken>();
-	case TokenVALUE::NOT:
-		return std::make_shared<NotToken>();
-	case TokenVALUE::OR:
-		return std::make_shared<OrToken>();
-	case TokenVALUE::DIRECTION:
-		return std::make_shared<DirectionToken>();
-	case TokenVALUE::BREAK:
-		return std::make_shared<BreakToken>();
-	case TokenVALUE::CONTINUE:
-		return std::make_shared<ContinueToken>();
-	case TokenVALUE::PRINT:
-		return std::make_shared<PrintToken>();
-	case TokenVALUE::WAIT:
-		return std::make_shared<WaitToken>();
-	case TokenVALUE::CLOSEBRACKETS:
-		return std::make_shared<CloseBracketsToken>();
-	case TokenVALUE::OPENBRACKETS:
-		return std::make_shared<OpenBracketsToken>();
-	case TokenVALUE::CLOSEANGLEBRACKETS:
-		return std::make_shared<CloseAngleBracketsToken>();
-	case TokenVALUE::OPENANGLEBRACKETS:
-		return std::make_shared<OpenAngleBracketsToken>();
-	case TokenVALUE::CLOSEPARENTHESIS:
-		return std::make_shared<CloseParenthesisToken>();
-	case TokenVALUE::OPENPARENTHESIS:
-		return std::make_shared<OpenParenthesisToken>();
-	case TokenVALUE::COMMA:
-		return std::make_shared<CommaToken>();
-	case TokenVALUE::FALSELITERAL:
-		return std::make_shared<FalseToken>();
-	case TokenVALUE::TRUELITERAL:
-		return std::make_shared<TrueToken>();
-	case TokenVALUE::MILLISECOND:
-		return std::make_shared<MilliSecondToken>();
-	case TokenVALUE::SECOND:
-		return std::make_shared<SecondToken>();
-	case TokenVALUE::MINUTE:
-		return std::make_shared<MinuteToken>();
-	case TokenVALUE::NORTH:
-		return std::make_shared<NorthToken>();
-	case TokenVALUE::NORTHW:
-		return std::make_shared<NorthWToken>();
-	case TokenVALUE::NORTHE:
-		return std::make_shared<NorthEToken>();
-	case TokenVALUE::SOUTH:
-		return std::make_shared<SouthToken>();
-	case TokenVALUE::SOUTHW:
-		return std::make_shared<SouthWToken>();
-	case TokenVALUE::SOUTHE:
-		return std::make_shared<SouthEToken>();
-	case TokenVALUE::BOOLTYPE:
-		return std::make_shared<BoolTypeToken>();
-	case TokenVALUE::INTTYPE:
-		return std::make_shared<IntTypeToken>();
-	case TokenVALUE::FLOATTYPE:
-		return std::make_shared<FloatTypeToken>();
-	case TokenVALUE::STRINGTYPE:
-		return std::make_shared<StringTypeToken>();
-	case TokenVALUE::COORDTYPE:
-		return std::make_shared<CoordTypeToken>();
-	case TokenVALUE::ZONETYPE:
-		return std::make_shared<ZoneTypeToken>();
-	case TokenVALUE::TIMETYPE:
-		return std::make_shared<TimeTypeToken>();
-	case TokenVALUE::DIRECTIONTYPE:
-		return std::make_shared<BoolTypeToken>();
-	case TokenVALUE::NUMERIC:
-		return std::make_shared<NumericToken>(text);
-	case TokenVALUE::IDENTIFIER:
-		return std::make_shared<IdentifierToken>(text);
-	case TokenVALUE::STRINGLITERAL:
-		return std::make_shared<StringLiteralToken>(text);
-	default:
-		return std::make_shared<UnknownToken>();
-	}
 }
 
 Lexer::Lexer()

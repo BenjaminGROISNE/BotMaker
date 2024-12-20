@@ -71,6 +71,7 @@ void Interpretor::doUnitTests()
 	assert(elseTest());
 	assert(notTest());
 	assert(waitTest());
+	assert(compareTest());
 	volatile int stop = 0;
 }
 
@@ -261,6 +262,22 @@ bool Interpretor::waitTest()
 	unitTest(str4, tRes2);
 	return !tRes.success() && tRes2.success();
 }
+
+bool Interpretor::compareTest()
+{
+	TokenResult tRes;
+	std::string str1 = "compare<>()";
+	assert(!unitTest(str1, tRes));
+	TokenResult tRes2;
+	std::string str2 = "compare<INT,EQUAL>(5,5)";
+	unitTest(str2, tRes2);
+	std::string str3 = "compare<FLOAT,GREATER>(int(5),int(6))";
+	unitTest(str3, tRes2);
+	std::string str4 = "compare<STRING,EQUAL>(\"de\",\"efe\")";
+	unitTest(str4, tRes2);
+	return !tRes.success() && tRes2.success();
+}
+
 bool Interpretor::elifTest()
 {
 	TokenResult tRes;
