@@ -12,109 +12,104 @@ bool isTokenString(const std::string& text);
 bool isKeywordString(const std::string& text);
 bool isLiteralString(const std::string& text);
 bool isPunctuationString(const std::string& text);
+#define TOKEN_DEF(var,str) static const std::string var = str;
+#define TOKEN_CAT(catName) static const std::vector<std::string> catName
+// Punctuation Tokens string
+TOKEN_DEF(commaP, ",");
+TOKEN_DEF(openParenthesisP, "(");
+TOKEN_DEF(closeParenthesisP, ")");
+TOKEN_DEF(openBracketsP, "{");
+TOKEN_DEF(closeBracketsP, "}");
+TOKEN_DEF(openAngleBracketsP, "<");
+TOKEN_DEF(closeAngleBracketsP, ">");
+TOKEN_DEF(quotation, "\"");
+TOKEN_DEF(whitespace, " ");
+TOKEN_DEF(tabulation, "\t");
+TOKEN_DEF(backspace, "\b");
+TOKEN_DEF(newline, "\n");
+TOKEN_DEF(carriagereturn, "\r");
+TOKEN_DEF(allPunctuations, " <>\",(){}\t\b\n\r");
 
-//Punctuation Tokens string
-static const std::string commaP = ",";
-static const std::string openParenthesisP = "(";
-static const std::string closeParenthesisP = ")";
-static const std::string openBracketsP = "{";
-static const std::string closeBracketsP = "}";
-static const std::string openAngleBracketsP = "<";
-static const std::string closeAngleBracketsP = ">";
-static const std::string quotation = "\"";
-static const std::string whitespace = " ";
-static const std::string tabulation = "\t";
-static const std::string backspace = "\b";
-static const std::string newline = "\n";
-static const std::string carriagereturn = "\r";
-static const std::string allPunctuations = " <>\",(){}\t\b\n\r";
+TOKEN_CAT(allPunctuationsTokensStrings)= { openAngleBracketsP, closeAngleBracketsP, quotation, carriagereturn, newline, whitespace, tabulation, backspace, 
+commaP, openParenthesisP, closeParenthesisP, openBracketsP, closeBracketsP };
 
-static const std::vector<std::string> allPunctuationsTokensStrings = { openAngleBracketsP,closeAngleBracketsP, quotation,carriagereturn, newline, whitespace,tabulation,backspace, commaP, openParenthesisP, closeParenthesisP, openBracketsP, closeBracketsP };
+// Literal Tokens string
+TOKEN_DEF(trueL, "true");
+TOKEN_DEF(falseL, "false");
+TOKEN_DEF(secondL, "SECOND");
+TOKEN_DEF(millisecondL, "MILLISECOND");
+TOKEN_DEF(minuteL, "MINUTE");
+TOKEN_DEF(northL, "NORTH");
+TOKEN_DEF(southL, "SOUTH");
+TOKEN_DEF(northwL, "NORTHW");
+TOKEN_DEF(northeL, "NORTHE");
+TOKEN_DEF(southwL, "SOUTHW");
+TOKEN_DEF(southeL, "SOUTHE");
+TOKEN_DEF(intL, "INT");
+TOKEN_DEF(floatL, "FLOAT");
+TOKEN_DEF(coordL, "COORD");
+TOKEN_DEF(zoneL, "ZONE");
+TOKEN_DEF(boolL, "BOOL");
+TOKEN_DEF(timetypeL, "TIMETYPE");
+TOKEN_DEF(directionL, "DIRECTION");
+TOKEN_DEF(stringL, "STRING");
+TOKEN_DEF(datatypeL, "DATATYPE");
+TOKEN_DEF(comparetypeL, "COMPARETYPE");
+TOKEN_DEF(greaterL, "GREATER");
+TOKEN_DEF(lesserL, "LESSER");
+TOKEN_DEF(equalL, "EQUAL");
+TOKEN_DEF(notequalL, "NOTEQUAL");
+TOKEN_DEF(greaterequalL, "GREATEREQUAL");
+TOKEN_DEF(lesserequalL, "LESSEREQUAL");
 
-//Literal Tokens string
-static const std::string trueL = "true";
-static const std::string falseL = "false";
-static const std::string secondL = "SECOND";
-static const std::string millisecondL = "MILLISECOND";
-static const std::string minuteL = "MINUTE";
-static const std::string northL = "NORTH";
-static const std::string southL = "SOUTH";
-static const std::string northwL = "NORTHW";
-static const std::string northeL = "NORTHE";
-static const std::string southwL = "SOUTHW";
-static const std::string southeL = "SOUTHE";
-static const std::string intL = "INT";
-static const std::string floatL = "FLOAT";
-static const std::string coordL = "COORD";
-static const std::string zoneL = "ZONE";
-static const std::string boolL = "BOOL";
-static const std::string timetypeL = "TIMETYPE";
-static const std::string directionL = "DIRECTION";
-static const std::string stringL = "STRING";
-static const std::string datatypeL = "DATATYPE";
-static const std::string comparetypeL = "COMPARETYPE";
-static const std::string greaterL = "GREATER";
-static const std::string lesserL = "LESSER";
-static const std::string equalL = "EQUAL";
-static const std::string notequalL = "NOTEQUAL";
-static const std::string greaterequalL = "GREATEREQUAL";
-static const std::string lesserequalL = "LESSEREQUAL";
+TOKEN_CAT(allLiteralsTokensStrings)= { trueL, falseL, secondL, millisecondL, minuteL, northL, southL, northwL, northeL, southwL, southeL, intL, 
+floatL, coordL, zoneL, boolL, timetypeL, directionL, stringL, datatypeL };
 
+// Keyword Tokens string
+TOKEN_DEF(storeK, "store");
+TOKEN_DEF(clickK, "click");
+TOKEN_DEF(swipeK, "swipe");
+TOKEN_DEF(waitK, "wait");
+TOKEN_DEF(ifK, "if");
+TOKEN_DEF(elseK, "else");
+TOKEN_DEF(elifK, "elif");
+TOKEN_DEF(notK, "not");
+TOKEN_DEF(floatK, "float");
+TOKEN_DEF(intK, "int");
+TOKEN_DEF(coordK, "coord");
+TOKEN_DEF(zoneK, "zone");
+TOKEN_DEF(andK, "and");
+TOKEN_DEF(orK, "or");
+TOKEN_DEF(loopK, "loop");
+TOKEN_DEF(listK, "list");
+TOKEN_DEF(stringK, "string");
+TOKEN_DEF(directionK, "direction");
+TOKEN_DEF(findswipeK, "findswipe");
+TOKEN_DEF(findclickK, "findclick");
+TOKEN_DEF(findK, "find");
+TOKEN_DEF(breakK, "break");
+TOKEN_DEF(continueK, "continue");
+TOKEN_DEF(doloopK, "doloop");
+TOKEN_DEF(functionK, "function");
+TOKEN_DEF(switchK, "switch");
+TOKEN_DEF(caseK, "case");
+TOKEN_DEF(defaultK, "default");
+TOKEN_DEF(compareK, "compare");
+TOKEN_DEF(mainK, "main");
+TOKEN_DEF(boolK, "bool");
+TOKEN_DEF(printK, "print");
+TOKEN_DEF(returnK, "return");
+TOKEN_DEF(voidK, "void");
+TOKEN_DEF(addK, "add");
+TOKEN_DEF(subK, "sub");
+TOKEN_DEF(multK, "mult");
 
-
-
-
-
-static const std::vector<std::string> allLiteralsTokensStrings =
-{ trueL,falseL,secondL,millisecondL,minuteL,northL,southL,northwL,northeL,southwL,southeL,intL,floatL,coordL,zoneL,boolL,timetypeL,directionL,stringL,datatypeL };
-
-static std::string storeK = "store";
-static std::string clickK = "click";
-static std::string swipeK = "swipe";
-static std::string waitK = "wait";
-static std::string ifK = "if";
-static std::string elseK = "else";
-static std::string elifK = "elif";
-static std::string notK = "not";
-static std::string floatK = "float";
-static std::string intK = "int";
-static std::string coordK = "coord";
-static std::string zoneK = "zone";
-static std::string andK = "and";
-static std::string orK = "or";
-static std::string loopK = "loop";
-static std::string listK = "list";
-static std::string stringK = "string";
-static std::string directionK = "direction";
-static std::string findswipeK = "findswipe";
-static std::string findclickK = "findclick";
-static std::string findK = "find";
-static std::string breakK = "break";
-static std::string continueK = "continue";
-static std::string doloopK = "doloop";
-static std::string functionK = "function";
-static std::string switchK = "switch";
-static std::string caseK = "case";
-static std::string defaultK = "default";
-static std::string compareK = "compare";
-static std::string mainK = "main";
-static std::string boolK = "bool";
-static std::string printK = "print";
-static std::string returnK = "return";
-static std::string voidK = "void";
-static std::string addK = "add";
-static std::string subK = "sub";
-static std::string multK = "mult";
-
-
-static const std::vector<std::string> allKeywordsTokensString = { storeK,clickK,swipeK,waitK,ifK,elseK,elifK,notK,floatK,intK,coordK,zoneK,andK,orK,loopK,listK,stringK,directionK,findswipeK,findclickK,findK,breakK,continueK,doloopK,functionK,switchK,caseK,defaultK,compareK,mainK,boolK,printK,returnK,voidK, };
+TOKEN_CAT(allKeywordsTokensString)= { storeK, clickK, swipeK, waitK, ifK, elseK, elifK, notK, floatK, intK, coordK, zoneK, andK, orK, loopK, listK, stringK, 
+directionK, findswipeK, findclickK, findK, breakK, continueK, doloopK, functionK, switchK, caseK, defaultK, compareK, mainK, boolK, printK, returnK, voidK };
 
 // Concatenate all token vectors
 static const std::vector<std::string> allTokensStrings = [] {
 	std::vector<std::string> result;
-	result.reserve(allKeywordsTokensString.size() +
-		allPunctuationsTokensStrings.size() +
-		allLiteralsTokensStrings.size());
 
 	result.insert(result.end(), allKeywordsTokensString.begin(), allKeywordsTokensString.end());
 	result.insert(result.end(), allPunctuationsTokensStrings.begin(), allPunctuationsTokensStrings.end());

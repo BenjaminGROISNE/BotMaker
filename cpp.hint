@@ -1,0 +1,4 @@
+// Hint files help the Visual Studio IDE interpret Visual C++ identifiers
+// such as names of functions and macros.
+// For more information see https://go.microsoft.com/fwlink/?linkid=865984
+#define TOKEN_ALL(var, catList) static const std::vector<std::string> var = [] { std::vector<std::string> result; for(auto& cat:catList) { result.insert(result.end(), cat.begin(), cat.end()); result.insert(result.end(), cat.begin(), cat.end()); result.insert(result.end(), cat.begin(), cat.end()); } return result; }();
