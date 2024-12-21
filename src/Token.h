@@ -17,6 +17,23 @@ enum class DataType {
 	NONE, COORD, ZONE, STRING, DIRECTION, FLOAT, INT, BOOL, TIMETYPE,COMPARETYPE,DATATYPE,IDENTIFIER
 };
 
+std::unordered_map<DataType, std::string> dataStrMap = {
+	{DataType::NONE,"NONE"},
+	{DataType::COORD,"COORD"},
+	{DataType::ZONE,"ZONE"},
+	{DataType::STRING,"STRING"},
+	{DataType::DIRECTION,"DIRECTION"},
+	{DataType::FLOAT,"FLOAT"},
+	{DataType::INT,"INT"},
+	{DataType::BOOL,"BOOL"},
+	{DataType::TIMETYPE,"TIMETYPE"},
+	{DataType::COMPARETYPE,"COMPARETYPE"},
+	{DataType::DATATYPE,"DATATYPE"},
+	{DataType::IDENTIFIER,"IDENTIFIER"}
+};
+
+
+
 enum class TokenVALUE {
 	NOT, TOKEN, UNKNOWN, QUOTATION, OPENANGLEBRACKETS, CLOSEANGLEBRACKETS, FLOW, COMMA, SEMICOLON, NUMERIC, IDENTIFIER,
 	CLOSEBRACKETS, OPENBRACKETS, OPENPARENTHESIS, CLOSEPARENTHESIS, STRINGLITERAL, TRUELITERAL, FALSELITERAL, SECOND, WHITESPACE,
@@ -33,6 +50,7 @@ public:
 	ValueType(DataType t, int l = 0);
 	ValueType(const ValueType& vt);
 	bool equal(const ValueType& vt);
+	std::string show();
 	DataType type;
 	int dim;
 };
@@ -101,13 +119,16 @@ class Error {
 public:
 	Error();
 	Error(TokenVALUE scopeToken, int l, TokenVALUE errorToken, ErrorType et = ErrorType::MISSING);
-	Error(TokenVALUE scopeToken, int l, ValueType dType);
+	Error(TokenVALUE scopeToken, int l, ValueType& expectedType, ValueType& receivedType);
 	void showError();
 protected:
 	ErrorType errorType;
 	TokenVALUE errorValue;
 	TokenVALUE scopeToken;
-	ValueType vType;
+	ValueType expectedType;
+	ValueType receivedType;
+	bool dataTypeError;
+	bool tokenValueError;
 	int errorLine;
 };
 
@@ -117,7 +138,7 @@ public:
 	TokenResult(TokenVALUE value, int l);
 	void showErrors();
 	bool addError(TokenVALUE scopeToken,int l,TokenVALUE errorToken, ErrorType et=ErrorType::MISSING);
-	bool addError(TokenVALUE scopeToken,int l, ValueType& type);
+	bool addError(TokenVALUE scopeToken,int l, ValueType& expectedType, ValueType& receivedType);
 	bool addError(const TokenResult& tokRes);
 	void addVar(const std::string& name, const ValueType& type);
 	bool success();
@@ -217,8 +238,7 @@ public:
 	bool addType(ValueType tVal, IteratorList<Token>& tl, TokenResult& tRes);
 	bool addTypes(std::vector<ValueType> listTypes, IteratorList<Token>& tl, TokenResult& tRes);
 	bool addNumber(IteratorList<Token>& tl, TokenResult& tRes);
-	bool addTemplatedTypes(IteratorList<Token>& tl, TokenResult& tRes);
-	bool addTokens(IteratorList<Token>& tl, TokenResult& tRes);
+	bool addTemplatedTypes(IteratorList<Token>& tl, TokenResult& tRes);	TokenVALUE getTValue()const;
 protected:
 	ArgumentsOverload templateArguments;
 	std::vector<std::shared_ptr<Token>> templTokens;
@@ -468,14 +488,14 @@ protected:
 	std::vector<T> test(int i);
 	std::shared_ptr<Token> identifierToken;
 	std::shared_ptr<Token> valueToken;
-	bool addValue(IteratorList<Token>& tl, TokenResult tRes);
 	bool addTokens(IteratorList<Token>& tl, TokenResult& tRes)override;
 };
 
 //compare<DATATYPE,COMPARETYPE>(VALUE1,VALUE2,VALUE3,...,VALUEN)
 //compare<FLOAT,GREATER>(5.3,2.3,1.3,0.6,0.2)
-class CompareToken :public PKToken, public TemplateToken {
+class CompareToken :public MPKToken, public TemplateToken {
 public:
+	bool addTokens(IteratorList<Token>& tl, TokenResult& tRes);
 	CompareToken();
 	void setOverloads()final;
 	void setTemplateOverload()final;
@@ -703,10 +723,11 @@ class TimeTypeToken :public DataTypeToken {
 public:
 	TimeTypeToken();
 };
-class CompareTypeToken :public DataTypeToken {
+class CompareTypeToken :public LToken {
 public:
 	CompareTypeToken();
 	CompareType getCmpType();
+	ValueType getValueType(TokenResult& tRes)final;
 protected:
 };
 

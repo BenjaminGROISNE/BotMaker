@@ -18,73 +18,12 @@ bool isIdentifier(const std::string& s) {
 	return notEmpty && notTokenString && isAlnum;
 }
 
-// Define the map to store the mappings between token strings and TokenVALUE enums
-static const std::unordered_map<std::string, TokenVALUE> tokenMap = {
-	{mainK, TokenVALUE::MAIN},
-	{loopK, TokenVALUE::LOOP},
-	{boolK, TokenVALUE::BOOL},
-	{storeK, TokenVALUE::STORE},
-	{stringK, TokenVALUE::STRING},
-	{coordK, TokenVALUE::COORD},
-	{listK, TokenVALUE::LIST},
-	{intK, TokenVALUE::INTEGER},
-	{floatK, TokenVALUE::FLOAT},
-	{compareK, TokenVALUE::COMPARE},
-	{zoneK, TokenVALUE::ZONE},
-	{ifK, TokenVALUE::IF},
-	{elseK, TokenVALUE::ELSE},
-	{elifK, TokenVALUE::ELIF},
-	{doloopK, TokenVALUE::DOLOOP},
-	{andK, TokenVALUE::AND},
-	{notK, TokenVALUE::NOT},
-	{orK, TokenVALUE::OR},
-	{directionK, TokenVALUE::DIRECTION},
-	{switchK, TokenVALUE::SWITCH},
-	{defaultK, TokenVALUE::DEFAULT},
-	{breakK, TokenVALUE::BREAK},
-	{continueK, TokenVALUE::CONTINUE},
-	{caseK, TokenVALUE::CASE},
-	{printK, TokenVALUE::PRINT},
-	{waitK, TokenVALUE::WAIT},
-	{commaP, TokenVALUE::COMMA},
-	{openBracketsP, TokenVALUE::OPENBRACKETS},
-	{closeBracketsP, TokenVALUE::CLOSEBRACKETS},
-	{openAngleBracketsP, TokenVALUE::OPENANGLEBRACKETS},
-	{closeAngleBracketsP, TokenVALUE::CLOSEANGLEBRACKETS},
-	{openParenthesisP, TokenVALUE::OPENPARENTHESIS},
-	{closeParenthesisP, TokenVALUE::CLOSEPARENTHESIS},
-	{falseL, TokenVALUE::FALSELITERAL},
-	{trueL, TokenVALUE::TRUELITERAL},
-	{millisecondL, TokenVALUE::MILLISECOND},
-	{secondL, TokenVALUE::SECOND},
-	{minuteL, TokenVALUE::MINUTE},
-	{northL, TokenVALUE::NORTH},
-	{northwL, TokenVALUE::NORTHW},
-	{northeL, TokenVALUE::NORTHE},
-	{southL, TokenVALUE::SOUTH},
-	{southwL, TokenVALUE::SOUTHW},
-	{southeL, TokenVALUE::SOUTHE},
-	{boolL, TokenVALUE::BOOLTYPE},
-	{intL, TokenVALUE::INTTYPE},
-	{floatL, TokenVALUE::FLOATTYPE},
-	{coordL, TokenVALUE::COORDTYPE},
-	{zoneL, TokenVALUE::ZONETYPE},
-	{directionL, TokenVALUE::DIRECTIONTYPE},
-	{timetypeL, TokenVALUE::TIMETYPE},
-	{stringL, TokenVALUE::STRINGTYPE},
-	{comparetypeL, TokenVALUE::COMPARETYPE},
-	{greaterL, TokenVALUE::GREATER},
-	{lesserL, TokenVALUE::LESSER},
-	{greaterequalL, TokenVALUE::GREATEREQUAL},
-	{lesserequalL, TokenVALUE::LESSEREQUAL},
-	{equalL, TokenVALUE::EQUAL},
-	{notequalL, TokenVALUE::NOTEQUAL},
-	{quotation, TokenVALUE::QUOTATION}
-};
+
+
 
 TokenVALUE Lexer::getTokenValue(const std::string& text) {
-	auto it = tokenMap.find(text);
-	if (it != tokenMap.end()) {
+	auto it = StrTokenValueMap.find(text);
+	if (it != StrTokenValueMap.end()) {
 		return it->second;
 	}
 	else if (isNumber(text)) {
@@ -157,7 +96,13 @@ static const std::unordered_map<TokenVALUE, std::function<std::shared_ptr<Token>
 	TOKEN_FACTORY(TokenVALUE::COORDTYPE, CoordTypeToken),
 	TOKEN_FACTORY(TokenVALUE::ZONETYPE, ZoneTypeToken),
 	TOKEN_FACTORY(TokenVALUE::TIMETYPE, TimeTypeToken),
-	TOKEN_FACTORY(TokenVALUE::DIRECTIONTYPE, DirectionTypeToken)
+	TOKEN_FACTORY(TokenVALUE::DIRECTIONTYPE, DirectionTypeToken),
+	TOKEN_FACTORY(TokenVALUE::EQUAL, EqualToken),
+	TOKEN_FACTORY(TokenVALUE::NOTEQUAL, NotequalToken),
+	TOKEN_FACTORY(TokenVALUE::GREATER, GreaterToken),
+	TOKEN_FACTORY(TokenVALUE::LESSER, LesserToken),
+	TOKEN_FACTORY(TokenVALUE::GREATEREQUAL, GreaterequalToken),
+	TOKEN_FACTORY(TokenVALUE::LESSEREQUAL, LesserequalToken),
 };
 
 std::shared_ptr<Token> Lexer::getToken(const TokenVALUE& tValue, const std::string& text) {
@@ -274,6 +219,7 @@ std::vector<std::shared_ptr<Token>> Lexer::extractTokens(const std::string& text
 			skipSpace(newText);
 		}
 		else {
+			std::cout << nextTokenString << '\n';
 			listTokens.push_back(getToken(nextTokenString));
 			skipTokenString(newText, nextTokenString);
 		}

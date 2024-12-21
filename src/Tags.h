@@ -104,8 +104,10 @@ TOKEN_DEF(addK, "add");
 TOKEN_DEF(subK, "sub");
 TOKEN_DEF(multK, "mult");
 
-TOKEN_CAT(allKeywordsTokensString)= { storeK, clickK, swipeK, waitK, ifK, elseK, elifK, notK, floatK, intK, coordK, zoneK, andK, orK, loopK, listK, stringK, 
-directionK, findswipeK, findclickK, findK, breakK, continueK, doloopK, functionK, switchK, caseK, defaultK, compareK, mainK, boolK, printK, returnK, voidK };
+TOKEN_CAT(allKeywordsTokensString)= { storeK, clickK, swipeK, waitK, ifK, 
+elseK, elifK, notK, floatK, intK, coordK, zoneK, andK, orK, loopK, listK, stringK, 
+directionK, findswipeK, findclickK, findK, breakK, continueK, doloopK,
+functionK, switchK, caseK, defaultK, compareK, mainK, boolK, printK, returnK, voidK };
 
 // Concatenate all token vectors
 static const std::vector<std::string> allTokensStrings = [] {
@@ -118,15 +120,153 @@ static const std::vector<std::string> allTokensStrings = [] {
 	return result;
 	}();
 
-
-
-
-enum Dimensions {
-	ONEDIM,TWODIM
+enum class DataType {
+	NONE, COORD, ZONE, STRING, DIRECTION, FLOAT, INT, BOOL, TIMETYPE, COMPARETYPE, DATATYPE, IDENTIFIER
 };
 
+enum class TokenVALUE {
+	NOT, TOKEN, UNKNOWN, QUOTATION, OPENANGLEBRACKETS, CLOSEANGLEBRACKETS, FLOW, COMMA, SEMICOLON, NUMERIC, IDENTIFIER,
+	CLOSEBRACKETS, OPENBRACKETS, OPENPARENTHESIS, CLOSEPARENTHESIS, STRINGLITERAL, TRUELITERAL, FALSELITERAL, SECOND, WHITESPACE,
+	MINUTE, MILLISECOND, INTEGER, WAIT, FLOAT, BOOL, AND, OR, COMPARE, STRING, COORD, DIRECTION, ZONE, LIST, IF, LOOP, DOLOOP,
+	SWITCH, DEFAULT, ELSE, ELIF, BREAK, CONTINUE, CASE, STORE, MAIN, PRINT, NORTH, SOUTH, EAST, WEST, NORTHW, NORTHE, SOUTHW, SOUTHE,
+	TEMPLATE, STRINGTYPE, INTTYPE, FLOATTYPE, COORDTYPE, ZONETYPE, BOOLTYPE, DIRECTIONTYPE, TIMETYPE, DATATYPE,
+	COMPARETYPE, GREATER, LESSER, GREATEREQUAL, LESSEREQUAL, EQUAL, NOTEQUAL
+};
+// Define the map to store the mappings between token strings and TokenVALUE enums
+static const std::unordered_map<std::string, TokenVALUE> StrTokenValueMap = {
+	{mainK, TokenVALUE::MAIN},
+	{loopK, TokenVALUE::LOOP},
+	{boolK, TokenVALUE::BOOL},
+	{storeK, TokenVALUE::STORE},
+	{stringK, TokenVALUE::STRING},
+	{coordK, TokenVALUE::COORD},
+	{listK, TokenVALUE::LIST},
+	{intK, TokenVALUE::INTEGER},
+	{floatK, TokenVALUE::FLOAT},
+	{compareK, TokenVALUE::COMPARE},
+	{zoneK, TokenVALUE::ZONE},
+	{ifK, TokenVALUE::IF},
+	{elseK, TokenVALUE::ELSE},
+	{elifK, TokenVALUE::ELIF},
+	{doloopK, TokenVALUE::DOLOOP},
+	{andK, TokenVALUE::AND},
+	{notK, TokenVALUE::NOT},
+	{orK, TokenVALUE::OR},
+	{directionK, TokenVALUE::DIRECTION},
+	{switchK, TokenVALUE::SWITCH},
+	{defaultK, TokenVALUE::DEFAULT},
+	{breakK, TokenVALUE::BREAK},
+	{continueK, TokenVALUE::CONTINUE},
+	{caseK, TokenVALUE::CASE},
+	{printK, TokenVALUE::PRINT},
+	{waitK, TokenVALUE::WAIT},
+	{commaP, TokenVALUE::COMMA},
+	{openBracketsP, TokenVALUE::OPENBRACKETS},
+	{closeBracketsP, TokenVALUE::CLOSEBRACKETS},
+	{openAngleBracketsP, TokenVALUE::OPENANGLEBRACKETS},
+	{closeAngleBracketsP, TokenVALUE::CLOSEANGLEBRACKETS},
+	{openParenthesisP, TokenVALUE::OPENPARENTHESIS},
+	{closeParenthesisP, TokenVALUE::CLOSEPARENTHESIS},
+	{falseL, TokenVALUE::FALSELITERAL},
+	{trueL, TokenVALUE::TRUELITERAL},
+	{millisecondL, TokenVALUE::MILLISECOND},
+	{secondL, TokenVALUE::SECOND},
+	{minuteL, TokenVALUE::MINUTE},
+	{northL, TokenVALUE::NORTH},
+	{northwL, TokenVALUE::NORTHW},
+	{northeL, TokenVALUE::NORTHE},
+	{southL, TokenVALUE::SOUTH},
+	{southwL, TokenVALUE::SOUTHW},
+	{southeL, TokenVALUE::SOUTHE},
+	{boolL, TokenVALUE::BOOLTYPE},
+	{intL, TokenVALUE::INTTYPE},
+	{floatL, TokenVALUE::FLOATTYPE},
+	{coordL, TokenVALUE::COORDTYPE},
+	{zoneL, TokenVALUE::ZONETYPE},
+	{directionL, TokenVALUE::DIRECTIONTYPE},
+	{timetypeL, TokenVALUE::TIMETYPE},
+	{stringL, TokenVALUE::STRINGTYPE},
+	{comparetypeL, TokenVALUE::COMPARETYPE},
+	{greaterL, TokenVALUE::GREATER},
+	{lesserL, TokenVALUE::LESSER},
+	{greaterequalL, TokenVALUE::GREATEREQUAL},
+	{lesserequalL, TokenVALUE::LESSEREQUAL},
+	{equalL, TokenVALUE::EQUAL},
+	{notequalL, TokenVALUE::NOTEQUAL},
+	{quotation, TokenVALUE::QUOTATION}
+};
+
+// Define the map to store the mappings between TokenVALUE enums and their corresponding strings
+static const std::unordered_map<TokenVALUE, std::string> TokenValueStrMap = {
+{TokenVALUE::MAIN, mainK},
+{TokenVALUE::LOOP, loopK},
+{TokenVALUE::BOOL, boolK},
+{TokenVALUE::STORE, storeK},
+{TokenVALUE::STRING, stringK},
+{TokenVALUE::COORD, coordK},
+{TokenVALUE::LIST, listK},
+{TokenVALUE::INTEGER, intK},
+{TokenVALUE::FLOAT, floatK},
+{TokenVALUE::COMPARE, compareK},
+{TokenVALUE::ZONE, zoneK},
+{TokenVALUE::IF, ifK},
+{ TokenVALUE::ELSE, elseK },
+{ TokenVALUE::ELIF, elifK },
+{ TokenVALUE::DOLOOP, doloopK },
+{ TokenVALUE::AND, andK },
+{ TokenVALUE::NOT, notK },
+{ TokenVALUE::OR, orK },
+{ TokenVALUE::DIRECTION, directionK },
+{ TokenVALUE::SWITCH, switchK },
+{ TokenVALUE::DEFAULT, defaultK },
+{ TokenVALUE::BREAK, breakK },
+{ TokenVALUE::CONTINUE, continueK },
+{ TokenVALUE::CASE, caseK },
+{ TokenVALUE::PRINT, printK },
+{ TokenVALUE::WAIT, waitK },
+{ TokenVALUE::COMMA, commaP },
+{ TokenVALUE::OPENBRACKETS, openBracketsP },
+{ TokenVALUE::CLOSEBRACKETS, closeBracketsP },
+{ TokenVALUE::OPENANGLEBRACKETS, openAngleBracketsP },
+{ TokenVALUE::CLOSEANGLEBRACKETS, closeAngleBracketsP },
+{ TokenVALUE::OPENPARENTHESIS, openParenthesisP },
+{ TokenVALUE::CLOSEPARENTHESIS, closeParenthesisP },
+{ TokenVALUE::FALSELITERAL, falseL },
+{ TokenVALUE::TRUELITERAL, trueL },
+{ TokenVALUE::MILLISECOND, millisecondL },
+{ TokenVALUE::SECOND, secondL },
+{ TokenVALUE::MINUTE, minuteL },
+{ TokenVALUE::NORTH, northL },
+{ TokenVALUE::NORTHW, northwL },
+{ TokenVALUE::NORTHE, northeL },
+{ TokenVALUE::SOUTH, southL },
+{ TokenVALUE::SOUTHW, southwL },
+{ TokenVALUE::SOUTHE, southeL },
+{ TokenVALUE::BOOLTYPE, boolL },
+{ TokenVALUE::INTTYPE, intL },
+{ TokenVALUE::FLOATTYPE, floatL },
+{ TokenVALUE::COORDTYPE, coordL },
+{ TokenVALUE::ZONETYPE, zoneL },
+{ TokenVALUE::DIRECTIONTYPE, directionL },
+{ TokenVALUE::TIMETYPE, timetypeL },
+{ TokenVALUE::STRINGTYPE, stringL },
+{ TokenVALUE::COMPARETYPE, comparetypeL },
+{ TokenVALUE::GREATER, greaterL },
+{ TokenVALUE::LESSER, lesserL },
+{ TokenVALUE::GREATEREQUAL, greaterequalL },
+{ TokenVALUE::LESSEREQUAL, lesserequalL },
+{ TokenVALUE::EQUAL, equalL },
+{ TokenVALUE::NOTEQUAL, notequalL },
+{ TokenVALUE::QUOTATION, quotation }
+};
+
+
+
+
 enum TagType {
-	TAG,FLOWTAG,DATATYPETAG,COMPARETYPETAG,TIMETYPETAG,DIMENSIONTAG, INTEGERTAG, FLOATTAG, BOOLTAG, ANDTAG, NOTTAG, ORTAG, COMPARETAG,WAITTAG, STRINGTAG,COORDSTAG,DIRECTIONTAG,ZONETAG,LISTTAG,IFTAG,LOOPTAG, DOLOOPTAG, SWITCHTAG, DEFAULTTAG, ELSETAG, ELIFTAG, BREAKTAG, CONTINUETAG, CASETAG,LOADTAG,STORETAG,MAINTAG,PRINTTAG
+	TAG,FLOWTAG,DATATYPETAG,COMPARETYPETAG,TIMETYPETAG,DIMENSIONTAG, INTEGERTAG, FLOATTAG, BOOLTAG, ANDTAG, NOTTAG, ORTAG, COMPARETAG,WAITTAG,
+	STRINGTAG,COORDSTAG,DIRECTIONTAG,ZONETAG,LISTTAG,IFTAG,LOOPTAG, DOLOOPTAG, SWITCHTAG, DEFAULTTAG, ELSETAG, ELIFTAG, BREAKTAG, CONTINUETAG,
+	CASETAG,LOADTAG,STORETAG,MAINTAG,PRINTTAG
 };
 
 enum class TimeType {
