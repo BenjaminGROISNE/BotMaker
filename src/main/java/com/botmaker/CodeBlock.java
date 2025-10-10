@@ -7,4 +7,6 @@ public interface CodeBlock {
     String getId();
     ASTNode getAstNode();
     Node getUINode(CompletionContext context);
+    void highlight();
+    void unhighlight();
 }

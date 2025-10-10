@@ -4,7 +4,7 @@ public class Demo {
         String anotherMessage = "Hello from the second variable!";
 
         if (true) {
-            System.out.println(args);
+            System.out.println(message);
             System.out.println(message);
         }
     }
