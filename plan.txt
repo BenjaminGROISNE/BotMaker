@@ -1,0 +1,51 @@
+✦ Of course. Based on the analysis of your current application, here is a strategic plan outlining the next steps to transform it into a clean, debuggable, block-based automation tool.
+
+  The current architecture is a strong starting point. It successfully parses Java code into a visual block representation and leverages the JDT Language Server for features like code completion. The main challenge ahead is to bridge
+  the gap between the visual blocks and the runtime execution of the code to enable debugging.
+
+  Here is a proposed plan, broken down into four phases:
+
+  Phase 1: Architectural Refactoring for Abstraction and Extensibility
+
+  The goal of this phase is to move away from string-based type checking (switch (codeBlock.getType())) and towards a more object-oriented design. This will make the codebase cleaner, more robust, and easier to extend with new block
+  types in the future.
+
+   1. Introduce a `CodeBlock` Interface: Create a CodeBlock interface with common methods like getId(), getChildren(), getAstNode(), and a method for creating its corresponding UI component, e.g., createUI().
+   2. Implement Concrete Block Classes: For each block type (e.g., "print", "if", "variable_declaration"), create a specific class that implements the CodeBlock interface (e.g., PrintBlock, IfBlock, VariableDeclarationBlock).
+   3. Encapsulate Logic: Move the logic currently in AstToBlocksConverter and BlockUI that is specific to a block type into the corresponding new class. For example, the IfBlock class would be responsible for knowing how to find its
+      condition and "then" statement from the AST.
+   4. Create a Block Factory: Implement a factory class, e.g., CodeBlockFactory, with a method that takes an ASTNode as input and returns the appropriate concrete CodeBlock instance (e.g., PrintBlock, IfBlock). This will centralize the
+      logic for converting AST nodes to your block objects.
+
+  Phase 2: Integrating a Debugger Backend
+
+  This is the core technical challenge. You will replace the current runCode method, which simply executes the compiled code, with a system that runs the code under the control of a debugger. The standard Java Debug Interface (JDI) is
+   the right tool for this.
+
+   1. Launch with Debug Agent: Modify the code execution logic to start the target Java program with the JDWP (Java Debug Wire Protocol) agent. This involves adding command-line arguments like
+      -agentlib:jdwp=transport=dt_socket,server=y,suspend=y,address=*:5005. The suspend=y flag is crucial as it tells the JVM to wait for a debugger to attach before it starts running.
+   2. Implement a JDI Connector: In your main application, use the JDI library to connect to the target JVM's debug agent at the specified address (e.g., localhost:5005).
+   3. Create a Debugger Service: Encapsulate the JDI logic in a dedicated service class. This service will manage the connection, breakpoints, and execution control (resume, step, etc.).
+
+  Phase 3: Linking UI Blocks to Runtime for Breakpoints
+
+  This phase directly addresses your goal of "stopping at a block" by linking the UI to the debugger.
+
+   1. Implement Breakpoint UI: Add a "gutter" or clickable area to each BlockUI. Clicking this area will toggle a breakpoint on that block.
+   2. Map Blocks to Line Numbers: When a user sets a breakpoint on a BlockUI, get the corresponding CodeBlock object. Use its stored ASTNode to find its start position in the source code. The CompilationUnit object from the AST parser
+      has a getLineNumber(int position) method that will give you the exact line number.
+   3. Set JDI Breakpoints: Use your debugger service (from Phase 2) to tell the JDI to set a BreakpointRequest at the class and line number you just determined.
+   4. Handle Breakpoint Events: The JDI will send an event when a breakpoint is hit. Your application must listen for these events. When an event occurs, the debugger service should notify the UI to highlight the BlockUI corresponding to
+       the current execution line.
+
+  Phase 4: Building the Debugging User Experience
+
+  With the backend in place, the final phase is to build the user interface for controlling the debugger.
+
+   1. Add Debugger Controls: Create UI buttons for "Resume," "Step Over," "Step Into," and "Stop." These buttons will call the corresponding methods in your debugger service (e.g., debugger.resume(), debugger.stepOver()).
+   2. Create a Variable Inspector: Add a new panel to your UI. When the program is paused at a breakpoint, use the JDI to inspect the current stack frame. From the stack frame, you can get the visible local variables and their values.
+      Display these variable names and values in the panel.
+   3. Visual Feedback: Ensure the currently executing block (where the program is paused) is clearly highlighted. Update the variable inspector automatically each time the program pauses.
+
+  By following this plan, you will build a robust application with a clean, object-oriented architecture and achieve your primary goal of creating an interactive debugging experience that directly links your visual blocks to the live,
+   running code.
