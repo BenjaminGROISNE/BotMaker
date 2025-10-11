@@ -1,7 +1,7 @@
 package com.botmaker;
 
 import com.sun.jdi.connect.IllegalConnectorArgumentsException;
-import com.sun.jdi.event.StepEvent;
+import com.sun.jdi.event.LocatableEvent;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.scene.Scene;
@@ -22,9 +22,9 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
+import java.net.ServerSocket;
+import java.util.stream.Collectors;
 
 public class Main extends Application {
 
@@ -35,17 +35,17 @@ public class Main extends Application {
     private TextArea outputArea;
 
     private Button debugButton;
-    private Button nextStepButton;
+    private Button resumeButton;
 
     private DebuggerService debuggerService;
 
     private String docUri;
     private String currentCode;
     private long docVersion = 1;
-    private boolean isDirty = true;
 
-    // New fields for debugging UI
+    // Fields for debugging UI
     private Map<ASTNode, CodeBlock> nodeToBlockMap;
+    private Map<Integer, CodeBlock> lineToBlockMap;
     private CodeBlock highlightedBlock;
 
     @Override
@@ -66,19 +66,22 @@ public class Main extends Application {
         Button compileButton = new Button("Compile");
         compileButton.setOnAction(e -> compileCode());
 
+        Button runButton = new Button("Run");
+        runButton.setOnAction(e -> runCode());
+
         debugButton = new Button("Debug");
         debugButton.setOnAction(e -> startDebugging());
 
-        nextStepButton = new Button("Next Step");
-        nextStepButton.setDisable(true);
-        nextStepButton.setOnAction(e -> {
+        resumeButton = new Button("Resume");
+        resumeButton.setDisable(true);
+        resumeButton.setOnAction(e -> {
             if (debuggerService != null) {
-                nextStepButton.setDisable(true); // Disable until next step event
-                debuggerService.stepOver();
+                resumeButton.setDisable(true); // Disable until next pause event
+                debuggerService.resume();
             }
         });
 
-        HBox buttonBox = new HBox(10, compileButton, debugButton, nextStepButton);
+        HBox buttonBox = new HBox(10, compileButton, runButton, debugButton, resumeButton);
 
         outputArea = new TextArea();
         outputArea.setEditable(false);
@@ -100,7 +103,6 @@ public class Main extends Application {
 
     private void handleCodeUpdate(String newCode) {
         this.docVersion++;
-        this.isDirty = true;
         jdtServer.getTextDocumentService().didChange(new DidChangeTextDocumentParams(
                 new VersionedTextDocumentIdentifier(docUri, (int) docVersion),
                 List.of(new TextDocumentContentChangeEvent(newCode))
@@ -137,22 +139,43 @@ public class Main extends Application {
                     return;
                 }
 
+                CompilationUnit cu = factory.getCompilationUnit();
+                if (cu == null) {
+                    Platform.runLater(() -> statusLabel.setText("Error: Could not parse code to get breakpoints."));
+                    return;
+                }
+
+                // Create a direct mapping from line number to CodeBlock for accurate highlighting.
+                this.lineToBlockMap = nodeToBlockMap.values().stream()
+                        .collect(Collectors.toMap(
+                                block -> cu.getLineNumber(block.getAstNode().getStartPosition()),
+                                block -> block,
+                                (block1, block2) -> block1 // If two blocks are on the same line, just take the first.
+                        ));
+                List<Integer> breakpointLines = new ArrayList<>(this.lineToBlockMap.keySet());
+
+                // Find a free port for the debugger to listen on.
+                int freePort;
+                try (ServerSocket socket = new ServerSocket(0)) {
+                    freePort = socket.getLocalPort();
+                }
+
                 Platform.runLater(() -> {
-                    statusLabel.setText("Starting debugger...");
+                    statusLabel.setText("Starting debugger on port " + freePort + "...");
                     debugButton.setDisable(true);
+                    outputArea.clear();
                 });
 
                 String classPath = "build/compiled";
                 String className = "Demo";
                 String javaExecutable = Paths.get(System.getProperty("java.home"), "bin", "java").toString();
-                String debugAgent = "-agentlib:jdwp=transport=dt_socket,server=y,suspend=y,address=8000";
+                String debugAgent = String.format("-agentlib:jdwp=transport=dt_socket,server=y,suspend=y,address=%d", freePort);
 
                 ProcessBuilder pb = new ProcessBuilder(javaExecutable, debugAgent, "-cp", classPath, className);
                 Process process = pb.start();
 
-                // Handle process output streams in separate threads to prevent blocking
                 new Thread(() -> {
-                    try (java.util.Scanner s = new java.util.Scanner(process.getInputStream())) {
+                    try (Scanner s = new Scanner(process.getInputStream())) {
                         while (s.hasNextLine()) {
                             String line = s.nextLine();
                             Platform.runLater(() -> outputArea.appendText(line + "\n"));
@@ -160,7 +183,7 @@ public class Main extends Application {
                     }
                 }).start();
                 new Thread(() -> {
-                    try (java.util.Scanner s = new java.util.Scanner(process.getErrorStream())) {
+                    try (Scanner s = new Scanner(process.getErrorStream())) {
                         while (s.hasNextLine()) {
                             String line = s.nextLine();
                             Platform.runLater(() -> outputArea.appendText(line + "\n"));
@@ -169,41 +192,86 @@ public class Main extends Application {
                 }).start();
 
                 debuggerService = new DebuggerService();
-                debuggerService.setOnStep(this::handleStepEvent); // Set the callback
-                debuggerService.connectAndRun();
+                debuggerService.setOnPause(this::handlePauseEvent);
+                debuggerService.setOnDisconnect(this::onDebugSessionFinished);
+                debuggerService.connectAndRun(className, freePort, breakpointLines);
 
-                Platform.runLater(() -> {
-                    statusLabel.setText("Debugger attached.");
-                    nextStepButton.setDisable(false);
-                });
-
-            } catch (IOException | InterruptedException e) {
+            } catch (IOException | IllegalConnectorArgumentsException | InterruptedException e) {
                 Platform.runLater(() -> statusLabel.setText("Debugger Error: " + e.getMessage()));
-            } catch (IllegalConnectorArgumentsException e) {
-                throw new RuntimeException(e);
+                e.printStackTrace();
             }
         }).start();
     }
 
-    private void handleStepEvent(StepEvent event) {
+    private void runCode() {
+        new Thread(() -> {
+            try {
+                if (!compileAndWait()) {
+                    Platform.runLater(() -> statusLabel.setText("Run aborted due to compilation failure."));
+                    return;
+                }
+
+                Platform.runLater(() -> {
+                    statusLabel.setText("Running code...");
+                    outputArea.clear();
+                });
+
+                String classPath = "build/compiled";
+                String className = "Demo";
+                String javaExecutable = Paths.get(System.getProperty("java.home"), "bin", "java").toString();
+
+                ProcessBuilder pb = new ProcessBuilder(javaExecutable, "-cp", classPath, className);
+                Process process = pb.start();
+
+                new Thread(() -> {
+                    try (Scanner s = new Scanner(process.getInputStream())) {
+                        while (s.hasNextLine()) {
+                            String line = s.nextLine();
+                            Platform.runLater(() -> outputArea.appendText(line + "\n"));
+                        }
+                    }
+                }).start();
+                new Thread(() -> {
+                    try (Scanner s = new Scanner(process.getErrorStream())) {
+                        while (s.hasNextLine()) {
+                            String line = s.nextLine();
+                            Platform.runLater(() -> outputArea.appendText(line + "\n"));
+                        }
+                    }
+                }).start();
+
+                int exitCode = process.waitFor();
+                Platform.runLater(() -> statusLabel.setText("Run finished with exit code: " + exitCode));
+
+            } catch (IOException | InterruptedException e) {
+                Platform.runLater(() -> statusLabel.setText("Run Error: " + e.getMessage()));
+            }
+        }).start();
+    }
+
+    private void handlePauseEvent(LocatableEvent event) {
         Platform.runLater(() -> {
-            CompilationUnit cu = factory.getCompilationUnit();
-            if (cu == null) return;
+            System.out.println("UI Thread: Pause event received. Enabling resume button.");
+            resumeButton.setDisable(false); // Re-enable the button
 
             int lineNumber = event.location().lineNumber();
-            int offset = cu.getPosition(lineNumber, 0); // This is an approximation, gets start of line
+            CodeBlock block = lineToBlockMap.get(lineNumber);
 
-            // Find the most specific AST node at this offset.
-            ASTNode node = NodeFinder.perform(cu, offset, 1);
-
-            if (node != null) {
-                // Find the corresponding block and highlight it
-                CodeBlock block = findBlockForNode(node);
+            if (block != null) {
                 highlightBlock(block);
-                statusLabel.setText("Stepped to line: " + lineNumber);
+                statusLabel.setText("Paused at line: " + lineNumber);
+            } else {
+                statusLabel.setText("Paused at line: " + lineNumber + " (No block found)");
             }
+        });
+    }
 
-            nextStepButton.setDisable(false); // Re-enable the button
+    private void onDebugSessionFinished() {
+        Platform.runLater(() -> {
+            statusLabel.setText("Debug session finished.");
+            debugButton.setDisable(false);
+            resumeButton.setDisable(true);
+            highlightBlock(null); // Clear highlight
         });
     }
 
@@ -215,7 +283,7 @@ public class Main extends Application {
             }
             currentNode = currentNode.getParent();
         }
-        return null; // No corresponding block found
+        return null;
     }
 
     private void highlightBlock(CodeBlock block) {
@@ -263,7 +331,6 @@ public class Main extends Application {
         int exitCode = process.waitFor();
 
         if (exitCode == 0) {
-            isDirty = false;
             return true;
         }
         else {
