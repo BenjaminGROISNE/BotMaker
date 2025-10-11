@@ -85,9 +85,9 @@ public class IfBlock extends AbstractStatementBlock {
 
     @Override
     public CodeBlock getHighlightTarget() {
-        // When an IfBlock is the target, we actually want to highlight its condition.
+        // When an if statement is the paused location, highlight the condition.
         if (condition != null) {
-            return condition;
+            return condition.getHighlightTarget();
         }
         return this;
     }
