@@ -59,6 +59,11 @@ public abstract class AbstractCodeBlock implements CodeBlock {
         return cu.getLineNumber(astNode.getStartPosition());
     }
 
+    @Override
+    public CodeBlock getHighlightTarget() {
+        return this; // Default behavior is to highlight the block itself.
+    }
+
     // Abstract method for subclasses to implement their specific UI creation logic.
     protected abstract Node createUINode(CompletionContext context);
 }

@@ -262,13 +262,10 @@ public class Main extends Application {
             int lineNumber = event.location().lineNumber();
             CodeBlock block = lineToBlockMap.get(lineNumber);
 
-            // Special case: If we pause on an IfBlock, we actually want to highlight the condition.
-            if (block instanceof IfBlock) {
-                block = ((IfBlock) block).getCondition();
-            }
-
             if (block != null) {
-                highlightBlock(block);
+                // Ask the block what part of it should be highlighted.
+                CodeBlock target = block.getHighlightTarget();
+                highlightBlock(target);
                 statusLabel.setText("Paused at line: " + lineNumber);
             } else {
                 statusLabel.setText("Paused at line: " + lineNumber + " (No block found)");

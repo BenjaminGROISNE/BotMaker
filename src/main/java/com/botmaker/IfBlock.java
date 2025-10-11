@@ -82,4 +82,13 @@ public class IfBlock extends AbstractStatementBlock {
         }
         return super.getBreakpointLine(cu);
     }
+
+    @Override
+    public CodeBlock getHighlightTarget() {
+        // When an IfBlock is the target, we actually want to highlight its condition.
+        if (condition != null) {
+            return condition;
+        }
+        return this;
+    }
 }

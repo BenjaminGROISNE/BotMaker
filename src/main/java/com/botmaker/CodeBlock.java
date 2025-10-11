@@ -12,4 +12,5 @@ public interface CodeBlock {
     void highlight();
     void unhighlight();
     int getBreakpointLine(CompilationUnit cu);
+    CodeBlock getHighlightTarget();
 }
