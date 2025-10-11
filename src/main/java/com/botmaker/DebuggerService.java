@@ -36,7 +36,7 @@ public class DebuggerService {
         this.onDisconnect = onDisconnect;
     }
 
-    public void connectAndRun(String mainClassName, List<Integer> breakpointLines) throws IOException, IllegalConnectorArgumentsException, InterruptedException {
+    public void connectAndRun(String mainClassName, int port, List<Integer> breakpointLines) throws IOException, IllegalConnectorArgumentsException, InterruptedException {
         VirtualMachineManager vmMgr = Bootstrap.virtualMachineManager();
         AttachingConnector connector = vmMgr.attachingConnectors().stream()
                 .filter(c -> c.transport().name().equals("dt_socket"))
@@ -44,12 +44,27 @@ public class DebuggerService {
                 .orElseThrow(() -> new RuntimeException("Socket attaching connector not found"));
 
         Map<String, Connector.Argument> arguments = connector.defaultArguments();
-        arguments.get("port").setValue("8000");
+        arguments.get("port").setValue(String.valueOf(port));
         arguments.get("hostname").setValue("localhost");
 
-        System.out.println(ANSI_BLUE + "Attaching to process on port 8000..." + ANSI_RESET);
-        vm = connector.attach(arguments);
-        System.out.println(ANSI_BLUE + "Attached to VM: " + vm.name() + ANSI_RESET);
+        int maxRetries = 10;
+        int retryDelayMs = 250;
+        for (int i = 0; i < maxRetries; i++) {
+            try {
+                System.out.println(ANSI_BLUE + "Attaching to process on port " + port + " (Attempt " + (i + 1) + ")..." + ANSI_RESET);
+                vm = connector.attach(arguments);
+                System.out.println(ANSI_BLUE + "Attached to VM: " + vm.name() + ANSI_RESET);
+                break; // Success, exit the loop
+            } catch (IOException e) {
+                if (e instanceof java.net.ConnectException && i < maxRetries - 1) {
+                    System.out.println(ANSI_YELLOW + "Connection refused. Retrying in " + retryDelayMs + "ms..." + ANSI_RESET);
+                    Thread.sleep(retryDelayMs);
+                } else {
+                    // For other IOExceptions or on the last retry, re-throw.
+                    throw e;
+                }
+            }
+        }
 
         EventRequestManager erm = vm.eventRequestManager();
 

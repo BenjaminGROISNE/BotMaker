@@ -23,6 +23,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.*;
+import java.net.ServerSocket;
 import java.util.stream.Collectors;
 
 public class Main extends Application {
@@ -137,7 +138,6 @@ public class Main extends Application {
                     return;
                 }
 
-                // Get all unique line numbers from the code blocks to set breakpoints
                 CompilationUnit cu = factory.getCompilationUnit();
                 if (cu == null) {
                     Platform.runLater(() -> statusLabel.setText("Error: Could not parse code to get breakpoints."));
@@ -147,8 +147,14 @@ public class Main extends Application {
                         .map(block -> cu.getLineNumber(block.getAstNode().getStartPosition()))
                         .collect(Collectors.toSet());
 
+                // Find a free port for the debugger to listen on.
+                int freePort;
+                try (ServerSocket socket = new ServerSocket(0)) {
+                    freePort = socket.getLocalPort();
+                }
+
                 Platform.runLater(() -> {
-                    statusLabel.setText("Starting debugger...");
+                    statusLabel.setText("Starting debugger on port " + freePort + "...");
                     debugButton.setDisable(true);
                     outputArea.clear();
                 });
@@ -156,7 +162,7 @@ public class Main extends Application {
                 String classPath = "build/compiled";
                 String className = "Demo";
                 String javaExecutable = Paths.get(System.getProperty("java.home"), "bin", "java").toString();
-                String debugAgent = "-agentlib:jdwp=transport=dt_socket,server=y,suspend=y,address=8000";
+                String debugAgent = String.format("-agentlib:jdwp=transport=dt_socket,server=y,suspend=y,address=%d", freePort);
 
                 ProcessBuilder pb = new ProcessBuilder(javaExecutable, debugAgent, "-cp", classPath, className);
                 Process process = pb.start();
@@ -181,7 +187,7 @@ public class Main extends Application {
                 debuggerService = new DebuggerService();
                 debuggerService.setOnPause(this::handlePauseEvent);
                 debuggerService.setOnDisconnect(this::onDebugSessionFinished);
-                debuggerService.connectAndRun(className, new ArrayList<>(breakpointLines));
+                debuggerService.connectAndRun(className, freePort, new ArrayList<>(breakpointLines));
 
             } catch (IOException | IllegalConnectorArgumentsException | InterruptedException e) {
                 Platform.runLater(() -> statusLabel.setText("Debugger Error: " + e.getMessage()));
