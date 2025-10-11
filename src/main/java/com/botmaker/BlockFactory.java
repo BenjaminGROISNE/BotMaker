@@ -12,6 +12,10 @@ public class BlockFactory {
     public BodyBlock convert(String javaCode, Map<ASTNode, CodeBlock> nodeToBlockMap) {
         ASTParser parser = ASTParser.newParser(AST.getJLSLatest());
         parser.setSource(javaCode.toCharArray());
+        parser.setResolveBindings(true);
+        parser.setKind(ASTParser.K_COMPILATION_UNIT);
+        parser.setUnitName("Demo.java"); // A name is required for bindings to be resolved
+        parser.setEnvironment(null, null, null, true); // Use default JRE for classpath
         this.ast = (CompilationUnit) parser.createAST(null);
 
         MainMethodVisitor visitor = new MainMethodVisitor();
@@ -84,6 +88,14 @@ public class BlockFactory {
         return printBlock;
     }
 
+    private BinaryExpressionBlock parseBinaryExpression(InfixExpression astNode, Map<ASTNode, CodeBlock> nodeToBlockMap) {
+        BinaryExpressionBlock binaryBlock = new BinaryExpressionBlock("binary_" + astNode.hashCode(), astNode);
+        nodeToBlockMap.put(astNode, binaryBlock);
+        parseExpression(astNode.getLeftOperand(), nodeToBlockMap).ifPresent(binaryBlock::setLeftOperand);
+        parseExpression(astNode.getRightOperand(), nodeToBlockMap).ifPresent(binaryBlock::setRightOperand);
+        return binaryBlock;
+    }
+
     private Optional<ExpressionBlock> parseExpression(Expression astExpression, Map<ASTNode, CodeBlock> nodeToBlockMap) {
         if (astExpression instanceof StringLiteral) {
             StringLiteral literalNode = (StringLiteral) astExpression;
@@ -105,10 +117,19 @@ public class BlockFactory {
             nodeToBlockMap.put(astExpression, block);
             return Optional.of(block);
         }
+        if (astExpression instanceof BooleanLiteral) {
+            BooleanLiteral literalNode = (BooleanLiteral) astExpression;
+            LiteralBlock<Boolean> block = new LiteralBlock<>("boolean_" + literalNode.hashCode(), literalNode, literalNode.booleanValue());
+            nodeToBlockMap.put(astExpression, block);
+            return Optional.of(block);
+        }
         if (astExpression instanceof SimpleName) {
             IdentifierBlock block = new IdentifierBlock("id_" + astExpression.hashCode(), (SimpleName) astExpression);
             nodeToBlockMap.put(astExpression, block);
             return Optional.of(block);
+        }
+        if (astExpression instanceof InfixExpression) {
+            return Optional.of(parseBinaryExpression((InfixExpression) astExpression, nodeToBlockMap));
         }
         return Optional.empty();
     }

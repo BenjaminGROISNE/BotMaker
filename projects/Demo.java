@@ -3,7 +3,8 @@ public class Demo {
         String message = "Hello from the first variable!";
         String anotherMessage = "Hello from the second variable!";
 
-        if (true) {
+        int i = 1;
+        if (i == 1) {
             System.out.println(anotherMessage);
             System.out.println(message);
         }

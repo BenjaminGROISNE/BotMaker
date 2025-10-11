@@ -2,6 +2,7 @@ package com.botmaker;
 
 import javafx.scene.Node;
 import org.eclipse.jdt.core.dom.ASTNode;
+import org.eclipse.jdt.core.dom.CompilationUnit;
 
 public abstract class AbstractCodeBlock implements CodeBlock {
     protected final String id;
@@ -50,6 +51,12 @@ public abstract class AbstractCodeBlock implements CodeBlock {
         if (uiNode != null) {
             uiNode.setStyle(originalStyle);
         }
+    }
+
+    @Override
+    public int getBreakpointLine(CompilationUnit cu) {
+        if (cu == null || astNode == null) return -1;
+        return cu.getLineNumber(astNode.getStartPosition());
     }
 
     // Abstract method for subclasses to implement their specific UI creation logic.

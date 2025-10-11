@@ -5,6 +5,7 @@ import javafx.scene.Node;
 import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jdt.core.dom.IfStatement;
 
 public class IfBlock extends AbstractStatementBlock {
@@ -71,5 +72,14 @@ public class IfBlock extends AbstractStatementBlock {
         }
 
         return container;
+    }
+
+    @Override
+    public int getBreakpointLine(CompilationUnit cu) {
+        // The breakpoint for an IfBlock should be on its condition.
+        if (condition != null) {
+            return condition.getBreakpointLine(cu);
+        }
+        return super.getBreakpointLine(cu);
     }
 }

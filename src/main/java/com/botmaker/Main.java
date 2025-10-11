@@ -145,13 +145,18 @@ public class Main extends Application {
                     return;
                 }
 
-                // Create a direct mapping from line number to CodeBlock for accurate highlighting.
-                this.lineToBlockMap = nodeToBlockMap.values().stream()
-                        .collect(Collectors.toMap(
-                                block -> cu.getLineNumber(block.getAstNode().getStartPosition()),
-                                block -> block,
-                                (block1, block2) -> block1 // If two blocks are on the same line, just take the first.
-                        ));
+                // Create a direct mapping from executable line number to the CodeBlock that should be highlighted.
+                this.lineToBlockMap = new HashMap<>();
+                for (CodeBlock block : nodeToBlockMap.values()) {
+                    int line = block.getBreakpointLine(cu);
+                    if (line > 0) {
+                        // If a line is already mapped, only overwrite it if the new block is a StatementBlock.
+                        // This prioritizes highlighting the containing statement over a sub-expression.
+                        if (!lineToBlockMap.containsKey(line) || block instanceof StatementBlock) {
+                            lineToBlockMap.put(line, block);
+                        }
+                    }
+                }
                 List<Integer> breakpointLines = new ArrayList<>(this.lineToBlockMap.keySet());
 
                 // Find a free port for the debugger to listen on.
@@ -256,6 +261,11 @@ public class Main extends Application {
 
             int lineNumber = event.location().lineNumber();
             CodeBlock block = lineToBlockMap.get(lineNumber);
+
+            // Special case: If we pause on an IfBlock, we actually want to highlight the condition.
+            if (block instanceof IfBlock) {
+                block = ((IfBlock) block).getCondition();
+            }
 
             if (block != null) {
                 highlightBlock(block);

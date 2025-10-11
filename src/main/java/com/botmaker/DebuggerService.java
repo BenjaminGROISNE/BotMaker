@@ -71,7 +71,7 @@ public class DebuggerService {
         List<ReferenceType> classes = vm.classesByName(mainClassName);
         if (!classes.isEmpty()) {
             System.out.println(ANSI_YELLOW + "Class " + mainClassName + " is already loaded. Setting breakpoints immediately." + ANSI_RESET);
-            setBreakpoints(classes.get(0), breakpointLines);
+            setBreakpoints(classes.getFirst(), breakpointLines);
         } else {
             System.out.println(ANSI_YELLOW + "Class " + mainClassName + " is not loaded yet. Requesting notification for when it is." + ANSI_RESET);
             ClassPrepareRequest classPrepareRequest = erm.createClassPrepareRequest();
