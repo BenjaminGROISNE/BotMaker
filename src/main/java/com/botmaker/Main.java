@@ -23,7 +23,6 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.*;
-import java.net.ServerSocket;
 import java.util.stream.Collectors;
 
 public class Main extends Application {
@@ -45,7 +44,6 @@ public class Main extends Application {
 
     // Fields for debugging UI
     private Map<ASTNode, CodeBlock> nodeToBlockMap;
-    private Map<Integer, CodeBlock> lineToBlockMap;
     private CodeBlock highlightedBlock;
 
     @Override
@@ -139,29 +137,18 @@ public class Main extends Application {
                     return;
                 }
 
+                // Get all unique line numbers from the code blocks to set breakpoints
                 CompilationUnit cu = factory.getCompilationUnit();
                 if (cu == null) {
                     Platform.runLater(() -> statusLabel.setText("Error: Could not parse code to get breakpoints."));
                     return;
                 }
-
-                // Create a direct mapping from line number to CodeBlock for accurate highlighting.
-                this.lineToBlockMap = nodeToBlockMap.values().stream()
-                        .collect(Collectors.toMap(
-                                block -> cu.getLineNumber(block.getAstNode().getStartPosition()),
-                                block -> block,
-                                (block1, block2) -> block1 // If two blocks are on the same line, just take the first.
-                        ));
-                List<Integer> breakpointLines = new ArrayList<>(this.lineToBlockMap.keySet());
-
-                // Find a free port for the debugger to listen on.
-                int freePort;
-                try (ServerSocket socket = new ServerSocket(0)) {
-                    freePort = socket.getLocalPort();
-                }
+                Set<Integer> breakpointLines = nodeToBlockMap.values().stream()
+                        .map(block -> cu.getLineNumber(block.getAstNode().getStartPosition()))
+                        .collect(Collectors.toSet());
 
                 Platform.runLater(() -> {
-                    statusLabel.setText("Starting debugger on port " + freePort + "...");
+                    statusLabel.setText("Starting debugger...");
                     debugButton.setDisable(true);
                     outputArea.clear();
                 });
@@ -169,7 +156,7 @@ public class Main extends Application {
                 String classPath = "build/compiled";
                 String className = "Demo";
                 String javaExecutable = Paths.get(System.getProperty("java.home"), "bin", "java").toString();
-                String debugAgent = String.format("-agentlib:jdwp=transport=dt_socket,server=y,suspend=y,address=%d", freePort);
+                String debugAgent = "-agentlib:jdwp=transport=dt_socket,server=y,suspend=y,address=8000";
 
                 ProcessBuilder pb = new ProcessBuilder(javaExecutable, debugAgent, "-cp", classPath, className);
                 Process process = pb.start();
@@ -194,7 +181,7 @@ public class Main extends Application {
                 debuggerService = new DebuggerService();
                 debuggerService.setOnPause(this::handlePauseEvent);
                 debuggerService.setOnDisconnect(this::onDebugSessionFinished);
-                debuggerService.connectAndRun(className, freePort, breakpointLines);
+                debuggerService.connectAndRun(className, new ArrayList<>(breakpointLines));
 
             } catch (IOException | IllegalConnectorArgumentsException | InterruptedException e) {
                 Platform.runLater(() -> statusLabel.setText("Debugger Error: " + e.getMessage()));
@@ -254,14 +241,21 @@ public class Main extends Application {
             System.out.println("UI Thread: Pause event received. Enabling resume button.");
             resumeButton.setDisable(false); // Re-enable the button
 
-            int lineNumber = event.location().lineNumber();
-            CodeBlock block = lineToBlockMap.get(lineNumber);
+            CompilationUnit cu = factory.getCompilationUnit();
+            if (cu == null) {
+                System.out.println("UI Thread: CompilationUnit is null, cannot update highlight.");
+                return;
+            }
 
-            if (block != null) {
+            int lineNumber = event.location().lineNumber();
+            int offset = cu.getPosition(lineNumber, 0);
+
+            ASTNode node = NodeFinder.perform(cu, offset, 1);
+
+            if (node != null) {
+                CodeBlock block = findBlockForNode(node);
                 highlightBlock(block);
                 statusLabel.setText("Paused at line: " + lineNumber);
-            } else {
-                statusLabel.setText("Paused at line: " + lineNumber + " (No block found)");
             }
         });
     }
