@@ -75,6 +75,24 @@ public class IfBlock extends AbstractStatementBlock {
     }
 
     @Override
+    public void highlight() {
+        if (condition != null) {
+            condition.highlight();
+        } else {
+            super.highlight();
+        }
+    }
+
+    @Override
+    public void unhighlight() {
+        if (condition != null) {
+            condition.unhighlight();
+        } else {
+            super.unhighlight();
+        }
+    }
+
+    @Override
     public int getBreakpointLine(CompilationUnit cu) {
         // The breakpoint for an IfBlock should be on its condition.
         if (condition != null) {
@@ -85,10 +103,6 @@ public class IfBlock extends AbstractStatementBlock {
 
     @Override
     public CodeBlock getHighlightTarget() {
-        // When an if statement is the paused location, highlight the condition.
-        if (condition != null) {
-            return condition.getHighlightTarget();
-        }
         return this;
     }
 }

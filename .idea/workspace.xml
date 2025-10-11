@@ -4,16 +4,8 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="cba04025-c331-4634-a893-436bad03efc0" name="Changes" comment="correct debug highlight with ifblock and binaryexpressionblock">
-      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_05_10_2025_00_44_[Changes]/shelved.patch" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_05_10_2025_00_44__Changes_.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+    <list default="true" id="cba04025-c331-4634-a893-436bad03efc0" name="Changes" comment="Refactor Main file. ifcondition block still doesn't work">
       <change beforePath="$PROJECT_DIR$/jdt-workspace-data/.metadata/.log" beforeDir="false" afterPath="$PROJECT_DIR$/jdt-workspace-data/.metadata/.log" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/jdt-workspace-data/.metadata/.plugins/org.eclipse.core.resources/.root/8.tree" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/jdt-workspace-data/.metadata/.plugins/org.eclipse.core.resources/.safetable/org.eclipse.core.resources" beforeDir="false" afterPath="$PROJECT_DIR$/jdt-workspace-data/.metadata/.plugins/org.eclipse.core.resources/.safetable/org.eclipse.core.resources" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/botmaker/IfBlock.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/botmaker/IfBlock.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/botmaker/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/botmaker/Main.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tools/jdt-language-server/config_linux/org.eclipse.osgi/.manager/.fileTable.61" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -246,7 +238,15 @@
       <option name="project" value="LOCAL" />
       <updated>1760197281727</updated>
     </task>
-    <option name="localTasksCounter" value="11" />
+    <task id="LOCAL-00011" summary="Refactor Main file. ifcondition block still doesn't work">
+      <option name="closed" value="true" />
+      <created>1760223934148</created>
+      <option name="number" value="00011" />
+      <option name="presentableId" value="LOCAL-00011" />
+      <option name="project" value="LOCAL" />
+      <updated>1760223934148</updated>
+    </task>
+    <option name="localTasksCounter" value="12" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -274,7 +274,8 @@
     <MESSAGE value="correct debug highlight" />
     <MESSAGE value="correct debug highlight with ifblock" />
     <MESSAGE value="correct debug highlight with ifblock and binaryexpressionblock" />
-    <option name="LAST_COMMIT_MESSAGE" value="correct debug highlight with ifblock and binaryexpressionblock" />
+    <MESSAGE value="Refactor Main file. ifcondition block still doesn't work" />
+    <option name="LAST_COMMIT_MESSAGE" value="Refactor Main file. ifcondition block still doesn't work" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
