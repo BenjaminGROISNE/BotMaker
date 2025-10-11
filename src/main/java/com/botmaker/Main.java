@@ -45,6 +45,7 @@ public class Main extends Application {
 
     // Fields for debugging UI
     private Map<ASTNode, CodeBlock> nodeToBlockMap;
+    private Map<Integer, CodeBlock> lineToBlockMap; // For direct highlighting
     private CodeBlock highlightedBlock;
 
     @Override
@@ -143,9 +144,15 @@ public class Main extends Application {
                     Platform.runLater(() -> statusLabel.setText("Error: Could not parse code to get breakpoints."));
                     return;
                 }
-                Set<Integer> breakpointLines = nodeToBlockMap.values().stream()
-                        .map(block -> cu.getLineNumber(block.getAstNode().getStartPosition()))
-                        .collect(Collectors.toSet());
+
+                // Create a direct mapping from line number to CodeBlock for accurate highlighting.
+                this.lineToBlockMap = nodeToBlockMap.values().stream()
+                        .collect(Collectors.toMap(
+                                block -> cu.getLineNumber(block.getAstNode().getStartPosition()),
+                                block -> block,
+                                (block1, block2) -> block1 // If two blocks are on the same line, just take the first.
+                        ));
+                List<Integer> breakpointLines = new ArrayList<>(this.lineToBlockMap.keySet());
 
                 // Find a free port for the debugger to listen on.
                 int freePort;
@@ -187,7 +194,7 @@ public class Main extends Application {
                 debuggerService = new DebuggerService();
                 debuggerService.setOnPause(this::handlePauseEvent);
                 debuggerService.setOnDisconnect(this::onDebugSessionFinished);
-                debuggerService.connectAndRun(className, freePort, new ArrayList<>(breakpointLines));
+                debuggerService.connectAndRun(className, freePort, breakpointLines);
 
             } catch (IOException | IllegalConnectorArgumentsException | InterruptedException e) {
                 Platform.runLater(() -> statusLabel.setText("Debugger Error: " + e.getMessage()));
@@ -247,21 +254,14 @@ public class Main extends Application {
             System.out.println("UI Thread: Pause event received. Enabling resume button.");
             resumeButton.setDisable(false); // Re-enable the button
 
-            CompilationUnit cu = factory.getCompilationUnit();
-            if (cu == null) {
-                System.out.println("UI Thread: CompilationUnit is null, cannot update highlight.");
-                return;
-            }
-
             int lineNumber = event.location().lineNumber();
-            int offset = cu.getPosition(lineNumber, 0);
+            CodeBlock block = lineToBlockMap.get(lineNumber);
 
-            ASTNode node = NodeFinder.perform(cu, offset, 1);
-
-            if (node != null) {
-                CodeBlock block = findBlockForNode(node);
+            if (block != null) {
                 highlightBlock(block);
                 statusLabel.setText("Paused at line: " + lineNumber);
+            } else {
+                statusLabel.setText("Paused at line: " + lineNumber + " (No block found)");
             }
         });
     }
@@ -273,17 +273,6 @@ public class Main extends Application {
             resumeButton.setDisable(true);
             highlightBlock(null); // Clear highlight
         });
-    }
-
-    private CodeBlock findBlockForNode(ASTNode node) {
-        ASTNode currentNode = node;
-        while (currentNode != null) {
-            if (nodeToBlockMap.containsKey(currentNode)) {
-                return nodeToBlockMap.get(currentNode);
-            }
-            currentNode = currentNode.getParent();
-        }
-        return null;
     }
 
     private void highlightBlock(CodeBlock block) {
