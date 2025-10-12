@@ -1,4 +1,4 @@
-package com.botmaker;
+package com.botmaker.lsp;
 
 import org.eclipse.lsp4j.services.LanguageServer;
 

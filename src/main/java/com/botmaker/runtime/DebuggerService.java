@@ -1,4 +1,4 @@
-package com.botmaker;
+package com.botmaker.runtime;
 
 import com.sun.jdi.*;
 import com.sun.jdi.connect.AttachingConnector;

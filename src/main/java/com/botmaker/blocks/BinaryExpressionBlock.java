@@ -1,5 +1,8 @@
-package com.botmaker;
+package com.botmaker.blocks;
 
+import com.botmaker.core.AbstractExpressionBlock;
+import com.botmaker.core.ExpressionBlock;
+import com.botmaker.lsp.CompletionContext;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.control.Label;

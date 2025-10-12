@@ -1,4 +1,4 @@
-package com.botmaker;
+package com.botmaker.core;
 
 /**
  * A block that represents a value that can be evaluated.

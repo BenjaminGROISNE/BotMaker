@@ -1,5 +1,9 @@
-package com.botmaker;
+package com.botmaker.parser;
 
+import com.botmaker.blocks.*;
+import com.botmaker.core.CodeBlock;
+import com.botmaker.core.ExpressionBlock;
+import com.botmaker.core.StatementBlock;
 import org.eclipse.jdt.core.dom.*;
 
 import java.util.Map;

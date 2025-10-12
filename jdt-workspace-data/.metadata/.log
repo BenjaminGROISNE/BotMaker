@@ -3550,3 +3550,246 @@ Command-line arguments:  -data jdt-workspace-data
 
 !ENTRY org.eclipse.jdt.ls.core 1 0 2025-10-12 01:15:14.972
 !MESSAGE Validated 1. Took 33 ms
+
+!ENTRY org.eclipse.jdt.ls.core 1 0 2025-10-12 01:17:12.438
+!MESSAGE Parent process stopped running, forcing server exit
+
+!ENTRY org.eclipse.jdt.ls.core 1 0 2025-10-12 01:17:12.439
+!MESSAGE >> exit
+
+!ENTRY org.eclipse.jdt.ls.core 1 0 2025-10-12 01:17:12.466
+!MESSAGE Shutdown received... waking up main thread
+
+!ENTRY org.eclipse.jdt.ls.core 1 0 2025-10-12 01:17:12.471
+!MESSAGE class org.eclipse.jdt.ls.core.internal.JavaLanguageServerPlugin is stopping:
+!SESSION 2025-10-12 15:51:28.685 -----------------------------------------------
+eclipse.buildId=unknown
+java.version=25
+java.vendor=Eclipse Adoptium
+BootLoader constants: OS=linux, ARCH=x86_64, WS=gtk, NL=fr_FR
+Command-line arguments:  -data jdt-workspace-data
+
+!ENTRY org.eclipse.jdt.ls.core 1 0 2025-10-12 15:51:29.878
+!MESSAGE class org.eclipse.jdt.ls.core.internal.JavaLanguageServerPlugin is started
+
+!ENTRY org.eclipse.jdt.ls.core 1 0 2025-10-12 15:51:29.921
+!MESSAGE Started org.eclipse.buildship.core 30ms
+
+!ENTRY org.eclipse.jdt.ls.core 1 0 2025-10-12 15:51:29.922
+!MESSAGE Started org.eclipse.m2e.core 0ms
+
+!ENTRY org.eclipse.jdt.ls.core 1 0 2025-10-12 15:51:30.066
+!MESSAGE >> initialize
+
+!ENTRY org.eclipse.jdt.ls.core 1 0 2025-10-12 15:51:30.070
+!MESSAGE Initializing Java Language Server 1.52.0.202510031334
+
+!ENTRY org.eclipse.jdt.ls.core 1 0 2025-10-12 15:51:30.101
+!MESSAGE Main thread is waiting
+
+!ENTRY org.eclipse.jdt.ls.core 1 0 2025-10-12 15:51:30.611
+!MESSAGE ProjectRegistryRefreshJob finished 688ms
+
+!ENTRY org.eclipse.jdt.ls.core 1 0 2025-10-12 15:51:30.661
+!MESSAGE No workspace folders or root uri was defined. Falling back on /home/groisnebenjamin/IdeaProjects/BotMaker/jdt-workspace-data
+
+!ENTRY org.eclipse.jdt.ls.core 1 0 2025-10-12 15:51:30.666
+!MESSAGE Static Commands: []
+
+!ENTRY org.eclipse.jdt.ls.core 1 0 2025-10-12 15:51:30.667
+!MESSAGE Non-Static Commands: [java.project.import, java.project.changeImportedProjects, java.navigate.openTypeHierarchy, java.project.resolveStackTraceLocation, java.edit.handlePasteEvent, java.edit.stringFormatting, java.project.getSettings, java.project.resolveWorkspaceSymbol, java.project.upgradeGradle, java.project.createModuleInfo, java.vm.getAllInstalls, java.edit.organizeImports, java.project.refreshDiagnostics, java.project.removeFromSourcePath, java.project.listSourcePaths, java.project.updateSettings, java.project.getAll, java.reloadBundles, java.project.isTestFile, java.project.resolveText, java.project.getClasspaths, java.navigate.resolveTypeHierarchy, java.getTroubleshootingInfo, java.edit.smartSemicolonDetection, java.project.updateSourceAttachment, java.project.updateClassPaths, java.decompile, java.protobuf.generateSources, java.project.resolveSourceAttachment, java.project.updateJdk, java.project.addToSourcePath, java.completion.onDidSelect]
+
+!ENTRY org.eclipse.jdt.ls.core 1 0 2025-10-12 15:51:30.695
+!MESSAGE RepositoryRegistryUpdateJob finished 21ms
+
+!ENTRY org.eclipse.jdt.ls.core 1 0 2025-10-12 15:51:30.719
+!MESSAGE Workspace initialized in 45ms
+
+!ENTRY org.eclipse.jdt.ls.core 1 0 2025-10-12 15:51:32.069
+!MESSAGE Reconciled 1. Took 1 ms
+
+!ENTRY org.eclipse.jdt.ls.core 1 0 2025-10-12 15:51:32.766
+!MESSAGE begin problem for /Demo.java
+
+!ENTRY org.eclipse.jdt.ls.core 1 0 2025-10-12 15:51:32.770
+!MESSAGE 1 problems reported for /Demo.java
+
+!ENTRY org.eclipse.jdt.ls.core 1 0 2025-10-12 15:51:32.777
+!MESSAGE Validated 1. Took 56 ms
+
+!ENTRY org.eclipse.jdt.ls.core 1 0 2025-10-12 16:05:03.091
+!MESSAGE >> shutdown
+!SESSION 2025-10-12 16:07:35.962 -----------------------------------------------
+eclipse.buildId=unknown
+java.version=25
+java.vendor=Eclipse Adoptium
+BootLoader constants: OS=linux, ARCH=x86_64, WS=gtk, NL=fr_FR
+Command-line arguments:  -data jdt-workspace-data
+
+!ENTRY org.eclipse.core.resources 2 10035 2025-10-12 16:07:36.709
+!MESSAGE The workspace exited with unsaved changes in the previous session; refreshing workspace to recover changes.
+
+!ENTRY org.eclipse.jdt.ls.core 1 0 2025-10-12 16:07:37.060
+!MESSAGE class org.eclipse.jdt.ls.core.internal.JavaLanguageServerPlugin is started
+
+!ENTRY org.eclipse.jdt.ls.core 1 0 2025-10-12 16:07:37.103
+!MESSAGE Started org.eclipse.buildship.core 28ms
+
+!ENTRY org.eclipse.jdt.ls.core 1 0 2025-10-12 16:07:37.104
+!MESSAGE Started org.eclipse.m2e.core 0ms
+
+!ENTRY org.eclipse.jdt.ls.core 1 0 2025-10-12 16:07:37.225
+!MESSAGE >> initialize
+
+!ENTRY org.eclipse.jdt.ls.core 1 0 2025-10-12 16:07:37.230
+!MESSAGE Initializing Java Language Server 1.52.0.202510031334
+
+!ENTRY org.eclipse.jdt.ls.core 1 0 2025-10-12 16:07:37.251
+!MESSAGE Main thread is waiting
+
+!ENTRY org.eclipse.jdt.ls.core 1 0 2025-10-12 16:07:37.771
+!MESSAGE ProjectRegistryRefreshJob finished 666ms
+
+!ENTRY org.eclipse.jdt.ls.core 1 0 2025-10-12 16:07:37.788
+!MESSAGE No workspace folders or root uri was defined. Falling back on /home/groisnebenjamin/IdeaProjects/BotMaker/jdt-workspace-data
+
+!ENTRY org.eclipse.jdt.ls.core 1 0 2025-10-12 16:07:37.797
+!MESSAGE Static Commands: []
+
+!ENTRY org.eclipse.jdt.ls.core 1 0 2025-10-12 16:07:37.797
+!MESSAGE Non-Static Commands: [java.project.import, java.project.changeImportedProjects, java.navigate.openTypeHierarchy, java.project.resolveStackTraceLocation, java.edit.handlePasteEvent, java.edit.stringFormatting, java.project.getSettings, java.project.resolveWorkspaceSymbol, java.project.upgradeGradle, java.project.createModuleInfo, java.vm.getAllInstalls, java.edit.organizeImports, java.project.refreshDiagnostics, java.project.removeFromSourcePath, java.project.listSourcePaths, java.project.updateSettings, java.project.getAll, java.reloadBundles, java.project.isTestFile, java.project.resolveText, java.project.getClasspaths, java.navigate.resolveTypeHierarchy, java.getTroubleshootingInfo, java.edit.smartSemicolonDetection, java.project.updateSourceAttachment, java.project.updateClassPaths, java.decompile, java.protobuf.generateSources, java.project.resolveSourceAttachment, java.project.updateJdk, java.project.addToSourcePath, java.completion.onDidSelect]
+
+!ENTRY org.eclipse.jdt.ls.core 1 0 2025-10-12 16:07:37.832
+!MESSAGE RepositoryRegistryUpdateJob finished 24ms
+
+!ENTRY org.eclipse.jdt.ls.core 1 0 2025-10-12 16:07:37.853
+!MESSAGE Workspace initialized in 45ms
+
+!ENTRY org.eclipse.jdt.ls.core 1 0 2025-10-12 16:07:38.619
+!MESSAGE Reconciled 1. Took 0 ms
+
+!ENTRY org.eclipse.jdt.ls.core 1 0 2025-10-12 16:07:39.290
+!MESSAGE begin problem for /Demo.java
+
+!ENTRY org.eclipse.jdt.ls.core 1 0 2025-10-12 16:07:39.292
+!MESSAGE 1 problems reported for /Demo.java
+
+!ENTRY org.eclipse.jdt.ls.core 1 0 2025-10-12 16:07:39.295
+!MESSAGE Validated 1. Took 26 ms
+
+!ENTRY org.eclipse.jdt.ls.core 1 0 2025-10-12 16:07:51.988
+!MESSAGE >> shutdown
+!SESSION 2025-10-12 16:08:01.655 -----------------------------------------------
+eclipse.buildId=unknown
+java.version=25
+java.vendor=Eclipse Adoptium
+BootLoader constants: OS=linux, ARCH=x86_64, WS=gtk, NL=fr_FR
+Command-line arguments:  -data jdt-workspace-data
+
+!ENTRY org.eclipse.jdt.ls.core 1 0 2025-10-12 16:08:02.705
+!MESSAGE class org.eclipse.jdt.ls.core.internal.JavaLanguageServerPlugin is started
+
+!ENTRY org.eclipse.jdt.ls.core 1 0 2025-10-12 16:08:02.744
+!MESSAGE Started org.eclipse.buildship.core 26ms
+
+!ENTRY org.eclipse.jdt.ls.core 1 0 2025-10-12 16:08:02.745
+!MESSAGE Started org.eclipse.m2e.core 1ms
+
+!ENTRY org.eclipse.jdt.ls.core 1 0 2025-10-12 16:08:02.859
+!MESSAGE >> initialize
+
+!ENTRY org.eclipse.jdt.ls.core 1 0 2025-10-12 16:08:02.863
+!MESSAGE Initializing Java Language Server 1.52.0.202510031334
+
+!ENTRY org.eclipse.jdt.ls.core 1 0 2025-10-12 16:08:02.888
+!MESSAGE Main thread is waiting
+
+!ENTRY org.eclipse.jdt.ls.core 1 0 2025-10-12 16:08:03.350
+!MESSAGE ProjectRegistryRefreshJob finished 605ms
+
+!ENTRY org.eclipse.jdt.ls.core 1 0 2025-10-12 16:08:03.403
+!MESSAGE No workspace folders or root uri was defined. Falling back on /home/groisnebenjamin/IdeaProjects/BotMaker/jdt-workspace-data
+
+!ENTRY org.eclipse.jdt.ls.core 1 0 2025-10-12 16:08:03.409
+!MESSAGE Static Commands: []
+
+!ENTRY org.eclipse.jdt.ls.core 1 0 2025-10-12 16:08:03.410
+!MESSAGE Non-Static Commands: [java.project.import, java.project.changeImportedProjects, java.navigate.openTypeHierarchy, java.project.resolveStackTraceLocation, java.edit.handlePasteEvent, java.edit.stringFormatting, java.project.getSettings, java.project.resolveWorkspaceSymbol, java.project.upgradeGradle, java.project.createModuleInfo, java.vm.getAllInstalls, java.edit.organizeImports, java.project.refreshDiagnostics, java.project.removeFromSourcePath, java.project.listSourcePaths, java.project.updateSettings, java.project.getAll, java.reloadBundles, java.project.isTestFile, java.project.resolveText, java.project.getClasspaths, java.navigate.resolveTypeHierarchy, java.getTroubleshootingInfo, java.edit.smartSemicolonDetection, java.project.updateSourceAttachment, java.project.updateClassPaths, java.decompile, java.protobuf.generateSources, java.project.resolveSourceAttachment, java.project.updateJdk, java.project.addToSourcePath, java.completion.onDidSelect]
+
+!ENTRY org.eclipse.jdt.ls.core 1 0 2025-10-12 16:08:03.438
+!MESSAGE RepositoryRegistryUpdateJob finished 21ms
+
+!ENTRY org.eclipse.jdt.ls.core 1 0 2025-10-12 16:08:03.459
+!MESSAGE Workspace initialized in 41ms
+
+!ENTRY org.eclipse.jdt.ls.core 1 0 2025-10-12 16:08:04.715
+!MESSAGE Reconciled 1. Took 1 ms
+
+!ENTRY org.eclipse.jdt.ls.core 1 0 2025-10-12 16:08:05.390
+!MESSAGE begin problem for /Demo.java
+
+!ENTRY org.eclipse.jdt.ls.core 1 0 2025-10-12 16:08:05.397
+!MESSAGE 1 problems reported for /Demo.java
+
+!ENTRY org.eclipse.jdt.ls.core 1 0 2025-10-12 16:08:05.400
+!MESSAGE Validated 1. Took 35 ms
+
+!ENTRY org.eclipse.jdt.ls.core 1 0 2025-10-12 16:08:11.564
+!MESSAGE >> shutdown
+!SESSION 2025-10-12 16:11:31.222 -----------------------------------------------
+eclipse.buildId=unknown
+java.version=25
+java.vendor=Eclipse Adoptium
+BootLoader constants: OS=linux, ARCH=x86_64, WS=gtk, NL=fr_FR
+Command-line arguments:  -data jdt-workspace-data
+
+!ENTRY org.eclipse.jdt.ls.core 1 0 2025-10-12 16:11:32.287
+!MESSAGE class org.eclipse.jdt.ls.core.internal.JavaLanguageServerPlugin is started
+
+!ENTRY org.eclipse.jdt.ls.core 1 0 2025-10-12 16:11:32.328
+!MESSAGE Started org.eclipse.buildship.core 29ms
+
+!ENTRY org.eclipse.jdt.ls.core 1 0 2025-10-12 16:11:32.329
+!MESSAGE Started org.eclipse.m2e.core 0ms
+
+!ENTRY org.eclipse.jdt.ls.core 1 0 2025-10-12 16:11:32.461
+!MESSAGE >> initialize
+
+!ENTRY org.eclipse.jdt.ls.core 1 0 2025-10-12 16:11:32.466
+!MESSAGE Initializing Java Language Server 1.52.0.202510031334
+
+!ENTRY org.eclipse.jdt.ls.core 1 0 2025-10-12 16:11:32.486
+!MESSAGE Main thread is waiting
+
+!ENTRY org.eclipse.jdt.ls.core 1 0 2025-10-12 16:11:32.981
+!MESSAGE ProjectRegistryRefreshJob finished 651ms
+
+!ENTRY org.eclipse.jdt.ls.core 1 0 2025-10-12 16:11:33.018
+!MESSAGE No workspace folders or root uri was defined. Falling back on /home/groisnebenjamin/IdeaProjects/BotMaker/jdt-workspace-data
+
+!ENTRY org.eclipse.jdt.ls.core 1 0 2025-10-12 16:11:33.026
+!MESSAGE Static Commands: []
+
+!ENTRY org.eclipse.jdt.ls.core 1 0 2025-10-12 16:11:33.026
+!MESSAGE Non-Static Commands: [java.project.import, java.project.changeImportedProjects, java.navigate.openTypeHierarchy, java.project.resolveStackTraceLocation, java.edit.handlePasteEvent, java.edit.stringFormatting, java.project.getSettings, java.project.resolveWorkspaceSymbol, java.project.upgradeGradle, java.project.createModuleInfo, java.vm.getAllInstalls, java.edit.organizeImports, java.project.refreshDiagnostics, java.project.removeFromSourcePath, java.project.listSourcePaths, java.project.updateSettings, java.project.getAll, java.reloadBundles, java.project.isTestFile, java.project.resolveText, java.project.getClasspaths, java.navigate.resolveTypeHierarchy, java.getTroubleshootingInfo, java.edit.smartSemicolonDetection, java.project.updateSourceAttachment, java.project.updateClassPaths, java.decompile, java.protobuf.generateSources, java.project.resolveSourceAttachment, java.project.updateJdk, java.project.addToSourcePath, java.completion.onDidSelect]
+
+!ENTRY org.eclipse.jdt.ls.core 1 0 2025-10-12 16:11:33.056
+!MESSAGE RepositoryRegistryUpdateJob finished 21ms
+
+!ENTRY org.eclipse.jdt.ls.core 1 0 2025-10-12 16:11:33.079
+!MESSAGE Workspace initialized in 45ms
+
+!ENTRY org.eclipse.jdt.ls.core 1 0 2025-10-12 16:11:34.365
+!MESSAGE Reconciled 1. Took 1 ms
+
+!ENTRY org.eclipse.jdt.ls.core 1 0 2025-10-12 16:11:35.048
+!MESSAGE begin problem for /Demo.java
+
+!ENTRY org.eclipse.jdt.ls.core 1 0 2025-10-12 16:11:35.050
+!MESSAGE 1 problems reported for /Demo.java
+
+!ENTRY org.eclipse.jdt.ls.core 1 0 2025-10-12 16:11:35.053
+!MESSAGE Validated 1. Took 37 ms
+
+!ENTRY org.eclipse.jdt.ls.core 1 0 2025-10-12 16:11:42.612
+!MESSAGE >> shutdown

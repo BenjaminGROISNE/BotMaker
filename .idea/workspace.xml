@@ -4,8 +4,32 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="cba04025-c331-4634-a893-436bad03efc0" name="Changes" comment="Refactor Main file. ifcondition block still doesn't work">
+    <list default="true" id="cba04025-c331-4634-a893-436bad03efc0" name="Changes" comment="Working if condition highlight">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/jdt-workspace-data/.metadata/.log" beforeDir="false" afterPath="$PROJECT_DIR$/jdt-workspace-data/.metadata/.log" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/jdt-workspace-data/.metadata/.plugins/org.eclipse.core.resources/.safetable/org.eclipse.core.resources" beforeDir="false" afterPath="$PROJECT_DIR$/jdt-workspace-data/.metadata/.plugins/org.eclipse.core.resources/.safetable/org.eclipse.core.resources" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/jdt-workspace-data/.metadata/.plugins/org.eclipse.jdt.core/1865797976.index" beforeDir="false" afterPath="$PROJECT_DIR$/jdt-workspace-data/.metadata/.plugins/org.eclipse.jdt.core/1865797976.index" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/botmaker/AbstractCodeBlock.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/botmaker/AbstractExpressionBlock.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/botmaker/AbstractStatementBlock.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/botmaker/BinaryExpressionBlock.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/botmaker/BlockFactory.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/botmaker/BodyBlock.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/botmaker/CodeBlock.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/botmaker/CodeExecutionService.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/botmaker/CompletionContext.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/botmaker/DebuggerService.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/botmaker/DebuggingManager.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/botmaker/ExpressionBlock.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/botmaker/IdentifierBlock.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/botmaker/IfBlock.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/botmaker/JdtLanguageServerLauncher.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/botmaker/LiteralBlock.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/botmaker/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/botmaker/Main.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/botmaker/PrintBlock.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/botmaker/StatementBlock.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/botmaker/UIManager.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/botmaker/VariableDeclarationBlock.java" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -246,7 +270,15 @@
       <option name="project" value="LOCAL" />
       <updated>1760223934148</updated>
     </task>
-    <option name="localTasksCounter" value="12" />
+    <task id="LOCAL-00012" summary="Working if condition highlight">
+      <option name="closed" value="true" />
+      <created>1760224538321</created>
+      <option name="number" value="00012" />
+      <option name="presentableId" value="LOCAL-00012" />
+      <option name="project" value="LOCAL" />
+      <updated>1760224538321</updated>
+    </task>
+    <option name="localTasksCounter" value="13" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -275,7 +307,8 @@
     <MESSAGE value="correct debug highlight with ifblock" />
     <MESSAGE value="correct debug highlight with ifblock and binaryexpressionblock" />
     <MESSAGE value="Refactor Main file. ifcondition block still doesn't work" />
-    <option name="LAST_COMMIT_MESSAGE" value="Refactor Main file. ifcondition block still doesn't work" />
+    <MESSAGE value="Working if condition highlight" />
+    <option name="LAST_COMMIT_MESSAGE" value="Working if condition highlight" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

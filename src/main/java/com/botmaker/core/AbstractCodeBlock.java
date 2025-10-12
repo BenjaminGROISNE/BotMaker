@@ -1,5 +1,6 @@
-package com.botmaker;
+package com.botmaker.core;
 
+import com.botmaker.lsp.CompletionContext;
 import javafx.scene.Node;
 import org.eclipse.jdt.core.dom.ASTNode;
 import org.eclipse.jdt.core.dom.CompilationUnit;

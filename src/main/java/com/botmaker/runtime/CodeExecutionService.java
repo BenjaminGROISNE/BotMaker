@@ -1,4 +1,4 @@
-package com.botmaker;
+package com.botmaker.runtime;
 
 import javafx.application.Platform;
 

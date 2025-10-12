@@ -1,5 +1,13 @@
 package com.botmaker;
 
+import com.botmaker.blocks.BodyBlock;
+import com.botmaker.core.CodeBlock;
+import com.botmaker.lsp.CompletionContext;
+import com.botmaker.lsp.JdtLanguageServerLauncher;
+import com.botmaker.parser.BlockFactory;
+import com.botmaker.runtime.CodeExecutionService;
+import com.botmaker.runtime.DebuggingManager;
+import com.botmaker.ui.UIManager;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.stage.Stage;
@@ -80,20 +88,20 @@ public class Main extends Application {
         });
     }
 
-    void compileCode() {
+    public void compileCode() {
         executionService.compileCode(currentCode);
     }
 
-    void runCode() {
+    public void runCode() {
         executionService.runCode(currentCode);
     }
 
-    void startDebugging() {
+    public void startDebugging() {
         debuggingManager.setNodeToBlockMap(nodeToBlockMap);
         debuggingManager.startDebugging(currentCode);
     }
 
-    void resumeDebugging() {
+    public void resumeDebugging() {
         debuggingManager.resume();
     }
 

@@ -1,5 +1,7 @@
-package com.botmaker;
+package com.botmaker.blocks;
 
+import com.botmaker.core.AbstractExpressionBlock;
+import com.botmaker.lsp.CompletionContext;
 import javafx.scene.Node;
 import javafx.scene.layout.HBox;
 import javafx.scene.text.Text;

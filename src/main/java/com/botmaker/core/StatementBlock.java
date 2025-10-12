@@ -1,4 +1,4 @@
-package com.botmaker;
+package com.botmaker.core;
 
 /**
  * A block that represents a complete action or step in execution.

@@ -1,5 +1,8 @@
-package com.botmaker;
+package com.botmaker.blocks;
 
+import com.botmaker.core.StatementBlock;
+import com.botmaker.core.AbstractStatementBlock;
+import com.botmaker.lsp.CompletionContext;
 import javafx.collections.FXCollections;
 import javafx.scene.Node;
 import javafx.scene.control.ListCell;

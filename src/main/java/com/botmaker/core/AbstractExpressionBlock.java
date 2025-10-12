@@ -1,4 +1,4 @@
-package com.botmaker;
+package com.botmaker.core;
 
 import org.eclipse.jdt.core.dom.ASTNode;
 
