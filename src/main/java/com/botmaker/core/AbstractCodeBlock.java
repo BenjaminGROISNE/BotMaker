@@ -65,6 +65,11 @@ public abstract class AbstractCodeBlock implements CodeBlock {
         return this; // Default behavior is to highlight the block itself.
     }
 
+    @Override
+    public String getDetails() {
+        return this.getClass().getSimpleName() + " (ID: " + this.getId() + ")";
+    }
+
     // Abstract method for subclasses to implement their specific UI creation logic.
     protected abstract Node createUINode(CompletionContext context);
 }

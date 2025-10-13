@@ -1,6 +1,7 @@
 package com.botmaker.blocks;
 
 import com.botmaker.core.AbstractStatementBlock;
+import com.botmaker.core.BodyBlock;
 import com.botmaker.core.CodeBlock;
 import com.botmaker.core.ExpressionBlock;
 import com.botmaker.lsp.CompletionContext;
@@ -108,5 +109,11 @@ public class IfBlock extends AbstractStatementBlock {
     @Override
     public CodeBlock getHighlightTarget() {
         return condition != null ? condition : this;
+    }
+
+    @Override
+    public String getDetails() {
+        String conditionDetails = (condition != null) ? condition.getDetails() : "no condition";
+        return "If Statement (condition: " + conditionDetails + ")";
     }
 }

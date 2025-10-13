@@ -13,14 +13,16 @@ import javafx.scene.layout.VBox;
 public class UIManager {
 
     private final Main mainApp;
+    private final BlockDragAndDropManager dragAndDropManager;
     private VBox blocksContainer;
     private Label statusLabel;
     private TextArea outputArea;
     private Button debugButton;
     private Button resumeButton;
 
-    public UIManager(Main mainApp) {
+    public UIManager(Main mainApp, BlockDragAndDropManager dragAndDropManager) {
         this.mainApp = mainApp;
+        this.dragAndDropManager = dragAndDropManager;
     }
 
     public Scene createScene() {
@@ -29,6 +31,8 @@ public class UIManager {
         outputArea = new TextArea();
         outputArea.setEditable(false);
         outputArea.setPrefHeight(200);
+
+        HBox palette = createBlockPalette();
 
         Button compileButton = new Button("Compile");
         compileButton.setOnAction(e -> mainApp.compileCode());
@@ -47,10 +51,24 @@ public class UIManager {
 
         ScrollPane scrollPane = new ScrollPane(blocksContainer);
         scrollPane.setFitToWidth(true);
-        VBox root = new VBox(10, buttonBox, scrollPane, outputArea, statusLabel);
+        VBox root = new VBox(10, palette, buttonBox, scrollPane, outputArea, statusLabel);
         root.setPadding(new Insets(10));
 
         return new Scene(root, 600, 800);
+    }
+
+    private HBox createBlockPalette() {
+        HBox palette = new HBox(10);
+        palette.setPadding(new Insets(5));
+        palette.setStyle("-fx-background-color: #f0f0f0; -fx-border-color: #cccccc; -fx-border-width: 0 0 1 0;");
+
+        for (AddableBlock blockType : AddableBlock.values()) {
+            Label blockLabel = new Label(blockType.getDisplayName());
+            blockLabel.setStyle("-fx-background-color: #e0e0e0; -fx-padding: 8; -fx-border-color: #c0c0c0; -fx-border-radius: 4; -fx-background-radius: 4;");
+            dragAndDropManager.makeDraggable(blockLabel, blockType);
+            palette.getChildren().add(blockLabel);
+        }
+        return palette;
     }
 
     public VBox getBlocksContainer() {

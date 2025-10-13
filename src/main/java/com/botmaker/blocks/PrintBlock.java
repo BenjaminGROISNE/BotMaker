@@ -11,6 +11,7 @@ import org.eclipse.jdt.core.dom.MethodInvocation;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class PrintBlock extends AbstractStatementBlock {
 
@@ -41,5 +42,13 @@ public class PrintBlock extends AbstractStatementBlock {
         }
 
         return container;
+    }
+
+    @Override
+    public String getDetails() {
+        String argsString = arguments.stream()
+                .map(ExpressionBlock::getDetails)
+                .collect(Collectors.joining(", "));
+        return "Print Statement: " + argsString;
     }
 }

@@ -1,12 +1,13 @@
 package com.botmaker;
 
-import com.botmaker.blocks.BodyBlock;
+import com.botmaker.core.BodyBlock;
 import com.botmaker.core.CodeBlock;
 import com.botmaker.lsp.CompletionContext;
 import com.botmaker.lsp.JdtLanguageServerLauncher;
 import com.botmaker.parser.BlockFactory;
 import com.botmaker.runtime.CodeExecutionService;
 import com.botmaker.runtime.DebuggingManager;
+import com.botmaker.ui.BlockDragAndDropManager;
 import com.botmaker.ui.UIManager;
 import javafx.application.Application;
 import javafx.application.Platform;
@@ -40,13 +41,15 @@ public class Main extends Application {
     private UIManager uiManager;
     private CodeExecutionService executionService;
     private DebuggingManager debuggingManager;
+    private BlockDragAndDropManager dragAndDropManager;
 
     @Override
     public void start(Stage primaryStage) throws Exception {
         JdtLanguageServerLauncher launcher = new JdtLanguageServerLauncher(Paths.get("tools/jdt-language-server"));
         jdtServer = launcher.getServer();
 
-        uiManager = new UIManager(this);
+        dragAndDropManager = new BlockDragAndDropManager();
+        uiManager = new UIManager(this, dragAndDropManager);
         primaryStage.setScene(uiManager.createScene());
 
         executionService = new CodeExecutionService(
@@ -127,7 +130,7 @@ public class Main extends Application {
                 this::handleCodeUpdate
         );
 
-        BodyBlock rootBlock = factory.convert(javaCode, nodeToBlockMap);
+        BodyBlock rootBlock = factory.convert(javaCode, nodeToBlockMap, dragAndDropManager);
 
         if (rootBlock != null) {
             uiManager.getBlocksContainer().getChildren().add(rootBlock.getUINode(context));

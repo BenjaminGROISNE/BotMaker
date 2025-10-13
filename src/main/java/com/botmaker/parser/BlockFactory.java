@@ -1,9 +1,8 @@
 package com.botmaker.parser;
 
 import com.botmaker.blocks.*;
-import com.botmaker.core.CodeBlock;
-import com.botmaker.core.ExpressionBlock;
-import com.botmaker.core.StatementBlock;
+import com.botmaker.core.*;
+import com.botmaker.ui.BlockDragAndDropManager;
 import org.eclipse.jdt.core.dom.*;
 
 import java.util.Map;
@@ -13,7 +12,7 @@ public class BlockFactory {
 
     private CompilationUnit ast;
 
-    public BodyBlock convert(String javaCode, Map<ASTNode, CodeBlock> nodeToBlockMap) {
+    public BodyBlock convert(String javaCode, Map<ASTNode, CodeBlock> nodeToBlockMap, BlockDragAndDropManager manager) {
         ASTParser parser = ASTParser.newParser(AST.getJLSLatest());
         parser.setSource(javaCode.toCharArray());
         parser.setResolveBindings(true);
@@ -26,26 +25,26 @@ public class BlockFactory {
         ast.accept(visitor);
 
         return visitor.getMainMethodBody()
-                .map(block -> parseBodyBlock(block, nodeToBlockMap))
+                .map(block -> parseBodyBlock(block, nodeToBlockMap, manager))
                 .orElse(null);
     }
 
-    private BodyBlock parseBodyBlock(Block astBlock, Map<ASTNode, CodeBlock> nodeToBlockMap) {
-        BodyBlock bodyBlock = new BodyBlock("body_" + astBlock.hashCode(), astBlock);
+    private BodyBlock parseBodyBlock(Block astBlock, Map<ASTNode, CodeBlock> nodeToBlockMap, BlockDragAndDropManager manager) {
+        BodyBlock bodyBlock = new BodyBlock("body_" + astBlock.hashCode(), astBlock, manager);
         nodeToBlockMap.put(astBlock, bodyBlock);
         for (Object statementObj : astBlock.statements()) {
             Statement statement = (Statement) statementObj;
-            parseStatement(statement, nodeToBlockMap).ifPresent(bodyBlock::addStatement);
+            parseStatement(statement, nodeToBlockMap, manager).ifPresent(bodyBlock::addStatement);
         }
         return bodyBlock;
     }
 
-    private Optional<StatementBlock> parseStatement(Statement astStatement, Map<ASTNode, CodeBlock> nodeToBlockMap) {
+    private Optional<StatementBlock> parseStatement(Statement astStatement, Map<ASTNode, CodeBlock> nodeToBlockMap, BlockDragAndDropManager manager) {
         if (astStatement instanceof VariableDeclarationStatement) {
             return Optional.of(parseVariableDeclaration((VariableDeclarationStatement) astStatement, nodeToBlockMap));
         }
         if (astStatement instanceof IfStatement) {
-            return Optional.of(parseIfStatement((IfStatement) astStatement, nodeToBlockMap));
+            return Optional.of(parseIfStatement((IfStatement) astStatement, nodeToBlockMap, manager));
         }
         if (astStatement instanceof ExpressionStatement) {
             Expression expression = ((ExpressionStatement) astStatement).getExpression();
@@ -67,17 +66,17 @@ public class BlockFactory {
         return varBlock;
     }
 
-    private IfBlock parseIfStatement(IfStatement astNode, Map<ASTNode, CodeBlock> nodeToBlockMap) {
+    private IfBlock parseIfStatement(IfStatement astNode, Map<ASTNode, CodeBlock> nodeToBlockMap, BlockDragAndDropManager manager) {
         IfBlock ifBlock = new IfBlock("if_" + astNode.hashCode(), astNode);
         nodeToBlockMap.put(astNode, ifBlock);
         parseExpression(astNode.getExpression(), nodeToBlockMap).ifPresent(ifBlock::setCondition);
 
         if (astNode.getThenStatement() instanceof Block) {
-            ifBlock.setThenBody(parseBodyBlock((Block) astNode.getThenStatement(), nodeToBlockMap));
+            ifBlock.setThenBody(parseBodyBlock((Block) astNode.getThenStatement(), nodeToBlockMap, manager));
         }
 
         if (astNode.getElseStatement() != null && astNode.getElseStatement() instanceof Block) {
-            ifBlock.setElseBody(parseBodyBlock((Block) astNode.getElseStatement(), nodeToBlockMap));
+            ifBlock.setElseBody(parseBodyBlock((Block) astNode.getElseStatement(), nodeToBlockMap, manager));
         }
 
         return ifBlock;

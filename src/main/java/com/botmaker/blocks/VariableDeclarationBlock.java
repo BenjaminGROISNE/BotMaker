@@ -57,4 +57,10 @@ public class VariableDeclarationBlock extends AbstractStatementBlock {
 
         return container;
     }
+
+    @Override
+    public String getDetails() {
+        String initializerText = initializer != null ? " = ..." : "";
+        return "Variable Declaration: " + variableType.toString() + " " + variableName + initializerText;
+    }
 }

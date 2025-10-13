@@ -7,29 +7,25 @@
     <list default="true" id="cba04025-c331-4634-a893-436bad03efc0" name="Changes" comment="Working if condition highlight">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/jdt-workspace-data/.metadata/.log" beforeDir="false" afterPath="$PROJECT_DIR$/jdt-workspace-data/.metadata/.log" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/jdt-workspace-data/.metadata/.plugins/org.eclipse.buildship.core/gradle/versions.json" beforeDir="false" afterPath="$PROJECT_DIR$/jdt-workspace-data/.metadata/.plugins/org.eclipse.buildship.core/gradle/versions.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/jdt-workspace-data/.metadata/.plugins/org.eclipse.core.resources/.projects/jdt.ls-java-project/org.eclipse.jdt.core/state.dat" beforeDir="false" afterPath="$PROJECT_DIR$/jdt-workspace-data/.metadata/.plugins/org.eclipse.core.resources/.projects/jdt.ls-java-project/org.eclipse.jdt.core/state.dat" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/jdt-workspace-data/.metadata/.plugins/org.eclipse.core.resources/.root/13.tree" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/jdt-workspace-data/.metadata/.plugins/org.eclipse.core.resources/.safetable/org.eclipse.core.resources" beforeDir="false" afterPath="$PROJECT_DIR$/jdt-workspace-data/.metadata/.plugins/org.eclipse.core.resources/.safetable/org.eclipse.core.resources" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/jdt-workspace-data/.metadata/.plugins/org.eclipse.jdt.core/1865797976.index" beforeDir="false" afterPath="$PROJECT_DIR$/jdt-workspace-data/.metadata/.plugins/org.eclipse.jdt.core/1865797976.index" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/botmaker/AbstractCodeBlock.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/botmaker/AbstractExpressionBlock.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/botmaker/AbstractStatementBlock.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/botmaker/BinaryExpressionBlock.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/botmaker/BlockFactory.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/botmaker/BodyBlock.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/botmaker/CodeBlock.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/botmaker/CodeExecutionService.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/botmaker/CompletionContext.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/botmaker/DebuggerService.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/botmaker/DebuggingManager.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/botmaker/ExpressionBlock.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/botmaker/IdentifierBlock.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/botmaker/IfBlock.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/botmaker/JdtLanguageServerLauncher.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/botmaker/LiteralBlock.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/jdt-workspace-data/.metadata/.plugins/org.eclipse.jdt.core/savedIndexNames.txt" beforeDir="false" afterPath="$PROJECT_DIR$/jdt-workspace-data/.metadata/.plugins/org.eclipse.jdt.core/savedIndexNames.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/plan.txt" beforeDir="false" afterPath="$PROJECT_DIR$/plan.txt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/botmaker/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/botmaker/Main.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/botmaker/PrintBlock.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/botmaker/StatementBlock.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/botmaker/UIManager.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/botmaker/VariableDeclarationBlock.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/botmaker/blocks/BodyBlock.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/botmaker/core/BodyBlock.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/botmaker/blocks/IfBlock.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/botmaker/blocks/IfBlock.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/botmaker/blocks/PrintBlock.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/botmaker/blocks/PrintBlock.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/botmaker/blocks/VariableDeclarationBlock.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/botmaker/blocks/VariableDeclarationBlock.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/botmaker/core/AbstractCodeBlock.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/botmaker/core/AbstractCodeBlock.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/botmaker/core/CodeBlock.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/botmaker/core/CodeBlock.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/botmaker/parser/BlockFactory.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/botmaker/parser/BlockFactory.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/botmaker/ui/UIManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/botmaker/ui/UIManager.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tools/jdt-language-server/config_linux/org.eclipse.osgi/.manager/.fileTable.78" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/tools/jdt-language-server/config_linux/org.eclipse.osgi/.manager/.fileTable.79" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/tools/jdt-language-server/config_linux/org.eclipse.osgi/framework.info.78" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -70,6 +66,7 @@
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+    <option name="RESET_MODE" value="HARD" />
   </component>
   <component name="ProblemsViewState">
     <option name="selectedTabId" value="CurrentFile" />

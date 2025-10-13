@@ -49,3 +49,40 @@
 
   By following this plan, you will build a robust application with a clean, object-oriented architecture and achieve your primary goal of creating an interactive debugging experience that directly links your visual blocks to the live,
    running code.
+
+
+
+
+    So there are two key things to continue the app. First is to develop a robust system to detect select and add a block to the CodeBlock hierarchy. The second one is to take that additional block and add it to the AST, write the
+     additional code and recompile (most locally if possible). For now we'll focus on the first part. It should be easily debuggable I should be able to select blocks (that are made to be handled by the user not like bodyblock) in a top
+     bar. When a block is selected in the top bar I should be able to see where it's going to be inserted when I hover the current blocks. Share your strategy for that first step
+
+   ✦ Excellent. Here is my strategy for implementing the block selection and insertion preview feature.
+
+     Strategy:
+
+     I will focus on creating a clean, user-friendly, and debuggable system for visually adding new blocks. The core idea is to implement a drag-and-drop workflow.
+
+      1. Block Palette (The "Top Bar"):
+          * I'll enhance UIManager to include a new HBox that will serve as a "block palette."
+          * This palette will contain draggable UI representations for each type of block that a user can add (e.g., "Print", "Variable Declaration"). For now, these will be simple, styled labels.
+          * I'll create a new AddableBlock enum to define which blocks are available to the user, making it easy to extend later.
+
+      2. Drag-and-Drop Gesture:
+          * I will create a new class, BlockDragAndDropManager, to encapsulate all the logic related to the drag-and-drop gesture. This keeps the code organized and easier to debug.
+          * When a user clicks and drags a block from the palette, a drag-and-drop gesture will be initiated. The drag board will contain information about the type of block being dragged (e.g., AddableBlock.PRINT).
+
+      3. Insertion Preview:
+          * The primary drop targets will be BodyBlock instances, which are visually represented by ListViews.
+          * I'll modify BodyBlock's UI creation to register onDragOver and onDragDropped event handlers.
+          * As the user drags a block over a BodyBlock, a visual placeholder (an "insertion marker") will be displayed to show exactly where the new block will be inserted. This marker will be a simple styled Node.
+          * The logic will determine the precise insertion index within the BodyBlock's list of statements by tracking which list cell is being hovered over.
+
+      4. State Management & Finalization:
+          * The BlockDragAndDropManager will manage the state of the drag gesture.
+          * When the user drops the block onto a valid target, for now, I will simply print a confirmation to the console (e.g., "Dropped PRINT block at index 2"). This fulfills the requirement of focusing only on the first part of the
+            problem without modifying the AST.
+
+     This approach creates a clear separation of concerns and will be easy to debug by adding logging within the BlockDragAndDropManager.
+
+     I will now proceed with the implementation, starting with the creation of the AddableBlock enum and the BlockDragAndDropManager class.
