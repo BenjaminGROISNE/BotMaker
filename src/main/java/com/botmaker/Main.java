@@ -127,7 +127,8 @@ public class Main extends Application {
                 docUri,
                 currentCode,
                 docVersion,
-                this::handleCodeUpdate
+                this::handleCodeUpdate,
+                dragAndDropManager
         );
 
         BodyBlock rootBlock = factory.convert(javaCode, nodeToBlockMap, dragAndDropManager);

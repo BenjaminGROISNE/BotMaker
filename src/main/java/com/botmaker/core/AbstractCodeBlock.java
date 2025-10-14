@@ -2,6 +2,7 @@ package com.botmaker.core;
 
 import com.botmaker.lsp.CompletionContext;
 import javafx.scene.Node;
+import javafx.scene.layout.Region;
 import org.eclipse.jdt.core.dom.ASTNode;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 
@@ -68,6 +69,17 @@ public abstract class AbstractCodeBlock implements CodeBlock {
     @Override
     public String getDetails() {
         return this.getClass().getSimpleName() + " (ID: " + this.getId() + ")";
+    }
+
+    /**
+     * Creates a standard placeholder for a missing expression, which acts as a drop target.
+     * @param context The completion context containing the drag-and-drop manager.
+     * @return A Node representing the drop zone.
+     */
+    protected Node createExpressionDropZone(CompletionContext context) {
+        Region dropZone = new Region();
+        context.dragAndDropManager().addExpressionDropHandlers(dropZone);
+        return dropZone;
     }
 
     // Abstract method for subclasses to implement their specific UI creation logic.

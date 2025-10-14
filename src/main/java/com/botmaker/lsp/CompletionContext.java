@@ -1,5 +1,6 @@
 package com.botmaker.lsp;
 
+import com.botmaker.ui.BlockDragAndDropManager;
 import org.eclipse.lsp4j.services.LanguageServer;
 
 import java.util.function.Consumer;
@@ -10,5 +11,6 @@ public record CompletionContext(
     String docUri,
     String sourceCode,
     long docVersion,
-    Consumer<String> onCodeUpdate // A callback to trigger a refresh, e.g., Main::refreshUI
+    Consumer<String> onCodeUpdate, // A callback to trigger a refresh
+    BlockDragAndDropManager dragAndDropManager
 ) {}

@@ -53,6 +53,8 @@ public class VariableDeclarationBlock extends AbstractStatementBlock {
 
         if (initializer != null) {
             container.getChildren().add(initializer.getUINode(context));
+        } else {
+            container.getChildren().add(createExpressionDropZone(context));
         }
 
         return container;

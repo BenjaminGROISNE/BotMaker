@@ -57,6 +57,8 @@ public class IfBlock extends AbstractStatementBlock {
         header.getChildren().add(new Label("If"));
         if (condition != null) {
             header.getChildren().add(condition.getUINode(context));
+        } else {
+            header.getChildren().add(createExpressionDropZone(context));
         }
         container.getChildren().add(header);
 

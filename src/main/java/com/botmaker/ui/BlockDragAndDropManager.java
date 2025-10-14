@@ -1,13 +1,12 @@
 package com.botmaker.ui;
 
-import com.botmaker.core.BodyBlock;
 import com.botmaker.core.StatementBlock;
 import javafx.scene.Node;
-import javafx.scene.control.ListView;
 import javafx.scene.input.ClipboardContent;
 import javafx.scene.input.DataFormat;
 import javafx.scene.input.Dragboard;
 import javafx.scene.input.TransferMode;
+import javafx.scene.layout.Region;
 
 public class BlockDragAndDropManager {
 
@@ -31,40 +30,103 @@ public class BlockDragAndDropManager {
     }
 
     /**
-     * Makes a ListView within a BodyBlock a drop target for new blocks.
-     * @param bodyBlock The logical BodyBlock.
-     * @param listView The UI representation of the BodyBlock.
+     * Creates a thin, transparent region to act as a separator and drop target.
      */
-    public void makeDroppable(BodyBlock bodyBlock, ListView<StatementBlock> listView) {
-        listView.setOnDragOver(event -> {
-            // Accept the drag only if it has the correct data format.
-            if (event.getGestureSource() != listView && event.getDragboard().hasContent(ADDABLE_BLOCK_FORMAT)) {
-                event.acceptTransferModes(TransferMode.COPY);
-            }
-            event.consume();
-        });
-
-        listView.setOnDragExited(event -> {
-            // This will be used later to remove the insertion marker
-            System.out.println("Drag Exited BodyBlock: " + bodyBlock.getId());
-            event.consume();
-        });
-
-        listView.setOnDragDropped(event -> {
-            Dragboard db = event.getDragboard();
-            boolean success = false;
-            if (db.hasContent(ADDABLE_BLOCK_FORMAT)) {
-                String blockTypeName = (String) db.getContent(ADDABLE_BLOCK_FORMAT);
-                System.out.println("Dropped " + blockTypeName + " on BodyBlock " + bodyBlock.getId());
-
-                // The next step would be to calculate the insertion index and
-                // trigger an event to add the block to the AST.
-                // For now, this is the end of the line.
-
-                success = true;
-            }
-            event.setDropCompleted(success);
-            event.consume();
-        });
+    public Region createSeparator() {
+        Region separator = new Region();
+        separator.setMinHeight(8);
+        separator.setStyle("-fx-background-color: transparent;");
+        return separator;
     }
-}
+
+    /**
+     * Adds all necessary drag-and-drop event handlers to a separator region.
+     * @param separator The region to add handlers to.
+     * @param insertionIndex The index in the list where a drop should occur.
+     * @param adjacentBlock The block next to the separator, for context (can be null).
+     */
+        public void addSeparatorDragHandlers(Region separator, int insertionIndex, StatementBlock adjacentBlock) {
+            String defaultColor = "transparent";
+            String hoverColor = "#007bff"; // A distinct blue
+    
+            separator.setOnDragEntered(event -> {
+                if (event.getDragboard().hasContent(BlockDragAndDropManager.ADDABLE_BLOCK_FORMAT)) {
+                    separator.setStyle("-fx-background-color: " + hoverColor + ";");
+                    String logMessage = "Hovering insertion point at index: " + insertionIndex;
+                    if (adjacentBlock != null) {
+                        logMessage += " (next to: " + adjacentBlock.getDetails() + ")";
+                    }
+                    System.out.println(logMessage);
+                }
+                event.consume();
+            });
+    
+            separator.setOnDragExited(event -> {
+                separator.setStyle("-fx-background-color: " + defaultColor + ";");
+                event.consume();
+            });
+    
+            separator.setOnDragOver(event -> {
+                if (event.getDragboard().hasContent(BlockDragAndDropManager.ADDABLE_BLOCK_FORMAT)) {
+                    event.acceptTransferModes(TransferMode.COPY);
+                }
+                event.consume();
+            });
+    
+            separator.setOnDragDropped(event -> {
+                Dragboard db = event.getDragboard();
+                boolean success = false;
+                if (db.hasContent(BlockDragAndDropManager.ADDABLE_BLOCK_FORMAT)) {
+                    String blockTypeName = (String) db.getContent(BlockDragAndDropManager.ADDABLE_BLOCK_FORMAT);
+                    System.out.println("Dropped " + blockTypeName + " at index " + insertionIndex);
+                    // In the future, this is where we would trigger the AST modification
+                    success = true;
+                }
+                event.setDropCompleted(success);
+                event.consume();
+            });
+        }
+    
+        public void addExpressionDropHandlers(Region target) {
+            String defaultStyle = "-fx-background-color: #f0f0f0; -fx-border-color: #c0c0c0; -fx-border-style: dashed; -fx-min-width: 50; -fx-min-height: 25;";
+            String hoverStyle = defaultStyle + "-fx-border-color: #007bff;"; // Highlight with blue
+    
+            target.setStyle(defaultStyle);
+    
+            target.setOnDragEntered(event -> {
+                if (event.getDragboard().hasContent(ADDABLE_BLOCK_FORMAT)) {
+                    target.setStyle(hoverStyle);
+                    System.out.println("Hovering expression slot.");
+                }
+                event.consume();
+            });
+    
+            target.setOnDragExited(event -> {
+                target.setStyle(defaultStyle);
+                event.consume();
+            });
+    
+            target.setOnDragOver(event -> {
+                if (event.getDragboard().hasContent(ADDABLE_BLOCK_FORMAT)) {
+                    event.acceptTransferModes(TransferMode.COPY);
+                }
+                event.consume();
+            });
+    
+            target.setOnDragDropped(event -> {
+                Dragboard db = event.getDragboard();
+                boolean success = false;
+                if (db.hasContent(ADDABLE_BLOCK_FORMAT)) {
+                    // For now, we just acknowledge the drop and show a message.
+                    // In the future, we would need a different DataFormat for expressions.
+                    String blockTypeName = (String) db.getContent(ADDABLE_BLOCK_FORMAT);
+                    System.out.println("Cannot drop a Statement block ('" + blockTypeName + "') into an Expression slot.");
+                    // We'll still mark it as a "successful" drop to finalize the gesture.
+                    success = true;
+                }
+                event.setDropCompleted(success);
+                event.consume();
+            });
+        }
+    }
+    

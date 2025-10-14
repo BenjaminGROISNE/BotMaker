@@ -37,8 +37,14 @@ public class PrintBlock extends AbstractStatementBlock {
 
         container.getChildren().add(new Text("Print:"));
 
-        for (ExpressionBlock arg : arguments) {
-            container.getChildren().add(arg.getUINode(context));
+        if (arguments.isEmpty()) {
+            container.getChildren().add(createExpressionDropZone(context));
+        } else {
+            for (ExpressionBlock arg : arguments) {
+                container.getChildren().add(arg.getUINode(context));
+            }
+            // Optionally, add a drop zone to add more arguments
+            // container.getChildren().add(createExpressionDropZone(context));
         }
 
         return container;
