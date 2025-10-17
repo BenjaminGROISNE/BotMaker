@@ -4,6 +4,8 @@ import com.botmaker.blocks.*;
 import com.botmaker.core.*;
 import com.botmaker.ui.BlockDragAndDropManager;
 import org.eclipse.jdt.core.dom.*;
+import org.eclipse.jdt.core.dom.IMethodBinding;
+import org.eclipse.jdt.core.dom.ITypeBinding;
 
 import java.util.Map;
 import java.util.Optional;
@@ -138,11 +140,22 @@ public class BlockFactory {
     }
 
     private boolean isPrintStatement(Expression expression) {
-        if (!(expression instanceof MethodInvocation)) return false;
+        if (!(expression instanceof MethodInvocation)) {
+            return false;
+        }
         MethodInvocation method = (MethodInvocation) expression;
-        return method.getName().getIdentifier().equals("println") &&
-               method.getExpression() instanceof QualifiedName &&
-               ((QualifiedName) method.getExpression()).getFullyQualifiedName().equals("System.out");
+
+        if (!method.getName().getIdentifier().equals("println")) {
+            return false;
+        }
+
+        // Per user instruction, handle the no-argument case differently.
+        if (method.arguments().isEmpty()) {
+            return method.toString().startsWith("System.out.println");
+        } else {
+            Expression expr = method.getExpression();
+            return expr != null && "System.out".equals(expr.toString());
+        }
     }
 
     public CompilationUnit getCompilationUnit() {

@@ -4,15 +4,18 @@ import com.botmaker.core.BodyBlock;
 import com.botmaker.core.CodeBlock;
 import com.botmaker.lsp.CompletionContext;
 import com.botmaker.lsp.JdtLanguageServerLauncher;
+import com.botmaker.parser.AstRewriter;
 import com.botmaker.parser.BlockFactory;
 import com.botmaker.runtime.CodeExecutionService;
 import com.botmaker.runtime.DebuggingManager;
 import com.botmaker.ui.BlockDragAndDropManager;
+import com.botmaker.ui.DropInfo;
 import com.botmaker.ui.UIManager;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.stage.Stage;
 import org.eclipse.jdt.core.dom.ASTNode;
+import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.lsp4j.DidChangeTextDocumentParams;
 import org.eclipse.lsp4j.DidOpenTextDocumentParams;
 import org.eclipse.lsp4j.TextDocumentContentChangeEvent;
@@ -42,13 +45,15 @@ public class Main extends Application {
     private CodeExecutionService executionService;
     private DebuggingManager debuggingManager;
     private BlockDragAndDropManager dragAndDropManager;
+    private AstRewriter astRewriter;
 
     @Override
     public void start(Stage primaryStage) throws Exception {
         JdtLanguageServerLauncher launcher = new JdtLanguageServerLauncher(Paths.get("tools/jdt-language-server"));
         jdtServer = launcher.getServer();
 
-        dragAndDropManager = new BlockDragAndDropManager();
+        astRewriter = new AstRewriter();
+        dragAndDropManager = new BlockDragAndDropManager(this::addBlockToAst);
         uiManager = new UIManager(this, dragAndDropManager);
         primaryStage.setScene(uiManager.createScene());
 
@@ -117,12 +122,37 @@ public class Main extends Application {
         refreshUI(newCode);
     }
 
+    private void addBlockToAst(DropInfo dropInfo) {
+        CompilationUnit cu = factory.getCompilationUnit();
+        String newCode = astRewriter.addStatement(
+                cu,
+                currentCode,
+                dropInfo.targetBody(),
+                dropInfo.type(),
+                dropInfo.insertionIndex()
+        );
+        // Run on UI thread to ensure UI updates are safe
+        Platform.runLater(() -> handleCodeUpdate(newCode));
+    }
+
+    public void replaceExpressionInAst(org.eclipse.jdt.core.dom.Expression toReplace, com.botmaker.ui.AddableExpression type) {
+        CompilationUnit cu = factory.getCompilationUnit();
+        String newCode = astRewriter.replaceExpression(
+                cu,
+                currentCode,
+                toReplace,
+                type
+        );
+        Platform.runLater(() -> handleCodeUpdate(newCode));
+    }
+
     private void refreshUI(String javaCode) {
         this.currentCode = javaCode;
         this.nodeToBlockMap = new HashMap<>();
         uiManager.getBlocksContainer().getChildren().clear();
 
         CompletionContext context = new CompletionContext(
+                this,
                 jdtServer,
                 docUri,
                 currentCode,

@@ -3,9 +3,11 @@ package com.botmaker.blocks;
 import com.botmaker.core.AbstractExpressionBlock;
 import com.botmaker.lsp.CompletionContext;
 import javafx.application.Platform;
+import javafx.scene.Cursor;
 import javafx.scene.Node;
 import javafx.scene.control.ContextMenu;
 import javafx.scene.control.MenuItem;
+import javafx.scene.control.Tooltip;
 import javafx.scene.layout.HBox;
 import javafx.scene.text.Text;
 import org.eclipse.jdt.core.dom.SimpleName;
@@ -31,9 +33,13 @@ public class IdentifierBlock extends AbstractExpressionBlock {
         HBox container = new HBox(text);
         container.setStyle("-fx-background-color: #fafafa; -fx-border-color: #d9d9d9; -fx-padding: 5; -fx-background-radius: 5; -fx-border-radius: 5;");
 
+        // Add visual cues for interaction
+        container.setCursor(Cursor.HAND);
+        Tooltip tooltip = new Tooltip("Click for suggestions");
+        Tooltip.install(container, tooltip);
+
         // Add the click handler for suggestions
         container.setOnMouseClicked(e -> requestSuggestions(container, context));
-
         return container;
     }
 

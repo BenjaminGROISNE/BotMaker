@@ -2,69 +2,53 @@ package com.botmaker.core;
 
 import com.botmaker.lsp.CompletionContext;
 import com.botmaker.ui.BlockDragAndDropManager;
-import javafx.collections.FXCollections;
-import javafx.geometry.Insets;
+import com.botmaker.ui.DropInfo;
 import javafx.scene.Node;
-import javafx.scene.control.ListCell;
-import javafx.scene.control.ListView;
-import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
-import org.eclipse.jdt.core.dom.Block;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class BodyBlock extends AbstractStatementBlock {
+public class BodyBlock extends AbstractCodeBlock implements BlockWithChildren {
     private final List<StatementBlock> statements = new ArrayList<>();
     private final BlockDragAndDropManager dragAndDropManager;
 
-    public BodyBlock(String id, Block astNode, BlockDragAndDropManager manager) {
+    public BodyBlock(String id, org.eclipse.jdt.core.dom.Block astNode, BlockDragAndDropManager dragAndDropManager) {
         super(id, astNode);
-        this.dragAndDropManager = manager;
-    }
-
-    public List<StatementBlock> getStatements() {
-        return statements;
+        this.dragAndDropManager = dragAndDropManager;
     }
 
     public void addStatement(StatementBlock statement) {
-        this.statements.add(statement);
+        statements.add(statement);
+    }
+
+    @Override
+    public List<CodeBlock> getChildren() {
+        return new ArrayList<>(statements);
     }
 
     @Override
     protected Node createUINode(CompletionContext context) {
-        ListView<StatementBlock> listView = new ListView<>();
-        listView.setItems(FXCollections.observableList(statements));
-        listView.setStyle("-fx-background-insets: 0; -fx-padding: 1;");
+        VBox container = new VBox();
+        container.getStyleClass().add("body-block");
 
-        listView.setCellFactory(param -> new ListCell<StatementBlock>() {
-            @Override
-            protected void updateItem(StatementBlock item, boolean empty) {
-                super.updateItem(item, empty);
-                if (empty || item == null) {
-                    setGraphic(null);
-                    setText(null);
-                } else {
-                    // Each cell only has a separator at the bottom, for insertion *after* the current item.
-                    Region bottomSeparator = dragAndDropManager.createSeparator();
-                    dragAndDropManager.addSeparatorDragHandlers(bottomSeparator, getIndex() + 1, item);
+        // Add a separator at the beginning
+        container.getChildren().add(createSeparatorWithHandlers(this, 0));
 
-                    Node itemNode = item.getUINode(context);
-                    VBox cellContainer = new VBox(itemNode, bottomSeparator);
-                    setGraphic(cellContainer);
-                    setText(null);
-                    setPadding(Insets.EMPTY);
-                }
-            }
-        });
+        for (int i = 0; i < statements.size(); i++) {
+            StatementBlock statement = statements.get(i);
+            container.getChildren().add(statement.getUINode(context));
+            // Add a separator after each statement
+            container.getChildren().add(createSeparatorWithHandlers(this, i + 1));
+        }
 
-        // A separator at the top of the whole body handles insertion at the very beginning (index 0).
-        Region topBodySeparator = dragAndDropManager.createSeparator();
-        dragAndDropManager.addSeparatorDragHandlers(topBodySeparator, 0, null);
+        return container;
+    }
 
-        VBox bodyContainer = new VBox(topBodySeparator, listView);
-        bodyContainer.setStyle("-fx-border-color: #cccccc; -fx-border-width: 1; -fx-border-style: dashed;");
-
-        return bodyContainer;
+    private Node createSeparatorWithHandlers(BodyBlock targetBody, int insertionIndex) {
+        javafx.scene.layout.Region separator = dragAndDropManager.createSeparator();
+        StatementBlock adjacentBlock = (insertionIndex < statements.size()) ? statements.get(insertionIndex) : null;
+        dragAndDropManager.addSeparatorDragHandlers(separator, targetBody, insertionIndex, adjacentBlock);
+        return separator;
     }
 }

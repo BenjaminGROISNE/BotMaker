@@ -43,9 +43,25 @@ public class PrintBlock extends AbstractStatementBlock {
             for (ExpressionBlock arg : arguments) {
                 container.getChildren().add(arg.getUINode(context));
             }
-            // Optionally, add a drop zone to add more arguments
-            // container.getChildren().add(createExpressionDropZone(context));
         }
+
+        javafx.scene.control.Button addButton = new javafx.scene.control.Button("+");
+        javafx.scene.control.ContextMenu contextMenu = new javafx.scene.control.ContextMenu();
+
+        for (com.botmaker.ui.AddableExpression type : com.botmaker.ui.AddableExpression.values()) {
+            javafx.scene.control.MenuItem menuItem = new javafx.scene.control.MenuItem(type.getDisplayName());
+            menuItem.setOnAction(e -> {
+                if (!arguments.isEmpty()) {
+                    // We are assuming one argument for now
+                    org.eclipse.jdt.core.dom.Expression toReplace = (org.eclipse.jdt.core.dom.Expression) arguments.get(0).getAstNode();
+                    context.mainApp().replaceExpressionInAst(toReplace, type);
+                }
+            });
+            contextMenu.getItems().add(menuItem);
+        }
+
+        addButton.setOnAction(e -> contextMenu.show(addButton, javafx.geometry.Side.BOTTOM, 0, 0));
+        container.getChildren().add(addButton);
 
         return container;
     }

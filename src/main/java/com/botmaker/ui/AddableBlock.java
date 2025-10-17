@@ -7,7 +7,7 @@ import com.botmaker.core.StatementBlock;
 
 public enum AddableBlock {
     PRINT("Print", PrintBlock.class),
-    VARIABLE_DECLARATION("Variable", VariableDeclarationBlock.class),
+    VARIABLE_DECLARATION("Declare Variable", VariableDeclarationBlock.class),
     IF("If", IfBlock.class);
 
     private final String displayName;
