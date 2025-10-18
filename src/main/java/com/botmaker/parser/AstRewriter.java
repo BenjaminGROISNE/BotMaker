@@ -105,6 +105,23 @@ public class AstRewriter {
         }
     }
 
+    public String replaceSimpleName(CompilationUnit cu, String originalCode, SimpleName toReplace, String newName) {
+        AST ast = cu.getAST();
+        ASTRewrite rewriter = ASTRewrite.create(ast);
+        SimpleName newSimpleName = ast.newSimpleName(newName);
+        rewriter.replace(toReplace, newSimpleName, null);
+
+        IDocument document = new Document(originalCode);
+        try {
+            TextEdit edits = rewriter.rewriteAST(document, null);
+            edits.apply(document);
+            return document.get();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return originalCode;
+        }
+    }
+
     private Expression createDefaultExpression(AST ast, com.botmaker.ui.AddableExpression type) {
         switch (type) {
             case TEXT:

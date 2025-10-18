@@ -6,15 +6,15 @@ import com.botmaker.lsp.CompletionContext;
 import com.botmaker.lsp.JdtLanguageServerLauncher;
 import com.botmaker.parser.AstRewriter;
 import com.botmaker.parser.BlockFactory;
+import com.botmaker.parser.CodeEditor;
 import com.botmaker.runtime.CodeExecutionService;
 import com.botmaker.runtime.DebuggingManager;
 import com.botmaker.ui.BlockDragAndDropManager;
-import com.botmaker.ui.DropInfo;
 import com.botmaker.ui.UIManager;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.stage.Stage;
-import org.eclipse.jdt.core.dom.*;
+import org.eclipse.jdt.core.dom.ASTNode;
 import org.eclipse.lsp4j.DidChangeTextDocumentParams;
 import org.eclipse.lsp4j.DidOpenTextDocumentParams;
 import org.eclipse.lsp4j.TextDocumentContentChangeEvent;
@@ -45,6 +45,7 @@ public class Main extends Application {
     private DebuggingManager debuggingManager;
     private BlockDragAndDropManager dragAndDropManager;
     private AstRewriter astRewriter;
+    private CodeEditor codeEditor;
 
     @Override
     public void start(Stage primaryStage) throws Exception {
@@ -52,7 +53,11 @@ public class Main extends Application {
         jdtServer = launcher.getServer();
 
         astRewriter = new AstRewriter();
-        dragAndDropManager = new BlockDragAndDropManager(this::addBlockToAst);
+        codeEditor = new CodeEditor(this, astRewriter, factory);
+
+        dragAndDropManager = new BlockDragAndDropManager(dropInfo ->
+                codeEditor.addStatement(dropInfo.targetBody(), dropInfo.type(), dropInfo.insertionIndex()));
+
         uiManager = new UIManager(this, dragAndDropManager);
         primaryStage.setScene(uiManager.createScene());
 
@@ -112,7 +117,7 @@ public class Main extends Application {
         debuggingManager.resume();
     }
 
-    private void handleCodeUpdate(String newCode) {
+    public void handleCodeUpdate(String newCode) {
         try {
             Files.writeString(Paths.get(new java.net.URI(docUri)), newCode);
         } catch (java.io.IOException | java.net.URISyntaxException e) {
@@ -128,51 +133,6 @@ public class Main extends Application {
         refreshUI(newCode);
     }
 
-    private void addBlockToAst(DropInfo dropInfo) {
-        CompilationUnit cu = factory.getCompilationUnit();
-        String newCode = astRewriter.addStatement(
-                cu,
-                currentCode,
-                dropInfo.targetBody(),
-                dropInfo.type(),
-                dropInfo.insertionIndex()
-        );
-        // Run on UI thread to ensure UI updates are safe
-        Platform.runLater(() -> handleCodeUpdate(newCode));
-    }
-
-    public void replaceExpressionInAst(org.eclipse.jdt.core.dom.Expression toReplace, com.botmaker.ui.AddableExpression type) {
-        CompilationUnit cu = factory.getCompilationUnit();
-        String newCode = astRewriter.replaceExpression(
-                cu,
-                currentCode,
-                toReplace,
-                type
-        );
-        Platform.runLater(() -> handleCodeUpdate(newCode));
-    }
-
-    public void replaceLiteralValue(Expression toReplace, String newLiteralValue) {
-        CompilationUnit cu = factory.getCompilationUnit();
-        String newCode = astRewriter.replaceLiteral(
-                cu,
-                currentCode,
-                toReplace,
-                newLiteralValue
-        );
-        Platform.runLater(() -> handleCodeUpdate(newCode));
-    }
-
-    public void addArgumentToPrintln(org.eclipse.jdt.core.dom.MethodInvocation mi, String text) {
-        CompilationUnit cu = factory.getCompilationUnit();
-        AST ast = cu.getAST();
-        StringLiteral newArg = ast.newStringLiteral();
-        newArg.setLiteralValue(text);
-
-        String newCode = astRewriter.addArgumentToMethodInvocation(cu, currentCode, mi, newArg);
-        Platform.runLater(() -> handleCodeUpdate(newCode));
-    }
-
     private void refreshUI(String javaCode) {
         this.currentCode = javaCode;
         this.nodeToBlockMap = new HashMap<>();
@@ -180,11 +140,11 @@ public class Main extends Application {
 
         CompletionContext context = new CompletionContext(
                 this,
+                codeEditor,
                 jdtServer,
                 docUri,
                 currentCode,
                 docVersion,
-                this::handleCodeUpdate,
                 dragAndDropManager
         );
 
@@ -206,8 +166,8 @@ public class Main extends Application {
         }
     }
 
-    public AstRewriter getAstRewriter() {
-        return astRewriter;
+    public String getCurrentCode() {
+        return currentCode;
     }
 
     public BlockFactory getBlockFactory() {

@@ -47,10 +47,10 @@ public class LiteralBlock<T> extends AbstractExpressionBlock {
                     // Handle the special synthetic case for an empty println
                     if (this.astNode instanceof org.eclipse.jdt.core.dom.MethodInvocation) {
                         org.eclipse.jdt.core.dom.MethodInvocation mi = (org.eclipse.jdt.core.dom.MethodInvocation) this.astNode;
-                        context.mainApp().addArgumentToPrintln(mi, newText);
+                        context.codeEditor().addStringArgumentToMethodInvocation(mi, newText);
                     } else {
                         // This is the normal case for editing an existing literal
-                        context.mainApp().replaceLiteralValue((Expression) this.astNode, newText);
+                        context.codeEditor().replaceLiteralValue((Expression) this.astNode, newText);
                     }
                 }
             }

@@ -78,14 +78,8 @@ public class IdentifierBlock extends AbstractExpressionBlock {
     private void applySuggestion(CompletionItem item, CompletionContext context) {
         try {
             String insertText = item.getInsertText() != null ? item.getInsertText() : item.getLabel();
-            int start = this.astNode.getStartPosition();
-            int end = start + this.astNode.getLength();
-
-            String newCode = context.sourceCode().substring(0, start) + insertText + context.sourceCode().substring(end);
-
-            // Use the callback to notify Main to refresh the UI
-            context.onCodeUpdate().accept(newCode);
-
+            // The astNode for an IdentifierBlock is a SimpleName.
+            context.codeEditor().replaceSimpleName((SimpleName) this.astNode, insertText);
         } catch (Exception e) {
             e.printStackTrace(); // Log error
         }

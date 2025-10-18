@@ -54,7 +54,7 @@ public class PrintBlock extends AbstractStatementBlock {
                 if (!arguments.isEmpty()) {
                     // We are assuming one argument for now
                     org.eclipse.jdt.core.dom.Expression toReplace = (org.eclipse.jdt.core.dom.Expression) arguments.get(0).getAstNode();
-                    context.mainApp().replaceExpressionInAst(toReplace, type);
+                    context.codeEditor().replaceExpression(toReplace, type);
                 }
             });
             contextMenu.getItems().add(menuItem);
