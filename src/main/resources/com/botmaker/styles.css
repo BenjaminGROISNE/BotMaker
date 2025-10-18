@@ -1,0 +1,324 @@
+/* General styles for both light and dark themes */
+.root {
+    -fx-font-family: "Inter", sans-serif;
+
+    /* Block Color Variables */
+    -fx-if-block-background: #E0C000;
+    -fx-if-block-border: #E09000;
+
+    -fx-binary-expression-block-background: #B060D0;
+    -fx-binary-expression-block-border: #9040E0;
+
+    -fx-identifier-block-background: #A9A9A9;
+    -fx-identifier-block-border: #696969;
+
+    -fx-literal-block-background: #FF80C0;
+    -fx-literal-block-border: #C03090;
+
+    -fx-print-block-background: #3090E0;
+    -fx-print-block-border: #2020C0;
+
+    -fx-variable-declaration-block-background: #50C050;
+    -fx-variable-declaration-block-border: #408040;
+}
+
+.button {
+    -fx-background-color: #e0e0e0;
+    -fx-text-fill: black;
+    -fx-background-radius: 4;
+}
+
+.button:hover {
+    -fx-background-color: #d0d0d0;
+}
+
+.text-area {
+    -fx-background-color: #ffffff;
+    -fx-text-fill: black;
+    -fx-border-color: #cccccc;
+    -fx-border-radius: 4;
+}
+
+.scroll-pane {
+    -fx-background-color: transparent;
+}
+
+.label {
+    -fx-text-fill: black;
+}
+
+/* Light Theme */
+.light-theme {
+    -fx-background-color: #f4f4f4;
+}
+
+.light-theme .button {
+    -fx-background-color: #e0e0e0;
+    -fx-text-fill: black;
+}
+
+.light-theme .button:hover {
+    -fx-background-color: #d0d0d0;
+}
+
+.light-theme .text-area {
+    -fx-background-color: #ffffff;
+    -fx-text-fill: black;
+    -fx-border-color: #cccccc;
+}
+
+.light-theme .label {
+    -fx-text-fill: black;
+}
+
+.light-theme #status-label {
+    -fx-text-fill: #333333;
+}
+
+.light-theme .palette {
+    -fx-background-color: #e8e8e8; /* Slightly lighter for distinction */
+    -fx-border-color: #bbbbbb;
+    -fx-border-width: 0 0 1 0;
+}
+
+.light-theme .palette-block-label {
+    -fx-border-width: 1;
+    -fx-border-radius: 4;
+    -fx-background-radius: 4;
+    -fx-padding: 6 10;
+    -fx-text-fill: black;
+    -fx-font-weight: bold;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 5, 0, 0, 1); /* Subtle shadow */
+}
+
+.light-theme .palette-block-label:hover {
+    -fx-background-color: derive(-fx-background-color, 10%);
+    -fx-border-color: derive(-fx-border-color, 10%);
+}
+
+/* Specific palette label colors (matching block colors) */
+.light-theme .palette-if-label {
+    -fx-background-color: -fx-if-block-background;
+    -fx-border-color: -fx-if-block-border;
+}
+.light-theme .palette-binaryexpression-label {
+    -fx-background-color: -fx-binary-expression-block-background;
+    -fx-border-color: -fx-binary-expression-block-border;
+}
+.light-theme .palette-identifier-label {
+    -fx-background-color: -fx-identifier-block-background;
+    -fx-border-color: -fx-identifier-block-border;
+}
+.light-theme .palette-literal-label {
+    -fx-background-color: -fx-literal-block-background;
+    -fx-border-color: -fx-literal-block-border;
+}
+.light-theme .palette-print-label {
+    -fx-background-color: -fx-print-block-background;
+    -fx-border-color: -fx-print-block-border;
+}
+.light-theme .palette-variable_declaration-label {
+    -fx-background-color: -fx-variable-declaration-block-background;
+    -fx-border-color: -fx-variable-declaration-block-border;
+}
+
+/* Block Styles (apply to both themes by default) */
+.if-block {
+    -fx-background-color: -fx-if-block-background;
+    -fx-border-color: -fx-if-block-border;
+    -fx-padding: 5;
+    -fx-background-radius: 5;
+    -fx-border-radius: 5;
+}
+
+.binary-expression-block {
+    -fx-background-color: -fx-binary-expression-block-background;
+    -fx-border-color: -fx-binary-expression-block-border;
+    -fx-padding: 5;
+    -fx-background-radius: 5;
+    -fx-border-radius: 5;
+}
+
+.identifier-block {
+    -fx-background-color: -fx-identifier-block-background;
+    -fx-border-color: -fx-identifier-block-border;
+    -fx-padding: 5;
+    -fx-background-radius: 5;
+    -fx-border-radius: 5;
+}
+
+.literal-block {
+    -fx-background-color: -fx-literal-block-background;
+    -fx-border-color: -fx-literal-block-border;
+    -fx-padding: 5;
+    -fx-background-radius: 5;
+    -fx-border-radius: 5;
+}
+
+.print-block {
+    -fx-background-color: -fx-print-block-background;
+    -fx-border-color: -fx-print-block-border;
+    -fx-padding: 5;
+    -fx-background-radius: 5;
+    -fx-border-radius: 5;
+}
+
+.variable-declaration-block {
+    -fx-background-color: -fx-variable-declaration-block-background;
+    -fx-border-color: -fx-variable-declaration-block-border;
+    -fx-padding: 5;
+    -fx-background-radius: 5;
+    -fx-border-radius: 5;
+}
+
+/* Dark Theme specific overrides */
+.dark-theme {
+    -fx-background-color: #2b2b2b;
+}
+
+.dark-theme .button {
+    -fx-background-color: #555555;
+    -fx-text-fill: white;
+}
+
+.dark-theme .button:hover {
+    -fx-background-color: #666666;
+}
+
+.dark-theme .text-area {
+    -fx-background-color: #3c3f41;
+    -fx-text-fill: #bbbbbb;
+    -fx-border-color: #555555;
+}
+
+.dark-theme .text-area .content {
+    -fx-background-color: #3c3f41;
+}
+
+.dark-theme .label {
+    -fx-text-fill: white;
+}
+
+.dark-theme #status-label {
+    -fx-text-fill: #aaaaaa;
+}
+
+.dark-theme .scroll-pane {
+    -fx-background-color: #2b2b2b;
+}
+
+.dark-theme .palette {
+    -fx-background-color: #222222 !important; /* Darker background for distinction */
+    -fx-border-color: #444444;
+    -fx-border-width: 0 0 1 0;
+}
+
+.dark-theme .palette-block-label {
+    -fx-background-color: derive(-fx-background-color, -10%); /* Darker background for draggable labels */
+    -fx-border-color: derive(-fx-border-color, -10%);
+    -fx-border-width: 1;
+    -fx-border-radius: 4;
+    -fx-background-radius: 4;
+    -fx-padding: 6 10;
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.3), 5, 0, 0, 1); /* Subtle shadow */
+}
+
+.dark-theme .palette-block-label:hover {
+    -fx-background-color: derive(-fx-background-color, -20%);
+    -fx-border-color: derive(-fx-border-color, -20%);
+}
+
+/* Specific palette label colors (matching block colors) */
+.dark-theme .palette-if-label {
+    -fx-background-color: -fx-if-block-background;
+    -fx-border-color: -fx-if-block-border;
+}
+.dark-theme .palette-binaryexpression-label {
+    -fx-background-color: -fx-binary-expression-block-background;
+    -fx-border-color: -fx-binary-expression-block-border;
+}
+.dark-theme .palette-identifier-label {
+    -fx-background-color: -fx-identifier-block-background;
+    -fx-border-color: -fx-identifier-block-border;
+}
+.dark-theme .palette-literal-label {
+    -fx-background-color: -fx-literal-block-background;
+    -fx-border-color: -fx-literal-block-border;
+}
+.dark-theme .palette-print-label {
+    -fx-background-color: -fx-print-block-background;
+    -fx-border-color: -fx-print-block-border;
+}
+.dark-theme .palette-variable_declaration-label {
+    -fx-background-color: -fx-variable-declaration-block-background;
+    -fx-border-color: -fx-variable-declaration-block-border;
+}
+
+/* Block Text Bolder and Bigger & Always Black */
+/* General text within blocks */
+.if-block .label,
+.binary-expression-block .label,
+.identifier-block .text,
+.literal-block .text-field,
+.print-block .text,
+.variable-declaration-block .text,
+.main-block-header {
+    -fx-font-size: 1.1em; /* Slightly bigger */
+    -fx-font-weight: bold; /* Bolder */
+    -fx-text-fill: black; /* Always black */
+}
+
+/* Override for dark theme labels that are NOT inside blocks (e.g., status label) */
+.dark-theme .label {
+    -fx-text-fill: white;
+}
+
+/* Ensure text fields in literal blocks are black in light theme */
+.light-theme .literal-block .text-field {
+    -fx-text-fill: black;
+}
+
+/* Literal Block TextField in Dark Theme */
+.dark-theme .literal-block .text-field {
+    -fx-background-color: #4e4e4e; /* Darker background for TextField */
+    -fx-text-fill: black; /* Changed to black */
+    -fx-prompt-text-fill: #aaaaaa; /* Slightly darker for prompt text */
+    -fx-highlight-fill: #007bff; /* Highlight color */
+    -fx-highlight-text-fill: white;
+    -fx-control-inner-background: #4e4e4e; /* For the actual editable area */
+}
+
+/* Body Block Separator */
+.body-block-separator {
+    -fx-min-height: 8;
+    -fx-background-color: transparent; /* Light theme default */
+}
+
+.dark-theme .body-block-separator {
+    -fx-background-color: #444444; /* Dark gray for dark theme */
+}
+
+/* Main Block Styles */
+.main-block {
+    -fx-background-color: #f0f0f0; /* Light theme default */
+    -fx-border-color: #cccccc;
+    -fx-border-width: 1;
+    -fx-border-radius: 5;
+    -fx-background-radius: 5;
+}
+
+.main-block-header {
+    -fx-font-weight: bold;
+    -fx-text-fill: black; /* Light theme default */
+}
+
+.dark-theme .main-block {
+    -fx-background-color: #3c3f41;
+    -fx-border-color: #555555;
+}
+
+.dark-theme .main-block-header {
+    -fx-text-fill: #bbbbbb;
+}

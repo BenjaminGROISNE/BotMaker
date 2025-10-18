@@ -45,7 +45,7 @@ public class VariableDeclarationBlock extends AbstractStatementBlock {
     protected Node createUINode(CompletionContext context) {
         HBox container = new HBox(5);
         container.setAlignment(Pos.CENTER_LEFT);
-        container.setStyle("-fx-background-color: #f6ffed; -fx-border-color: #b7eb8f; -fx-padding: 5; -fx-background-radius: 5; -fx-border-radius: 5;");
+        container.getStyleClass().add("variable-declaration-block");
 
         container.getChildren().add(new Text(variableType.toString()));
         container.getChildren().add(new Text(variableName));

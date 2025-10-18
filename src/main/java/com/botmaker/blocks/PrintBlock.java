@@ -34,7 +34,7 @@ public class PrintBlock extends AbstractStatementBlock {
     protected Node createUINode(CompletionContext context) {
         HBox container = new HBox(5);
         container.setAlignment(Pos.CENTER_LEFT);
-        container.setStyle("-fx-background-color: #e6f7ff; -fx-border-color: #91d5ff; -fx-padding: 5; -fx-background-radius: 5; -fx-border-radius: 5;");
+        container.getStyleClass().add("print-block");
 
         container.getChildren().add(new Text("Print:"));
 

@@ -51,7 +51,7 @@ public class BinaryExpressionBlock extends AbstractExpressionBlock {
     protected Node createUINode(CompletionContext context) {
         HBox container = new HBox(5);
         container.setAlignment(Pos.CENTER_LEFT);
-        container.setStyle("-fx-background-color: #f9f0ff; -fx-border-color: #d3adf7; -fx-padding: 5; -fx-background-radius: 5; -fx-border-radius: 5;");
+        container.getStyleClass().add("binary-expression-block");
 
         HBox expressionBox = new HBox(5);
         expressionBox.setAlignment(Pos.CENTER_LEFT);

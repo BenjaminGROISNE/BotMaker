@@ -57,7 +57,7 @@ public class LiteralBlock<T> extends AbstractExpressionBlock {
         });
 
         HBox container = new HBox(textField);
-        container.setStyle("-fx-background-color: #fff0f6; -fx-border-color: #ffadd2; -fx-padding: 5; -fx-background-radius: 5; -fx-border-radius: 5;");
+        container.getStyleClass().add("literal-block");
         return container;
     }
 }

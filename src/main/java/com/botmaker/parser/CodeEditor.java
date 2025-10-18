@@ -1,11 +1,11 @@
 package com.botmaker.parser;
 
-import com.botmaker.Main;
 import com.botmaker.core.BodyBlock;
 import com.botmaker.ui.AddableBlock;
 import com.botmaker.ui.AddableExpression;
 import javafx.application.Platform;
 import org.eclipse.jdt.core.dom.*;
+import com.botmaker.Main;
 
 public class CodeEditor {
 

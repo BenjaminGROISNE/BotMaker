@@ -50,7 +50,7 @@ public class IfBlock extends AbstractStatementBlock {
     @Override
     protected Node createUINode(CompletionContext context) {
         VBox container = new VBox(5);
-        container.setStyle("-fx-background-color: #fffbe6; -fx-border-color: #ffe58f; -fx-padding: 5; -fx-background-radius: 5; -fx-border-radius: 5;");
+        container.getStyleClass().add("if-block");
 
         HBox header = new HBox(5);
         header.setAlignment(Pos.CENTER_LEFT);

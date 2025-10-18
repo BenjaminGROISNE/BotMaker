@@ -141,10 +141,10 @@ public class AstRewriter {
         switch (type) {
             case TEXT:
                 StringLiteral newString = ast.newStringLiteral();
-                newString.setLiteralValue("new text");
+                newString.setLiteralValue("");
                 return newString;
             case VARIABLE:
-                return ast.newSimpleName("newVar");
+                return ast.newSimpleName("a");
             default:
                 return null;
         }

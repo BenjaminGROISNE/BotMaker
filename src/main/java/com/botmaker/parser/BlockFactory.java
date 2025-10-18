@@ -14,7 +14,7 @@ public class BlockFactory {
 
     private CompilationUnit ast;
 
-    public BodyBlock convert(String javaCode, Map<ASTNode, CodeBlock> nodeToBlockMap, BlockDragAndDropManager manager) {
+    public MainBlock convert(String javaCode, Map<ASTNode, CodeBlock> nodeToBlockMap, BlockDragAndDropManager manager) {
         ASTParser parser = ASTParser.newParser(AST.getJLSLatest());
         parser.setSource(javaCode.toCharArray());
         parser.setResolveBindings(true);
@@ -26,8 +26,16 @@ public class BlockFactory {
         MainMethodVisitor visitor = new MainMethodVisitor();
         ast.accept(visitor);
 
-        return visitor.getMainMethodBody()
-                .map(block -> parseBodyBlock(block, nodeToBlockMap, manager))
+        return visitor.getMainMethodDeclaration()
+                .map(mainMethodDecl -> {
+                    MainBlock mainBlock = new MainBlock("main_" + mainMethodDecl.hashCode(), mainMethodDecl);
+                    nodeToBlockMap.put(mainMethodDecl, mainBlock);
+                    visitor.getMainMethodBody().ifPresent(bodyAstNode -> {
+                        BodyBlock bodyBlock = parseBodyBlock(bodyAstNode, nodeToBlockMap, manager);
+                        mainBlock.setMainBody(bodyBlock);
+                    });
+                    return mainBlock;
+                })
                 .orElse(null);
     }
 
@@ -183,19 +191,23 @@ public class BlockFactory {
     }
 
     private static class MainMethodVisitor extends ASTVisitor {
-        private Block mainMethodBody;
+        private MethodDeclaration mainMethodDeclaration;
 
         @Override
         public boolean visit(MethodDeclaration node) {
             if ("main".equals(node.getName().getIdentifier())) {
-                mainMethodBody = node.getBody();
+                mainMethodDeclaration = node;
                 return false;
             }
             return true;
         }
 
+        public Optional<MethodDeclaration> getMainMethodDeclaration() {
+            return Optional.ofNullable(mainMethodDeclaration);
+        }
+
         public Optional<Block> getMainMethodBody() {
-            return Optional.ofNullable(mainMethodBody);
+            return Optional.ofNullable(mainMethodDeclaration != null ? mainMethodDeclaration.getBody() : null);
         }
     }
 }

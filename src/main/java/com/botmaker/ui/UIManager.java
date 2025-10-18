@@ -25,14 +25,18 @@ public class UIManager {
         this.dragAndDropManager = dragAndDropManager;
     }
 
+    private boolean isDarkMode = false;
+
     public Scene createScene() {
         blocksContainer = new VBox(10);
         statusLabel = new Label("Ready");
+        statusLabel.setId("status-label");
         outputArea = new TextArea();
         outputArea.setEditable(false);
         outputArea.setPrefHeight(200);
 
         HBox palette = createBlockPalette();
+        palette.getStyleClass().add("palette");
 
         Button compileButton = new Button("Compile");
         compileButton.setOnAction(e -> mainApp.compileCode());
@@ -49,22 +53,35 @@ public class UIManager {
 
         HBox buttonBox = new HBox(10, compileButton, runButton, debugButton, resumeButton);
 
+        Button themeButton = new Button("Toggle Theme");
+        HBox topBar = new HBox(10, themeButton);
+
         ScrollPane scrollPane = new ScrollPane(blocksContainer);
         scrollPane.setFitToWidth(true);
-        VBox root = new VBox(10, palette, buttonBox, scrollPane, outputArea, statusLabel);
+        VBox root = new VBox(10, topBar, palette, buttonBox, scrollPane, outputArea, statusLabel);
         root.setPadding(new Insets(10));
 
-        return new Scene(root, 600, 800);
+        Scene scene = new Scene(root, 600, 800);
+        scene.getStylesheets().add(getClass().getResource("/com/botmaker/styles.css").toExternalForm());
+        root.getStyleClass().add("light-theme");
+
+        themeButton.setOnAction(e -> {
+            isDarkMode = !isDarkMode;
+            root.getStyleClass().remove(isDarkMode ? "light-theme" : "dark-theme");
+            root.getStyleClass().add(isDarkMode ? "dark-theme" : "light-theme");
+        });
+
+        return scene;
     }
 
     private HBox createBlockPalette() {
         HBox palette = new HBox(10);
         palette.setPadding(new Insets(5));
-        palette.setStyle("-fx-background-color: #f0f0f0; -fx-border-color: #cccccc; -fx-border-width: 0 0 1 0;");
 
         for (AddableBlock blockType : AddableBlock.values()) {
             Label blockLabel = new Label(blockType.getDisplayName());
-            blockLabel.setStyle("-fx-background-color: #e0e0e0; -fx-padding: 8; -fx-border-color: #c0c0c0; -fx-border-radius: 4; -fx-background-radius: 4;");
+            blockLabel.getStyleClass().add("palette-block-label");
+            blockLabel.getStyleClass().add("palette-" + blockType.name().toLowerCase() + "-label");
             dragAndDropManager.makeDraggable(blockLabel, blockType);
             palette.getChildren().add(blockLabel);
         }

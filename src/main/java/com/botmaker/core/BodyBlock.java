@@ -47,6 +47,7 @@ public class BodyBlock extends AbstractCodeBlock implements BlockWithChildren {
 
     private Node createSeparatorWithHandlers(BodyBlock targetBody, int insertionIndex) {
         javafx.scene.layout.Region separator = dragAndDropManager.createSeparator();
+        separator.getStyleClass().add("body-block-separator");
         StatementBlock adjacentBlock = (insertionIndex < statements.size()) ? statements.get(insertionIndex) : null;
         dragAndDropManager.addSeparatorDragHandlers(separator, targetBody, insertionIndex, adjacentBlock);
         return separator;

@@ -1,5 +1,6 @@
 package com.botmaker;
 
+import com.botmaker.blocks.MainBlock;
 import com.botmaker.core.BodyBlock;
 import com.botmaker.core.CodeBlock;
 import com.botmaker.lsp.CompletionContext;
@@ -148,7 +149,7 @@ public class Main extends Application {
                 dragAndDropManager
         );
 
-        BodyBlock rootBlock = factory.convert(javaCode, nodeToBlockMap, dragAndDropManager);
+        MainBlock rootBlock = factory.convert(javaCode, nodeToBlockMap, dragAndDropManager);
 
         if (rootBlock != null) {
             uiManager.getBlocksContainer().getChildren().add(rootBlock.getUINode(context));
@@ -172,6 +173,14 @@ public class Main extends Application {
 
     public BlockFactory getBlockFactory() {
         return factory;
+    }
+
+    public LanguageServer getJdtServer() {
+        return jdtServer;
+    }
+
+    public String getDocUri() {
+        return docUri;
     }
 
     public static void main(String[] args) {
