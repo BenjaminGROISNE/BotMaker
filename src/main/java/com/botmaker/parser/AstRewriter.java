@@ -57,6 +57,54 @@ public class AstRewriter {
         }
     }
 
+    public String replaceLiteral(CompilationUnit cu, String originalCode, Expression toReplace, String newLiteralValue) {
+        AST ast = cu.getAST();
+        ASTRewrite rewriter = ASTRewrite.create(ast);
+
+        Expression newExpression;
+        if (toReplace instanceof StringLiteral) {
+            StringLiteral newString = ast.newStringLiteral();
+            newString.setLiteralValue(newLiteralValue);
+            newExpression = newString;
+        } else if (toReplace instanceof NumberLiteral) {
+            newExpression = ast.newNumberLiteral(newLiteralValue);
+        } else if (toReplace instanceof BooleanLiteral) {
+            newExpression = ast.newBooleanLiteral(Boolean.parseBoolean(newLiteralValue));
+        } else {
+            // Not a literal we can handle, return original code
+            return originalCode;
+        }
+
+        rewriter.replace(toReplace, newExpression, null);
+
+        IDocument document = new Document(originalCode);
+        try {
+            TextEdit edits = rewriter.rewriteAST(document, null);
+            edits.apply(document);
+            return document.get();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return originalCode;
+        }
+    }
+
+    public String addArgumentToMethodInvocation(CompilationUnit cu, String originalCode, MethodInvocation mi, Expression newArgument) {
+        AST ast = cu.getAST();
+        ASTRewrite rewriter = ASTRewrite.create(ast);
+        ListRewrite listRewrite = rewriter.getListRewrite(mi, MethodInvocation.ARGUMENTS_PROPERTY);
+        listRewrite.insertLast(newArgument, null);
+
+        IDocument document = new Document(originalCode);
+        try {
+            TextEdit edits = rewriter.rewriteAST(document, null);
+            edits.apply(document);
+            return document.get();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return originalCode; // Return original on failure
+        }
+    }
+
     private Expression createDefaultExpression(AST ast, com.botmaker.ui.AddableExpression type) {
         switch (type) {
             case TEXT:

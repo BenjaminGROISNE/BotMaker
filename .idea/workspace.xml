@@ -4,26 +4,25 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="cba04025-c331-4634-a893-436bad03efc0" name="Changes" comment="working drag block and hover effect">
+    <list default="true" id="cba04025-c331-4634-a893-436bad03efc0" name="Changes" comment="update rewriter print has some problem loading empty messages">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/jdt-workspace-data/.metadata/.log" beforeDir="false" afterPath="$PROJECT_DIR$/jdt-workspace-data/.metadata/.log" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/jdt-workspace-data/.metadata/.plugins/org.eclipse.buildship.core/gradle/versions.json" beforeDir="false" afterPath="$PROJECT_DIR$/jdt-workspace-data/.metadata/.plugins/org.eclipse.buildship.core/gradle/versions.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/jdt-workspace-data/.metadata/.plugins/org.eclipse.core.resources/.history/7d/c094ca262ca5001018cb93621a7c6047" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/jdt-workspace-data/.metadata/.plugins/org.eclipse.core.resources/.projects/jdt.ls-java-project/.indexes/af/history.index" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/jdt-workspace-data/.metadata/.plugins/org.eclipse.core.resources/.projects/jdt.ls-java-project/.markers.snap" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/jdt-workspace-data/.metadata/.plugins/org.eclipse.core.resources/.projects/jdt.ls-java-project/.syncinfo.snap" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/jdt-workspace-data/.metadata/.plugins/org.eclipse.core.resources/.root/.markers.snap" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/jdt-workspace-data/.metadata/.plugins/org.eclipse.core.resources/.root/17.tree" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/jdt-workspace-data/.metadata/.plugins/org.eclipse.core.resources/.safetable/org.eclipse.core.resources" beforeDir="false" afterPath="$PROJECT_DIR$/jdt-workspace-data/.metadata/.plugins/org.eclipse.core.resources/.safetable/org.eclipse.core.resources" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/jdt-workspace-data/.metadata/.plugins/org.eclipse.jdt.core/1865797976.index" beforeDir="false" afterPath="$PROJECT_DIR$/jdt-workspace-data/.metadata/.plugins/org.eclipse.jdt.core/1865797976.index" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/jdt-workspace-data/.metadata/.plugins/org.eclipse.core.resources/17.snap" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/jdt-workspace-data/.metadata/.plugins/org.eclipse.jdt.core/3842426239.index" beforeDir="false" afterPath="$PROJECT_DIR$/jdt-workspace-data/.metadata/.plugins/org.eclipse.jdt.core/3842426239.index" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/jdt-workspace-data/.metadata/.plugins/org.eclipse.jdt.core/savedIndexNames.txt" beforeDir="false" afterPath="$PROJECT_DIR$/jdt-workspace-data/.metadata/.plugins/org.eclipse.jdt.core/savedIndexNames.txt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/projects/Demo.java" beforeDir="false" afterPath="$PROJECT_DIR$/projects/Demo.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/botmaker/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/botmaker/Main.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/botmaker/blocks/IdentifierBlock.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/botmaker/blocks/IdentifierBlock.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/botmaker/blocks/LiteralBlock.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/botmaker/blocks/LiteralBlock.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/botmaker/blocks/PrintBlock.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/botmaker/blocks/PrintBlock.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/botmaker/core/BodyBlock.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/botmaker/core/BodyBlock.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/botmaker/lsp/CompletionContext.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/botmaker/lsp/CompletionContext.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/botmaker/parser/AstRewriter.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/botmaker/parser/AstRewriter.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/botmaker/parser/BlockFactory.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/botmaker/parser/BlockFactory.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/botmaker/ui/AddableBlock.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/botmaker/ui/AddableBlock.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/botmaker/ui/BlockDragAndDropManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/botmaker/ui/BlockDragAndDropManager.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tools/jdt-language-server/config_linux/org.eclipse.osgi/.manager/.fileTable.97" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/tools/jdt-language-server/config_linux/org.eclipse.osgi/.manager/.fileTable.98" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/tools/jdt-language-server/config_linux/org.eclipse.osgi/framework.info.97" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -86,7 +85,7 @@
     "Gradle.BotMaker [:com.astblocks.demo.Main.main()].executor": "Run",
     "Gradle.BotMaker [:com.botmaker.Main.main()].executor": "Run",
     "Gradle.BotMaker [:org.example.Main.main()].executor": "Run",
-    "Gradle.BotMaker [run].executor": "Debug",
+    "Gradle.BotMaker [run].executor": "Run",
     "Gradle.BotMaker.executor": "Run",
     "Gradle.Download Sources.executor": "Run",
     "ModuleVcsDetector.initialDetectionPerformed": "true",
@@ -289,7 +288,15 @@
       <option name="project" value="LOCAL" />
       <updated>1760471557976</updated>
     </task>
-    <option name="localTasksCounter" value="15" />
+    <task id="LOCAL-00015" summary="update rewriter print has some problem loading empty messages">
+      <option name="closed" value="true" />
+      <created>1760740377441</created>
+      <option name="number" value="00015" />
+      <option name="presentableId" value="LOCAL-00015" />
+      <option name="project" value="LOCAL" />
+      <updated>1760740377441</updated>
+    </task>
+    <option name="localTasksCounter" value="16" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -321,7 +328,8 @@
     <MESSAGE value="Working if condition highlight" />
     <MESSAGE value="&#10;   1 feat(ui): Implement drag-and-drop for adding new blocks&#10;   2 &#10;   3 Adds a drag-and-drop system for adding new statement blocks to the visual editor.&#10;   4 &#10;   5 This includes a draggable block palette and highlighting separator lines to indicate insertion points on `BodyBlock` drop targets. The hover-event logging has also been refactored to be more detailed and object-oriented." />
     <MESSAGE value="working drag block and hover effect" />
-    <option name="LAST_COMMIT_MESSAGE" value="working drag block and hover effect" />
+    <MESSAGE value="update rewriter print has some problem loading empty messages" />
+    <option name="LAST_COMMIT_MESSAGE" value="update rewriter print has some problem loading empty messages" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

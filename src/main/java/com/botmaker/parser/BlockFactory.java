@@ -32,6 +32,7 @@ public class BlockFactory {
     }
 
     private BodyBlock parseBodyBlock(Block astBlock, Map<ASTNode, CodeBlock> nodeToBlockMap, BlockDragAndDropManager manager) {
+        System.out.println("Creating BodyBlock for: " + astBlock.hashCode());
         BodyBlock bodyBlock = new BodyBlock("body_" + astBlock.hashCode(), astBlock, manager);
         nodeToBlockMap.put(astBlock, bodyBlock);
         for (Object statementObj : astBlock.statements()) {
@@ -58,6 +59,7 @@ public class BlockFactory {
     }
 
     private VariableDeclarationBlock parseVariableDeclaration(VariableDeclarationStatement astNode, Map<ASTNode, CodeBlock> nodeToBlockMap) {
+        System.out.println("Creating VariableDeclarationBlock for: " + astNode);
         VariableDeclarationBlock varBlock = new VariableDeclarationBlock("var_" + astNode.hashCode(), astNode);
         nodeToBlockMap.put(astNode, varBlock);
         VariableDeclarationFragment fragment = (VariableDeclarationFragment) astNode.fragments().get(0);
@@ -69,6 +71,7 @@ public class BlockFactory {
     }
 
     private IfBlock parseIfStatement(IfStatement astNode, Map<ASTNode, CodeBlock> nodeToBlockMap, BlockDragAndDropManager manager) {
+        System.out.println("Creating IfBlock for: " + astNode);
         IfBlock ifBlock = new IfBlock("if_" + astNode.hashCode(), astNode);
         nodeToBlockMap.put(astNode, ifBlock);
         parseExpression(astNode.getExpression(), nodeToBlockMap).ifPresent(ifBlock::setCondition);
@@ -85,15 +88,26 @@ public class BlockFactory {
     }
 
     private PrintBlock parsePrintStatement(MethodInvocation astNode, Map<ASTNode, CodeBlock> nodeToBlockMap) {
+        System.out.println("Creating PrintBlock for: " + astNode);
         PrintBlock printBlock = new PrintBlock("print_" + astNode.hashCode(), astNode);
         nodeToBlockMap.put(astNode, printBlock);
-        for (Object arg : astNode.arguments()) {
-            parseExpression((Expression) arg, nodeToBlockMap).ifPresent(printBlock::addArgument);
+
+        if (astNode.arguments().isEmpty()) {
+            System.out.println("Creating synthetic String LiteralBlock for empty println");
+            // For the synthetic block, pass the MethodInvocation node itself.
+            // The LiteralBlock will check for this special case.
+            LiteralBlock<String> block = new LiteralBlock<>("synthetic_string_" + astNode.hashCode(), astNode, "");
+            printBlock.addArgument(block);
+        } else {
+            for (Object arg : astNode.arguments()) {
+                parseExpression((Expression) arg, nodeToBlockMap).ifPresent(printBlock::addArgument);
+            }
         }
         return printBlock;
     }
 
     private BinaryExpressionBlock parseBinaryExpression(InfixExpression astNode, Map<ASTNode, CodeBlock> nodeToBlockMap) {
+        System.out.println("Creating BinaryExpressionBlock for: " + astNode);
         BinaryExpressionBlock binaryBlock = new BinaryExpressionBlock("binary_" + astNode.hashCode(), astNode);
         nodeToBlockMap.put(astNode, binaryBlock);
         parseExpression(astNode.getLeftOperand(), nodeToBlockMap).ifPresent(binaryBlock::setLeftOperand);
@@ -103,12 +117,14 @@ public class BlockFactory {
 
     private Optional<ExpressionBlock> parseExpression(Expression astExpression, Map<ASTNode, CodeBlock> nodeToBlockMap) {
         if (astExpression instanceof StringLiteral) {
+            System.out.println("Creating String LiteralBlock for: " + astExpression);
             StringLiteral literalNode = (StringLiteral) astExpression;
             LiteralBlock<String> block = new LiteralBlock<>("string_" + literalNode.hashCode(), literalNode, literalNode.getLiteralValue());
             nodeToBlockMap.put(astExpression, block);
             return Optional.of(block);
         }
         if (astExpression instanceof NumberLiteral) {
+            System.out.println("Creating Number LiteralBlock for: " + astExpression);
             NumberLiteral literalNode = (NumberLiteral) astExpression;
             String token = literalNode.getToken();
             ExpressionBlock block;
@@ -123,12 +139,14 @@ public class BlockFactory {
             return Optional.of(block);
         }
         if (astExpression instanceof BooleanLiteral) {
+            System.out.println("Creating Boolean LiteralBlock for: " + astExpression);
             BooleanLiteral literalNode = (BooleanLiteral) astExpression;
             LiteralBlock<Boolean> block = new LiteralBlock<>("boolean_" + literalNode.hashCode(), literalNode, literalNode.booleanValue());
             nodeToBlockMap.put(astExpression, block);
             return Optional.of(block);
         }
         if (astExpression instanceof SimpleName) {
+            System.out.println("Creating IdentifierBlock for: " + astExpression);
             IdentifierBlock block = new IdentifierBlock("id_" + astExpression.hashCode(), (SimpleName) astExpression);
             nodeToBlockMap.put(astExpression, block);
             return Optional.of(block);

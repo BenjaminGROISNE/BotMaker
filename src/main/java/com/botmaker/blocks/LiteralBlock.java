@@ -36,25 +36,24 @@ public class LiteralBlock<T> extends AbstractExpressionBlock {
         }
         textField.setCursor(Cursor.TEXT);
 
-        // When user presses Enter
-        textField.setOnAction(event -> {
-            String newText = textField.getText();
-            String replacementCode;
+        // Update when the text field loses focus, if the value has changed.
+        textField.focusedProperty().addListener((obs, oldVal, newVal) -> {
+            // newVal is false when focus is lost
+            if (!newVal) {
+                String newText = textField.getText();
+                String oldText = (value instanceof String) ? (String) value : String.valueOf(value);
 
-            if (value instanceof String) {
-                // Escape quotes and wrap in quotes for the new source code
-                replacementCode = "\"" + newText.replace("\"", "\\\"") + "\"";
-            } else {
-                // For numbers, booleans, etc., use the text as is.
-                // This assumes valid input.
-                replacementCode = newText;
+                if (!newText.equals(oldText)) {
+                    // Handle the special synthetic case for an empty println
+                    if (this.astNode instanceof org.eclipse.jdt.core.dom.MethodInvocation) {
+                        org.eclipse.jdt.core.dom.MethodInvocation mi = (org.eclipse.jdt.core.dom.MethodInvocation) this.astNode;
+                        context.mainApp().addArgumentToPrintln(mi, newText);
+                    } else {
+                        // This is the normal case for editing an existing literal
+                        context.mainApp().replaceLiteralValue((Expression) this.astNode, newText);
+                    }
+                }
             }
-
-            int start = this.astNode.getStartPosition();
-            int end = start + this.astNode.getLength();
-            String newCode = context.sourceCode().substring(0, start) + replacementCode + context.sourceCode().substring(end);
-
-            context.onCodeUpdate().accept(newCode);
         });
 
         HBox container = new HBox(textField);

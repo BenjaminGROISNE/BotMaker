@@ -14,8 +14,7 @@ import com.botmaker.ui.UIManager;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.stage.Stage;
-import org.eclipse.jdt.core.dom.ASTNode;
-import org.eclipse.jdt.core.dom.CompilationUnit;
+import org.eclipse.jdt.core.dom.*;
 import org.eclipse.lsp4j.DidChangeTextDocumentParams;
 import org.eclipse.lsp4j.DidOpenTextDocumentParams;
 import org.eclipse.lsp4j.TextDocumentContentChangeEvent;
@@ -114,6 +113,13 @@ public class Main extends Application {
     }
 
     private void handleCodeUpdate(String newCode) {
+        try {
+            Files.writeString(Paths.get(new java.net.URI(docUri)), newCode);
+        } catch (java.io.IOException | java.net.URISyntaxException e) {
+            e.printStackTrace();
+            Platform.runLater(() -> uiManager.getStatusLabel().setText("Error saving file: " + e.getMessage()));
+        }
+
         this.docVersion++;
         jdtServer.getTextDocumentService().didChange(new DidChangeTextDocumentParams(
                 new VersionedTextDocumentIdentifier(docUri, (int) docVersion),
@@ -143,6 +149,27 @@ public class Main extends Application {
                 toReplace,
                 type
         );
+        Platform.runLater(() -> handleCodeUpdate(newCode));
+    }
+
+    public void replaceLiteralValue(Expression toReplace, String newLiteralValue) {
+        CompilationUnit cu = factory.getCompilationUnit();
+        String newCode = astRewriter.replaceLiteral(
+                cu,
+                currentCode,
+                toReplace,
+                newLiteralValue
+        );
+        Platform.runLater(() -> handleCodeUpdate(newCode));
+    }
+
+    public void addArgumentToPrintln(org.eclipse.jdt.core.dom.MethodInvocation mi, String text) {
+        CompilationUnit cu = factory.getCompilationUnit();
+        AST ast = cu.getAST();
+        StringLiteral newArg = ast.newStringLiteral();
+        newArg.setLiteralValue(text);
+
+        String newCode = astRewriter.addArgumentToMethodInvocation(cu, currentCode, mi, newArg);
         Platform.runLater(() -> handleCodeUpdate(newCode));
     }
 
@@ -177,6 +204,14 @@ public class Main extends Application {
         if (highlightedBlock != null) {
             highlightedBlock.highlight();
         }
+    }
+
+    public AstRewriter getAstRewriter() {
+        return astRewriter;
+    }
+
+    public BlockFactory getBlockFactory() {
+        return factory;
     }
 
     public static void main(String[] args) {
