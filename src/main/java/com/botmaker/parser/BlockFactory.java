@@ -52,7 +52,7 @@ public class BlockFactory {
         if (astStatement instanceof ExpressionStatement) {
             Expression expression = ((ExpressionStatement) astStatement).getExpression();
             if (isPrintStatement(expression)) {
-                return Optional.of(parsePrintStatement((MethodInvocation) expression, nodeToBlockMap));
+                return Optional.of(parsePrintStatement((ExpressionStatement) astStatement, nodeToBlockMap));
             }
         }
         return Optional.empty();
@@ -87,19 +87,21 @@ public class BlockFactory {
         return ifBlock;
     }
 
-    private PrintBlock parsePrintStatement(MethodInvocation astNode, Map<ASTNode, CodeBlock> nodeToBlockMap) {
+    private PrintBlock parsePrintStatement(ExpressionStatement astNode, Map<ASTNode, CodeBlock> nodeToBlockMap) {
         System.out.println("Creating PrintBlock for: " + astNode);
         PrintBlock printBlock = new PrintBlock("print_" + astNode.hashCode(), astNode);
         nodeToBlockMap.put(astNode, printBlock);
 
-        if (astNode.arguments().isEmpty()) {
+        MethodInvocation methodInvocation = (MethodInvocation) astNode.getExpression();
+
+        if (methodInvocation.arguments().isEmpty()) {
             System.out.println("Creating synthetic String LiteralBlock for empty println");
             // For the synthetic block, pass the MethodInvocation node itself.
             // The LiteralBlock will check for this special case.
-            LiteralBlock<String> block = new LiteralBlock<>("synthetic_string_" + astNode.hashCode(), astNode, "");
+            LiteralBlock<String> block = new LiteralBlock<>("synthetic_string_" + astNode.hashCode(), methodInvocation, "");
             printBlock.addArgument(block);
         } else {
-            for (Object arg : astNode.arguments()) {
+            for (Object arg : methodInvocation.arguments()) {
                 parseExpression((Expression) arg, nodeToBlockMap).ifPresent(printBlock::addArgument);
             }
         }

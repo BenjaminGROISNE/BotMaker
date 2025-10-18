@@ -85,4 +85,13 @@ public class CodeEditor {
         );
         triggerUpdate(newCode);
     }
+
+    public void deleteStatement(Statement toDelete) {
+        String newCode = astRewriter.deleteNode(
+                getCompilationUnit(),
+                getCurrentCode(),
+                toDelete
+        );
+        triggerUpdate(newCode);
+    }
 }

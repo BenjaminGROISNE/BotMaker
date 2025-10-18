@@ -1,10 +1,16 @@
 package com.botmaker.core;
 
 import com.botmaker.lsp.CompletionContext;
+import javafx.geometry.Pos;
 import javafx.scene.Node;
+import javafx.scene.control.Button;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.Pane;
+import javafx.scene.layout.Priority;
 import javafx.scene.layout.Region;
 import org.eclipse.jdt.core.dom.ASTNode;
 import org.eclipse.jdt.core.dom.CompilationUnit;
+import org.eclipse.jdt.core.dom.Statement;
 
 public abstract class AbstractCodeBlock implements CodeBlock {
     protected final String id;
@@ -28,12 +34,36 @@ public abstract class AbstractCodeBlock implements CodeBlock {
     }
 
     @Override
-    public Node getUINode(CompletionContext context) { // Updated signature
+    public Node getUINode(CompletionContext context) {
         if (uiNode == null) {
-            uiNode = createUINode(context); // Pass context to creation method
+            Node originalUINode = createUINode(context);
+
+            if (this instanceof StatementBlock) {
+                Button deleteButton = new Button("X");
+                deleteButton.setOnAction(e -> {
+                    context.codeEditor().deleteStatement((Statement) this.astNode);
+                });
+
+                Pane spacer = new Pane();
+                HBox.setHgrow(spacer, Priority.ALWAYS);
+
+                HBox wrapper = new HBox(originalUINode, spacer, deleteButton);
+                wrapper.setAlignment(Pos.CENTER_LEFT);
+
+                // Transfer style from the original node to the wrapper
+                String style = originalUINode.getStyle();
+                if (style != null && !style.isEmpty()) {
+                    wrapper.setStyle(style);
+                    originalUINode.setStyle("");
+                }
+                this.uiNode = wrapper;
+            } else {
+                this.uiNode = originalUINode;
+            }
         }
         return uiNode;
     }
+
 
     @Override
     public void highlight() {

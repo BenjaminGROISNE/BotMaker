@@ -122,6 +122,21 @@ public class AstRewriter {
         }
     }
 
+    public String deleteNode(CompilationUnit cu, String originalCode, ASTNode toDelete) {
+        ASTRewrite rewriter = ASTRewrite.create(cu.getAST());
+        rewriter.remove(toDelete, null);
+
+        IDocument document = new Document(originalCode);
+        try {
+            TextEdit edits = rewriter.rewriteAST(document, null);
+            edits.apply(document);
+            return document.get();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return originalCode;
+        }
+    }
+
     private Expression createDefaultExpression(AST ast, com.botmaker.ui.AddableExpression type) {
         switch (type) {
             case TEXT:

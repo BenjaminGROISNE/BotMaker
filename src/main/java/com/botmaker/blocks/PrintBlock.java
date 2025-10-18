@@ -7,6 +7,7 @@ import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.layout.HBox;
 import javafx.scene.text.Text;
+import org.eclipse.jdt.core.dom.ExpressionStatement;
 import org.eclipse.jdt.core.dom.MethodInvocation;
 
 import java.util.ArrayList;
@@ -17,7 +18,7 @@ public class PrintBlock extends AbstractStatementBlock {
 
     private final List<ExpressionBlock> arguments = new ArrayList<>();
 
-    public PrintBlock(String id, MethodInvocation astNode) {
+    public PrintBlock(String id, ExpressionStatement astNode) {
         super(id, astNode);
     }
 
