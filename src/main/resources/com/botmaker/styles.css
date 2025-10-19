@@ -92,8 +92,8 @@
 }
 
 .light-theme .palette-block-label:hover {
-    -fx-background-color: derive(-fx-background-color, 10%);
-    -fx-border-color: derive(-fx-border-color, 10%);
+    -fx-border-width: 2px;
+    -fx-padding: 5px 9px;
 }
 
 /* Specific palette label colors (matching block colors) */
@@ -129,6 +129,12 @@
     -fx-padding: 5;
     -fx-background-radius: 5;
     -fx-border-radius: 5;
+    -fx-border-width: 1px;
+}
+
+.if-block:hover {
+    -fx-border-width: 2px;
+    -fx-padding: 4px;
 }
 
 .binary-expression-block {
@@ -137,6 +143,12 @@
     -fx-padding: 5;
     -fx-background-radius: 5;
     -fx-border-radius: 5;
+    -fx-border-width: 1px;
+}
+
+.binary-expression-block:hover {
+    -fx-border-width: 2px;
+    -fx-padding: 4px;
 }
 
 .identifier-block {
@@ -145,6 +157,12 @@
     -fx-padding: 5;
     -fx-background-radius: 5;
     -fx-border-radius: 5;
+    -fx-border-width: 1px;
+}
+
+.identifier-block:hover {
+    -fx-border-width: 2px;
+    -fx-padding: 4px;
 }
 
 .literal-block {
@@ -153,6 +171,12 @@
     -fx-padding: 5;
     -fx-background-radius: 5;
     -fx-border-radius: 5;
+    -fx-border-width: 1px;
+}
+
+.literal-block:hover {
+    -fx-border-width: 2px;
+    -fx-padding: 4px;
 }
 
 .print-block {
@@ -161,6 +185,12 @@
     -fx-padding: 5;
     -fx-background-radius: 5;
     -fx-border-radius: 5;
+    -fx-border-width: 1px;
+}
+
+.print-block:hover {
+    -fx-border-width: 2px;
+    -fx-padding: 4px;
 }
 
 .variable-declaration-block {
@@ -169,6 +199,12 @@
     -fx-padding: 5;
     -fx-background-radius: 5;
     -fx-border-radius: 5;
+    -fx-border-width: 1px;
+}
+
+.variable-declaration-block:hover {
+    -fx-border-width: 2px;
+    -fx-padding: 4px;
 }
 
 /* Dark Theme specific overrides */
@@ -214,8 +250,6 @@
 }
 
 .dark-theme .palette-block-label {
-    -fx-background-color: derive(-fx-background-color, -10%); /* Darker background for draggable labels */
-    -fx-border-color: derive(-fx-border-color, -10%);
     -fx-border-width: 1;
     -fx-border-radius: 4;
     -fx-background-radius: 4;
@@ -226,8 +260,8 @@
 }
 
 .dark-theme .palette-block-label:hover {
-    -fx-background-color: derive(-fx-background-color, -20%);
-    -fx-border-color: derive(-fx-border-color, -20%);
+    -fx-border-width: 2px;
+    -fx-padding: 5px 9px;
 }
 
 /* Specific palette label colors (matching block colors) */
