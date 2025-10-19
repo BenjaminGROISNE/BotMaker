@@ -51,6 +51,9 @@ public class BlockFactory {
     }
 
     private Optional<StatementBlock> parseStatement(Statement astStatement, Map<ASTNode, CodeBlock> nodeToBlockMap, BlockDragAndDropManager manager) {
+        if (astStatement instanceof Block) {
+            return Optional.of(parseBodyBlock((Block) astStatement, nodeToBlockMap, manager));
+        }
         if (astStatement instanceof VariableDeclarationStatement) {
             return Optional.of(parseVariableDeclaration((VariableDeclarationStatement) astStatement, nodeToBlockMap));
         }
@@ -88,8 +91,9 @@ public class BlockFactory {
             ifBlock.setThenBody(parseBodyBlock((Block) astNode.getThenStatement(), nodeToBlockMap, manager));
         }
 
-        if (astNode.getElseStatement() != null && astNode.getElseStatement() instanceof Block) {
-            ifBlock.setElseBody(parseBodyBlock((Block) astNode.getElseStatement(), nodeToBlockMap, manager));
+        Statement elseStmt = astNode.getElseStatement();
+        if (elseStmt != null) {
+            parseStatement(elseStmt, nodeToBlockMap, manager).ifPresent(ifBlock::setElseStatement);
         }
 
         return ifBlock;

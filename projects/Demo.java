@@ -16,10 +16,9 @@ public class Demo {
 
         if (k > 30) {
             System.out.println(y);
-        } else {
-            System.out.println("The result is not greater than 30.");
+        } else if (true) {
 			System.out.println("");
-        }
+		}
         System.out.println("Demo finished.");
     }
 }

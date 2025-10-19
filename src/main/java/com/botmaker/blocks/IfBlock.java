@@ -17,7 +17,7 @@ public class IfBlock extends AbstractStatementBlock {
 
     private ExpressionBlock condition;
     private BodyBlock thenBody;
-    private BodyBlock elseBody; // Can be null
+    private com.botmaker.core.StatementBlock elseStatement; // Can be null
 
     public IfBlock(String id, IfStatement astNode) {
         super(id, astNode);
@@ -39,12 +39,12 @@ public class IfBlock extends AbstractStatementBlock {
         this.thenBody = thenBody;
     }
 
-    public BodyBlock getElseBody() {
-        return elseBody;
+    public com.botmaker.core.StatementBlock getElseStatement() {
+        return elseStatement;
     }
 
-    public void setElseBody(BodyBlock elseBody) {
-        this.elseBody = elseBody;
+    public void setElseStatement(com.botmaker.core.StatementBlock elseStatement) {
+        this.elseStatement = elseStatement;
     }
 
     @Override
@@ -52,6 +52,7 @@ public class IfBlock extends AbstractStatementBlock {
         VBox container = new VBox(5);
         container.getStyleClass().add("if-block");
 
+        // Header: If + condition + delete button
         HBox header = new HBox(5);
         header.setAlignment(Pos.CENTER_LEFT);
         header.getChildren().add(new Label("If"));
@@ -60,41 +61,51 @@ public class IfBlock extends AbstractStatementBlock {
         } else {
             header.getChildren().add(createExpressionDropZone(context));
         }
-
-        javafx.scene.control.Button deleteButton = new javafx.scene.control.Button("X");
-        deleteButton.setOnAction(e -> {
-            context.codeEditor().deleteStatement((org.eclipse.jdt.core.dom.Statement) this.astNode);
-        });
-
         javafx.scene.layout.Pane spacer = new javafx.scene.layout.Pane();
         HBox.setHgrow(spacer, javafx.scene.layout.Priority.ALWAYS);
-
+        javafx.scene.control.Button deleteButton = new javafx.scene.control.Button("X");
+        deleteButton.setOnAction(e -> context.codeEditor().deleteStatement((org.eclipse.jdt.core.dom.Statement) this.astNode));
         header.getChildren().addAll(spacer, deleteButton);
         container.getChildren().add(header);
 
+        // Then body
         if (thenBody != null) {
-            HBox thenContainer = new HBox(5);
-            thenContainer.setAlignment(Pos.TOP_LEFT);
-            thenContainer.getChildren().add(new Label("Then:"));
             Node thenBodyNode = thenBody.getUINode(context);
             HBox.setHgrow(thenBodyNode, javafx.scene.layout.Priority.ALWAYS);
-            thenContainer.getChildren().add(thenBodyNode);
-            container.getChildren().add(thenContainer);
+            container.getChildren().add(thenBodyNode);
         }
 
-        if (elseBody != null) {
-            HBox elseContainer = new HBox(5);
-            elseContainer.setAlignment(Pos.TOP_LEFT);
-            elseContainer.getChildren().add(new Label("Else:"));
-            Node elseBodyNode = elseBody.getUINode(context);
-            HBox.setHgrow(elseBodyNode, javafx.scene.layout.Priority.ALWAYS);
-            elseContainer.getChildren().add(elseBodyNode);
-            container.getChildren().add(elseContainer);
+        // Else part
+        if (elseStatement != null) {
+            if (elseStatement instanceof com.botmaker.core.BodyBlock) {
+                VBox elseContainer = new VBox(5);
+                HBox elseHeader = new HBox(5);
+                elseHeader.setAlignment(Pos.CENTER_LEFT);
+                Label elseLabel = new Label("Else");
+                javafx.scene.control.Button addElseIfButton = new javafx.scene.control.Button("+ if");
+                addElseIfButton.setOnAction(e -> context.codeEditor().convertElseToElseIf((IfStatement) this.astNode));
+                javafx.scene.layout.Pane elseSpacer = new javafx.scene.layout.Pane();
+                HBox.setHgrow(elseSpacer, javafx.scene.layout.Priority.ALWAYS);
+                javafx.scene.control.Button deleteElseButton = new javafx.scene.control.Button("X");
+                deleteElseButton.setOnAction(e -> context.codeEditor().deleteElseFromIfStatement((IfStatement) this.astNode));
+                elseHeader.getChildren().addAll(elseLabel, addElseIfButton, elseSpacer, deleteElseButton);
+
+                Node elseBodyNode = elseStatement.getUINode(context);
+                HBox.setHgrow(elseBodyNode, javafx.scene.layout.Priority.ALWAYS);
+                elseContainer.getChildren().addAll(elseHeader, elseBodyNode);
+                container.getChildren().add(elseContainer);
+            } else { // Assuming IfBlock
+                HBox elseIfContainer = new HBox(5);
+                elseIfContainer.setAlignment(Pos.CENTER_LEFT);
+                elseIfContainer.getChildren().add(new Label("Else"));
+                Node elseNode = elseStatement.getUINode(context);
+                HBox.setHgrow(elseNode, javafx.scene.layout.Priority.ALWAYS);
+                elseIfContainer.getChildren().add(elseNode);
+                container.getChildren().add(elseIfContainer);
+            }
         } else {
             javafx.scene.control.Button addElseButton = new javafx.scene.control.Button("+");
-            addElseButton.setOnAction(e -> {
-                context.codeEditor().addElseToIfStatement((IfStatement) this.astNode);
-            });
+            addElseButton.setOnAction(e -> context.codeEditor().addElseToIfStatement((IfStatement) this.astNode));
             container.getChildren().add(addElseButton);
         }
 

@@ -137,6 +137,46 @@ public class AstRewriter {
         }
     }
 
+    public String deleteElseFromIfStatement(CompilationUnit cu, String originalCode, IfStatement ifStatement) {
+        ASTRewrite rewriter = ASTRewrite.create(cu.getAST());
+        if (ifStatement.getElseStatement() != null) {
+            rewriter.remove(ifStatement.getElseStatement(), null);
+        } else {
+            return originalCode;
+        }
+        IDocument document = new Document(originalCode);
+        try {
+            TextEdit edits = rewriter.rewriteAST(document, null);
+            edits.apply(document);
+            return document.get();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return originalCode;
+        }
+    }
+
+    public String convertElseToElseIf(CompilationUnit cu, String originalCode, IfStatement ifStatement) {
+        AST ast = cu.getAST();
+        ASTRewrite rewriter = ASTRewrite.create(ast);
+        Statement elseStatement = ifStatement.getElseStatement();
+        if (elseStatement == null || elseStatement.getNodeType() != ASTNode.BLOCK) {
+            return originalCode;
+        }
+        IfStatement newElseIf = ast.newIfStatement();
+        newElseIf.setExpression(ast.newBooleanLiteral(true));
+        newElseIf.setThenStatement((Block) ASTNode.copySubtree(ast, elseStatement));
+        rewriter.replace(elseStatement, newElseIf, null);
+        IDocument document = new Document(originalCode);
+        try {
+            TextEdit edits = rewriter.rewriteAST(document, null);
+            edits.apply(document);
+            return document.get();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return originalCode;
+        }
+    }
+
     public String addElseToIfStatement(CompilationUnit cu, String originalCode, IfStatement ifStatement) {
         AST ast = cu.getAST();
         ASTRewrite rewriter = ASTRewrite.create(ast);

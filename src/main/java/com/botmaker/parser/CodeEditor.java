@@ -76,6 +76,16 @@ public class CodeEditor {
         triggerUpdate(newCode);
     }
 
+    public void deleteElseFromIfStatement(IfStatement ifStmt) {
+        String newCode = astRewriter.deleteElseFromIfStatement(getCompilationUnit(), getCurrentCode(), ifStmt);
+        triggerUpdate(newCode);
+    }
+
+    public void convertElseToElseIf(IfStatement ifStmt) {
+        String newCode = astRewriter.convertElseToElseIf(getCompilationUnit(), getCurrentCode(), ifStmt);
+        triggerUpdate(newCode);
+    }
+
     public void addElseToIfStatement(IfStatement ifStmt) {
         String newCode = astRewriter.addElseToIfStatement(
                 getCompilationUnit(),

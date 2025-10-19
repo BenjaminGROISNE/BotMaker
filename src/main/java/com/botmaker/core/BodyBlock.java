@@ -1,5 +1,6 @@
 package com.botmaker.core;
 
+import com.botmaker.core.AbstractStatementBlock;
 import com.botmaker.lsp.CompletionContext;
 import com.botmaker.ui.BlockDragAndDropManager;
 import com.botmaker.ui.DropInfo;
@@ -9,7 +10,7 @@ import javafx.scene.layout.VBox;
 import java.util.ArrayList;
 import java.util.List;
 
-public class BodyBlock extends AbstractCodeBlock implements BlockWithChildren {
+public class BodyBlock extends AbstractStatementBlock implements BlockWithChildren {
     private final List<StatementBlock> statements = new ArrayList<>();
     private final BlockDragAndDropManager dragAndDropManager;
 
@@ -32,16 +33,24 @@ public class BodyBlock extends AbstractCodeBlock implements BlockWithChildren {
         VBox container = new VBox();
         container.getStyleClass().add("body-block");
 
-        // Add a separator at the beginning
-        container.getChildren().add(createSeparatorWithHandlers(this, 0));
+        if (statements.isEmpty()) {
+            javafx.scene.control.Label placeholder = new javafx.scene.control.Label("Drag block here");
+            placeholder.getStyleClass().add("empty-body-placeholder");
+            dragAndDropManager.addSeparatorDragHandlers(placeholder, this, 0, null);
+            container.getChildren().add(placeholder);
+            container.setAlignment(javafx.geometry.Pos.CENTER);
+            container.setMinHeight(30);
+        } else {
+            // Add a separator at the beginning
+            container.getChildren().add(createSeparatorWithHandlers(this, 0));
 
-        for (int i = 0; i < statements.size(); i++) {
-            StatementBlock statement = statements.get(i);
-            container.getChildren().add(statement.getUINode(context));
-            // Add a separator after each statement
-            container.getChildren().add(createSeparatorWithHandlers(this, i + 1));
+            for (int i = 0; i < statements.size(); i++) {
+                StatementBlock statement = statements.get(i);
+                container.getChildren().add(statement.getUINode(context));
+                // Add a separator after each statement
+                container.getChildren().add(createSeparatorWithHandlers(this, i + 1));
+            }
         }
-
         return container;
     }
 
