@@ -31,6 +31,7 @@ public class IdentifierBlock extends AbstractExpressionBlock {
     protected Node createUINode(CompletionContext context) {
         Text text = new Text(this.identifier);
         HBox container = new HBox(text);
+        container.setAlignment(javafx.geometry.Pos.CENTER_LEFT);
         container.getStyleClass().add("identifier-block");
 
         // Add visual cues for interaction

@@ -42,7 +42,7 @@ public class MainBlock extends AbstractCodeBlock implements BlockWithChildren {
         container.getStyleClass().add("main-block");
         container.setPadding(new Insets(10));
 
-        Label header = new Label("public static void main(String[] args)");
+        Label header = new Label("Main");
         header.getStyleClass().add("main-block-header");
         container.getChildren().add(header);
 

@@ -57,6 +57,7 @@ public class LiteralBlock<T> extends AbstractExpressionBlock {
         });
 
         HBox container = new HBox(textField);
+        container.setAlignment(javafx.geometry.Pos.CENTER_LEFT);
         container.getStyleClass().add("literal-block");
         return container;
     }

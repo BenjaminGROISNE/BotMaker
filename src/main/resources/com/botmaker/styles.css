@@ -3,8 +3,8 @@
     -fx-font-family: "Inter", sans-serif;
 
     /* Block Color Variables */
-    -fx-if-block-background: #E0C000;
-    -fx-if-block-border: #E09000;
+    -fx-if-block-background: #FF8C00;
+    -fx-if-block-border: #D2691E;
 
     -fx-binary-expression-block-background: #B060D0;
     -fx-binary-expression-block-border: #9040E0;
@@ -26,6 +26,7 @@
     -fx-background-color: #e0e0e0;
     -fx-text-fill: black;
     -fx-background-radius: 4;
+    -fx-font-weight: bold;
 }
 
 .button:hover {
@@ -37,6 +38,7 @@
     -fx-text-fill: black;
     -fx-border-color: #cccccc;
     -fx-border-radius: 4;
+    -fx-font-weight: bold;
 }
 
 .scroll-pane {
@@ -45,6 +47,7 @@
 
 .label {
     -fx-text-fill: black;
+    -fx-font-weight: bold;
 }
 
 /* Light Theme */
@@ -317,7 +320,7 @@
 /* Literal Block TextField in Dark Theme */
 .dark-theme .literal-block .text-field {
     -fx-background-color: #4e4e4e; /* Darker background for TextField */
-    -fx-text-fill: black; /* Changed to black */
+    -fx-text-fill: white; /* Changed to white */
     -fx-prompt-text-fill: #aaaaaa; /* Slightly darker for prompt text */
     -fx-highlight-fill: #007bff; /* Highlight color */
     -fx-highlight-text-fill: white;
@@ -336,8 +339,8 @@
 
 /* Main Block Styles */
 .main-block {
-    -fx-background-color: #f0f0f0; /* Light theme default */
-    -fx-border-color: #cccccc;
+    -fx-background-color: #8B0000;
+    -fx-border-color: #B22222;
     -fx-border-width: 1;
     -fx-border-radius: 5;
     -fx-background-radius: 5;
@@ -349,10 +352,29 @@
 }
 
 .dark-theme .main-block {
-    -fx-background-color: #3c3f41;
-    -fx-border-color: #555555;
+    -fx-background-color: #8B0000;
+    -fx-border-color: #B22222;
 }
 
 .dark-theme .main-block-header {
     -fx-text-fill: #bbbbbb;
+}
+
+/* Context Menu Dark Theme */
+.dark-theme .context-menu {
+    -fx-background-color: #444;
+    -fx-border-color: #666;
+    -fx-border-width: 1px;
+}
+
+.dark-theme .menu-item .label {
+    -fx-text-fill: white;
+}
+
+.dark-theme .menu-item:focused {
+    -fx-background-color: #555;
+}
+
+.dark-theme .menu-item:focused .label {
+    -fx-text-fill: white;
 }

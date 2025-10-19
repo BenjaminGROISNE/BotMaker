@@ -5,15 +5,13 @@ public class Demo {
 
         int x = 10;
         int y = 15;
-        System.out.println("new text");
+        System.out.println("reh");
 
-        if (z > 30) {
+        if (x > 30) {
             System.out.println("The result is greater than 30.");
         } else {
             System.out.println("The result is not greater than 30.");
         }
-
-        System.out.println(); // Empty line
         System.out.println("Demo finished.");
     }
 }
