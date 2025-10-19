@@ -11,12 +11,14 @@ import java.nio.file.*;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
+import java.util.function.Consumer;
+
 public class JdtLanguageServerLauncher {
 
     private final Process process;
     private final LanguageServer server;
 
-    public JdtLanguageServerLauncher(Path jdtlsPath) throws Exception {
+    public JdtLanguageServerLauncher(Path jdtlsPath, Consumer<PublishDiagnosticsParams> diagnosticsConsumer) throws Exception {
         // Find the Equinox launcher JAR
         Path launcherJar = Files.list(jdtlsPath.resolve("plugins"))
                 .filter(p -> p.getFileName().toString().startsWith("org.eclipse.equinox.launcher_"))
@@ -60,7 +62,7 @@ public class JdtLanguageServerLauncher {
 
         // Connect LSP4J client to the process
         Launcher<LanguageServer> launcher = LSPLauncher.createClientLauncher(
-                new SimpleLanguageClient(),
+                new SimpleLanguageClient(diagnosticsConsumer),
                 process.getInputStream(),
                 process.getOutputStream()
         );
@@ -98,11 +100,19 @@ public class JdtLanguageServerLauncher {
 
     // Minimal LSP client (can handle notifications later)
     static class SimpleLanguageClient implements LanguageClient {
+        private final Consumer<PublishDiagnosticsParams> diagnosticsConsumer;
+
+        public SimpleLanguageClient(Consumer<PublishDiagnosticsParams> diagnosticsConsumer) {
+            this.diagnosticsConsumer = diagnosticsConsumer;
+        }
         @Override
         public void telemetryEvent(Object o) {}
         @Override
         public void publishDiagnostics(PublishDiagnosticsParams diagnostics) {
             System.out.println("[Diagnostics] " + diagnostics);
+            if (diagnosticsConsumer != null) {
+                diagnosticsConsumer.accept(diagnostics);
+            }
         }
         @Override
         public void showMessage(MessageParams messageParams) {

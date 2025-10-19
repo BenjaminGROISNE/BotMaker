@@ -47,10 +47,12 @@ public class Main extends Application {
     private BlockDragAndDropManager dragAndDropManager;
     private AstRewriter astRewriter;
     private CodeEditor codeEditor;
+    private com.botmaker.validation.DiagnosticsManager diagnosticsManager;
 
     @Override
     public void start(Stage primaryStage) throws Exception {
-        JdtLanguageServerLauncher launcher = new JdtLanguageServerLauncher(Paths.get("tools/jdt-language-server"));
+        diagnosticsManager = new com.botmaker.validation.DiagnosticsManager();
+        JdtLanguageServerLauncher launcher = new JdtLanguageServerLauncher(Paths.get("tools/jdt-language-server"), diagnosticsManager::handleDiagnostics);
         jdtServer = launcher.getServer();
 
         astRewriter = new AstRewriter();
@@ -137,6 +139,9 @@ public class Main extends Application {
     private void refreshUI(String javaCode) {
         this.currentCode = javaCode;
         this.nodeToBlockMap = new HashMap<>();
+        if (diagnosticsManager != null) {
+            diagnosticsManager.updateSource(nodeToBlockMap, currentCode);
+        }
         uiManager.getBlocksContainer().getChildren().clear();
 
         CompletionContext context = new CompletionContext(

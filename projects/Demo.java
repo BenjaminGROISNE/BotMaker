@@ -5,7 +5,7 @@ public class Demo {
 		System.out.println("");
 		if (true) {
 		}
-		int k = 10;
+		int y = 10;
 		System.out.println("");
         int y = 15;
         System.out.println("reh");
@@ -14,6 +14,7 @@ public class Demo {
             System.out.println(y);
         } else {
             System.out.println("The result is not greater than 30.");
+			System.out.println("");
         }
         System.out.println("Demo finished.");
     }

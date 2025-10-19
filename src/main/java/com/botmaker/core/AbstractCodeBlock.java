@@ -16,7 +16,7 @@ public abstract class AbstractCodeBlock implements CodeBlock {
     protected final String id;
     protected final ASTNode astNode;
     protected Node uiNode; // A cached reference to the UI node
-    private String originalStyle;
+    private javafx.scene.control.Tooltip errorTooltip;
 
     public AbstractCodeBlock(String id, ASTNode astNode) {
         this.id = id;
@@ -45,12 +45,8 @@ public abstract class AbstractCodeBlock implements CodeBlock {
     @Override
     public void highlight() {
         if (uiNode != null) {
-            originalStyle = uiNode.getStyle();
-            // Make sure to handle null or empty original style
-            if (originalStyle == null || originalStyle.trim().isEmpty()) {
-                uiNode.setStyle("-fx-border-color: red; -fx-border-width: 2;");
-            } else {
-                uiNode.setStyle(originalStyle + "; -fx-border-color: red; -fx-border-width: 2;");
+            if (!uiNode.getStyleClass().contains("highlighted")) {
+                uiNode.getStyleClass().add("highlighted");
             }
         }
     }
@@ -58,7 +54,33 @@ public abstract class AbstractCodeBlock implements CodeBlock {
     @Override
     public void unhighlight() {
         if (uiNode != null) {
-            uiNode.setStyle(originalStyle);
+            uiNode.getStyleClass().remove("highlighted");
+        }
+    }
+
+    @Override
+    public void setError(String message) {
+        if (uiNode != null) {
+            if (!uiNode.getStyleClass().contains("error-block")) {
+                uiNode.getStyleClass().add("error-block");
+            }
+            if (errorTooltip == null) {
+                errorTooltip = new javafx.scene.control.Tooltip(message);
+                javafx.scene.control.Tooltip.install(uiNode, errorTooltip);
+            } else {
+                errorTooltip.setText(message);
+            }
+        }
+    }
+
+    @Override
+    public void clearError() {
+        if (uiNode != null) {
+            uiNode.getStyleClass().remove("error-block");
+            if (errorTooltip != null) {
+                javafx.scene.control.Tooltip.uninstall(uiNode, errorTooltip);
+                errorTooltip = null;
+            }
         }
     }
 

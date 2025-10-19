@@ -389,3 +389,9 @@
     -fx-text-fill: black;
     -fx-font-weight: bold;
 }
+
+.error-block {
+    -fx-border-color: red !important;
+    -fx-border-width: 2px !important;
+    -fx-border-style: dashed !important;
+}

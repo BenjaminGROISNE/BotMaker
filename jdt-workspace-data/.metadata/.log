@@ -8771,3 +8771,96 @@ Command-line arguments:  -data jdt-workspace-data
 
 !ENTRY org.eclipse.jdt.ls.core 1 0 2025-10-19 19:28:54.109
 !MESSAGE Validated 1. Took 19 ms
+
+!ENTRY org.eclipse.jdt.ls.core 1 0 2025-10-19 19:40:56.598
+!MESSAGE Reconciled 1. Took 1 ms
+
+!ENTRY org.eclipse.jdt.ls.core 1 0 2025-10-19 19:40:57.063
+!MESSAGE begin problem for /Demo.java
+
+!ENTRY org.eclipse.jdt.ls.core 1 0 2025-10-19 19:40:57.063
+!MESSAGE 1 problems reported for /Demo.java
+
+!ENTRY org.eclipse.jdt.ls.core 1 0 2025-10-19 19:40:57.064
+!MESSAGE Validated 1. Took 14 ms
+!SESSION 2025-10-19 19:41:26.301 -----------------------------------------------
+eclipse.buildId=unknown
+java.version=25
+java.vendor=Eclipse Adoptium
+BootLoader constants: OS=linux, ARCH=x86_64, WS=gtk, NL=fr_FR
+Command-line arguments:  -data jdt-workspace-data
+
+!ENTRY org.eclipse.core.resources 2 10035 2025-10-19 19:41:26.964
+!MESSAGE The workspace exited with unsaved changes in the previous session; refreshing workspace to recover changes.
+
+!ENTRY org.eclipse.jdt.ls.core 1 0 2025-10-19 19:41:27.337
+!MESSAGE class org.eclipse.jdt.ls.core.internal.JavaLanguageServerPlugin is started
+
+!ENTRY org.eclipse.jdt.ls.core 1 0 2025-10-19 19:41:27.376
+!MESSAGE Started org.eclipse.buildship.core 27ms
+
+!ENTRY org.eclipse.jdt.ls.core 1 0 2025-10-19 19:41:27.377
+!MESSAGE Started org.eclipse.m2e.core 0ms
+
+!ENTRY org.eclipse.jdt.ls.core 1 0 2025-10-19 19:41:27.506
+!MESSAGE >> initialize
+
+!ENTRY org.eclipse.jdt.ls.core 1 0 2025-10-19 19:41:27.512
+!MESSAGE Initializing Java Language Server 1.52.0.202510031334
+
+!ENTRY org.eclipse.jdt.ls.core 1 0 2025-10-19 19:41:27.642
+!MESSAGE Main thread is waiting
+
+!ENTRY org.eclipse.jdt.ls.core 1 0 2025-10-19 19:41:28.202
+!MESSAGE ProjectRegistryRefreshJob finished 825ms
+
+!ENTRY org.eclipse.jdt.ls.core 1 0 2025-10-19 19:41:28.236
+!MESSAGE No workspace folders or root uri was defined. Falling back on /home/groisnebenjamin/IdeaProjects/BotMaker/jdt-workspace-data
+
+!ENTRY org.eclipse.jdt.ls.core 1 0 2025-10-19 19:41:28.244
+!MESSAGE Static Commands: []
+
+!ENTRY org.eclipse.jdt.ls.core 1 0 2025-10-19 19:41:28.245
+!MESSAGE Non-Static Commands: [java.project.import, java.project.changeImportedProjects, java.navigate.openTypeHierarchy, java.project.resolveStackTraceLocation, java.edit.handlePasteEvent, java.edit.stringFormatting, java.project.getSettings, java.project.resolveWorkspaceSymbol, java.project.upgradeGradle, java.project.createModuleInfo, java.vm.getAllInstalls, java.edit.organizeImports, java.project.refreshDiagnostics, java.project.removeFromSourcePath, java.project.listSourcePaths, java.project.updateSettings, java.project.getAll, java.reloadBundles, java.project.isTestFile, java.project.resolveText, java.project.getClasspaths, java.navigate.resolveTypeHierarchy, java.getTroubleshootingInfo, java.edit.smartSemicolonDetection, java.project.updateSourceAttachment, java.project.updateClassPaths, java.decompile, java.protobuf.generateSources, java.project.resolveSourceAttachment, java.project.updateJdk, java.project.addToSourcePath, java.completion.onDidSelect]
+
+!ENTRY org.eclipse.jdt.ls.core 1 0 2025-10-19 19:41:28.257
+!MESSAGE RepositoryRegistryUpdateJob finished 0ms
+
+!ENTRY org.eclipse.jdt.ls.core 1 0 2025-10-19 19:41:28.284
+!MESSAGE Workspace initialized in 27ms
+
+!ENTRY org.eclipse.jdt.ls.core 1 0 2025-10-19 19:41:29.087
+!MESSAGE Reconciled 1. Took 0 ms
+
+!ENTRY org.eclipse.jdt.ls.core 1 0 2025-10-19 19:41:29.709
+!MESSAGE begin problem for /Demo.java
+
+!ENTRY org.eclipse.jdt.ls.core 1 0 2025-10-19 19:41:29.711
+!MESSAGE 1 problems reported for /Demo.java
+
+!ENTRY org.eclipse.jdt.ls.core 1 0 2025-10-19 19:41:29.714
+!MESSAGE Validated 1. Took 26 ms
+
+!ENTRY org.eclipse.jdt.ls.core 1 0 2025-10-19 19:41:36.932
+!MESSAGE Completion request completed
+
+!ENTRY org.eclipse.jdt.ls.core 1 0 2025-10-19 19:41:37.919
+!MESSAGE Completion request completed
+
+!ENTRY org.eclipse.jdt.ls.core 1 0 2025-10-19 19:41:47.465
+!MESSAGE Completion request completed
+
+!ENTRY org.eclipse.jdt.ls.core 1 0 2025-10-19 19:41:51.597
+!MESSAGE Reconciled 1. Took 1 ms
+
+!ENTRY org.eclipse.jdt.ls.core 1 0 2025-10-19 19:41:52.069
+!MESSAGE begin problem for /Demo.java
+
+!ENTRY org.eclipse.jdt.ls.core 1 0 2025-10-19 19:41:52.071
+!MESSAGE Duplicate local variable y is of type RedefinedLocal
+
+!ENTRY org.eclipse.jdt.ls.core 1 0 2025-10-19 19:41:52.072
+!MESSAGE 2 problems reported for /Demo.java
+
+!ENTRY org.eclipse.jdt.ls.core 1 0 2025-10-19 19:41:52.072
+!MESSAGE Validated 1. Took 24 ms

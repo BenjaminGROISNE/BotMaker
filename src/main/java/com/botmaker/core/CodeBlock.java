@@ -15,4 +15,6 @@ public interface CodeBlock {
     int getBreakpointLine(CompilationUnit cu);
     CodeBlock getHighlightTarget();
     String getDetails();
+    void setError(String message);
+    void clearError();
 }
