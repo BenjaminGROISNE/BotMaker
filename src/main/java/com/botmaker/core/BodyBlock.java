@@ -5,6 +5,7 @@ import com.botmaker.lsp.CompletionContext;
 import com.botmaker.ui.BlockDragAndDropManager;
 import com.botmaker.ui.DropInfo;
 import javafx.scene.Node;
+import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 
 import java.util.ArrayList;
@@ -32,14 +33,16 @@ public class BodyBlock extends AbstractStatementBlock implements BlockWithChildr
     protected Node createUINode(CompletionContext context) {
         VBox container = new VBox();
         container.getStyleClass().add("body-block");
+        VBox.setVgrow(container, Priority.ALWAYS);
 
         if (statements.isEmpty()) {
             javafx.scene.control.Label placeholder = new javafx.scene.control.Label("Drag block here");
             placeholder.getStyleClass().add("empty-body-placeholder");
-            dragAndDropManager.addSeparatorDragHandlers(placeholder, this, 0, null);
+            placeholder.setMouseTransparent(true);
             container.getChildren().add(placeholder);
             container.setAlignment(javafx.geometry.Pos.CENTER);
             container.setMinHeight(30);
+            dragAndDropManager.addEmptyBodyDropHandlers(container, this);
         } else {
             // Add a separator at the beginning
             container.getChildren().add(createSeparatorWithHandlers(this, 0));

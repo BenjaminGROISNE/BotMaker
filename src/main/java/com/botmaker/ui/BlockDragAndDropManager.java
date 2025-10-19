@@ -95,6 +95,40 @@ public class BlockDragAndDropManager {
         });
     }
 
+    public void addEmptyBodyDropHandlers(Region target, BodyBlock targetBody) {
+        target.setOnDragEntered(event -> {
+            if (event.getDragboard().hasContent(ADDABLE_BLOCK_FORMAT)) {
+                target.getStyleClass().add("empty-body-drop-hover");
+            }
+            event.consume();
+        });
+
+        target.setOnDragExited(event -> {
+            target.getStyleClass().remove("empty-body-drop-hover");
+            event.consume();
+        });
+
+        target.setOnDragOver(event -> {
+            if (event.getDragboard().hasContent(ADDABLE_BLOCK_FORMAT)) {
+                event.acceptTransferModes(TransferMode.COPY);
+            }
+            event.consume();
+        });
+
+        target.setOnDragDropped(event -> {
+            Dragboard db = event.getDragboard();
+            boolean success = false;
+            if (db.hasContent(ADDABLE_BLOCK_FORMAT)) {
+                String blockTypeName = (String) db.getContent(ADDABLE_BLOCK_FORMAT);
+                AddableBlock type = AddableBlock.valueOf(blockTypeName);
+                onDrop.accept(new DropInfo(type, targetBody, 0)); // Always index 0 for empty body
+                success = true;
+            }
+            event.setDropCompleted(success);
+            event.consume();
+        });
+    }
+
     public void addExpressionDropHandlers(Region target) {
         String defaultStyle = "-fx-background-color: #f0f0f0; -fx-border-color: #c0c0c0; -fx-border-style: dashed; -fx-min-width: 50; -fx-min-height: 25;";
         String hoverStyle = defaultStyle + "-fx-border-color: #007bff;"; // Highlight with blue
