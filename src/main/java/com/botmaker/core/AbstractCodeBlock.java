@@ -36,30 +36,7 @@ public abstract class AbstractCodeBlock implements CodeBlock {
     @Override
     public Node getUINode(CompletionContext context) {
         if (uiNode == null) {
-            Node originalUINode = createUINode(context);
-
-            if (this instanceof StatementBlock) {
-                Button deleteButton = new Button("X");
-                deleteButton.setOnAction(e -> {
-                    context.codeEditor().deleteStatement((Statement) this.astNode);
-                });
-
-                Pane spacer = new Pane();
-                HBox.setHgrow(spacer, Priority.ALWAYS);
-
-                HBox wrapper = new HBox(originalUINode, spacer, deleteButton);
-                wrapper.setAlignment(Pos.CENTER_LEFT);
-
-                // Transfer style from the original node to the wrapper
-                String style = originalUINode.getStyle();
-                if (style != null && !style.isEmpty()) {
-                    wrapper.setStyle(style);
-                    originalUINode.setStyle("");
-                }
-                this.uiNode = wrapper;
-            } else {
-                this.uiNode = originalUINode;
-            }
+            this.uiNode = createUINode(context);
         }
         return uiNode;
     }

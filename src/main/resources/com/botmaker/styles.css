@@ -378,3 +378,14 @@
 .dark-theme .menu-item:focused .label {
     -fx-text-fill: white;
 }
+
+/* Block Text Color and Font Weight Override for Dark Theme */
+.dark-theme .if-block .label,
+.dark-theme .binary-expression-block .label,
+.dark-theme .identifier-block .text,
+.dark-theme .print-block .text,
+.dark-theme .variable-declaration-block .text,
+.dark-theme .main-block-header {
+    -fx-text-fill: black;
+    -fx-font-weight: bold;
+}

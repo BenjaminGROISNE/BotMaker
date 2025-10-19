@@ -57,6 +57,16 @@ public class VariableDeclarationBlock extends AbstractStatementBlock {
             container.getChildren().add(createExpressionDropZone(context));
         }
 
+        javafx.scene.control.Button deleteButton = new javafx.scene.control.Button("X");
+        deleteButton.setOnAction(e -> {
+            context.codeEditor().deleteStatement((org.eclipse.jdt.core.dom.Statement) this.astNode);
+        });
+
+        javafx.scene.layout.Pane spacer = new javafx.scene.layout.Pane();
+        HBox.setHgrow(spacer, javafx.scene.layout.Priority.ALWAYS);
+
+        container.getChildren().addAll(spacer, deleteButton);
+
         return container;
     }
 
