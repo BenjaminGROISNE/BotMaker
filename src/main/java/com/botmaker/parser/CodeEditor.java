@@ -76,6 +76,15 @@ public class CodeEditor {
         triggerUpdate(newCode);
     }
 
+    public void addElseToIfStatement(IfStatement ifStmt) {
+        String newCode = astRewriter.addElseToIfStatement(
+                getCompilationUnit(),
+                getCurrentCode(),
+                ifStmt
+        );
+        triggerUpdate(newCode);
+    }
+
     public void replaceSimpleName(SimpleName toReplace, String newName) {
         String newCode = astRewriter.replaceSimpleName(
             getCompilationUnit(),

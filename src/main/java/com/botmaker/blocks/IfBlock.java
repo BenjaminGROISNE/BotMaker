@@ -76,7 +76,9 @@ public class IfBlock extends AbstractStatementBlock {
             HBox thenContainer = new HBox(5);
             thenContainer.setAlignment(Pos.TOP_LEFT);
             thenContainer.getChildren().add(new Label("Then:"));
-            thenContainer.getChildren().add(thenBody.getUINode(context));
+            Node thenBodyNode = thenBody.getUINode(context);
+            HBox.setHgrow(thenBodyNode, javafx.scene.layout.Priority.ALWAYS);
+            thenContainer.getChildren().add(thenBodyNode);
             container.getChildren().add(thenContainer);
         }
 
@@ -84,8 +86,16 @@ public class IfBlock extends AbstractStatementBlock {
             HBox elseContainer = new HBox(5);
             elseContainer.setAlignment(Pos.TOP_LEFT);
             elseContainer.getChildren().add(new Label("Else:"));
-            elseContainer.getChildren().add(elseBody.getUINode(context));
+            Node elseBodyNode = elseBody.getUINode(context);
+            HBox.setHgrow(elseBodyNode, javafx.scene.layout.Priority.ALWAYS);
+            elseContainer.getChildren().add(elseBodyNode);
             container.getChildren().add(elseContainer);
+        } else {
+            javafx.scene.control.Button addElseButton = new javafx.scene.control.Button("+");
+            addElseButton.setOnAction(e -> {
+                context.codeEditor().addElseToIfStatement((IfStatement) this.astNode);
+            });
+            container.getChildren().add(addElseButton);
         }
 
         return container;

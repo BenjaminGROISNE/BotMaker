@@ -137,6 +137,29 @@ public class AstRewriter {
         }
     }
 
+    public String addElseToIfStatement(CompilationUnit cu, String originalCode, IfStatement ifStatement) {
+        AST ast = cu.getAST();
+        ASTRewrite rewriter = ASTRewrite.create(ast);
+
+        if (ifStatement.getElseStatement() == null) {
+            Block elseBlock = ast.newBlock();
+            rewriter.set(ifStatement, IfStatement.ELSE_STATEMENT_PROPERTY, elseBlock, null);
+        } else {
+            // else already exists, do nothing
+            return originalCode;
+        }
+
+        IDocument document = new Document(originalCode);
+        try {
+            TextEdit edits = rewriter.rewriteAST(document, null);
+            edits.apply(document);
+            return document.get();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return originalCode;
+        }
+    }
+
     private Expression createDefaultExpression(AST ast, com.botmaker.ui.AddableExpression type) {
         switch (type) {
             case TEXT:

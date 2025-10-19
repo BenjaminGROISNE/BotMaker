@@ -4,10 +4,14 @@ public class Demo {
         System.out.println(message);
 		System.out.println("");
 		if (true) {
+			System.out.println("");
+			System.out.println("");
+		} else {
+			System.out.println("");
 		}
-		int y = 10;
+		int x = 10;
 		System.out.println("");
-        int y = 15;
+        int k = 15;
         System.out.println("reh");
 
         if (k > 30) {
