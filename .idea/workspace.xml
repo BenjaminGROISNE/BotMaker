@@ -4,21 +4,13 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="cba04025-c331-4634-a893-436bad03efc0" name="Changes" comment="changed else block">
+    <list default="true" id="cba04025-c331-4634-a893-436bad03efc0" name="Changes" comment="empty body drag fixed">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/jdt-workspace-data/.metadata/.log" beforeDir="false" afterPath="$PROJECT_DIR$/jdt-workspace-data/.metadata/.log" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/jdt-workspace-data/.metadata/.plugins/org.eclipse.core.resources/.projects/jdt.ls-java-project/.markers" beforeDir="false" afterPath="$PROJECT_DIR$/jdt-workspace-data/.metadata/.plugins/org.eclipse.core.resources/.projects/jdt.ls-java-project/.markers" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/jdt-workspace-data/.metadata/.plugins/org.eclipse.core.resources/.projects/jdt.ls-java-project/.markers.snap" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/jdt-workspace-data/.metadata/.plugins/org.eclipse.core.resources/.projects/jdt.ls-java-project/.syncinfo.snap" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/jdt-workspace-data/.metadata/.plugins/org.eclipse.core.resources/.root/.markers.snap" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/jdt-workspace-data/.metadata/.plugins/org.eclipse.core.resources/.root/24.tree" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/jdt-workspace-data/.metadata/.plugins/org.eclipse.core.resources/.safetable/org.eclipse.core.resources" beforeDir="false" afterPath="$PROJECT_DIR$/jdt-workspace-data/.metadata/.plugins/org.eclipse.core.resources/.safetable/org.eclipse.core.resources" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/jdt-workspace-data/.metadata/.plugins/org.eclipse.core.resources/24.snap" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/jdt-workspace-data/.metadata/.plugins/org.eclipse.jdt.core/1865797976.index" beforeDir="false" afterPath="$PROJECT_DIR$/jdt-workspace-data/.metadata/.plugins/org.eclipse.jdt.core/1865797976.index" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/jdt-workspace-data/.metadata/.plugins/org.eclipse.jdt.core/savedIndexNames.txt" beforeDir="false" afterPath="$PROJECT_DIR$/jdt-workspace-data/.metadata/.plugins/org.eclipse.jdt.core/savedIndexNames.txt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/projects/Demo.java" beforeDir="false" afterPath="$PROJECT_DIR$/projects/Demo.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/botmaker/core/BodyBlock.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/botmaker/core/BodyBlock.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/botmaker/ui/BlockDragAndDropManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/botmaker/ui/BlockDragAndDropManager.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/botmaker/blocks/IfBlock.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/botmaker/blocks/IfBlock.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/resources/com/botmaker/styles.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/com/botmaker/styles.css" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -373,7 +365,15 @@
       <option name="project" value="LOCAL" />
       <updated>1760902091184</updated>
     </task>
-    <option name="localTasksCounter" value="26" />
+    <task id="LOCAL-00026" summary="empty body drag fixed">
+      <option name="closed" value="true" />
+      <created>1760903007366</created>
+      <option name="number" value="00026" />
+      <option name="presentableId" value="LOCAL-00026" />
+      <option name="project" value="LOCAL" />
+      <updated>1760903007366</updated>
+    </task>
+    <option name="localTasksCounter" value="27" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -415,7 +415,8 @@
     <MESSAGE value="First shot at validating blocks (can identify the block but to proceed further" />
     <MESSAGE value="Fixed ifblock partially" />
     <MESSAGE value="changed else block" />
-    <option name="LAST_COMMIT_MESSAGE" value="changed else block" />
+    <MESSAGE value="empty body drag fixed" />
+    <option name="LAST_COMMIT_MESSAGE" value="empty body drag fixed" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

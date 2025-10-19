@@ -71,6 +71,7 @@ public class IfBlock extends AbstractStatementBlock {
         // Then body
         if (thenBody != null) {
             Node thenBodyNode = thenBody.getUINode(context);
+            thenBodyNode.getStyleClass().add("if-body");
             HBox.setHgrow(thenBodyNode, javafx.scene.layout.Priority.ALWAYS);
             container.getChildren().add(thenBodyNode);
         }
@@ -91,6 +92,7 @@ public class IfBlock extends AbstractStatementBlock {
                 elseHeader.getChildren().addAll(elseLabel, addElseIfButton, elseSpacer, deleteElseButton);
 
                 Node elseBodyNode = elseStatement.getUINode(context);
+                elseBodyNode.getStyleClass().add("if-body");
                 HBox.setHgrow(elseBodyNode, javafx.scene.layout.Priority.ALWAYS);
                 elseContainer.getChildren().addAll(elseHeader, elseBodyNode);
                 container.getChildren().add(elseContainer);

@@ -20,6 +20,9 @@
 
     -fx-variable-declaration-block-background: #50C050;
     -fx-variable-declaration-block-border: #408040;
+
+    -fx-if-body-background: #FFB34D;
+    -fx-main-body-background: #B20000;
 }
 
 .button {
@@ -334,14 +337,20 @@
 }
 
 .body-block {
-    -fx-border-color: #c0c0c0;
-    -fx-border-width: 1px;
-    -fx-border-style: solid;
     -fx-padding: 5px;
+    -fx-background-radius: 5px;
 }
 
-.empty-body-drop-hover {
-    -fx-background-color: #e0e0e0;
+.if-body {
+    -fx-background-color: -fx-if-body-background !important;
+}
+
+.main-block .body-block {
+    -fx-background-color: -fx-main-body-background;
+}
+
+.body-block.empty-body-drop-hover {
+    -fx-background-color: yellow;
 }
 
 .dark-theme .body-block-separator {
