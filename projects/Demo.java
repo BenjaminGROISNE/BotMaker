@@ -5,14 +5,12 @@ public class Demo {
 		System.out.println("");
 		if (true) {
 		}
-		System.out.println("");
-
-        int x = 10;
+		int k = 10;
 		System.out.println("");
         int y = 15;
         System.out.println("reh");
 
-        if (x > 30) {
+        if (k > 30) {
             System.out.println(y);
         } else {
             System.out.println("The result is not greater than 30.");

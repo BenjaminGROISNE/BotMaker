@@ -5,6 +5,7 @@ import com.botmaker.core.ExpressionBlock;
 import com.botmaker.lsp.CompletionContext;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
+import javafx.scene.control.TextField;
 import javafx.scene.layout.HBox;
 import javafx.scene.text.Text;
 import org.eclipse.jdt.core.dom.Type;
@@ -48,7 +49,19 @@ public class VariableDeclarationBlock extends AbstractStatementBlock {
         container.getStyleClass().add("variable-declaration-block");
 
         container.getChildren().add(new Text(variableType.toString()));
-        container.getChildren().add(new Text(variableName));
+        
+        TextField nameField = new TextField(variableName);
+        nameField.focusedProperty().addListener((obs, oldVal, newVal) -> {
+            if (!newVal) { // Focus lost
+                String newName = nameField.getText();
+                if (!newName.equals(variableName)) {
+                    VariableDeclarationFragment fragment = (VariableDeclarationFragment) ((VariableDeclarationStatement) this.astNode).fragments().get(0);
+                    context.codeEditor().replaceSimpleName(fragment.getName(), newName);
+                }
+            }
+        });
+        container.getChildren().add(nameField);
+
         container.getChildren().add(new Text("="));
 
         if (initializer != null) {
