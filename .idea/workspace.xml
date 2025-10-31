@@ -4,14 +4,34 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="cba04025-c331-4634-a893-436bad03efc0" name="Changes" comment="empty body drag fixed">
+    <list default="true" id="cba04025-c331-4634-a893-436bad03efc0" name="Changes" comment="empty body drag works but hover effect not shown">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/jdt-workspace-data/.metadata/.log" beforeDir="false" afterPath="$PROJECT_DIR$/jdt-workspace-data/.metadata/.log" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/jdt-workspace-data/.metadata/.plugins/org.eclipse.jdt.core/1865797976.index" beforeDir="false" afterPath="$PROJECT_DIR$/jdt-workspace-data/.metadata/.plugins/org.eclipse.jdt.core/1865797976.index" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/jdt-workspace-data/.metadata/.plugins/org.eclipse.jdt.core/savedIndexNames.txt" beforeDir="false" afterPath="$PROJECT_DIR$/jdt-workspace-data/.metadata/.plugins/org.eclipse.jdt.core/savedIndexNames.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/projects/Demo.java" beforeDir="false" afterPath="$PROJECT_DIR$/projects/Demo.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/botmaker/blocks/IfBlock.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/botmaker/blocks/IfBlock.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/com/botmaker/styles.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/com/botmaker/styles.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/jdt-workspace-data/.metadata/.log" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/jdt-workspace-data/.metadata/.plugins/org.eclipse.buildship.core/gradle/versions.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/jdt-workspace-data/.metadata/.plugins/org.eclipse.core.resources/.projects/jdt.ls-java-project/.location" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/jdt-workspace-data/.metadata/.plugins/org.eclipse.core.resources/.projects/jdt.ls-java-project/.markers" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/jdt-workspace-data/.metadata/.plugins/org.eclipse.core.resources/.root/.indexes/history.version" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/jdt-workspace-data/.metadata/.plugins/org.eclipse.core.resources/.root/.indexes/properties.index" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/jdt-workspace-data/.metadata/.plugins/org.eclipse.core.resources/.root/.indexes/properties.version" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/jdt-workspace-data/.metadata/.plugins/org.eclipse.core.resources/.safetable/org.eclipse.core.resources" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/jdt-workspace-data/.metadata/.plugins/org.eclipse.jdt.core/1865797976.index" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/jdt-workspace-data/.metadata/.plugins/org.eclipse.jdt.core/3842426239.index" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/jdt-workspace-data/.metadata/.plugins/org.eclipse.jdt.core/444637476.index" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/jdt-workspace-data/.metadata/.plugins/org.eclipse.jdt.core/assumedExternalFilesCache" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/jdt-workspace-data/.metadata/.plugins/org.eclipse.jdt.core/externalFilesCache" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/jdt-workspace-data/.metadata/.plugins/org.eclipse.jdt.core/externalLibsTimeStamps" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/jdt-workspace-data/.metadata/.plugins/org.eclipse.jdt.core/javaLikeNames.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/jdt-workspace-data/.metadata/.plugins/org.eclipse.jdt.core/nonChainingJarsCache" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/jdt-workspace-data/.metadata/.plugins/org.eclipse.jdt.core/savedIndexNames.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/jdt-workspace-data/.metadata/.plugins/org.eclipse.jdt.core/variablesAndContainers.dat" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/jdt-workspace-data/.metadata/.plugins/org.eclipse.jdt.launching/.install.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/jdt-workspace-data/.metadata/.plugins/org.eclipse.jdt.launching/libraryInfos.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/jdt-workspace-data/.metadata/.plugins/org.eclipse.m2e.core/workspaceState.ser" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/projects/Demo.java" beforeDir="false" afterPath="$PROJECT_DIR$/projects/src/main/java/Demo.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/botmaker/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/botmaker/Main.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/botmaker/lsp/JdtLanguageServerLauncher.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/botmaker/lsp/JdtLanguageServerLauncher.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/botmaker/runtime/CodeExecutionService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/botmaker/runtime/CodeExecutionService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/botmaker/validation/DiagnosticsManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/botmaker/validation/DiagnosticsManager.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -54,6 +74,13 @@
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
     <option name="RESET_MODE" value="HARD" />
   </component>
+  <component name="HighlightingSettingsPerFile">
+    <setting file="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.eclipse.lsp4j/org.eclipse.lsp4j.jsonrpc/0.21.0/bfd3025b2f10c8cbb428d539a76f02a128440480/org.eclipse.lsp4j.jsonrpc-0.21.0-sources.jar!/org/eclipse/lsp4j/jsonrpc/Endpoint.java" root0="SKIP_INSPECTION" />
+    <setting file="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.eclipse.lsp4j/org.eclipse.lsp4j/0.21.0/59f263c9f254fe06c7699b62c4e9a19ac9b43909/org.eclipse.lsp4j-0.21.0-sources.jar!/org/eclipse/lsp4j/InitializeParams.java" root0="SKIP_INSPECTION" />
+    <setting file="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.eclipse.lsp4j/org.eclipse.lsp4j/0.21.0/59f263c9f254fe06c7699b62c4e9a19ac9b43909/org.eclipse.lsp4j-0.21.0-sources.jar!/org/eclipse/lsp4j/MessageActionItem.java" root0="SKIP_INSPECTION" />
+    <setting file="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.eclipse.lsp4j/org.eclipse.lsp4j/0.21.0/59f263c9f254fe06c7699b62c4e9a19ac9b43909/org.eclipse.lsp4j-0.21.0-sources.jar!/org/eclipse/lsp4j/launch/LSPLauncher.java" root0="SKIP_INSPECTION" />
+    <setting file="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.eclipse.lsp4j/org.eclipse.lsp4j/0.21.0/59f263c9f254fe06c7699b62c4e9a19ac9b43909/org.eclipse.lsp4j-0.21.0-sources.jar!/org/eclipse/lsp4j/services/LanguageServer.java" root0="SKIP_INSPECTION" />
+  </component>
   <component name="ProblemsViewState">
     <option name="selectedTabId" value="ProjectErrors" />
   </component>
@@ -74,8 +101,9 @@
     &quot;Gradle.BotMaker [:com.astblocks.demo.Main.main()].executor&quot;: &quot;Run&quot;,
     &quot;Gradle.BotMaker [:com.botmaker.Main.main()].executor&quot;: &quot;Run&quot;,
     &quot;Gradle.BotMaker [:org.example.Main.main()].executor&quot;: &quot;Run&quot;,
-    &quot;Gradle.BotMaker [run].executor&quot;: &quot;Run&quot;,
+    &quot;Gradle.BotMaker [run].executor&quot;: &quot;Debug&quot;,
     &quot;Gradle.BotMaker.executor&quot;: &quot;Run&quot;,
+    &quot;Gradle.Build BotMaker.executor&quot;: &quot;Run&quot;,
     &quot;Gradle.Download Sources.executor&quot;: &quot;Run&quot;,
     &quot;ModuleVcsDetector.initialDetectionPerformed&quot;: &quot;true&quot;,
     &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
@@ -94,6 +122,9 @@
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$/tools" />
+    </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/projects/src/main/java" />
     </key>
   </component>
   <component name="RunManager" selected="Gradle.BotMaker [run]">
@@ -425,6 +456,31 @@
           <url>file://$PROJECT_DIR$/src/main/java/com/botmaker/AstToBlocksConverter.java</url>
           <line>94</line>
           <option name="timeStamp" value="4" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/com/botmaker/runtime/CodeExecutionService.java</url>
+          <line>30</line>
+          <option name="timeStamp" value="5" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/com/botmaker/validation/DiagnosticsManager.java</url>
+          <line>31</line>
+          <option name="timeStamp" value="6" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/com/botmaker/runtime/CodeExecutionService.java</url>
+          <line>72</line>
+          <option name="timeStamp" value="7" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/com/botmaker/validation/DiagnosticsManager.java</url>
+          <line>33</line>
+          <option name="timeStamp" value="8" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/com/botmaker/runtime/CodeExecutionService.java</url>
+          <line>29</line>
+          <option name="timeStamp" value="9" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>

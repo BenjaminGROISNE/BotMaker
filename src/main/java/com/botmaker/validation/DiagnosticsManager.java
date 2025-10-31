@@ -4,9 +4,12 @@ import com.botmaker.core.CodeBlock;
 import javafx.application.Platform;
 import org.eclipse.jdt.core.dom.ASTNode;
 import org.eclipse.lsp4j.Diagnostic;
+import org.eclipse.lsp4j.DiagnosticSeverity;
 import org.eclipse.lsp4j.PublishDiagnosticsParams;
 
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
@@ -16,6 +19,21 @@ public class DiagnosticsManager {
     private Map<ASTNode, CodeBlock> nodeToBlockMap;
     private String sourceCode;
     private final Set<CodeBlock> blocksWithErrors = new HashSet<>();
+    private List<Diagnostic> lastDiagnostics = new ArrayList<>();
+
+    public List<Diagnostic> getDiagnostics() {
+        return lastDiagnostics;
+    }
+
+    public boolean hasErrors() {
+        if (lastDiagnostics == null || lastDiagnostics.isEmpty()) {
+            return false;
+        }
+        return lastDiagnostics.stream().anyMatch(d -> {
+            DiagnosticSeverity severity = d.getSeverity();
+            return severity == null || severity == DiagnosticSeverity.Error;
+        });
+    }
 
     public void updateSource(Map<ASTNode, CodeBlock> nodeToBlockMap, String sourceCode) {
         this.nodeToBlockMap = nodeToBlockMap;
@@ -23,6 +41,8 @@ public class DiagnosticsManager {
     }
 
     public void handleDiagnostics(PublishDiagnosticsParams params) {
+        this.lastDiagnostics = params.getDiagnostics(); // Store the latest diagnostics
+
         Platform.runLater(() -> {
             // Clear previous errors
             for (CodeBlock block : blocksWithErrors) {

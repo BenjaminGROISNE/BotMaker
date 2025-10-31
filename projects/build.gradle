@@ -1,0 +1,32 @@
+plugins {
+    id 'java'
+    id 'eclipse'
+}
+
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(25) // or your JDK version
+    }
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    // optional, for tests or other dependencies
+    testImplementation 'org.junit.jupiter:junit-jupiter:5.9.3'
+}
+
+// 👇 tell Gradle that your Java source files are directly in the project root
+sourceSets {
+    main {
+        java {
+            srcDirs = ['src/main/java']
+        }
+    }
+}
+
+tasks.withType(JavaCompile).configureEach {
+    options.encoding = 'UTF-8'
+}

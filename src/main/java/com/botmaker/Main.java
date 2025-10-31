@@ -68,7 +68,8 @@ public class Main extends Application {
                 uiManager.getOutputArea()::appendText,
                 uiManager.getOutputArea()::clear,
                 uiManager.getOutputArea()::setText,
-                uiManager.getStatusLabel()::setText
+                uiManager.getStatusLabel()::setText,
+                diagnosticsManager
         );
 
         debuggingManager = new DebuggingManager(
@@ -84,7 +85,7 @@ public class Main extends Application {
                 factory
         );
 
-        Path docPath = Paths.get("projects/Demo.java").toAbsolutePath();
+        Path docPath = Paths.get("projects/src/main/java/Demo.java").toAbsolutePath();
         docUri = docPath.toUri().toString();
         currentCode = Files.readString(docPath);
 

@@ -70,9 +70,11 @@ public class JdtLanguageServerLauncher {
         launcher.startListening();
         server = launcher.getRemoteProxy();
 
-        // Create a workspace folder path (where projects/code will live)
-        Path workspace = Paths.get("projects");
-        workspace.toFile().mkdirs();
+
+        Path workspace = Paths.get("/home/groisnebenjamin/IdeaProjects/BotMaker/projects");
+        WorkspaceFolder folder = new WorkspaceFolder(workspace.toUri().toString());
+
+
 
         // Initialize LSP params
         InitializeParams init = new InitializeParams();
@@ -82,8 +84,8 @@ public class JdtLanguageServerLauncher {
         init.setCapabilities(new ClientCapabilities());
 
         // Add workspace folder
-        WorkspaceFolder folder = new WorkspaceFolder(workspace.toAbsolutePath().toUri().toString());
         init.setWorkspaceFolders(List.of(folder));
+        System.out.println("Workspace root: " + folder.getUri());
 
         // Now initialize the server
         server.initialize(init).get();

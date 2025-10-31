@@ -16,15 +16,27 @@ public class CodeExecutionService {
     private final Runnable clearOutputConsumer;
     private final Consumer<String> statusConsumer;
     private final Consumer<String> setOutputConsumer;
+    private final com.botmaker.validation.DiagnosticsManager diagnosticsManager;
 
-    public CodeExecutionService(Consumer<String> appendOutputConsumer, Runnable clearOutputConsumer, Consumer<String> setOutputConsumer, Consumer<String> statusConsumer) {
+    public CodeExecutionService(Consumer<String> appendOutputConsumer, Runnable clearOutputConsumer, Consumer<String> setOutputConsumer, Consumer<String> statusConsumer, com.botmaker.validation.DiagnosticsManager diagnosticsManager) {
         this.appendOutputConsumer = appendOutputConsumer;
         this.clearOutputConsumer = clearOutputConsumer;
         this.setOutputConsumer = setOutputConsumer;
         this.statusConsumer = statusConsumer;
+        this.diagnosticsManager = diagnosticsManager;
     }
 
     public void runCode(String code) {
+        if (diagnosticsManager.hasErrors()) {
+            String translatedErrors = com.botmaker.validation.ErrorTranslator.translate(diagnosticsManager.getDiagnostics());
+            System.err.println(translatedErrors);
+            Platform.runLater(() -> {
+                setOutputConsumer.accept(translatedErrors);
+                statusConsumer.accept("Run aborted due to errors.");
+            });
+            return; // Abort run
+        }
+
         new Thread(() -> {
             try {
                 if (!compileAndWait(code)) {
@@ -57,6 +69,16 @@ public class CodeExecutionService {
     }
 
     public void compileCode(String code) {
+        if (diagnosticsManager.hasErrors()) {
+            String translatedErrors = com.botmaker.validation.ErrorTranslator.translate(diagnosticsManager.getDiagnostics());
+            System.err.println(translatedErrors);
+            Platform.runLater(() -> {
+                setOutputConsumer.accept(translatedErrors);
+                statusConsumer.accept("Compilation failed. See errors above.");
+            });
+            return; // Abort compilation
+        }
+
         new Thread(() -> {
             try {
                 Platform.runLater(() -> setOutputConsumer.accept("Saving and compiling..."));
@@ -88,8 +110,10 @@ public class CodeExecutionService {
         if (exitCode == 0) {
             return true;
         } else {
+            final String errorMessage = "Compilation Failed:\n" + errors;
+            System.err.println(errorMessage);
             Platform.runLater(() -> {
-                setOutputConsumer.accept("Compilation Failed:\n" + errors);
+                setOutputConsumer.accept(errorMessage);
             });
             return false;
         }
