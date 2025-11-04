@@ -3,7 +3,7 @@ public class Demo {
         String message = "Hello, Blocks!";
 		//System.out.println(a);
        // System.out.println(b);
-        System.out.println(message);
+        System.out.println(a);
 		System.out.println("");
 		if (true) {
 		} else {

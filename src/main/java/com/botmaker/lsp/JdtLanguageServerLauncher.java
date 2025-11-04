@@ -26,7 +26,8 @@ public class JdtLanguageServerLauncher {
                 .orElseThrow(() -> new RuntimeException("Launcher JAR not found"));
 
         String javaExecutable = Paths.get(System.getProperty("java.home"), "bin", "java").toString();
-
+        Path projectDir = Paths.get("/home/groisnebenjamin/IdeaProjects/BotMaker/projects");
+        Path Demo=projectDir.resolve("jdt.ls-java-project/src/Demo.java");
         // Build command
         ProcessBuilder pb = new ProcessBuilder(
                 javaExecutable,
@@ -39,16 +40,14 @@ public class JdtLanguageServerLauncher {
                 "-Xmx1G",
                 "-jar", launcherJar.toString(),
                 "-configuration", jdtlsPath.resolve("config_linux").toString(), // adjust for your OS
-                "-data", "jdt-workspace-data"
+                "-data", projectDir.toString()
         );
-        // Do NOT redirect the error stream, as it will corrupt the JSON-RPC output
-        // pb.redirectErrorStream(true);
 
-        // Start the server process
+
+
         process = pb.start();
 
-        // The LSP4J launcher needs exclusive access to the input stream.
-        // Do NOT add a separate logger for process.getInputStream().
+
 
         // Log the error stream separately to see any server-side issues.
         new Thread(() -> {
