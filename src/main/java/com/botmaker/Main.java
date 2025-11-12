@@ -85,7 +85,7 @@ public class Main extends Application {
                 factory
         );
 
-        Path docPath = Paths.get("projects/jdt.ls-java-project/src/Demo.java").toAbsolutePath();
+        Path docPath = Paths.get("/home/groisnebenjamin/eclipse-workspace/Botmaker/src/main/java/com/botmaker/Demo.java").toAbsolutePath();
         docUri = docPath.toUri().toString();
         currentCode = Files.readString(docPath);
 

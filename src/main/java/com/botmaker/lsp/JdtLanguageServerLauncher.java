@@ -10,7 +10,6 @@ import java.io.*;
 import java.nio.file.*;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
-
 import java.util.function.Consumer;
 
 public class JdtLanguageServerLauncher {
@@ -26,28 +25,49 @@ public class JdtLanguageServerLauncher {
                 .orElseThrow(() -> new RuntimeException("Launcher JAR not found"));
 
         String javaExecutable = Paths.get(System.getProperty("java.home"), "bin", "java").toString();
-        Path projectDir = Paths.get("/home/groisnebenjamin/IdeaProjects/BotMaker/projects");
-        Path Demo=projectDir.resolve("jdt.ls-java-project/src/Demo.java");
-        // Build command
+        Path projectDir = Paths.get("/home/groisnebenjamin/eclipse-workspace/Botmaker");
+
+        // Create a dedicated workspace data directory (not the project itself!)
+        Path workspaceData = Paths.get(System.getProperty("user.home"), ".jdtls-workspace", "Botmaker");
+        Files.createDirectories(workspaceData);
+
+        // Build command with all necessary flags from VS Code implementation
         ProcessBuilder pb = new ProcessBuilder(
                 javaExecutable,
+                // Java 25 specific flags
+                "-Djdk.xml.maxGeneralEntitySizeLimit=0",
+                "-Djdk.xml.totalEntitySizeLimit=0",
+                // Module system flags
+                "--add-modules=ALL-SYSTEM",
+                "--add-opens", "java.base/java.util=ALL-UNNAMED",
+                "--add-opens", "java.base/java.lang=ALL-UNNAMED",
+                "--add-opens", "java.base/sun.nio.fs=ALL-UNNAMED",
+                // Eclipse/JDT configuration
                 "-Declipse.application=org.eclipse.jdt.ls.core.id1",
                 "-Dosgi.bundles.defaultStartLevel=4",
                 "-Declipse.product=org.eclipse.jdt.ls.core.product",
+                // Important: Disable automatic VM detection
+                "-DDetectVMInstallationsJob.disabled=true",
+                // Encoding
+                "-Dfile.encoding=UTF-8",
+                // Disable verbose logging
+                "-Xlog:disable",
+                // Memory settings
+                "-Xmx1G",
+                // Dependency collector (improves Maven/Gradle performance)
+                "-Daether.dependencyCollector.impl=bf",
+                // Logging (remove these for production, useful for debugging)
                 "-Dlog.protocol=true",
                 "-Dlog.level=ALL",
-                "-noverify",
-                "-Xmx1G",
+                // Launcher JAR
                 "-jar", launcherJar.toString(),
-                "-configuration", jdtlsPath.resolve("config_linux").toString(), // adjust for your OS
-                "-data", projectDir.toString()
+                // Configuration directory
+                "-configuration", jdtlsPath.resolve("config_linux").toString(),
+                // Workspace data directory (NOT your project directory!)
+                "-data", workspaceData.toString()
         );
 
-
-
         process = pb.start();
-
-
 
         // Log the error stream separately to see any server-side issues.
         new Thread(() -> {
@@ -69,25 +89,36 @@ public class JdtLanguageServerLauncher {
         launcher.startListening();
         server = launcher.getRemoteProxy();
 
-
-        Path workspace = Paths.get("/home/groisnebenjamin/IdeaProjects/BotMaker/projects");
-        WorkspaceFolder folder = new WorkspaceFolder(workspace.toUri().toString());
-
-
-
         // Initialize LSP params
         InitializeParams init = new InitializeParams();
         init.setProcessId((int) ProcessHandle.current().pid());
 
-        // Client capabilities (can be empty)
-        init.setCapabilities(new ClientCapabilities());
+        // Set up client capabilities
+        ClientCapabilities capabilities = new ClientCapabilities();
+        WorkspaceClientCapabilities workspaceCaps = new WorkspaceClientCapabilities();
+        workspaceCaps.setDidChangeConfiguration(new DidChangeConfigurationCapabilities(true));
+        workspaceCaps.setWorkspaceFolders(true);
+        capabilities.setWorkspace(workspaceCaps);
 
-        // Add workspace folder
+        TextDocumentClientCapabilities textDocCaps = new TextDocumentClientCapabilities();
+        capabilities.setTextDocument(textDocCaps);
+
+        init.setCapabilities(capabilities);
+
+        // Add workspace folder - this should point to your actual project
+        WorkspaceFolder folder = new WorkspaceFolder(projectDir.toUri().toString());
         init.setWorkspaceFolders(List.of(folder));
-        System.out.println("Workspace root: " + folder.getUri());
+        init.setRootUri(folder.getUri());
 
-        // Now initialize the server
-        server.initialize(init).get();
+        System.out.println("Workspace root: " + folder.getUri());
+        System.out.println("Workspace data: " + workspaceData);
+
+        // Initialize the server
+        InitializeResult result = server.initialize(init).get();
+        System.out.println("Server initialized: " + result.getCapabilities());
+
+        // Send initialized notification
+        server.initialized(new InitializedParams());
     }
 
     public LanguageServer getServer() {
@@ -96,25 +127,31 @@ public class JdtLanguageServerLauncher {
 
     public void stop() {
         try { server.shutdown().get(); } catch (Exception ignored) {}
+        server.exit();
         process.destroy();
     }
 
-    // Minimal LSP client (can handle notifications later)
+    // Minimal LSP client
     static class SimpleLanguageClient implements LanguageClient {
         private final Consumer<PublishDiagnosticsParams> diagnosticsConsumer;
 
         public SimpleLanguageClient(Consumer<PublishDiagnosticsParams> diagnosticsConsumer) {
             this.diagnosticsConsumer = diagnosticsConsumer;
         }
+
         @Override
-        public void telemetryEvent(Object o) {}
+        public void telemetryEvent(Object o) {
+            System.out.println("[Telemetry] " + o);
+        }
+
         @Override
         public void publishDiagnostics(PublishDiagnosticsParams diagnostics) {
-            System.out.println("[Diagnostics] " + diagnostics);
+            System.out.println("[Diagnostics] " + diagnostics.getUri() + " -> " + diagnostics.getDiagnostics().size() + " issues");
             if (diagnosticsConsumer != null) {
                 diagnosticsConsumer.accept(diagnostics);
             }
         }
+
         @Override
         public void showMessage(MessageParams messageParams) {
             System.out.println("[Message] " + messageParams.getMessage());
@@ -122,12 +159,13 @@ public class JdtLanguageServerLauncher {
 
         @Override
         public CompletableFuture<MessageActionItem> showMessageRequest(ShowMessageRequestParams showMessageRequestParams) {
-            return null;
+            System.out.println("[MessageRequest] " + showMessageRequestParams.getMessage());
+            return CompletableFuture.completedFuture(null);
         }
 
         @Override
         public void logMessage(MessageParams messageParams) {
-
+            System.out.println("[Log] " + messageParams.getMessage());
         }
     }
 }
