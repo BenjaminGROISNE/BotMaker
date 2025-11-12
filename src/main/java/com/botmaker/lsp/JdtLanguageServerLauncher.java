@@ -11,6 +11,8 @@ import java.nio.file.*;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 import java.util.function.Consumer;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class JdtLanguageServerLauncher {
 
@@ -18,6 +20,9 @@ public class JdtLanguageServerLauncher {
     private final LanguageServer server;
 
     public JdtLanguageServerLauncher(Path jdtlsPath, Consumer<PublishDiagnosticsParams> diagnosticsConsumer) throws Exception {
+        // Suppress LSP4J warnings about unsupported notifications
+        Logger.getLogger("org.eclipse.lsp4j.jsonrpc.services.GenericEndpoint").setLevel(Level.SEVERE);
+
         // Find the Equinox launcher JAR
         Path launcherJar = Files.list(jdtlsPath.resolve("plugins"))
                 .filter(p -> p.getFileName().toString().startsWith("org.eclipse.equinox.launcher_"))
@@ -56,6 +61,8 @@ public class JdtLanguageServerLauncher {
                 "-Xmx1G",
                 // Dependency collector (improves Maven/Gradle performance)
                 "-Daether.dependencyCollector.impl=bf",
+                // Suppress JavaFX warnings about restricted methods
+                "--enable-native-access=javafx.graphics",
                 // Logging (remove these for production, useful for debugging)
                 "-Dlog.protocol=true",
                 "-Dlog.level=ALL",
@@ -166,6 +173,18 @@ public class JdtLanguageServerLauncher {
         @Override
         public void logMessage(MessageParams messageParams) {
             System.out.println("[Log] " + messageParams.getMessage());
+        }
+
+        @Override
+        public CompletableFuture<Void> registerCapability(RegistrationParams params) {
+            System.out.println("[RegisterCapability] " + params.getRegistrations().size() + " capabilities");
+            return CompletableFuture.completedFuture(null);
+        }
+
+        @Override
+        public CompletableFuture<Void> unregisterCapability(UnregistrationParams params) {
+            System.out.println("[UnregisterCapability] " + params.getUnregisterations().size() + " capabilities");
+            return CompletableFuture.completedFuture(null);
         }
     }
 }
