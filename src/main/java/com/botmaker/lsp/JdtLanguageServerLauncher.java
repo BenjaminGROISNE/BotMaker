@@ -1,5 +1,11 @@
 package com.botmaker.lsp;
 
+import org.eclipse.jdt.core.compiler.IProblem;
+import org.eclipse.jdt.internal.compiler.IProblemFactory;
+import org.eclipse.jdt.internal.compiler.lookup.ProblemReasons;
+import org.eclipse.jdt.internal.compiler.problem.ProblemHandler;
+import org.eclipse.jdt.internal.compiler.problem.ProblemReporter;
+import org.eclipse.jdt.internal.core.builder.ProblemFactory;
 import org.eclipse.lsp4j.*;
 import org.eclipse.lsp4j.jsonrpc.Launcher;
 import org.eclipse.lsp4j.launch.LSPLauncher;
@@ -30,10 +36,10 @@ public class JdtLanguageServerLauncher {
                 .orElseThrow(() -> new RuntimeException("Launcher JAR not found"));
 
         String javaExecutable = Paths.get(System.getProperty("java.home"), "bin", "java").toString();
-        Path projectDir = Paths.get("/home/groisnebenjamin/eclipse-workspace/Botmaker");
+        Path projectDir = Paths.get("./projects");
 
         // Create a dedicated workspace data directory (not the project itself!)
-        Path workspaceData = Paths.get(System.getProperty("user.home"), ".jdtls-workspace", "Botmaker");
+        Path workspaceData = Paths.get(System.getProperty("user.home"), ".jdtls-workspace", "Demo");
         Files.createDirectories(workspaceData);
 
         // Build command with all necessary flags from VS Code implementation

@@ -10,6 +10,7 @@ public interface CodeBlock {
     String getId();
     ASTNode getAstNode();
     Node getUINode(CompletionContext context);
+    Node getUINode();
     void highlight();
     void unhighlight();
     int getBreakpointLine(CompilationUnit cu);

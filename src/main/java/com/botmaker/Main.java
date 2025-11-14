@@ -52,7 +52,15 @@ public class Main extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception {
         diagnosticsManager = new com.botmaker.validation.DiagnosticsManager();
-        JdtLanguageServerLauncher launcher = new JdtLanguageServerLauncher(Paths.get("tools/jdt-language-server"), diagnosticsManager::handleDiagnostics);
+        JdtLanguageServerLauncher launcher = new JdtLanguageServerLauncher(Paths.get("tools/jdt-language-server"), (params) -> {
+            // This is called on a background thread.
+            // We pass the params to the FX thread to do all UI work.
+            Platform.runLater(() -> {
+                diagnosticsManager.processDiagnostics(params.getDiagnostics());
+                uiManager.updateErrors(diagnosticsManager.getDiagnostics());
+                uiManager.getStatusLabel().setText(diagnosticsManager.getErrorSummary());
+            });
+        });
         jdtServer = launcher.getServer();
 
         astRewriter = new AstRewriter();
@@ -85,7 +93,7 @@ public class Main extends Application {
                 factory
         );
 
-        Path docPath = Paths.get("/home/groisnebenjamin/eclipse-workspace/Botmaker/src/main/java/com/botmaker/Demo.java").toAbsolutePath();
+        Path docPath = Paths.get("./projects/src/main/java/com/demo/Demo.java").toAbsolutePath();
         docUri = docPath.toUri().toString();
         currentCode = Files.readString(docPath);
 
@@ -187,6 +195,10 @@ public class Main extends Application {
 
     public String getDocUri() {
         return docUri;
+    }
+
+    public com.botmaker.validation.DiagnosticsManager getDiagnosticsManager() {
+        return diagnosticsManager;
     }
 
     public static void main(String[] args) {

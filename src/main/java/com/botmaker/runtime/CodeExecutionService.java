@@ -31,7 +31,6 @@ public class CodeExecutionService {
             String translatedErrors = com.botmaker.validation.ErrorTranslator.translate(diagnosticsManager.getDiagnostics());
             System.err.println(translatedErrors);
             Platform.runLater(() -> {
-                setOutputConsumer.accept(translatedErrors);
                 statusConsumer.accept("Run aborted due to errors.");
             });
             return; // Abort run
@@ -73,7 +72,6 @@ public class CodeExecutionService {
             String translatedErrors = com.botmaker.validation.ErrorTranslator.translate(diagnosticsManager.getDiagnostics());
             System.err.println(translatedErrors);
             Platform.runLater(() -> {
-                setOutputConsumer.accept(translatedErrors);
                 statusConsumer.accept("Compilation failed. See errors above.");
             });
             return; // Abort compilation

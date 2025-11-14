@@ -415,3 +415,18 @@
     -fx-border-width: 2px !important;
     -fx-border-style: dashed !important;
 }
+
+/* Styles for the new Error List View */
+.error-cell {
+    -fx-text-fill: #D32F2F; /* Red text for errors */
+    -fx-font-weight: bold;
+}
+
+.warning-cell {
+    -fx-text-fill: #FBC02D; /* Amber text for warnings */
+}
+
+.error-cell:selected, .warning-cell:selected {
+    -fx-background-color: -fx-selection-bar;
+    -fx-text-fill: -fx-selection-bar-text;
+}

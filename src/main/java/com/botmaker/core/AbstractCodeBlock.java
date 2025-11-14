@@ -41,6 +41,11 @@ public abstract class AbstractCodeBlock implements CodeBlock {
         return uiNode;
     }
 
+    @Override
+    public Node getUINode() {
+        return uiNode;
+    }
+
 
     @Override
     public void highlight() {

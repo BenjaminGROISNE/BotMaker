@@ -1,14 +1,19 @@
 package com.botmaker.ui;
 
 import com.botmaker.Main;
+import com.botmaker.core.CodeBlock;
+import com.botmaker.validation.ErrorTranslator;
 import javafx.geometry.Insets;
+import javafx.scene.Node;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.ScrollPane;
-import javafx.scene.control.TextArea;
+import javafx.scene.control.*;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
+import org.eclipse.lsp4j.Diagnostic;
+import org.eclipse.lsp4j.DiagnosticSeverity;
+
+import java.util.List;
 
 public class UIManager {
 
@@ -19,6 +24,10 @@ public class UIManager {
     private TextArea outputArea;
     private Button debugButton;
     private Button resumeButton;
+    private ScrollPane scrollPane;
+    private ListView<Diagnostic> errorListView;
+    private TabPane bottomTabPane;
+
 
     public UIManager(Main mainApp, BlockDragAndDropManager dragAndDropManager) {
         this.mainApp = mainApp;
@@ -31,9 +40,64 @@ public class UIManager {
         blocksContainer = new VBox(10);
         statusLabel = new Label("Ready");
         statusLabel.setId("status-label");
+
+        // Initialize the components for the tabs
         outputArea = new TextArea();
         outputArea.setEditable(false);
-        outputArea.setPrefHeight(200);
+
+        errorListView = new ListView<>();
+        errorListView.setPlaceholder(new Label("No errors to display."));
+
+        errorListView.setCellFactory(lv -> new ListCell<>() {
+            @Override
+            protected void updateItem(Diagnostic diagnostic, boolean empty) {
+                super.updateItem(diagnostic, empty);
+                getStyleClass().removeAll("error-cell", "warning-cell");
+
+                if (empty || diagnostic == null) {
+                    setText(null);
+                    setOnMouseClicked(null);
+                } else {
+                    String message = ErrorTranslator.getShortSummary(diagnostic);
+                    int line = diagnostic.getRange().getStart().getLine() + 1;
+                    setText(String.format("Line %d: %s", line, message));
+
+                    if (diagnostic.getSeverity() == DiagnosticSeverity.Error) {
+                        getStyleClass().add("error-cell");
+                    } else if (diagnostic.getSeverity() == DiagnosticSeverity.Warning) {
+                        getStyleClass().add("warning-cell");
+                    }
+
+                    setOnMouseClicked(event -> {
+                        if (event.getClickCount() == 2) { // Double-click to scroll
+                            mainApp.getDiagnosticsManager().findBlockForDiagnostic(diagnostic)
+                                    .ifPresent(this::scrollToBlock);
+                        }
+                    });
+                }
+            }
+
+            private void scrollToBlock(CodeBlock block) {
+                Node uiNode = block.getUINode();
+                if (uiNode == null) return;
+
+                uiNode.requestFocus();
+                double containerHeight = blocksContainer.getBoundsInLocal().getHeight();
+                double blockY = uiNode.getBoundsInParent().getMinY();
+                double scrollPaneHeight = scrollPane.getViewportBounds().getHeight();
+                double vValue = blockY / (containerHeight - scrollPaneHeight);
+                scrollPane.setVvalue(Math.max(0, Math.min(1, vValue)));
+            }
+        });
+
+        // Create the TabPane
+        bottomTabPane = new TabPane();
+        Tab terminalTab = new Tab("Terminal", outputArea);
+        terminalTab.setClosable(false);
+        Tab errorsTab = new Tab("Errors", errorListView);
+        errorsTab.setClosable(false);
+        bottomTabPane.getTabs().addAll(terminalTab, errorsTab);
+
 
         HBox palette = createBlockPalette();
         palette.getStyleClass().add("palette");
@@ -56,9 +120,15 @@ public class UIManager {
         Button themeButton = new Button("Toggle Theme");
         HBox topBar = new HBox(10, themeButton);
 
-        ScrollPane scrollPane = new ScrollPane(blocksContainer);
+        scrollPane = new ScrollPane(blocksContainer);
         scrollPane.setFitToWidth(true);
-        VBox root = new VBox(10, topBar, palette, buttonBox, scrollPane, outputArea, statusLabel);
+
+        // Set VGrow priorities to make panes resizable
+        VBox.setVgrow(scrollPane, Priority.ALWAYS);
+        VBox.setVgrow(bottomTabPane, Priority.SOMETIMES);
+
+
+        VBox root = new VBox(10, topBar, palette, buttonBox, scrollPane, bottomTabPane, statusLabel);
         root.setPadding(new Insets(10));
 
         Scene scene = new Scene(root, 600, 800);
@@ -99,6 +169,19 @@ public class UIManager {
     public TextArea getOutputArea() {
         return outputArea;
     }
+
+    public void updateErrors(List<Diagnostic> diagnostics) {
+        if (diagnostics == null) {
+            errorListView.getItems().clear();
+        } else {
+            errorListView.getItems().setAll(diagnostics);
+        }
+        // If there are errors, automatically switch to the errors tab
+        if (diagnostics != null && !diagnostics.isEmpty()) {
+            bottomTabPane.getSelectionModel().select(1); // Select the second tab (Errors)
+        }
+    }
+
 
     public void onDebuggerStarted() {
         debugButton.setDisable(true);
