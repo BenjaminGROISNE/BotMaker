@@ -416,6 +416,14 @@
     -fx-border-style: dashed !important;
 }
 
+/* Style for the blinking effect on an error block */
+.error-block-blink {
+    -fx-border-color: #FF0000 !important; /* Bright solid red */
+    -fx-border-width: 3px !important;
+    -fx-border-style: solid !important;
+    -fx-effect: dropshadow(gaussian, #FF4444, 10, 0.5, 0, 0);
+}
+
 /* Styles for the new Error List View */
 .error-cell {
     -fx-text-fill: #D32F2F; /* Red text for errors */

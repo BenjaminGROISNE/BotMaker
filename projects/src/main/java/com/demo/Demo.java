@@ -4,8 +4,8 @@ public class Demo {
         String message = "Hello, Blocks!";
         //System.out.println(a);
         // System.out.println(b);
-        System.out.println(a);
-        System.out.println(a);
+        System.out.println(message);
+        System.out.println(message);
         if (true) {
         } else {
             System.out.println("");

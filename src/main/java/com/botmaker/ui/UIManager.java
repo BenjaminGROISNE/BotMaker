@@ -3,13 +3,16 @@ package com.botmaker.ui;
 import com.botmaker.Main;
 import com.botmaker.core.CodeBlock;
 import com.botmaker.validation.ErrorTranslator;
+import javafx.animation.PauseTransition;
 import javafx.geometry.Insets;
+import javafx.geometry.Orientation;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
+import javafx.util.Duration;
 import org.eclipse.lsp4j.Diagnostic;
 import org.eclipse.lsp4j.DiagnosticSeverity;
 
@@ -69,7 +72,7 @@ public class UIManager {
                     }
 
                     setOnMouseClicked(event -> {
-                        if (event.getClickCount() == 2) { // Double-click to scroll
+                        if (event.getClickCount() >= 1) { // Use single-click
                             mainApp.getDiagnosticsManager().findBlockForDiagnostic(diagnostic)
                                     .ifPresent(this::scrollToBlock);
                         }
@@ -80,6 +83,16 @@ public class UIManager {
             private void scrollToBlock(CodeBlock block) {
                 Node uiNode = block.getUINode();
                 if (uiNode == null) return;
+
+                // --- Blinking Animation ---
+                final String blinkStyle = "error-block-blink";
+                if (!uiNode.getStyleClass().contains(blinkStyle)) { // Prevent multiple animations
+                    uiNode.getStyleClass().add(blinkStyle);
+                    PauseTransition blinkOff = new PauseTransition(Duration.seconds(1));
+                    blinkOff.setOnFinished(event -> uiNode.getStyleClass().remove(blinkStyle));
+                    blinkOff.play();
+                }
+                // --- End Animation ---
 
                 uiNode.requestFocus();
                 double containerHeight = blocksContainer.getBoundsInLocal().getHeight();
@@ -95,7 +108,7 @@ public class UIManager {
         Tab terminalTab = new Tab("Terminal", outputArea);
         terminalTab.setClosable(false);
         Tab errorsTab = new Tab("Errors", errorListView);
-        errorsTab.setClosable(false);
+errorsTab.setClosable(false);
         bottomTabPane.getTabs().addAll(terminalTab, errorsTab);
 
 
@@ -123,12 +136,15 @@ public class UIManager {
         scrollPane = new ScrollPane(blocksContainer);
         scrollPane.setFitToWidth(true);
 
-        // Set VGrow priorities to make panes resizable
-        VBox.setVgrow(scrollPane, Priority.ALWAYS);
-        VBox.setVgrow(bottomTabPane, Priority.SOMETIMES);
+        // Create a SplitPane for resizable vertical layout
+        SplitPane splitPane = new SplitPane();
+        splitPane.setOrientation(Orientation.VERTICAL);
+        splitPane.getItems().addAll(scrollPane, bottomTabPane);
+        splitPane.setDividerPositions(0.7); // 70% for code blocks, 30% for tabs
 
+        VBox.setVgrow(splitPane, Priority.ALWAYS); // Make the SplitPane grow to fill space
 
-        VBox root = new VBox(10, topBar, palette, buttonBox, scrollPane, bottomTabPane, statusLabel);
+        VBox root = new VBox(10, topBar, palette, buttonBox, splitPane, statusLabel);
         root.setPadding(new Insets(10));
 
         Scene scene = new Scene(root, 600, 800);
