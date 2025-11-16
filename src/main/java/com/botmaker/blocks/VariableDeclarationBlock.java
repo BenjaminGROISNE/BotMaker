@@ -3,14 +3,19 @@ package com.botmaker.blocks;
 import com.botmaker.core.AbstractStatementBlock;
 import com.botmaker.core.ExpressionBlock;
 import com.botmaker.lsp.CompletionContext;
+import com.botmaker.util.TypeManager;
+import javafx.application.Platform;
 import javafx.geometry.Pos;
+import javafx.scene.Cursor;
 import javafx.scene.Node;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.layout.HBox;
-import javafx.scene.text.Text;
 import org.eclipse.jdt.core.dom.Type;
 import org.eclipse.jdt.core.dom.VariableDeclarationFragment;
 import org.eclipse.jdt.core.dom.VariableDeclarationStatement;
+import org.eclipse.lsp4j.*;
+
+import java.util.List;
 
 public class VariableDeclarationBlock extends AbstractStatementBlock {
 
@@ -48,8 +53,12 @@ public class VariableDeclarationBlock extends AbstractStatementBlock {
         container.setAlignment(Pos.CENTER_LEFT);
         container.getStyleClass().add("variable-declaration-block");
 
-        container.getChildren().add(new Text(variableType.toString()));
-        
+        Label typeLabel = new Label(variableType.toString());
+        typeLabel.getStyleClass().add("type-label");
+        typeLabel.setCursor(Cursor.HAND);
+        typeLabel.setOnMouseClicked(e -> requestTypeSuggestions(typeLabel, context));
+        container.getChildren().add(typeLabel);
+
         TextField nameField = new TextField(variableName);
         nameField.focusedProperty().addListener((obs, oldVal, newVal) -> {
             if (!newVal) { // Focus lost
@@ -64,7 +73,7 @@ public class VariableDeclarationBlock extends AbstractStatementBlock {
         });
         container.getChildren().add(nameField);
 
-        container.getChildren().add(new Text("="));
+        container.getChildren().add(new Label("="));
 
         if (initializer != null) {
             container.getChildren().add(initializer.getUINode(context));
@@ -84,6 +93,78 @@ public class VariableDeclarationBlock extends AbstractStatementBlock {
 
         return container;
     }
+
+    private void requestTypeSuggestions(Node uiNode, CompletionContext context) {
+        try {
+            Position pos = getPositionFromOffset(context.sourceCode(), this.variableType.getStartPosition());
+            CompletionParams params = new CompletionParams(new TextDocumentIdentifier(context.docUri()), pos);
+
+            context.server().getTextDocumentService().completion(params).thenAccept(result -> {
+                Platform.runLater(() -> {
+                    ContextMenu menu = new ContextMenu();
+
+                    // Manually add fundamental types from TypeManager
+                    for (String typeName : TypeManager.getFundamentalTypeNames()) {
+                        CompletionItem dummyItem = new CompletionItem(typeName);
+                        MenuItem mi = new MenuItem(typeName);
+                        mi.setOnAction(event -> applyTypeSuggestion(dummyItem, context));
+                        menu.getItems().add(mi);
+                    }
+                    menu.getItems().add(new SeparatorMenuItem());
+
+                    // Add types from language server if any
+                    if (result != null && (result.isRight() || (result.isLeft() && !result.getLeft().isEmpty()))) {
+                        List<CompletionItem> items = result.isLeft() ? result.getLeft() : result.getRight().getItems();
+                        for (CompletionItem item : items) {
+                            CompletionItemKind kind = item.getKind();
+                            // Filter for classes and interfaces suggested by the server
+                            if (kind == CompletionItemKind.Class || kind == CompletionItemKind.Interface) {
+                                // Avoid duplicating types we added manually
+                                if (TypeManager.getFundamentalTypeNames().contains(item.getLabel())) continue;
+
+                                MenuItem mi = new MenuItem(item.getLabel());
+                                mi.setOnAction(event -> applyTypeSuggestion(item, context));
+                                menu.getItems().add(mi);
+                            }
+                        }
+                    }
+                    menu.show(uiNode, javafx.geometry.Side.BOTTOM, 0, 0);
+                });
+            });
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void applyTypeSuggestion(CompletionItem item, CompletionContext context) {
+        try {
+            String newTypeName = item.getInsertText() != null ? item.getInsertText() : item.getLabel();
+            context.codeEditor().replaceVariableType((VariableDeclarationStatement) this.astNode, newTypeName);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    private Position getPositionFromOffset(String code, int offset) {
+        int line = 0;
+        int lastNewline = -1;
+        // Handle case where offset is at the beginning of the file
+        if (offset == 0) {
+            return new Position(0, 0);
+        }
+        for (int i = 0; i < offset; i++) {
+            if (i >= code.length()) { // Boundary check
+                return new Position(line, i - lastNewline - 1);
+            }
+            if (code.charAt(i) == '\n') {
+                line++;
+                lastNewline = i;
+            }
+        }
+        int character = offset - lastNewline - 1;
+        return new Position(line, character);
+    }
+
 
     @Override
     public String getDetails() {

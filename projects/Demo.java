@@ -3,7 +3,7 @@ public class Demo {
     public static void main(String[] args) {
         if (true) {
 		}
-		int message = 0;
+		String message = "0";
 		System.out.println(args);
 		System.out.println(message);
         if (true) {

@@ -23,6 +23,18 @@
 
     -fx-if-body-background: #FFB34D;
     -fx-main-body-background: #B20000;
+
+    -fx-declare-int-block-background: #4682B4; /* SteelBlue */
+    -fx-declare-int-block-border: #4169E1; /* RoyalBlue */
+
+    -fx-declare-double-block-background: #20B2AA; /* LightSeaGreen */
+    -fx-declare-double-block-border: #008B8B; /* DarkCyan */
+
+    -fx-declare-boolean-block-background: #9370DB; /* MediumPurple */
+    -fx-declare-boolean-block-border: #8A2BE2; /* BlueViolet */
+
+    -fx-declare-string-block-background: #DAA520; /* GoldenRod */
+    -fx-declare-string-block-border: #B8860B; /* DarkGoldenRod */
 }
 
 .button {
@@ -127,6 +139,23 @@
     -fx-background-color: -fx-variable-declaration-block-background;
     -fx-border-color: -fx-variable-declaration-block-border;
 }
+.light-theme .palette-declare_int-label {
+    -fx-background-color: -fx-declare-int-block-background;
+    -fx-border-color: -fx-declare-int-block-border;
+}
+.light-theme .palette-declare_double-label {
+    -fx-background-color: -fx-declare-double-block-background;
+    -fx-border-color: -fx-declare-double-block-border;
+}
+.light-theme .palette-declare_boolean-label {
+    -fx-background-color: -fx-declare-boolean-block-background;
+    -fx-border-color: -fx-declare-boolean-block-border;
+}
+.light-theme .palette-declare_string-label {
+    -fx-background-color: -fx-declare-string-block-background;
+    -fx-border-color: -fx-declare-string-block-border;
+}
+
 
 /* Block Styles (apply to both themes by default) */
 .if-block {
@@ -295,6 +324,22 @@
     -fx-background-color: -fx-variable-declaration-block-background;
     -fx-border-color: -fx-variable-declaration-block-border;
 }
+.dark-theme .palette-declare_int-label {
+    -fx-background-color: -fx-declare-int-block-background;
+    -fx-border-color: -fx-declare-int-block-border;
+}
+.dark-theme .palette-declare_double-label {
+    -fx-background-color: -fx-declare-double-block-background;
+    -fx-border-color: -fx-declare-double-block-border;
+}
+.dark-theme .palette-declare_boolean-label {
+    -fx-background-color: -fx-declare-boolean-block-background;
+    -fx-border-color: -fx-declare-boolean-block-border;
+}
+.dark-theme .palette-declare_string-label {
+    -fx-background-color: -fx-declare-string-block-background;
+    -fx-border-color: -fx-declare-string-block-border;
+}
 
 /* Block Text Bolder and Bigger & Always Black */
 /* General text within blocks */
@@ -437,4 +482,37 @@
 .error-cell:selected, .warning-cell:selected {
     -fx-background-color: -fx-selection-bar;
     -fx-text-fill: -fx-selection-bar-text;
+}
+
+/* Interactive Type Label */
+.type-label {
+    -fx-background-color: #FFD700; /* Gold/Yellow */
+    -fx-text-fill: #333333; /* Dark gray text */
+    -fx-font-weight: bold;
+    -fx-padding: 3 7 3 7;
+    -fx-border-radius: 4;
+    -fx-background-radius: 4;
+    -fx-border-color: #FFA500; /* Orange border */
+    -fx-border-width: 2; /* Thicker border */
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 3, 0, 0, 1); /* Subtle shadow always */
+}
+
+.type-label:hover {
+    -fx-background-color: #FFC107; /* Slightly darker yellow on hover */
+    -fx-border-color: #FF8C00; /* Darker orange on hover */
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.3), 8, 0, 0, 1); /* More pronounced shadow on hover */
+}
+
+.dark-theme .type-label {
+    -fx-background-color: #B8860B; /* Dark goldenrod */
+    -fx-text-fill: #EEEEEE; /* Light gray text */
+    -fx-border-color: #DAA520; /* Goldenrod border */
+    -fx-border-width: 2;
+    -fx-effect: dropshadow(gaussian, rgba(255,255,0,0.1), 3, 0, 0, 1);
+}
+
+.dark-theme .type-label:hover {
+    -fx-background-color: #DAA520; /* Goldenrod on hover */
+    -fx-border-color: #FFD700; /* Gold on hover */
+    -fx-effect: dropshadow(gaussian, rgba(255,255,0,0.3), 8, 0, 0, 1);
 }

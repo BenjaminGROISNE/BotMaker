@@ -108,7 +108,7 @@ public class UIManager {
         Tab terminalTab = new Tab("Terminal", outputArea);
         terminalTab.setClosable(false);
         Tab errorsTab = new Tab("Errors", errorListView);
-errorsTab.setClosable(false);
+        errorsTab.setClosable(false);
         bottomTabPane.getTabs().addAll(terminalTab, errorsTab);
 
 

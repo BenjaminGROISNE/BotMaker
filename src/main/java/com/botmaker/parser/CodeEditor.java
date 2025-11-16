@@ -115,4 +115,14 @@ public class CodeEditor {
         );
         triggerUpdate(newCode);
     }
+
+    public void replaceVariableType(VariableDeclarationStatement toReplace, String newTypeName) {
+        String newCode = astRewriter.replaceVariableType(
+            getCompilationUnit(),
+            getCurrentCode(),
+            toReplace,
+            newTypeName
+        );
+        triggerUpdate(newCode);
+    }
 }
