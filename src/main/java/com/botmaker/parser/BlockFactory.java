@@ -171,6 +171,10 @@ public class BlockFactory {
             return Optional.of(block);
         }
         if (astExpression instanceof SimpleName) {
+            // Do not convert type names into identifier blocks
+            if (astExpression.getParent() instanceof Type) {
+                return Optional.empty();
+            }
             System.out.println("Creating IdentifierBlock for: " + astExpression);
             SimpleName simpleName = (SimpleName) astExpression;
 

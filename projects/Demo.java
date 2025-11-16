@@ -1,8 +1,11 @@
 package com.demo;
 public class Demo {
     public static void main(String[] args) {
-        String message = "Hello, Blocks!";
-        System.out.println(message);
+        if (true) {
+		}
+		int message = 0;
+		System.out.println(args);
+		System.out.println(message);
         if (true) {
         } else {
             System.out.println("");

@@ -234,7 +234,7 @@ public class AstRewriter {
                 fragment.setName(ast.newSimpleName("defaultVar"));
                 fragment.setInitializer(ast.newNumberLiteral("0"));
                 VariableDeclarationStatement varDecl = ast.newVariableDeclarationStatement(fragment);
-                varDecl.setType(ast.newSimpleType(ast.newSimpleName("int")));
+                varDecl.setType(ast.newPrimitiveType(PrimitiveType.INT));
                 return varDecl;
 
             case IF:

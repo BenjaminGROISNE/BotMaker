@@ -54,8 +54,10 @@ public class VariableDeclarationBlock extends AbstractStatementBlock {
         nameField.focusedProperty().addListener((obs, oldVal, newVal) -> {
             if (!newVal) { // Focus lost
                 String newName = nameField.getText();
-                if (!newName.equals(variableName)) {
-                    VariableDeclarationFragment fragment = (VariableDeclarationFragment) ((VariableDeclarationStatement) this.astNode).fragments().get(0);
+                VariableDeclarationFragment fragment = (VariableDeclarationFragment) ((VariableDeclarationStatement) this.astNode).fragments().get(0);
+                String currentName = fragment.getName().getIdentifier();
+
+                if (!newName.equals(currentName)) {
                     context.codeEditor().replaceSimpleName(fragment.getName(), newName);
                 }
             }

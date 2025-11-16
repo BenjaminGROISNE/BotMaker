@@ -119,7 +119,10 @@ errorsTab.setClosable(false);
         compileButton.setOnAction(e -> mainApp.compileCode());
 
         Button runButton = new Button("Run");
-        runButton.setOnAction(e -> mainApp.runCode());
+        runButton.setOnAction(e -> {
+            bottomTabPane.getSelectionModel().select(terminalTab);
+            mainApp.runCode();
+        });
 
         debugButton = new Button("Debug");
         debugButton.setOnAction(e -> mainApp.startDebugging());
