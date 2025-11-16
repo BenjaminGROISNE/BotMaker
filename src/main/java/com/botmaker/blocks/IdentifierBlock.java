@@ -17,14 +17,36 @@ import java.util.List;
 
 public class IdentifierBlock extends AbstractExpressionBlock {
     private final String identifier;
+    private boolean isUnedited = false; // Track if this is a default/auto-populated identifier
+    private static final String UNEDITED_STYLE_CLASS = "unedited-identifier";
 
     public IdentifierBlock(String id, SimpleName astNode) {
         super(id, astNode);
         this.identifier = astNode.getIdentifier();
     }
 
+    /**
+     * Constructor for creating new IdentifierBlocks with default value
+     */
+    public IdentifierBlock(String id, SimpleName astNode, boolean markAsUnedited) {
+        super(id, astNode);
+        this.identifier = astNode.getIdentifier();
+        this.isUnedited = markAsUnedited;
+    }
+
     public String getIdentifier() {
         return identifier;
+    }
+
+    public boolean isUnedited() {
+        return isUnedited;
+    }
+
+    public void markAsEdited() {
+        this.isUnedited = false;
+        if (uiNode != null) {
+            uiNode.getStyleClass().remove(UNEDITED_STYLE_CLASS);
+        }
     }
 
     @Override
@@ -34,14 +56,71 @@ public class IdentifierBlock extends AbstractExpressionBlock {
         container.setAlignment(javafx.geometry.Pos.CENTER_LEFT);
         container.getStyleClass().add("identifier-block");
 
+        // Add unedited styling if applicable
+        if (isUnedited) {
+            container.getStyleClass().add(UNEDITED_STYLE_CLASS);
+        }
+
         // Add visual cues for interaction
         container.setCursor(Cursor.HAND);
-        Tooltip tooltip = new Tooltip("Click for suggestions");
+
+        String tooltipText = isUnedited
+                ? "⚠️ Default variable name - Click to choose a variable or edit it"
+                : "Click for variable suggestions";
+
+        Tooltip tooltip = new Tooltip(tooltipText);
         Tooltip.install(container, tooltip);
 
         // Add the click handler for suggestions
-        container.setOnMouseClicked(e -> requestSuggestions(container, context));
+        container.setOnMouseClicked(e -> {
+            if (e.getClickCount() == 1) {
+                requestSuggestions(container, context);
+            }
+        });
+
+        // If this is unedited, automatically request suggestions once to auto-populate
+        if (isUnedited) {
+            Platform.runLater(() -> autoPopulateWithSuggestion(container, context));
+        }
+
         return container;
+    }
+
+    /**
+     * Automatically populate with the first available variable suggestion
+     */
+    private void autoPopulateWithSuggestion(Node uiNode, CompletionContext context) {
+        try {
+            Position pos = getPositionFromOffset(context.sourceCode(), this.astNode.getStartPosition());
+            CompletionParams params = new CompletionParams(new TextDocumentIdentifier(context.docUri()), pos);
+
+            context.server().getTextDocumentService().completion(params).thenAccept(result -> {
+                if (result == null || (result.isLeft() && result.getLeft().isEmpty()) || (result.isRight() && result.getRight().getItems().isEmpty())) {
+                    return; // No suggestions found, keep default value
+                }
+
+                List<CompletionItem> items = result.isLeft() ? result.getLeft() : result.getRight().getItems();
+
+                // Find the first variable suggestion
+                CompletionItem firstVariable = items.stream()
+                        .filter(item -> item.getKind() == CompletionItemKind.Variable)
+                        .findFirst()
+                        .orElse(null);
+
+                if (firstVariable != null) {
+                    Platform.runLater(() -> {
+                        // Auto-apply the first suggestion
+                        applySuggestion(firstVariable, context);
+
+                        // Update tooltip to reflect the auto-population
+                        Tooltip newTooltip = new Tooltip("✓ Auto-selected variable - Click to change or confirm");
+                        Tooltip.install(uiNode, newTooltip);
+                    });
+                }
+            });
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     private void requestSuggestions(Node uiNode, CompletionContext context) {
@@ -62,7 +141,10 @@ public class IdentifierBlock extends AbstractExpressionBlock {
                         // Filter for variables, as requested by the user
                         if (item.getKind() == CompletionItemKind.Variable) {
                             MenuItem mi = new MenuItem(item.getLabel());
-                            mi.setOnAction(event -> applySuggestion(item, context));
+                            mi.setOnAction(event -> {
+                                applySuggestion(item, context);
+                                markAsEdited(); // Mark as edited when user explicitly selects
+                            });
                             menu.getItems().add(mi);
                         }
                     }

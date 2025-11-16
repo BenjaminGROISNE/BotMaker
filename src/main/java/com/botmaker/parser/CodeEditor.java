@@ -56,6 +56,7 @@ public class CodeEditor {
     }
 
     public void replaceExpression(Expression toReplace, AddableExpression type) {
+        blockFactory.setMarkNewIdentifiersAsUnedited(true);
         String newCode = astRewriter.replaceExpression(
                 getCompilationUnit(),
                 getCurrentCode(),
@@ -66,6 +67,7 @@ public class CodeEditor {
     }
 
     public void addStatement(BodyBlock targetBody, AddableBlock type, int index) {
+        blockFactory.setMarkNewIdentifiersAsUnedited(true);
         String newCode = astRewriter.addStatement(
                 getCompilationUnit(),
                 getCurrentCode(),

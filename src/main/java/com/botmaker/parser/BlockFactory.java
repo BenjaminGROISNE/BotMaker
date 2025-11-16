@@ -13,30 +13,43 @@ import java.util.Optional;
 public class BlockFactory {
 
     private CompilationUnit ast;
+    private boolean markNewIdentifiersAsUnedited = false;
 
     public MainBlock convert(String javaCode, Map<ASTNode, CodeBlock> nodeToBlockMap, BlockDragAndDropManager manager) {
-        ASTParser parser = ASTParser.newParser(AST.getJLSLatest());
-        parser.setSource(javaCode.toCharArray());
-        parser.setResolveBindings(true);
-        parser.setKind(ASTParser.K_COMPILATION_UNIT);
-        parser.setUnitName("Demo.java"); // A name is required for bindings to be resolved
-        parser.setEnvironment(null, null, null, true); // Use default JRE for classpath
-        this.ast = (CompilationUnit) parser.createAST(null);
+        try {
+            ASTParser parser = ASTParser.newParser(AST.getJLSLatest());
+            parser.setSource(javaCode.toCharArray());
+            parser.setResolveBindings(true);
+            parser.setKind(ASTParser.K_COMPILATION_UNIT);
+            parser.setUnitName("Demo.java");
+            parser.setEnvironment(null, null, null, true);
+            this.ast = (CompilationUnit) parser.createAST(null);
 
-        MainMethodVisitor visitor = new MainMethodVisitor();
-        ast.accept(visitor);
+            MainMethodVisitor visitor = new MainMethodVisitor();
+            ast.accept(visitor);
 
-        return visitor.getMainMethodDeclaration()
-                .map(mainMethodDecl -> {
-                    MainBlock mainBlock = new MainBlock("main_" + mainMethodDecl.hashCode(), mainMethodDecl);
-                    nodeToBlockMap.put(mainMethodDecl, mainBlock);
-                    visitor.getMainMethodBody().ifPresent(bodyAstNode -> {
-                        BodyBlock bodyBlock = parseBodyBlock(bodyAstNode, nodeToBlockMap, manager);
-                        mainBlock.setMainBody(bodyBlock);
-                    });
-                    return mainBlock;
-                })
-                .orElse(null);
+            return visitor.getMainMethodDeclaration()
+                    .map(mainMethodDecl -> {
+                        MainBlock mainBlock = new MainBlock("main_" + mainMethodDecl.hashCode(), mainMethodDecl);
+                        nodeToBlockMap.put(mainMethodDecl, mainBlock);
+                        visitor.getMainMethodBody().ifPresent(bodyAstNode -> {
+                            BodyBlock bodyBlock = parseBodyBlock(bodyAstNode, nodeToBlockMap, manager);
+                            mainBlock.setMainBody(bodyBlock);
+                        });
+                        return mainBlock;
+                    })
+                    .orElse(null);
+        } finally {
+            setMarkNewIdentifiersAsUnedited(false);
+        }
+    }
+
+    /**
+     * Enable marking of newly created identifiers as unedited
+     * Call this before converting code that contains newly added blocks
+     */
+    public void setMarkNewIdentifiersAsUnedited(boolean mark) {
+        this.markNewIdentifiersAsUnedited = mark;
     }
 
     private BodyBlock parseBodyBlock(Block astBlock, Map<ASTNode, CodeBlock> nodeToBlockMap, BlockDragAndDropManager manager) {
@@ -108,8 +121,6 @@ public class BlockFactory {
 
         if (methodInvocation.arguments().isEmpty()) {
             System.out.println("Creating synthetic String LiteralBlock for empty println");
-            // For the synthetic block, pass the MethodInvocation node itself.
-            // The LiteralBlock will check for this special case.
             LiteralBlock<String> block = new LiteralBlock<>("synthetic_string_" + astNode.hashCode(), methodInvocation, "");
             printBlock.addArgument(block);
         } else {
@@ -161,7 +172,13 @@ public class BlockFactory {
         }
         if (astExpression instanceof SimpleName) {
             System.out.println("Creating IdentifierBlock for: " + astExpression);
-            IdentifierBlock block = new IdentifierBlock("id_" + astExpression.hashCode(), (SimpleName) astExpression);
+            SimpleName simpleName = (SimpleName) astExpression;
+
+            // Check if this identifier should be marked as unedited
+            boolean shouldMarkAsUnedited = markNewIdentifiersAsUnedited &&
+                    "defaultVar".equals(simpleName.getIdentifier());
+
+            IdentifierBlock block = new IdentifierBlock("id_" + astExpression.hashCode(), simpleName, shouldMarkAsUnedited);
             nodeToBlockMap.put(astExpression, block);
             return Optional.of(block);
         }
@@ -181,7 +198,6 @@ public class BlockFactory {
             return false;
         }
 
-        // Per user instruction, handle the no-argument case differently.
         if (method.arguments().isEmpty()) {
             return method.toString().startsWith("System.out.println");
         } else {

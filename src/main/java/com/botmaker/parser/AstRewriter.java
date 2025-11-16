@@ -207,7 +207,7 @@ public class AstRewriter {
                 newString.setLiteralValue("");
                 return newString;
             case VARIABLE:
-                return ast.newSimpleName("a");
+                return ast.newSimpleName("defaultVar");
             default:
                 return null;
         }
@@ -229,9 +229,9 @@ public class AstRewriter {
                 return ast.newExpressionStatement(println);
 
             case VARIABLE_DECLARATION:
-                // int newVar = 0;
+                // int defaultVar = 0;
                 VariableDeclarationFragment fragment = ast.newVariableDeclarationFragment();
-                fragment.setName(ast.newSimpleName("newVar"));
+                fragment.setName(ast.newSimpleName("defaultVar"));
                 fragment.setInitializer(ast.newNumberLiteral("0"));
                 VariableDeclarationStatement varDecl = ast.newVariableDeclarationStatement(fragment);
                 varDecl.setType(ast.newSimpleType(ast.newSimpleName("int")));

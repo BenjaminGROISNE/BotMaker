@@ -1,11 +1,11 @@
 package com.demo;
 public class Demo {
     public static void main(String[] args) {
-        String message = "Hello, Blocks!";
-        //System.out.println(a);
-        // System.out.println(b);
-        System.out.println(message);
-        System.out.println(message);
+        if (true) {
+		}
+		String message = "Hello, Blocks!";
+		System.out.println(args);
+		System.out.println(message);
         if (true) {
         } else {
             System.out.println("");
