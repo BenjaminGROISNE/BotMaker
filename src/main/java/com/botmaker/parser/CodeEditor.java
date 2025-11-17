@@ -1,35 +1,66 @@
 package com.botmaker.parser;
 
 import com.botmaker.core.BodyBlock;
+import com.botmaker.events.CoreApplicationEvents;
+import com.botmaker.events.EventBus;
+import com.botmaker.state.ApplicationState;
 import com.botmaker.ui.AddableBlock;
 import com.botmaker.ui.AddableExpression;
-import javafx.application.Platform;
 import org.eclipse.jdt.core.dom.*;
-import com.botmaker.Main;
 
+/**
+ * Handles code editing operations.
+ * Phase 1 Refactoring: Now uses ApplicationState and EventBus instead of Main reference.
+ */
 public class CodeEditor {
 
-    private final Main mainApp;
+    // ============================================
+    // PHASE 1 CHANGES: Replace Main dependency
+    // ============================================
+    private final ApplicationState state;
+    private final EventBus eventBus;
+
+    // KEPT: Original dependencies
     private final AstRewriter astRewriter;
     private final BlockFactory blockFactory;
 
-    public CodeEditor(Main mainApp, AstRewriter astRewriter, BlockFactory blockFactory) {
-        this.mainApp = mainApp;
+    // ============================================
+    // PHASE 1: CHANGED - New constructor signature
+    // OLD: public CodeEditor(Main mainApp, AstRewriter astRewriter, BlockFactory blockFactory)
+    // NEW: Uses state and eventBus instead of mainApp
+    // ============================================
+    public CodeEditor(ApplicationState state, EventBus eventBus,
+                      AstRewriter astRewriter, BlockFactory blockFactory) {
+        this.state = state;
+        this.eventBus = eventBus;
         this.astRewriter = astRewriter;
         this.blockFactory = blockFactory;
     }
 
+    // ============================================
+    // PHASE 1: CHANGED - Use state instead of mainApp
+    // ============================================
     private String getCurrentCode() {
-        return mainApp.getCurrentCode();
+        return state.getCurrentCode();
     }
 
     private CompilationUnit getCompilationUnit() {
-        return blockFactory.getCompilationUnit();
+        return state.getCompilationUnit().orElse(null);
     }
 
+    // ============================================
+    // PHASE 1: CHANGED - Publish event instead of calling Main
+    // OLD: Platform.runLater(() -> mainApp.handleCodeUpdate(newCode));
+    // NEW: eventBus.publish(...)
+    // ============================================
     private void triggerUpdate(String newCode) {
-        Platform.runLater(() -> mainApp.handleCodeUpdate(newCode));
+        String previousCode = getCurrentCode();
+        eventBus.publish(new CoreApplicationEvents.CodeUpdatedEvent(newCode, previousCode));
     }
+
+    // ============================================
+    // KEPT: All editing methods unchanged
+    // ============================================
 
     public void replaceLiteralValue(Expression toReplace, String newLiteralValue) {
         String newCode = astRewriter.replaceLiteral(
@@ -42,12 +73,15 @@ public class CodeEditor {
     }
 
     public void addStringArgumentToMethodInvocation(MethodInvocation mi, String text) {
-        AST ast = getCompilationUnit().getAST();
+        CompilationUnit cu = getCompilationUnit();
+        if (cu == null) return;
+
+        AST ast = cu.getAST();
         StringLiteral newArg = ast.newStringLiteral();
         newArg.setLiteralValue(text);
 
         String newCode = astRewriter.addArgumentToMethodInvocation(
-                getCompilationUnit(),
+                cu,
                 getCurrentCode(),
                 mi,
                 newArg
@@ -79,12 +113,20 @@ public class CodeEditor {
     }
 
     public void deleteElseFromIfStatement(IfStatement ifStmt) {
-        String newCode = astRewriter.deleteElseFromIfStatement(getCompilationUnit(), getCurrentCode(), ifStmt);
+        String newCode = astRewriter.deleteElseFromIfStatement(
+                getCompilationUnit(),
+                getCurrentCode(),
+                ifStmt
+        );
         triggerUpdate(newCode);
     }
 
     public void convertElseToElseIf(IfStatement ifStmt) {
-        String newCode = astRewriter.convertElseToElseIf(getCompilationUnit(), getCurrentCode(), ifStmt);
+        String newCode = astRewriter.convertElseToElseIf(
+                getCompilationUnit(),
+                getCurrentCode(),
+                ifStmt
+        );
         triggerUpdate(newCode);
     }
 
@@ -99,10 +141,10 @@ public class CodeEditor {
 
     public void replaceSimpleName(SimpleName toReplace, String newName) {
         String newCode = astRewriter.replaceSimpleName(
-            getCompilationUnit(),
-            getCurrentCode(),
-            toReplace,
-            newName
+                getCompilationUnit(),
+                getCurrentCode(),
+                toReplace,
+                newName
         );
         triggerUpdate(newCode);
     }
@@ -118,10 +160,10 @@ public class CodeEditor {
 
     public void replaceVariableType(VariableDeclarationStatement toReplace, String newTypeName) {
         String newCode = astRewriter.replaceVariableType(
-            getCompilationUnit(),
-            getCurrentCode(),
-            toReplace,
-            newTypeName
+                getCompilationUnit(),
+                getCurrentCode(),
+                toReplace,
+                newTypeName
         );
         triggerUpdate(newCode);
     }

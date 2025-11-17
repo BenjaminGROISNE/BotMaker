@@ -14,9 +14,20 @@ import java.util.function.Consumer;
 public class BlockDragAndDropManager {
 
     public static final DataFormat ADDABLE_BLOCK_FORMAT = new DataFormat("application/x-java-addable-block");
-    private final Consumer<DropInfo> onDrop;
+
+    // ============================================
+    // PHASE 2 FIX: Make callback mutable
+    // ============================================
+    private Consumer<DropInfo> onDrop;
 
     public BlockDragAndDropManager(Consumer<DropInfo> onDrop) {
+        this.onDrop = onDrop;
+    }
+
+    // ============================================
+    // PHASE 2 FIX: Add setter for callback
+    // ============================================
+    public void setCallback(Consumer<DropInfo> onDrop) {
         this.onDrop = onDrop;
     }
 
@@ -87,8 +98,16 @@ public class BlockDragAndDropManager {
             if (db.hasContent(ADDABLE_BLOCK_FORMAT)) {
                 String blockTypeName = (String) db.getContent(ADDABLE_BLOCK_FORMAT);
                 AddableBlock type = AddableBlock.valueOf(blockTypeName);
-                onDrop.accept(new DropInfo(type, targetBody, insertionIndex));
-                success = true;
+
+                // ============================================
+                // PHASE 2 FIX: Check if callback is set
+                // ============================================
+                if (onDrop != null) {
+                    onDrop.accept(new DropInfo(type, targetBody, insertionIndex));
+                    success = true;
+                } else {
+                    System.err.println("WARNING: onDrop callback not set yet!");
+                }
             }
             event.setDropCompleted(success);
             event.consume();
@@ -121,8 +140,16 @@ public class BlockDragAndDropManager {
             if (db.hasContent(ADDABLE_BLOCK_FORMAT)) {
                 String blockTypeName = (String) db.getContent(ADDABLE_BLOCK_FORMAT);
                 AddableBlock type = AddableBlock.valueOf(blockTypeName);
-                onDrop.accept(new DropInfo(type, targetBody, 0)); // Always index 0 for empty body
-                success = true;
+
+                // ============================================
+                // PHASE 2 FIX: Check if callback is set
+                // ============================================
+                if (onDrop != null) {
+                    onDrop.accept(new DropInfo(type, targetBody, 0)); // Always index 0 for empty body
+                    success = true;
+                } else {
+                    System.err.println("WARNING: onDrop callback not set yet!");
+                }
             }
             event.setDropCompleted(success);
             event.consume();

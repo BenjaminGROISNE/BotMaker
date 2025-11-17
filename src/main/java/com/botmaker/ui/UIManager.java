@@ -1,7 +1,10 @@
 package com.botmaker.ui;
 
-import com.botmaker.Main;
 import com.botmaker.core.CodeBlock;
+import com.botmaker.events.CoreApplicationEvents;
+import com.botmaker.events.EventBus;
+import com.botmaker.lsp.CompletionContext;
+import com.botmaker.services.CodeEditorService;
 import com.botmaker.validation.ErrorTranslator;
 import javafx.animation.PauseTransition;
 import javafx.geometry.Insets;
@@ -18,10 +21,20 @@ import org.eclipse.lsp4j.DiagnosticSeverity;
 
 import java.util.List;
 
+/**
+ * Manages the UI components.
+ * Phase 3: Completely independent - no Main dependency!
+ */
 public class UIManager {
 
-    private final Main mainApp;
+    // ============================================
+    // PHASE 3: Remove Main dependency
+    // ============================================
     private final BlockDragAndDropManager dragAndDropManager;
+    private final EventBus eventBus;
+    private final CodeEditorService codeEditorService;
+    private final com.botmaker.validation.DiagnosticsManager diagnosticsManager;
+
     private VBox blocksContainer;
     private Label statusLabel;
     private TextArea outputArea;
@@ -30,27 +43,118 @@ public class UIManager {
     private ScrollPane scrollPane;
     private ListView<Diagnostic> errorListView;
     private TabPane bottomTabPane;
+    private Tab terminalTab;
+    private boolean isDarkMode = false;
 
-
-    public UIManager(Main mainApp, BlockDragAndDropManager dragAndDropManager) {
-        this.mainApp = mainApp;
+    // ============================================
+    // PHASE 3: CHANGED - No more Main parameter
+    // ============================================
+    public UIManager(BlockDragAndDropManager dragAndDropManager,
+                     EventBus eventBus,
+                     CodeEditorService codeEditorService,
+                     com.botmaker.validation.DiagnosticsManager diagnosticsManager) {
         this.dragAndDropManager = dragAndDropManager;
+        this.eventBus = eventBus;
+        this.codeEditorService = codeEditorService;
+        this.diagnosticsManager = diagnosticsManager;
+
+        setupEventHandlers();
     }
 
-    private boolean isDarkMode = false;
+    private void setupEventHandlers() {
+        // Subscribe to block updates
+        eventBus.subscribe(
+                CoreApplicationEvents.UIBlocksUpdatedEvent.class,
+                this::handleBlocksUpdate,
+                true
+        );
+
+        // Subscribe to output events
+        eventBus.subscribe(
+                CoreApplicationEvents.OutputAppendedEvent.class,
+                event -> outputArea.appendText(event.getText()),
+                true
+        );
+
+        eventBus.subscribe(
+                CoreApplicationEvents.OutputClearedEvent.class,
+                event -> outputArea.clear(),
+                true
+        );
+
+        eventBus.subscribe(
+                CoreApplicationEvents.OutputSetEvent.class,
+                event -> outputArea.setText(event.getText()),
+                true
+        );
+
+        // Subscribe to status messages
+        eventBus.subscribe(
+                CoreApplicationEvents.StatusMessageEvent.class,
+                event -> statusLabel.setText(event.getMessage()),
+                true
+        );
+
+        // Subscribe to diagnostics updates
+        eventBus.subscribe(
+                CoreApplicationEvents.DiagnosticsUpdatedEvent.class,
+                event -> {
+                    diagnosticsManager.processDiagnostics(event.getDiagnostics());
+                    updateErrors(diagnosticsManager.getDiagnostics());
+                    statusLabel.setText(diagnosticsManager.getErrorSummary());
+                },
+                true
+        );
+
+        // Subscribe to debug session events
+        eventBus.subscribe(
+                CoreApplicationEvents.DebugSessionStartedEvent.class,
+                event -> onDebuggerStarted(),
+                true
+        );
+
+        eventBus.subscribe(
+                CoreApplicationEvents.DebugSessionPausedEvent.class,
+                event -> onDebuggerPaused(),
+                true
+        );
+
+        eventBus.subscribe(
+                CoreApplicationEvents.DebugSessionResumedEvent.class,
+                event -> onDebuggerResumed(),
+                true
+        );
+
+        eventBus.subscribe(
+                CoreApplicationEvents.DebugSessionFinishedEvent.class,
+                event -> onDebuggerFinished(),
+                true
+        );
+    }
+
+    private void handleBlocksUpdate(CoreApplicationEvents.UIBlocksUpdatedEvent event) {
+        blocksContainer.getChildren().clear();
+
+        if (event.getRootBlock() != null) {
+            CompletionContext context = codeEditorService.createCompletionContext();
+            blocksContainer.getChildren().add(event.getRootBlock().getUINode(context));
+        }
+    }
 
     public Scene createScene() {
         blocksContainer = new VBox(10);
         statusLabel = new Label("Ready");
         statusLabel.setId("status-label");
 
-        // Initialize the components for the tabs
         outputArea = new TextArea();
         outputArea.setEditable(false);
 
         errorListView = new ListView<>();
         errorListView.setPlaceholder(new Label("No errors to display."));
 
+        // ============================================
+        // PHASE 3: CHANGED - Use diagnosticsManager directly (no Main)
+        // ============================================
         errorListView.setCellFactory(lv -> new ListCell<>() {
             @Override
             protected void updateItem(Diagnostic diagnostic, boolean empty) {
@@ -72,8 +176,8 @@ public class UIManager {
                     }
 
                     setOnMouseClicked(event -> {
-                        if (event.getClickCount() >= 1) { // Use single-click
-                            mainApp.getDiagnosticsManager().findBlockForDiagnostic(diagnostic)
+                        if (event.getClickCount() >= 1) {
+                            diagnosticsManager.findBlockForDiagnostic(diagnostic)
                                     .ifPresent(this::scrollToBlock);
                         }
                     });
@@ -84,15 +188,13 @@ public class UIManager {
                 Node uiNode = block.getUINode();
                 if (uiNode == null) return;
 
-                // --- Blinking Animation ---
                 final String blinkStyle = "error-block-blink";
-                if (!uiNode.getStyleClass().contains(blinkStyle)) { // Prevent multiple animations
+                if (!uiNode.getStyleClass().contains(blinkStyle)) {
                     uiNode.getStyleClass().add(blinkStyle);
                     PauseTransition blinkOff = new PauseTransition(Duration.seconds(1));
                     blinkOff.setOnFinished(event -> uiNode.getStyleClass().remove(blinkStyle));
                     blinkOff.play();
                 }
-                // --- End Animation ---
 
                 uiNode.requestFocus();
                 double containerHeight = blocksContainer.getBoundsInLocal().getHeight();
@@ -103,33 +205,37 @@ public class UIManager {
             }
         });
 
-        // Create the TabPane
         bottomTabPane = new TabPane();
-        Tab terminalTab = new Tab("Terminal", outputArea);
+        terminalTab = new Tab("Terminal", outputArea);
         terminalTab.setClosable(false);
         Tab errorsTab = new Tab("Errors", errorListView);
         errorsTab.setClosable(false);
         bottomTabPane.getTabs().addAll(terminalTab, errorsTab);
 
-
         HBox palette = createBlockPalette();
         palette.getStyleClass().add("palette");
 
         Button compileButton = new Button("Compile");
-        compileButton.setOnAction(e -> mainApp.compileCode());
+        compileButton.setOnAction(e ->
+                eventBus.publish(new CoreApplicationEvents.CompilationRequestedEvent())
+        );
 
         Button runButton = new Button("Run");
         runButton.setOnAction(e -> {
             bottomTabPane.getSelectionModel().select(terminalTab);
-            mainApp.runCode();
+            eventBus.publish(new CoreApplicationEvents.ExecutionRequestedEvent());
         });
 
         debugButton = new Button("Debug");
-        debugButton.setOnAction(e -> mainApp.startDebugging());
+        debugButton.setOnAction(e ->
+                eventBus.publish(new CoreApplicationEvents.DebugStartRequestedEvent())
+        );
 
         resumeButton = new Button("Resume");
         resumeButton.setDisable(true);
-        resumeButton.setOnAction(e -> mainApp.resumeDebugging());
+        resumeButton.setOnAction(e ->
+                eventBus.publish(new CoreApplicationEvents.DebugResumeRequestedEvent())
+        );
 
         HBox buttonBox = new HBox(10, compileButton, runButton, debugButton, resumeButton);
 
@@ -139,13 +245,12 @@ public class UIManager {
         scrollPane = new ScrollPane(blocksContainer);
         scrollPane.setFitToWidth(true);
 
-        // Create a SplitPane for resizable vertical layout
         SplitPane splitPane = new SplitPane();
         splitPane.setOrientation(Orientation.VERTICAL);
         splitPane.getItems().addAll(scrollPane, bottomTabPane);
-        splitPane.setDividerPositions(0.7); // 70% for code blocks, 30% for tabs
+        splitPane.setDividerPositions(0.7);
 
-        VBox.setVgrow(splitPane, Priority.ALWAYS); // Make the SplitPane grow to fill space
+        VBox.setVgrow(splitPane, Priority.ALWAYS);
 
         VBox root = new VBox(10, topBar, palette, buttonBox, splitPane, statusLabel);
         root.setPadding(new Insets(10));
@@ -189,32 +294,30 @@ public class UIManager {
         return outputArea;
     }
 
-    public void updateErrors(List<Diagnostic> diagnostics) {
+    private void updateErrors(List<Diagnostic> diagnostics) {
         if (diagnostics == null) {
             errorListView.getItems().clear();
         } else {
             errorListView.getItems().setAll(diagnostics);
         }
-        // If there are errors, automatically switch to the errors tab
         if (diagnostics != null && !diagnostics.isEmpty()) {
-            bottomTabPane.getSelectionModel().select(1); // Select the second tab (Errors)
+            bottomTabPane.getSelectionModel().select(1);
         }
     }
 
-
-    public void onDebuggerStarted() {
+    private void onDebuggerStarted() {
         debugButton.setDisable(true);
     }
 
-    public void onDebuggerPaused() {
+    private void onDebuggerPaused() {
         resumeButton.setDisable(false);
     }
 
-    public void onDebuggerResumed() {
+    private void onDebuggerResumed() {
         resumeButton.setDisable(true);
     }
 
-    public void onDebuggerFinished() {
+    private void onDebuggerFinished() {
         debugButton.setDisable(false);
         resumeButton.setDisable(true);
     }

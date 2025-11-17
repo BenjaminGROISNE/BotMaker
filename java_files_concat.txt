@@ -106,14 +106,36 @@ import java.util.List;
 
 public class IdentifierBlock extends AbstractExpressionBlock {
     private final String identifier;
+    private boolean isUnedited = false; // Track if this is a default/auto-populated identifier
+    private static final String UNEDITED_STYLE_CLASS = "unedited-identifier";
 
     public IdentifierBlock(String id, SimpleName astNode) {
         super(id, astNode);
         this.identifier = astNode.getIdentifier();
     }
 
+    /**
+     * Constructor for creating new IdentifierBlocks with default value
+     */
+    public IdentifierBlock(String id, SimpleName astNode, boolean markAsUnedited) {
+        super(id, astNode);
+        this.identifier = astNode.getIdentifier();
+        this.isUnedited = markAsUnedited;
+    }
+
     public String getIdentifier() {
         return identifier;
+    }
+
+    public boolean isUnedited() {
+        return isUnedited;
+    }
+
+    public void markAsEdited() {
+        this.isUnedited = false;
+        if (uiNode != null) {
+            uiNode.getStyleClass().remove(UNEDITED_STYLE_CLASS);
+        }
     }
 
     @Override
@@ -123,14 +145,71 @@ public class IdentifierBlock extends AbstractExpressionBlock {
         container.setAlignment(javafx.geometry.Pos.CENTER_LEFT);
         container.getStyleClass().add("identifier-block");
 
+        // Add unedited styling if applicable
+        if (isUnedited) {
+            container.getStyleClass().add(UNEDITED_STYLE_CLASS);
+        }
+
         // Add visual cues for interaction
         container.setCursor(Cursor.HAND);
-        Tooltip tooltip = new Tooltip("Click for suggestions");
+
+        String tooltipText = isUnedited
+                ? "⚠️ Default variable name - Click to choose a variable or edit it"
+                : "Click for variable suggestions";
+
+        Tooltip tooltip = new Tooltip(tooltipText);
         Tooltip.install(container, tooltip);
 
         // Add the click handler for suggestions
-        container.setOnMouseClicked(e -> requestSuggestions(container, context));
+        container.setOnMouseClicked(e -> {
+            if (e.getClickCount() == 1) {
+                requestSuggestions(container, context);
+            }
+        });
+
+        // If this is unedited, automatically request suggestions once to auto-populate
+        if (isUnedited) {
+            Platform.runLater(() -> autoPopulateWithSuggestion(container, context));
+        }
+
         return container;
+    }
+
+    /**
+     * Automatically populate with the first available variable suggestion
+     */
+    private void autoPopulateWithSuggestion(Node uiNode, CompletionContext context) {
+        try {
+            Position pos = getPositionFromOffset(context.sourceCode(), this.astNode.getStartPosition());
+            CompletionParams params = new CompletionParams(new TextDocumentIdentifier(context.docUri()), pos);
+
+            context.server().getTextDocumentService().completion(params).thenAccept(result -> {
+                if (result == null || (result.isLeft() && result.getLeft().isEmpty()) || (result.isRight() && result.getRight().getItems().isEmpty())) {
+                    return; // No suggestions found, keep default value
+                }
+
+                List<CompletionItem> items = result.isLeft() ? result.getLeft() : result.getRight().getItems();
+
+                // Find the first variable suggestion
+                CompletionItem firstVariable = items.stream()
+                        .filter(item -> item.getKind() == CompletionItemKind.Variable)
+                        .findFirst()
+                        .orElse(null);
+
+                if (firstVariable != null) {
+                    Platform.runLater(() -> {
+                        // Auto-apply the first suggestion
+                        applySuggestion(firstVariable, context);
+
+                        // Update tooltip to reflect the auto-population
+                        Tooltip newTooltip = new Tooltip("✓ Auto-selected variable - Click to change or confirm");
+                        Tooltip.install(uiNode, newTooltip);
+                    });
+                }
+            });
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     private void requestSuggestions(Node uiNode, CompletionContext context) {
@@ -151,7 +230,10 @@ public class IdentifierBlock extends AbstractExpressionBlock {
                         // Filter for variables, as requested by the user
                         if (item.getKind() == CompletionItemKind.Variable) {
                             MenuItem mi = new MenuItem(item.getLabel());
-                            mi.setOnAction(event -> applySuggestion(item, context));
+                            mi.setOnAction(event -> {
+                                applySuggestion(item, context);
+                                markAsEdited(); // Mark as edited when user explicitly selects
+                            });
                             menu.getItems().add(mi);
                         }
                     }
@@ -189,7 +271,6 @@ public class IdentifierBlock extends AbstractExpressionBlock {
         return new Position(line, character);
     }
 }
-
 
 =================================================================================
 FILE: main/java/com/botmaker/blocks/IfBlock.java
@@ -573,6 +654,7 @@ public class PrintBlock extends AbstractStatementBlock {
     }
 }
 
+
 =================================================================================
 FILE: main/java/com/botmaker/blocks/VariableDeclarationBlock.java
 =================================================================================
@@ -582,14 +664,19 @@ package com.botmaker.blocks;
 import com.botmaker.core.AbstractStatementBlock;
 import com.botmaker.core.ExpressionBlock;
 import com.botmaker.lsp.CompletionContext;
+import com.botmaker.util.TypeManager;
+import javafx.application.Platform;
 import javafx.geometry.Pos;
+import javafx.scene.Cursor;
 import javafx.scene.Node;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.layout.HBox;
-import javafx.scene.text.Text;
 import org.eclipse.jdt.core.dom.Type;
 import org.eclipse.jdt.core.dom.VariableDeclarationFragment;
 import org.eclipse.jdt.core.dom.VariableDeclarationStatement;
+import org.eclipse.lsp4j.*;
+
+import java.util.List;
 
 public class VariableDeclarationBlock extends AbstractStatementBlock {
 
@@ -627,21 +714,27 @@ public class VariableDeclarationBlock extends AbstractStatementBlock {
         container.setAlignment(Pos.CENTER_LEFT);
         container.getStyleClass().add("variable-declaration-block");
 
-        container.getChildren().add(new Text(variableType.toString()));
-        
+        Label typeLabel = new Label(variableType.toString());
+        typeLabel.getStyleClass().add("type-label");
+        typeLabel.setCursor(Cursor.HAND);
+        typeLabel.setOnMouseClicked(e -> requestTypeSuggestions(typeLabel, context));
+        container.getChildren().add(typeLabel);
+
         TextField nameField = new TextField(variableName);
         nameField.focusedProperty().addListener((obs, oldVal, newVal) -> {
             if (!newVal) { // Focus lost
                 String newName = nameField.getText();
-                if (!newName.equals(variableName)) {
-                    VariableDeclarationFragment fragment = (VariableDeclarationFragment) ((VariableDeclarationStatement) this.astNode).fragments().get(0);
+                VariableDeclarationFragment fragment = (VariableDeclarationFragment) ((VariableDeclarationStatement) this.astNode).fragments().get(0);
+                String currentName = fragment.getName().getIdentifier();
+
+                if (!newName.equals(currentName)) {
                     context.codeEditor().replaceSimpleName(fragment.getName(), newName);
                 }
             }
         });
         container.getChildren().add(nameField);
 
-        container.getChildren().add(new Text("="));
+        container.getChildren().add(new Label("="));
 
         if (initializer != null) {
             container.getChildren().add(initializer.getUINode(context));
@@ -661,6 +754,78 @@ public class VariableDeclarationBlock extends AbstractStatementBlock {
 
         return container;
     }
+
+    private void requestTypeSuggestions(Node uiNode, CompletionContext context) {
+        try {
+            Position pos = getPositionFromOffset(context.sourceCode(), this.variableType.getStartPosition());
+            CompletionParams params = new CompletionParams(new TextDocumentIdentifier(context.docUri()), pos);
+
+            context.server().getTextDocumentService().completion(params).thenAccept(result -> {
+                Platform.runLater(() -> {
+                    ContextMenu menu = new ContextMenu();
+
+                    // Manually add fundamental types from TypeManager
+                    for (String typeName : TypeManager.getFundamentalTypeNames()) {
+                        CompletionItem dummyItem = new CompletionItem(typeName);
+                        MenuItem mi = new MenuItem(typeName);
+                        mi.setOnAction(event -> applyTypeSuggestion(dummyItem, context));
+                        menu.getItems().add(mi);
+                    }
+                    menu.getItems().add(new SeparatorMenuItem());
+
+                    // Add types from language server if any
+                    if (result != null && (result.isRight() || (result.isLeft() && !result.getLeft().isEmpty()))) {
+                        List<CompletionItem> items = result.isLeft() ? result.getLeft() : result.getRight().getItems();
+                        for (CompletionItem item : items) {
+                            CompletionItemKind kind = item.getKind();
+                            // Filter for classes and interfaces suggested by the server
+                            if (kind == CompletionItemKind.Class || kind == CompletionItemKind.Interface) {
+                                // Avoid duplicating types we added manually
+                                if (TypeManager.getFundamentalTypeNames().contains(item.getLabel())) continue;
+
+                                MenuItem mi = new MenuItem(item.getLabel());
+                                mi.setOnAction(event -> applyTypeSuggestion(item, context));
+                                menu.getItems().add(mi);
+                            }
+                        }
+                    }
+                    menu.show(uiNode, javafx.geometry.Side.BOTTOM, 0, 0);
+                });
+            });
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void applyTypeSuggestion(CompletionItem item, CompletionContext context) {
+        try {
+            String newTypeName = item.getInsertText() != null ? item.getInsertText() : item.getLabel();
+            context.codeEditor().replaceVariableType((VariableDeclarationStatement) this.astNode, newTypeName);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    private Position getPositionFromOffset(String code, int offset) {
+        int line = 0;
+        int lastNewline = -1;
+        // Handle case where offset is at the beginning of the file
+        if (offset == 0) {
+            return new Position(0, 0);
+        }
+        for (int i = 0; i < offset; i++) {
+            if (i >= code.length()) { // Boundary check
+                return new Position(line, i - lastNewline - 1);
+            }
+            if (code.charAt(i) == '\n') {
+                line++;
+                lastNewline = i;
+            }
+        }
+        int character = offset - lastNewline - 1;
+        return new Position(line, character);
+    }
+
 
     @Override
     public String getDetails() {
@@ -3719,7 +3884,6 @@ public class Main extends Application {
     }
 }
 
-
 =================================================================================
 FILE: main/java/com/botmaker/parser/AstRewriter.java
 =================================================================================
@@ -3728,6 +3892,7 @@ package com.botmaker.parser;
 
 import com.botmaker.core.BodyBlock;
 import com.botmaker.ui.AddableBlock;
+import com.botmaker.util.TypeManager;
 import org.eclipse.jdt.core.dom.*;
 import org.eclipse.jdt.core.dom.rewrite.ASTRewrite;
 import org.eclipse.jdt.core.dom.rewrite.ListRewrite;
@@ -3930,10 +4095,10 @@ public class AstRewriter {
         switch (type) {
             case TEXT:
                 StringLiteral newString = ast.newStringLiteral();
-                newString.setLiteralValue("");
+                newString.setLiteralValue("text");
                 return newString;
             case VARIABLE:
-                return ast.newSimpleName("a");
+                return ast.newSimpleName("defaultVar");
             default:
                 return null;
         }
@@ -3954,14 +4119,38 @@ public class AstRewriter {
                 println.arguments().add(emptyString);
                 return ast.newExpressionStatement(println);
 
-            case VARIABLE_DECLARATION:
-                // int newVar = 0;
+            case DECLARE_INT: {
                 VariableDeclarationFragment fragment = ast.newVariableDeclarationFragment();
-                fragment.setName(ast.newSimpleName("newVar"));
+                fragment.setName(ast.newSimpleName("i"));
                 fragment.setInitializer(ast.newNumberLiteral("0"));
                 VariableDeclarationStatement varDecl = ast.newVariableDeclarationStatement(fragment);
-                varDecl.setType(ast.newSimpleType(ast.newSimpleName("int")));
+                varDecl.setType(ast.newPrimitiveType(PrimitiveType.INT));
                 return varDecl;
+            }
+            case DECLARE_DOUBLE: {
+                VariableDeclarationFragment fragment = ast.newVariableDeclarationFragment();
+                fragment.setName(ast.newSimpleName("d"));
+                fragment.setInitializer(ast.newNumberLiteral("0.0"));
+                VariableDeclarationStatement varDecl = ast.newVariableDeclarationStatement(fragment);
+                varDecl.setType(ast.newPrimitiveType(PrimitiveType.DOUBLE));
+                return varDecl;
+            }
+            case DECLARE_BOOLEAN: {
+                VariableDeclarationFragment fragment = ast.newVariableDeclarationFragment();
+                fragment.setName(ast.newSimpleName("b"));
+                fragment.setInitializer(ast.newBooleanLiteral(false));
+                VariableDeclarationStatement varDecl = ast.newVariableDeclarationStatement(fragment);
+                varDecl.setType(ast.newPrimitiveType(PrimitiveType.BOOLEAN));
+                return varDecl;
+            }
+            case DECLARE_STRING: {
+                VariableDeclarationFragment fragment = ast.newVariableDeclarationFragment();
+                fragment.setName(ast.newSimpleName("s"));
+                fragment.setInitializer(ast.newStringLiteral());
+                VariableDeclarationStatement varDecl = ast.newVariableDeclarationStatement(fragment);
+                varDecl.setType(TypeManager.createTypeNode(ast, "String"));
+                return varDecl;
+            }
 
             case IF:
                 // if (true) {}
@@ -3974,7 +4163,67 @@ public class AstRewriter {
                 return null;
         }
     }
+
+    private Expression createDefaultInitializer(AST ast, String typeName) {
+        switch (typeName) {
+            case "int":
+            case "long":
+            case "short":
+            case "byte":
+                return ast.newNumberLiteral("0");
+            case "double":
+            case "float":
+                return ast.newNumberLiteral("0.0");
+            case "boolean":
+                return ast.newBooleanLiteral(false);
+            case "char":
+                CharacterLiteral literal = ast.newCharacterLiteral();
+                literal.setCharValue('a'); // Default char
+                return literal;
+            case "String":
+                StringLiteral stringLiteral = ast.newStringLiteral();
+                stringLiteral.setLiteralValue(""); // Default empty string
+                return stringLiteral;
+            default:
+                // For any other object type, the safest default is null.
+                return ast.newNullLiteral();
+        }
+    }
+
+    public String replaceVariableType(CompilationUnit cu, String originalCode, VariableDeclarationStatement varDecl, String newTypeName) {
+        AST ast = cu.getAST();
+        ASTRewrite rewriter = ASTRewrite.create(ast);
+
+        // 1. Create the new type node
+        Type newType = TypeManager.createTypeNode(ast, newTypeName);
+        rewriter.replace(varDecl.getType(), newType, null);
+
+        // 2. Get the fragment and its current initializer
+        if (!varDecl.fragments().isEmpty()) {
+            VariableDeclarationFragment fragment = (VariableDeclarationFragment) varDecl.fragments().get(0);
+            Expression currentInitializer = fragment.getInitializer();
+
+            // 3. Create a new default initializer based on the new type
+            Expression newInitializer = createDefaultInitializer(ast, newTypeName);
+
+            // 4. Replace the old initializer if it exists and we have a new one
+            if (currentInitializer != null && newInitializer != null) {
+                rewriter.replace(currentInitializer, newInitializer, null);
+            }
+        }
+
+        IDocument document = new Document(originalCode);
+        try {
+            TextEdit edits = rewriter.rewriteAST(document, null);
+            edits.apply(document);
+            return document.get();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return originalCode;
+        }
+    }
 }
+
 
 =================================================================================
 FILE: main/java/com/botmaker/parser/BlockFactory.java
@@ -3995,30 +4244,43 @@ import java.util.Optional;
 public class BlockFactory {
 
     private CompilationUnit ast;
+    private boolean markNewIdentifiersAsUnedited = false;
 
     public MainBlock convert(String javaCode, Map<ASTNode, CodeBlock> nodeToBlockMap, BlockDragAndDropManager manager) {
-        ASTParser parser = ASTParser.newParser(AST.getJLSLatest());
-        parser.setSource(javaCode.toCharArray());
-        parser.setResolveBindings(true);
-        parser.setKind(ASTParser.K_COMPILATION_UNIT);
-        parser.setUnitName("Demo.java"); // A name is required for bindings to be resolved
-        parser.setEnvironment(null, null, null, true); // Use default JRE for classpath
-        this.ast = (CompilationUnit) parser.createAST(null);
+        try {
+            ASTParser parser = ASTParser.newParser(AST.getJLSLatest());
+            parser.setSource(javaCode.toCharArray());
+            parser.setResolveBindings(true);
+            parser.setKind(ASTParser.K_COMPILATION_UNIT);
+            parser.setUnitName("Demo.java");
+            parser.setEnvironment(null, null, null, true);
+            this.ast = (CompilationUnit) parser.createAST(null);
 
-        MainMethodVisitor visitor = new MainMethodVisitor();
-        ast.accept(visitor);
+            MainMethodVisitor visitor = new MainMethodVisitor();
+            ast.accept(visitor);
 
-        return visitor.getMainMethodDeclaration()
-                .map(mainMethodDecl -> {
-                    MainBlock mainBlock = new MainBlock("main_" + mainMethodDecl.hashCode(), mainMethodDecl);
-                    nodeToBlockMap.put(mainMethodDecl, mainBlock);
-                    visitor.getMainMethodBody().ifPresent(bodyAstNode -> {
-                        BodyBlock bodyBlock = parseBodyBlock(bodyAstNode, nodeToBlockMap, manager);
-                        mainBlock.setMainBody(bodyBlock);
-                    });
-                    return mainBlock;
-                })
-                .orElse(null);
+            return visitor.getMainMethodDeclaration()
+                    .map(mainMethodDecl -> {
+                        MainBlock mainBlock = new MainBlock("main_" + mainMethodDecl.hashCode(), mainMethodDecl);
+                        nodeToBlockMap.put(mainMethodDecl, mainBlock);
+                        visitor.getMainMethodBody().ifPresent(bodyAstNode -> {
+                            BodyBlock bodyBlock = parseBodyBlock(bodyAstNode, nodeToBlockMap, manager);
+                            mainBlock.setMainBody(bodyBlock);
+                        });
+                        return mainBlock;
+                    })
+                    .orElse(null);
+        } finally {
+            setMarkNewIdentifiersAsUnedited(false);
+        }
+    }
+
+    /**
+     * Enable marking of newly created identifiers as unedited
+     * Call this before converting code that contains newly added blocks
+     */
+    public void setMarkNewIdentifiersAsUnedited(boolean mark) {
+        this.markNewIdentifiersAsUnedited = mark;
     }
 
     private BodyBlock parseBodyBlock(Block astBlock, Map<ASTNode, CodeBlock> nodeToBlockMap, BlockDragAndDropManager manager) {
@@ -4090,8 +4352,6 @@ public class BlockFactory {
 
         if (methodInvocation.arguments().isEmpty()) {
             System.out.println("Creating synthetic String LiteralBlock for empty println");
-            // For the synthetic block, pass the MethodInvocation node itself.
-            // The LiteralBlock will check for this special case.
             LiteralBlock<String> block = new LiteralBlock<>("synthetic_string_" + astNode.hashCode(), methodInvocation, "");
             printBlock.addArgument(block);
         } else {
@@ -4142,8 +4402,18 @@ public class BlockFactory {
             return Optional.of(block);
         }
         if (astExpression instanceof SimpleName) {
+            // Do not convert type names into identifier blocks
+            if (astExpression.getParent() instanceof Type) {
+                return Optional.empty();
+            }
             System.out.println("Creating IdentifierBlock for: " + astExpression);
-            IdentifierBlock block = new IdentifierBlock("id_" + astExpression.hashCode(), (SimpleName) astExpression);
+            SimpleName simpleName = (SimpleName) astExpression;
+
+            // Check if this identifier should be marked as unedited
+            boolean shouldMarkAsUnedited = markNewIdentifiersAsUnedited &&
+                    "defaultVar".equals(simpleName.getIdentifier());
+
+            IdentifierBlock block = new IdentifierBlock("id_" + astExpression.hashCode(), simpleName, shouldMarkAsUnedited);
             nodeToBlockMap.put(astExpression, block);
             return Optional.of(block);
         }
@@ -4163,7 +4433,6 @@ public class BlockFactory {
             return false;
         }
 
-        // Per user instruction, handle the no-argument case differently.
         if (method.arguments().isEmpty()) {
             return method.toString().startsWith("System.out.println");
         } else {
@@ -4260,6 +4529,7 @@ public class CodeEditor {
     }
 
     public void replaceExpression(Expression toReplace, AddableExpression type) {
+        blockFactory.setMarkNewIdentifiersAsUnedited(true);
         String newCode = astRewriter.replaceExpression(
                 getCompilationUnit(),
                 getCurrentCode(),
@@ -4270,6 +4540,7 @@ public class CodeEditor {
     }
 
     public void addStatement(BodyBlock targetBody, AddableBlock type, int index) {
+        blockFactory.setMarkNewIdentifiersAsUnedited(true);
         String newCode = astRewriter.addStatement(
                 getCompilationUnit(),
                 getCurrentCode(),
@@ -4317,8 +4588,17 @@ public class CodeEditor {
         );
         triggerUpdate(newCode);
     }
-}
 
+    public void replaceVariableType(VariableDeclarationStatement toReplace, String newTypeName) {
+        String newCode = astRewriter.replaceVariableType(
+            getCompilationUnit(),
+            getCurrentCode(),
+            toReplace,
+            newTypeName
+        );
+        triggerUpdate(newCode);
+    }
+}
 
 =================================================================================
 FILE: main/java/com/botmaker/runtime/CodeExecutionService.java
@@ -4822,8 +5102,11 @@ import com.botmaker.core.StatementBlock;
 
 public enum AddableBlock {
     PRINT("Print", PrintBlock.class),
-    VARIABLE_DECLARATION("Declare Variable", VariableDeclarationBlock.class),
-    IF("If", IfBlock.class);
+    IF("If", IfBlock.class),
+    DECLARE_INT("Declare Int", VariableDeclarationBlock.class),
+    DECLARE_DOUBLE("Declare Double", VariableDeclarationBlock.class),
+    DECLARE_BOOLEAN("Declare Boolean", VariableDeclarationBlock.class),
+    DECLARE_STRING("Declare String", VariableDeclarationBlock.class);
 
     private final String displayName;
     private final Class<? extends StatementBlock> blockClass;
@@ -4863,7 +5146,6 @@ public enum AddableExpression {
         return displayName;
     }
 }
-
 
 =================================================================================
 FILE: main/java/com/botmaker/ui/BlockDragAndDropManager.java
@@ -5169,7 +5451,7 @@ public class UIManager {
         Tab terminalTab = new Tab("Terminal", outputArea);
         terminalTab.setClosable(false);
         Tab errorsTab = new Tab("Errors", errorListView);
-errorsTab.setClosable(false);
+        errorsTab.setClosable(false);
         bottomTabPane.getTabs().addAll(terminalTab, errorsTab);
 
 
@@ -5180,7 +5462,10 @@ errorsTab.setClosable(false);
         compileButton.setOnAction(e -> mainApp.compileCode());
 
         Button runButton = new Button("Run");
-        runButton.setOnAction(e -> mainApp.runCode());
+        runButton.setOnAction(e -> {
+            bottomTabPane.getSelectionModel().select(terminalTab);
+            mainApp.runCode();
+        });
 
         debugButton = new Button("Debug");
         debugButton.setOnAction(e -> mainApp.startDebugging());
@@ -5277,6 +5562,57 @@ errorsTab.setClosable(false);
         resumeButton.setDisable(true);
     }
 }
+
+=================================================================================
+FILE: main/java/com/botmaker/util/TypeManager.java
+=================================================================================
+
+package com.botmaker.util;
+
+import org.eclipse.jdt.core.dom.AST;
+import org.eclipse.jdt.core.dom.PrimitiveType;
+import org.eclipse.jdt.core.dom.Type;
+
+import java.util.List;
+
+public class TypeManager {
+
+    private static final List<String> FUNDAMENTAL_TYPES = List.of(
+        "int", "double", "boolean", "String", "long", "float", "char", "short", "byte"
+    );
+
+    /**
+     * Returns a list of fundamental Java type names (primitives + String).
+     */
+    public static List<String> getFundamentalTypeNames() {
+        return FUNDAMENTAL_TYPES;
+    }
+
+    /**
+     * Creates a JDT AST Type node from a string representation of the type name.
+     * Handles both primitive types and class/interface names.
+     *
+     * @param ast The AST instance to use for creating the node.
+     * @param typeName The name of the type (e.g., "int", "String", "java.util.List").
+     * @return The constructed Type node.
+     */
+    public static Type createTypeNode(AST ast, String typeName) {
+        switch (typeName) {
+            case "int": return ast.newPrimitiveType(PrimitiveType.INT);
+            case "double": return ast.newPrimitiveType(PrimitiveType.DOUBLE);
+            case "boolean": return ast.newPrimitiveType(PrimitiveType.BOOLEAN);
+            case "char": return ast.newPrimitiveType(PrimitiveType.CHAR);
+            case "long": return ast.newPrimitiveType(PrimitiveType.LONG);
+            case "float": return ast.newPrimitiveType(PrimitiveType.FLOAT);
+            case "short": return ast.newPrimitiveType(PrimitiveType.SHORT);
+            case "byte": return ast.newPrimitiveType(PrimitiveType.BYTE);
+            default:
+                // For non-primitives, ast.newName() can handle simple and qualified names.
+                return ast.newSimpleType(ast.newName(typeName));
+        }
+    }
+}
+
 
 =================================================================================
 FILE: main/java/com/botmaker/validation/DiagnosticsManager.java

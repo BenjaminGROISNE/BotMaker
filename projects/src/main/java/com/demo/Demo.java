@@ -1,21 +1,20 @@
 package com.demo;
 public class Demo {
     public static void main(String[] args) {
-        if (true) {
+        String s = "";
+
+		System.out.println("");
+		double d = 0.0;
+		int i = 0;
+		int i = 0;		if (true) {
 		}
 		String message = "0";
 		System.out.println(args);
-		System.out.println(message);
-        if (true) {
-        } else {
-            System.out.println("");
+		    System.out.println("");
         }
-        int x = 10;
         System.out.println("");
         int k = 15;
-        System.out.println("reh");
-
-        if (k > 30) {
+        if(k > 30) {
             System.out.println("");
         }
         System.out.println("Demo finished.");

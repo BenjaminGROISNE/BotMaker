@@ -1,17 +1,20 @@
 package com.botmaker.lsp;
 
-import com.botmaker.Main;
 import com.botmaker.parser.CodeEditor;
 import com.botmaker.ui.BlockDragAndDropManager;
 import org.eclipse.lsp4j.services.LanguageServer;
 
-// Using a record for a simple, immutable data carrier to pass to UI creation.
+/**
+ * Context object passed to blocks for UI rendering and editing operations.
+ * Phase 3: Removed Main dependency - blocks now use only what they need.
+ */
 public record CompletionContext(
-        Main mainApp, // Reference to the main application
         CodeEditor codeEditor,
         LanguageServer server,
         String docUri,
         String sourceCode,
         long docVersion,
         BlockDragAndDropManager dragAndDropManager
-) {}
+) {
+    // All the data blocks need, without Main reference
+}
