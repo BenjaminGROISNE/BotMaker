@@ -1,6 +1,7 @@
 package com.botmaker.services;
 
 import com.botmaker.config.ApplicationConfig;
+import com.botmaker.config.Constants;
 import com.botmaker.events.CoreApplicationEvents;
 import com.botmaker.events.EventBus;
 import com.botmaker.lsp.JdtLanguageServerLauncher;
@@ -123,13 +124,11 @@ public class LanguageServerService {
 
                 // Give the server a chance to shutdown gracefully
                 if (server != null) {
-                    server.shutdown().get(2, java.util.concurrent.TimeUnit.SECONDS);
-                    server.exit();
+                    server.shutdown().get(Constants.DEBUGGER_SHUTDOWN_TIMEOUT_SECONDS, java.util.concurrent.TimeUnit.SECONDS);                    server.exit();
                 }
 
-                // Small delay to let LSP process the exit
-                Thread.sleep(500);
 
+                Thread.sleep(Constants.SHORT_SLEEP_MS);
             } catch (java.util.concurrent.TimeoutException e) {
                 System.err.println("Server shutdown timed out, forcing stop...");
             } catch (Exception e) {

@@ -21,15 +21,9 @@ import org.eclipse.lsp4j.DiagnosticSeverity;
 
 import java.util.List;
 
-/**
- * Manages the UI components.
- * Phase 3: Completely independent - no Main dependency!
- */
+
 public class UIManager {
 
-    // ============================================
-    // PHASE 3: Remove Main dependency
-    // ============================================
     private final BlockDragAndDropManager dragAndDropManager;
     private final EventBus eventBus;
     private final CodeEditorService codeEditorService;

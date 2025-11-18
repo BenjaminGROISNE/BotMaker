@@ -1,5 +1,6 @@
 package com.botmaker.lsp;
 
+import com.botmaker.config.Constants;
 import org.eclipse.jdt.core.compiler.IProblem;
 import org.eclipse.jdt.internal.compiler.IProblemFactory;
 import org.eclipse.jdt.internal.compiler.lookup.ProblemReasons;
@@ -14,6 +15,8 @@ import org.eclipse.lsp4j.services.LanguageServer;
 
 import java.io.*;
 import java.nio.file.*;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 import java.util.function.Consumer;
@@ -43,42 +46,38 @@ public class JdtLanguageServerLauncher {
         Files.createDirectories(workspaceData);
 
         // Build command with all necessary flags from VS Code implementation
-        ProcessBuilder pb = new ProcessBuilder(
+        List<String> command = new ArrayList<>(Arrays.asList(
                 javaExecutable,
-                // Java 25 specific flags
-                "-Djdk.xml.maxGeneralEntitySizeLimit=0",
-                "-Djdk.xml.totalEntitySizeLimit=0",
-                // Module system flags
+                Constants.JVM_ENTITY_SIZE_LIMIT,
+                Constants.JVM_TOTAL_ENTITY_SIZE_LIMIT,
                 "--add-modules=ALL-SYSTEM",
                 "--add-opens", "java.base/java.util=ALL-UNNAMED",
                 "--add-opens", "java.base/java.lang=ALL-UNNAMED",
                 "--add-opens", "java.base/sun.nio.fs=ALL-UNNAMED",
-                // Eclipse/JDT configuration
                 "-Declipse.application=org.eclipse.jdt.ls.core.id1",
                 "-Dosgi.bundles.defaultStartLevel=4",
                 "-Declipse.product=org.eclipse.jdt.ls.core.product",
-                // Important: Disable automatic VM detection
-                "-DDetectVMInstallationsJob.disabled=true",
-                // Encoding
-                "-Dfile.encoding=UTF-8",
-                // Disable verbose logging
-                "-Xlog:disable",
-                // Memory settings
-                "-Xmx1G",
-                // Dependency collector (improves Maven/Gradle performance)
-                "-Daether.dependencyCollector.impl=bf",
-                // Suppress JavaFX warnings about restricted methods
-                "--enable-native-access=javafx.graphics",
-                // Logging (remove these for production, useful for debugging)
-                "-Dlog.protocol=true",
-                "-Dlog.level=ALL",
-                // Launcher JAR
+                Constants.LSP_DETECT_VM_DISABLED,
+                Constants.LSP_FILE_ENCODING,
+                Constants.LSP_LOG_DISABLE,
+                Constants.JVM_MAX_HEAP,
+                Constants.LSP_DEPENDENCY_COLLECTOR,
+                "--enable-native-access=javafx.graphics"
+        ));
+
+// Add debug logging conditionally
+        if (Constants.LSP_LOG_PROTOCOL) {
+            command.add("-Dlog.protocol=true");
+            command.add("-Dlog.level=" + Constants.LSP_LOG_LEVEL);
+        }
+
+        command.addAll(Arrays.asList(
                 "-jar", launcherJar.toString(),
-                // Configuration directory
                 "-configuration", jdtlsPath.resolve("config_linux").toString(),
-                // Workspace data directory (NOT your project directory!)
                 "-data", workspaceData.toString()
-        );
+        ));
+
+        ProcessBuilder pb = new ProcessBuilder(command);
 
         process = pb.start();
 

@@ -1,5 +1,6 @@
 package com.botmaker.runtime;
 
+import com.botmaker.config.Constants;
 import com.sun.jdi.*;
 import com.sun.jdi.connect.AttachingConnector;
 import com.sun.jdi.connect.Connector;
@@ -47,8 +48,8 @@ public class DebuggerService {
         arguments.get("port").setValue(String.valueOf(port));
         arguments.get("hostname").setValue("localhost");
 
-        int maxRetries = 10;
-        int retryDelayMs = 250;
+        int maxRetries = Constants.DEBUGGER_MAX_CONNECT_RETRIES;
+        int retryDelayMs = Constants.DEBUGGER_RETRY_DELAY_MS;
         for (int i = 0; i < maxRetries; i++) {
             try {
                 System.out.println(ANSI_BLUE + "Attaching to process on port " + port + " (Attempt " + (i + 1) + ")..." + ANSI_RESET);

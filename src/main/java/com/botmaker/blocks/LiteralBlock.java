@@ -36,9 +36,7 @@ public class LiteralBlock<T> extends AbstractExpressionBlock {
         }
         textField.setCursor(Cursor.TEXT);
 
-        // Update when the text field loses focus, if the value has changed.
         textField.focusedProperty().addListener((obs, oldVal, newVal) -> {
-            // newVal is false when focus is lost
             if (!newVal) {
                 String newText = textField.getText();
                 String oldText = (value instanceof String) ? (String) value : String.valueOf(value);

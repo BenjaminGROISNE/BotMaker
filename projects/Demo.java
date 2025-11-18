@@ -1,9 +1,11 @@
 package com.demo;
 public class Demo {
     public static void main(String[] args) {
-        String s = "";
-		System.out.println("");
-		double d = 0.0;
+        if (true) {
+		}
+		String s = "";
+		System.out.println(s);
+		byte d = 5;
 		System.out.println("");
 		int i = 0;
         if (true) {
