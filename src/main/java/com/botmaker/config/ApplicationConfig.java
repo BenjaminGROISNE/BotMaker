@@ -104,11 +104,33 @@ public class ApplicationConfig {
 
         return new Builder()
                 .jdtServerPath(Paths.get("tools/jdt-language-server"))
-                .projectPath(Paths.get("./projects"))
+                .projectPath(Paths.get("projects"))  // REMOVED ./
                 .workspaceDataPath(Paths.get(System.getProperty("user.home"), ".jdtls-workspace", "Demo"))
-                .sourceFilePath(Paths.get("./projects/src/main/java/com/demo/Demo.java"))
-                .compiledOutputPath(Paths.get("build/compiled"))
-                .mainClassName("Demo")
+                .sourceFilePath(Paths.get("projects/src/main/java/com/demo/Demo.java"))  // REMOVED ./
+                .compiledOutputPath(Paths.get("projects/build/classes/java/main"))  // REMOVED ./
+                .mainClassName("com.demo.Demo")
+                .javaHome(javaHome)
+                .javaExecutable(Paths.get(javaHome, "bin", "java").toString())
+                .javacExecutable(Paths.get(javaHome, "bin", "javac").toString())
+                .initialWidth(600)
+                .initialHeight(800)
+                .enableEventLogging(false)
+                .build();
+    }
+
+    /**
+     * Creates configuration for a specific project
+     */
+    public static ApplicationConfig forProject(String projectName) {
+        String javaHome = System.getProperty("java.home");
+
+        return new Builder()
+                .jdtServerPath(Paths.get("tools/jdt-language-server"))
+                .projectPath(Paths.get("projects", projectName))  // REMOVED ./
+                .workspaceDataPath(Paths.get(System.getProperty("user.home"), ".jdtls-workspace", projectName))
+                .sourceFilePath(Paths.get("projects", projectName, "src/main/java/com/demo/Demo.java"))  // REMOVED ./
+                .compiledOutputPath(Paths.get("projects", projectName, "build/classes/java/main"))  // REMOVED ./
+                .mainClassName("com.demo.Demo")
                 .javaHome(javaHome)
                 .javaExecutable(Paths.get(javaHome, "bin", "java").toString())
                 .javacExecutable(Paths.get(javaHome, "bin", "javac").toString())

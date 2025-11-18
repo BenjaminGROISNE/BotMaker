@@ -167,11 +167,14 @@ public class BlockFactory {
             System.out.println("Creating IdentifierBlock for: " + astExpression);
             SimpleName simpleName = (SimpleName) astExpression;
 
-            // Check if this identifier should be marked as unedited
-            boolean shouldMarkAsUnedited = markNewIdentifiersAsUnedited &&
-                    "defaultVar".equals(simpleName.getIdentifier());
-
-            IdentifierBlock block = new IdentifierBlock(BlockIdPrefix.generate(BlockIdPrefix.IDENTIFIER, astExpression), simpleName, shouldMarkAsUnedited);            nodeToBlockMap.put(astExpression, block);
+            // Mark as unedited if this identifier was just auto-generated
+            // The flag is set externally via setMarkNewIdentifiersAsUnedited()
+            IdentifierBlock block = new IdentifierBlock(
+                    BlockIdPrefix.generate(BlockIdPrefix.IDENTIFIER, astExpression),
+                    simpleName,
+                    markNewIdentifiersAsUnedited
+            );
+            nodeToBlockMap.put(astExpression, block);
             return Optional.of(block);
         }
         if (astExpression instanceof InfixExpression) {

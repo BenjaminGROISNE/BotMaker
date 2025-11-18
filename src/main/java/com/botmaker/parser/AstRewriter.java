@@ -2,6 +2,7 @@ package com.botmaker.parser;
 
 import com.botmaker.core.BodyBlock;
 import com.botmaker.ui.AddableBlock;
+import com.botmaker.util.DefaultNames;
 import com.botmaker.util.TypeManager;
 import org.eclipse.jdt.core.dom.*;
 import org.eclipse.jdt.core.dom.rewrite.ASTRewrite;
@@ -208,7 +209,7 @@ public class AstRewriter {
                 newString.setLiteralValue("text");
                 return newString;
             case VARIABLE:
-                return ast.newSimpleName("defaultVar");
+                return ast.newSimpleName(DefaultNames.DEFAULT_VARIABLE);
             default:
                 return null;
         }
@@ -231,7 +232,7 @@ public class AstRewriter {
 
             case DECLARE_INT: {
                 VariableDeclarationFragment fragment = ast.newVariableDeclarationFragment();
-                fragment.setName(ast.newSimpleName("i"));
+                fragment.setName(ast.newSimpleName(DefaultNames.DEFAULT_INT)); // Was "i"
                 fragment.setInitializer(ast.newNumberLiteral("0"));
                 VariableDeclarationStatement varDecl = ast.newVariableDeclarationStatement(fragment);
                 varDecl.setType(ast.newPrimitiveType(PrimitiveType.INT));
@@ -239,7 +240,7 @@ public class AstRewriter {
             }
             case DECLARE_DOUBLE: {
                 VariableDeclarationFragment fragment = ast.newVariableDeclarationFragment();
-                fragment.setName(ast.newSimpleName("d"));
+                fragment.setName(ast.newSimpleName(DefaultNames.DEFAULT_DOUBLE)); // Was "d"
                 fragment.setInitializer(ast.newNumberLiteral("0.0"));
                 VariableDeclarationStatement varDecl = ast.newVariableDeclarationStatement(fragment);
                 varDecl.setType(ast.newPrimitiveType(PrimitiveType.DOUBLE));
@@ -247,7 +248,7 @@ public class AstRewriter {
             }
             case DECLARE_BOOLEAN: {
                 VariableDeclarationFragment fragment = ast.newVariableDeclarationFragment();
-                fragment.setName(ast.newSimpleName("b"));
+                fragment.setName(ast.newSimpleName(DefaultNames.DEFAULT_BOOLEAN)); // Was "b"
                 fragment.setInitializer(ast.newBooleanLiteral(false));
                 VariableDeclarationStatement varDecl = ast.newVariableDeclarationStatement(fragment);
                 varDecl.setType(ast.newPrimitiveType(PrimitiveType.BOOLEAN));
@@ -255,7 +256,7 @@ public class AstRewriter {
             }
             case DECLARE_STRING: {
                 VariableDeclarationFragment fragment = ast.newVariableDeclarationFragment();
-                fragment.setName(ast.newSimpleName("s"));
+                fragment.setName(ast.newSimpleName(DefaultNames.DEFAULT_STRING)); // Was "s"
                 fragment.setInitializer(ast.newStringLiteral());
                 VariableDeclarationStatement varDecl = ast.newVariableDeclarationStatement(fragment);
                 varDecl.setType(TypeManager.createTypeNode(ast, "String"));

@@ -1,5 +1,8 @@
 package com.botmaker.runtime;
 
+import com.botmaker.config.ApplicationConfig;
+import com.botmaker.validation.DiagnosticsManager;
+import com.botmaker.validation.ErrorTranslator;
 import javafx.application.Platform;
 
 import java.io.IOException;
@@ -16,14 +19,21 @@ public class CodeExecutionService {
     private final Runnable clearOutputConsumer;
     private final Consumer<String> statusConsumer;
     private final Consumer<String> setOutputConsumer;
-    private final com.botmaker.validation.DiagnosticsManager diagnosticsManager;
-
-    public CodeExecutionService(Consumer<String> appendOutputConsumer, Runnable clearOutputConsumer, Consumer<String> setOutputConsumer, Consumer<String> statusConsumer, com.botmaker.validation.DiagnosticsManager diagnosticsManager) {
+    private final DiagnosticsManager diagnosticsManager;
+    private final ApplicationConfig config;
+    public CodeExecutionService(
+            Consumer<String> appendOutputConsumer,
+            Runnable clearOutputConsumer,
+            Consumer<String> setOutputConsumer,
+            Consumer<String> statusConsumer,
+            DiagnosticsManager diagnosticsManager,
+            ApplicationConfig config) {
         this.appendOutputConsumer = appendOutputConsumer;
         this.clearOutputConsumer = clearOutputConsumer;
         this.setOutputConsumer = setOutputConsumer;
         this.statusConsumer = statusConsumer;
         this.diagnosticsManager = diagnosticsManager;
+        this.config = config;
     }
 
     public void runCode(String code) {
@@ -33,12 +43,16 @@ public class CodeExecutionService {
             Platform.runLater(() -> {
                 statusConsumer.accept("Run aborted due to errors.");
             });
-            return; // Abort run
+            return;
         }
 
         new Thread(() -> {
             try {
-                if (!compileAndWait(code)) {
+                // ADD: Get paths from config
+                Path sourceFilePath = config.getSourceFilePath();
+                Path compiledOutputPath = config.getCompiledOutputPath();
+
+                if (!compileAndWait(code, sourceFilePath, compiledOutputPath)) {
                     Platform.runLater(() -> statusConsumer.accept("Run aborted due to compilation failure."));
                     return;
                 }
@@ -48,9 +62,9 @@ public class CodeExecutionService {
                     clearOutputConsumer.run();
                 });
 
-                String classPath = "build/compiled";
-                String className = "Demo";
-                String javaExecutable = Paths.get(System.getProperty("java.home"), "bin", "java").toString();
+                String classPath = compiledOutputPath.toString();
+                String className = config.getMainClassName();
+                String javaExecutable = config.getJavaExecutable();
 
                 ProcessBuilder pb = new ProcessBuilder(javaExecutable, "-cp", classPath, className);
                 Process process = pb.start();
@@ -74,13 +88,18 @@ public class CodeExecutionService {
             Platform.runLater(() -> {
                 statusConsumer.accept("Compilation failed. See errors above.");
             });
-            return; // Abort compilation
+            return;
         }
 
         new Thread(() -> {
             try {
                 Platform.runLater(() -> setOutputConsumer.accept("Saving and compiling..."));
-                if (compileAndWait(code)) {
+
+                // ADD: Get paths from config
+                Path sourceFilePath = config.getSourceFilePath();
+                Path compiledOutputPath = config.getCompiledOutputPath();
+
+                if (compileAndWait(code, sourceFilePath, compiledOutputPath)) {
                     Platform.runLater(() -> setOutputConsumer.accept("Compilation successful."));
                 }
             } catch (IOException | InterruptedException e) {
@@ -89,17 +108,17 @@ public class CodeExecutionService {
         }).start();
     }
 
-    public boolean compileAndWait(String code) throws IOException, InterruptedException {
-        Path sourceFile = Paths.get("projects/Demo.java");
-        Files.writeString(sourceFile, code);
+    public boolean compileAndWait(String code, Path sourceFilePath, Path compiledOutputPath) throws IOException, InterruptedException {
+        // Ensure parent directories exist
+        Files.createDirectories(sourceFilePath.getParent());
+        Files.writeString(sourceFilePath, code);
 
-        String sourcePath = sourceFile.toString();
-        String outDir = "build/compiled";
-        Files.createDirectories(Paths.get(outDir));
+        // Ensure output directory exists
+        Files.createDirectories(compiledOutputPath);
 
         String javacExecutable = Paths.get(System.getProperty("java.home"), "bin", "javac").toString();
         // Add -g to include debug information for the debugger
-        ProcessBuilder pb = new ProcessBuilder(javacExecutable, "-g", "-d", outDir, sourcePath);
+        ProcessBuilder pb = new ProcessBuilder(javacExecutable, "-g", "-d", compiledOutputPath.toString(), sourceFilePath.toString());
         Process process = pb.start();
 
         String errors = new String(process.getErrorStream().readAllBytes());

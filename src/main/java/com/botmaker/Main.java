@@ -2,6 +2,7 @@ package com.botmaker;
 
 import com.botmaker.config.ApplicationConfig;
 import com.botmaker.di.DependencyContainer;
+import com.botmaker.events.CoreApplicationEvents;
 import com.botmaker.events.EventBus;
 import com.botmaker.parser.AstRewriter;
 import com.botmaker.parser.BlockFactory;
@@ -10,6 +11,7 @@ import com.botmaker.services.*;
 import com.botmaker.state.ApplicationState;
 import com.botmaker.ui.BlockDragAndDropManager;
 import com.botmaker.ui.UIManager;
+import com.botmaker.validation.DiagnosticsManager;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.stage.Stage;
@@ -103,11 +105,12 @@ public class Main extends Application {
         container.registerLazySingleton(CodeExecutionService.class, () -> {
             EventBus eventBus = container.resolve(EventBus.class);
             return new CodeExecutionService(
-                    text -> eventBus.publish(new com.botmaker.events.CoreApplicationEvents.OutputAppendedEvent(text)),
-                    () -> eventBus.publish(new com.botmaker.events.CoreApplicationEvents.OutputClearedEvent()),
-                    text -> eventBus.publish(new com.botmaker.events.CoreApplicationEvents.OutputSetEvent(text)),
-                    msg -> eventBus.publish(new com.botmaker.events.CoreApplicationEvents.StatusMessageEvent(msg)),
-                    container.resolve(com.botmaker.validation.DiagnosticsManager.class)
+                    text -> eventBus.publish(new CoreApplicationEvents.OutputAppendedEvent(text)),
+                    () -> eventBus.publish(new CoreApplicationEvents.OutputClearedEvent()),
+                    text -> eventBus.publish(new CoreApplicationEvents.OutputSetEvent(text)),
+                    msg -> eventBus.publish(new CoreApplicationEvents.StatusMessageEvent(msg)),
+                    container.resolve(DiagnosticsManager.class),
+                    container.resolve(ApplicationConfig.class)
             );
         });
 
@@ -139,7 +142,8 @@ public class Main extends Application {
                         container.resolve(ApplicationState.class),
                         container.resolve(EventBus.class),
                         container.resolve(CodeExecutionService.class),
-                        container.resolve(BlockFactory.class)
+                        container.resolve(BlockFactory.class),
+                        container.resolve(ApplicationConfig.class)
                 )
         );
 

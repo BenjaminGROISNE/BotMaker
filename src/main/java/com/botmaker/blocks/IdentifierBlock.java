@@ -21,12 +21,12 @@ public class IdentifierBlock extends AbstractExpressionBlock {
     private static final String UNEDITED_STYLE_CLASS = "unedited-identifier";
 
     public IdentifierBlock(String id, SimpleName astNode) {
-        super(id, astNode);
-        this.identifier = astNode.getIdentifier();
+        this(id, astNode, false);
     }
 
     /**
-     * Constructor for creating new IdentifierBlocks with default value
+     * Constructor for creating new IdentifierBlocks
+     * @param markAsUnedited true if this identifier was auto-generated and should prompt user to edit
      */
     public IdentifierBlock(String id, SimpleName astNode, boolean markAsUnedited) {
         super(id, astNode);

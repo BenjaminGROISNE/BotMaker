@@ -1,5 +1,6 @@
 package com.botmaker.runtime;
 
+import com.botmaker.config.ApplicationConfig;
 import com.botmaker.core.CodeBlock;
 import com.botmaker.core.StatementBlock;
 import com.botmaker.events.CoreApplicationEvents;
@@ -33,7 +34,7 @@ public class DebuggingManager {
     private final CodeExecutionService codeExecutionService;
     private final EventBus eventBus; // NEW: Replaces all the Consumer/Runnable callbacks
     private final BlockFactory factory;
-
+    private final ApplicationConfig config;
     // KEPT: Original state
     private Map<ASTNode, CodeBlock> nodeToBlockMap;
     private DebuggerService debuggerService;
@@ -47,10 +48,12 @@ public class DebuggingManager {
     public DebuggingManager(
             CodeExecutionService codeExecutionService,
             EventBus eventBus,
-            BlockFactory factory) {
+            BlockFactory factory,
+            ApplicationConfig config) {
         this.codeExecutionService = codeExecutionService;
         this.eventBus = eventBus;
         this.factory = factory;
+        this.config = config;
     }
 
     // ============================================
@@ -64,8 +67,7 @@ public class DebuggingManager {
     public void startDebugging(String code) {
         new Thread(() -> {
             try {
-                if (!codeExecutionService.compileAndWait(code)) {
-                    // PHASE 1 CHANGE: Publish event instead of calling consumer
+                if (!codeExecutionService.compileAndWait(code, config.getSourceFilePath(), config.getCompiledOutputPath())) {
                     eventBus.publish(new CoreApplicationEvents.StatusMessageEvent(
                             "Debug aborted due to compilation failure."
                     ));
@@ -108,9 +110,9 @@ public class DebuggingManager {
                     eventBus.publish(new CoreApplicationEvents.OutputClearedEvent());
                 });
 
-                String classPath = "build/compiled";
-                String className = "Demo";
-                String javaExecutable = Paths.get(System.getProperty("java.home"), "bin", "java").toString();
+                String classPath = config.getCompiledOutputPath().toString();
+                String className = config.getMainClassName();
+                String javaExecutable = config.getJavaExecutable();
                 String debugAgent = String.format("-agentlib:jdwp=transport=dt_socket,server=y,suspend=y,address=%d", freePort);
 
                 ProcessBuilder pb = new ProcessBuilder(javaExecutable, debugAgent, "-cp", classPath, className);

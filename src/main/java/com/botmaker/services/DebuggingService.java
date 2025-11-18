@@ -1,5 +1,6 @@
 package com.botmaker.services;
 
+import com.botmaker.config.ApplicationConfig;
 import com.botmaker.events.CoreApplicationEvents;
 import com.botmaker.events.EventBus;
 import com.botmaker.parser.BlockFactory;
@@ -16,19 +17,22 @@ public class DebuggingService {
     private final ApplicationState state;
     private final EventBus eventBus;
     private final DebuggingManager debuggingManager;
+    ApplicationConfig config;
 
     public DebuggingService(
             ApplicationState state,
             EventBus eventBus,
             CodeExecutionService codeExecutionService,
-            BlockFactory blockFactory) {
+            BlockFactory blockFactory,
+            ApplicationConfig config) {
 
         this.state = state;
         this.eventBus = eventBus;
         this.debuggingManager = new DebuggingManager(
                 codeExecutionService,
                 eventBus,
-                blockFactory
+                blockFactory,
+                config
         );
 
         setupEventHandlers();
