@@ -4,24 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="cba04025-c331-4634-a893-436bad03efc0" name="Changes" comment="fixed project dependance on Demo.java and compile/run DEmo.java recreated">
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/botmaker/project/ProjectInfo.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/botmaker/project/ProjectManager.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/botmaker/ui/ProjectSelectionScreen.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
+    <list default="true" id="cba04025-c331-4634-a893-436bad03efc0" name="Changes" comment="Project selection works">
+      <change afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/projects/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/projects/Demo/build.gradle" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/projects/gradle/wrapper/gradle-wrapper.jar" beforeDir="false" afterPath="$PROJECT_DIR$/projects/Demo/gradle/wrapper/gradle-wrapper.jar" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/projects/gradle/wrapper/gradle-wrapper.properties" beforeDir="false" afterPath="$PROJECT_DIR$/projects/Demo/gradle/wrapper/gradle-wrapper.properties" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/projects/gradlew" beforeDir="false" afterPath="$PROJECT_DIR$/projects/Demo/gradlew" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/projects/gradlew.bat" beforeDir="false" afterPath="$PROJECT_DIR$/projects/Demo/gradlew.bat" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/projects/settings.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/projects/Demo/settings.gradle" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/projects/src/main/java/com/demo/Demo.java" beforeDir="false" afterPath="$PROJECT_DIR$/projects/Demo/src/main/java/com/demo/Demo.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/botmaker/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/botmaker/Main.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/botmaker/config/ApplicationConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/botmaker/config/ApplicationConfig.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/botmaker/lsp/JdtLanguageServerLauncher.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/botmaker/lsp/JdtLanguageServerLauncher.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/botmaker/services/LanguageServerService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/botmaker/services/LanguageServerService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/com/botmaker/styles.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/com/botmaker/styles.css" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -477,7 +462,15 @@
       <option name="project" value="LOCAL" />
       <updated>1763499560772</updated>
     </task>
-    <option name="localTasksCounter" value="37" />
+    <task id="LOCAL-00037" summary="Project selection works">
+      <option name="closed" value="true" />
+      <created>1763500918264</created>
+      <option name="number" value="00037" />
+      <option name="presentableId" value="LOCAL-00037" />
+      <option name="project" value="LOCAL" />
+      <updated>1763500918264</updated>
+    </task>
+    <option name="localTasksCounter" value="38" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -505,7 +498,6 @@
     <ignored-roots>
       <path value="$PROJECT_DIR$/.." />
     </ignored-roots>
-    <MESSAGE value="Refactor Main file. ifcondition block still doesn't work" />
     <MESSAGE value="Working if condition highlight" />
     <MESSAGE value="&#10;   1 feat(ui): Implement drag-and-drop for adding new blocks&#10;   2 &#10;   3 Adds a drag-and-drop system for adding new statement blocks to the visual editor.&#10;   4 &#10;   5 This includes a draggable block palette and highlighting separator lines to indicate insertion points on `BodyBlock` drop targets. The hover-event logging has also been refactored to be more detailed and object-oriented." />
     <MESSAGE value="working drag block and hover effect" />
@@ -530,7 +522,8 @@
     <MESSAGE value="Fixed refactor bugs" />
     <MESSAGE value="small refactor" />
     <MESSAGE value="fixed project dependance on Demo.java and compile/run DEmo.java recreated" />
-    <option name="LAST_COMMIT_MESSAGE" value="fixed project dependance on Demo.java and compile/run DEmo.java recreated" />
+    <MESSAGE value="Project selection works" />
+    <option name="LAST_COMMIT_MESSAGE" value="Project selection works" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
