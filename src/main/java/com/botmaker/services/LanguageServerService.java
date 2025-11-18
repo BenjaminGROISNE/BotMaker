@@ -103,6 +103,8 @@ public class LanguageServerService {
                     List.of(new TextDocumentContentChangeEvent(event.getNewCode()))
             ));
 
+            eventBus.publish(new CoreApplicationEvents.UIRefreshRequestedEvent(event.getNewCode()));
+
         } catch (Exception e) {
             e.printStackTrace();
             eventBus.publish(new CoreApplicationEvents.StatusMessageEvent(
@@ -112,11 +114,30 @@ public class LanguageServerService {
     }
 
     /**
-     * Shuts down the language server
+     * Shuts down the language server gracefully
      */
     public void shutdown() {
         if (launcher != null) {
-            launcher.stop();
+            try {
+                System.out.println("Requesting server shutdown...");
+
+                // Give the server a chance to shutdown gracefully
+                if (server != null) {
+                    server.shutdown().get(2, java.util.concurrent.TimeUnit.SECONDS);
+                    server.exit();
+                }
+
+                // Small delay to let LSP process the exit
+                Thread.sleep(500);
+
+            } catch (java.util.concurrent.TimeoutException e) {
+                System.err.println("Server shutdown timed out, forcing stop...");
+            } catch (Exception e) {
+                System.err.println("Error during server shutdown: " + e.getMessage());
+            } finally {
+                // Force stop the launcher/process
+                launcher.stop();
+            }
         }
     }
 

@@ -105,7 +105,7 @@ public class DebuggingManager {
 
                 // Clear output via direct call (still needed for now)
                 Platform.runLater(() -> {
-                    // This will be refactored in Phase 2
+                    eventBus.publish(new CoreApplicationEvents.OutputClearedEvent());
                 });
 
                 String classPath = "build/compiled";
@@ -183,9 +183,7 @@ public class DebuggingManager {
                     String line = s.nextLine();
                     // This still uses direct reference - will be refactored in Phase 2
                     Platform.runLater(() -> {
-                        // appendOutputConsumer.accept(line + "\n");
-                        // For now, we'll keep this as-is since we still have the service
-                    });
+                        eventBus.publish(new CoreApplicationEvents.OutputAppendedEvent(line + "\n"));                    });
                 }
             }
         }).start();

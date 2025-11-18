@@ -47,10 +47,24 @@ public class Main extends Application {
         primaryStage.show();
 
         primaryStage.setOnCloseRequest(e -> {
-            if (languageServerService != null) {
-                languageServerService.shutdown();
-            }
-            Platform.exit();
+            e.consume();
+            new Thread(() -> {
+                try {
+                    if (languageServerService != null) {
+                        System.out.println("Shutting down Language Server...");
+                        languageServerService.shutdown();
+                        System.out.println("Language Server shut down successfully.");
+                    }
+                } catch (Exception ex) {
+                    System.err.println("Error during shutdown: " + ex.getMessage());
+                } finally {
+                    // Now exit the application
+                    Platform.runLater(() -> {
+                        Platform.exit();
+                        System.exit(0); // Force exit to ensure clean termination
+                    });
+                }
+            }).start();
         });
     }
 

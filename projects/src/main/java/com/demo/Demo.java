@@ -1,17 +1,19 @@
 package com.demo;
 public class Demo {
     public static void main(String[] args) {
-        String s = "";
-
+        if (true) {
+		}
+		String s = "";
 		System.out.println("");
 		double d = 0.0;
+		System.out.println("");
 		int i = 0;
-		int i = 0;		if (true) {
+        if (true) {
 		}
 		String message = "0";
 		System.out.println(args);
 		    System.out.println("");
-        }
+
         System.out.println("");
         int k = 15;
         if(k > 30) {
