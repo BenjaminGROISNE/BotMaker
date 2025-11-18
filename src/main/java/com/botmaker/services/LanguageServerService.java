@@ -7,11 +7,7 @@ import com.botmaker.events.EventBus;
 import com.botmaker.lsp.JdtLanguageServerLauncher;
 import com.botmaker.state.ApplicationState;
 import javafx.application.Platform;
-import org.eclipse.lsp4j.DidChangeTextDocumentParams;
-import org.eclipse.lsp4j.DidOpenTextDocumentParams;
-import org.eclipse.lsp4j.TextDocumentContentChangeEvent;
-import org.eclipse.lsp4j.TextDocumentItem;
-import org.eclipse.lsp4j.VersionedTextDocumentIdentifier;
+import org.eclipse.lsp4j.*;
 import org.eclipse.lsp4j.services.LanguageServer;
 
 import java.nio.file.Files;
@@ -60,19 +56,42 @@ public class LanguageServerService {
     public void initialize() throws Exception {
         launcher = new JdtLanguageServerLauncher(
                 config.getJdtServerPath(),
-                (params) -> {
+                config.getProjectPath(),
+                config.getWorkspaceDataPath(),
+                (PublishDiagnosticsParams params) -> {  // ← Explicit type
                     Platform.runLater(() -> {
-                        eventBus.publish(new CoreApplicationEvents.DiagnosticsUpdatedEvent(
-                                params.getDiagnostics()
-                        ));
+                        List<Diagnostic> diagnostics = params.getDiagnostics();
+                        eventBus.publish(new CoreApplicationEvents.DiagnosticsUpdatedEvent(diagnostics));
                     });
                 }
         );
 
         server = launcher.getServer();
 
-        // Open the initial document
-        Path docPath = config.getSourceFilePath().toAbsolutePath();
+        Path docPath = config.getSourceFilePath().toAbsolutePath().normalize();
+
+        // Ensure the file exists
+        if (!Files.exists(docPath)) {
+            Files.createDirectories(docPath.getParent());
+
+            // Extract project name and package from main class name
+            String mainClassName = config.getMainClassName();
+            String[] parts = mainClassName.split("\\.");
+            String packageName = parts.length > 1 ? String.join(".", java.util.Arrays.copyOf(parts, parts.length - 1)) : "com.demo";
+            String className = parts[parts.length - 1];
+
+            // Create a default file with correct package and class name
+            String defaultCode = String.format("""
+            package %s;
+            public class %s {
+                public static void main(String[] args) {
+                    System.out.println("Hello from %s!");
+                }
+            }
+            """, packageName, className, className);
+            Files.writeString(docPath, defaultCode);
+        }
+
         String docUri = docPath.toUri().toString();
         String currentCode = Files.readString(docPath);
 

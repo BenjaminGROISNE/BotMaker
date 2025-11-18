@@ -10,10 +10,12 @@ import com.botmaker.runtime.CodeExecutionService;
 import com.botmaker.services.*;
 import com.botmaker.state.ApplicationState;
 import com.botmaker.ui.BlockDragAndDropManager;
+import com.botmaker.ui.ProjectSelectionScreen;
 import com.botmaker.ui.UIManager;
 import com.botmaker.validation.DiagnosticsManager;
 import javafx.application.Application;
 import javafx.application.Platform;
+import javafx.scene.control.Alert;
 import javafx.stage.Stage;
 
 /**
@@ -27,47 +29,79 @@ public class Main extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
-        // Initialize dependency container
-        container = new DependencyContainer();
-        ApplicationConfig config = ApplicationConfig.createDefault();
+        // Show project selection screen first
+        ProjectSelectionScreen selectionScreen = new ProjectSelectionScreen(
+                primaryStage,
+                projectName -> openProject(primaryStage, projectName)
+        );
 
-        // Setup all dependencies
-        setupDependencies(config);
-
-        // Initialize services in correct order
-        initializeServices();
-
-        // Get UI and show
-        UIManager uiManager = container.resolve(UIManager.class);
-        primaryStage.setScene(uiManager.createScene());
-        primaryStage.setTitle("BotMaker Blocks");
-
-        // Load initial code
-        CodeEditorService codeEditorService = container.resolve(CodeEditorService.class);
-        codeEditorService.loadInitialCode();
-
+        primaryStage.setScene(selectionScreen.createScene());
+        primaryStage.setTitle("BotMaker - Select Project");
         primaryStage.show();
+    }
 
-        primaryStage.setOnCloseRequest(e -> {
-            e.consume();
-            new Thread(() -> {
-                try {
-                    if (languageServerService != null) {
-                        System.out.println("Shutting down Language Server...");
-                        languageServerService.shutdown();
-                        System.out.println("Language Server shut down successfully.");
+    /**
+     * Opens a project in the editor
+     */
+    private void openProject(Stage primaryStage, String projectName) {
+        try {
+            // Initialize dependency container with project-specific config
+            container = new DependencyContainer();
+            ApplicationConfig config = ApplicationConfig.forProject(projectName);
+
+            // Setup all dependencies
+            setupDependencies(config);
+
+            // Initialize services in correct order
+            initializeServices();
+
+            // Get UI and show
+            UIManager uiManager = container.resolve(UIManager.class);
+            primaryStage.setScene(uiManager.createScene());
+            primaryStage.setTitle("BotMaker Blocks - " + projectName);
+
+            // Load initial code
+            CodeEditorService codeEditorService = container.resolve(CodeEditorService.class);
+            codeEditorService.loadInitialCode();
+
+            // Update close handler
+            primaryStage.setOnCloseRequest(e -> {
+                e.consume();
+                new Thread(() -> {
+                    try {
+                        if (languageServerService != null) {
+                            System.out.println("Shutting down Language Server...");
+                            languageServerService.shutdown();
+                            System.out.println("Language Server shut down successfully.");
+                        }
+                    } catch (Exception ex) {
+                        System.err.println("Error during shutdown: " + ex.getMessage());
+                    } finally {
+                        Platform.runLater(() -> {
+                            Platform.exit();
+                            System.exit(0);
+                        });
                     }
-                } catch (Exception ex) {
-                    System.err.println("Error during shutdown: " + ex.getMessage());
-                } finally {
-                    // Now exit the application
-                    Platform.runLater(() -> {
-                        Platform.exit();
-                        System.exit(0); // Force exit to ensure clean termination
-                    });
-                }
-            }).start();
-        });
+                }).start();
+            });
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            showErrorDialog("Error opening project: " + e.getMessage());
+        }
+    }
+
+    /**
+     * Shows an error dialog
+     */
+    private void showErrorDialog(String message) {
+        Alert alert = new Alert(
+               Alert.AlertType.ERROR
+        );
+        alert.setTitle("Error");
+        alert.setHeaderText("Failed to open project");
+        alert.setContentText(message);
+        alert.showAndWait();
     }
 
     /**

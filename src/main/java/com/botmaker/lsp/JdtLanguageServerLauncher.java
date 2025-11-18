@@ -28,9 +28,14 @@ public class JdtLanguageServerLauncher {
     private final Process process;
     private final LanguageServer server;
 
-    public JdtLanguageServerLauncher(Path jdtlsPath, Consumer<PublishDiagnosticsParams> diagnosticsConsumer) throws Exception {
+    public JdtLanguageServerLauncher(
+            Path jdtlsPath,
+            Path projectPath,
+            Path workspaceData,
+            Consumer<PublishDiagnosticsParams> diagnosticsConsumer) throws Exception {
         // Suppress LSP4J warnings about unsupported notifications
         Logger.getLogger("org.eclipse.lsp4j.jsonrpc.services.GenericEndpoint").setLevel(Level.SEVERE);
+        Logger.getLogger("org.eclipse.lsp4j.jsonrpc.json.StreamMessageProducer").setLevel(Level.SEVERE);
 
         // Find the Equinox launcher JAR
         Path launcherJar = Files.list(jdtlsPath.resolve("plugins"))
@@ -39,21 +44,25 @@ public class JdtLanguageServerLauncher {
                 .orElseThrow(() -> new RuntimeException("Launcher JAR not found"));
 
         String javaExecutable = Paths.get(System.getProperty("java.home"), "bin", "java").toString();
-        Path projectDir = Paths.get("./projects");
 
-        // Create a dedicated workspace data directory (not the project itself!)
-        Path workspaceData = Paths.get(System.getProperty("user.home"), ".jdtls-workspace", "Demo");
+        // USE the projectPath parameter (not hardcoded)
+        Path projectDir = projectPath.toAbsolutePath().normalize();
+
+        // USE the workspaceData parameter (not hardcoded)
         Files.createDirectories(workspaceData);
 
         // Build command with all necessary flags from VS Code implementation
         List<String> command = new ArrayList<>(Arrays.asList(
                 javaExecutable,
+                // Java 25 specific flags
                 Constants.JVM_ENTITY_SIZE_LIMIT,
                 Constants.JVM_TOTAL_ENTITY_SIZE_LIMIT,
+                // Module system flags
                 "--add-modules=ALL-SYSTEM",
                 "--add-opens", "java.base/java.util=ALL-UNNAMED",
                 "--add-opens", "java.base/java.lang=ALL-UNNAMED",
                 "--add-opens", "java.base/sun.nio.fs=ALL-UNNAMED",
+                // Eclipse/JDT configuration
                 "-Declipse.application=org.eclipse.jdt.ls.core.id1",
                 "-Dosgi.bundles.defaultStartLevel=4",
                 "-Declipse.product=org.eclipse.jdt.ls.core.product",
@@ -65,7 +74,7 @@ public class JdtLanguageServerLauncher {
                 "--enable-native-access=javafx.graphics"
         ));
 
-// Add debug logging conditionally
+        // Add debug logging conditionally
         if (Constants.LSP_LOG_PROTOCOL) {
             command.add("-Dlog.protocol=true");
             command.add("-Dlog.level=" + Constants.LSP_LOG_LEVEL);
@@ -74,11 +83,10 @@ public class JdtLanguageServerLauncher {
         command.addAll(Arrays.asList(
                 "-jar", launcherJar.toString(),
                 "-configuration", jdtlsPath.resolve("config_linux").toString(),
-                "-data", workspaceData.toString()
+                "-data", workspaceData.toAbsolutePath().normalize().toString()
         ));
 
         ProcessBuilder pb = new ProcessBuilder(command);
-
         process = pb.start();
 
         // Log the error stream separately to see any server-side issues.

@@ -100,37 +100,27 @@ public class ApplicationConfig {
      * Creates a default configuration based on current environment
      */
     public static ApplicationConfig createDefault() {
-        String javaHome = System.getProperty("java.home");
-
-        return new Builder()
-                .jdtServerPath(Paths.get("tools/jdt-language-server"))
-                .projectPath(Paths.get("projects"))  // REMOVED ./
-                .workspaceDataPath(Paths.get(System.getProperty("user.home"), ".jdtls-workspace", "Demo"))
-                .sourceFilePath(Paths.get("projects/src/main/java/com/demo/Demo.java"))  // REMOVED ./
-                .compiledOutputPath(Paths.get("projects/build/classes/java/main"))  // REMOVED ./
-                .mainClassName("com.demo.Demo")
-                .javaHome(javaHome)
-                .javaExecutable(Paths.get(javaHome, "bin", "java").toString())
-                .javacExecutable(Paths.get(javaHome, "bin", "javac").toString())
-                .initialWidth(600)
-                .initialHeight(800)
-                .enableEventLogging(false)
-                .build();
+        // Fallback - normally we use forProject()
+        String defaultProjectName = "BotMaker";
+        return forProject(defaultProjectName);
     }
 
     /**
      * Creates configuration for a specific project
+     * @param projectName The project name (also used as main class name)
      */
     public static ApplicationConfig forProject(String projectName) {
         String javaHome = System.getProperty("java.home");
+        String packageName = projectName.toLowerCase();
+        String mainClassName = projectName; // Project name IS the main class name
 
         return new Builder()
                 .jdtServerPath(Paths.get("tools/jdt-language-server"))
-                .projectPath(Paths.get("projects", projectName))  // REMOVED ./
+                .projectPath(Paths.get("projects", projectName))
                 .workspaceDataPath(Paths.get(System.getProperty("user.home"), ".jdtls-workspace", projectName))
-                .sourceFilePath(Paths.get("projects", projectName, "src/main/java/com/demo/Demo.java"))  // REMOVED ./
-                .compiledOutputPath(Paths.get("projects", projectName, "build/classes/java/main"))  // REMOVED ./
-                .mainClassName("com.demo.Demo")
+                .sourceFilePath(Paths.get("projects", projectName, "src/main/java/com", packageName, mainClassName + ".java"))
+                .compiledOutputPath(Paths.get("projects", projectName, "build/classes/java/main"))
+                .mainClassName("com." + packageName + "." + mainClassName)
                 .javaHome(javaHome)
                 .javaExecutable(Paths.get(javaHome, "bin", "java").toString())
                 .javacExecutable(Paths.get(javaHome, "bin", "javac").toString())

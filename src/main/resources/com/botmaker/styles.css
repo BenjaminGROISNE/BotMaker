@@ -516,3 +516,38 @@
     -fx-border-color: #FFD700; /* Gold on hover */
     -fx-effect: dropshadow(gaussian, rgba(255,255,0,0.3), 8, 0, 0, 1);
 }
+
+
+/* Project Selection Screen */
+.list-view {
+    -fx-background-color: white;
+    -fx-border-color: #cccccc;
+    -fx-border-radius: 4;
+}
+
+.list-cell {
+    -fx-padding: 10;
+}
+
+.list-cell:selected {
+    -fx-background-color: #007bff;
+    -fx-text-fill: white;
+}
+
+.list-cell:selected .label {
+    -fx-text-fill: white;
+}
+
+.dark-theme .list-view {
+    -fx-background-color: #3c3f41;
+    -fx-border-color: #555555;
+}
+
+.dark-theme .list-cell {
+    -fx-background-color: #3c3f41;
+    -fx-text-fill: white;
+}
+
+.dark-theme .list-cell:selected {
+    -fx-background-color: #0d6efd;
+}
