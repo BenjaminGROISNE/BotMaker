@@ -6,6 +6,7 @@ import com.botmaker.events.CoreApplicationEvents;
 import com.botmaker.events.EventBus;
 import com.botmaker.parser.AstRewriter;
 import com.botmaker.parser.BlockFactory;
+import com.botmaker.project.ProjectConfig;
 import com.botmaker.runtime.CodeExecutionService;
 import com.botmaker.services.*;
 import com.botmaker.state.ApplicationState;
@@ -18,9 +19,13 @@ import javafx.application.Platform;
 import javafx.scene.control.Alert;
 import javafx.stage.Stage;
 
+import java.nio.file.Files;
+import java.nio.file.Paths;
+
 /**
  * Main application entry point.
  * Phase 3: Final cleanup - Main is now just a thin bootstrapper.
+ * Updated: Automatic project loading from config
  */
 public class Main extends Application {
 
@@ -29,7 +34,23 @@ public class Main extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
-        // Show project selection screen first
+        // Check if we should auto-load the last project
+        String lastProject = ProjectConfig.getLastOpened();
+
+        if (lastProject != null && projectExists(lastProject)) {
+            // Auto-load last project
+            System.out.println("Auto-loading last project: " + lastProject);
+            openProject(primaryStage, lastProject);
+        } else {
+            // Show project selection screen
+            showProjectSelection(primaryStage);
+        }
+    }
+
+    /**
+     * Shows the project selection screen
+     */
+    private void showProjectSelection(Stage primaryStage) {
         ProjectSelectionScreen selectionScreen = new ProjectSelectionScreen(
                 primaryStage,
                 projectName -> openProject(primaryStage, projectName)
@@ -41,10 +62,21 @@ public class Main extends Application {
     }
 
     /**
+     * Checks if a project exists
+     */
+    private boolean projectExists(String projectName) {
+        return Files.exists(Paths.get("projects", projectName)) &&
+                Files.exists(Paths.get("projects", projectName, "build.gradle"));
+    }
+
+    /**
      * Opens a project in the editor
      */
     private void openProject(Stage primaryStage, String projectName) {
         try {
+            // Update the last opened project in config
+            ProjectConfig.updateLastOpened(projectName);
+
             // Initialize dependency container with project-specific config
             container = new DependencyContainer();
             ApplicationConfig config = ApplicationConfig.forProject(projectName);
@@ -63,6 +95,9 @@ public class Main extends Application {
             // Load initial code
             CodeEditorService codeEditorService = container.resolve(CodeEditorService.class);
             codeEditorService.loadInitialCode();
+
+            // Show the window
+            primaryStage.show();
 
             // Update close handler
             primaryStage.setOnCloseRequest(e -> {
@@ -88,6 +123,11 @@ public class Main extends Application {
         } catch (Exception e) {
             e.printStackTrace();
             showErrorDialog("Error opening project: " + e.getMessage());
+
+            // If auto-load failed, show selection screen
+            if (ProjectConfig.getLastOpened() != null) {
+                showProjectSelection(primaryStage);
+            }
         }
     }
 
@@ -96,7 +136,7 @@ public class Main extends Application {
      */
     private void showErrorDialog(String message) {
         Alert alert = new Alert(
-               Alert.AlertType.ERROR
+                Alert.AlertType.ERROR
         );
         alert.setTitle("Error");
         alert.setHeaderText("Failed to open project");
