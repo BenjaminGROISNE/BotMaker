@@ -82,7 +82,7 @@ public class Main extends Application {
             ApplicationConfig config = ApplicationConfig.forProject(projectName);
 
             // Setup all dependencies
-            setupDependencies(config);
+            setupDependencies(config, primaryStage);
 
             // Initialize services in correct order
             initializeServices();
@@ -147,7 +147,7 @@ public class Main extends Application {
     /**
      * Setup all dependencies in the container
      */
-    private void setupDependencies(ApplicationConfig config) {
+    private void setupDependencies(ApplicationConfig config, Stage primaryStage) {
         // Core infrastructure
         container.registerSingleton(ApplicationConfig.class, config);
         container.registerSingleton(ApplicationState.class, new ApplicationState());
@@ -221,14 +221,20 @@ public class Main extends Application {
                 )
         );
 
-        container.registerLazySingleton(UIManager.class, () ->
-                new UIManager(
-                        container.resolve(BlockDragAndDropManager.class),
-                        container.resolve(EventBus.class),
-                        container.resolve(CodeEditorService.class),
-                        container.resolve(com.botmaker.validation.DiagnosticsManager.class)
-                )
-        );
+        container.registerLazySingleton(UIManager.class, () -> {
+            UIManager uiManager = new UIManager(
+                    container.resolve(BlockDragAndDropManager.class),
+                    container.resolve(EventBus.class),
+                    container.resolve(CodeEditorService.class),
+                    container.resolve(com.botmaker.validation.DiagnosticsManager.class),
+                    primaryStage
+            );
+
+            // Set callback for project selection from menu
+            uiManager.setOnSelectProject(v -> showProjectSelection(primaryStage));
+
+            return uiManager;
+        });
     }
 
     /**

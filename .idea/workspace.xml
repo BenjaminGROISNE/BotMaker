@@ -4,14 +4,8 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="cba04025-c331-4634-a893-436bad03efc0" name="Changes" comment="README.md">
-      <change afterPath="$PROJECT_DIR$/img.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/projects/.botmaker-config.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/botmaker/project/ProjectConfig.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/botmaker/project/ProjectCreator.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/botmaker/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/botmaker/Main.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/botmaker/ui/ProjectSelectionScreen.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/botmaker/ui/ProjectSelectionScreen.java" afterDir="false" />
+    <list default="true" id="cba04025-c331-4634-a893-436bad03efc0" name="Changes" comment="Project Creation and opens most recent project">
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/botmaker/ui/MenuBarManager.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -495,7 +489,15 @@
       <option name="project" value="LOCAL" />
       <updated>1763501103875</updated>
     </task>
-    <option name="localTasksCounter" value="39" />
+    <task id="LOCAL-00039" summary="Project Creation and opens most recent project">
+      <option name="closed" value="true" />
+      <created>1763578177527</created>
+      <option name="number" value="00039" />
+      <option name="presentableId" value="LOCAL-00039" />
+      <option name="project" value="LOCAL" />
+      <updated>1763578177527</updated>
+    </task>
+    <option name="localTasksCounter" value="40" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -523,7 +525,6 @@
     <ignored-roots>
       <path value="$PROJECT_DIR$/.." />
     </ignored-roots>
-    <MESSAGE value="&#10;   1 feat(ui): Implement drag-and-drop for adding new blocks&#10;   2 &#10;   3 Adds a drag-and-drop system for adding new statement blocks to the visual editor.&#10;   4 &#10;   5 This includes a draggable block palette and highlighting separator lines to indicate insertion points on `BodyBlock` drop targets. The hover-event logging has also been refactored to be more detailed and object-oriented." />
     <MESSAGE value="working drag block and hover effect" />
     <MESSAGE value="update rewriter print has some problem loading empty messages" />
     <MESSAGE value="Working println rewriter" />
@@ -548,7 +549,8 @@
     <MESSAGE value="fixed project dependance on Demo.java and compile/run DEmo.java recreated" />
     <MESSAGE value="Project selection works" />
     <MESSAGE value="README.md" />
-    <option name="LAST_COMMIT_MESSAGE" value="README.md" />
+    <MESSAGE value="Project Creation and opens most recent project" />
+    <option name="LAST_COMMIT_MESSAGE" value="Project Creation and opens most recent project" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

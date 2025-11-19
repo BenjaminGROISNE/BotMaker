@@ -12,14 +12,17 @@ import javafx.geometry.Orientation;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
+import javafx.stage.Stage;
 import javafx.util.Duration;
 import org.eclipse.lsp4j.Diagnostic;
 import org.eclipse.lsp4j.DiagnosticSeverity;
 
 import java.util.List;
+import java.util.function.Consumer;
 
 
 public class UIManager {
@@ -28,6 +31,7 @@ public class UIManager {
     private final EventBus eventBus;
     private final CodeEditorService codeEditorService;
     private final com.botmaker.validation.DiagnosticsManager diagnosticsManager;
+    private final Stage primaryStage;
 
     private VBox blocksContainer;
     private Label statusLabel;
@@ -39,18 +43,21 @@ public class UIManager {
     private TabPane bottomTabPane;
     private Tab terminalTab;
     private boolean isDarkMode = false;
+    private MenuBarManager menuBarManager;
 
-    // ============================================
-    // PHASE 3: CHANGED - No more Main parameter
-    // ============================================
+    // Callback for project selection
+    private Consumer<Void> onSelectProject;
+
     public UIManager(BlockDragAndDropManager dragAndDropManager,
                      EventBus eventBus,
                      CodeEditorService codeEditorService,
-                     com.botmaker.validation.DiagnosticsManager diagnosticsManager) {
+                     com.botmaker.validation.DiagnosticsManager diagnosticsManager,
+                     Stage primaryStage) {
         this.dragAndDropManager = dragAndDropManager;
         this.eventBus = eventBus;
         this.codeEditorService = codeEditorService;
         this.diagnosticsManager = diagnosticsManager;
+        this.primaryStage = primaryStage;
 
         setupEventHandlers();
     }
@@ -136,6 +143,14 @@ public class UIManager {
     }
 
     public Scene createScene() {
+        // Create menu bar
+        menuBarManager = new MenuBarManager(primaryStage);
+        menuBarManager.setOnSelectProject(v -> {
+            if (onSelectProject != null) {
+                onSelectProject.accept(null);
+            }
+        });
+
         blocksContainer = new VBox(10);
         statusLabel = new Label("Ready");
         statusLabel.setId("status-label");
@@ -146,9 +161,6 @@ public class UIManager {
         errorListView = new ListView<>();
         errorListView.setPlaceholder(new Label("No errors to display."));
 
-        // ============================================
-        // PHASE 3: CHANGED - Use diagnosticsManager directly (no Main)
-        // ============================================
         errorListView.setCellFactory(lv -> new ListCell<>() {
             @Override
             protected void updateItem(Diagnostic diagnostic, boolean empty) {
@@ -246,8 +258,15 @@ public class UIManager {
 
         VBox.setVgrow(splitPane, Priority.ALWAYS);
 
-        VBox root = new VBox(10, topBar, palette, buttonBox, splitPane, statusLabel);
-        root.setPadding(new Insets(10));
+        // Main content area (everything below menu bar)
+        VBox contentArea = new VBox(10, topBar, palette, buttonBox, splitPane, statusLabel);
+        contentArea.setPadding(new Insets(10));
+        VBox.setVgrow(splitPane, Priority.ALWAYS);
+
+        // Root layout with menu bar at top
+        BorderPane root = new BorderPane();
+        root.setTop(menuBarManager.getMenuBar());
+        root.setCenter(contentArea);
 
         Scene scene = new Scene(root, 600, 800);
         scene.getStylesheets().add(getClass().getResource("/com/botmaker/styles.css").toExternalForm());
@@ -314,5 +333,12 @@ public class UIManager {
     private void onDebuggerFinished() {
         debugButton.setDisable(false);
         resumeButton.setDisable(true);
+    }
+
+    /**
+     * Sets the callback for when "Select Project" is clicked from menu
+     */
+    public void setOnSelectProject(Consumer<Void> callback) {
+        this.onSelectProject = callback;
     }
 }
