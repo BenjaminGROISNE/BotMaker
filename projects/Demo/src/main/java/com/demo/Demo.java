@@ -14,9 +14,9 @@ public class Demo {
 		System.out.println(i);
 		int number1 = 0;
 		int number = 0;
-		    System.out.println("");
+		    System.out.println("a");
 
-        System.out.println("");
+        System.out.println("b");
         int k = 50;
         if(k > 30) {
 			System.out.println("44848");
