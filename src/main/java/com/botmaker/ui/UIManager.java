@@ -47,6 +47,7 @@ public class UIManager {
     private Button debugButton;
     private Button stepOverButton; // Was Resume
     private Button continueButton; // New
+    private Button stopDebugButton;
 
     public UIManager(BlockDragAndDropManager dragAndDropManager,
                      EventBus eventBus,
@@ -187,7 +188,12 @@ public class UIManager {
         continueButton.setDisable(true);
         continueButton.setOnAction(e -> eventBus.publish(new CoreApplicationEvents.DebugContinueRequestedEvent()));
 
-        HBox buttonBox = new HBox(10, compileButton, runButton, debugButton, stepOverButton, continueButton);
+        stopDebugButton = new Button("Stop");
+        stopDebugButton.setDisable(true); // Disabled until debugging starts
+        stopDebugButton.setStyle("-fx-text-fill: red;"); // Visual hint
+        stopDebugButton.setOnAction(e -> eventBus.publish(new CoreApplicationEvents.DebugStopRequestedEvent()));
+
+        HBox buttonBox = new HBox(10, compileButton, runButton, debugButton, stepOverButton, continueButton,stopDebugButton);
 
         Button themeButton = new Button("Toggle Theme");
         HBox topBar = new HBox(10, themeButton);
@@ -245,22 +251,26 @@ public class UIManager {
         debugButton.setDisable(true);
         stepOverButton.setDisable(true);
         continueButton.setDisable(true);
+        stopDebugButton.setDisable(false);
     }
 
     private void onDebuggerPaused() {
         stepOverButton.setDisable(false);
         continueButton.setDisable(false);
+        stopDebugButton.setDisable(false);
     }
 
     private void onDebuggerResumed() {
         stepOverButton.setDisable(true);
         continueButton.setDisable(true);
+        stopDebugButton.setDisable(false);
     }
 
     private void onDebuggerFinished() {
         debugButton.setDisable(false);
         stepOverButton.setDisable(true);
         continueButton.setDisable(true);
+        stopDebugButton.setDisable(true);
     }
 
     public void setOnSelectProject(Consumer<Void> callback) { this.onSelectProject = callback; }

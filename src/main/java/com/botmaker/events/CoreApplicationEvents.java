@@ -98,6 +98,12 @@ public class CoreApplicationEvents {
         }
     }
 
+    public static class DebugStopRequestedEvent extends AbstractApplicationEvent {
+        public DebugStopRequestedEvent() {
+            super("User");
+        }
+    }
+
     /**
      * Fired when a user wants to continue execution until the next breakpoint
      */

@@ -28,6 +28,9 @@ public class DebuggingManager {
     private DebuggerService debuggerService;
     private Map<Integer, CodeBlock> lineToBlockMap;
 
+    // NEW: Store the running process so we can kill it
+    private volatile Process currentProcess;
+
     public DebuggingManager(
             CodeExecutionService codeExecutionService,
             EventBus eventBus,
@@ -63,20 +66,16 @@ public class DebuggingManager {
                 for (CodeBlock block : nodeToBlockMap.values()) {
                     int line = block.getBreakpointLine(cu);
                     if (line > 0) {
-                        // Map lines to blocks for highlighting
                         if (!lineToBlockMap.containsKey(line) || block instanceof StatementBlock) {
                             lineToBlockMap.put(line, block);
                         }
-                        // Add user-defined breakpoints
                         if (block.isBreakpoint()) {
                             activeBreakpoints.add(line);
                         }
                     }
                 }
 
-                // --- FIX: Ensure we stop at the first line if no breakpoints exist ---
                 if (activeBreakpoints.isEmpty() && !lineToBlockMap.isEmpty()) {
-                    // Find the lowest line number (first executable block)
                     lineToBlockMap.keySet().stream()
                             .min(Integer::compareTo)
                             .ifPresent(firstLine -> {
@@ -84,7 +83,6 @@ public class DebuggingManager {
                                 eventBus.publish(new CoreApplicationEvents.StatusMessageEvent("No breakpoints set. Pausing at start (Line " + firstLine + ")."));
                             });
                 }
-                // --------------------------------------------------------------------
 
                 int freePort;
                 try (ServerSocket socket = new ServerSocket(0)) {
@@ -102,10 +100,12 @@ public class DebuggingManager {
                 String debugAgent = String.format("-agentlib:jdwp=transport=dt_socket,server=y,suspend=y,address=%d", freePort);
 
                 ProcessBuilder pb = new ProcessBuilder(javaExecutable, debugAgent, "-cp", classPath, className);
-                Process process = pb.start();
 
-                redirectStream(process.getInputStream());
-                redirectStream(process.getErrorStream());
+                // NEW: Assign to field
+                this.currentProcess = pb.start();
+
+                redirectStream(currentProcess.getInputStream());
+                redirectStream(currentProcess.getErrorStream());
 
                 debuggerService = new DebuggerService();
                 debuggerService.setOnPause(this::handlePauseEvent);
@@ -134,6 +134,26 @@ public class DebuggingManager {
         }
     }
 
+    // NEW: Forcefully kill the process and disconnect
+    public void stopDebugging() {
+        // 1. Disconnect JDI nicely if possible (triggers events)
+        if (debuggerService != null) {
+            debuggerService.disconnect();
+        }
+
+        // 2. Kill the OS process to stop execution immediately
+        if (currentProcess != null && currentProcess.isAlive()) {
+            try {
+                currentProcess.destroyForcibly();
+                eventBus.publish(new CoreApplicationEvents.StatusMessageEvent("Debug process terminated."));
+            } catch (Exception e) {
+                e.printStackTrace();
+            } finally {
+                currentProcess = null;
+            }
+        }
+    }
+
     private void handlePauseEvent(LocatableEvent event) {
         int lineNumber = event.location().lineNumber();
         CodeBlock block = lineToBlockMap.get(lineNumber);
@@ -150,6 +170,7 @@ public class DebuggingManager {
         eventBus.publish(new CoreApplicationEvents.DebugSessionFinishedEvent());
         eventBus.publish(new CoreApplicationEvents.StatusMessageEvent("Debug session finished."));
         eventBus.publish(new CoreApplicationEvents.BlockHighlightEvent(null));
+        this.currentProcess = null;
     }
 
     private void redirectStream(InputStream stream) {

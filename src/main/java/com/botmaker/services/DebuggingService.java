@@ -30,10 +30,16 @@ public class DebuggingService {
 
     private void setupEventHandlers() {
         eventBus.subscribe(CoreApplicationEvents.DebugStartRequestedEvent.class, event -> startDebugging(), false);
-
-        // Map StepOver and Continue events
         eventBus.subscribe(CoreApplicationEvents.DebugStepOverRequestedEvent.class, event -> stepOver(), false);
         eventBus.subscribe(CoreApplicationEvents.DebugContinueRequestedEvent.class, event -> continueExecution(), false);
+
+        // NEW: Subscribe to Stop request
+        eventBus.subscribe(CoreApplicationEvents.DebugStopRequestedEvent.class, event -> stopDebugging(), false);
+    }
+
+    // Add the delegate method
+    public void stopDebugging() {
+        debuggingManager.stopDebugging();
     }
 
     public void startDebugging() {

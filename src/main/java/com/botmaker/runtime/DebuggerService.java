@@ -161,6 +161,20 @@ public class DebuggerService {
         }
     }
 
+
+    public void disconnect() {
+        if (vm != null) {
+            try {
+                System.out.println(ANSI_BLUE + "Disconnecting debugger..." + ANSI_RESET);
+                vm.dispose(); // This triggers VMDisconnectEvent in the listener loop
+            } catch (VMDisconnectedException e) {
+                // Already disconnected, ignore
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
     // NEW: Step Over Implementation
     public void stepOver() {
         if (vm == null || currentThread == null) return;

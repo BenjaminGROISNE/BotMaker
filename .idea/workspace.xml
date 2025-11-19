@@ -4,10 +4,15 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="cba04025-c331-4634-a893-436bad03efc0" name="Changes" comment="Kinda working debug next step and continue">
+    <list default="true" id="cba04025-c331-4634-a893-436bad03efc0" name="Changes" comment="wanky visble breakpoints">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/projects/.botmaker-config.json" beforeDir="false" afterPath="$PROJECT_DIR$/projects/.botmaker-config.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/botmaker/core/AbstractCodeBlock.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/botmaker/core/AbstractCodeBlock.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/botmaker/events/CoreApplicationEvents.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/botmaker/events/CoreApplicationEvents.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/botmaker/runtime/DebuggerService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/botmaker/runtime/DebuggerService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/botmaker/runtime/DebuggingManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/botmaker/runtime/DebuggingManager.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/botmaker/services/DebuggingService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/botmaker/services/DebuggingService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/botmaker/ui/MenuBarManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/botmaker/ui/MenuBarManager.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/botmaker/ui/UIManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/botmaker/ui/UIManager.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -515,7 +520,15 @@
       <option name="project" value="LOCAL" />
       <updated>1763582756754</updated>
     </task>
-    <option name="localTasksCounter" value="42" />
+    <task id="LOCAL-00042" summary="wanky visble breakpoints">
+      <option name="closed" value="true" />
+      <created>1763583468149</created>
+      <option name="number" value="00042" />
+      <option name="presentableId" value="LOCAL-00042" />
+      <option name="project" value="LOCAL" />
+      <updated>1763583468149</updated>
+    </task>
+    <option name="localTasksCounter" value="43" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -543,7 +556,6 @@
     <ignored-roots>
       <path value="$PROJECT_DIR$/.." />
     </ignored-roots>
-    <MESSAGE value="Working println rewriter" />
     <MESSAGE value="Started Main refactor" />
     <MESSAGE value="added deletebutton" />
     <MESSAGE value="Fixed stackOverflow error adjusted hover effect on blocks and block palette" />
@@ -568,7 +580,8 @@
     <MESSAGE value="Project Creation and opens most recent project" />
     <MESSAGE value="Added MenuBar" />
     <MESSAGE value="Kinda working debug next step and continue" />
-    <option name="LAST_COMMIT_MESSAGE" value="Kinda working debug next step and continue" />
+    <MESSAGE value="wanky visble breakpoints" />
+    <option name="LAST_COMMIT_MESSAGE" value="wanky visble breakpoints" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

@@ -73,8 +73,11 @@ public class MenuBarManager {
                 KeyCode.Q,
                 KeyCombination.CONTROL_DOWN
         ));
+
+        // UPDATED: Force system exit
         exitItem.setOnAction(e -> {
-            primaryStage.close();
+            javafx.application.Platform.exit(); // Close JavaFX
+            System.exit(0); // Kill JVM (stops LSP, Debugger, etc.)
         });
 
         fileMenu.getItems().addAll(
