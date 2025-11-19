@@ -4,8 +4,24 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="cba04025-c331-4634-a893-436bad03efc0" name="Changes" comment="Project Creation and opens most recent project">
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/botmaker/ui/MenuBarManager.java" afterDir="false" />
+    <list default="true" id="cba04025-c331-4634-a893-436bad03efc0" name="Changes" comment="Added MenuBar">
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/botmaker/ui/BlockEvent.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/java_files_concat.txt" beforeDir="false" afterPath="$PROJECT_DIR$/java_files_concat.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/projects/.botmaker-config.json" beforeDir="false" afterPath="$PROJECT_DIR$/projects/.botmaker-config.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/botmaker/core/AbstractCodeBlock.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/botmaker/core/AbstractCodeBlock.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/botmaker/core/CodeBlock.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/botmaker/core/CodeBlock.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/botmaker/events/CoreApplicationEvents.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/botmaker/events/CoreApplicationEvents.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/botmaker/runtime/DebuggerService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/botmaker/runtime/DebuggerService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/botmaker/runtime/DebuggingManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/botmaker/runtime/DebuggingManager.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/botmaker/services/CodeEditorService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/botmaker/services/CodeEditorService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/botmaker/services/DebuggingService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/botmaker/services/DebuggingService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/botmaker/state/ApplicationState.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/botmaker/state/ApplicationState.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/botmaker/ui/UIManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/botmaker/ui/UIManager.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/com/botmaker/styles.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/com/botmaker/styles.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tools/jdt-language-server/config_linux/org.eclipse.osgi/.manager/.fileTable.374" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/tools/jdt-language-server/config_linux/org.eclipse.osgi/.manager/.fileTable.375" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/tools/jdt-language-server/config_linux/org.eclipse.osgi/framework.info.374" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -48,18 +64,18 @@
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
     <option name="RESET_MODE" value="HARD" />
   </component>
-  <component name="GitHubPullRequestSearchHistory"><![CDATA[{
-  "lastFilter": {
-    "state": "OPEN",
-    "assignee": "HiddenDev568"
+  <component name="GitHubPullRequestSearchHistory">{
+  &quot;lastFilter&quot;: {
+    &quot;state&quot;: &quot;OPEN&quot;,
+    &quot;assignee&quot;: &quot;HiddenDev568&quot;
   }
-}]]></component>
-  <component name="GithubPullRequestsUISettings"><![CDATA[{
-  "selectedUrlAndAccountId": {
-    "url": "git@github.com:BenjaminGROISNE/BotMaker.git",
-    "accountId": "ec7e42a5-ccc3-4159-bc2d-66779d152957"
+}</component>
+  <component name="GithubPullRequestsUISettings">{
+  &quot;selectedUrlAndAccountId&quot;: {
+    &quot;url&quot;: &quot;git@github.com:BenjaminGROISNE/BotMaker.git&quot;,
+    &quot;accountId&quot;: &quot;ec7e42a5-ccc3-4159-bc2d-66779d152957&quot;
   }
-}]]></component>
+}</component>
   <component name="HighlightingSettingsPerFile">
     <setting file="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.eclipse.lsp4j/org.eclipse.lsp4j.jsonrpc/0.21.0/bfd3025b2f10c8cbb428d539a76f02a128440480/org.eclipse.lsp4j.jsonrpc-0.21.0-sources.jar!/org/eclipse/lsp4j/jsonrpc/Endpoint.java" root0="SKIP_INSPECTION" />
     <setting file="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.eclipse.lsp4j/org.eclipse.lsp4j/0.21.0/59f263c9f254fe06c7699b62c4e9a19ac9b43909/org.eclipse.lsp4j-0.21.0-sources.jar!/org/eclipse/lsp4j/InitializeParams.java" root0="SKIP_INSPECTION" />
@@ -497,7 +513,15 @@
       <option name="project" value="LOCAL" />
       <updated>1763578177527</updated>
     </task>
-    <option name="localTasksCounter" value="40" />
+    <task id="LOCAL-00040" summary="Added MenuBar">
+      <option name="closed" value="true" />
+      <created>1763578768926</created>
+      <option name="number" value="00040" />
+      <option name="presentableId" value="LOCAL-00040" />
+      <option name="project" value="LOCAL" />
+      <updated>1763578768926</updated>
+    </task>
+    <option name="localTasksCounter" value="41" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -525,7 +549,6 @@
     <ignored-roots>
       <path value="$PROJECT_DIR$/.." />
     </ignored-roots>
-    <MESSAGE value="working drag block and hover effect" />
     <MESSAGE value="update rewriter print has some problem loading empty messages" />
     <MESSAGE value="Working println rewriter" />
     <MESSAGE value="Started Main refactor" />
@@ -550,7 +573,8 @@
     <MESSAGE value="Project selection works" />
     <MESSAGE value="README.md" />
     <MESSAGE value="Project Creation and opens most recent project" />
-    <option name="LAST_COMMIT_MESSAGE" value="Project Creation and opens most recent project" />
+    <MESSAGE value="Added MenuBar" />
+    <option name="LAST_COMMIT_MESSAGE" value="Added MenuBar" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

@@ -2,6 +2,7 @@ package com.botmaker.services;
 
 import com.botmaker.blocks.MainBlock;
 import com.botmaker.config.ApplicationConfig;
+import com.botmaker.core.CodeBlock;
 import com.botmaker.events.CoreApplicationEvents;
 import com.botmaker.events.EventBus;
 import com.botmaker.lsp.CompletionContext;
@@ -12,10 +13,6 @@ import com.botmaker.state.ApplicationState;
 import com.botmaker.ui.BlockDragAndDropManager;
 import javafx.application.Platform;
 
-/**
- * Service responsible for code editing operations and UI synchronization.
- * Manages the relationship between code, AST, and visual blocks.
- */
 public class CodeEditorService {
 
     private final ApplicationConfig config;
@@ -47,32 +44,39 @@ public class CodeEditorService {
         this.languageServerService = languageServerService;
         this.diagnosticsManager = diagnosticsManager;
 
-        // Initialize code editor
         this.codeEditor = new CodeEditor(state, eventBus, astRewriter, blockFactory);
 
         setupEventHandlers();
     }
 
     private void setupEventHandlers() {
-        // Subscribe to UI refresh requests
         eventBus.subscribe(
                 CoreApplicationEvents.UIRefreshRequestedEvent.class,
                 event -> Platform.runLater(() -> refreshUI(event.getCode())),
                 false
         );
+
+        // NEW: Listen for toggles to update state
+        eventBus.subscribe(
+                CoreApplicationEvents.BreakpointToggledEvent.class,
+                this::handleBreakpointToggle,
+                false
+        );
     }
 
-    /**
-     * Loads the initial code and triggers UI refresh
-     */
+    private void handleBreakpointToggle(CoreApplicationEvents.BreakpointToggledEvent event) {
+        if (event.isEnabled()) {
+            state.addBreakpoint(event.getBlock().getId());
+        } else {
+            state.removeBreakpoint(event.getBlock().getId());
+        }
+    }
+
     public void loadInitialCode() {
         String currentCode = state.getCurrentCode();
         Platform.runLater(() -> refreshUI(currentCode));
     }
 
-    /**
-     * Refreshes the UI based on the current code
-     */
     private void refreshUI(String javaCode) {
         state.setCurrentCode(javaCode);
         state.clearNodeToBlockMap();
@@ -81,25 +85,25 @@ public class CodeEditorService {
             diagnosticsManager.updateSource(state.getMutableNodeToBlockMap(), javaCode);
         }
 
-        // Parse code to blocks
         MainBlock rootBlock = blockFactory.convert(
                 javaCode,
                 state.getMutableNodeToBlockMap(),
                 dragAndDropManager
         );
 
-        // Update compilation unit in state
+        // NEW: Restore breakpoints on newly created blocks
+        for (CodeBlock block : state.getNodeToBlockMap().values()) {
+            if (state.hasBreakpoint(block.getId())) {
+                block.setBreakpoint(true);
+            }
+        }
+
         state.setCompilationUnit(blockFactory.getCompilationUnit());
 
-        // Publish event with the root block (UI will handle rendering)
         eventBus.publish(new CoreApplicationEvents.UIBlocksUpdatedEvent(rootBlock));
         eventBus.publish(new CoreApplicationEvents.StatusMessageEvent("UI Refreshed."));
     }
 
-    /**
-     * Creates a completion context for block rendering
-     * PHASE 3: No longer includes Main reference
-     */
     public CompletionContext createCompletionContext() {
         return new CompletionContext(
                 codeEditor,
@@ -111,17 +115,6 @@ public class CodeEditorService {
         );
     }
 
-    /**
-     * Get the code editor instance
-     */
-    public CodeEditor getCodeEditor() {
-        return codeEditor;
-    }
-
-    /**
-     * Get the block factory instance
-     */
-    public BlockFactory getBlockFactory() {
-        return blockFactory;
-    }
+    public CodeEditor getCodeEditor() { return codeEditor; }
+    public BlockFactory getBlockFactory() { return blockFactory; }
 }

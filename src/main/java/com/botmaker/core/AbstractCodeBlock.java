@@ -1,22 +1,23 @@
 package com.botmaker.core;
 
 import com.botmaker.lsp.CompletionContext;
-import javafx.geometry.Pos;
+import com.botmaker.ui.BlockEvent;
 import javafx.scene.Node;
-import javafx.scene.control.Button;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.Pane;
-import javafx.scene.layout.Priority;
+import javafx.scene.control.ContextMenu;
+import javafx.scene.control.MenuItem;
+import javafx.scene.control.Tooltip;
 import javafx.scene.layout.Region;
 import org.eclipse.jdt.core.dom.ASTNode;
 import org.eclipse.jdt.core.dom.CompilationUnit;
-import org.eclipse.jdt.core.dom.Statement;
 
 public abstract class AbstractCodeBlock implements CodeBlock {
     protected final String id;
     protected final ASTNode astNode;
-    protected Node uiNode; // A cached reference to the UI node
+    protected Node uiNode;
     private javafx.scene.control.Tooltip errorTooltip;
+
+    protected boolean isBreakpoint = false;
+    private static final String BREAKPOINT_STYLE_CLASS = "breakpoint-enabled";
 
     public AbstractCodeBlock(String id, ASTNode astNode) {
         this.id = id;
@@ -24,35 +25,45 @@ public abstract class AbstractCodeBlock implements CodeBlock {
     }
 
     @Override
-    public String getId() {
-        return id;
-    }
+    public String getId() { return id; }
 
     @Override
-    public ASTNode getAstNode() {
-        return astNode;
-    }
+    public ASTNode getAstNode() { return astNode; }
 
     @Override
     public Node getUINode(CompletionContext context) {
         if (uiNode == null) {
             this.uiNode = createUINode(context);
+            setupBreakpointInteraction();
+
+            // --- FIX: Add discovery tooltip ---
+            Tooltip tip = new Tooltip("Right-click to toggle breakpoint");
+            Tooltip.install(uiNode, tip);
         }
+        updateBreakpointVisuals();
         return uiNode;
+    }
+
+    private void setupBreakpointInteraction() {
+        if (uiNode == null) return;
+
+        uiNode.setOnContextMenuRequested(e -> {
+            ContextMenu contextMenu = new ContextMenu();
+            MenuItem toggleBpItem = new MenuItem(isBreakpoint ? "Remove Breakpoint 🔴" : "Add Breakpoint ⚪");
+            toggleBpItem.setOnAction(ev -> toggleBreakpoint());
+            contextMenu.getItems().add(toggleBpItem);
+            contextMenu.show(uiNode, e.getScreenX(), e.getScreenY());
+            e.consume();
+        });
     }
 
     @Override
-    public Node getUINode() {
-        return uiNode;
-    }
-
+    public Node getUINode() { return uiNode; }
 
     @Override
     public void highlight() {
-        if (uiNode != null) {
-            if (!uiNode.getStyleClass().contains("highlighted")) {
-                uiNode.getStyleClass().add("highlighted");
-            }
+        if (uiNode != null && !uiNode.getStyleClass().contains("highlighted")) {
+            uiNode.getStyleClass().add("highlighted");
         }
     }
 
@@ -70,8 +81,8 @@ public abstract class AbstractCodeBlock implements CodeBlock {
                 uiNode.getStyleClass().add("error-block");
             }
             if (errorTooltip == null) {
-                errorTooltip = new javafx.scene.control.Tooltip(message);
-                javafx.scene.control.Tooltip.install(uiNode, errorTooltip);
+                errorTooltip = new Tooltip(message);
+                Tooltip.install(uiNode, errorTooltip);
             } else {
                 errorTooltip.setText(message);
             }
@@ -83,7 +94,7 @@ public abstract class AbstractCodeBlock implements CodeBlock {
         if (uiNode != null) {
             uiNode.getStyleClass().remove("error-block");
             if (errorTooltip != null) {
-                javafx.scene.control.Tooltip.uninstall(uiNode, errorTooltip);
+                Tooltip.uninstall(uiNode, errorTooltip);
                 errorTooltip = null;
             }
         }
@@ -96,26 +107,51 @@ public abstract class AbstractCodeBlock implements CodeBlock {
     }
 
     @Override
-    public CodeBlock getHighlightTarget() {
-        return this; // Default behavior is to highlight the block itself.
-    }
+    public CodeBlock getHighlightTarget() { return this; }
 
     @Override
     public String getDetails() {
         return this.getClass().getSimpleName() + " (ID: " + this.getId() + ")";
     }
 
-    /**
-     * Creates a standard placeholder for a missing expression, which acts as a drop target.
-     * @param context The completion context containing the drag-and-drop manager.
-     * @return A Node representing the drop zone.
-     */
+    @Override
+    public boolean isBreakpoint() { return isBreakpoint; }
+
+    @Override
+    public void setBreakpoint(boolean enabled) {
+        this.isBreakpoint = enabled;
+        updateBreakpointVisuals();
+    }
+
+    @Override
+    public void toggleBreakpoint() {
+        setBreakpoint(!isBreakpoint);
+        if (uiNode != null) {
+            uiNode.fireEvent(new BlockEvent.BreakpointToggleEvent(this, isBreakpoint));
+        }
+    }
+
+    private void updateBreakpointVisuals() {
+        if (uiNode != null) {
+            if (isBreakpoint) {
+                if (!uiNode.getStyleClass().contains(BREAKPOINT_STYLE_CLASS)) {
+                    uiNode.getStyleClass().add(BREAKPOINT_STYLE_CLASS);
+                }
+                // --- FIX: Force style immediately ---
+                uiNode.setStyle("-fx-border-color: red; -fx-border-width: 2px; -fx-border-style: solid; -fx-effect: dropshadow(three-pass-box, red, 5, 0, 0, 0);");
+            } else {
+                uiNode.getStyleClass().remove(BREAKPOINT_STYLE_CLASS);
+                // --- FIX: Clear specific breakpoint style ---
+                uiNode.setStyle("");
+            }
+        }
+    }
+
     protected Node createExpressionDropZone(CompletionContext context) {
         Region dropZone = new Region();
         context.dragAndDropManager().addExpressionDropHandlers(dropZone);
         return dropZone;
     }
 
-    // Abstract method for subclasses to implement their specific UI creation logic.
     protected abstract Node createUINode(CompletionContext context);
 }

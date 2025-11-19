@@ -9,6 +9,7 @@ import com.sun.jdi.event.*;
 import com.sun.jdi.request.BreakpointRequest;
 import com.sun.jdi.request.ClassPrepareRequest;
 import com.sun.jdi.request.EventRequestManager;
+import com.sun.jdi.request.StepRequest;
 
 import java.io.IOException;
 import java.util.List;
@@ -18,7 +19,7 @@ import java.util.function.Consumer;
 
 public class DebuggerService {
 
-    // ANSI escape codes for colors
+    // ANSI escape codes
     public static final String ANSI_RESET = "\u001B[0m";
     public static final String ANSI_BLUE = "\u001B[34m";
     public static final String ANSI_GREEN = "\u001B[32m";
@@ -29,13 +30,11 @@ public class DebuggerService {
     private Consumer<LocatableEvent> onPause;
     private Runnable onDisconnect;
 
-    public void setOnPause(Consumer<LocatableEvent> onPause) {
-        this.onPause = onPause;
-    }
+    // NEW: Keep track of the thread we are debugging
+    private ThreadReference currentThread;
 
-    public void setOnDisconnect(Runnable onDisconnect) {
-        this.onDisconnect = onDisconnect;
-    }
+    public void setOnPause(Consumer<LocatableEvent> onPause) { this.onPause = onPause; }
+    public void setOnDisconnect(Runnable onDisconnect) { this.onDisconnect = onDisconnect; }
 
     public void connectAndRun(String mainClassName, int port, List<Integer> breakpointLines) throws IOException, IllegalConnectorArgumentsException, InterruptedException {
         VirtualMachineManager vmMgr = Bootstrap.virtualMachineManager();
@@ -55,13 +54,12 @@ public class DebuggerService {
                 System.out.println(ANSI_BLUE + "Attaching to process on port " + port + " (Attempt " + (i + 1) + ")..." + ANSI_RESET);
                 vm = connector.attach(arguments);
                 System.out.println(ANSI_BLUE + "Attached to VM: " + vm.name() + ANSI_RESET);
-                break; // Success, exit the loop
+                break;
             } catch (IOException e) {
                 if (e instanceof java.net.ConnectException && i < maxRetries - 1) {
                     System.out.println(ANSI_YELLOW + "Connection refused. Retrying in " + retryDelayMs + "ms..." + ANSI_RESET);
                     Thread.sleep(retryDelayMs);
                 } else {
-                    // For other IOExceptions or on the last retry, re-throw.
                     throw e;
                 }
             }
@@ -71,10 +69,8 @@ public class DebuggerService {
 
         List<ReferenceType> classes = vm.classesByName(mainClassName);
         if (!classes.isEmpty()) {
-            System.out.println(ANSI_YELLOW + "Class " + mainClassName + " is already loaded. Setting breakpoints immediately." + ANSI_RESET);
             setBreakpoints(classes.getFirst(), breakpointLines);
         } else {
-            System.out.println(ANSI_YELLOW + "Class " + mainClassName + " is not loaded yet. Requesting notification for when it is." + ANSI_RESET);
             ClassPrepareRequest classPrepareRequest = erm.createClassPrepareRequest();
             classPrepareRequest.addClassFilter(mainClassName);
             classPrepareRequest.enable();
@@ -82,11 +78,8 @@ public class DebuggerService {
 
         CountDownLatch listenerReadyLatch = new CountDownLatch(1);
         new Thread(() -> listenForEvents(listenerReadyLatch, mainClassName, breakpointLines)).start();
-
-        System.out.println(ANSI_BLUE + "Waiting for debugger event listener to be ready..." + ANSI_RESET);
         listenerReadyLatch.await();
 
-        System.out.println(ANSI_BLUE + "Listener is ready. Resuming VM to trigger class loading and hit initial breakpoint." + ANSI_RESET);
         vm.resume();
     }
 
@@ -105,12 +98,23 @@ public class DebuggerService {
 
                 try {
                     for (Event event : eventSet) {
-                        if (event instanceof BreakpointEvent) {
-                            System.out.println(ANSI_GREEN + "---> Hit Breakpoint: " + event + ANSI_RESET);
-                            if (onPause != null) {
-                                onPause.accept((BreakpointEvent) event);
+                        if (event instanceof LocatableEvent) {
+                            // BreakpointEvent or StepEvent
+                            System.out.println(ANSI_GREEN + "---> Paused at: " + event + ANSI_RESET);
+
+                            // Capture the thread context
+                            if (event instanceof BreakpointEvent) {
+                                currentThread = ((BreakpointEvent) event).thread();
+                            } else if (event instanceof StepEvent) {
+                                currentThread = ((StepEvent) event).thread();
+                                // Clean up the step request once hit
+                                vm.eventRequestManager().deleteEventRequest(event.request());
                             }
-                            shouldResume = false; // PAUSE the VM
+
+                            if (onPause != null) {
+                                onPause.accept((LocatableEvent) event);
+                            }
+                            shouldResume = false; // Keep paused
                         } else if (event instanceof ClassPrepareEvent) {
                             System.out.println(ANSI_YELLOW + "Class Prepared: " + ((ClassPrepareEvent) event).referenceType().name() + ANSI_RESET);
                             ClassPrepareEvent cpe = (ClassPrepareEvent) event;
@@ -119,13 +123,8 @@ public class DebuggerService {
                             }
                         } else if (event instanceof VMDisconnectEvent) {
                             System.out.println(ANSI_RED + "VM Disconnected." + ANSI_RESET);
-                            if (onDisconnect != null) {
-                                onDisconnect.run();
-                            }
-                            return; // Exit thread
-                        } else {
-                            // Other events like VMStartEvent, ThreadStartEvent etc.
-                            System.out.println(ANSI_BLUE + "JDI Event: " + event + ANSI_RESET);
+                            if (onDisconnect != null) onDisconnect.run();
+                            return;
                         }
                     }
                 } finally {
@@ -133,37 +132,57 @@ public class DebuggerService {
                         eventSet.resume();
                     }
                 }
-            } catch (InterruptedException e) {
-                System.out.println(ANSI_RED + "Event listener interrupted." + ANSI_RESET);
-                return;
-            } catch (VMDisconnectedException e) {
-                System.out.println(ANSI_RED + "VM Disconnected. Exiting event listener." + ANSI_RESET);
-                if (onDisconnect != null) {
-                    onDisconnect.run();
-                }
+            } catch (InterruptedException | VMDisconnectedException e) {
+                if (onDisconnect != null) onDisconnect.run();
                 return;
             } catch (Exception e) {
-                System.out.println(ANSI_RED + "Exception in event loop: " + e.getMessage() + ANSI_RESET);
                 e.printStackTrace();
             }
         }
     }
 
     private void setBreakpoints(ReferenceType refType, List<Integer> lines) {
+        if (lines == null || lines.isEmpty()) return;
         try {
+            EventRequestManager erm = vm.eventRequestManager();
+            // Clear existing breakpoints on this class first if re-setting
+            // (Not implementing clear logic here for simplicity, assuming fresh session)
+
             for (int lineNumber : lines) {
                 List<Location> locations = refType.locationsOfLine(lineNumber);
                 if (!locations.isEmpty()) {
                     Location loc = locations.get(0);
-                    System.out.println(ANSI_YELLOW + "Setting breakpoint at: " + loc + ANSI_RESET);
-                    BreakpointRequest bpReq = vm.eventRequestManager().createBreakpointRequest(loc);
+                    BreakpointRequest bpReq = erm.createBreakpointRequest(loc);
                     bpReq.enable();
-                } else {
-                    System.out.println(ANSI_YELLOW + "Warning: Could not find a location for line " + lineNumber + ANSI_RESET);
                 }
             }
         } catch (AbsentInformationException e) {
-            System.err.println(ANSI_RED + "Could not set breakpoints. Compile the source with debug information (-g)." + ANSI_RESET);
+            System.err.println("No debug info available.");
+        }
+    }
+
+    // NEW: Step Over Implementation
+    public void stepOver() {
+        if (vm == null || currentThread == null) return;
+        try {
+            EventRequestManager erm = vm.eventRequestManager();
+
+            // Clear any existing step requests on this thread
+            List<StepRequest> steps = erm.stepRequests();
+            for (StepRequest step : steps) {
+                if (step.thread().equals(currentThread)) {
+                    erm.deleteEventRequest(step);
+                }
+            }
+
+            // Create new StepOver request
+            StepRequest request = erm.createStepRequest(currentThread, StepRequest.STEP_LINE, StepRequest.STEP_OVER);
+            request.addCountFilter(1); // Step 1 line
+            request.enable();
+
+            vm.resume();
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 

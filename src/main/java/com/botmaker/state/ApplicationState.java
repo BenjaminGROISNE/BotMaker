@@ -4,10 +4,7 @@ import com.botmaker.core.CodeBlock;
 import org.eclipse.jdt.core.dom.ASTNode;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 
 /**
  * Central application state container.
@@ -30,7 +27,7 @@ public class ApplicationState {
 
     // Debug state
     private boolean isDebugging;
-
+    private final Set<String> breakpointIds = new HashSet<>();
     public ApplicationState() {
         this.currentCode = "";
         this.docUri = "";
@@ -139,7 +136,22 @@ public class ApplicationState {
     public void setDebugging(boolean debugging) {
         this.isDebugging = debugging;
     }
+    // NEW: Breakpoint Management
+    public Set<String> getBreakpointIds() {
+        return Collections.unmodifiableSet(breakpointIds);
+    }
 
+    public void addBreakpoint(String blockId) {
+        breakpointIds.add(blockId);
+    }
+
+    public void removeBreakpoint(String blockId) {
+        breakpointIds.remove(blockId);
+    }
+
+    public boolean hasBreakpoint(String blockId) {
+        return breakpointIds.contains(blockId);
+    }
     // Utility methods
 
     /**

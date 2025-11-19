@@ -8,16 +8,11 @@ import com.botmaker.runtime.CodeExecutionService;
 import com.botmaker.runtime.DebuggingManager;
 import com.botmaker.state.ApplicationState;
 
-/**
- * Service wrapper for debugging operations.
- * Bridges between the event system and the existing DebuggingManager.
- */
 public class DebuggingService {
 
     private final ApplicationState state;
     private final EventBus eventBus;
     private final DebuggingManager debuggingManager;
-    ApplicationConfig config;
 
     public DebuggingService(
             ApplicationState state,
@@ -28,51 +23,29 @@ public class DebuggingService {
 
         this.state = state;
         this.eventBus = eventBus;
-        this.debuggingManager = new DebuggingManager(
-                codeExecutionService,
-                eventBus,
-                blockFactory,
-                config
-        );
+        this.debuggingManager = new DebuggingManager(codeExecutionService, eventBus, blockFactory, config);
 
         setupEventHandlers();
     }
 
     private void setupEventHandlers() {
-        // Subscribe to debug start requests
-        eventBus.subscribe(
-                CoreApplicationEvents.DebugStartRequestedEvent.class,
-                event -> startDebugging(),
-                false
-        );
+        eventBus.subscribe(CoreApplicationEvents.DebugStartRequestedEvent.class, event -> startDebugging(), false);
 
-        // Subscribe to debug resume requests
-        eventBus.subscribe(
-                CoreApplicationEvents.DebugResumeRequestedEvent.class,
-                event -> resume(),
-                false
-        );
+        // Map StepOver and Continue events
+        eventBus.subscribe(CoreApplicationEvents.DebugStepOverRequestedEvent.class, event -> stepOver(), false);
+        eventBus.subscribe(CoreApplicationEvents.DebugContinueRequestedEvent.class, event -> continueExecution(), false);
     }
 
-    /**
-     * Starts a debugging session
-     */
     public void startDebugging() {
         debuggingManager.setNodeToBlockMap(state.getNodeToBlockMap());
         debuggingManager.startDebugging(state.getCurrentCode());
     }
 
-    /**
-     * Resumes the debugging session
-     */
-    public void resume() {
-        debuggingManager.resume();
+    public void stepOver() {
+        debuggingManager.stepOver();
     }
 
-    /**
-     * Get the underlying debugging manager
-     */
-    public DebuggingManager getDebuggingManager() {
-        return debuggingManager;
+    public void continueExecution() {
+        debuggingManager.continueExecution();
     }
 }

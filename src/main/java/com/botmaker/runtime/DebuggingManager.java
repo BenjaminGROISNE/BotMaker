@@ -15,36 +15,19 @@ import org.eclipse.jdt.core.dom.CompilationUnit;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.ServerSocket;
-import java.nio.file.Paths;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Scanner;
+import java.util.*;
 
-/**
- * Manages debugging sessions.
- * Phase 1 Refactoring: Now uses EventBus instead of callbacks.
- */
 public class DebuggingManager {
 
-    // ============================================
-    // PHASE 1 CHANGES: Replace callbacks with EventBus
-    // ============================================
     private final CodeExecutionService codeExecutionService;
-    private final EventBus eventBus; // NEW: Replaces all the Consumer/Runnable callbacks
+    private final EventBus eventBus;
     private final BlockFactory factory;
     private final ApplicationConfig config;
-    // KEPT: Original state
+
     private Map<ASTNode, CodeBlock> nodeToBlockMap;
     private DebuggerService debuggerService;
     private Map<Integer, CodeBlock> lineToBlockMap;
 
-    // ============================================
-    // PHASE 1: CHANGED - New constructor signature
-    // OLD: Had 9 parameters (service + 8 callbacks)
-    // NEW: Only 3 parameters (service + eventBus + factory)
-    // ============================================
     public DebuggingManager(
             CodeExecutionService codeExecutionService,
             EventBus eventBus,
@@ -56,10 +39,6 @@ public class DebuggingManager {
         this.config = config;
     }
 
-    // ============================================
-    // KEPT: Original methods
-    // ============================================
-
     public void setNodeToBlockMap(Map<ASTNode, CodeBlock> nodeToBlockMap) {
         this.nodeToBlockMap = nodeToBlockMap;
     }
@@ -68,47 +47,54 @@ public class DebuggingManager {
         new Thread(() -> {
             try {
                 if (!codeExecutionService.compileAndWait(code, config.getSourceFilePath(), config.getCompiledOutputPath())) {
-                    eventBus.publish(new CoreApplicationEvents.StatusMessageEvent(
-                            "Debug aborted due to compilation failure."
-                    ));
+                    eventBus.publish(new CoreApplicationEvents.StatusMessageEvent("Debug aborted due to compilation failure."));
                     return;
                 }
 
                 CompilationUnit cu = factory.getCompilationUnit();
                 if (cu == null || nodeToBlockMap == null) {
-                    eventBus.publish(new CoreApplicationEvents.StatusMessageEvent(
-                            "Error: Could not parse code to get breakpoints."
-                    ));
+                    eventBus.publish(new CoreApplicationEvents.StatusMessageEvent("Error: Could not parse code to get breakpoints."));
                     return;
                 }
 
                 this.lineToBlockMap = new HashMap<>();
+                List<Integer> activeBreakpoints = new ArrayList<>();
+
                 for (CodeBlock block : nodeToBlockMap.values()) {
                     int line = block.getBreakpointLine(cu);
                     if (line > 0) {
+                        // Map lines to blocks for highlighting
                         if (!lineToBlockMap.containsKey(line) || block instanceof StatementBlock) {
                             lineToBlockMap.put(line, block);
                         }
+                        // Add user-defined breakpoints
+                        if (block.isBreakpoint()) {
+                            activeBreakpoints.add(line);
+                        }
                     }
                 }
-                List<Integer> breakpointLines = new ArrayList<>(this.lineToBlockMap.keySet());
+
+                // --- FIX: Ensure we stop at the first line if no breakpoints exist ---
+                if (activeBreakpoints.isEmpty() && !lineToBlockMap.isEmpty()) {
+                    // Find the lowest line number (first executable block)
+                    lineToBlockMap.keySet().stream()
+                            .min(Integer::compareTo)
+                            .ifPresent(firstLine -> {
+                                activeBreakpoints.add(firstLine);
+                                eventBus.publish(new CoreApplicationEvents.StatusMessageEvent("No breakpoints set. Pausing at start (Line " + firstLine + ")."));
+                            });
+                }
+                // --------------------------------------------------------------------
 
                 int freePort;
                 try (ServerSocket socket = new ServerSocket(0)) {
                     freePort = socket.getLocalPort();
                 }
 
-                // PHASE 1 CHANGE: Publish events instead of calling callbacks
-                final int port = freePort;
-                eventBus.publish(new CoreApplicationEvents.StatusMessageEvent(
-                        "Starting debugger on port " + port + "..."
-                ));
+                eventBus.publish(new CoreApplicationEvents.StatusMessageEvent("Starting debugger on port " + freePort + "..."));
                 eventBus.publish(new CoreApplicationEvents.DebugSessionStartedEvent());
 
-                // Clear output via direct call (still needed for now)
-                Platform.runLater(() -> {
-                    eventBus.publish(new CoreApplicationEvents.OutputClearedEvent());
-                });
+                Platform.runLater(() -> eventBus.publish(new CoreApplicationEvents.OutputClearedEvent()));
 
                 String classPath = config.getCompiledOutputPath().toString();
                 String className = config.getMainClassName();
@@ -124,68 +110,54 @@ public class DebuggingManager {
                 debuggerService = new DebuggerService();
                 debuggerService.setOnPause(this::handlePauseEvent);
                 debuggerService.setOnDisconnect(this::onDebugSessionFinished);
-                debuggerService.connectAndRun(className, freePort, breakpointLines);
+
+                debuggerService.connectAndRun(className, freePort, activeBreakpoints);
 
             } catch (IOException | IllegalConnectorArgumentsException | InterruptedException e) {
-                eventBus.publish(new CoreApplicationEvents.StatusMessageEvent(
-                        "Debugger Error: " + e.getMessage()
-                ));
+                eventBus.publish(new CoreApplicationEvents.StatusMessageEvent("Debugger Error: " + e.getMessage()));
                 e.printStackTrace();
             }
         }).start();
     }
 
-    public void resume() {
+    public void continueExecution() {
         if (debuggerService != null) {
-            // PHASE 1 CHANGE: Publish event instead of calling callback
             eventBus.publish(new CoreApplicationEvents.DebugSessionResumedEvent());
             debuggerService.resume();
         }
     }
 
-    // ============================================
-    // PHASE 1: CHANGED - Publish events instead of calling callbacks
-    // ============================================
+    public void stepOver() {
+        if (debuggerService != null) {
+            eventBus.publish(new CoreApplicationEvents.DebugSessionResumedEvent());
+            debuggerService.stepOver();
+        }
+    }
 
     private void handlePauseEvent(LocatableEvent event) {
         int lineNumber = event.location().lineNumber();
         CodeBlock block = lineToBlockMap.get(lineNumber);
+        CodeBlock target = (block != null) ? block.getHighlightTarget() : null;
 
-        if (block != null) {
-            CodeBlock target = block.getHighlightTarget();
-            // Publish events instead of calling callbacks
-            eventBus.publish(new CoreApplicationEvents.DebugSessionPausedEvent(lineNumber, target));
-            eventBus.publish(new CoreApplicationEvents.BlockHighlightEvent(target));
-            eventBus.publish(new CoreApplicationEvents.StatusMessageEvent(
-                    "Paused at line: " + lineNumber
-            ));
-        } else {
-            eventBus.publish(new CoreApplicationEvents.DebugSessionPausedEvent(lineNumber, null));
-            eventBus.publish(new CoreApplicationEvents.StatusMessageEvent(
-                    "Paused at line: " + lineNumber + " (No block found)"
-            ));
-        }
+        eventBus.publish(new CoreApplicationEvents.DebugSessionPausedEvent(lineNumber, target));
+        eventBus.publish(new CoreApplicationEvents.BlockHighlightEvent(target));
+        eventBus.publish(new CoreApplicationEvents.StatusMessageEvent(
+                "Paused at line: " + lineNumber
+        ));
     }
 
     private void onDebugSessionFinished() {
-        // PHASE 1 CHANGE: Publish events instead of calling callbacks
         eventBus.publish(new CoreApplicationEvents.DebugSessionFinishedEvent());
         eventBus.publish(new CoreApplicationEvents.StatusMessageEvent("Debug session finished."));
         eventBus.publish(new CoreApplicationEvents.BlockHighlightEvent(null));
     }
-
-    // ============================================
-    // KEPT: Helper method unchanged
-    // ============================================
 
     private void redirectStream(InputStream stream) {
         new Thread(() -> {
             try (Scanner s = new Scanner(stream)) {
                 while (s.hasNextLine()) {
                     String line = s.nextLine();
-                    // This still uses direct reference - will be refactored in Phase 2
-                    Platform.runLater(() -> {
-                        eventBus.publish(new CoreApplicationEvents.OutputAppendedEvent(line + "\n"));                    });
+                    Platform.runLater(() -> eventBus.publish(new CoreApplicationEvents.OutputAppendedEvent(line + "\n")));
                 }
             }
         }).start();

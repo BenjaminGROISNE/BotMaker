@@ -24,7 +24,6 @@ import org.eclipse.lsp4j.DiagnosticSeverity;
 import java.util.List;
 import java.util.function.Consumer;
 
-
 public class UIManager {
 
     private final BlockDragAndDropManager dragAndDropManager;
@@ -36,17 +35,18 @@ public class UIManager {
     private VBox blocksContainer;
     private Label statusLabel;
     private TextArea outputArea;
-    private Button debugButton;
-    private Button resumeButton;
-    private ScrollPane scrollPane;
     private ListView<Diagnostic> errorListView;
     private TabPane bottomTabPane;
     private Tab terminalTab;
+    private ScrollPane scrollPane;
     private boolean isDarkMode = false;
     private MenuBarManager menuBarManager;
-
-    // Callback for project selection
     private Consumer<Void> onSelectProject;
+
+    // Controls
+    private Button debugButton;
+    private Button stepOverButton; // Was Resume
+    private Button continueButton; // New
 
     public UIManager(BlockDragAndDropManager dragAndDropManager,
                      EventBus eventBus,
@@ -63,93 +63,44 @@ public class UIManager {
     }
 
     private void setupEventHandlers() {
-        // Subscribe to block updates
-        eventBus.subscribe(
-                CoreApplicationEvents.UIBlocksUpdatedEvent.class,
-                this::handleBlocksUpdate,
-                true
-        );
+        eventBus.subscribe(CoreApplicationEvents.UIBlocksUpdatedEvent.class, this::handleBlocksUpdate, true);
+        eventBus.subscribe(CoreApplicationEvents.OutputAppendedEvent.class, event -> outputArea.appendText(event.getText()), true);
+        eventBus.subscribe(CoreApplicationEvents.OutputClearedEvent.class, event -> outputArea.clear(), true);
+        eventBus.subscribe(CoreApplicationEvents.OutputSetEvent.class, event -> outputArea.setText(event.getText()), true);
+        eventBus.subscribe(CoreApplicationEvents.StatusMessageEvent.class, event -> statusLabel.setText(event.getMessage()), true);
 
-        // Subscribe to output events
-        eventBus.subscribe(
-                CoreApplicationEvents.OutputAppendedEvent.class,
-                event -> outputArea.appendText(event.getText()),
-                true
-        );
+        eventBus.subscribe(CoreApplicationEvents.DiagnosticsUpdatedEvent.class, event -> {
+            diagnosticsManager.processDiagnostics(event.getDiagnostics());
+            updateErrors(diagnosticsManager.getDiagnostics());
+            statusLabel.setText(diagnosticsManager.getErrorSummary());
+        }, true);
 
-        eventBus.subscribe(
-                CoreApplicationEvents.OutputClearedEvent.class,
-                event -> outputArea.clear(),
-                true
-        );
-
-        eventBus.subscribe(
-                CoreApplicationEvents.OutputSetEvent.class,
-                event -> outputArea.setText(event.getText()),
-                true
-        );
-
-        // Subscribe to status messages
-        eventBus.subscribe(
-                CoreApplicationEvents.StatusMessageEvent.class,
-                event -> statusLabel.setText(event.getMessage()),
-                true
-        );
-
-        // Subscribe to diagnostics updates
-        eventBus.subscribe(
-                CoreApplicationEvents.DiagnosticsUpdatedEvent.class,
-                event -> {
-                    diagnosticsManager.processDiagnostics(event.getDiagnostics());
-                    updateErrors(diagnosticsManager.getDiagnostics());
-                    statusLabel.setText(diagnosticsManager.getErrorSummary());
-                },
-                true
-        );
-
-        // Subscribe to debug session events
-        eventBus.subscribe(
-                CoreApplicationEvents.DebugSessionStartedEvent.class,
-                event -> onDebuggerStarted(),
-                true
-        );
-
-        eventBus.subscribe(
-                CoreApplicationEvents.DebugSessionPausedEvent.class,
-                event -> onDebuggerPaused(),
-                true
-        );
-
-        eventBus.subscribe(
-                CoreApplicationEvents.DebugSessionResumedEvent.class,
-                event -> onDebuggerResumed(),
-                true
-        );
-
-        eventBus.subscribe(
-                CoreApplicationEvents.DebugSessionFinishedEvent.class,
-                event -> onDebuggerFinished(),
-                true
-        );
+        // Debug Session UI States
+        eventBus.subscribe(CoreApplicationEvents.DebugSessionStartedEvent.class, event -> onDebuggerStarted(), true);
+        eventBus.subscribe(CoreApplicationEvents.DebugSessionPausedEvent.class, event -> onDebuggerPaused(), true);
+        eventBus.subscribe(CoreApplicationEvents.DebugSessionResumedEvent.class, event -> onDebuggerResumed(), true);
+        eventBus.subscribe(CoreApplicationEvents.DebugSessionFinishedEvent.class, event -> onDebuggerFinished(), true);
     }
 
     private void handleBlocksUpdate(CoreApplicationEvents.UIBlocksUpdatedEvent event) {
         blocksContainer.getChildren().clear();
-
         if (event.getRootBlock() != null) {
             CompletionContext context = codeEditorService.createCompletionContext();
-            blocksContainer.getChildren().add(event.getRootBlock().getUINode(context));
+            Node rootNode = event.getRootBlock().getUINode(context);
+
+            // IMPORTANT: Listen for the custom BreakpointToggleEvent bubbled up from blocks
+            rootNode.addEventHandler(BlockEvent.BreakpointToggleEvent.TOGGLE_BREAKPOINT, e -> {
+                // Publish to EventBus so CodeEditorService can update state
+                eventBus.publish(new CoreApplicationEvents.BreakpointToggledEvent(e.getBlock(), e.isEnabled()));
+            });
+
+            blocksContainer.getChildren().add(rootNode);
         }
     }
 
     public Scene createScene() {
-        // Create menu bar
         menuBarManager = new MenuBarManager(primaryStage);
-        menuBarManager.setOnSelectProject(v -> {
-            if (onSelectProject != null) {
-                onSelectProject.accept(null);
-            }
-        });
+        menuBarManager.setOnSelectProject(v -> { if (onSelectProject != null) onSelectProject.accept(null); });
 
         blocksContainer = new VBox(10);
         statusLabel = new Label("Ready");
@@ -160,13 +111,11 @@ public class UIManager {
 
         errorListView = new ListView<>();
         errorListView.setPlaceholder(new Label("No errors to display."));
-
         errorListView.setCellFactory(lv -> new ListCell<>() {
             @Override
             protected void updateItem(Diagnostic diagnostic, boolean empty) {
                 super.updateItem(diagnostic, empty);
                 getStyleClass().removeAll("error-cell", "warning-cell");
-
                 if (empty || diagnostic == null) {
                     setText(null);
                     setOnMouseClicked(null);
@@ -174,26 +123,19 @@ public class UIManager {
                     String message = ErrorTranslator.getShortSummary(diagnostic);
                     int line = diagnostic.getRange().getStart().getLine() + 1;
                     setText(String.format("Line %d: %s", line, message));
-
-                    if (diagnostic.getSeverity() == DiagnosticSeverity.Error) {
-                        getStyleClass().add("error-cell");
-                    } else if (diagnostic.getSeverity() == DiagnosticSeverity.Warning) {
-                        getStyleClass().add("warning-cell");
-                    }
+                    if (diagnostic.getSeverity() == DiagnosticSeverity.Error) getStyleClass().add("error-cell");
+                    else if (diagnostic.getSeverity() == DiagnosticSeverity.Warning) getStyleClass().add("warning-cell");
 
                     setOnMouseClicked(event -> {
                         if (event.getClickCount() >= 1) {
-                            diagnosticsManager.findBlockForDiagnostic(diagnostic)
-                                    .ifPresent(this::scrollToBlock);
+                            diagnosticsManager.findBlockForDiagnostic(diagnostic).ifPresent(this::scrollToBlock);
                         }
                     });
                 }
             }
-
             private void scrollToBlock(CodeBlock block) {
                 Node uiNode = block.getUINode();
                 if (uiNode == null) return;
-
                 final String blinkStyle = "error-block-blink";
                 if (!uiNode.getStyleClass().contains(blinkStyle)) {
                     uiNode.getStyleClass().add(blinkStyle);
@@ -201,8 +143,8 @@ public class UIManager {
                     blinkOff.setOnFinished(event -> uiNode.getStyleClass().remove(blinkStyle));
                     blinkOff.play();
                 }
-
                 uiNode.requestFocus();
+                // Simplified scroll logic
                 double containerHeight = blocksContainer.getBoundsInLocal().getHeight();
                 double blockY = uiNode.getBoundsInParent().getMinY();
                 double scrollPaneHeight = scrollPane.getViewportBounds().getHeight();
@@ -222,9 +164,7 @@ public class UIManager {
         palette.getStyleClass().add("palette");
 
         Button compileButton = new Button("Compile");
-        compileButton.setOnAction(e ->
-                eventBus.publish(new CoreApplicationEvents.CompilationRequestedEvent())
-        );
+        compileButton.setOnAction(e -> eventBus.publish(new CoreApplicationEvents.CompilationRequestedEvent()));
 
         Button runButton = new Button("Run");
         runButton.setOnAction(e -> {
@@ -233,17 +173,21 @@ public class UIManager {
         });
 
         debugButton = new Button("Debug");
-        debugButton.setOnAction(e ->
-                eventBus.publish(new CoreApplicationEvents.DebugStartRequestedEvent())
-        );
+        debugButton.setOnAction(e -> {
+            bottomTabPane.getSelectionModel().select(terminalTab);
+            eventBus.publish(new CoreApplicationEvents.DebugStartRequestedEvent());
+        });
 
-        resumeButton = new Button("Resume");
-        resumeButton.setDisable(true);
-        resumeButton.setOnAction(e ->
-                eventBus.publish(new CoreApplicationEvents.DebugResumeRequestedEvent())
-        );
+        // UPDATED BUTTONS
+        stepOverButton = new Button("Step Over");
+        stepOverButton.setDisable(true);
+        stepOverButton.setOnAction(e -> eventBus.publish(new CoreApplicationEvents.DebugStepOverRequestedEvent()));
 
-        HBox buttonBox = new HBox(10, compileButton, runButton, debugButton, resumeButton);
+        continueButton = new Button("Continue");
+        continueButton.setDisable(true);
+        continueButton.setOnAction(e -> eventBus.publish(new CoreApplicationEvents.DebugContinueRequestedEvent()));
+
+        HBox buttonBox = new HBox(10, compileButton, runButton, debugButton, stepOverButton, continueButton);
 
         Button themeButton = new Button("Toggle Theme");
         HBox topBar = new HBox(10, themeButton);
@@ -255,15 +199,12 @@ public class UIManager {
         splitPane.setOrientation(Orientation.VERTICAL);
         splitPane.getItems().addAll(scrollPane, bottomTabPane);
         splitPane.setDividerPositions(0.7);
-
         VBox.setVgrow(splitPane, Priority.ALWAYS);
 
-        // Main content area (everything below menu bar)
         VBox contentArea = new VBox(10, topBar, palette, buttonBox, splitPane, statusLabel);
         contentArea.setPadding(new Insets(10));
         VBox.setVgrow(splitPane, Priority.ALWAYS);
 
-        // Root layout with menu bar at top
         BorderPane root = new BorderPane();
         root.setTop(menuBarManager.getMenuBar());
         root.setCenter(contentArea);
@@ -284,7 +225,6 @@ public class UIManager {
     private HBox createBlockPalette() {
         HBox palette = new HBox(10);
         palette.setPadding(new Insets(5));
-
         for (AddableBlock blockType : AddableBlock.values()) {
             Label blockLabel = new Label(blockType.getDisplayName());
             blockLabel.getStyleClass().add("palette-block-label");
@@ -295,50 +235,33 @@ public class UIManager {
         return palette;
     }
 
-    public VBox getBlocksContainer() {
-        return blocksContainer;
-    }
-
-    public Label getStatusLabel() {
-        return statusLabel;
-    }
-
-    public TextArea getOutputArea() {
-        return outputArea;
-    }
-
     private void updateErrors(List<Diagnostic> diagnostics) {
-        if (diagnostics == null) {
-            errorListView.getItems().clear();
-        } else {
-            errorListView.getItems().setAll(diagnostics);
-        }
-        if (diagnostics != null && !diagnostics.isEmpty()) {
-            bottomTabPane.getSelectionModel().select(1);
-        }
+        if (diagnostics == null) errorListView.getItems().clear();
+        else errorListView.getItems().setAll(diagnostics);
+        if (diagnostics != null && !diagnostics.isEmpty()) bottomTabPane.getSelectionModel().select(1);
     }
 
     private void onDebuggerStarted() {
         debugButton.setDisable(true);
+        stepOverButton.setDisable(true);
+        continueButton.setDisable(true);
     }
 
     private void onDebuggerPaused() {
-        resumeButton.setDisable(false);
+        stepOverButton.setDisable(false);
+        continueButton.setDisable(false);
     }
 
     private void onDebuggerResumed() {
-        resumeButton.setDisable(true);
+        stepOverButton.setDisable(true);
+        continueButton.setDisable(true);
     }
 
     private void onDebuggerFinished() {
         debugButton.setDisable(false);
-        resumeButton.setDisable(true);
+        stepOverButton.setDisable(true);
+        continueButton.setDisable(true);
     }
 
-    /**
-     * Sets the callback for when "Select Project" is clicked from menu
-     */
-    public void setOnSelectProject(Consumer<Void> callback) {
-        this.onSelectProject = callback;
-    }
+    public void setOnSelectProject(Consumer<Void> callback) { this.onSelectProject = callback; }
 }
