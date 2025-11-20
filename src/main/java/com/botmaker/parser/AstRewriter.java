@@ -71,8 +71,6 @@ public class AstRewriter {
         }
     }
 
-    // ... rest of the file remains unchanged ...
-
     public String addStatement(CompilationUnit cu, String originalCode, BodyBlock targetBody, AddableBlock type, int index) {
         AST ast = cu.getAST();
         ASTRewrite rewriter = ASTRewrite.create(ast);
@@ -266,8 +264,43 @@ public class AstRewriter {
                 StringLiteral newString = ast.newStringLiteral();
                 newString.setLiteralValue("text");
                 return newString;
+
+            case NUMBER:
+                return ast.newNumberLiteral("0");
+
             case VARIABLE:
                 return ast.newSimpleName(DefaultNames.DEFAULT_VARIABLE);
+
+            case ADD:
+            case SUBTRACT:
+            case MULTIPLY:
+            case DIVIDE:
+            case MODULO:
+                // Create a binary expression: variable <op> 0
+                InfixExpression infixExpr = ast.newInfixExpression();
+                infixExpr.setLeftOperand(ast.newSimpleName(DefaultNames.DEFAULT_VARIABLE));
+                infixExpr.setRightOperand(ast.newNumberLiteral("0"));
+
+                // Set the operator based on type
+                switch (type) {
+                    case ADD:
+                        infixExpr.setOperator(InfixExpression.Operator.PLUS);
+                        break;
+                    case SUBTRACT:
+                        infixExpr.setOperator(InfixExpression.Operator.MINUS);
+                        break;
+                    case MULTIPLY:
+                        infixExpr.setOperator(InfixExpression.Operator.TIMES);
+                        break;
+                    case DIVIDE:
+                        infixExpr.setOperator(InfixExpression.Operator.DIVIDE);
+                        break;
+                    case MODULO:
+                        infixExpr.setOperator(InfixExpression.Operator.REMAINDER);
+                        break;
+                }
+                return infixExpr;
+
             default:
                 return null;
         }
@@ -276,6 +309,7 @@ public class AstRewriter {
     private Statement createDefaultStatement(AST ast, AddableBlock type) {
         switch (type) {
             case PRINT:
+                // System.out.println("");
                 MethodInvocation println = ast.newMethodInvocation();
                 println.setExpression(ast.newQualifiedName(
                         ast.newSimpleName("System"),
@@ -295,6 +329,7 @@ public class AstRewriter {
                 varDecl.setType(ast.newPrimitiveType(PrimitiveType.INT));
                 return varDecl;
             }
+
             case DECLARE_DOUBLE: {
                 VariableDeclarationFragment fragment = ast.newVariableDeclarationFragment();
                 fragment.setName(ast.newSimpleName(DefaultNames.DEFAULT_DOUBLE));
@@ -303,6 +338,7 @@ public class AstRewriter {
                 varDecl.setType(ast.newPrimitiveType(PrimitiveType.DOUBLE));
                 return varDecl;
             }
+
             case DECLARE_BOOLEAN: {
                 VariableDeclarationFragment fragment = ast.newVariableDeclarationFragment();
                 fragment.setName(ast.newSimpleName(DefaultNames.DEFAULT_BOOLEAN));
@@ -311,6 +347,7 @@ public class AstRewriter {
                 varDecl.setType(ast.newPrimitiveType(PrimitiveType.BOOLEAN));
                 return varDecl;
             }
+
             case DECLARE_STRING: {
                 VariableDeclarationFragment fragment = ast.newVariableDeclarationFragment();
                 fragment.setName(ast.newSimpleName(DefaultNames.DEFAULT_STRING));
@@ -321,10 +358,123 @@ public class AstRewriter {
             }
 
             case IF:
+                // if (true) {}
                 IfStatement ifStatement = ast.newIfStatement();
                 ifStatement.setExpression(ast.newBooleanLiteral(true));
                 ifStatement.setThenStatement(ast.newBlock());
                 return ifStatement;
+
+            case WHILE:
+                // while (true) {}
+                WhileStatement whileStatement = ast.newWhileStatement();
+                whileStatement.setExpression(ast.newBooleanLiteral(true));
+                whileStatement.setBody(ast.newBlock());
+                return whileStatement;
+
+            case FOR:
+                // for (int i = 0; i < 10; i++) {}
+                ForStatement forStatement = ast.newForStatement();
+
+                // Initialization: int i = 0
+                VariableDeclarationFragment initFragment = ast.newVariableDeclarationFragment();
+                initFragment.setName(ast.newSimpleName("i"));
+                initFragment.setInitializer(ast.newNumberLiteral("0"));
+                VariableDeclarationExpression initExpr = ast.newVariableDeclarationExpression(initFragment);
+                initExpr.setType(ast.newPrimitiveType(PrimitiveType.INT));
+                forStatement.initializers().add(initExpr);
+
+                // Condition: i < 10
+                InfixExpression condition = ast.newInfixExpression();
+                condition.setLeftOperand(ast.newSimpleName("i"));
+                condition.setOperator(InfixExpression.Operator.LESS);
+                condition.setRightOperand(ast.newNumberLiteral("10"));
+                forStatement.setExpression(condition);
+
+                // Update: i++
+                PostfixExpression update = ast.newPostfixExpression();
+                update.setOperand(ast.newSimpleName("i"));
+                update.setOperator(PostfixExpression.Operator.INCREMENT);
+                forStatement.updaters().add(update);
+
+                // Body
+                forStatement.setBody(ast.newBlock());
+                return forStatement;
+
+            case BREAK:
+                return ast.newBreakStatement();
+
+            case CONTINUE:
+                return ast.newContinueStatement();
+
+            case ASSIGNMENT: {
+                // variable = 0
+                Assignment assignment = ast.newAssignment();
+                assignment.setLeftHandSide(ast.newSimpleName(DefaultNames.DEFAULT_VARIABLE));
+                assignment.setOperator(Assignment.Operator.ASSIGN);
+                assignment.setRightHandSide(ast.newNumberLiteral("0"));
+                return ast.newExpressionStatement(assignment);
+            }
+
+            case INCREMENT: {
+                // variable++
+                PostfixExpression postfix = ast.newPostfixExpression();
+                postfix.setOperand(ast.newSimpleName(DefaultNames.DEFAULT_VARIABLE));
+                postfix.setOperator(PostfixExpression.Operator.INCREMENT);
+                return ast.newExpressionStatement(postfix);
+            }
+
+            case DECREMENT: {
+                // variable--
+                PostfixExpression postfix = ast.newPostfixExpression();
+                postfix.setOperand(ast.newSimpleName(DefaultNames.DEFAULT_VARIABLE));
+                postfix.setOperator(PostfixExpression.Operator.DECREMENT);
+                return ast.newExpressionStatement(postfix);
+            }
+
+            case READ_LINE: {
+                // String input = scanner.nextLine()
+                VariableDeclarationFragment fragment = ast.newVariableDeclarationFragment();
+                fragment.setName(ast.newSimpleName("input"));
+
+                MethodInvocation scannerCall = ast.newMethodInvocation();
+                scannerCall.setExpression(ast.newSimpleName("scanner"));
+                scannerCall.setName(ast.newSimpleName("nextLine"));
+                fragment.setInitializer(scannerCall);
+
+                VariableDeclarationStatement varDecl = ast.newVariableDeclarationStatement(fragment);
+                varDecl.setType(TypeManager.createTypeNode(ast, "String"));
+                return varDecl;
+            }
+
+            case READ_INT: {
+                // int num = scanner.nextInt()
+                VariableDeclarationFragment fragment = ast.newVariableDeclarationFragment();
+                fragment.setName(ast.newSimpleName("num"));
+
+                MethodInvocation scannerCall = ast.newMethodInvocation();
+                scannerCall.setExpression(ast.newSimpleName("scanner"));
+                scannerCall.setName(ast.newSimpleName("nextInt"));
+                fragment.setInitializer(scannerCall);
+
+                VariableDeclarationStatement varDecl = ast.newVariableDeclarationStatement(fragment);
+                varDecl.setType(ast.newPrimitiveType(PrimitiveType.INT));
+                return varDecl;
+            }
+
+            case READ_DOUBLE: {
+                // double num = scanner.nextDouble()
+                VariableDeclarationFragment fragment = ast.newVariableDeclarationFragment();
+                fragment.setName(ast.newSimpleName("num"));
+
+                MethodInvocation scannerCall = ast.newMethodInvocation();
+                scannerCall.setExpression(ast.newSimpleName("scanner"));
+                scannerCall.setName(ast.newSimpleName("nextDouble"));
+                fragment.setInitializer(scannerCall);
+
+                VariableDeclarationStatement varDecl = ast.newVariableDeclarationStatement(fragment);
+                varDecl.setType(ast.newPrimitiveType(PrimitiveType.DOUBLE));
+                return varDecl;
+            }
 
             default:
                 return null;

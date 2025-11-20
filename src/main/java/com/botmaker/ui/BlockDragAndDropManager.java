@@ -73,10 +73,37 @@ public class BlockDragAndDropManager {
             event.consume();
         });
 
-        // Reset opacity when drag is done
+        // Reset opacity and release focus when drag is done
         node.setOnDragDone(event -> {
             node.setOpacity(1.0);
-            event.consume();
+            // DON'T consume - let the event propagate to restore normal mouse behavior
+            // event.consume();
+
+            // Multiple approaches to ensure drag is fully released
+            javafx.application.Platform.runLater(() -> {
+                // 1. Find and focus ScrollPane
+                javafx.scene.Node current = node;
+                javafx.scene.control.ScrollPane scrollPane = null;
+                while (current != null) {
+                    if (current instanceof javafx.scene.control.ScrollPane) {
+                        scrollPane = (javafx.scene.control.ScrollPane) current;
+                        break;
+                    }
+                    current = current.getParent();
+                }
+
+                if (scrollPane != null) {
+                    // Make sure ScrollPane can receive focus
+                    scrollPane.setFocusTraversable(true);
+                    scrollPane.requestFocus();
+
+                    // Also try to release any event filters
+                    final javafx.scene.control.ScrollPane sp = scrollPane;
+                    javafx.application.Platform.runLater(() -> {
+                        sp.requestFocus();
+                    });
+                }
+            });
         });
     }
 

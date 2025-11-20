@@ -97,8 +97,15 @@ public class UIManager {
 
             blocksContainer.getChildren().add(rootNode);
         }
-    }
 
+        // --- FIX START ---
+        // Restore focus to the ScrollPane so input (scrolling) works immediately
+        // without requiring a mouse click.
+        if (scrollPane != null) {
+            scrollPane.requestFocus();
+        }
+        // --- FIX END ---
+    }
     public Scene createScene() {
         menuBarManager = new MenuBarManager(primaryStage);
         menuBarManager.setOnSelectProject(v -> { if (onSelectProject != null) onSelectProject.accept(null); });

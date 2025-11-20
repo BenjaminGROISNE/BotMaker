@@ -3,6 +3,7 @@ package com.botmaker.parser;
 import com.botmaker.blocks.*;
 import com.botmaker.core.*;
 import com.botmaker.ui.BlockDragAndDropManager;
+import com.botmaker.util.BlockIdPrefix;
 import org.eclipse.jdt.core.dom.*;
 import org.eclipse.jdt.core.dom.IMethodBinding;
 import org.eclipse.jdt.core.dom.ITypeBinding;
@@ -66,15 +67,49 @@ public class BlockFactory {
             return Optional.of(parseBodyBlock((Block) astStatement, nodeToBlockMap, manager));
         }
         if (astStatement instanceof VariableDeclarationStatement) {
-            return Optional.of(parseVariableDeclaration((VariableDeclarationStatement) astStatement, nodeToBlockMap));
+            VariableDeclarationStatement varDecl = (VariableDeclarationStatement) astStatement;
+            // Check if it's a scanner read input
+            if (isReadInputStatement(varDecl)) {
+                return Optional.of(parseReadInputStatement(varDecl, nodeToBlockMap));
+            }
+            return Optional.of(parseVariableDeclaration(varDecl, nodeToBlockMap));
         }
         if (astStatement instanceof IfStatement) {
             return Optional.of(parseIfStatement((IfStatement) astStatement, nodeToBlockMap, manager));
+        }
+        if (astStatement instanceof WhileStatement) {
+            return Optional.of(parseWhileStatement((WhileStatement) astStatement, nodeToBlockMap, manager));
+        }
+        if (astStatement instanceof ForStatement) {
+            return Optional.of(parseForStatement((ForStatement) astStatement, nodeToBlockMap, manager));
+        }
+        if (astStatement instanceof BreakStatement) {
+            return Optional.of(parseBreakStatement((BreakStatement) astStatement, nodeToBlockMap));
+        }
+        if (astStatement instanceof ContinueStatement) {
+            return Optional.of(parseContinueStatement((ContinueStatement) astStatement, nodeToBlockMap));
         }
         if (astStatement instanceof ExpressionStatement) {
             Expression expression = ((ExpressionStatement) astStatement).getExpression();
             if (isPrintStatement(expression)) {
                 return Optional.of(parsePrintStatement((ExpressionStatement) astStatement, nodeToBlockMap));
+            }
+            if (expression instanceof Assignment) {
+                return Optional.of(parseAssignmentStatement((ExpressionStatement) astStatement, nodeToBlockMap));
+            }
+            if (expression instanceof PostfixExpression) {
+                PostfixExpression postfix = (PostfixExpression) expression;
+                if (postfix.getOperator() == PostfixExpression.Operator.INCREMENT ||
+                        postfix.getOperator() == PostfixExpression.Operator.DECREMENT) {
+                    return Optional.of(parseIncrementDecrementStatement((ExpressionStatement) astStatement, nodeToBlockMap));
+                }
+            }
+            if (expression instanceof PrefixExpression) {
+                PrefixExpression prefix = (PrefixExpression) expression;
+                if (prefix.getOperator() == PrefixExpression.Operator.INCREMENT ||
+                        prefix.getOperator() == PrefixExpression.Operator.DECREMENT) {
+                    return Optional.of(parseIncrementDecrementStatement((ExpressionStatement) astStatement, nodeToBlockMap));
+                }
             }
         }
         return Optional.empty();
@@ -125,6 +160,152 @@ public class BlockFactory {
         }
         return printBlock;
     }
+
+
+    private boolean isReadInputStatement(VariableDeclarationStatement varDecl) {
+        if (varDecl.fragments().isEmpty()) return false;
+        VariableDeclarationFragment fragment = (VariableDeclarationFragment) varDecl.fragments().get(0);
+        Expression initializer = fragment.getInitializer();
+
+        if (initializer instanceof MethodInvocation) {
+            MethodInvocation mi = (MethodInvocation) initializer;
+            Expression expr = mi.getExpression();
+            if (expr instanceof SimpleName) {
+                SimpleName name = (SimpleName) expr;
+                String methodName = mi.getName().getIdentifier();
+                return name.getIdentifier().equals("scanner") &&
+                        (methodName.equals("nextLine") || methodName.equals("nextInt") ||
+                                methodName.equals("nextDouble") || methodName.equals("nextBoolean"));
+            }
+        }
+        return false;
+    }
+
+    // Parse while statement
+    private WhileBlock parseWhileStatement(WhileStatement astNode, Map<ASTNode, CodeBlock> nodeToBlockMap, BlockDragAndDropManager manager) {
+        System.out.println("Creating WhileBlock for: " + astNode);
+        WhileBlock whileBlock = new WhileBlock(BlockIdPrefix.generate(BlockIdPrefix.WHILE, astNode), astNode, manager);
+        nodeToBlockMap.put(astNode, whileBlock);
+
+        parseExpression(astNode.getExpression(), nodeToBlockMap).ifPresent(whileBlock::setCondition);
+
+        if (astNode.getBody() instanceof Block) {
+            whileBlock.setBody(parseBodyBlock((Block) astNode.getBody(), nodeToBlockMap, manager));
+        }
+
+        return whileBlock;
+    }
+
+    // Parse for statement
+    private ForBlock parseForStatement(ForStatement astNode, Map<ASTNode, CodeBlock> nodeToBlockMap, BlockDragAndDropManager manager) {
+        System.out.println("Creating ForBlock for: " + astNode);
+        ForBlock forBlock = new ForBlock(BlockIdPrefix.generate(BlockIdPrefix.FOR, astNode), astNode, manager);
+        nodeToBlockMap.put(astNode, forBlock);
+
+        // Parse initialization (first item in initializers list)
+        if (!astNode.initializers().isEmpty()) {
+            Expression initExpr = (Expression) astNode.initializers().get(0);
+            parseExpression(initExpr, nodeToBlockMap).ifPresent(forBlock::setInitialization);
+        }
+
+        // Parse condition
+        if (astNode.getExpression() != null) {
+            parseExpression(astNode.getExpression(), nodeToBlockMap).ifPresent(forBlock::setCondition);
+        }
+
+        // Parse update (first item in updaters list)
+        if (!astNode.updaters().isEmpty()) {
+            Expression updateExpr = (Expression) astNode.updaters().get(0);
+            parseExpression(updateExpr, nodeToBlockMap).ifPresent(forBlock::setUpdate);
+        }
+
+        // Parse body
+        if (astNode.getBody() instanceof Block) {
+            forBlock.setBody(parseBodyBlock((Block) astNode.getBody(), nodeToBlockMap, manager));
+        }
+
+        return forBlock;
+    }
+
+    // Parse break statement
+    private BreakBlock parseBreakStatement(BreakStatement astNode, Map<ASTNode, CodeBlock> nodeToBlockMap) {
+        System.out.println("Creating BreakBlock for: " + astNode);
+        BreakBlock breakBlock = new BreakBlock(BlockIdPrefix.generate(BlockIdPrefix.BREAK, astNode), astNode);
+        nodeToBlockMap.put(astNode, breakBlock);
+        return breakBlock;
+    }
+
+    // Parse continue statement
+    private ContinueBlock parseContinueStatement(ContinueStatement astNode, Map<ASTNode, CodeBlock> nodeToBlockMap) {
+        System.out.println("Creating ContinueBlock for: " + astNode);
+        ContinueBlock continueBlock = new ContinueBlock(BlockIdPrefix.generate(BlockIdPrefix.CONTINUE, astNode), astNode);
+        nodeToBlockMap.put(astNode, continueBlock);
+        return continueBlock;
+    }
+
+    // Parse assignment statement
+    private AssignmentBlock parseAssignmentStatement(ExpressionStatement astNode, Map<ASTNode, CodeBlock> nodeToBlockMap) {
+        System.out.println("Creating AssignmentBlock for: " + astNode);
+        AssignmentBlock assignBlock = new AssignmentBlock(BlockIdPrefix.generate(BlockIdPrefix.ASSIGNMENT, astNode), astNode);
+        nodeToBlockMap.put(astNode, assignBlock);
+
+        Assignment assignment = (Assignment) astNode.getExpression();
+        parseExpression(assignment.getLeftHandSide(), nodeToBlockMap).ifPresent(assignBlock::setLeftHandSide);
+        parseExpression(assignment.getRightHandSide(), nodeToBlockMap).ifPresent(assignBlock::setRightHandSide);
+
+        return assignBlock;
+    }
+
+    // Parse increment/decrement statement
+    private IncrementDecrementBlock parseIncrementDecrementStatement(ExpressionStatement astNode, Map<ASTNode, CodeBlock> nodeToBlockMap) {
+        System.out.println("Creating IncrementDecrementBlock for: " + astNode);
+
+        Expression expr = astNode.getExpression();
+        String operator;
+        boolean isPrefix;
+        Expression operand;
+
+        if (expr instanceof PostfixExpression) {
+            PostfixExpression postfix = (PostfixExpression) expr;
+            operator = postfix.getOperator().toString();
+            isPrefix = false;
+            operand = postfix.getOperand();
+        } else {
+            PrefixExpression prefix = (PrefixExpression) expr;
+            operator = prefix.getOperator().toString();
+            isPrefix = true;
+            operand = prefix.getOperand();
+        }
+
+        String prefix = operator.equals("++") ? BlockIdPrefix.INCREMENT : BlockIdPrefix.DECREMENT;
+        IncrementDecrementBlock incDecBlock = new IncrementDecrementBlock(
+                BlockIdPrefix.generate(prefix, astNode), astNode, operator, isPrefix
+        );
+        nodeToBlockMap.put(astNode, incDecBlock);
+
+        parseExpression(operand, nodeToBlockMap).ifPresent(incDecBlock::setOperand);
+
+        return incDecBlock;
+    }
+
+    // Parse read input statement
+    private ReadInputBlock parseReadInputStatement(VariableDeclarationStatement astNode, Map<ASTNode, CodeBlock> nodeToBlockMap) {
+        System.out.println("Creating ReadInputBlock for: " + astNode);
+
+        VariableDeclarationFragment fragment = (VariableDeclarationFragment) astNode.fragments().get(0);
+        MethodInvocation mi = (MethodInvocation) fragment.getInitializer();
+        String inputType = mi.getName().getIdentifier();
+
+        ReadInputBlock readBlock = new ReadInputBlock(
+                BlockIdPrefix.generate(BlockIdPrefix.READ_INPUT, astNode), astNode, inputType
+        );
+        nodeToBlockMap.put(astNode, readBlock);
+
+        parseExpression(fragment.getName(), nodeToBlockMap).ifPresent(readBlock::setVariableName);
+
+        return readBlock;
+    }
+
 
     private BinaryExpressionBlock parseBinaryExpression(InfixExpression astNode, Map<ASTNode, CodeBlock> nodeToBlockMap) {
         System.out.println("Creating BinaryExpressionBlock for: " + astNode);

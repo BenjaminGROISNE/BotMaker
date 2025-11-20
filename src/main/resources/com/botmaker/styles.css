@@ -560,3 +560,76 @@
 .dark-theme .list-cell:selected {
     -fx-background-color: #0d6efd;
 }
+
+/* Control Flow Blocks */
+.while-block, .for-block {
+    -fx-background-color: #fff3cd;
+    -fx-padding: 8px;
+    -fx-border-color: #ffc107;
+    -fx-border-width: 2px;
+    -fx-border-radius: 5px;
+}
+
+.while-header, .for-header {
+    -fx-font-weight: bold;
+}
+
+.while-body, .for-body {
+    -fx-background-color: rgba(255, 255, 255, 0.5);
+    -fx-padding: 5px;
+}
+
+.break-block, .continue-block {
+    -fx-background-color: #f8d7da;
+    -fx-padding: 5px;
+    -fx-border-color: #dc3545;
+    -fx-border-width: 1px;
+    -fx-border-radius: 3px;
+}
+
+/* Variable Operations */
+.assignment-block {
+    -fx-background-color: #d1ecf1;
+    -fx-padding: 5px;
+    -fx-border-color: #17a2b8;
+    -fx-border-width: 1px;
+    -fx-border-radius: 3px;
+}
+
+.increment-decrement-block {
+    -fx-background-color: #e2e3e5;
+    -fx-padding: 5px;
+    -fx-border-color: #6c757d;
+    -fx-border-width: 1px;
+    -fx-border-radius: 3px;
+}
+
+/* Input Blocks */
+.read-input-block {
+    -fx-background-color: #d4edda;
+    -fx-padding: 5px;
+    -fx-border-color: #28a745;
+    -fx-border-width: 1px;
+    -fx-border-radius: 3px;
+}
+
+/* Labels */
+.keyword-label {
+    -fx-font-weight: bold;
+    -fx-text-fill: #0066cc;
+}
+
+.operator-label {
+    -fx-font-weight: bold;
+    -fx-text-fill: #cc0066;
+}
+
+.method-call-label {
+    -fx-text-fill: #6600cc;
+    -fx-font-style: italic;
+}
+
+.type-label {
+    -fx-text-fill: #006600;
+    -fx-font-weight: bold;
+}
