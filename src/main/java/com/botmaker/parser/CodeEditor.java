@@ -1,34 +1,22 @@
 package com.botmaker.parser;
 
+import com.botmaker.state.*;
 import com.botmaker.core.BodyBlock;
+import com.botmaker.core.StatementBlock;
 import com.botmaker.events.CoreApplicationEvents;
 import com.botmaker.events.EventBus;
-import com.botmaker.state.ApplicationState;
+import com.botmaker.parser.AstRewriter;
+import com.botmaker.parser.BlockFactory;
 import com.botmaker.ui.AddableBlock;
-import com.botmaker.ui.AddableExpression;
 import org.eclipse.jdt.core.dom.*;
 
-/**
- * Handles code editing operations.
- * Phase 1 Refactoring: Now uses ApplicationState and EventBus instead of Main reference.
- */
 public class CodeEditor {
 
-    // ============================================
-    // PHASE 1 CHANGES: Replace Main dependency
-    // ============================================
     private final ApplicationState state;
     private final EventBus eventBus;
-
-    // KEPT: Original dependencies
     private final AstRewriter astRewriter;
     private final BlockFactory blockFactory;
 
-    // ============================================
-    // PHASE 1: CHANGED - New constructor signature
-    // OLD: public CodeEditor(Main mainApp, AstRewriter astRewriter, BlockFactory blockFactory)
-    // NEW: Uses state and eventBus instead of mainApp
-    // ============================================
     public CodeEditor(ApplicationState state, EventBus eventBus,
                       AstRewriter astRewriter, BlockFactory blockFactory) {
         this.state = state;
@@ -37,9 +25,6 @@ public class CodeEditor {
         this.blockFactory = blockFactory;
     }
 
-    // ============================================
-    // PHASE 1: CHANGED - Use state instead of mainApp
-    // ============================================
     private String getCurrentCode() {
         return state.getCurrentCode();
     }
@@ -48,19 +33,30 @@ public class CodeEditor {
         return state.getCompilationUnit().orElse(null);
     }
 
-    // ============================================
-    // PHASE 1: CHANGED - Publish event instead of calling Main
-    // OLD: Platform.runLater(() -> mainApp.handleCodeUpdate(newCode));
-    // NEW: eventBus.publish(...)
-    // ============================================
     private void triggerUpdate(String newCode) {
         String previousCode = getCurrentCode();
         eventBus.publish(new CoreApplicationEvents.CodeUpdatedEvent(newCode, previousCode));
     }
 
-    // ============================================
-    // KEPT: All editing methods unchanged
-    // ============================================
+    /**
+     * Moves an existing statement block to a new position.
+     * @param blockToMove The statement block to move
+     * @param sourceBody The body containing the block
+     * @param targetBody The body where the block should be moved
+     * @param targetIndex The index where the block should be inserted
+     */
+    public void moveStatement(StatementBlock blockToMove, BodyBlock sourceBody,
+                              BodyBlock targetBody, int targetIndex) {
+        String newCode = astRewriter.moveStatement(
+                getCompilationUnit(),
+                getCurrentCode(),
+                blockToMove,
+                sourceBody,
+                targetBody,
+                targetIndex
+        );
+        triggerUpdate(newCode);
+    }
 
     public void replaceLiteralValue(Expression toReplace, String newLiteralValue) {
         String newCode = astRewriter.replaceLiteral(
@@ -89,7 +85,7 @@ public class CodeEditor {
         triggerUpdate(newCode);
     }
 
-    public void replaceExpression(Expression toReplace, AddableExpression type) {
+    public void replaceExpression(Expression toReplace, com.botmaker.ui.AddableExpression type) {
         blockFactory.setMarkNewIdentifiersAsUnedited(true);
         String newCode = astRewriter.replaceExpression(
                 getCompilationUnit(),

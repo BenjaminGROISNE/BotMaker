@@ -1,6 +1,7 @@
 package com.botmaker.parser;
 
 import com.botmaker.core.BodyBlock;
+import com.botmaker.core.StatementBlock;
 import com.botmaker.ui.AddableBlock;
 import com.botmaker.util.DefaultNames;
 import com.botmaker.util.TypeManager;
@@ -13,13 +14,72 @@ import org.eclipse.text.edits.TextEdit;
 
 public class AstRewriter {
 
+    /**
+     * Moves a statement from one position to another, potentially across different bodies.
+     * @param cu The compilation unit
+     * @param originalCode The current source code
+     * @param blockToMove The StatementBlock to move
+     * @param sourceBody The BodyBlock containing the statement (can be same as targetBody)
+     * @param targetBody The BodyBlock where the statement should be moved to
+     * @param targetIndex The index in the target body where the statement should be inserted
+     * @return The updated source code
+     */
+    public String moveStatement(CompilationUnit cu, String originalCode,
+                                StatementBlock blockToMove, BodyBlock sourceBody,
+                                BodyBlock targetBody, int targetIndex) {
+        AST ast = cu.getAST();
+        ASTRewrite rewriter = ASTRewrite.create(ast);
+
+        Statement statement = (Statement) blockToMove.getAstNode();
+        Block sourceBlock = (Block) sourceBody.getAstNode();
+        Block targetBlock = (Block) targetBody.getAstNode();
+
+        // Get the list rewriters for both source and target
+        ListRewrite sourceListRewrite = rewriter.getListRewrite(sourceBlock, Block.STATEMENTS_PROPERTY);
+        ListRewrite targetListRewrite = rewriter.getListRewrite(targetBlock, Block.STATEMENTS_PROPERTY);
+
+        // --- FIX START ---
+        // JDT ASTRewrite handles indices based on the ORIGINAL AST.
+        // We do NOT need to manually adjust the index for the removal shift
+        // because the removal hasn't actually happened to the underlying list yet.
+
+        // If moving to the exact same position (same body, same index), do nothing
+        if (sourceBody == targetBody) {
+            int currentIndex = sourceBlock.statements().indexOf(statement);
+            if (currentIndex == targetIndex) {
+                return originalCode;
+            }
+            // The logic "if (targetIndex > currentIndex) targetIndex--;" was removed here.
+        }
+        // --- FIX END ---
+
+        // Create a copy of the statement for the new location
+        Statement copiedStatement = (Statement) ASTNode.copySubtree(ast, statement);
+
+        // Remove from source and insert at target
+        sourceListRewrite.remove(statement, null);
+        targetListRewrite.insertAt(copiedStatement, targetIndex, null);
+
+        IDocument document = new Document(originalCode);
+        try {
+            TextEdit edits = rewriter.rewriteAST(document, null);
+            edits.apply(document);
+            return document.get();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return originalCode;
+        }
+    }
+
+    // ... rest of the file remains unchanged ...
+
     public String addStatement(CompilationUnit cu, String originalCode, BodyBlock targetBody, AddableBlock type, int index) {
         AST ast = cu.getAST();
         ASTRewrite rewriter = ASTRewrite.create(ast);
 
         Statement newStatement = createDefaultStatement(ast, type);
         if (newStatement == null) {
-            return originalCode; // Or throw an exception
+            return originalCode;
         }
 
         Block targetAstBlock = (Block) targetBody.getAstNode();
@@ -33,7 +93,7 @@ public class AstRewriter {
             return document.get();
         } catch (Exception e) {
             e.printStackTrace();
-            return originalCode; // Return original on failure
+            return originalCode;
         }
     }
 
@@ -55,7 +115,7 @@ public class AstRewriter {
             return document.get();
         } catch (Exception e) {
             e.printStackTrace();
-            return originalCode; // Return original on failure
+            return originalCode;
         }
     }
 
@@ -73,7 +133,6 @@ public class AstRewriter {
         } else if (toReplace instanceof BooleanLiteral) {
             newExpression = ast.newBooleanLiteral(Boolean.parseBoolean(newLiteralValue));
         } else {
-            // Not a literal we can handle, return original code
             return originalCode;
         }
 
@@ -103,7 +162,7 @@ public class AstRewriter {
             return document.get();
         } catch (Exception e) {
             e.printStackTrace();
-            return originalCode; // Return original on failure
+            return originalCode;
         }
     }
 
@@ -187,7 +246,6 @@ public class AstRewriter {
             Block elseBlock = ast.newBlock();
             rewriter.set(ifStatement, IfStatement.ELSE_STATEMENT_PROPERTY, elseBlock, null);
         } else {
-            // else already exists, do nothing
             return originalCode;
         }
 
@@ -218,7 +276,6 @@ public class AstRewriter {
     private Statement createDefaultStatement(AST ast, AddableBlock type) {
         switch (type) {
             case PRINT:
-                // System.out.println("");
                 MethodInvocation println = ast.newMethodInvocation();
                 println.setExpression(ast.newQualifiedName(
                         ast.newSimpleName("System"),
@@ -232,7 +289,7 @@ public class AstRewriter {
 
             case DECLARE_INT: {
                 VariableDeclarationFragment fragment = ast.newVariableDeclarationFragment();
-                fragment.setName(ast.newSimpleName(DefaultNames.DEFAULT_INT)); // Was "i"
+                fragment.setName(ast.newSimpleName(DefaultNames.DEFAULT_INT));
                 fragment.setInitializer(ast.newNumberLiteral("0"));
                 VariableDeclarationStatement varDecl = ast.newVariableDeclarationStatement(fragment);
                 varDecl.setType(ast.newPrimitiveType(PrimitiveType.INT));
@@ -240,7 +297,7 @@ public class AstRewriter {
             }
             case DECLARE_DOUBLE: {
                 VariableDeclarationFragment fragment = ast.newVariableDeclarationFragment();
-                fragment.setName(ast.newSimpleName(DefaultNames.DEFAULT_DOUBLE)); // Was "d"
+                fragment.setName(ast.newSimpleName(DefaultNames.DEFAULT_DOUBLE));
                 fragment.setInitializer(ast.newNumberLiteral("0.0"));
                 VariableDeclarationStatement varDecl = ast.newVariableDeclarationStatement(fragment);
                 varDecl.setType(ast.newPrimitiveType(PrimitiveType.DOUBLE));
@@ -248,7 +305,7 @@ public class AstRewriter {
             }
             case DECLARE_BOOLEAN: {
                 VariableDeclarationFragment fragment = ast.newVariableDeclarationFragment();
-                fragment.setName(ast.newSimpleName(DefaultNames.DEFAULT_BOOLEAN)); // Was "b"
+                fragment.setName(ast.newSimpleName(DefaultNames.DEFAULT_BOOLEAN));
                 fragment.setInitializer(ast.newBooleanLiteral(false));
                 VariableDeclarationStatement varDecl = ast.newVariableDeclarationStatement(fragment);
                 varDecl.setType(ast.newPrimitiveType(PrimitiveType.BOOLEAN));
@@ -256,7 +313,7 @@ public class AstRewriter {
             }
             case DECLARE_STRING: {
                 VariableDeclarationFragment fragment = ast.newVariableDeclarationFragment();
-                fragment.setName(ast.newSimpleName(DefaultNames.DEFAULT_STRING)); // Was "s"
+                fragment.setName(ast.newSimpleName(DefaultNames.DEFAULT_STRING));
                 fragment.setInitializer(ast.newStringLiteral());
                 VariableDeclarationStatement varDecl = ast.newVariableDeclarationStatement(fragment);
                 varDecl.setType(TypeManager.createTypeNode(ast, "String"));
@@ -264,7 +321,6 @@ public class AstRewriter {
             }
 
             case IF:
-                // if (true) {}
                 IfStatement ifStatement = ast.newIfStatement();
                 ifStatement.setExpression(ast.newBooleanLiteral(true));
                 ifStatement.setThenStatement(ast.newBlock());
@@ -289,14 +345,13 @@ public class AstRewriter {
                 return ast.newBooleanLiteral(false);
             case "char":
                 CharacterLiteral literal = ast.newCharacterLiteral();
-                literal.setCharValue('a'); // Default char
+                literal.setCharValue('a');
                 return literal;
             case "String":
                 StringLiteral stringLiteral = ast.newStringLiteral();
-                stringLiteral.setLiteralValue(""); // Default empty string
+                stringLiteral.setLiteralValue("");
                 return stringLiteral;
             default:
-                // For any other object type, the safest default is null.
                 return ast.newNullLiteral();
         }
     }
@@ -305,19 +360,14 @@ public class AstRewriter {
         AST ast = cu.getAST();
         ASTRewrite rewriter = ASTRewrite.create(ast);
 
-        // 1. Create the new type node
         Type newType = TypeManager.createTypeNode(ast, newTypeName);
         rewriter.replace(varDecl.getType(), newType, null);
 
-        // 2. Get the fragment and its current initializer
         if (!varDecl.fragments().isEmpty()) {
             VariableDeclarationFragment fragment = (VariableDeclarationFragment) varDecl.fragments().get(0);
             Expression currentInitializer = fragment.getInitializer();
-
-            // 3. Create a new default initializer based on the new type
             Expression newInitializer = createDefaultInitializer(ast, newTypeName);
 
-            // 4. Replace the old initializer if it exists and we have a new one
             if (currentInitializer != null && newInitializer != null) {
                 rewriter.replace(currentInitializer, newInitializer, null);
             }

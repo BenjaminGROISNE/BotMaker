@@ -1,6 +1,8 @@
 package com.botmaker;
 
 import com.botmaker.config.ApplicationConfig;
+import com.botmaker.core.BodyBlock;
+import com.botmaker.core.StatementBlock;
 import com.botmaker.di.DependencyContainer;
 import com.botmaker.events.CoreApplicationEvents;
 import com.botmaker.events.EventBus;
@@ -13,6 +15,7 @@ import com.botmaker.state.ApplicationState;
 import com.botmaker.ui.BlockDragAndDropManager;
 import com.botmaker.ui.ProjectSelectionScreen;
 import com.botmaker.ui.UIManager;
+import com.botmaker.util.BlockLookupHelper;
 import com.botmaker.validation.DiagnosticsManager;
 import javafx.application.Application;
 import javafx.application.Platform;
@@ -247,9 +250,12 @@ public class Main extends Application {
 
         // 2. Get CodeEditorService (depends on initialized LSS)
         CodeEditorService codeEditorService = container.resolve(CodeEditorService.class);
+        ApplicationState state = container.resolve(ApplicationState.class);
 
         // 3. Wire up drag-and-drop callback now that CodeEditorService exists
         BlockDragAndDropManager dragAndDropManager = container.resolve(BlockDragAndDropManager.class);
+
+        // Existing callback for adding new blocks
         dragAndDropManager.setCallback(dropInfo ->
                 codeEditorService.getCodeEditor().addStatement(
                         dropInfo.targetBody(),
@@ -257,6 +263,42 @@ public class Main extends Application {
                         dropInfo.insertionIndex()
                 )
         );
+
+        // NEW: Add callback for moving existing blocks
+        dragAndDropManager.setMoveCallback(moveInfo -> {
+            System.out.println("Move callback triggered for blockId: " + moveInfo.blockId());
+
+            // Find the block to move using the helper
+            StatementBlock blockToMove = BlockLookupHelper.findBlockById(
+                    moveInfo.blockId(),
+                    state.getNodeToBlockMap()
+            );
+
+            System.out.println("Found block: " + (blockToMove != null));
+
+            if (blockToMove != null) {
+                // Find the source body containing this block
+                BodyBlock sourceBody = BlockLookupHelper.findParentBody(
+                        blockToMove,
+                        state.getNodeToBlockMap()
+                );
+
+                System.out.println("Found sourceBody: " + (sourceBody != null));
+
+                if (sourceBody != null) {
+                    codeEditorService.getCodeEditor().moveStatement(
+                            blockToMove,
+                            sourceBody,
+                            moveInfo.targetBody(),
+                            moveInfo.insertionIndex()
+                    );
+                } else {
+                    System.err.println("Could not find source body for block: " + moveInfo.blockId());
+                }
+            } else {
+                System.err.println("Could not find block with ID: " + moveInfo.blockId());
+            }
+        });
 
         // 4. CRITICAL: Force initialization of services that subscribe to events
         //    This ensures their constructors run and event subscriptions are registered

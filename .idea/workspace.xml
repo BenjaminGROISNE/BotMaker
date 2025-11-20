@@ -4,15 +4,18 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="cba04025-c331-4634-a893-436bad03efc0" name="Changes" comment="wanky visble breakpoints">
+    <list default="true" id="cba04025-c331-4634-a893-436bad03efc0" name="Changes" comment="fixed exit app added stop button that needs to stop finishing running">
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/botmaker/ui/MoveBlockInfo.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/botmaker/util/BlockLookupHelper.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/java_files_concat.txt" beforeDir="false" afterPath="$PROJECT_DIR$/java_files_concat.txt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/projects/.botmaker-config.json" beforeDir="false" afterPath="$PROJECT_DIR$/projects/.botmaker-config.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/botmaker/events/CoreApplicationEvents.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/botmaker/events/CoreApplicationEvents.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/botmaker/runtime/DebuggerService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/botmaker/runtime/DebuggerService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/botmaker/runtime/DebuggingManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/botmaker/runtime/DebuggingManager.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/botmaker/services/DebuggingService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/botmaker/services/DebuggingService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/botmaker/ui/MenuBarManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/botmaker/ui/MenuBarManager.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/botmaker/ui/UIManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/botmaker/ui/UIManager.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/projects/Demo/src/main/java/com/demo/Demo.java" beforeDir="false" afterPath="$PROJECT_DIR$/projects/Demo/src/main/java/com/demo/Demo.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/botmaker/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/botmaker/Main.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/botmaker/core/BodyBlock.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/botmaker/core/BodyBlock.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/botmaker/parser/AstRewriter.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/botmaker/parser/AstRewriter.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/botmaker/parser/CodeEditor.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/botmaker/parser/CodeEditor.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/botmaker/ui/BlockDragAndDropManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/botmaker/ui/BlockDragAndDropManager.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -528,7 +531,15 @@
       <option name="project" value="LOCAL" />
       <updated>1763583468149</updated>
     </task>
-    <option name="localTasksCounter" value="43" />
+    <task id="LOCAL-00043" summary="fixed exit app added stop button that needs to stop finishing running">
+      <option name="closed" value="true" />
+      <created>1763583993628</created>
+      <option name="number" value="00043" />
+      <option name="presentableId" value="LOCAL-00043" />
+      <option name="project" value="LOCAL" />
+      <updated>1763583993628</updated>
+    </task>
+    <option name="localTasksCounter" value="44" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -556,7 +567,6 @@
     <ignored-roots>
       <path value="$PROJECT_DIR$/.." />
     </ignored-roots>
-    <MESSAGE value="Started Main refactor" />
     <MESSAGE value="added deletebutton" />
     <MESSAGE value="Fixed stackOverflow error adjusted hover effect on blocks and block palette" />
     <MESSAGE value="some ui changes" />
@@ -581,7 +591,8 @@
     <MESSAGE value="Added MenuBar" />
     <MESSAGE value="Kinda working debug next step and continue" />
     <MESSAGE value="wanky visble breakpoints" />
-    <option name="LAST_COMMIT_MESSAGE" value="wanky visble breakpoints" />
+    <MESSAGE value="fixed exit app added stop button that needs to stop finishing running" />
+    <option name="LAST_COMMIT_MESSAGE" value="fixed exit app added stop button that needs to stop finishing running" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

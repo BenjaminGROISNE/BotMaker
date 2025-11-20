@@ -14,21 +14,22 @@ import java.util.function.Consumer;
 public class BlockDragAndDropManager {
 
     public static final DataFormat ADDABLE_BLOCK_FORMAT = new DataFormat("application/x-java-addable-block");
+    public static final DataFormat EXISTING_BLOCK_FORMAT = new DataFormat("application/x-java-existing-block");
 
-    // ============================================
-    // PHASE 2 FIX: Make callback mutable
-    // ============================================
+    // Callbacks
     private Consumer<DropInfo> onDrop;
+    private Consumer<MoveBlockInfo> onBlockMove;
 
     public BlockDragAndDropManager(Consumer<DropInfo> onDrop) {
         this.onDrop = onDrop;
     }
 
-    // ============================================
-    // PHASE 2 FIX: Add setter for callback
-    // ============================================
     public void setCallback(Consumer<DropInfo> onDrop) {
         this.onDrop = onDrop;
+    }
+
+    public void setMoveCallback(Consumer<MoveBlockInfo> onBlockMove) {
+        this.onBlockMove = onBlockMove;
     }
 
     /**
@@ -40,10 +41,41 @@ public class BlockDragAndDropManager {
         node.setOnDragDetected(event -> {
             Dragboard db = node.startDragAndDrop(TransferMode.COPY);
             ClipboardContent content = new ClipboardContent();
-            // Store the enum name as a string.
             content.put(ADDABLE_BLOCK_FORMAT, blockType.name());
             db.setContent(content);
-            System.out.println("Drag detected for: " + blockType.name()); // For debugging
+            System.out.println("Drag detected for: " + blockType.name());
+            event.consume();
+        });
+    }
+
+    /**
+     * Makes an existing block's UI node draggable for repositioning.
+     * @param node The UI node of the block to make draggable.
+     * @param block The StatementBlock instance being dragged.
+     * @param sourceBody The BodyBlock containing this block.
+     */
+    public void makeBlockMovable(Node node, StatementBlock block, BodyBlock sourceBody) {
+        node.setOnDragDetected(event -> {
+            // Only start drag if not clicking on interactive elements
+            if (event.getTarget() instanceof javafx.scene.control.Control) {
+                return;
+            }
+
+            Dragboard db = node.startDragAndDrop(TransferMode.MOVE);
+            ClipboardContent content = new ClipboardContent();
+            content.put(EXISTING_BLOCK_FORMAT, block.getId());
+            db.setContent(content);
+
+            // Visual feedback - make the block semi-transparent while dragging
+            node.setOpacity(0.5);
+
+            System.out.println("Dragging existing block: " + block.getDetails());
+            event.consume();
+        });
+
+        // Reset opacity when drag is done
+        node.setOnDragDone(event -> {
+            node.setOpacity(1.0);
             event.consume();
         });
     }
@@ -60,34 +92,42 @@ public class BlockDragAndDropManager {
 
     /**
      * Adds all necessary drag-and-drop event handlers to a separator region.
+     * Handles both adding new blocks and moving existing blocks.
      * @param separator The region to add handlers to.
+     * @param targetBody The body where blocks will be inserted.
      * @param insertionIndex The index in the list where a drop should occur.
      * @param adjacentBlock The block next to the separator, for context (can be null).
      */
     public void addSeparatorDragHandlers(Region separator, BodyBlock targetBody, int insertionIndex, StatementBlock adjacentBlock) {
         String defaultColor = "transparent";
         String hoverColor = "#007bff"; // A distinct blue
+        String moveHoverColor = "#28a745"; // Green for moving blocks
 
         separator.setOnDragEntered(event -> {
-            if (event.getDragboard().hasContent(BlockDragAndDropManager.ADDABLE_BLOCK_FORMAT)) {
+            Dragboard db = event.getDragboard();
+            if (db.hasContent(ADDABLE_BLOCK_FORMAT)) {
                 separator.setStyle("-fx-background-color: " + hoverColor + ";");
                 String logMessage = "Hovering insertion point at index: " + insertionIndex;
                 if (adjacentBlock != null) {
                     logMessage += " (next to: " + adjacentBlock.getDetails() + ")";
                 }
                 System.out.println(logMessage);
+            } else if (db.hasContent(EXISTING_BLOCK_FORMAT)) {
+                separator.setStyle("-fx-background-color: " + moveHoverColor + ";");
+                System.out.println("Hovering to move block at index: " + insertionIndex);
             }
             event.consume();
         });
 
         separator.setOnDragExited(event -> {
-            separator.setStyle("-fx-background-color: " + defaultColor );
+            separator.setStyle("-fx-background-color: " + defaultColor);
             event.consume();
         });
 
         separator.setOnDragOver(event -> {
-            if (event.getDragboard().hasContent(BlockDragAndDropManager.ADDABLE_BLOCK_FORMAT)) {
-                event.acceptTransferModes(TransferMode.COPY);
+            Dragboard db = event.getDragboard();
+            if (db.hasContent(ADDABLE_BLOCK_FORMAT) || db.hasContent(EXISTING_BLOCK_FORMAT)) {
+                event.acceptTransferModes(TransferMode.COPY_OR_MOVE);
             }
             event.consume();
         });
@@ -95,20 +135,30 @@ public class BlockDragAndDropManager {
         separator.setOnDragDropped(event -> {
             Dragboard db = event.getDragboard();
             boolean success = false;
+
             if (db.hasContent(ADDABLE_BLOCK_FORMAT)) {
+                // Adding a new block
                 String blockTypeName = (String) db.getContent(ADDABLE_BLOCK_FORMAT);
                 AddableBlock type = AddableBlock.valueOf(blockTypeName);
 
-                // ============================================
-                // PHASE 2 FIX: Check if callback is set
-                // ============================================
                 if (onDrop != null) {
                     onDrop.accept(new DropInfo(type, targetBody, insertionIndex));
                     success = true;
                 } else {
                     System.err.println("WARNING: onDrop callback not set yet!");
                 }
+            } else if (db.hasContent(EXISTING_BLOCK_FORMAT)) {
+                // Moving an existing block
+                String blockId = (String) db.getContent(EXISTING_BLOCK_FORMAT);
+
+                if (onBlockMove != null) {
+                    onBlockMove.accept(new MoveBlockInfo(blockId, targetBody, insertionIndex));
+                    success = true;
+                } else {
+                    System.err.println("WARNING: onBlockMove callback not set yet!");
+                }
             }
+
             event.setDropCompleted(success);
             event.consume();
         });
@@ -116,7 +166,8 @@ public class BlockDragAndDropManager {
 
     public void addEmptyBodyDropHandlers(Region target, BodyBlock targetBody) {
         target.setOnDragEntered(event -> {
-            if (event.getDragboard().hasContent(ADDABLE_BLOCK_FORMAT)) {
+            Dragboard db = event.getDragboard();
+            if (db.hasContent(ADDABLE_BLOCK_FORMAT) || db.hasContent(EXISTING_BLOCK_FORMAT)) {
                 target.getStyleClass().add("empty-body-drop-hover");
             }
             event.consume();
@@ -128,8 +179,9 @@ public class BlockDragAndDropManager {
         });
 
         target.setOnDragOver(event -> {
-            if (event.getDragboard().hasContent(ADDABLE_BLOCK_FORMAT)) {
-                event.acceptTransferModes(TransferMode.COPY);
+            Dragboard db = event.getDragboard();
+            if (db.hasContent(ADDABLE_BLOCK_FORMAT) || db.hasContent(EXISTING_BLOCK_FORMAT)) {
+                event.acceptTransferModes(TransferMode.COPY_OR_MOVE);
             }
             event.consume();
         });
@@ -137,20 +189,30 @@ public class BlockDragAndDropManager {
         target.setOnDragDropped(event -> {
             Dragboard db = event.getDragboard();
             boolean success = false;
+
             if (db.hasContent(ADDABLE_BLOCK_FORMAT)) {
+                // Adding a new block
                 String blockTypeName = (String) db.getContent(ADDABLE_BLOCK_FORMAT);
                 AddableBlock type = AddableBlock.valueOf(blockTypeName);
 
-                // ============================================
-                // PHASE 2 FIX: Check if callback is set
-                // ============================================
                 if (onDrop != null) {
                     onDrop.accept(new DropInfo(type, targetBody, 0)); // Always index 0 for empty body
                     success = true;
                 } else {
                     System.err.println("WARNING: onDrop callback not set yet!");
                 }
+            } else if (db.hasContent(EXISTING_BLOCK_FORMAT)) {
+                // Moving an existing block
+                String blockId = (String) db.getContent(EXISTING_BLOCK_FORMAT);
+
+                if (onBlockMove != null) {
+                    onBlockMove.accept(new MoveBlockInfo(blockId, targetBody, 0));
+                    success = true;
+                } else {
+                    System.err.println("WARNING: onBlockMove callback not set yet!");
+                }
             }
+
             event.setDropCompleted(success);
             event.consume();
         });
@@ -186,11 +248,8 @@ public class BlockDragAndDropManager {
             Dragboard db = event.getDragboard();
             boolean success = false;
             if (db.hasContent(ADDABLE_BLOCK_FORMAT)) {
-                // For now, we just acknowledge the drop and show a message.
-                // In the future, we would need a different DataFormat for expressions.
                 String blockTypeName = (String) db.getContent(ADDABLE_BLOCK_FORMAT);
                 System.out.println("Cannot drop a Statement block ('" + blockTypeName + "') into an Expression slot.");
-                // We'll still mark it as a "successful" drop to finalize the gesture.
                 success = true;
             }
             event.setDropCompleted(success);

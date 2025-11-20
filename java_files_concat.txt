@@ -1,5 +1,5 @@
 =================================================================================
-FILE: main/java/com/botmaker/blocks/BinaryExpressionBlock.java
+FILE: ./src/main/java/com/botmaker/blocks/BinaryExpressionBlock.java
 =================================================================================
 
 package com.botmaker.blocks;
@@ -84,7 +84,7 @@ public class BinaryExpressionBlock extends AbstractExpressionBlock {
 
 
 =================================================================================
-FILE: main/java/com/botmaker/blocks/IdentifierBlock.java
+FILE: ./src/main/java/com/botmaker/blocks/IdentifierBlock.java
 =================================================================================
 
 package com.botmaker.blocks;
@@ -273,7 +273,7 @@ public class IdentifierBlock extends AbstractExpressionBlock {
 }
 
 =================================================================================
-FILE: main/java/com/botmaker/blocks/IfBlock.java
+FILE: ./src/main/java/com/botmaker/blocks/IfBlock.java
 =================================================================================
 
 package com.botmaker.blocks;
@@ -432,7 +432,7 @@ public class IfBlock extends AbstractStatementBlock {
 }
 
 =================================================================================
-FILE: main/java/com/botmaker/blocks/LiteralBlock.java
+FILE: ./src/main/java/com/botmaker/blocks/LiteralBlock.java
 =================================================================================
 
 package com.botmaker.blocks;
@@ -500,7 +500,7 @@ public class LiteralBlock<T> extends AbstractExpressionBlock {
 
 
 =================================================================================
-FILE: main/java/com/botmaker/blocks/MainBlock.java
+FILE: ./src/main/java/com/botmaker/blocks/MainBlock.java
 =================================================================================
 
 package com.botmaker.blocks;
@@ -561,7 +561,7 @@ public class MainBlock extends AbstractCodeBlock implements BlockWithChildren {
 
 
 =================================================================================
-FILE: main/java/com/botmaker/blocks/PrintBlock.java
+FILE: ./src/main/java/com/botmaker/blocks/PrintBlock.java
 =================================================================================
 
 package com.botmaker.blocks;
@@ -654,7 +654,7 @@ public class PrintBlock extends AbstractStatementBlock {
 
 
 =================================================================================
-FILE: main/java/com/botmaker/blocks/VariableDeclarationBlock.java
+FILE: ./src/main/java/com/botmaker/blocks/VariableDeclarationBlock.java
 =================================================================================
 
 package com.botmaker.blocks;
@@ -833,7 +833,7 @@ public class VariableDeclarationBlock extends AbstractStatementBlock {
 }
 
 =================================================================================
-FILE: main/java/com/botmaker/config/ApplicationConfig.java
+FILE: ./src/main/java/com/botmaker/config/ApplicationConfig.java
 =================================================================================
 
 package com.botmaker.config;
@@ -1063,7 +1063,7 @@ public class ApplicationConfig {
 }
 
 =================================================================================
-FILE: main/java/com/botmaker/config/Constants.java
+FILE: ./src/main/java/com/botmaker/config/Constants.java
 =================================================================================
 
 package com.botmaker.config;
@@ -1101,28 +1101,39 @@ public class Constants {
 }
 
 =================================================================================
-FILE: main/java/com/botmaker/core/AbstractCodeBlock.java
+FILE: ./src/main/java/com/botmaker/core/AbstractCodeBlock.java
 =================================================================================
 
 package com.botmaker.core;
 
 import com.botmaker.lsp.CompletionContext;
-import javafx.geometry.Pos;
+import javafx.beans.binding.Bindings;
+import javafx.geometry.Insets;
 import javafx.scene.Node;
-import javafx.scene.control.Button;
-import javafx.scene.layout.HBox;
+import javafx.scene.control.ContextMenu;
+import javafx.scene.control.MenuItem;
+import javafx.scene.control.Tooltip;
 import javafx.scene.layout.Pane;
-import javafx.scene.layout.Priority;
 import javafx.scene.layout.Region;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Circle;
 import org.eclipse.jdt.core.dom.ASTNode;
 import org.eclipse.jdt.core.dom.CompilationUnit;
-import org.eclipse.jdt.core.dom.Statement;
 
 public abstract class AbstractCodeBlock implements CodeBlock {
     protected final String id;
     protected final ASTNode astNode;
-    protected Node uiNode; // A cached reference to the UI node
+
+    protected Node uiNode;
     private javafx.scene.control.Tooltip errorTooltip;
+
+    // Breakpoint State
+    protected boolean isBreakpoint = false;
+    private Circle breakpointCircle;
+
+    // Constants
+    private static final double GUTTER_PADDING = 12.0; // Space reserved on the left
+    private static final double CIRCLE_RADIUS = 4.0;
 
     public AbstractCodeBlock(String id, ASTNode astNode) {
         this.id = id;
@@ -1130,35 +1141,81 @@ public abstract class AbstractCodeBlock implements CodeBlock {
     }
 
     @Override
-    public String getId() {
-        return id;
-    }
+    public String getId() { return id; }
 
     @Override
-    public ASTNode getAstNode() {
-        return astNode;
-    }
+    public ASTNode getAstNode() { return astNode; }
 
     @Override
     public Node getUINode(CompletionContext context) {
         if (uiNode == null) {
+            // 1. Create the standard UI
             this.uiNode = createUINode(context);
+
+            // 2. Inject the visual Gutter (Padding + Circle)
+            if (uiNode instanceof Region) {
+                Region region = (Region) uiNode;
+
+                // Add left padding to make room for the circle
+                Insets existing = region.getPadding();
+                region.setPadding(new Insets(
+                        existing.getTop(),
+                        existing.getRight(),
+                        existing.getBottom(),
+                        existing.getLeft() + GUTTER_PADDING
+                ));
+
+                // If the UI node allows children (Pane), add the floating circle
+                if (uiNode instanceof Pane) {
+                    Pane pane = (Pane) uiNode;
+
+                    breakpointCircle = new Circle(CIRCLE_RADIUS, Color.RED);
+                    breakpointCircle.setManaged(false); // Don't affect flow layout
+                    breakpointCircle.setVisible(false); // Hidden by default
+
+                    // Position: Center vertically, placed inside the left padding
+                    // x = (Padding / 2) roughly centers it in the gutter
+                    breakpointCircle.setLayoutX(GUTTER_PADDING / 2 + existing.getLeft());
+                    breakpointCircle.centerYProperty().bind(pane.heightProperty().divide(2));
+
+                    pane.getChildren().add(breakpointCircle);
+                }
+            }
+
+            // 3. Setup Interaction
+            setupBreakpointInteraction();
+
+            // 4. Discovery Tooltip
+            Tooltip tip = new Tooltip("Right-click to toggle breakpoint");
+            Tooltip.install(uiNode, tip);
         }
+
+        updateBreakpointVisuals();
         return uiNode;
+    }
+
+    private void setupBreakpointInteraction() {
+        if (uiNode == null) return;
+
+        ContextMenu contextMenu = new ContextMenu();
+        MenuItem toggleBpItem = new MenuItem("Toggle Breakpoint");
+        toggleBpItem.setOnAction(ev -> toggleBreakpoint());
+        contextMenu.getItems().add(toggleBpItem);
+
+        uiNode.setOnContextMenuRequested(e -> {
+            toggleBpItem.setText(isBreakpoint ? "Remove Breakpoint 🔴" : "Add Breakpoint ⚪");
+            contextMenu.show(uiNode, e.getScreenX(), e.getScreenY());
+            e.consume();
+        });
     }
 
     @Override
-    public Node getUINode() {
-        return uiNode;
-    }
-
+    public Node getUINode() { return uiNode; }
 
     @Override
     public void highlight() {
-        if (uiNode != null) {
-            if (!uiNode.getStyleClass().contains("highlighted")) {
-                uiNode.getStyleClass().add("highlighted");
-            }
+        if (uiNode != null && !uiNode.getStyleClass().contains("highlighted")) {
+            uiNode.getStyleClass().add("highlighted");
         }
     }
 
@@ -1176,8 +1233,8 @@ public abstract class AbstractCodeBlock implements CodeBlock {
                 uiNode.getStyleClass().add("error-block");
             }
             if (errorTooltip == null) {
-                errorTooltip = new javafx.scene.control.Tooltip(message);
-                javafx.scene.control.Tooltip.install(uiNode, errorTooltip);
+                errorTooltip = new Tooltip(message);
+                Tooltip.install(uiNode, errorTooltip);
             } else {
                 errorTooltip.setText(message);
             }
@@ -1189,7 +1246,7 @@ public abstract class AbstractCodeBlock implements CodeBlock {
         if (uiNode != null) {
             uiNode.getStyleClass().remove("error-block");
             if (errorTooltip != null) {
-                javafx.scene.control.Tooltip.uninstall(uiNode, errorTooltip);
+                Tooltip.uninstall(uiNode, errorTooltip);
                 errorTooltip = null;
             }
         }
@@ -1202,33 +1259,62 @@ public abstract class AbstractCodeBlock implements CodeBlock {
     }
 
     @Override
-    public CodeBlock getHighlightTarget() {
-        return this; // Default behavior is to highlight the block itself.
-    }
+    public CodeBlock getHighlightTarget() { return this; }
 
     @Override
     public String getDetails() {
         return this.getClass().getSimpleName() + " (ID: " + this.getId() + ")";
     }
 
-    /**
-     * Creates a standard placeholder for a missing expression, which acts as a drop target.
-     * @param context The completion context containing the drag-and-drop manager.
-     * @return A Node representing the drop zone.
-     */
+    @Override
+    public boolean isBreakpoint() { return isBreakpoint; }
+
+    @Override
+    public void setBreakpoint(boolean enabled) {
+        this.isBreakpoint = enabled;
+        updateBreakpointVisuals();
+    }
+
+    @Override
+    public void toggleBreakpoint() {
+        setBreakpoint(!isBreakpoint);
+        if (uiNode != null) {
+            uiNode.fireEvent(new com.botmaker.ui.BlockEvent.BreakpointToggleEvent(this, isBreakpoint));
+        }
+    }
+
+    private void updateBreakpointVisuals() {
+        // Update the circle visibility
+        if (breakpointCircle != null) {
+            breakpointCircle.setVisible(isBreakpoint);
+        }
+
+        // Optional: Keep the red border as secondary reinforcement, or remove if circle is enough
+        if (uiNode != null) {
+            String style = uiNode.getStyle();
+            String borderStyle = "-fx-border-color: #e74c3c; -fx-border-width: 0 0 0 2; -fx-border-style: solid;";
+
+            if (isBreakpoint) {
+                if (!style.contains("-fx-border-color: #e74c3c")) {
+                    uiNode.setStyle(style + borderStyle);
+                }
+            } else {
+                uiNode.setStyle(style.replace(borderStyle, ""));
+            }
+        }
+    }
+
     protected Node createExpressionDropZone(CompletionContext context) {
         Region dropZone = new Region();
         context.dragAndDropManager().addExpressionDropHandlers(dropZone);
         return dropZone;
     }
 
-    // Abstract method for subclasses to implement their specific UI creation logic.
     protected abstract Node createUINode(CompletionContext context);
 }
 
-
 =================================================================================
-FILE: main/java/com/botmaker/core/AbstractExpressionBlock.java
+FILE: ./src/main/java/com/botmaker/core/AbstractExpressionBlock.java
 =================================================================================
 
 package com.botmaker.core;
@@ -1243,7 +1329,7 @@ public abstract class AbstractExpressionBlock extends AbstractCodeBlock implemen
 
 
 =================================================================================
-FILE: main/java/com/botmaker/core/AbstractStatementBlock.java
+FILE: ./src/main/java/com/botmaker/core/AbstractStatementBlock.java
 =================================================================================
 
 package com.botmaker.core;
@@ -1258,7 +1344,7 @@ public abstract class AbstractStatementBlock extends AbstractCodeBlock implement
 
 
 =================================================================================
-FILE: main/java/com/botmaker/core/BlockWithChildren.java
+FILE: ./src/main/java/com/botmaker/core/BlockWithChildren.java
 =================================================================================
 
 package com.botmaker.core;
@@ -1271,7 +1357,7 @@ public interface BlockWithChildren {
 
 
 =================================================================================
-FILE: main/java/com/botmaker/core/BodyBlock.java
+FILE: ./src/main/java/com/botmaker/core/BodyBlock.java
 =================================================================================
 
 package com.botmaker.core;
@@ -1279,7 +1365,7 @@ package com.botmaker.core;
 import com.botmaker.core.AbstractStatementBlock;
 import com.botmaker.lsp.CompletionContext;
 import com.botmaker.ui.BlockDragAndDropManager;
-import com.botmaker.ui.DropInfo;
+import javafx.scene.Cursor;
 import javafx.scene.Node;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
@@ -1298,6 +1384,21 @@ public class BodyBlock extends AbstractStatementBlock implements BlockWithChildr
 
     public void addStatement(StatementBlock statement) {
         statements.add(statement);
+    }
+
+    public List<StatementBlock> getStatements() {
+        return new ArrayList<>(statements);
+    }
+
+    public void removeStatement(StatementBlock statement) {
+        statements.remove(statement);
+    }
+
+    public void insertStatement(int index, StatementBlock statement) {
+        if (index < 0 || index > statements.size()) {
+            throw new IndexOutOfBoundsException("Index: " + index + ", Size: " + statements.size());
+        }
+        statements.add(index, statement);
     }
 
     @Override
@@ -1325,12 +1426,34 @@ public class BodyBlock extends AbstractStatementBlock implements BlockWithChildr
 
             for (int i = 0; i < statements.size(); i++) {
                 StatementBlock statement = statements.get(i);
-                container.getChildren().add(statement.getUINode(context));
+                Node statementNode = statement.getUINode(context);
+
+                // Make the statement block draggable for repositioning
+                makeStatementDraggable(statementNode, statement);
+
+                container.getChildren().add(statementNode);
                 // Add a separator after each statement
                 container.getChildren().add(createSeparatorWithHandlers(this, i + 1));
             }
         }
         return container;
+    }
+
+    /**
+     * Makes a statement block's UI node draggable so it can be repositioned.
+     */
+    private void makeStatementDraggable(Node statementNode, StatementBlock statement) {
+        // Add visual cue that the block is draggable
+        statementNode.setOnMouseEntered(e -> {
+            statementNode.setCursor(Cursor.OPEN_HAND);
+        });
+
+        statementNode.setOnMouseExited(e -> {
+            statementNode.setCursor(Cursor.DEFAULT);
+        });
+
+        // Register with the drag and drop manager
+        dragAndDropManager.makeBlockMovable(statementNode, statement, this);
     }
 
     private Node createSeparatorWithHandlers(BodyBlock targetBody, int insertionIndex) {
@@ -1343,7 +1466,7 @@ public class BodyBlock extends AbstractStatementBlock implements BlockWithChildr
 }
 
 =================================================================================
-FILE: main/java/com/botmaker/core/CodeBlock.java
+FILE: ./src/main/java/com/botmaker/core/CodeBlock.java
 =================================================================================
 
 package com.botmaker.core;
@@ -1351,7 +1474,6 @@ package com.botmaker.core;
 import com.botmaker.lsp.CompletionContext;
 import javafx.scene.Node;
 import org.eclipse.jdt.core.dom.ASTNode;
-
 import org.eclipse.jdt.core.dom.CompilationUnit;
 
 public interface CodeBlock {
@@ -1359,18 +1481,26 @@ public interface CodeBlock {
     ASTNode getAstNode();
     Node getUINode(CompletionContext context);
     Node getUINode();
+
+    // Visual State
     void highlight();
     void unhighlight();
+    void setError(String message);
+    void clearError();
+
+    // Breakpoint Logic
+    void setBreakpoint(boolean enabled);
+    boolean isBreakpoint();
+    void toggleBreakpoint();
+
+    // Debugging
     int getBreakpointLine(CompilationUnit cu);
     CodeBlock getHighlightTarget();
     String getDetails();
-    void setError(String message);
-    void clearError();
 }
 
-
 =================================================================================
-FILE: main/java/com/botmaker/core/ExpressionBlock.java
+FILE: ./src/main/java/com/botmaker/core/ExpressionBlock.java
 =================================================================================
 
 package com.botmaker.core;
@@ -1384,7 +1514,7 @@ public interface ExpressionBlock extends CodeBlock {
 
 
 =================================================================================
-FILE: main/java/com/botmaker/core/StatementBlock.java
+FILE: ./src/main/java/com/botmaker/core/StatementBlock.java
 =================================================================================
 
 package com.botmaker.core;
@@ -1398,7 +1528,7 @@ public interface StatementBlock extends CodeBlock {
 
 
 =================================================================================
-FILE: main/java/com/botmaker/di/DependencyContainer.java
+FILE: ./src/main/java/com/botmaker/di/DependencyContainer.java
 =================================================================================
 
 package com.botmaker.di;
@@ -1511,7 +1641,7 @@ public class DependencyContainer {
 }
 
 =================================================================================
-FILE: main/java/com/botmaker/events/AbstractApplicationEvent.java
+FILE: ./src/main/java/com/botmaker/events/AbstractApplicationEvent.java
 =================================================================================
 
 package com.botmaker.events;
@@ -1544,7 +1674,7 @@ public abstract class AbstractApplicationEvent implements ApplicationEvent {
 }
 
 =================================================================================
-FILE: main/java/com/botmaker/events/ApplicationEvent.java
+FILE: ./src/main/java/com/botmaker/events/ApplicationEvent.java
 =================================================================================
 
 package com.botmaker.events;
@@ -1568,264 +1698,144 @@ public interface ApplicationEvent {
 }
 
 =================================================================================
-FILE: main/java/com/botmaker/events/CoreApplicationEvents.java
+FILE: ./src/main/java/com/botmaker/events/CoreApplicationEvents.java
 =================================================================================
 
 package com.botmaker.events;
 
 import com.botmaker.core.CodeBlock;
 import org.eclipse.lsp4j.Diagnostic;
-
 import java.util.Collections;
 import java.util.List;
 
-/**
- * Core application events that drive the application's behavior.
- *
- * Phase 1: Initial 13 events
- * Phase 2: Added 4 more events (UIBlocksUpdated, Output events)
- */
 public class CoreApplicationEvents {
 
-    // ============================================
-    // PHASE 1 EVENTS (original 13)
-    // ============================================
+    // ... (Keep existing events: CodeUpdatedEvent, DiagnosticsUpdatedEvent, UIRefreshRequestedEvent, BlockHighlightEvent) ...
 
-    /**
-     * Fired when the source code has been updated
-     */
     public static class CodeUpdatedEvent extends AbstractApplicationEvent {
         private final String newCode;
         private final String previousCode;
-
         public CodeUpdatedEvent(String newCode, String previousCode) {
             this.newCode = newCode;
             this.previousCode = previousCode;
         }
-
-        public String getNewCode() {
-            return newCode;
-        }
-
-        public String getPreviousCode() {
-            return previousCode;
-        }
+        public String getNewCode() { return newCode; }
+        public String getPreviousCode() { return previousCode; }
     }
 
-    /**
-     * Fired when diagnostics have been updated from the language server
-     */
     public static class DiagnosticsUpdatedEvent extends AbstractApplicationEvent {
         private final List<Diagnostic> diagnostics;
-
         public DiagnosticsUpdatedEvent(List<Diagnostic> diagnostics) {
-            this.diagnostics = diagnostics != null ?
-                    List.copyOf(diagnostics) : Collections.emptyList();
+            this.diagnostics = diagnostics != null ? List.copyOf(diagnostics) : Collections.emptyList();
         }
-
-        public List<Diagnostic> getDiagnostics() {
-            return diagnostics;
-        }
+        public List<Diagnostic> getDiagnostics() { return diagnostics; }
     }
 
-    /**
-     * Fired when the UI needs to be refreshed with new blocks
-     */
     public static class UIRefreshRequestedEvent extends AbstractApplicationEvent {
         private final String code;
-
-        public UIRefreshRequestedEvent(String code) {
-            this.code = code;
-        }
-
-        public String getCode() {
-            return code;
-        }
+        public UIRefreshRequestedEvent(String code) { this.code = code; }
+        public String getCode() { return code; }
     }
 
-    /**
-     * Fired when a block should be highlighted (e.g., during debugging)
-     */
     public static class BlockHighlightEvent extends AbstractApplicationEvent {
         private final CodeBlock block;
-
-        public BlockHighlightEvent(CodeBlock block) {
-            this.block = block;
-        }
-
-        public CodeBlock getBlock() {
-            return block;
-        }
+        public BlockHighlightEvent(CodeBlock block) { this.block = block; }
+        public CodeBlock getBlock() { return block; }
     }
 
-    /**
-     * Fired when compilation is requested
-     */
-    public static class CompilationRequestedEvent extends AbstractApplicationEvent {
-        public CompilationRequestedEvent() {
-            super("User");
-        }
-    }
+    public static class CompilationRequestedEvent extends AbstractApplicationEvent {}
+    public static class ExecutionRequestedEvent extends AbstractApplicationEvent {}
+    public static class DebugStartRequestedEvent extends AbstractApplicationEvent {}
 
-    /**
-     * Fired when code execution is requested
-     */
-    public static class ExecutionRequestedEvent extends AbstractApplicationEvent {
-        public ExecutionRequestedEvent() {
-            super("User");
-        }
-    }
+    public static class DebugSessionStartedEvent extends AbstractApplicationEvent {}
+    public static class DebugSessionResumedEvent extends AbstractApplicationEvent {}
+    public static class DebugSessionFinishedEvent extends AbstractApplicationEvent {}
 
-    /**
-     * Fired when debugging should start
-     */
-    public static class DebugStartRequestedEvent extends AbstractApplicationEvent {
-        public DebugStartRequestedEvent() {
-            super("User");
-        }
-    }
-
-    /**
-     * Fired when debugger should resume
-     */
-    public static class DebugResumeRequestedEvent extends AbstractApplicationEvent {
-        public DebugResumeRequestedEvent() {
-            super("User");
-        }
-    }
-
-    /**
-     * Fired when debugging has started
-     */
-    public static class DebugSessionStartedEvent extends AbstractApplicationEvent {
-        public DebugSessionStartedEvent() {
-            super("DebuggingManager");
-        }
-    }
-
-    /**
-     * Fired when debugger has paused
-     */
     public static class DebugSessionPausedEvent extends AbstractApplicationEvent {
         private final int lineNumber;
         private final CodeBlock block;
-
         public DebugSessionPausedEvent(int lineNumber, CodeBlock block) {
-            super("DebuggingManager");
             this.lineNumber = lineNumber;
             this.block = block;
         }
-
-        public int getLineNumber() {
-            return lineNumber;
-        }
-
-        public CodeBlock getBlock() {
-            return block;
-        }
+        public int getLineNumber() { return lineNumber; }
+        public CodeBlock getBlock() { return block; }
     }
 
-    /**
-     * Fired when debugger has resumed
-     */
-    public static class DebugSessionResumedEvent extends AbstractApplicationEvent {
-        public DebugSessionResumedEvent() {
-            super("DebuggingManager");
-        }
-    }
-
-    /**
-     * Fired when debugging has finished
-     */
-    public static class DebugSessionFinishedEvent extends AbstractApplicationEvent {
-        public DebugSessionFinishedEvent() {
-            super("DebuggingManager");
-        }
-    }
-
-    /**
-     * Fired when there's a status message to display
-     */
     public static class StatusMessageEvent extends AbstractApplicationEvent {
         private final String message;
-
-        public StatusMessageEvent(String message) {
-            this.message = message;
-        }
-
-        public String getMessage() {
-            return message;
-        }
+        public StatusMessageEvent(String message) { this.message = message; }
+        public String getMessage() { return message; }
     }
 
-    // ============================================
-    // PHASE 2 EVENTS (new - 4 events added)
-    // ============================================
-
-    /**
-     * Fired when the UI blocks have been updated and need to be rendered
-     * PHASE 2: NEW
-     */
     public static class UIBlocksUpdatedEvent extends AbstractApplicationEvent {
         private final com.botmaker.blocks.MainBlock rootBlock;
-
         public UIBlocksUpdatedEvent(com.botmaker.blocks.MainBlock rootBlock) {
             super("CodeEditorService");
             this.rootBlock = rootBlock;
         }
-
-        public com.botmaker.blocks.MainBlock getRootBlock() {
-            return rootBlock;
-        }
+        public com.botmaker.blocks.MainBlock getRootBlock() { return rootBlock; }
     }
 
-    /**
-     * Fired when output should be appended to the terminal
-     * PHASE 2: NEW
-     */
     public static class OutputAppendedEvent extends AbstractApplicationEvent {
         private final String text;
-
-        public OutputAppendedEvent(String text) {
-            super("System");
-            this.text = text;
-        }
-
-        public String getText() {
-            return text;
-        }
+        public OutputAppendedEvent(String text) { this.text = text; }
+        public String getText() { return text; }
     }
 
-    /**
-     * Fired when output should be cleared
-     * PHASE 2: NEW
-     */
-    public static class OutputClearedEvent extends AbstractApplicationEvent {
-        public OutputClearedEvent() {
-            super("System");
-        }
-    }
-
-    /**
-     * Fired when output should be set (replace all)
-     * PHASE 2: NEW
-     */
+    public static class OutputClearedEvent extends AbstractApplicationEvent {}
     public static class OutputSetEvent extends AbstractApplicationEvent {
         private final String text;
+        public OutputSetEvent(String text) { this.text = text; }
+        public String getText() { return text; }
+    }
 
-        public OutputSetEvent(String text) {
-            super("System");
-            this.text = text;
+    // --- NEW EVENTS ---
+
+    /**
+     * Fired when a user wants to step over the current line
+     */
+    public static class DebugStepOverRequestedEvent extends AbstractApplicationEvent {
+        public DebugStepOverRequestedEvent() {
+            super("User");
+        }
+    }
+
+    public static class DebugStopRequestedEvent extends AbstractApplicationEvent {
+        public DebugStopRequestedEvent() {
+            super("User");
+        }
+    }
+
+    /**
+     * Fired when a user wants to continue execution until the next breakpoint
+     */
+    public static class DebugContinueRequestedEvent extends AbstractApplicationEvent {
+        public DebugContinueRequestedEvent() {
+            super("User");
+        }
+    }
+
+    /**
+     * Fired when a user toggles a breakpoint on a block
+     */
+    public static class BreakpointToggledEvent extends AbstractApplicationEvent {
+        private final CodeBlock block;
+        private final boolean isEnabled;
+
+        public BreakpointToggledEvent(CodeBlock block, boolean isEnabled) {
+            super("User");
+            this.block = block;
+            this.isEnabled = isEnabled;
         }
 
-        public String getText() {
-            return text;
-        }
+        public CodeBlock getBlock() { return block; }
+        public boolean isEnabled() { return isEnabled; }
     }
 }
 
 =================================================================================
-FILE: main/java/com/botmaker/events/EventBus.java
+FILE: ./src/main/java/com/botmaker/events/EventBus.java
 =================================================================================
 
 package com.botmaker.events;
@@ -1972,7 +1982,7 @@ public class EventBus {
 }
 
 =================================================================================
-FILE: main/java/com/botmaker/lsp/CompletionContext.java
+FILE: ./src/main/java/com/botmaker/lsp/CompletionContext.java
 =================================================================================
 
 package com.botmaker.lsp;
@@ -1997,7 +2007,7 @@ public record CompletionContext(
 }
 
 =================================================================================
-FILE: main/java/com/botmaker/lsp/JdtLanguageServerLauncher.java
+FILE: ./src/main/java/com/botmaker/lsp/JdtLanguageServerLauncher.java
 =================================================================================
 
 package com.botmaker.lsp;
@@ -2206,12 +2216,14 @@ public class JdtLanguageServerLauncher {
 
 
 =================================================================================
-FILE: main/java/com/botmaker/Main.java
+FILE: ./src/main/java/com/botmaker/Main.java
 =================================================================================
 
 package com.botmaker;
 
 import com.botmaker.config.ApplicationConfig;
+import com.botmaker.core.BodyBlock;
+import com.botmaker.core.StatementBlock;
 import com.botmaker.di.DependencyContainer;
 import com.botmaker.events.CoreApplicationEvents;
 import com.botmaker.events.EventBus;
@@ -2224,6 +2236,7 @@ import com.botmaker.state.ApplicationState;
 import com.botmaker.ui.BlockDragAndDropManager;
 import com.botmaker.ui.ProjectSelectionScreen;
 import com.botmaker.ui.UIManager;
+import com.botmaker.util.BlockLookupHelper;
 import com.botmaker.validation.DiagnosticsManager;
 import javafx.application.Application;
 import javafx.application.Platform;
@@ -2458,9 +2471,12 @@ public class Main extends Application {
 
         // 2. Get CodeEditorService (depends on initialized LSS)
         CodeEditorService codeEditorService = container.resolve(CodeEditorService.class);
+        ApplicationState state = container.resolve(ApplicationState.class);
 
         // 3. Wire up drag-and-drop callback now that CodeEditorService exists
         BlockDragAndDropManager dragAndDropManager = container.resolve(BlockDragAndDropManager.class);
+
+        // Existing callback for adding new blocks
         dragAndDropManager.setCallback(dropInfo ->
                 codeEditorService.getCodeEditor().addStatement(
                         dropInfo.targetBody(),
@@ -2468,6 +2484,42 @@ public class Main extends Application {
                         dropInfo.insertionIndex()
                 )
         );
+
+        // NEW: Add callback for moving existing blocks
+        dragAndDropManager.setMoveCallback(moveInfo -> {
+            System.out.println("Move callback triggered for blockId: " + moveInfo.blockId());
+
+            // Find the block to move using the helper
+            StatementBlock blockToMove = BlockLookupHelper.findBlockById(
+                    moveInfo.blockId(),
+                    state.getNodeToBlockMap()
+            );
+
+            System.out.println("Found block: " + (blockToMove != null));
+
+            if (blockToMove != null) {
+                // Find the source body containing this block
+                BodyBlock sourceBody = BlockLookupHelper.findParentBody(
+                        blockToMove,
+                        state.getNodeToBlockMap()
+                );
+
+                System.out.println("Found sourceBody: " + (sourceBody != null));
+
+                if (sourceBody != null) {
+                    codeEditorService.getCodeEditor().moveStatement(
+                            blockToMove,
+                            sourceBody,
+                            moveInfo.targetBody(),
+                            moveInfo.insertionIndex()
+                    );
+                } else {
+                    System.err.println("Could not find source body for block: " + moveInfo.blockId());
+                }
+            } else {
+                System.err.println("Could not find block with ID: " + moveInfo.blockId());
+            }
+        });
 
         // 4. CRITICAL: Force initialization of services that subscribe to events
         //    This ensures their constructors run and event subscriptions are registered
@@ -2482,12 +2534,13 @@ public class Main extends Application {
 }
 
 =================================================================================
-FILE: main/java/com/botmaker/parser/AstRewriter.java
+FILE: ./src/main/java/com/botmaker/parser/AstRewriter.java
 =================================================================================
 
 package com.botmaker.parser;
 
 import com.botmaker.core.BodyBlock;
+import com.botmaker.core.StatementBlock;
 import com.botmaker.ui.AddableBlock;
 import com.botmaker.util.DefaultNames;
 import com.botmaker.util.TypeManager;
@@ -2500,13 +2553,72 @@ import org.eclipse.text.edits.TextEdit;
 
 public class AstRewriter {
 
+    /**
+     * Moves a statement from one position to another, potentially across different bodies.
+     * @param cu The compilation unit
+     * @param originalCode The current source code
+     * @param blockToMove The StatementBlock to move
+     * @param sourceBody The BodyBlock containing the statement (can be same as targetBody)
+     * @param targetBody The BodyBlock where the statement should be moved to
+     * @param targetIndex The index in the target body where the statement should be inserted
+     * @return The updated source code
+     */
+    public String moveStatement(CompilationUnit cu, String originalCode,
+                                StatementBlock blockToMove, BodyBlock sourceBody,
+                                BodyBlock targetBody, int targetIndex) {
+        AST ast = cu.getAST();
+        ASTRewrite rewriter = ASTRewrite.create(ast);
+
+        Statement statement = (Statement) blockToMove.getAstNode();
+        Block sourceBlock = (Block) sourceBody.getAstNode();
+        Block targetBlock = (Block) targetBody.getAstNode();
+
+        // Get the list rewriters for both source and target
+        ListRewrite sourceListRewrite = rewriter.getListRewrite(sourceBlock, Block.STATEMENTS_PROPERTY);
+        ListRewrite targetListRewrite = rewriter.getListRewrite(targetBlock, Block.STATEMENTS_PROPERTY);
+
+        // If moving within the same body, we need to be careful with indices
+        if (sourceBody == targetBody) {
+            int currentIndex = sourceBlock.statements().indexOf(statement);
+
+            // If moving to the exact same position, do nothing
+            if (currentIndex == targetIndex) {
+                return originalCode;
+            }
+
+            // When moving down (targetIndex > currentIndex):
+            // After removing the block, all indices shift down by 1
+            // So we need to decrease targetIndex by 1
+            if (targetIndex > currentIndex) {
+                targetIndex--;
+            }
+        }
+
+        // Create a copy of the statement for the new location
+        Statement copiedStatement = (Statement) ASTNode.copySubtree(ast, statement);
+
+        // Remove from source and insert at target
+        sourceListRewrite.remove(statement, null);
+        targetListRewrite.insertAt(copiedStatement, targetIndex, null);
+
+        IDocument document = new Document(originalCode);
+        try {
+            TextEdit edits = rewriter.rewriteAST(document, null);
+            edits.apply(document);
+            return document.get();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return originalCode;
+        }
+    }
+
     public String addStatement(CompilationUnit cu, String originalCode, BodyBlock targetBody, AddableBlock type, int index) {
         AST ast = cu.getAST();
         ASTRewrite rewriter = ASTRewrite.create(ast);
 
         Statement newStatement = createDefaultStatement(ast, type);
         if (newStatement == null) {
-            return originalCode; // Or throw an exception
+            return originalCode;
         }
 
         Block targetAstBlock = (Block) targetBody.getAstNode();
@@ -2520,7 +2632,7 @@ public class AstRewriter {
             return document.get();
         } catch (Exception e) {
             e.printStackTrace();
-            return originalCode; // Return original on failure
+            return originalCode;
         }
     }
 
@@ -2542,7 +2654,7 @@ public class AstRewriter {
             return document.get();
         } catch (Exception e) {
             e.printStackTrace();
-            return originalCode; // Return original on failure
+            return originalCode;
         }
     }
 
@@ -2560,7 +2672,6 @@ public class AstRewriter {
         } else if (toReplace instanceof BooleanLiteral) {
             newExpression = ast.newBooleanLiteral(Boolean.parseBoolean(newLiteralValue));
         } else {
-            // Not a literal we can handle, return original code
             return originalCode;
         }
 
@@ -2590,7 +2701,7 @@ public class AstRewriter {
             return document.get();
         } catch (Exception e) {
             e.printStackTrace();
-            return originalCode; // Return original on failure
+            return originalCode;
         }
     }
 
@@ -2674,7 +2785,6 @@ public class AstRewriter {
             Block elseBlock = ast.newBlock();
             rewriter.set(ifStatement, IfStatement.ELSE_STATEMENT_PROPERTY, elseBlock, null);
         } else {
-            // else already exists, do nothing
             return originalCode;
         }
 
@@ -2705,7 +2815,6 @@ public class AstRewriter {
     private Statement createDefaultStatement(AST ast, AddableBlock type) {
         switch (type) {
             case PRINT:
-                // System.out.println("");
                 MethodInvocation println = ast.newMethodInvocation();
                 println.setExpression(ast.newQualifiedName(
                         ast.newSimpleName("System"),
@@ -2719,7 +2828,7 @@ public class AstRewriter {
 
             case DECLARE_INT: {
                 VariableDeclarationFragment fragment = ast.newVariableDeclarationFragment();
-                fragment.setName(ast.newSimpleName(DefaultNames.DEFAULT_INT)); // Was "i"
+                fragment.setName(ast.newSimpleName(DefaultNames.DEFAULT_INT));
                 fragment.setInitializer(ast.newNumberLiteral("0"));
                 VariableDeclarationStatement varDecl = ast.newVariableDeclarationStatement(fragment);
                 varDecl.setType(ast.newPrimitiveType(PrimitiveType.INT));
@@ -2727,7 +2836,7 @@ public class AstRewriter {
             }
             case DECLARE_DOUBLE: {
                 VariableDeclarationFragment fragment = ast.newVariableDeclarationFragment();
-                fragment.setName(ast.newSimpleName(DefaultNames.DEFAULT_DOUBLE)); // Was "d"
+                fragment.setName(ast.newSimpleName(DefaultNames.DEFAULT_DOUBLE));
                 fragment.setInitializer(ast.newNumberLiteral("0.0"));
                 VariableDeclarationStatement varDecl = ast.newVariableDeclarationStatement(fragment);
                 varDecl.setType(ast.newPrimitiveType(PrimitiveType.DOUBLE));
@@ -2735,7 +2844,7 @@ public class AstRewriter {
             }
             case DECLARE_BOOLEAN: {
                 VariableDeclarationFragment fragment = ast.newVariableDeclarationFragment();
-                fragment.setName(ast.newSimpleName(DefaultNames.DEFAULT_BOOLEAN)); // Was "b"
+                fragment.setName(ast.newSimpleName(DefaultNames.DEFAULT_BOOLEAN));
                 fragment.setInitializer(ast.newBooleanLiteral(false));
                 VariableDeclarationStatement varDecl = ast.newVariableDeclarationStatement(fragment);
                 varDecl.setType(ast.newPrimitiveType(PrimitiveType.BOOLEAN));
@@ -2743,7 +2852,7 @@ public class AstRewriter {
             }
             case DECLARE_STRING: {
                 VariableDeclarationFragment fragment = ast.newVariableDeclarationFragment();
-                fragment.setName(ast.newSimpleName(DefaultNames.DEFAULT_STRING)); // Was "s"
+                fragment.setName(ast.newSimpleName(DefaultNames.DEFAULT_STRING));
                 fragment.setInitializer(ast.newStringLiteral());
                 VariableDeclarationStatement varDecl = ast.newVariableDeclarationStatement(fragment);
                 varDecl.setType(TypeManager.createTypeNode(ast, "String"));
@@ -2751,7 +2860,6 @@ public class AstRewriter {
             }
 
             case IF:
-                // if (true) {}
                 IfStatement ifStatement = ast.newIfStatement();
                 ifStatement.setExpression(ast.newBooleanLiteral(true));
                 ifStatement.setThenStatement(ast.newBlock());
@@ -2776,14 +2884,13 @@ public class AstRewriter {
                 return ast.newBooleanLiteral(false);
             case "char":
                 CharacterLiteral literal = ast.newCharacterLiteral();
-                literal.setCharValue('a'); // Default char
+                literal.setCharValue('a');
                 return literal;
             case "String":
                 StringLiteral stringLiteral = ast.newStringLiteral();
-                stringLiteral.setLiteralValue(""); // Default empty string
+                stringLiteral.setLiteralValue("");
                 return stringLiteral;
             default:
-                // For any other object type, the safest default is null.
                 return ast.newNullLiteral();
         }
     }
@@ -2792,19 +2899,14 @@ public class AstRewriter {
         AST ast = cu.getAST();
         ASTRewrite rewriter = ASTRewrite.create(ast);
 
-        // 1. Create the new type node
         Type newType = TypeManager.createTypeNode(ast, newTypeName);
         rewriter.replace(varDecl.getType(), newType, null);
 
-        // 2. Get the fragment and its current initializer
         if (!varDecl.fragments().isEmpty()) {
             VariableDeclarationFragment fragment = (VariableDeclarationFragment) varDecl.fragments().get(0);
             Expression currentInitializer = fragment.getInitializer();
-
-            // 3. Create a new default initializer based on the new type
             Expression newInitializer = createDefaultInitializer(ast, newTypeName);
 
-            // 4. Replace the old initializer if it exists and we have a new one
             if (currentInitializer != null && newInitializer != null) {
                 rewriter.replace(currentInitializer, newInitializer, null);
             }
@@ -2822,9 +2924,8 @@ public class AstRewriter {
     }
 }
 
-
 =================================================================================
-FILE: main/java/com/botmaker/parser/BlockFactory.java
+FILE: ./src/main/java/com/botmaker/parser/BlockFactory.java
 =================================================================================
 
 package com.botmaker.parser;
@@ -3057,7 +3158,7 @@ public class BlockFactory {
 }
 
 =================================================================================
-FILE: main/java/com/botmaker/parser/BlockIdPrefix.java
+FILE: ./src/main/java/com/botmaker/parser/BlockIdPrefix.java
 =================================================================================
 
 package com.botmaker.parser;
@@ -3091,40 +3192,28 @@ public class BlockIdPrefix {
 }
 
 =================================================================================
-FILE: main/java/com/botmaker/parser/CodeEditor.java
+FILE: ./src/main/java/com/botmaker/parser/CodeEditor.java
 =================================================================================
 
 package com.botmaker.parser;
 
+import com.botmaker.state.*;
 import com.botmaker.core.BodyBlock;
+import com.botmaker.core.StatementBlock;
 import com.botmaker.events.CoreApplicationEvents;
 import com.botmaker.events.EventBus;
-import com.botmaker.state.ApplicationState;
+import com.botmaker.parser.AstRewriter;
+import com.botmaker.parser.BlockFactory;
 import com.botmaker.ui.AddableBlock;
-import com.botmaker.ui.AddableExpression;
 import org.eclipse.jdt.core.dom.*;
 
-/**
- * Handles code editing operations.
- * Phase 1 Refactoring: Now uses ApplicationState and EventBus instead of Main reference.
- */
 public class CodeEditor {
 
-    // ============================================
-    // PHASE 1 CHANGES: Replace Main dependency
-    // ============================================
     private final ApplicationState state;
     private final EventBus eventBus;
-
-    // KEPT: Original dependencies
     private final AstRewriter astRewriter;
     private final BlockFactory blockFactory;
 
-    // ============================================
-    // PHASE 1: CHANGED - New constructor signature
-    // OLD: public CodeEditor(Main mainApp, AstRewriter astRewriter, BlockFactory blockFactory)
-    // NEW: Uses state and eventBus instead of mainApp
-    // ============================================
     public CodeEditor(ApplicationState state, EventBus eventBus,
                       AstRewriter astRewriter, BlockFactory blockFactory) {
         this.state = state;
@@ -3133,9 +3222,6 @@ public class CodeEditor {
         this.blockFactory = blockFactory;
     }
 
-    // ============================================
-    // PHASE 1: CHANGED - Use state instead of mainApp
-    // ============================================
     private String getCurrentCode() {
         return state.getCurrentCode();
     }
@@ -3144,19 +3230,30 @@ public class CodeEditor {
         return state.getCompilationUnit().orElse(null);
     }
 
-    // ============================================
-    // PHASE 1: CHANGED - Publish event instead of calling Main
-    // OLD: Platform.runLater(() -> mainApp.handleCodeUpdate(newCode));
-    // NEW: eventBus.publish(...)
-    // ============================================
     private void triggerUpdate(String newCode) {
         String previousCode = getCurrentCode();
         eventBus.publish(new CoreApplicationEvents.CodeUpdatedEvent(newCode, previousCode));
     }
 
-    // ============================================
-    // KEPT: All editing methods unchanged
-    // ============================================
+    /**
+     * Moves an existing statement block to a new position.
+     * @param blockToMove The statement block to move
+     * @param sourceBody The body containing the block
+     * @param targetBody The body where the block should be moved
+     * @param targetIndex The index where the block should be inserted
+     */
+    public void moveStatement(StatementBlock blockToMove, BodyBlock sourceBody,
+                              BodyBlock targetBody, int targetIndex) {
+        String newCode = astRewriter.moveStatement(
+                getCompilationUnit(),
+                getCurrentCode(),
+                blockToMove,
+                sourceBody,
+                targetBody,
+                targetIndex
+        );
+        triggerUpdate(newCode);
+    }
 
     public void replaceLiteralValue(Expression toReplace, String newLiteralValue) {
         String newCode = astRewriter.replaceLiteral(
@@ -3185,7 +3282,7 @@ public class CodeEditor {
         triggerUpdate(newCode);
     }
 
-    public void replaceExpression(Expression toReplace, AddableExpression type) {
+    public void replaceExpression(Expression toReplace, com.botmaker.ui.AddableExpression type) {
         blockFactory.setMarkNewIdentifiersAsUnedited(true);
         String newCode = astRewriter.replaceExpression(
                 getCompilationUnit(),
@@ -3266,7 +3363,7 @@ public class CodeEditor {
 }
 
 =================================================================================
-FILE: main/java/com/botmaker/project/ProjectConfig.java
+FILE: ./src/main/java/com/botmaker/project/ProjectConfig.java
 =================================================================================
 
 package com.botmaker.project;
@@ -3423,7 +3520,7 @@ public class ProjectConfig {
 }
 
 =================================================================================
-FILE: main/java/com/botmaker/project/ProjectCreator.java
+FILE: ./src/main/java/com/botmaker/project/ProjectCreator.java
 =================================================================================
 
 package com.botmaker.project;
@@ -3723,7 +3820,7 @@ public class ProjectCreator {
 }
 
 =================================================================================
-FILE: main/java/com/botmaker/project/ProjectInfo.java
+FILE: ./src/main/java/com/botmaker/project/ProjectInfo.java
 =================================================================================
 
 package com.botmaker.project;
@@ -3764,7 +3861,7 @@ public class ProjectInfo {
 }
 
 =================================================================================
-FILE: main/java/com/botmaker/project/ProjectManager.java
+FILE: ./src/main/java/com/botmaker/project/ProjectManager.java
 =================================================================================
 
 package com.botmaker.project;
@@ -3852,7 +3949,7 @@ public class ProjectManager {
 }
 
 =================================================================================
-FILE: main/java/com/botmaker/runtime/CodeExecutionService.java
+FILE: ./src/main/java/com/botmaker/runtime/CodeExecutionService.java
 =================================================================================
 
 package com.botmaker.runtime;
@@ -4007,7 +4104,7 @@ public class CodeExecutionService {
 
 
 =================================================================================
-FILE: main/java/com/botmaker/runtime/DebuggerService.java
+FILE: ./src/main/java/com/botmaker/runtime/DebuggerService.java
 =================================================================================
 
 package com.botmaker.runtime;
@@ -4021,6 +4118,7 @@ import com.sun.jdi.event.*;
 import com.sun.jdi.request.BreakpointRequest;
 import com.sun.jdi.request.ClassPrepareRequest;
 import com.sun.jdi.request.EventRequestManager;
+import com.sun.jdi.request.StepRequest;
 
 import java.io.IOException;
 import java.util.List;
@@ -4030,7 +4128,7 @@ import java.util.function.Consumer;
 
 public class DebuggerService {
 
-    // ANSI escape codes for colors
+    // ANSI escape codes
     public static final String ANSI_RESET = "\u001B[0m";
     public static final String ANSI_BLUE = "\u001B[34m";
     public static final String ANSI_GREEN = "\u001B[32m";
@@ -4041,13 +4139,11 @@ public class DebuggerService {
     private Consumer<LocatableEvent> onPause;
     private Runnable onDisconnect;
 
-    public void setOnPause(Consumer<LocatableEvent> onPause) {
-        this.onPause = onPause;
-    }
+    // NEW: Keep track of the thread we are debugging
+    private ThreadReference currentThread;
 
-    public void setOnDisconnect(Runnable onDisconnect) {
-        this.onDisconnect = onDisconnect;
-    }
+    public void setOnPause(Consumer<LocatableEvent> onPause) { this.onPause = onPause; }
+    public void setOnDisconnect(Runnable onDisconnect) { this.onDisconnect = onDisconnect; }
 
     public void connectAndRun(String mainClassName, int port, List<Integer> breakpointLines) throws IOException, IllegalConnectorArgumentsException, InterruptedException {
         VirtualMachineManager vmMgr = Bootstrap.virtualMachineManager();
@@ -4067,13 +4163,12 @@ public class DebuggerService {
                 System.out.println(ANSI_BLUE + "Attaching to process on port " + port + " (Attempt " + (i + 1) + ")..." + ANSI_RESET);
                 vm = connector.attach(arguments);
                 System.out.println(ANSI_BLUE + "Attached to VM: " + vm.name() + ANSI_RESET);
-                break; // Success, exit the loop
+                break;
             } catch (IOException e) {
                 if (e instanceof java.net.ConnectException && i < maxRetries - 1) {
                     System.out.println(ANSI_YELLOW + "Connection refused. Retrying in " + retryDelayMs + "ms..." + ANSI_RESET);
                     Thread.sleep(retryDelayMs);
                 } else {
-                    // For other IOExceptions or on the last retry, re-throw.
                     throw e;
                 }
             }
@@ -4083,10 +4178,8 @@ public class DebuggerService {
 
         List<ReferenceType> classes = vm.classesByName(mainClassName);
         if (!classes.isEmpty()) {
-            System.out.println(ANSI_YELLOW + "Class " + mainClassName + " is already loaded. Setting breakpoints immediately." + ANSI_RESET);
             setBreakpoints(classes.getFirst(), breakpointLines);
         } else {
-            System.out.println(ANSI_YELLOW + "Class " + mainClassName + " is not loaded yet. Requesting notification for when it is." + ANSI_RESET);
             ClassPrepareRequest classPrepareRequest = erm.createClassPrepareRequest();
             classPrepareRequest.addClassFilter(mainClassName);
             classPrepareRequest.enable();
@@ -4094,11 +4187,8 @@ public class DebuggerService {
 
         CountDownLatch listenerReadyLatch = new CountDownLatch(1);
         new Thread(() -> listenForEvents(listenerReadyLatch, mainClassName, breakpointLines)).start();
-
-        System.out.println(ANSI_BLUE + "Waiting for debugger event listener to be ready..." + ANSI_RESET);
         listenerReadyLatch.await();
 
-        System.out.println(ANSI_BLUE + "Listener is ready. Resuming VM to trigger class loading and hit initial breakpoint." + ANSI_RESET);
         vm.resume();
     }
 
@@ -4117,12 +4207,23 @@ public class DebuggerService {
 
                 try {
                     for (Event event : eventSet) {
-                        if (event instanceof BreakpointEvent) {
-                            System.out.println(ANSI_GREEN + "---> Hit Breakpoint: " + event + ANSI_RESET);
-                            if (onPause != null) {
-                                onPause.accept((BreakpointEvent) event);
+                        if (event instanceof LocatableEvent) {
+                            // BreakpointEvent or StepEvent
+                            System.out.println(ANSI_GREEN + "---> Paused at: " + event + ANSI_RESET);
+
+                            // Capture the thread context
+                            if (event instanceof BreakpointEvent) {
+                                currentThread = ((BreakpointEvent) event).thread();
+                            } else if (event instanceof StepEvent) {
+                                currentThread = ((StepEvent) event).thread();
+                                // Clean up the step request once hit
+                                vm.eventRequestManager().deleteEventRequest(event.request());
                             }
-                            shouldResume = false; // PAUSE the VM
+
+                            if (onPause != null) {
+                                onPause.accept((LocatableEvent) event);
+                            }
+                            shouldResume = false; // Keep paused
                         } else if (event instanceof ClassPrepareEvent) {
                             System.out.println(ANSI_YELLOW + "Class Prepared: " + ((ClassPrepareEvent) event).referenceType().name() + ANSI_RESET);
                             ClassPrepareEvent cpe = (ClassPrepareEvent) event;
@@ -4131,13 +4232,8 @@ public class DebuggerService {
                             }
                         } else if (event instanceof VMDisconnectEvent) {
                             System.out.println(ANSI_RED + "VM Disconnected." + ANSI_RESET);
-                            if (onDisconnect != null) {
-                                onDisconnect.run();
-                            }
-                            return; // Exit thread
-                        } else {
-                            // Other events like VMStartEvent, ThreadStartEvent etc.
-                            System.out.println(ANSI_BLUE + "JDI Event: " + event + ANSI_RESET);
+                            if (onDisconnect != null) onDisconnect.run();
+                            return;
                         }
                     }
                 } finally {
@@ -4145,37 +4241,71 @@ public class DebuggerService {
                         eventSet.resume();
                     }
                 }
-            } catch (InterruptedException e) {
-                System.out.println(ANSI_RED + "Event listener interrupted." + ANSI_RESET);
-                return;
-            } catch (VMDisconnectedException e) {
-                System.out.println(ANSI_RED + "VM Disconnected. Exiting event listener." + ANSI_RESET);
-                if (onDisconnect != null) {
-                    onDisconnect.run();
-                }
+            } catch (InterruptedException | VMDisconnectedException e) {
+                if (onDisconnect != null) onDisconnect.run();
                 return;
             } catch (Exception e) {
-                System.out.println(ANSI_RED + "Exception in event loop: " + e.getMessage() + ANSI_RESET);
                 e.printStackTrace();
             }
         }
     }
 
     private void setBreakpoints(ReferenceType refType, List<Integer> lines) {
+        if (lines == null || lines.isEmpty()) return;
         try {
+            EventRequestManager erm = vm.eventRequestManager();
+            // Clear existing breakpoints on this class first if re-setting
+            // (Not implementing clear logic here for simplicity, assuming fresh session)
+
             for (int lineNumber : lines) {
                 List<Location> locations = refType.locationsOfLine(lineNumber);
                 if (!locations.isEmpty()) {
                     Location loc = locations.get(0);
-                    System.out.println(ANSI_YELLOW + "Setting breakpoint at: " + loc + ANSI_RESET);
-                    BreakpointRequest bpReq = vm.eventRequestManager().createBreakpointRequest(loc);
+                    BreakpointRequest bpReq = erm.createBreakpointRequest(loc);
                     bpReq.enable();
-                } else {
-                    System.out.println(ANSI_YELLOW + "Warning: Could not find a location for line " + lineNumber + ANSI_RESET);
                 }
             }
         } catch (AbsentInformationException e) {
-            System.err.println(ANSI_RED + "Could not set breakpoints. Compile the source with debug information (-g)." + ANSI_RESET);
+            System.err.println("No debug info available.");
+        }
+    }
+
+
+    public void disconnect() {
+        if (vm != null) {
+            try {
+                System.out.println(ANSI_BLUE + "Disconnecting debugger..." + ANSI_RESET);
+                vm.dispose(); // This triggers VMDisconnectEvent in the listener loop
+            } catch (VMDisconnectedException e) {
+                // Already disconnected, ignore
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    // NEW: Step Over Implementation
+    public void stepOver() {
+        if (vm == null || currentThread == null) return;
+        try {
+            EventRequestManager erm = vm.eventRequestManager();
+
+            // Clear any existing step requests on this thread
+            List<StepRequest> steps = erm.stepRequests();
+            for (StepRequest step : steps) {
+                if (step.thread().equals(currentThread)) {
+                    erm.deleteEventRequest(step);
+                }
+            }
+
+            // Create new StepOver request
+            StepRequest request = erm.createStepRequest(currentThread, StepRequest.STEP_LINE, StepRequest.STEP_OVER);
+            request.addCountFilter(1); // Step 1 line
+            request.enable();
+
+            vm.resume();
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 
@@ -4187,9 +4317,8 @@ public class DebuggerService {
     }
 }
 
-
 =================================================================================
-FILE: main/java/com/botmaker/runtime/DebuggingManager.java
+FILE: ./src/main/java/com/botmaker/runtime/DebuggingManager.java
 =================================================================================
 
 package com.botmaker.runtime;
@@ -4209,36 +4338,22 @@ import org.eclipse.jdt.core.dom.CompilationUnit;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.ServerSocket;
-import java.nio.file.Paths;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Scanner;
+import java.util.*;
 
-/**
- * Manages debugging sessions.
- * Phase 1 Refactoring: Now uses EventBus instead of callbacks.
- */
 public class DebuggingManager {
 
-    // ============================================
-    // PHASE 1 CHANGES: Replace callbacks with EventBus
-    // ============================================
     private final CodeExecutionService codeExecutionService;
-    private final EventBus eventBus; // NEW: Replaces all the Consumer/Runnable callbacks
+    private final EventBus eventBus;
     private final BlockFactory factory;
     private final ApplicationConfig config;
-    // KEPT: Original state
+
     private Map<ASTNode, CodeBlock> nodeToBlockMap;
     private DebuggerService debuggerService;
     private Map<Integer, CodeBlock> lineToBlockMap;
 
-    // ============================================
-    // PHASE 1: CHANGED - New constructor signature
-    // OLD: Had 9 parameters (service + 8 callbacks)
-    // NEW: Only 3 parameters (service + eventBus + factory)
-    // ============================================
+    // NEW: Store the running process so we can kill it
+    private volatile Process currentProcess;
+
     public DebuggingManager(
             CodeExecutionService codeExecutionService,
             EventBus eventBus,
@@ -4250,10 +4365,6 @@ public class DebuggingManager {
         this.config = config;
     }
 
-    // ============================================
-    // KEPT: Original methods
-    // ============================================
-
     public void setNodeToBlockMap(Map<ASTNode, CodeBlock> nodeToBlockMap) {
         this.nodeToBlockMap = nodeToBlockMap;
     }
@@ -4262,47 +4373,49 @@ public class DebuggingManager {
         new Thread(() -> {
             try {
                 if (!codeExecutionService.compileAndWait(code, config.getSourceFilePath(), config.getCompiledOutputPath())) {
-                    eventBus.publish(new CoreApplicationEvents.StatusMessageEvent(
-                            "Debug aborted due to compilation failure."
-                    ));
+                    eventBus.publish(new CoreApplicationEvents.StatusMessageEvent("Debug aborted due to compilation failure."));
                     return;
                 }
 
                 CompilationUnit cu = factory.getCompilationUnit();
                 if (cu == null || nodeToBlockMap == null) {
-                    eventBus.publish(new CoreApplicationEvents.StatusMessageEvent(
-                            "Error: Could not parse code to get breakpoints."
-                    ));
+                    eventBus.publish(new CoreApplicationEvents.StatusMessageEvent("Error: Could not parse code to get breakpoints."));
                     return;
                 }
 
                 this.lineToBlockMap = new HashMap<>();
+                List<Integer> activeBreakpoints = new ArrayList<>();
+
                 for (CodeBlock block : nodeToBlockMap.values()) {
                     int line = block.getBreakpointLine(cu);
                     if (line > 0) {
                         if (!lineToBlockMap.containsKey(line) || block instanceof StatementBlock) {
                             lineToBlockMap.put(line, block);
                         }
+                        if (block.isBreakpoint()) {
+                            activeBreakpoints.add(line);
+                        }
                     }
                 }
-                List<Integer> breakpointLines = new ArrayList<>(this.lineToBlockMap.keySet());
+
+                if (activeBreakpoints.isEmpty() && !lineToBlockMap.isEmpty()) {
+                    lineToBlockMap.keySet().stream()
+                            .min(Integer::compareTo)
+                            .ifPresent(firstLine -> {
+                                activeBreakpoints.add(firstLine);
+                                eventBus.publish(new CoreApplicationEvents.StatusMessageEvent("No breakpoints set. Pausing at start (Line " + firstLine + ")."));
+                            });
+                }
 
                 int freePort;
                 try (ServerSocket socket = new ServerSocket(0)) {
                     freePort = socket.getLocalPort();
                 }
 
-                // PHASE 1 CHANGE: Publish events instead of calling callbacks
-                final int port = freePort;
-                eventBus.publish(new CoreApplicationEvents.StatusMessageEvent(
-                        "Starting debugger on port " + port + "..."
-                ));
+                eventBus.publish(new CoreApplicationEvents.StatusMessageEvent("Starting debugger on port " + freePort + "..."));
                 eventBus.publish(new CoreApplicationEvents.DebugSessionStartedEvent());
 
-                // Clear output via direct call (still needed for now)
-                Platform.runLater(() -> {
-                    eventBus.publish(new CoreApplicationEvents.OutputClearedEvent());
-                });
+                Platform.runLater(() -> eventBus.publish(new CoreApplicationEvents.OutputClearedEvent()));
 
                 String classPath = config.getCompiledOutputPath().toString();
                 String className = config.getMainClassName();
@@ -4310,76 +4423,85 @@ public class DebuggingManager {
                 String debugAgent = String.format("-agentlib:jdwp=transport=dt_socket,server=y,suspend=y,address=%d", freePort);
 
                 ProcessBuilder pb = new ProcessBuilder(javaExecutable, debugAgent, "-cp", classPath, className);
-                Process process = pb.start();
 
-                redirectStream(process.getInputStream());
-                redirectStream(process.getErrorStream());
+                // NEW: Assign to field
+                this.currentProcess = pb.start();
+
+                redirectStream(currentProcess.getInputStream());
+                redirectStream(currentProcess.getErrorStream());
 
                 debuggerService = new DebuggerService();
                 debuggerService.setOnPause(this::handlePauseEvent);
                 debuggerService.setOnDisconnect(this::onDebugSessionFinished);
-                debuggerService.connectAndRun(className, freePort, breakpointLines);
+
+                debuggerService.connectAndRun(className, freePort, activeBreakpoints);
 
             } catch (IOException | IllegalConnectorArgumentsException | InterruptedException e) {
-                eventBus.publish(new CoreApplicationEvents.StatusMessageEvent(
-                        "Debugger Error: " + e.getMessage()
-                ));
+                eventBus.publish(new CoreApplicationEvents.StatusMessageEvent("Debugger Error: " + e.getMessage()));
                 e.printStackTrace();
             }
         }).start();
     }
 
-    public void resume() {
+    public void continueExecution() {
         if (debuggerService != null) {
-            // PHASE 1 CHANGE: Publish event instead of calling callback
             eventBus.publish(new CoreApplicationEvents.DebugSessionResumedEvent());
             debuggerService.resume();
         }
     }
 
-    // ============================================
-    // PHASE 1: CHANGED - Publish events instead of calling callbacks
-    // ============================================
+    public void stepOver() {
+        if (debuggerService != null) {
+            eventBus.publish(new CoreApplicationEvents.DebugSessionResumedEvent());
+            debuggerService.stepOver();
+        }
+    }
+
+    // NEW: Forcefully kill the process and disconnect
+    public void stopDebugging() {
+        // 1. Disconnect JDI nicely if possible (triggers events)
+        if (debuggerService != null) {
+            debuggerService.disconnect();
+        }
+
+        // 2. Kill the OS process to stop execution immediately
+        if (currentProcess != null && currentProcess.isAlive()) {
+            try {
+                currentProcess.destroyForcibly();
+                eventBus.publish(new CoreApplicationEvents.StatusMessageEvent("Debug process terminated."));
+            } catch (Exception e) {
+                e.printStackTrace();
+            } finally {
+                currentProcess = null;
+            }
+        }
+    }
 
     private void handlePauseEvent(LocatableEvent event) {
         int lineNumber = event.location().lineNumber();
         CodeBlock block = lineToBlockMap.get(lineNumber);
+        CodeBlock target = (block != null) ? block.getHighlightTarget() : null;
 
-        if (block != null) {
-            CodeBlock target = block.getHighlightTarget();
-            // Publish events instead of calling callbacks
-            eventBus.publish(new CoreApplicationEvents.DebugSessionPausedEvent(lineNumber, target));
-            eventBus.publish(new CoreApplicationEvents.BlockHighlightEvent(target));
-            eventBus.publish(new CoreApplicationEvents.StatusMessageEvent(
-                    "Paused at line: " + lineNumber
-            ));
-        } else {
-            eventBus.publish(new CoreApplicationEvents.DebugSessionPausedEvent(lineNumber, null));
-            eventBus.publish(new CoreApplicationEvents.StatusMessageEvent(
-                    "Paused at line: " + lineNumber + " (No block found)"
-            ));
-        }
+        eventBus.publish(new CoreApplicationEvents.DebugSessionPausedEvent(lineNumber, target));
+        eventBus.publish(new CoreApplicationEvents.BlockHighlightEvent(target));
+        eventBus.publish(new CoreApplicationEvents.StatusMessageEvent(
+                "Paused at line: " + lineNumber
+        ));
     }
 
     private void onDebugSessionFinished() {
-        // PHASE 1 CHANGE: Publish events instead of calling callbacks
         eventBus.publish(new CoreApplicationEvents.DebugSessionFinishedEvent());
         eventBus.publish(new CoreApplicationEvents.StatusMessageEvent("Debug session finished."));
         eventBus.publish(new CoreApplicationEvents.BlockHighlightEvent(null));
+        this.currentProcess = null;
     }
-
-    // ============================================
-    // KEPT: Helper method unchanged
-    // ============================================
 
     private void redirectStream(InputStream stream) {
         new Thread(() -> {
             try (Scanner s = new Scanner(stream)) {
                 while (s.hasNextLine()) {
                     String line = s.nextLine();
-                    // This still uses direct reference - will be refactored in Phase 2
-                    Platform.runLater(() -> {
-                        eventBus.publish(new CoreApplicationEvents.OutputAppendedEvent(line + "\n"));                    });
+                    Platform.runLater(() -> eventBus.publish(new CoreApplicationEvents.OutputAppendedEvent(line + "\n")));
                 }
             }
         }).start();
@@ -4387,13 +4509,14 @@ public class DebuggingManager {
 }
 
 =================================================================================
-FILE: main/java/com/botmaker/services/CodeEditorService.java
+FILE: ./src/main/java/com/botmaker/services/CodeEditorService.java
 =================================================================================
 
 package com.botmaker.services;
 
 import com.botmaker.blocks.MainBlock;
 import com.botmaker.config.ApplicationConfig;
+import com.botmaker.core.CodeBlock;
 import com.botmaker.events.CoreApplicationEvents;
 import com.botmaker.events.EventBus;
 import com.botmaker.lsp.CompletionContext;
@@ -4404,10 +4527,6 @@ import com.botmaker.state.ApplicationState;
 import com.botmaker.ui.BlockDragAndDropManager;
 import javafx.application.Platform;
 
-/**
- * Service responsible for code editing operations and UI synchronization.
- * Manages the relationship between code, AST, and visual blocks.
- */
 public class CodeEditorService {
 
     private final ApplicationConfig config;
@@ -4439,32 +4558,39 @@ public class CodeEditorService {
         this.languageServerService = languageServerService;
         this.diagnosticsManager = diagnosticsManager;
 
-        // Initialize code editor
         this.codeEditor = new CodeEditor(state, eventBus, astRewriter, blockFactory);
 
         setupEventHandlers();
     }
 
     private void setupEventHandlers() {
-        // Subscribe to UI refresh requests
         eventBus.subscribe(
                 CoreApplicationEvents.UIRefreshRequestedEvent.class,
                 event -> Platform.runLater(() -> refreshUI(event.getCode())),
                 false
         );
+
+        // NEW: Listen for toggles to update state
+        eventBus.subscribe(
+                CoreApplicationEvents.BreakpointToggledEvent.class,
+                this::handleBreakpointToggle,
+                false
+        );
     }
 
-    /**
-     * Loads the initial code and triggers UI refresh
-     */
+    private void handleBreakpointToggle(CoreApplicationEvents.BreakpointToggledEvent event) {
+        if (event.isEnabled()) {
+            state.addBreakpoint(event.getBlock().getId());
+        } else {
+            state.removeBreakpoint(event.getBlock().getId());
+        }
+    }
+
     public void loadInitialCode() {
         String currentCode = state.getCurrentCode();
         Platform.runLater(() -> refreshUI(currentCode));
     }
 
-    /**
-     * Refreshes the UI based on the current code
-     */
     private void refreshUI(String javaCode) {
         state.setCurrentCode(javaCode);
         state.clearNodeToBlockMap();
@@ -4473,25 +4599,25 @@ public class CodeEditorService {
             diagnosticsManager.updateSource(state.getMutableNodeToBlockMap(), javaCode);
         }
 
-        // Parse code to blocks
         MainBlock rootBlock = blockFactory.convert(
                 javaCode,
                 state.getMutableNodeToBlockMap(),
                 dragAndDropManager
         );
 
-        // Update compilation unit in state
+        // NEW: Restore breakpoints on newly created blocks
+        for (CodeBlock block : state.getNodeToBlockMap().values()) {
+            if (state.hasBreakpoint(block.getId())) {
+                block.setBreakpoint(true);
+            }
+        }
+
         state.setCompilationUnit(blockFactory.getCompilationUnit());
 
-        // Publish event with the root block (UI will handle rendering)
         eventBus.publish(new CoreApplicationEvents.UIBlocksUpdatedEvent(rootBlock));
         eventBus.publish(new CoreApplicationEvents.StatusMessageEvent("UI Refreshed."));
     }
 
-    /**
-     * Creates a completion context for block rendering
-     * PHASE 3: No longer includes Main reference
-     */
     public CompletionContext createCompletionContext() {
         return new CompletionContext(
                 codeEditor,
@@ -4503,23 +4629,12 @@ public class CodeEditorService {
         );
     }
 
-    /**
-     * Get the code editor instance
-     */
-    public CodeEditor getCodeEditor() {
-        return codeEditor;
-    }
-
-    /**
-     * Get the block factory instance
-     */
-    public BlockFactory getBlockFactory() {
-        return blockFactory;
-    }
+    public CodeEditor getCodeEditor() { return codeEditor; }
+    public BlockFactory getBlockFactory() { return blockFactory; }
 }
 
 =================================================================================
-FILE: main/java/com/botmaker/services/DebuggingService.java
+FILE: ./src/main/java/com/botmaker/services/DebuggingService.java
 =================================================================================
 
 package com.botmaker.services;
@@ -4532,16 +4647,11 @@ import com.botmaker.runtime.CodeExecutionService;
 import com.botmaker.runtime.DebuggingManager;
 import com.botmaker.state.ApplicationState;
 
-/**
- * Service wrapper for debugging operations.
- * Bridges between the event system and the existing DebuggingManager.
- */
 public class DebuggingService {
 
     private final ApplicationState state;
     private final EventBus eventBus;
     private final DebuggingManager debuggingManager;
-    ApplicationConfig config;
 
     public DebuggingService(
             ApplicationState state,
@@ -4552,57 +4662,41 @@ public class DebuggingService {
 
         this.state = state;
         this.eventBus = eventBus;
-        this.debuggingManager = new DebuggingManager(
-                codeExecutionService,
-                eventBus,
-                blockFactory,
-                config
-        );
+        this.debuggingManager = new DebuggingManager(codeExecutionService, eventBus, blockFactory, config);
 
         setupEventHandlers();
     }
 
     private void setupEventHandlers() {
-        // Subscribe to debug start requests
-        eventBus.subscribe(
-                CoreApplicationEvents.DebugStartRequestedEvent.class,
-                event -> startDebugging(),
-                false
-        );
+        eventBus.subscribe(CoreApplicationEvents.DebugStartRequestedEvent.class, event -> startDebugging(), false);
+        eventBus.subscribe(CoreApplicationEvents.DebugStepOverRequestedEvent.class, event -> stepOver(), false);
+        eventBus.subscribe(CoreApplicationEvents.DebugContinueRequestedEvent.class, event -> continueExecution(), false);
 
-        // Subscribe to debug resume requests
-        eventBus.subscribe(
-                CoreApplicationEvents.DebugResumeRequestedEvent.class,
-                event -> resume(),
-                false
-        );
+        // NEW: Subscribe to Stop request
+        eventBus.subscribe(CoreApplicationEvents.DebugStopRequestedEvent.class, event -> stopDebugging(), false);
     }
 
-    /**
-     * Starts a debugging session
-     */
+    // Add the delegate method
+    public void stopDebugging() {
+        debuggingManager.stopDebugging();
+    }
+
     public void startDebugging() {
         debuggingManager.setNodeToBlockMap(state.getNodeToBlockMap());
         debuggingManager.startDebugging(state.getCurrentCode());
     }
 
-    /**
-     * Resumes the debugging session
-     */
-    public void resume() {
-        debuggingManager.resume();
+    public void stepOver() {
+        debuggingManager.stepOver();
     }
 
-    /**
-     * Get the underlying debugging manager
-     */
-    public DebuggingManager getDebuggingManager() {
-        return debuggingManager;
+    public void continueExecution() {
+        debuggingManager.continueExecution();
     }
 }
 
 =================================================================================
-FILE: main/java/com/botmaker/services/ExecutionService.java
+FILE: ./src/main/java/com/botmaker/services/ExecutionService.java
 =================================================================================
 
 package com.botmaker.services;
@@ -4680,7 +4774,7 @@ public class ExecutionService {
 }
 
 =================================================================================
-FILE: main/java/com/botmaker/services/LanguageServerService.java
+FILE: ./src/main/java/com/botmaker/services/LanguageServerService.java
 =================================================================================
 
 package com.botmaker.services;
@@ -4853,7 +4947,7 @@ public class LanguageServerService {
 }
 
 =================================================================================
-FILE: main/java/com/botmaker/state/ApplicationState.java
+FILE: ./src/main/java/com/botmaker/state/ApplicationState.java
 =================================================================================
 
 package com.botmaker.state;
@@ -4862,10 +4956,7 @@ import com.botmaker.core.CodeBlock;
 import org.eclipse.jdt.core.dom.ASTNode;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 
 /**
  * Central application state container.
@@ -4888,7 +4979,7 @@ public class ApplicationState {
 
     // Debug state
     private boolean isDebugging;
-
+    private final Set<String> breakpointIds = new HashSet<>();
     public ApplicationState() {
         this.currentCode = "";
         this.docUri = "";
@@ -4997,7 +5088,22 @@ public class ApplicationState {
     public void setDebugging(boolean debugging) {
         this.isDebugging = debugging;
     }
+    // NEW: Breakpoint Management
+    public Set<String> getBreakpointIds() {
+        return Collections.unmodifiableSet(breakpointIds);
+    }
 
+    public void addBreakpoint(String blockId) {
+        breakpointIds.add(blockId);
+    }
+
+    public void removeBreakpoint(String blockId) {
+        breakpointIds.remove(blockId);
+    }
+
+    public boolean hasBreakpoint(String blockId) {
+        return breakpointIds.contains(blockId);
+    }
     // Utility methods
 
     /**
@@ -5046,7 +5152,7 @@ public class ApplicationState {
 }
 
 =================================================================================
-FILE: main/java/com/botmaker/ui/AddableBlock.java
+FILE: ./src/main/java/com/botmaker/ui/AddableBlock.java
 =================================================================================
 
 package com.botmaker.ui;
@@ -5083,7 +5189,7 @@ public enum AddableBlock {
 
 
 =================================================================================
-FILE: main/java/com/botmaker/ui/AddableExpression.java
+FILE: ./src/main/java/com/botmaker/ui/AddableExpression.java
 =================================================================================
 
 package com.botmaker.ui;
@@ -5104,7 +5210,7 @@ public enum AddableExpression {
 }
 
 =================================================================================
-FILE: main/java/com/botmaker/ui/BlockDragAndDropManager.java
+FILE: ./src/main/java/com/botmaker/ui/BlockDragAndDropManager.java
 =================================================================================
 
 package com.botmaker.ui;
@@ -5123,21 +5229,22 @@ import java.util.function.Consumer;
 public class BlockDragAndDropManager {
 
     public static final DataFormat ADDABLE_BLOCK_FORMAT = new DataFormat("application/x-java-addable-block");
+    public static final DataFormat EXISTING_BLOCK_FORMAT = new DataFormat("application/x-java-existing-block");
 
-    // ============================================
-    // PHASE 2 FIX: Make callback mutable
-    // ============================================
+    // Callbacks
     private Consumer<DropInfo> onDrop;
+    private Consumer<MoveBlockInfo> onBlockMove;
 
     public BlockDragAndDropManager(Consumer<DropInfo> onDrop) {
         this.onDrop = onDrop;
     }
 
-    // ============================================
-    // PHASE 2 FIX: Add setter for callback
-    // ============================================
     public void setCallback(Consumer<DropInfo> onDrop) {
         this.onDrop = onDrop;
+    }
+
+    public void setMoveCallback(Consumer<MoveBlockInfo> onBlockMove) {
+        this.onBlockMove = onBlockMove;
     }
 
     /**
@@ -5149,10 +5256,41 @@ public class BlockDragAndDropManager {
         node.setOnDragDetected(event -> {
             Dragboard db = node.startDragAndDrop(TransferMode.COPY);
             ClipboardContent content = new ClipboardContent();
-            // Store the enum name as a string.
             content.put(ADDABLE_BLOCK_FORMAT, blockType.name());
             db.setContent(content);
-            System.out.println("Drag detected for: " + blockType.name()); // For debugging
+            System.out.println("Drag detected for: " + blockType.name());
+            event.consume();
+        });
+    }
+
+    /**
+     * Makes an existing block's UI node draggable for repositioning.
+     * @param node The UI node of the block to make draggable.
+     * @param block The StatementBlock instance being dragged.
+     * @param sourceBody The BodyBlock containing this block.
+     */
+    public void makeBlockMovable(Node node, StatementBlock block, BodyBlock sourceBody) {
+        node.setOnDragDetected(event -> {
+            // Only start drag if not clicking on interactive elements
+            if (event.getTarget() instanceof javafx.scene.control.Control) {
+                return;
+            }
+
+            Dragboard db = node.startDragAndDrop(TransferMode.MOVE);
+            ClipboardContent content = new ClipboardContent();
+            content.put(EXISTING_BLOCK_FORMAT, block.getId());
+            db.setContent(content);
+
+            // Visual feedback - make the block semi-transparent while dragging
+            node.setOpacity(0.5);
+
+            System.out.println("Dragging existing block: " + block.getDetails());
+            event.consume();
+        });
+
+        // Reset opacity when drag is done
+        node.setOnDragDone(event -> {
+            node.setOpacity(1.0);
             event.consume();
         });
     }
@@ -5169,34 +5307,42 @@ public class BlockDragAndDropManager {
 
     /**
      * Adds all necessary drag-and-drop event handlers to a separator region.
+     * Handles both adding new blocks and moving existing blocks.
      * @param separator The region to add handlers to.
+     * @param targetBody The body where blocks will be inserted.
      * @param insertionIndex The index in the list where a drop should occur.
      * @param adjacentBlock The block next to the separator, for context (can be null).
      */
     public void addSeparatorDragHandlers(Region separator, BodyBlock targetBody, int insertionIndex, StatementBlock adjacentBlock) {
         String defaultColor = "transparent";
         String hoverColor = "#007bff"; // A distinct blue
+        String moveHoverColor = "#28a745"; // Green for moving blocks
 
         separator.setOnDragEntered(event -> {
-            if (event.getDragboard().hasContent(BlockDragAndDropManager.ADDABLE_BLOCK_FORMAT)) {
+            Dragboard db = event.getDragboard();
+            if (db.hasContent(ADDABLE_BLOCK_FORMAT)) {
                 separator.setStyle("-fx-background-color: " + hoverColor + ";");
                 String logMessage = "Hovering insertion point at index: " + insertionIndex;
                 if (adjacentBlock != null) {
                     logMessage += " (next to: " + adjacentBlock.getDetails() + ")";
                 }
                 System.out.println(logMessage);
+            } else if (db.hasContent(EXISTING_BLOCK_FORMAT)) {
+                separator.setStyle("-fx-background-color: " + moveHoverColor + ";");
+                System.out.println("Hovering to move block at index: " + insertionIndex);
             }
             event.consume();
         });
 
         separator.setOnDragExited(event -> {
-            separator.setStyle("-fx-background-color: " + defaultColor );
+            separator.setStyle("-fx-background-color: " + defaultColor);
             event.consume();
         });
 
         separator.setOnDragOver(event -> {
-            if (event.getDragboard().hasContent(BlockDragAndDropManager.ADDABLE_BLOCK_FORMAT)) {
-                event.acceptTransferModes(TransferMode.COPY);
+            Dragboard db = event.getDragboard();
+            if (db.hasContent(ADDABLE_BLOCK_FORMAT) || db.hasContent(EXISTING_BLOCK_FORMAT)) {
+                event.acceptTransferModes(TransferMode.COPY_OR_MOVE);
             }
             event.consume();
         });
@@ -5204,20 +5350,30 @@ public class BlockDragAndDropManager {
         separator.setOnDragDropped(event -> {
             Dragboard db = event.getDragboard();
             boolean success = false;
+
             if (db.hasContent(ADDABLE_BLOCK_FORMAT)) {
+                // Adding a new block
                 String blockTypeName = (String) db.getContent(ADDABLE_BLOCK_FORMAT);
                 AddableBlock type = AddableBlock.valueOf(blockTypeName);
 
-                // ============================================
-                // PHASE 2 FIX: Check if callback is set
-                // ============================================
                 if (onDrop != null) {
                     onDrop.accept(new DropInfo(type, targetBody, insertionIndex));
                     success = true;
                 } else {
                     System.err.println("WARNING: onDrop callback not set yet!");
                 }
+            } else if (db.hasContent(EXISTING_BLOCK_FORMAT)) {
+                // Moving an existing block
+                String blockId = (String) db.getContent(EXISTING_BLOCK_FORMAT);
+
+                if (onBlockMove != null) {
+                    onBlockMove.accept(new MoveBlockInfo(blockId, targetBody, insertionIndex));
+                    success = true;
+                } else {
+                    System.err.println("WARNING: onBlockMove callback not set yet!");
+                }
             }
+
             event.setDropCompleted(success);
             event.consume();
         });
@@ -5225,7 +5381,8 @@ public class BlockDragAndDropManager {
 
     public void addEmptyBodyDropHandlers(Region target, BodyBlock targetBody) {
         target.setOnDragEntered(event -> {
-            if (event.getDragboard().hasContent(ADDABLE_BLOCK_FORMAT)) {
+            Dragboard db = event.getDragboard();
+            if (db.hasContent(ADDABLE_BLOCK_FORMAT) || db.hasContent(EXISTING_BLOCK_FORMAT)) {
                 target.getStyleClass().add("empty-body-drop-hover");
             }
             event.consume();
@@ -5237,8 +5394,9 @@ public class BlockDragAndDropManager {
         });
 
         target.setOnDragOver(event -> {
-            if (event.getDragboard().hasContent(ADDABLE_BLOCK_FORMAT)) {
-                event.acceptTransferModes(TransferMode.COPY);
+            Dragboard db = event.getDragboard();
+            if (db.hasContent(ADDABLE_BLOCK_FORMAT) || db.hasContent(EXISTING_BLOCK_FORMAT)) {
+                event.acceptTransferModes(TransferMode.COPY_OR_MOVE);
             }
             event.consume();
         });
@@ -5246,20 +5404,30 @@ public class BlockDragAndDropManager {
         target.setOnDragDropped(event -> {
             Dragboard db = event.getDragboard();
             boolean success = false;
+
             if (db.hasContent(ADDABLE_BLOCK_FORMAT)) {
+                // Adding a new block
                 String blockTypeName = (String) db.getContent(ADDABLE_BLOCK_FORMAT);
                 AddableBlock type = AddableBlock.valueOf(blockTypeName);
 
-                // ============================================
-                // PHASE 2 FIX: Check if callback is set
-                // ============================================
                 if (onDrop != null) {
                     onDrop.accept(new DropInfo(type, targetBody, 0)); // Always index 0 for empty body
                     success = true;
                 } else {
                     System.err.println("WARNING: onDrop callback not set yet!");
                 }
+            } else if (db.hasContent(EXISTING_BLOCK_FORMAT)) {
+                // Moving an existing block
+                String blockId = (String) db.getContent(EXISTING_BLOCK_FORMAT);
+
+                if (onBlockMove != null) {
+                    onBlockMove.accept(new MoveBlockInfo(blockId, targetBody, 0));
+                    success = true;
+                } else {
+                    System.err.println("WARNING: onBlockMove callback not set yet!");
+                }
             }
+
             event.setDropCompleted(success);
             event.consume();
         });
@@ -5295,11 +5463,8 @@ public class BlockDragAndDropManager {
             Dragboard db = event.getDragboard();
             boolean success = false;
             if (db.hasContent(ADDABLE_BLOCK_FORMAT)) {
-                // For now, we just acknowledge the drop and show a message.
-                // In the future, we would need a different DataFormat for expressions.
                 String blockTypeName = (String) db.getContent(ADDABLE_BLOCK_FORMAT);
                 System.out.println("Cannot drop a Statement block ('" + blockTypeName + "') into an Expression slot.");
-                // We'll still mark it as a "successful" drop to finalize the gesture.
                 success = true;
             }
             event.setDropCompleted(success);
@@ -5309,7 +5474,41 @@ public class BlockDragAndDropManager {
 }
 
 =================================================================================
-FILE: main/java/com/botmaker/ui/DropInfo.java
+FILE: ./src/main/java/com/botmaker/ui/BlockEvent.java
+=================================================================================
+
+package com.botmaker.ui;
+
+import com.botmaker.core.CodeBlock;
+import javafx.event.Event;
+import javafx.event.EventType;
+
+public class BlockEvent extends Event {
+    public static final EventType<BlockEvent> ANY = new EventType<>(Event.ANY, "BLOCK_EVENT");
+
+    public BlockEvent(EventType<? extends Event> eventType) {
+        super(eventType);
+    }
+
+    public static class BreakpointToggleEvent extends BlockEvent {
+        public static final EventType<BreakpointToggleEvent> TOGGLE_BREAKPOINT = new EventType<>(ANY, "TOGGLE_BREAKPOINT");
+
+        private final CodeBlock block;
+        private final boolean isEnabled;
+
+        public BreakpointToggleEvent(CodeBlock block, boolean isEnabled) {
+            super(TOGGLE_BREAKPOINT);
+            this.block = block;
+            this.isEnabled = isEnabled;
+        }
+
+        public CodeBlock getBlock() { return block; }
+        public boolean isEnabled() { return isEnabled; }
+    }
+}
+
+=================================================================================
+FILE: ./src/main/java/com/botmaker/ui/DropInfo.java
 =================================================================================
 
 package com.botmaker.ui;
@@ -5321,7 +5520,7 @@ public record DropInfo(AddableBlock type, BodyBlock targetBody, int insertionInd
 
 
 =================================================================================
-FILE: main/java/com/botmaker/ui/MenuBarManager.java
+FILE: ./src/main/java/com/botmaker/ui/MenuBarManager.java
 =================================================================================
 
 package com.botmaker.ui;
@@ -5399,8 +5598,11 @@ public class MenuBarManager {
                 KeyCode.Q,
                 KeyCombination.CONTROL_DOWN
         ));
+
+        // UPDATED: Force system exit
         exitItem.setOnAction(e -> {
-            primaryStage.close();
+            javafx.application.Platform.exit(); // Close JavaFX
+            System.exit(0); // Kill JVM (stops LSP, Debugger, etc.)
         });
 
         fileMenu.getItems().addAll(
@@ -5538,7 +5740,24 @@ public class MenuBarManager {
 }
 
 =================================================================================
-FILE: main/java/com/botmaker/ui/ProjectSelectionScreen.java
+FILE: ./src/main/java/com/botmaker/ui/MoveBlockInfo.java
+=================================================================================
+
+package com.botmaker.ui;
+
+import com.botmaker.core.BodyBlock;
+
+/**
+ * Information about moving an existing block to a new position.
+ * @param blockId The ID of the block being moved
+ * @param targetBody The BodyBlock where the block should be moved to
+ * @param insertionIndex The index where the block should be inserted
+ */
+public record MoveBlockInfo(String blockId, BodyBlock targetBody, int insertionIndex) {
+}
+
+=================================================================================
+FILE: ./src/main/java/com/botmaker/ui/ProjectSelectionScreen.java
 =================================================================================
 
 package com.botmaker.ui;
@@ -5832,7 +6051,7 @@ public class ProjectSelectionScreen {
 }
 
 =================================================================================
-FILE: main/java/com/botmaker/ui/UIManager.java
+FILE: ./src/main/java/com/botmaker/ui/UIManager.java
 =================================================================================
 
 package com.botmaker.ui;
@@ -5861,7 +6080,6 @@ import org.eclipse.lsp4j.DiagnosticSeverity;
 import java.util.List;
 import java.util.function.Consumer;
 
-
 public class UIManager {
 
     private final BlockDragAndDropManager dragAndDropManager;
@@ -5873,17 +6091,19 @@ public class UIManager {
     private VBox blocksContainer;
     private Label statusLabel;
     private TextArea outputArea;
-    private Button debugButton;
-    private Button resumeButton;
-    private ScrollPane scrollPane;
     private ListView<Diagnostic> errorListView;
     private TabPane bottomTabPane;
     private Tab terminalTab;
+    private ScrollPane scrollPane;
     private boolean isDarkMode = false;
     private MenuBarManager menuBarManager;
-
-    // Callback for project selection
     private Consumer<Void> onSelectProject;
+
+    // Controls
+    private Button debugButton;
+    private Button stepOverButton; // Was Resume
+    private Button continueButton; // New
+    private Button stopDebugButton;
 
     public UIManager(BlockDragAndDropManager dragAndDropManager,
                      EventBus eventBus,
@@ -5900,93 +6120,44 @@ public class UIManager {
     }
 
     private void setupEventHandlers() {
-        // Subscribe to block updates
-        eventBus.subscribe(
-                CoreApplicationEvents.UIBlocksUpdatedEvent.class,
-                this::handleBlocksUpdate,
-                true
-        );
+        eventBus.subscribe(CoreApplicationEvents.UIBlocksUpdatedEvent.class, this::handleBlocksUpdate, true);
+        eventBus.subscribe(CoreApplicationEvents.OutputAppendedEvent.class, event -> outputArea.appendText(event.getText()), true);
+        eventBus.subscribe(CoreApplicationEvents.OutputClearedEvent.class, event -> outputArea.clear(), true);
+        eventBus.subscribe(CoreApplicationEvents.OutputSetEvent.class, event -> outputArea.setText(event.getText()), true);
+        eventBus.subscribe(CoreApplicationEvents.StatusMessageEvent.class, event -> statusLabel.setText(event.getMessage()), true);
 
-        // Subscribe to output events
-        eventBus.subscribe(
-                CoreApplicationEvents.OutputAppendedEvent.class,
-                event -> outputArea.appendText(event.getText()),
-                true
-        );
+        eventBus.subscribe(CoreApplicationEvents.DiagnosticsUpdatedEvent.class, event -> {
+            diagnosticsManager.processDiagnostics(event.getDiagnostics());
+            updateErrors(diagnosticsManager.getDiagnostics());
+            statusLabel.setText(diagnosticsManager.getErrorSummary());
+        }, true);
 
-        eventBus.subscribe(
-                CoreApplicationEvents.OutputClearedEvent.class,
-                event -> outputArea.clear(),
-                true
-        );
-
-        eventBus.subscribe(
-                CoreApplicationEvents.OutputSetEvent.class,
-                event -> outputArea.setText(event.getText()),
-                true
-        );
-
-        // Subscribe to status messages
-        eventBus.subscribe(
-                CoreApplicationEvents.StatusMessageEvent.class,
-                event -> statusLabel.setText(event.getMessage()),
-                true
-        );
-
-        // Subscribe to diagnostics updates
-        eventBus.subscribe(
-                CoreApplicationEvents.DiagnosticsUpdatedEvent.class,
-                event -> {
-                    diagnosticsManager.processDiagnostics(event.getDiagnostics());
-                    updateErrors(diagnosticsManager.getDiagnostics());
-                    statusLabel.setText(diagnosticsManager.getErrorSummary());
-                },
-                true
-        );
-
-        // Subscribe to debug session events
-        eventBus.subscribe(
-                CoreApplicationEvents.DebugSessionStartedEvent.class,
-                event -> onDebuggerStarted(),
-                true
-        );
-
-        eventBus.subscribe(
-                CoreApplicationEvents.DebugSessionPausedEvent.class,
-                event -> onDebuggerPaused(),
-                true
-        );
-
-        eventBus.subscribe(
-                CoreApplicationEvents.DebugSessionResumedEvent.class,
-                event -> onDebuggerResumed(),
-                true
-        );
-
-        eventBus.subscribe(
-                CoreApplicationEvents.DebugSessionFinishedEvent.class,
-                event -> onDebuggerFinished(),
-                true
-        );
+        // Debug Session UI States
+        eventBus.subscribe(CoreApplicationEvents.DebugSessionStartedEvent.class, event -> onDebuggerStarted(), true);
+        eventBus.subscribe(CoreApplicationEvents.DebugSessionPausedEvent.class, event -> onDebuggerPaused(), true);
+        eventBus.subscribe(CoreApplicationEvents.DebugSessionResumedEvent.class, event -> onDebuggerResumed(), true);
+        eventBus.subscribe(CoreApplicationEvents.DebugSessionFinishedEvent.class, event -> onDebuggerFinished(), true);
     }
 
     private void handleBlocksUpdate(CoreApplicationEvents.UIBlocksUpdatedEvent event) {
         blocksContainer.getChildren().clear();
-
         if (event.getRootBlock() != null) {
             CompletionContext context = codeEditorService.createCompletionContext();
-            blocksContainer.getChildren().add(event.getRootBlock().getUINode(context));
+            Node rootNode = event.getRootBlock().getUINode(context);
+
+            // IMPORTANT: Listen for the custom BreakpointToggleEvent bubbled up from blocks
+            rootNode.addEventHandler(BlockEvent.BreakpointToggleEvent.TOGGLE_BREAKPOINT, e -> {
+                // Publish to EventBus so CodeEditorService can update state
+                eventBus.publish(new CoreApplicationEvents.BreakpointToggledEvent(e.getBlock(), e.isEnabled()));
+            });
+
+            blocksContainer.getChildren().add(rootNode);
         }
     }
 
     public Scene createScene() {
-        // Create menu bar
         menuBarManager = new MenuBarManager(primaryStage);
-        menuBarManager.setOnSelectProject(v -> {
-            if (onSelectProject != null) {
-                onSelectProject.accept(null);
-            }
-        });
+        menuBarManager.setOnSelectProject(v -> { if (onSelectProject != null) onSelectProject.accept(null); });
 
         blocksContainer = new VBox(10);
         statusLabel = new Label("Ready");
@@ -5997,13 +6168,11 @@ public class UIManager {
 
         errorListView = new ListView<>();
         errorListView.setPlaceholder(new Label("No errors to display."));
-
         errorListView.setCellFactory(lv -> new ListCell<>() {
             @Override
             protected void updateItem(Diagnostic diagnostic, boolean empty) {
                 super.updateItem(diagnostic, empty);
                 getStyleClass().removeAll("error-cell", "warning-cell");
-
                 if (empty || diagnostic == null) {
                     setText(null);
                     setOnMouseClicked(null);
@@ -6011,26 +6180,19 @@ public class UIManager {
                     String message = ErrorTranslator.getShortSummary(diagnostic);
                     int line = diagnostic.getRange().getStart().getLine() + 1;
                     setText(String.format("Line %d: %s", line, message));
-
-                    if (diagnostic.getSeverity() == DiagnosticSeverity.Error) {
-                        getStyleClass().add("error-cell");
-                    } else if (diagnostic.getSeverity() == DiagnosticSeverity.Warning) {
-                        getStyleClass().add("warning-cell");
-                    }
+                    if (diagnostic.getSeverity() == DiagnosticSeverity.Error) getStyleClass().add("error-cell");
+                    else if (diagnostic.getSeverity() == DiagnosticSeverity.Warning) getStyleClass().add("warning-cell");
 
                     setOnMouseClicked(event -> {
                         if (event.getClickCount() >= 1) {
-                            diagnosticsManager.findBlockForDiagnostic(diagnostic)
-                                    .ifPresent(this::scrollToBlock);
+                            diagnosticsManager.findBlockForDiagnostic(diagnostic).ifPresent(this::scrollToBlock);
                         }
                     });
                 }
             }
-
             private void scrollToBlock(CodeBlock block) {
                 Node uiNode = block.getUINode();
                 if (uiNode == null) return;
-
                 final String blinkStyle = "error-block-blink";
                 if (!uiNode.getStyleClass().contains(blinkStyle)) {
                     uiNode.getStyleClass().add(blinkStyle);
@@ -6038,8 +6200,8 @@ public class UIManager {
                     blinkOff.setOnFinished(event -> uiNode.getStyleClass().remove(blinkStyle));
                     blinkOff.play();
                 }
-
                 uiNode.requestFocus();
+                // Simplified scroll logic
                 double containerHeight = blocksContainer.getBoundsInLocal().getHeight();
                 double blockY = uiNode.getBoundsInParent().getMinY();
                 double scrollPaneHeight = scrollPane.getViewportBounds().getHeight();
@@ -6059,9 +6221,7 @@ public class UIManager {
         palette.getStyleClass().add("palette");
 
         Button compileButton = new Button("Compile");
-        compileButton.setOnAction(e ->
-                eventBus.publish(new CoreApplicationEvents.CompilationRequestedEvent())
-        );
+        compileButton.setOnAction(e -> eventBus.publish(new CoreApplicationEvents.CompilationRequestedEvent()));
 
         Button runButton = new Button("Run");
         runButton.setOnAction(e -> {
@@ -6070,17 +6230,26 @@ public class UIManager {
         });
 
         debugButton = new Button("Debug");
-        debugButton.setOnAction(e ->
-                eventBus.publish(new CoreApplicationEvents.DebugStartRequestedEvent())
-        );
+        debugButton.setOnAction(e -> {
+            bottomTabPane.getSelectionModel().select(terminalTab);
+            eventBus.publish(new CoreApplicationEvents.DebugStartRequestedEvent());
+        });
 
-        resumeButton = new Button("Resume");
-        resumeButton.setDisable(true);
-        resumeButton.setOnAction(e ->
-                eventBus.publish(new CoreApplicationEvents.DebugResumeRequestedEvent())
-        );
+        // UPDATED BUTTONS
+        stepOverButton = new Button("Step Over");
+        stepOverButton.setDisable(true);
+        stepOverButton.setOnAction(e -> eventBus.publish(new CoreApplicationEvents.DebugStepOverRequestedEvent()));
 
-        HBox buttonBox = new HBox(10, compileButton, runButton, debugButton, resumeButton);
+        continueButton = new Button("Continue");
+        continueButton.setDisable(true);
+        continueButton.setOnAction(e -> eventBus.publish(new CoreApplicationEvents.DebugContinueRequestedEvent()));
+
+        stopDebugButton = new Button("Stop");
+        stopDebugButton.setDisable(true); // Disabled until debugging starts
+        stopDebugButton.setStyle("-fx-text-fill: red;"); // Visual hint
+        stopDebugButton.setOnAction(e -> eventBus.publish(new CoreApplicationEvents.DebugStopRequestedEvent()));
+
+        HBox buttonBox = new HBox(10, compileButton, runButton, debugButton, stepOverButton, continueButton,stopDebugButton);
 
         Button themeButton = new Button("Toggle Theme");
         HBox topBar = new HBox(10, themeButton);
@@ -6092,15 +6261,12 @@ public class UIManager {
         splitPane.setOrientation(Orientation.VERTICAL);
         splitPane.getItems().addAll(scrollPane, bottomTabPane);
         splitPane.setDividerPositions(0.7);
-
         VBox.setVgrow(splitPane, Priority.ALWAYS);
 
-        // Main content area (everything below menu bar)
         VBox contentArea = new VBox(10, topBar, palette, buttonBox, splitPane, statusLabel);
         contentArea.setPadding(new Insets(10));
         VBox.setVgrow(splitPane, Priority.ALWAYS);
 
-        // Root layout with menu bar at top
         BorderPane root = new BorderPane();
         root.setTop(menuBarManager.getMenuBar());
         root.setCenter(contentArea);
@@ -6121,7 +6287,6 @@ public class UIManager {
     private HBox createBlockPalette() {
         HBox palette = new HBox(10);
         palette.setPadding(new Insets(5));
-
         for (AddableBlock blockType : AddableBlock.values()) {
             Label blockLabel = new Label(blockType.getDisplayName());
             blockLabel.getStyleClass().add("palette-block-label");
@@ -6132,56 +6297,138 @@ public class UIManager {
         return palette;
     }
 
-    public VBox getBlocksContainer() {
-        return blocksContainer;
-    }
-
-    public Label getStatusLabel() {
-        return statusLabel;
-    }
-
-    public TextArea getOutputArea() {
-        return outputArea;
-    }
-
     private void updateErrors(List<Diagnostic> diagnostics) {
-        if (diagnostics == null) {
-            errorListView.getItems().clear();
-        } else {
-            errorListView.getItems().setAll(diagnostics);
-        }
-        if (diagnostics != null && !diagnostics.isEmpty()) {
-            bottomTabPane.getSelectionModel().select(1);
-        }
+        if (diagnostics == null) errorListView.getItems().clear();
+        else errorListView.getItems().setAll(diagnostics);
+        if (diagnostics != null && !diagnostics.isEmpty()) bottomTabPane.getSelectionModel().select(1);
     }
 
     private void onDebuggerStarted() {
         debugButton.setDisable(true);
+        stepOverButton.setDisable(true);
+        continueButton.setDisable(true);
+        stopDebugButton.setDisable(false);
     }
 
     private void onDebuggerPaused() {
-        resumeButton.setDisable(false);
+        stepOverButton.setDisable(false);
+        continueButton.setDisable(false);
+        stopDebugButton.setDisable(false);
     }
 
     private void onDebuggerResumed() {
-        resumeButton.setDisable(true);
+        stepOverButton.setDisable(true);
+        continueButton.setDisable(true);
+        stopDebugButton.setDisable(false);
     }
 
     private void onDebuggerFinished() {
         debugButton.setDisable(false);
-        resumeButton.setDisable(true);
+        stepOverButton.setDisable(true);
+        continueButton.setDisable(true);
+        stopDebugButton.setDisable(true);
+    }
+
+    public void setOnSelectProject(Consumer<Void> callback) { this.onSelectProject = callback; }
+}
+
+=================================================================================
+FILE: ./src/main/java/com/botmaker/util/BlockLookupHelper.java
+=================================================================================
+
+package com.botmaker.util;
+
+import com.botmaker.core.BodyBlock;
+import com.botmaker.core.BlockWithChildren;
+import com.botmaker.core.CodeBlock;
+import com.botmaker.core.StatementBlock;
+
+import java.util.Map;
+
+/**
+ * Helper class for looking up blocks in the block tree.
+ */
+public class BlockLookupHelper {
+
+    /**
+     * Finds a block by its ID in the node-to-block map.
+     * @param blockId The ID of the block to find
+     * @param nodeToBlockMap The map of AST nodes to CodeBlocks
+     * @return The StatementBlock if found, null otherwise
+     */
+    public static StatementBlock findBlockById(String blockId, Map<?, CodeBlock> nodeToBlockMap) {
+        if (blockId == null || nodeToBlockMap == null) {
+            return null;
+        }
+
+        // Search through all blocks in the map
+        for (CodeBlock block : nodeToBlockMap.values()) {
+            if (block.getId().equals(blockId) && block instanceof StatementBlock) {
+                return (StatementBlock) block;
+            }
+        }
+
+        return null;
     }
 
     /**
-     * Sets the callback for when "Select Project" is clicked from menu
+     * Finds the BodyBlock that contains the given statement block.
+     * @param targetBlock The statement block to find the parent for
+     * @param nodeToBlockMap The map of AST nodes to CodeBlocks
+     * @return The BodyBlock containing the statement, null if not found
      */
-    public void setOnSelectProject(Consumer<Void> callback) {
-        this.onSelectProject = callback;
+    public static BodyBlock findParentBody(StatementBlock targetBlock, Map<?, CodeBlock> nodeToBlockMap) {
+        if (targetBlock == null || nodeToBlockMap == null) {
+            return null;
+        }
+
+        // Search through all blocks to find which BodyBlock contains the target
+        for (CodeBlock block : nodeToBlockMap.values()) {
+            if (block instanceof BodyBlock) {
+                BodyBlock bodyBlock = (BodyBlock) block;
+                if (bodyBlock.getStatements().contains(targetBlock)) {
+                    return bodyBlock;
+                }
+            }
+
+            // Also check nested structures
+            if (block instanceof BlockWithChildren) {
+                BodyBlock found = findParentBodyInChildren(targetBlock, (BlockWithChildren) block);
+                if (found != null) {
+                    return found;
+                }
+            }
+        }
+
+        return null;
+    }
+
+    /**
+     * Recursively searches for the parent body in a block's children.
+     */
+    private static BodyBlock findParentBodyInChildren(StatementBlock targetBlock, BlockWithChildren parent) {
+        for (CodeBlock child : parent.getChildren()) {
+            if (child instanceof BodyBlock) {
+                BodyBlock bodyBlock = (BodyBlock) child;
+                if (bodyBlock.getStatements().contains(targetBlock)) {
+                    return bodyBlock;
+                }
+            }
+
+            if (child instanceof BlockWithChildren) {
+                BodyBlock found = findParentBodyInChildren(targetBlock, (BlockWithChildren) child);
+                if (found != null) {
+                    return found;
+                }
+            }
+        }
+
+        return null;
     }
 }
 
 =================================================================================
-FILE: main/java/com/botmaker/util/DefaultNames.java
+FILE: ./src/main/java/com/botmaker/util/DefaultNames.java
 =================================================================================
 
 package com.botmaker.util;
@@ -6224,7 +6471,7 @@ public class DefaultNames {
 }
 
 =================================================================================
-FILE: main/java/com/botmaker/util/TypeManager.java
+FILE: ./src/main/java/com/botmaker/util/TypeManager.java
 =================================================================================
 
 package com.botmaker.util;
@@ -6275,7 +6522,7 @@ public class TypeManager {
 
 
 =================================================================================
-FILE: main/java/com/botmaker/validation/DiagnosticsManager.java
+FILE: ./src/main/java/com/botmaker/validation/DiagnosticsManager.java
 =================================================================================
 
 package com.botmaker.validation;
@@ -6571,7 +6818,7 @@ public class DiagnosticsManager {
 }
 
 =================================================================================
-FILE: main/java/com/botmaker/validation/ErrorTranslator.java
+FILE: ./src/main/java/com/botmaker/validation/ErrorTranslator.java
 =================================================================================
 
 package com.botmaker.validation;
