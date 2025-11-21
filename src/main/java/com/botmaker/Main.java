@@ -25,11 +25,6 @@ import javafx.stage.Stage;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 
-/**
- * Main application entry point.
- * Phase 3: Final cleanup - Main is now just a thin bootstrapper.
- * Updated: Automatic project loading from config
- */
 public class Main extends Application {
 
     private DependencyContainer container;
@@ -37,26 +32,23 @@ public class Main extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
-        // Check if we should auto-load the last project
         String lastProject = ProjectConfig.getLastOpened();
 
+        // NOTE: Auto-load disabled if we want to force the cache option availability
+        // But for convenience, we check if it exists.
+        // If you are stuck in a crash loop, delete .botmaker-config.json manually once.
         if (lastProject != null && projectExists(lastProject)) {
-            // Auto-load last project
             System.out.println("Auto-loading last project: " + lastProject);
-            openProject(primaryStage, lastProject);
+            openProject(primaryStage, lastProject, false); // Default: don't clear cache on auto-load
         } else {
-            // Show project selection screen
             showProjectSelection(primaryStage);
         }
     }
 
-    /**
-     * Shows the project selection screen
-     */
     private void showProjectSelection(Stage primaryStage) {
         ProjectSelectionScreen selectionScreen = new ProjectSelectionScreen(
                 primaryStage,
-                projectName -> openProject(primaryStage, projectName)
+                (projectName, clearCache) -> openProject(primaryStage, projectName, clearCache)
         );
 
         primaryStage.setScene(selectionScreen.createScene());
@@ -64,45 +56,37 @@ public class Main extends Application {
         primaryStage.show();
     }
 
-    /**
-     * Checks if a project exists
-     */
     private boolean projectExists(String projectName) {
         return Files.exists(Paths.get("projects", projectName)) &&
                 Files.exists(Paths.get("projects", projectName, "build.gradle"));
     }
 
-    /**
-     * Opens a project in the editor
-     */
-    private void openProject(Stage primaryStage, String projectName) {
+    private void openProject(Stage primaryStage, String projectName, boolean clearCache) {
         try {
-            // Update the last opened project in config
             ProjectConfig.updateLastOpened(projectName);
 
-            // Initialize dependency container with project-specific config
             container = new DependencyContainer();
             ApplicationConfig config = ApplicationConfig.forProject(projectName);
 
-            // Setup all dependencies
             setupDependencies(config, primaryStage);
 
-            // Initialize services in correct order
+            // --- INJECT CLEAR CACHE FLAG ---
+            if (clearCache) {
+                LanguageServerService lss = container.resolve(LanguageServerService.class);
+                lss.setShouldClearCache(true);
+            }
+
             initializeServices();
 
-            // Get UI and show
             UIManager uiManager = container.resolve(UIManager.class);
             primaryStage.setScene(uiManager.createScene());
             primaryStage.setTitle("BotMaker Blocks - " + projectName);
 
-            // Load initial code
             CodeEditorService codeEditorService = container.resolve(CodeEditorService.class);
             codeEditorService.loadInitialCode();
 
-            // Show the window
             primaryStage.show();
 
-            // Update close handler
             primaryStage.setOnCloseRequest(e -> {
                 e.consume();
                 new Thread(() -> {
@@ -126,37 +110,28 @@ public class Main extends Application {
         } catch (Exception e) {
             e.printStackTrace();
             showErrorDialog("Error opening project: " + e.getMessage());
-
-            // If auto-load failed, show selection screen
             if (ProjectConfig.getLastOpened() != null) {
                 showProjectSelection(primaryStage);
             }
         }
     }
 
-    /**
-     * Shows an error dialog
-     */
+    // ... rest of Main.java (setupDependencies, initializeServices, showErrorDialog) ...
+    // COPY EXISTING METHODS HERE
+
     private void showErrorDialog(String message) {
-        Alert alert = new Alert(
-                Alert.AlertType.ERROR
-        );
+        Alert alert = new Alert(Alert.AlertType.ERROR);
         alert.setTitle("Error");
         alert.setHeaderText("Failed to open project");
         alert.setContentText(message);
         alert.showAndWait();
     }
 
-    /**
-     * Setup all dependencies in the container
-     */
     private void setupDependencies(ApplicationConfig config, Stage primaryStage) {
-        // Core infrastructure
         container.registerSingleton(ApplicationConfig.class, config);
         container.registerSingleton(ApplicationState.class, new ApplicationState());
         container.registerSingleton(EventBus.class, new EventBus(config.isEnableEventLogging()));
 
-        // Utilities
         container.registerSingleton(BlockFactory.class, new BlockFactory());
         container.registerSingleton(AstRewriter.class, new AstRewriter());
         container.registerSingleton(
@@ -164,12 +139,12 @@ public class Main extends Application {
                 new com.botmaker.validation.DiagnosticsManager()
         );
 
-        // BlockDragAndDropManager - will be wired after CodeEditorService exists
         container.registerSingleton(BlockDragAndDropManager.class,
                 new BlockDragAndDropManager(null)
         );
 
-        // Services
+        // IMPORTANT: This must return the SAME instance if resolved multiple times
+        // using registerSingleton for the factory result logic in container
         container.registerLazySingleton(LanguageServerService.class, () ->
                 new LanguageServerService(
                         container.resolve(ApplicationConfig.class),
@@ -232,30 +207,19 @@ public class Main extends Application {
                     container.resolve(com.botmaker.validation.DiagnosticsManager.class),
                     primaryStage
             );
-
-            // Set callback for project selection from menu
             uiManager.setOnSelectProject(v -> showProjectSelection(primaryStage));
-
             return uiManager;
         });
     }
 
-    /**
-     * Initialize services in the correct order and ensure event subscriptions are set up
-     */
     private void initializeServices() throws Exception {
-        // 1. Initialize LanguageServerService first (needs LSP connection)
         languageServerService = container.resolve(LanguageServerService.class);
         languageServerService.initialize();
 
-        // 2. Get CodeEditorService (depends on initialized LSS)
         CodeEditorService codeEditorService = container.resolve(CodeEditorService.class);
         ApplicationState state = container.resolve(ApplicationState.class);
-
-        // 3. Wire up drag-and-drop callback now that CodeEditorService exists
         BlockDragAndDropManager dragAndDropManager = container.resolve(BlockDragAndDropManager.class);
 
-        // Existing callback for adding new blocks
         dragAndDropManager.setCallback(dropInfo ->
                 codeEditorService.getCodeEditor().addStatement(
                         dropInfo.targetBody(),
@@ -264,26 +228,18 @@ public class Main extends Application {
                 )
         );
 
-        // NEW: Add callback for moving existing blocks
         dragAndDropManager.setMoveCallback(moveInfo -> {
             System.out.println("Move callback triggered for blockId: " + moveInfo.blockId());
-
-            // Find the block to move using the helper
             StatementBlock blockToMove = BlockLookupHelper.findBlockById(
                     moveInfo.blockId(),
                     state.getNodeToBlockMap()
             );
 
-            System.out.println("Found block: " + (blockToMove != null));
-
             if (blockToMove != null) {
-                // Find the source body containing this block
                 BodyBlock sourceBody = BlockLookupHelper.findParentBody(
                         blockToMove,
                         state.getNodeToBlockMap()
                 );
-
-                System.out.println("Found sourceBody: " + (sourceBody != null));
 
                 if (sourceBody != null) {
                     codeEditorService.getCodeEditor().moveStatement(
@@ -292,16 +248,10 @@ public class Main extends Application {
                             moveInfo.targetBody(),
                             moveInfo.insertionIndex()
                     );
-                } else {
-                    System.err.println("Could not find source body for block: " + moveInfo.blockId());
                 }
-            } else {
-                System.err.println("Could not find block with ID: " + moveInfo.blockId());
             }
         });
 
-        // 4. CRITICAL: Force initialization of services that subscribe to events
-        //    This ensures their constructors run and event subscriptions are registered
         container.resolve(ExecutionService.class);
         container.resolve(DebuggingService.class);
         container.resolve(UIManager.class);

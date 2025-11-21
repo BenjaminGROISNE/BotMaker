@@ -1544,6 +1544,53 @@ public class ReadInputBlock extends AbstractStatementBlock {
 }
 
 =================================================================================
+FILE: ./src/main/java/com/botmaker/blocks/ReturnBlock.java
+=================================================================================
+
+package com.botmaker.blocks;
+
+import com.botmaker.core.AbstractStatementBlock;
+import com.botmaker.lsp.CompletionContext;
+import javafx.geometry.Pos;
+import javafx.scene.Node;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.Pane;
+import javafx.scene.layout.Priority;
+import org.eclipse.jdt.core.dom.Statement;
+
+public class ReturnBlock extends AbstractStatementBlock {
+
+    public ReturnBlock(String id, Statement astNode) {
+        super(id, astNode);
+    }
+
+    @Override
+    protected Node createUINode(CompletionContext context) {
+        HBox container = new HBox(5);
+        container.setAlignment(Pos.CENTER_LEFT);
+        container.getStyleClass().add("return-block");
+
+        Label returnLabel = new Label("return");
+        returnLabel.getStyleClass().add("keyword-label");
+
+        // Spacer and Delete Button
+        Pane spacer = new Pane();
+        HBox.setHgrow(spacer, Priority.ALWAYS);
+
+        Button deleteButton = new Button("X");
+        deleteButton.setOnAction(e -> {
+            context.codeEditor().deleteStatement((Statement) this.astNode);
+        });
+
+        container.getChildren().addAll(returnLabel, spacer, deleteButton);
+
+        return container;
+    }
+}
+
+=================================================================================
 FILE: ./src/main/java/com/botmaker/blocks/SwitchBlock.java
 =================================================================================
 
@@ -1902,6 +1949,81 @@ public class VariableDeclarationBlock extends AbstractStatementBlock {
     public String getDetails() {
         String initializerText = initializer != null ? " = ..." : "";
         return "Variable Declaration: " + variableType.toString() + " " + variableName + initializerText;
+    }
+}
+
+=================================================================================
+FILE: ./src/main/java/com/botmaker/blocks/WaitBlock.java
+=================================================================================
+
+package com.botmaker.blocks;
+
+import com.botmaker.core.AbstractStatementBlock;
+import com.botmaker.core.ExpressionBlock;
+import com.botmaker.lsp.CompletionContext;
+import javafx.geometry.Pos;
+import javafx.scene.Node;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.Pane;
+import javafx.scene.layout.Priority;
+import org.eclipse.jdt.core.dom.Statement;
+
+public class WaitBlock extends AbstractStatementBlock {
+
+    private ExpressionBlock duration;
+
+    public WaitBlock(String id, Statement astNode) {
+        super(id, astNode);
+    }
+
+    public ExpressionBlock getDuration() {
+        return duration;
+    }
+
+    public void setDuration(ExpressionBlock duration) {
+        this.duration = duration;
+    }
+
+    @Override
+    protected Node createUINode(CompletionContext context) {
+        HBox container = new HBox(5);
+        container.setAlignment(Pos.CENTER_LEFT);
+        container.getStyleClass().add("wait-block");
+
+        Label waitLabel = new Label("Wait");
+        waitLabel.getStyleClass().add("keyword-label");
+
+        container.getChildren().add(waitLabel);
+
+        if (duration != null) {
+            container.getChildren().add(duration.getUINode(context));
+        } else {
+            container.getChildren().add(createExpressionDropZone(context));
+        }
+
+        Label msLabel = new Label("ms");
+        msLabel.getStyleClass().add("keyword-label");
+        container.getChildren().add(msLabel);
+
+        // Spacer and Delete Button
+        Pane spacer = new Pane();
+        HBox.setHgrow(spacer, Priority.ALWAYS);
+
+        Button deleteButton = new Button("X");
+        deleteButton.setOnAction(e -> {
+            context.codeEditor().deleteStatement((Statement) this.astNode);
+        });
+
+        container.getChildren().addAll(spacer, deleteButton);
+
+        return container;
+    }
+
+    @Override
+    public String getDetails() {
+        return "Wait: " + (duration != null ? duration.getDetails() : "...");
     }
 }
 
@@ -3756,20 +3878,13 @@ public class AstRewriter {
         ListRewrite sourceListRewrite = rewriter.getListRewrite(sourceBlock, Block.STATEMENTS_PROPERTY);
         ListRewrite targetListRewrite = rewriter.getListRewrite(targetBlock, Block.STATEMENTS_PROPERTY);
 
-        // --- FIX START ---
-        // JDT ASTRewrite handles indices based on the ORIGINAL AST.
-        // We do NOT need to manually adjust the index for the removal shift
-        // because the removal hasn't actually happened to the underlying list yet.
-
         // If moving to the exact same position (same body, same index), do nothing
         if (sourceBody == targetBody) {
             int currentIndex = sourceBlock.statements().indexOf(statement);
             if (currentIndex == targetIndex) {
                 return originalCode;
             }
-            // The logic "if (targetIndex > currentIndex) targetIndex--;" was removed here.
         }
-        // --- FIX END ---
 
         // Create a copy of the statement for the new location
         Statement copiedStatement = (Statement) ASTNode.copySubtree(ast, statement);
@@ -3797,6 +3912,13 @@ public class AstRewriter {
         if (newStatement == null) {
             return originalCode;
         }
+
+        // Special handling for Switch statements:
+        // If we are dropping a CASE into a SWITCH block, the targetBody might actually be
+        // a synthetic block or the switch itself. However, strictly speaking,
+        // Switch cases are children of the SwitchStatement, not a Block.
+        // But in this architecture, we usually drop into BodyBlocks.
+        // Standard blocks (If/While) use Block bodies. Switch statements have a list of statements.
 
         Block targetAstBlock = (Block) targetBody.getAstNode();
         ListRewrite listRewrite = rewriter.getListRewrite(targetAstBlock, Block.STATEMENTS_PROPERTY);
@@ -4175,13 +4297,15 @@ public class AstRewriter {
                 return doStatement;
 
             case SWITCH:
-                // switch (variable) { case 0: break; default: break; }
+                // switch (variable) { default: break; }
                 SwitchStatement switchStatement = ast.newSwitchStatement();
                 switchStatement.setExpression(ast.newSimpleName(DefaultNames.DEFAULT_VARIABLE));
 
-                // Add a default case with break
+                // Add a default case
                 SwitchCase defaultCase = ast.newSwitchCase();
-                defaultCase.setDefault(true);
+                // In JDT AST, a SwitchCase with empty/null expression is treated as 'default'.
+                // We do NOT call setDefault(true) as it doesn't exist in modern AST.
+
                 switchStatement.statements().add(defaultCase);
 
                 BreakStatement breakStmt = ast.newBreakStatement();
@@ -4189,6 +4313,56 @@ public class AstRewriter {
 
                 return switchStatement;
 
+            case CASE:
+                // case 0:
+                SwitchCase switchCase = ast.newSwitchCase();
+                // We assume JDK 8+ style (case expression:)
+                // In newer JDT versions, we use expressions().add()
+                try {
+                    // Using reflection to handle different JDT versions if necessary,
+                    // but assuming we are on a modern version based on AST.getJLSLatest()
+                    switchCase.expressions().add(ast.newNumberLiteral("0"));
+                } catch (Exception e) {
+                    // Fallback for older JDT where setExpression is used
+                    // switchCase.setExpression(ast.newNumberLiteral("0"));
+                }
+                return switchCase;
+
+            case RETURN:
+                // return;
+                return ast.newReturnStatement();
+
+            case WAIT:
+                // try { Thread.sleep(1000); } catch (InterruptedException e) { e.printStackTrace(); }
+                TryStatement tryStmt = ast.newTryStatement();
+                Block tryBody = ast.newBlock();
+
+                // Thread.sleep(1000)
+                MethodInvocation sleepCall = ast.newMethodInvocation();
+                sleepCall.setExpression(ast.newSimpleName("Thread"));
+                sleepCall.setName(ast.newSimpleName("sleep"));
+                sleepCall.arguments().add(ast.newNumberLiteral("1000"));
+
+                tryBody.statements().add(ast.newExpressionStatement(sleepCall));
+                tryStmt.setBody(tryBody);
+
+                // catch (InterruptedException e)
+                CatchClause catchClause = ast.newCatchClause();
+                SingleVariableDeclaration exceptionDecl = ast.newSingleVariableDeclaration();
+                exceptionDecl.setType(ast.newSimpleType(ast.newSimpleName("InterruptedException")));
+                exceptionDecl.setName(ast.newSimpleName("e"));
+                catchClause.setException(exceptionDecl);
+
+                // e.printStackTrace()
+                Block catchBody = ast.newBlock();
+                MethodInvocation printStackTrace = ast.newMethodInvocation();
+                printStackTrace.setExpression(ast.newSimpleName("e"));
+                printStackTrace.setName(ast.newSimpleName("printStackTrace"));
+                catchBody.statements().add(ast.newExpressionStatement(printStackTrace));
+                catchClause.setBody(catchBody);
+
+                tryStmt.catchClauses().add(catchClause);
+                return tryStmt;
             case COMMENT:
                 // Comments are special - they're not real statements
                 // We'll use an EmptyStatement as a placeholder
@@ -4293,7 +4467,8 @@ public class BlockFactory {
 
             return visitor.getMainMethodDeclaration()
                     .map(mainMethodDecl -> {
-                        MainBlock mainBlock = new MainBlock(BlockIdPrefix.generate(BlockIdPrefix.MAIN, mainMethodDecl), mainMethodDecl);                        nodeToBlockMap.put(mainMethodDecl, mainBlock);
+                        MainBlock mainBlock = new MainBlock(BlockIdPrefix.generate(BlockIdPrefix.MAIN, mainMethodDecl), mainMethodDecl);
+                        nodeToBlockMap.put(mainMethodDecl, mainBlock);
                         visitor.getMainMethodBody().ifPresent(bodyAstNode -> {
                             BodyBlock bodyBlock = parseBodyBlock(bodyAstNode, nodeToBlockMap, manager);
                             mainBlock.setMainBody(bodyBlock);
@@ -4316,7 +4491,8 @@ public class BlockFactory {
 
     private BodyBlock parseBodyBlock(Block astBlock, Map<ASTNode, CodeBlock> nodeToBlockMap, BlockDragAndDropManager manager) {
         System.out.println("Creating BodyBlock for: " + astBlock.hashCode());
-        BodyBlock bodyBlock = new BodyBlock(BlockIdPrefix.generate(BlockIdPrefix.BODY, astBlock), astBlock, manager);        nodeToBlockMap.put(astBlock, bodyBlock);
+        BodyBlock bodyBlock = new BodyBlock(BlockIdPrefix.generate(BlockIdPrefix.BODY, astBlock), astBlock, manager);
+        nodeToBlockMap.put(astBlock, bodyBlock);
         for (Object statementObj : astBlock.statements()) {
             Statement statement = (Statement) statementObj;
             parseStatement(statement, nodeToBlockMap, manager).ifPresent(bodyBlock::addStatement);
@@ -4343,8 +4519,10 @@ public class BlockFactory {
         if (astStatement instanceof WhileStatement) {
             return Optional.of(parseWhileStatement((WhileStatement) astStatement, nodeToBlockMap, manager));
         }
-        // CHANGE THIS LINE:
-        if (astStatement instanceof EnhancedForStatement) {  // ← Changed from ForStatement
+        if (astStatement instanceof ReturnStatement) {
+            return Optional.of(parseReturnStatement((ReturnStatement) astStatement, nodeToBlockMap));
+        }
+        if (astStatement instanceof EnhancedForStatement) {
             return Optional.of(parseForStatement((EnhancedForStatement) astStatement, nodeToBlockMap, manager));
         }
         if (astStatement instanceof DoStatement) {
@@ -4382,10 +4560,59 @@ public class BlockFactory {
                 }
             }
         }
+        if (astStatement instanceof TryStatement) {
+            TryStatement tryStmt = (TryStatement) astStatement;
+            if (isWaitStatement(tryStmt)) {
+                return Optional.of(parseWaitStatement(tryStmt, nodeToBlockMap));
+            }
+        }
         return Optional.empty();
     }
 
+    private boolean isWaitStatement(TryStatement tryStmt) {
+        // Check if body has exactly one statement
+        if (tryStmt.getBody().statements().size() != 1) return false;
 
+        Statement firstStmt = (Statement) tryStmt.getBody().statements().getFirst();
+        if (!(firstStmt instanceof ExpressionStatement)) return false;
+
+        Expression expr = ((ExpressionStatement) firstStmt).getExpression();
+        if (!(expr instanceof MethodInvocation)) return false;
+
+        MethodInvocation mi = (MethodInvocation) expr;
+
+        // Check for Thread.sleep
+        if (!"sleep".equals(mi.getName().getIdentifier())) return false;
+
+        Expression scope = mi.getExpression();
+        return scope != null && "Thread".equals(scope.toString());
+    }
+
+    // 3. logic to create the visual block
+    private WaitBlock parseWaitStatement(TryStatement astNode, Map<ASTNode, CodeBlock> nodeToBlockMap) {
+        System.out.println("Creating WaitBlock for: " + astNode);
+        WaitBlock waitBlock = new WaitBlock(BlockIdPrefix.generate(BlockIdPrefix.WAIT, astNode), astNode);
+        nodeToBlockMap.put(astNode, waitBlock);
+
+        // Extract the argument from Thread.sleep(arg) inside the try block
+        Statement innerStmt = (Statement) astNode.getBody().statements().getFirst();
+        ExpressionStatement exprStmt = (ExpressionStatement) innerStmt;
+        MethodInvocation mi = (MethodInvocation) exprStmt.getExpression();
+
+        if (!mi.arguments().isEmpty()) {
+            Expression arg = (Expression) mi.arguments().getFirst();
+            parseExpression(arg, nodeToBlockMap).ifPresent(waitBlock::setDuration);
+        }
+
+        return waitBlock;
+    }
+
+    private ReturnBlock parseReturnStatement(ReturnStatement astNode, Map<ASTNode, CodeBlock> nodeToBlockMap) {
+        System.out.println("Creating ReturnBlock for: " + astNode);
+        ReturnBlock returnBlock = new ReturnBlock(BlockIdPrefix.generate(BlockIdPrefix.RETURN, astNode), astNode);
+        nodeToBlockMap.put(astNode, returnBlock);
+        return returnBlock;
+    }
 
     private DoWhileBlock parseDoWhileStatement(DoStatement astNode, Map<ASTNode, CodeBlock> nodeToBlockMap, BlockDragAndDropManager manager) {
         System.out.println("Creating DoWhileBlock for: " + astNode);
@@ -4430,15 +4657,15 @@ public class BlockFactory {
                 nodeToBlockMap.put(switchCase, currentCase);
 
                 // Parse case expression (null for default)
-                if (!switchCase.isDefault() && switchCase.expressions().size() > 0) {
-                    Expression caseExpr = (Expression) switchCase.expressions().get(0);
+                if (!switchCase.isDefault() && !switchCase.expressions().isEmpty()) {
+                    Expression caseExpr = (Expression) switchCase.expressions().getFirst();
                     parseExpression(caseExpr, nodeToBlockMap).ifPresent(currentCase::setCaseExpression);
                 }
 
                 // Create body for this case
                 currentCaseBody = new BodyBlock(
                         BlockIdPrefix.generate(BlockIdPrefix.BODY, switchCase),
-                        ast.newBlock(), // Synthetic block
+                        ast.getAST().newBlock(), // FIX: Access AST from CompilationUnit
                         manager
                 );
                 currentCase.setBody(currentCaseBody);
@@ -4464,10 +4691,12 @@ public class BlockFactory {
         nodeToBlockMap.put(astNode, commentBlock);
         return commentBlock;
     }
+
     private VariableDeclarationBlock parseVariableDeclaration(VariableDeclarationStatement astNode, Map<ASTNode, CodeBlock> nodeToBlockMap) {
         System.out.println("Creating VariableDeclarationBlock for: " + astNode);
-        VariableDeclarationBlock varBlock = new VariableDeclarationBlock(BlockIdPrefix.generate(BlockIdPrefix.VARIABLE, astNode), astNode);        nodeToBlockMap.put(astNode, varBlock);
-        VariableDeclarationFragment fragment = (VariableDeclarationFragment) astNode.fragments().get(0);
+        VariableDeclarationBlock varBlock = new VariableDeclarationBlock(BlockIdPrefix.generate(BlockIdPrefix.VARIABLE, astNode), astNode);
+        nodeToBlockMap.put(astNode, varBlock);
+        VariableDeclarationFragment fragment = (VariableDeclarationFragment) astNode.fragments().getFirst();
 
         if (fragment.getInitializer() != null) {
             parseExpression(fragment.getInitializer(), nodeToBlockMap).ifPresent(varBlock::setInitializer);
@@ -4477,7 +4706,8 @@ public class BlockFactory {
 
     private IfBlock parseIfStatement(IfStatement astNode, Map<ASTNode, CodeBlock> nodeToBlockMap, BlockDragAndDropManager manager) {
         System.out.println("Creating IfBlock for: " + astNode);
-        IfBlock ifBlock = new IfBlock(BlockIdPrefix.generate(BlockIdPrefix.IF, astNode), astNode);        nodeToBlockMap.put(astNode, ifBlock);
+        IfBlock ifBlock = new IfBlock(BlockIdPrefix.generate(BlockIdPrefix.IF, astNode), astNode);
+        nodeToBlockMap.put(astNode, ifBlock);
         parseExpression(astNode.getExpression(), nodeToBlockMap).ifPresent(ifBlock::setCondition);
 
         if (astNode.getThenStatement() instanceof Block) {
@@ -4494,14 +4724,15 @@ public class BlockFactory {
 
     private PrintBlock parsePrintStatement(ExpressionStatement astNode, Map<ASTNode, CodeBlock> nodeToBlockMap) {
         System.out.println("Creating PrintBlock for: " + astNode);
-        PrintBlock printBlock = new PrintBlock(BlockIdPrefix.generate(BlockIdPrefix.PRINT, astNode), astNode);        nodeToBlockMap.put(astNode, printBlock);
+        PrintBlock printBlock = new PrintBlock(BlockIdPrefix.generate(BlockIdPrefix.PRINT, astNode), astNode);
+        nodeToBlockMap.put(astNode, printBlock);
 
         MethodInvocation methodInvocation = (MethodInvocation) astNode.getExpression();
 
-
         if (methodInvocation.arguments().isEmpty()) {
             System.out.println("Creating synthetic String LiteralBlock for empty println");
-            LiteralBlock<String> block = new LiteralBlock<>(BlockIdPrefix.generate(BlockIdPrefix.SYNTHETIC_STRING, astNode), methodInvocation, "");            printBlock.addArgument(block);
+            LiteralBlock<String> block = new LiteralBlock<>(BlockIdPrefix.generate(BlockIdPrefix.SYNTHETIC_STRING, astNode), methodInvocation, "");
+            printBlock.addArgument(block);
         } else {
             for (Object arg : methodInvocation.arguments()) {
                 parseExpression((Expression) arg, nodeToBlockMap).ifPresent(printBlock::addArgument);
@@ -4513,7 +4744,7 @@ public class BlockFactory {
 
     private boolean isReadInputStatement(VariableDeclarationStatement varDecl) {
         if (varDecl.fragments().isEmpty()) return false;
-        VariableDeclarationFragment fragment = (VariableDeclarationFragment) varDecl.fragments().get(0);
+        VariableDeclarationFragment fragment = (VariableDeclarationFragment) varDecl.fragments().getFirst();
         Expression initializer = fragment.getInitializer();
 
         if (initializer instanceof MethodInvocation) {
@@ -4599,13 +4830,11 @@ public class BlockFactory {
         return assignBlock;
     }
 
-
-
     // Parse read input statement
     private ReadInputBlock parseReadInputStatement(VariableDeclarationStatement astNode, Map<ASTNode, CodeBlock> nodeToBlockMap) {
         System.out.println("Creating ReadInputBlock for: " + astNode);
 
-        VariableDeclarationFragment fragment = (VariableDeclarationFragment) astNode.fragments().get(0);
+        VariableDeclarationFragment fragment = (VariableDeclarationFragment) astNode.fragments().getFirst();
         MethodInvocation mi = (MethodInvocation) fragment.getInitializer();
         String inputType = mi.getName().getIdentifier();
 
@@ -4619,10 +4848,10 @@ public class BlockFactory {
         return readBlock;
     }
 
-
     private BinaryExpressionBlock parseBinaryExpression(InfixExpression astNode, Map<ASTNode, CodeBlock> nodeToBlockMap) {
         System.out.println("Creating BinaryExpressionBlock for: " + astNode);
-        BinaryExpressionBlock binaryBlock = new BinaryExpressionBlock(BlockIdPrefix.generate(BlockIdPrefix.BINARY, astNode), astNode);        nodeToBlockMap.put(astNode, binaryBlock);
+        BinaryExpressionBlock binaryBlock = new BinaryExpressionBlock(BlockIdPrefix.generate(BlockIdPrefix.BINARY, astNode), astNode);
+        nodeToBlockMap.put(astNode, binaryBlock);
         parseExpression(astNode.getLeftOperand(), nodeToBlockMap).ifPresent(binaryBlock::setLeftOperand);
         parseExpression(astNode.getRightOperand(), nodeToBlockMap).ifPresent(binaryBlock::setRightOperand);
         return binaryBlock;
@@ -4632,7 +4861,8 @@ public class BlockFactory {
         if (astExpression instanceof StringLiteral) {
             System.out.println("Creating String LiteralBlock for: " + astExpression);
             StringLiteral literalNode = (StringLiteral) astExpression;
-            LiteralBlock<String> block = new LiteralBlock<>(BlockIdPrefix.generate(BlockIdPrefix.STRING, literalNode), literalNode, literalNode.getLiteralValue());            nodeToBlockMap.put(astExpression, block);
+            LiteralBlock<String> block = new LiteralBlock<>(BlockIdPrefix.generate(BlockIdPrefix.STRING, literalNode), literalNode, literalNode.getLiteralValue());
+            nodeToBlockMap.put(astExpression, block);
             return Optional.of(block);
         }
         if (astExpression instanceof NumberLiteral) {
@@ -4641,16 +4871,20 @@ public class BlockFactory {
             String token = literalNode.getToken();
             ExpressionBlock block;
             if (token.toLowerCase().endsWith("f")) {
-                block = new LiteralBlock<>(BlockIdPrefix.generate(BlockIdPrefix.NUMBER_FLOAT, literalNode), literalNode, Float.parseFloat(token));            } else if (token.contains(".") || token.toLowerCase().endsWith("d")) {
-                block = new LiteralBlock<>(BlockIdPrefix.generate(BlockIdPrefix.NUMBER_DOUBLE, literalNode), literalNode, Double.parseDouble(token));            } else {
-                block = new LiteralBlock<>(BlockIdPrefix.generate(BlockIdPrefix.NUMBER_INT, literalNode), literalNode, Integer.parseInt(token));            }
+                block = new LiteralBlock<>(BlockIdPrefix.generate(BlockIdPrefix.NUMBER_FLOAT, literalNode), literalNode, Float.parseFloat(token));
+            } else if (token.contains(".") || token.toLowerCase().endsWith("d")) {
+                block = new LiteralBlock<>(BlockIdPrefix.generate(BlockIdPrefix.NUMBER_DOUBLE, literalNode), literalNode, Double.parseDouble(token));
+            } else {
+                block = new LiteralBlock<>(BlockIdPrefix.generate(BlockIdPrefix.NUMBER_INT, literalNode), literalNode, Integer.parseInt(token));
+            }
             nodeToBlockMap.put(astExpression, block);
             return Optional.of(block);
         }
         if (astExpression instanceof BooleanLiteral) {
             System.out.println("Creating Boolean LiteralBlock for: " + astExpression);
             BooleanLiteral literalNode = (BooleanLiteral) astExpression;
-            LiteralBlock<Boolean> block = new LiteralBlock<>(BlockIdPrefix.generate(BlockIdPrefix.BOOLEAN, literalNode), literalNode, literalNode.booleanValue());            nodeToBlockMap.put(astExpression, block);
+            LiteralBlock<Boolean> block = new LiteralBlock<>(BlockIdPrefix.generate(BlockIdPrefix.BOOLEAN, literalNode), literalNode, literalNode.booleanValue());
+            nodeToBlockMap.put(astExpression, block);
             return Optional.of(block);
         }
         if (astExpression instanceof SimpleName) {
@@ -4756,6 +4990,8 @@ public class BlockIdPrefix {
     public static final String SWITCH = "switch_";
     public static final String RETURN = "return_";
     public static final String COMMENT = "comment_";
+    public static final String WAIT = "wait_";     // Add this
+// ...
 
     private BlockIdPrefix() {} // Prevent instantiation
 
@@ -6746,8 +6982,11 @@ public enum AddableBlock {
     FOR("For Each", ForBlock.class),
     DO_WHILE("Do While", DoWhileBlock.class),
     SWITCH("Switch", SwitchBlock.class),
+    CASE("Case", SwitchBlock.SwitchCaseBlock.class),
     BREAK("Break", BreakBlock.class),
     CONTINUE("Continue", ContinueBlock.class),
+    RETURN("Return", ReturnBlock.class),  // Added Return
+    WAIT("Wait (ms)", WaitBlock.class),   // Added Wait
 
     // Variable Declaration
     DECLARE_INT("Declare Int", VariableDeclarationBlock.class),
@@ -6755,7 +6994,7 @@ public enum AddableBlock {
     DECLARE_BOOLEAN("Declare Boolean", VariableDeclarationBlock.class),
     DECLARE_STRING("Declare String", VariableDeclarationBlock.class),
 
-    // Variable Operations (now unified in AssignmentBlock)
+    // Variable Operations
     ASSIGNMENT("Assignment", AssignmentBlock.class),
 
     // Input

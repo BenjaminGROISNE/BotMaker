@@ -1,27 +1,23 @@
 package com.botmaker.lsp;
 
 import com.botmaker.config.Constants;
-import org.eclipse.jdt.core.compiler.IProblem;
-import org.eclipse.jdt.internal.compiler.IProblemFactory;
-import org.eclipse.jdt.internal.compiler.lookup.ProblemReasons;
-import org.eclipse.jdt.internal.compiler.problem.ProblemHandler;
-import org.eclipse.jdt.internal.compiler.problem.ProblemReporter;
-import org.eclipse.jdt.internal.core.builder.ProblemFactory;
-import org.eclipse.lsp4j.*;
 import org.eclipse.lsp4j.jsonrpc.Launcher;
 import org.eclipse.lsp4j.launch.LSPLauncher;
 import org.eclipse.lsp4j.services.LanguageClient;
 import org.eclipse.lsp4j.services.LanguageServer;
+import org.eclipse.lsp4j.*;
 
 import java.io.*;
 import java.nio.file.*;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Comparator;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 import java.util.function.Consumer;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.stream.Stream;
 
 public class JdtLanguageServerLauncher {
 
@@ -33,6 +29,14 @@ public class JdtLanguageServerLauncher {
             Path projectPath,
             Path workspaceData,
             Consumer<PublishDiagnosticsParams> diagnosticsConsumer) throws Exception {
+
+        // --- LOGGING START ---
+        System.out.println("Initializing JDT LS...");
+        System.out.println("  JDT Path: " + jdtlsPath);
+        System.out.println("  Project: " + projectPath);
+        System.out.println("  Workspace: " + workspaceData);
+        // --- LOGGING END ---
+
         // Suppress LSP4J warnings about unsupported notifications
         Logger.getLogger("org.eclipse.lsp4j.jsonrpc.services.GenericEndpoint").setLevel(Level.SEVERE);
         Logger.getLogger("org.eclipse.lsp4j.jsonrpc.json.StreamMessageProducer").setLevel(Level.SEVERE);
@@ -149,6 +153,31 @@ public class JdtLanguageServerLauncher {
         try { server.shutdown().get(); } catch (Exception ignored) {}
         server.exit();
         process.destroy();
+    }
+
+    /**
+     * Forcefully deletes the workspace cache directory.
+     * Call this BEFORE creating the launcher if you suspect corruption.
+     */
+    public static void cleanupWorkspace(Path workspaceData) {
+        if (!Files.exists(workspaceData)) return;
+
+        System.out.println("Cleaning up JDT workspace cache: " + workspaceData);
+        try (Stream<Path> walk = Files.walk(workspaceData)) {
+            walk.sorted(Comparator.reverseOrder())
+                    .map(Path::toFile)
+                    .forEach(File::delete);
+            System.out.println("Cache cleared successfully.");
+        } catch (IOException e) {
+            System.err.println("Failed to clear workspace cache: " + e.getMessage());
+            // Try to delete at least the lock file
+            try {
+                Files.deleteIfExists(workspaceData.resolve(".metadata/.lock"));
+                System.out.println("Deleted .lock file as fallback.");
+            } catch (IOException ex) {
+                ex.printStackTrace();
+            }
+        }
     }
 
     // Minimal LSP client

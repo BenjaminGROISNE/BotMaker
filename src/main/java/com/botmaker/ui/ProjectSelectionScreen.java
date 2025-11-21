@@ -15,6 +15,7 @@ import javafx.stage.Stage;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Optional;
+import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 
 /**
@@ -24,11 +25,17 @@ public class ProjectSelectionScreen {
 
     private final ProjectManager projectManager;
     private final ProjectCreator projectCreator;
-    private final Consumer<String> onProjectSelected;
+
+    // Changed to BiConsumer to pass (ProjectName, ShouldClearCache)
+    private final BiConsumer<String, Boolean> onProjectSelected;
+
     private final Stage stage;
     private ListView<ProjectInfo> projectListView;
 
-    public ProjectSelectionScreen(Stage stage, Consumer<String> onProjectSelected) {
+    // New Checkbox
+    private CheckBox clearCacheCheckbox;
+
+    public ProjectSelectionScreen(Stage stage, BiConsumer<String, Boolean> onProjectSelected) {
         this.stage = stage;
         this.projectManager = new ProjectManager();
         this.projectCreator = new ProjectCreator();
@@ -50,7 +57,6 @@ public class ProjectSelectionScreen {
         projectListView = new ListView<>();
         projectListView.setPrefHeight(400);
 
-        // Custom cell factory to show project info
         projectListView.setCellFactory(lv -> new ListCell<>() {
             @Override
             protected void updateItem(ProjectInfo project, boolean empty) {
@@ -76,15 +82,13 @@ public class ProjectSelectionScreen {
             }
         });
 
-        // Load projects
         refreshProjectList();
 
-        // Select first project by default
         if (!projectListView.getItems().isEmpty()) {
             projectListView.getSelectionModel().select(0);
         }
 
-        // Buttons
+        // Controls Area
         Button openButton = new Button("Open Project");
         openButton.setPrefWidth(150);
         openButton.setDefaultButton(true);
@@ -94,7 +98,11 @@ public class ProjectSelectionScreen {
         createButton.setPrefWidth(150);
         createButton.setOnAction(e -> showCreateProjectDialog());
 
-        // Handle double-click
+        // CLEAR CACHE CHECKBOX
+        clearCacheCheckbox = new CheckBox("Clear Language Server Cache (Fix startup freeze)");
+        clearCacheCheckbox.setStyle("-fx-text-fill: #666; -fx-font-size: 11px;");
+        clearCacheCheckbox.setTooltip(new Tooltip("Check this if the application hangs on loading."));
+
         projectListView.setOnMouseClicked(e -> {
             if (e.getClickCount() == 2) {
                 openSelectedProject();
@@ -103,51 +111,44 @@ public class ProjectSelectionScreen {
 
         HBox buttonBox = new HBox(10, openButton, createButton);
         buttonBox.setAlignment(Pos.CENTER);
-        buttonBox.setPadding(new Insets(20, 0, 0, 0));
 
-        // Layout
-        VBox center = new VBox(10, projectListView, buttonBox);
+        VBox footer = new VBox(15, clearCacheCheckbox, buttonBox);
+        footer.setAlignment(Pos.CENTER);
+        footer.setPadding(new Insets(20, 0, 0, 0));
+
+        VBox center = new VBox(10, projectListView, footer);
         root.setTop(header);
         root.setCenter(center);
 
-        Scene scene = new Scene(root, 600, 500);
+        Scene scene = new Scene(root, 600, 550); // Increased height slightly
         scene.getStylesheets().add(getClass().getResource("/com/botmaker/styles.css").toExternalForm());
 
         return scene;
     }
 
-    /**
-     * Opens the selected project
-     */
     private void openSelectedProject() {
         ProjectInfo selected = projectListView.getSelectionModel().getSelectedItem();
         if (selected != null) {
-            onProjectSelected.accept(selected.getName());
+            onProjectSelected.accept(selected.getName(), clearCacheCheckbox.isSelected());
         }
     }
 
-    /**
-     * Refreshes the project list
-     */
+    // ... rest of file (refreshProjectList, showCreateProjectDialog, etc) remains the same ...
+
     private void refreshProjectList() {
         List<ProjectInfo> projects = projectManager.listProjects();
         projectListView.getItems().clear();
         projectListView.getItems().addAll(projects);
     }
 
-    /**
-     * Shows the create project dialog
-     */
     private void showCreateProjectDialog() {
         Dialog<String> dialog = new Dialog<>();
         dialog.setTitle("Create New Project");
         dialog.setHeaderText("Enter project name");
 
-        // Set the button types
         ButtonType createButtonType = new ButtonType("Create", ButtonBar.ButtonData.OK_DONE);
         dialog.getDialogPane().getButtonTypes().addAll(createButtonType, ButtonType.CANCEL);
 
-        // Create the project name field
         VBox content = new VBox(10);
         content.setPadding(new Insets(20));
 
@@ -181,33 +182,21 @@ public class ProjectSelectionScreen {
 
         dialog.getDialogPane().setContent(content);
 
-        // Enable/disable create button based on validation
         Button createButton = (Button) dialog.getDialogPane().lookupButton(createButtonType);
         createButton.setDisable(true);
 
-        // Validation
         projectNameField.textProperty().addListener((observable, oldValue, newValue) -> {
             boolean isValid = isValidProjectName(newValue);
             createButton.setDisable(!isValid);
-
-            // Visual feedback
-            if (newValue.isEmpty()) {
-                projectNameField.setStyle("");
-            } else if (isValid) {
-                projectNameField.setStyle("-fx-border-color: green; -fx-border-width: 2px;");
-            } else {
-                projectNameField.setStyle("-fx-border-color: red; -fx-border-width: 2px;");
-            }
+            if (newValue.isEmpty()) projectNameField.setStyle("");
+            else if (isValid) projectNameField.setStyle("-fx-border-color: green; -fx-border-width: 2px;");
+            else projectNameField.setStyle("-fx-border-color: red; -fx-border-width: 2px;");
         });
 
-        // Request focus on the text field
         javafx.application.Platform.runLater(projectNameField::requestFocus);
 
-        // Convert the result when the create button is clicked
         dialog.setResultConverter(dialogButton -> {
-            if (dialogButton == createButtonType) {
-                return projectNameField.getText();
-            }
+            if (dialogButton == createButtonType) return projectNameField.getText();
             return null;
         });
 
@@ -215,70 +204,25 @@ public class ProjectSelectionScreen {
         result.ifPresent(this::createProject);
     }
 
-    /**
-     * Validates project name format
-     */
     private boolean isValidProjectName(String name) {
-        if (name == null || name.trim().isEmpty()) {
-            return false;
-        }
-
-        // Check format
-        if (!name.matches("^[A-Z][a-zA-Z0-9]*$")) {
-            return false;
-        }
-
-        // Check length
-        if (name.length() < 2 || name.length() > 50) {
-            return false;
-        }
-
-        // Check if already exists
-        if (projectCreator.projectExists(name)) {
-            return false;
-        }
-
+        if (name == null || name.trim().isEmpty()) return false;
+        if (!name.matches("^[A-Z][a-zA-Z0-9]*$")) return false;
+        if (name.length() < 2 || name.length() > 50) return false;
+        if (projectCreator.projectExists(name)) return false;
         return true;
     }
 
-    /**
-     * Creates a new project
-     */
     private void createProject(String projectName) {
         try {
-            // Show progress
-            Alert progressAlert = new Alert(Alert.AlertType.INFORMATION);
-            progressAlert.setTitle("Creating Project");
-            progressAlert.setHeaderText("Please wait...");
-            progressAlert.setContentText("Creating project: " + projectName);
-            progressAlert.show();
-
-            // Create the project
             projectCreator.createProject(projectName);
-
-            // Close progress alert
-            progressAlert.close();
-
-            // Show success message
-            Alert successAlert = new Alert(Alert.AlertType.INFORMATION);
-            successAlert.setTitle("Success");
-            successAlert.setHeaderText("Project Created");
-            successAlert.setContentText("Project '" + projectName + "' has been created successfully!");
-            successAlert.showAndWait();
-
-            // Refresh the list
             refreshProjectList();
-
-            // Select the newly created project
             for (ProjectInfo project : projectListView.getItems()) {
                 if (project.getName().equals(projectName)) {
                     projectListView.getSelectionModel().select(project);
                     break;
                 }
             }
-
         } catch (Exception e) {
-            // Show error message
             Alert errorAlert = new Alert(Alert.AlertType.ERROR);
             errorAlert.setTitle("Error");
             errorAlert.setHeaderText("Failed to create project");

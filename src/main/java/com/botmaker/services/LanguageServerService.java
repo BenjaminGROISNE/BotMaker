@@ -14,10 +14,6 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.List;
 
-/**
- * Manages the Language Server Protocol (LSP) integration.
- * Handles initialization, document synchronization, and diagnostics.
- */
 public class LanguageServerService {
 
     private final ApplicationConfig config;
@@ -27,6 +23,9 @@ public class LanguageServerService {
 
     private LanguageServer server;
     private JdtLanguageServerLauncher launcher;
+
+    // New flag
+    private boolean shouldClearCache = false;
 
     public LanguageServerService(
             ApplicationConfig config,
@@ -41,8 +40,11 @@ public class LanguageServerService {
         setupEventHandlers();
     }
 
+    public void setShouldClearCache(boolean shouldClear) {
+        this.shouldClearCache = shouldClear;
+    }
+
     private void setupEventHandlers() {
-        // Subscribe to code updates to sync with LSP
         eventBus.subscribe(
                 CoreApplicationEvents.CodeUpdatedEvent.class,
                 this::handleCodeUpdate,
@@ -50,15 +52,17 @@ public class LanguageServerService {
         );
     }
 
-    /**
-     * Initializes the language server
-     */
     public void initialize() throws Exception {
+        // NEW: Check if we need to clear cache
+        if (shouldClearCache) {
+            JdtLanguageServerLauncher.cleanupWorkspace(config.getWorkspaceDataPath());
+        }
+
         launcher = new JdtLanguageServerLauncher(
                 config.getJdtServerPath(),
                 config.getProjectPath(),
                 config.getWorkspaceDataPath(),
-                (PublishDiagnosticsParams params) -> {  // ← Explicit type
+                (PublishDiagnosticsParams params) -> {
                     Platform.runLater(() -> {
                         List<Diagnostic> diagnostics = params.getDiagnostics();
                         eventBus.publish(new CoreApplicationEvents.DiagnosticsUpdatedEvent(diagnostics));
@@ -66,6 +70,7 @@ public class LanguageServerService {
                 }
         );
 
+        // ... rest of the file stays the same ...
         server = launcher.getServer();
 
         Path docPath = config.getSourceFilePath().toAbsolutePath().normalize();
@@ -104,9 +109,7 @@ public class LanguageServerService {
         ));
     }
 
-    /**
-     * Handles code update events by syncing with LSP
-     */
+    // ... shutdown/handlers stay same ...
     private void handleCodeUpdate(CoreApplicationEvents.CodeUpdatedEvent event) {
         try {
             // Write to file
@@ -133,35 +136,25 @@ public class LanguageServerService {
         }
     }
 
-    /**
-     * Shuts down the language server gracefully
-     */
     public void shutdown() {
         if (launcher != null) {
             try {
                 System.out.println("Requesting server shutdown...");
-
-                // Give the server a chance to shutdown gracefully
                 if (server != null) {
-                    server.shutdown().get(Constants.DEBUGGER_SHUTDOWN_TIMEOUT_SECONDS, java.util.concurrent.TimeUnit.SECONDS);                    server.exit();
+                    server.shutdown().get(Constants.DEBUGGER_SHUTDOWN_TIMEOUT_SECONDS, java.util.concurrent.TimeUnit.SECONDS);
+                    server.exit();
                 }
-
-
                 Thread.sleep(Constants.SHORT_SLEEP_MS);
             } catch (java.util.concurrent.TimeoutException e) {
                 System.err.println("Server shutdown timed out, forcing stop...");
             } catch (Exception e) {
                 System.err.println("Error during server shutdown: " + e.getMessage());
             } finally {
-                // Force stop the launcher/process
                 launcher.stop();
             }
         }
     }
 
-    /**
-     * Get the language server instance
-     */
     public LanguageServer getServer() {
         return server;
     }
