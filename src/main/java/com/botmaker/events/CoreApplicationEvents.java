@@ -87,7 +87,29 @@ public class CoreApplicationEvents {
         public String getText() { return text; }
     }
 
-    // --- NEW EVENTS ---
+    public static class UndoRequestedEvent extends AbstractApplicationEvent {
+        public UndoRequestedEvent() { super("User"); }
+    }
+
+    public static class RedoRequestedEvent extends AbstractApplicationEvent {
+        public RedoRequestedEvent() { super("User"); }
+    }
+
+    /**
+     * Fired whenever the history stack changes (to enable/disable UI buttons)
+     */
+    public static class HistoryStateChangedEvent extends AbstractApplicationEvent {
+        private final boolean canUndo;
+        private final boolean canRedo;
+
+        public HistoryStateChangedEvent(boolean canUndo, boolean canRedo) {
+            this.canUndo = canUndo;
+            this.canRedo = canRedo;
+        }
+
+        public boolean canUndo() { return canUndo; }
+        public boolean canRedo() { return canRedo; }
+    }
 
     /**
      * Fired when a user wants to step over the current line

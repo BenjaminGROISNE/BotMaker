@@ -1,5 +1,7 @@
 package com.botmaker.ui;
 
+import com.botmaker.events.CoreApplicationEvents;
+import com.botmaker.events.EventBus;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
@@ -19,7 +21,9 @@ public class MenuBarManager {
     private final MenuBar menuBar;
     private final Stage primaryStage;
     private Consumer<Void> onSelectProject;
-
+    private EventBus eventBus;
+    private MenuItem undoItem;
+    private MenuItem redoItem;
     public MenuBarManager(Stage primaryStage) {
         this.primaryStage = primaryStage;
         this.menuBar = new MenuBar();
@@ -95,14 +99,19 @@ public class MenuBarManager {
     private Menu createEditMenu() {
         Menu editMenu = new Menu("Edit");
 
-        // Placeholder items for future implementation
-        MenuItem undoItem = new MenuItem("Undo");
+        undoItem = new MenuItem("Undo");
         undoItem.setAccelerator(new KeyCodeCombination(KeyCode.Z, KeyCombination.CONTROL_DOWN));
-        undoItem.setDisable(true); // Not implemented yet
+        undoItem.setDisable(true);
+        undoItem.setOnAction(e -> {
+            if (eventBus != null) eventBus.publish(new CoreApplicationEvents.UndoRequestedEvent());
+        });
 
-        MenuItem redoItem = new MenuItem("Redo");
+        redoItem = new MenuItem("Redo");
         redoItem.setAccelerator(new KeyCodeCombination(KeyCode.Y, KeyCombination.CONTROL_DOWN));
-        redoItem.setDisable(true); // Not implemented yet
+        redoItem.setDisable(true);
+        redoItem.setOnAction(e -> {
+            if (eventBus != null) eventBus.publish(new CoreApplicationEvents.RedoRequestedEvent());
+        });
 
         SeparatorMenuItem separator = new SeparatorMenuItem();
 
@@ -165,6 +174,17 @@ public class MenuBarManager {
         );
 
         return viewMenu;
+    }
+
+
+    public void setEventBus(EventBus eventBus) {
+        this.eventBus = eventBus;
+        eventBus.subscribe(CoreApplicationEvents.HistoryStateChangedEvent.class, this::updateMenuState, true);
+    }
+
+    private void updateMenuState(CoreApplicationEvents.HistoryStateChangedEvent event) {
+        if (undoItem != null) undoItem.setDisable(!event.canUndo());
+        if (redoItem != null) redoItem.setDisable(!event.canRedo());
     }
 
     /**

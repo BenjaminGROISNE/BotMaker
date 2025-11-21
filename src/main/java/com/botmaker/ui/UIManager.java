@@ -5,8 +5,10 @@ import com.botmaker.events.CoreApplicationEvents;
 import com.botmaker.events.EventBus;
 import com.botmaker.lsp.CompletionContext;
 import com.botmaker.services.CodeEditorService;
+import com.botmaker.validation.DiagnosticsManager;
 import com.botmaker.validation.ErrorTranslator;
 import javafx.animation.PauseTransition;
+import javafx.application.Platform;
 import javafx.geometry.Insets;
 import javafx.geometry.Orientation;
 import javafx.scene.Node;
@@ -29,7 +31,7 @@ public class UIManager {
     private final BlockDragAndDropManager dragAndDropManager;
     private final EventBus eventBus;
     private final CodeEditorService codeEditorService;
-    private final com.botmaker.validation.DiagnosticsManager diagnosticsManager;
+    private final DiagnosticsManager diagnosticsManager;
     private final Stage primaryStage;
 
     private VBox blocksContainer;
@@ -48,6 +50,8 @@ public class UIManager {
     private Button stepOverButton; // Was Resume
     private Button continueButton; // New
     private Button stopDebugButton;
+    private Button undoButton;
+    private Button redoButton;
 
     public UIManager(BlockDragAndDropManager dragAndDropManager,
                      EventBus eventBus,
@@ -81,6 +85,14 @@ public class UIManager {
         eventBus.subscribe(CoreApplicationEvents.DebugSessionPausedEvent.class, event -> onDebuggerPaused(), true);
         eventBus.subscribe(CoreApplicationEvents.DebugSessionResumedEvent.class, event -> onDebuggerResumed(), true);
         eventBus.subscribe(CoreApplicationEvents.DebugSessionFinishedEvent.class, event -> onDebuggerFinished(), true);
+
+        // Enable/Disable buttons based on history availability
+        eventBus.subscribe(CoreApplicationEvents.HistoryStateChangedEvent.class, event -> {
+            Platform.runLater(() -> {
+                if (undoButton != null) undoButton.setDisable(!event.canUndo());
+                if (redoButton != null) redoButton.setDisable(!event.canRedo());
+            });
+        }, true);
     }
 
     private void handleBlocksUpdate(CoreApplicationEvents.UIBlocksUpdatedEvent event) {
@@ -108,6 +120,7 @@ public class UIManager {
     }
     public Scene createScene() {
         menuBarManager = new MenuBarManager(primaryStage);
+        menuBarManager.setEventBus(eventBus);
         menuBarManager.setOnSelectProject(v -> { if (onSelectProject != null) onSelectProject.accept(null); });
 
         blocksContainer = new VBox(10);
@@ -171,6 +184,16 @@ public class UIManager {
         HBox palette = createBlockPalette();
         palette.getStyleClass().add("palette");
 
+
+        // --- Create Buttons ---
+        undoButton = new Button("Undo");
+        undoButton.setDisable(true);
+        undoButton.setOnAction(e -> eventBus.publish(new CoreApplicationEvents.UndoRequestedEvent()));
+
+        redoButton = new Button("Redo");
+        redoButton.setDisable(true);
+        redoButton.setOnAction(e -> eventBus.publish(new CoreApplicationEvents.RedoRequestedEvent()));
+
         Button compileButton = new Button("Compile");
         compileButton.setOnAction(e -> eventBus.publish(new CoreApplicationEvents.CompilationRequestedEvent()));
 
@@ -200,7 +223,11 @@ public class UIManager {
         stopDebugButton.setStyle("-fx-text-fill: red;"); // Visual hint
         stopDebugButton.setOnAction(e -> eventBus.publish(new CoreApplicationEvents.DebugStopRequestedEvent()));
 
-        HBox buttonBox = new HBox(10, compileButton, runButton, debugButton, stepOverButton, continueButton,stopDebugButton);
+        HBox buttonBox = new HBox(10,
+                undoButton, redoButton,
+                new Separator(Orientation.VERTICAL),
+                compileButton, runButton, debugButton, stepOverButton, continueButton, stopDebugButton
+        );
 
         Button themeButton = new Button("Toggle Theme");
         HBox topBar = new HBox(10, themeButton);

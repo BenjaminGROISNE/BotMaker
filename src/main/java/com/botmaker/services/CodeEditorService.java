@@ -10,7 +10,9 @@ import com.botmaker.parser.AstRewriter;
 import com.botmaker.parser.BlockFactory;
 import com.botmaker.parser.CodeEditor;
 import com.botmaker.state.ApplicationState;
+import com.botmaker.state.HistoryManager;
 import com.botmaker.ui.BlockDragAndDropManager;
+import com.botmaker.validation.DiagnosticsManager;
 import javafx.application.Platform;
 
 public class CodeEditorService {
@@ -23,7 +25,9 @@ public class CodeEditorService {
     private final CodeEditor codeEditor;
     private final BlockDragAndDropManager dragAndDropManager;
     private final LanguageServerService languageServerService;
-    private final com.botmaker.validation.DiagnosticsManager diagnosticsManager;
+    private final DiagnosticsManager diagnosticsManager;
+    private final HistoryManager historyManager;
+    private boolean isRestoringHistory = false;
 
     public CodeEditorService(
             ApplicationConfig config,
@@ -33,7 +37,7 @@ public class CodeEditorService {
             AstRewriter astRewriter,
             BlockDragAndDropManager dragAndDropManager,
             LanguageServerService languageServerService,
-            com.botmaker.validation.DiagnosticsManager diagnosticsManager) {
+            DiagnosticsManager diagnosticsManager) {
 
         this.config = config;
         this.state = state;
@@ -43,7 +47,7 @@ public class CodeEditorService {
         this.dragAndDropManager = dragAndDropManager;
         this.languageServerService = languageServerService;
         this.diagnosticsManager = diagnosticsManager;
-
+        this.historyManager = new HistoryManager();
         this.codeEditor = new CodeEditor(state, eventBus, astRewriter, blockFactory);
 
         setupEventHandlers();
@@ -62,6 +66,56 @@ public class CodeEditorService {
                 this::handleBreakpointToggle,
                 false
         );
+
+        // 1. Record History on Code Updates
+        eventBus.subscribe(CoreApplicationEvents.CodeUpdatedEvent.class, this::handleCodeUpdateForHistory, false);
+
+        // 2. Handle Requests
+        eventBus.subscribe(CoreApplicationEvents.UndoRequestedEvent.class, e -> undo(), false);
+        eventBus.subscribe(CoreApplicationEvents.RedoRequestedEvent.class, e -> redo(), false);
+
+    }
+
+    // Called when block drag-drop or text edit happens
+    private void handleCodeUpdateForHistory(CoreApplicationEvents.CodeUpdatedEvent event) {
+        // If this update is triggered BY the undo button, don't record it again!
+        if (isRestoringHistory) return;
+
+        // Save the PREVIOUS code state before the update happened
+        String previousCode = event.getPreviousCode();
+        if (previousCode != null && !previousCode.isEmpty()) {
+            historyManager.pushState(previousCode);
+            broadcastHistoryState();
+        }
+    }
+
+    private void undo() {
+        if (!historyManager.canUndo()) return;
+        applyHistoryState(historyManager.undo(state.getCurrentCode()));
+    }
+
+    private void redo() {
+        if (!historyManager.canRedo()) return;
+        applyHistoryState(historyManager.redo(state.getCurrentCode()));
+    }
+
+    private void applyHistoryState(String code) {
+        isRestoringHistory = true; // Lock recording
+        try {
+            // This triggers the standard refresh flow (UI update, LSP sync, etc.)
+            // We fake a CodeUpdatedEvent so the LanguageServerService picks it up
+            eventBus.publish(new CoreApplicationEvents.CodeUpdatedEvent(code, state.getCurrentCode()));
+            broadcastHistoryState();
+        } finally {
+            isRestoringHistory = false; // Unlock
+        }
+    }
+
+    private void broadcastHistoryState() {
+        eventBus.publish(new CoreApplicationEvents.HistoryStateChangedEvent(
+                historyManager.canUndo(),
+                historyManager.canRedo()
+        ));
     }
 
     private void handleBreakpointToggle(CoreApplicationEvents.BreakpointToggledEvent event) {
@@ -74,6 +128,8 @@ public class CodeEditorService {
 
     public void loadInitialCode() {
         String currentCode = state.getCurrentCode();
+        historyManager.clear();
+        broadcastHistoryState();
         Platform.runLater(() -> refreshUI(currentCode));
     }
 
