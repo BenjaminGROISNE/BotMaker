@@ -12,10 +12,7 @@ import javafx.scene.control.MenuItem;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.Priority;
-import org.eclipse.jdt.core.dom.Assignment;
-import org.eclipse.jdt.core.dom.ExpressionStatement;
-import org.eclipse.jdt.core.dom.PostfixExpression;
-import org.eclipse.jdt.core.dom.PrefixExpression;
+import org.eclipse.jdt.core.dom.*;
 
 public class AssignmentBlock extends AbstractStatementBlock {
 
@@ -96,8 +93,13 @@ public class AssignmentBlock extends AbstractStatementBlock {
             if (newOperator != null && !newOperator.equals(this.operator)) {
                 this.operator = newOperator;
 
-                // THE FIX: Actually write to file
-                context.codeEditor().updateAssignmentOperator(this.astNode, newOperator);
+                // FIX: Extract the inner Expression from the ExpressionStatement wrapper
+                // The astNode field holds the statement (e.g., "i++;"), but the CodeEditor
+                // expects the expression (e.g., "i++" or "a = b") to determine the node type.
+                if (this.astNode instanceof ExpressionStatement) {
+                    Expression expr = ((ExpressionStatement) this.astNode).getExpression();
+                    context.codeEditor().updateAssignmentOperator(expr, newOperator);
+                }
             }
         });
 
@@ -122,7 +124,7 @@ public class AssignmentBlock extends AbstractStatementBlock {
 
         Button deleteButton = new Button("X");
         deleteButton.setOnAction(e -> {
-            context.codeEditor().deleteStatement((org.eclipse.jdt.core.dom.Statement) this.astNode);
+            context.codeEditor().deleteStatement((Statement) this.astNode);
         });
 
         container.getChildren().addAll(spacer, deleteButton);
@@ -137,7 +139,7 @@ public class AssignmentBlock extends AbstractStatementBlock {
             MenuItem menuItem = new MenuItem(type.getDisplayName());
             menuItem.setOnAction(e -> {
                 if (rightHandSide != null) {
-                    org.eclipse.jdt.core.dom.Expression toReplace = (org.eclipse.jdt.core.dom.Expression) rightHandSide.getAstNode();
+                    Expression toReplace = (Expression) rightHandSide.getAstNode();
                     context.codeEditor().replaceExpression(toReplace, type);
                 }
             });

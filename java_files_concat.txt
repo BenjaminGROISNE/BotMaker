@@ -95,9 +95,13 @@ public class AssignmentBlock extends AbstractStatementBlock {
         operatorSelector.setOnAction(e -> {
             String selectedName = operatorSelector.getValue();
             String newOperator = getOperatorSymbol(selectedName);
-            if (newOperator != null && !newOperator.equals(operator)) {
+
+            // Only update if it actually changed
+            if (newOperator != null && !newOperator.equals(this.operator)) {
                 this.operator = newOperator;
-                System.out.println("Operator changed to: " + newOperator);
+
+                // THE FIX: Actually write to file
+                context.codeEditor().updateAssignmentOperator(this.astNode, newOperator);
             }
         });
 
@@ -1385,6 +1389,10 @@ public class ListBlock extends AbstractExpressionBlock {
 
     public ListBlock(String id, ArrayInitializer astNode) {
         super(id, astNode);
+        for (Object expr : astNode.expressions()) {
+            // The BlockFactory handles the recursive creation of children,
+            // we just hold the references.
+        }
     }
 
     public List<ExpressionBlock> getElements() {
@@ -1404,17 +1412,29 @@ public class ListBlock extends AbstractExpressionBlock {
         VBox container = new VBox(5);
         container.setAlignment(Pos.TOP_LEFT);
         container.getStyleClass().add("list-block");
-        container.setPadding(new Insets(8, 12, 8, 12));
+
+        // Add padding and a slight background diff for nested lists
+        // (You should add .nested-list to your CSS, or we use inline style for now)
+        if (this.astNode.getParent() instanceof ArrayInitializer) {
+            container.setStyle("-fx-background-color: rgba(255,255,255,0.1); -fx-background-radius: 4; -fx-border-color: rgba(255,255,255,0.2); -fx-border-width: 1;");
+            container.setPadding(new Insets(4, 8, 4, 8));
+        } else {
+            container.setPadding(new Insets(8, 12, 8, 12));
+        }
 
         // Header row: "List [...]" label + Add button
         HBox headerRow = new HBox(8);
         headerRow.setAlignment(Pos.CENTER_LEFT);
 
-        Label listLabel = new Label("List [" + elements.size() + " items]");
+        // Determine depth/context for label
+        String labelText = (this.astNode.getParent() instanceof ArrayInitializer) ? "Sub-List" : "List";
+        Label listLabel = new Label(labelText + " [" + elements.size() + "]");
         listLabel.getStyleClass().add("list-label");
 
-        Button addButton = new Button("+ Add Item");
+        Button addButton = new Button("+");
         addButton.getStyleClass().add("expression-add-button");
+        // Compact the button slightly for nested views
+        addButton.setStyle("-fx-font-size: 10px; -fx-padding: 2px 6px;");
         addButton.setOnAction(e -> showAddElementMenu(addButton, context, elements.size()));
 
         headerRow.getChildren().addAll(listLabel, addButton);
@@ -1422,12 +1442,12 @@ public class ListBlock extends AbstractExpressionBlock {
 
         // Display each element with controls
         if (elements.isEmpty()) {
-            Label emptyLabel = new Label("(empty list)");
-            emptyLabel.setStyle("-fx-font-style: italic; -fx-text-fill: rgba(255,255,255,0.6);");
+            Label emptyLabel = new Label("(empty)");
+            emptyLabel.setStyle("-fx-font-style: italic; -fx-text-fill: rgba(255,255,255,0.6); -fx-font-size: 10px;");
             container.getChildren().add(emptyLabel);
         } else {
-            VBox elementsContainer = new VBox(5);
-            elementsContainer.setPadding(new Insets(5, 0, 0, 10));
+            VBox elementsContainer = new VBox(2); // Tighter spacing
+            elementsContainer.setPadding(new Insets(2, 0, 0, 10)); // Indent content
 
             for (int i = 0; i < elements.size(); i++) {
                 HBox elementRow = createElementRow(i, elements.get(i), context);
@@ -1440,42 +1460,52 @@ public class ListBlock extends AbstractExpressionBlock {
         return container;
     }
 
-    /**
-     * Creates a row for a single list element with controls
-     */
     private HBox createElementRow(int index, ExpressionBlock element, CompletionContext context) {
-        HBox row = new HBox(8);
+        HBox row = new HBox(5);
         row.setAlignment(Pos.CENTER_LEFT);
 
         // Index label
-        Label indexLabel = new Label("[" + index + "]");
-        indexLabel.setStyle("-fx-font-weight: bold; -fx-text-fill: white; -fx-min-width: 30px;");
+        Label indexLabel = new Label(String.valueOf(index));
+        indexLabel.setStyle("-fx-font-family: monospace; -fx-text-fill: #888; -fx-min-width: 15px; -fx-font-size: 10px;");
 
         // Element display
         Node elementNode = element.getUINode(context);
 
-        // Change button (replace with different expression)
+        // Logic to handle nested UI resizing
+        if (element instanceof ListBlock) {
+            // Allow nested list to expand
+            HBox.setHgrow(elementNode, javafx.scene.layout.Priority.ALWAYS);
+        }
+
+        // Change button
         Button changeButton = new Button("↻");
-        changeButton.setStyle("-fx-font-size: 10px; -fx-padding: 2px 6px;");
+        changeButton.getStyleClass().add("icon-button");
+        changeButton.setStyle("-fx-font-size: 9px; -fx-padding: 1px 4px; -fx-opacity: 0.6;");
         changeButton.setOnAction(e -> showChangeElementMenu(changeButton, context, index));
 
         // Delete button
         Button deleteButton = new Button("✕");
-        deleteButton.setStyle("-fx-font-size: 10px; -fx-padding: 2px 6px; -fx-text-fill: #E74C3C;");
+        deleteButton.getStyleClass().add("icon-button");
+        deleteButton.setStyle("-fx-font-size: 9px; -fx-padding: 1px 4px; -fx-text-fill: #E74C3C; -fx-opacity: 0.6;");
         deleteButton.setOnAction(e -> deleteElement(index, context));
 
-        // Insert before button (optional, for reordering)
-        Button insertButton = new Button("+ Insert");
-        insertButton.setStyle("-fx-font-size: 10px; -fx-padding: 2px 6px;");
-        insertButton.setOnAction(e -> showAddElementMenu(insertButton, context, index));
+        // Hover effects for buttons
+        row.setOnMouseEntered(e -> {
+            changeButton.setStyle("-fx-font-size: 9px; -fx-padding: 1px 4px; -fx-opacity: 1.0;");
+            deleteButton.setStyle("-fx-font-size: 9px; -fx-padding: 1px 4px; -fx-text-fill: #E74C3C; -fx-opacity: 1.0;");
+        });
+        row.setOnMouseExited(e -> {
+            changeButton.setStyle("-fx-font-size: 9px; -fx-padding: 1px 4px; -fx-opacity: 0.6;");
+            deleteButton.setStyle("-fx-font-size: 9px; -fx-padding: 1px 4px; -fx-text-fill: #E74C3C; -fx-opacity: 0.6;");
+        });
 
-        row.getChildren().addAll(indexLabel, elementNode, changeButton, insertButton, deleteButton);
+        row.getChildren().addAll(indexLabel, elementNode, changeButton, deleteButton);
         return row;
     }
 
-    /**
-     * Shows menu to add a new element at the specified index
-     */
+    // ... (Rest of methods: showAddElementMenu, showChangeElementMenu, deleteElement, getDetails remain the same)
+    // Ensure AddableExpression.values() now includes LIST, so the menu automatically picks it up.
+
     private void showAddElementMenu(Button button, CompletionContext context, int insertIndex) {
         ContextMenu menu = new ContextMenu();
 
@@ -1490,13 +1520,9 @@ public class ListBlock extends AbstractExpressionBlock {
             });
             menu.getItems().add(menuItem);
         }
-
         menu.show(button, javafx.geometry.Side.BOTTOM, 0, 0);
     }
 
-    /**
-     * Shows menu to change an existing element
-     */
     private void showChangeElementMenu(Button button, CompletionContext context, int elementIndex) {
         ContextMenu menu = new ContextMenu();
 
@@ -1513,13 +1539,9 @@ public class ListBlock extends AbstractExpressionBlock {
             });
             menu.getItems().add(menuItem);
         }
-
         menu.show(button, javafx.geometry.Side.BOTTOM, 0, 0);
     }
 
-    /**
-     * Deletes an element from the list
-     */
     private void deleteElement(int index, CompletionContext context) {
         if (index >= 0 && index < elements.size()) {
             context.codeEditor().deleteElementFromArrayInitializer(
@@ -1531,7 +1553,7 @@ public class ListBlock extends AbstractExpressionBlock {
 
     @Override
     public String getDetails() {
-        return "List with " + elements.size() + " elements";
+        return "List (" + elements.size() + ")";
     }
 }
 
@@ -2084,18 +2106,15 @@ import com.botmaker.core.AbstractStatementBlock;
 import com.botmaker.core.ExpressionBlock;
 import com.botmaker.lsp.CompletionContext;
 import com.botmaker.util.TypeManager;
-import javafx.application.Platform;
 import javafx.geometry.Pos;
 import javafx.scene.Cursor;
 import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.Priority;
 import org.eclipse.jdt.core.dom.Type;
 import org.eclipse.jdt.core.dom.VariableDeclarationFragment;
 import org.eclipse.jdt.core.dom.VariableDeclarationStatement;
-import org.eclipse.lsp4j.*;
-
-import java.util.List;
 
 public class VariableDeclarationBlock extends AbstractStatementBlock {
 
@@ -2111,26 +2130,9 @@ public class VariableDeclarationBlock extends AbstractStatementBlock {
         this.initializer = null;
     }
 
-    public String getVariableName() {
-        return variableName;
-    }
-
-    public Type getVariableType() {
-        return variableType;
-    }
-
-    public ExpressionBlock getInitializer() {
-        return initializer;
-    }
-
     public void setInitializer(ExpressionBlock initializer) {
         this.initializer = initializer;
     }
-
-    // ENHANCEMENT for VariableDeclarationBlock.java
-
-// In the createUINode method, after displaying the type and name,
-// check if initializer is an ArrayInitializer and display it specially:
 
     @Override
     protected Node createUINode(CompletionContext context) {
@@ -2138,68 +2140,123 @@ public class VariableDeclarationBlock extends AbstractStatementBlock {
         container.setAlignment(Pos.CENTER_LEFT);
         container.getStyleClass().add("variable-declaration-block");
 
-        // Type label
+        // --- TYPE SELECTOR ---
         Label typeLabel = new Label(getDisplayTypeName(variableType));
         typeLabel.getStyleClass().add("type-label");
         typeLabel.setCursor(Cursor.HAND);
-        typeLabel.setOnMouseClicked(e -> requestTypeSuggestions(typeLabel, context));
+
+        Tooltip tooltip = new Tooltip("Click to change type (List/Base)");
+        Tooltip.install(typeLabel, tooltip);
+
+        typeLabel.setOnMouseClicked(e -> showTypeMenu(typeLabel, context));
         container.getChildren().add(typeLabel);
 
-        // Name field
+        // --- NAME FIELD ---
         TextField nameField = new TextField(variableName);
+        nameField.getStyleClass().add("variable-name-field");
+        nameField.setPrefWidth(100);
         nameField.focusedProperty().addListener((obs, oldVal, newVal) -> {
             if (!newVal) {
                 String newName = nameField.getText();
                 VariableDeclarationFragment fragment = (VariableDeclarationFragment) ((VariableDeclarationStatement) this.astNode).fragments().get(0);
                 String currentName = fragment.getName().getIdentifier();
 
-                if (!newName.equals(currentName)) {
+                if (!newName.equals(currentName) && !newName.isEmpty()) {
                     context.codeEditor().replaceSimpleName(fragment.getName(), newName);
                 }
             }
         });
         container.getChildren().add(nameField);
 
+        // --- EQUALS ---
         Label equalsLabel = new Label("=");
         equalsLabel.getStyleClass().add("keyword-label");
         container.getChildren().add(equalsLabel);
 
-        // Initializer display
+        // --- INITIALIZER ---
         if (initializer != null) {
-            // Check if it's a list/array initializer
             if (initializer.getAstNode() instanceof org.eclipse.jdt.core.dom.ArrayInitializer) {
-                // Display list specially
-                HBox listDisplay = createListDisplay(context);
-                container.getChildren().add(listDisplay);
+                container.getChildren().add(createListDisplay(context));
             } else {
-                // Normal expression
                 container.getChildren().add(initializer.getUINode(context));
             }
         } else {
             container.getChildren().add(createExpressionDropZone(context));
         }
 
-        // + Button for changing initializer expression
+        // --- ADD BUTTON ---
         Button addButton = new Button("+");
         addButton.getStyleClass().add("expression-add-button");
         addButton.setOnAction(e -> showExpressionMenu(addButton, context));
         container.getChildren().add(addButton);
 
-        // Delete button
-        javafx.scene.control.Button deleteButton = new javafx.scene.control.Button("X");
+        // --- SPACER & DELETE ---
+        javafx.scene.layout.Pane spacer = new javafx.scene.layout.Pane();
+        HBox.setHgrow(spacer, Priority.ALWAYS);
+
+        Button deleteButton = new Button("X");
         deleteButton.setOnAction(e -> {
             context.codeEditor().deleteStatement((org.eclipse.jdt.core.dom.Statement) this.astNode);
         });
-
-        javafx.scene.layout.Pane spacer = new javafx.scene.layout.Pane();
-        HBox.setHgrow(spacer, javafx.scene.layout.Priority.ALWAYS);
 
         container.getChildren().addAll(spacer, deleteButton);
 
         return container;
     }
 
-    // Helper method to display list nicely
+    private void showTypeMenu(Node anchor, CompletionContext context) {
+        ContextMenu menu = new ContextMenu();
+
+        String currentStr = variableType.toString();
+        boolean isArray = variableType.isArrayType();
+        String baseType = isArray ? currentStr.replace("[]", "") : currentStr;
+
+        // 1. Option to toggle List status
+        MenuItem toggleList = new MenuItem(isArray ? "Convert to Single Value" : "Convert to List");
+        toggleList.setStyle("-fx-font-weight: bold;");
+        toggleList.setOnAction(e -> {
+            String newType;
+            if (isArray) {
+                // Remove one level of array (int[][] -> int[])
+                int lastIndex = currentStr.lastIndexOf("[]");
+                newType = currentStr.substring(0, lastIndex);
+            } else {
+                // Add array level
+                newType = currentStr + "[]";
+            }
+            context.codeEditor().replaceVariableType((VariableDeclarationStatement) this.astNode, newType);
+        });
+        menu.getItems().add(toggleList);
+
+        // Option for nested list if already a list
+        if (isArray) {
+            MenuItem makeNested = new MenuItem("Make List of Lists");
+            makeNested.setOnAction(e -> {
+                String newType = currentStr + "[]";
+                context.codeEditor().replaceVariableType((VariableDeclarationStatement) this.astNode, newType);
+            });
+            menu.getItems().add(makeNested);
+        }
+
+        menu.getItems().add(new SeparatorMenuItem());
+
+        // 2. Change Base Type
+        Menu changeBaseMenu = new Menu("Change Base Type");
+        for (String type : TypeManager.getFundamentalTypeNames()) {
+            MenuItem item = new MenuItem(type);
+            item.setOnAction(e -> {
+                // Preserve array dimensions, just change base
+                String dims = currentStr.substring(currentStr.indexOf(baseType) + baseType.length());
+                String newType = type + dims;
+                context.codeEditor().replaceVariableType((VariableDeclarationStatement) this.astNode, newType);
+            });
+            changeBaseMenu.getItems().add(item);
+        }
+        menu.getItems().add(changeBaseMenu);
+
+        menu.show(anchor, javafx.geometry.Side.BOTTOM, 0, 0);
+    }
+
     private HBox createListDisplay(CompletionContext context) {
         HBox listBox = new HBox(3);
         listBox.setAlignment(Pos.CENTER_LEFT);
@@ -2209,12 +2266,11 @@ public class VariableDeclarationBlock extends AbstractStatementBlock {
         openBracket.setStyle("-fx-font-weight: bold; -fx-font-size: 14px;");
         listBox.getChildren().add(openBracket);
 
-        // Show "empty" or element count
         if (initializer instanceof ListBlock) {
             ListBlock listBlock = (ListBlock) initializer;
             if (listBlock.getElements().isEmpty()) {
                 Label emptyLabel = new Label("empty");
-                emptyLabel.setStyle("-fx-font-style: italic; -fx-text-fill: #999;");
+                emptyLabel.setStyle("-fx-font-style: italic; -fx-text-fill: #999; -fx-font-size: 10px;");
                 listBox.getChildren().add(emptyLabel);
             } else {
                 Label countLabel = new Label(listBlock.getElements().size() + " items");
@@ -2222,7 +2278,6 @@ public class VariableDeclarationBlock extends AbstractStatementBlock {
                 listBox.getChildren().add(countLabel);
             }
         } else {
-            // Fallback: just show the initializer
             listBox.getChildren().add(initializer.getUINode(context));
         }
 
@@ -2233,112 +2288,31 @@ public class VariableDeclarationBlock extends AbstractStatementBlock {
         return listBox;
     }
 
-    // Helper to get friendly type name
     private String getDisplayTypeName(Type type) {
         String typeName = type.toString();
-
-        // Handle arrays
         if (typeName.endsWith("[]")) {
-            String baseType = typeName.substring(0, typeName.length() - 2);
-            switch (baseType) {
-                case "int": return "int list";
-                case "double": return "double list";
-                case "String": return "text list";
-                case "boolean": return "boolean list";
-                default: return typeName;
-            }
+            // Convert "int[][]" to "int list list" for display, or keep symbols
+            // Keeping symbols is often clearer for nested lists
+            return typeName.replace("[]", " list");
         }
-
         return typeName;
     }
 
     private void showExpressionMenu(Button button, CompletionContext context) {
         ContextMenu menu = new ContextMenu();
-
         for (com.botmaker.ui.AddableExpression type : com.botmaker.ui.AddableExpression.values()) {
             MenuItem menuItem = new MenuItem(type.getDisplayName());
             menuItem.setOnAction(e -> {
                 if (initializer != null) {
-                    org.eclipse.jdt.core.dom.Expression toReplace = (org.eclipse.jdt.core.dom.Expression) initializer.getAstNode();
-                    context.codeEditor().replaceExpression(toReplace, type);
+                    context.codeEditor().replaceExpression(
+                            (org.eclipse.jdt.core.dom.Expression) initializer.getAstNode(),
+                            type
+                    );
                 }
             });
             menu.getItems().add(menuItem);
         }
-
         menu.show(button, javafx.geometry.Side.BOTTOM, 0, 0);
-    }
-
-    private void requestTypeSuggestions(Node uiNode, CompletionContext context) {
-        try {
-            Position pos = getPositionFromOffset(context.sourceCode(), this.variableType.getStartPosition());
-            CompletionParams params = new CompletionParams(new TextDocumentIdentifier(context.docUri()), pos);
-
-            context.server().getTextDocumentService().completion(params).thenAccept(result -> {
-                Platform.runLater(() -> {
-                    ContextMenu menu = new ContextMenu();
-
-                    for (String typeName : TypeManager.getFundamentalTypeNames()) {
-                        CompletionItem dummyItem = new CompletionItem(typeName);
-                        MenuItem mi = new MenuItem(typeName);
-                        mi.setOnAction(event -> applyTypeSuggestion(dummyItem, context));
-                        menu.getItems().add(mi);
-                    }
-                    menu.getItems().add(new SeparatorMenuItem());
-
-                    if (result != null && (result.isRight() || (result.isLeft() && !result.getLeft().isEmpty()))) {
-                        List<CompletionItem> items = result.isLeft() ? result.getLeft() : result.getRight().getItems();
-                        for (CompletionItem item : items) {
-                            CompletionItemKind kind = item.getKind();
-                            if (kind == CompletionItemKind.Class || kind == CompletionItemKind.Interface) {
-                                if (TypeManager.getFundamentalTypeNames().contains(item.getLabel())) continue;
-
-                                MenuItem mi = new MenuItem(item.getLabel());
-                                mi.setOnAction(event -> applyTypeSuggestion(item, context));
-                                menu.getItems().add(mi);
-                            }
-                        }
-                    }
-                    menu.show(uiNode, javafx.geometry.Side.BOTTOM, 0, 0);
-                });
-            });
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
-    private void applyTypeSuggestion(CompletionItem item, CompletionContext context) {
-        try {
-            String newTypeName = item.getInsertText() != null ? item.getInsertText() : item.getLabel();
-            context.codeEditor().replaceVariableType((VariableDeclarationStatement) this.astNode, newTypeName);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
-    private Position getPositionFromOffset(String code, int offset) {
-        int line = 0;
-        int lastNewline = -1;
-        if (offset == 0) {
-            return new Position(0, 0);
-        }
-        for (int i = 0; i < offset; i++) {
-            if (i >= code.length()) {
-                return new Position(line, i - lastNewline - 1);
-            }
-            if (code.charAt(i) == '\n') {
-                line++;
-                lastNewline = i;
-            }
-        }
-        int character = offset - lastNewline - 1;
-        return new Position(line, character);
-    }
-
-    @Override
-    public String getDetails() {
-        String initializerText = initializer != null ? " = ..." : "";
-        return "Variable Declaration: " + variableType.toString() + " " + variableName + initializerText;
     }
 }
 
@@ -4291,9 +4265,9 @@ import com.botmaker.ui.AddableBlock;
 import com.botmaker.ui.AddableExpression;
 import com.botmaker.util.DefaultNames;
 import com.botmaker.util.TypeManager;
+
 import org.eclipse.jdt.core.dom.*;
-import org.eclipse.jdt.core.dom.rewrite.ASTRewrite;
-import org.eclipse.jdt.core.dom.rewrite.ListRewrite;
+import org.eclipse.jdt.core.dom.rewrite.*;
 import org.eclipse.jface.text.Document;
 import org.eclipse.jface.text.IDocument;
 import org.eclipse.text.edits.TextEdit;
@@ -4613,6 +4587,9 @@ public class AstRewriter {
             case VARIABLE:
                 return ast.newSimpleName(DefaultNames.DEFAULT_VARIABLE);
 
+            // NEW: Handle Sub-List creation
+            case LIST:
+                return ast.newArrayInitializer();
 
             case ADD:
             case SUBTRACT:
@@ -4698,14 +4675,13 @@ public class AstRewriter {
                 varDecl.setType(TypeManager.createTypeNode(ast, "String"));
                 return varDecl;
             }
-            case DECLARE_INT_ARRAY: {
+            case DECLARE_ARRAY: {
                 VariableDeclarationFragment fragment = ast.newVariableDeclarationFragment();
-                fragment.setName(ast.newSimpleName("numbers"));
+                fragment.setName(ast.newSimpleName("myList"));
 
-                // Create empty array initializer: new int[]{0, 0, 0}
+                // Default to int[]
                 ArrayInitializer initializer = ast.newArrayInitializer();
-                initializer.expressions().add(ast.newNumberLiteral("0"));
-                initializer.expressions().add(ast.newNumberLiteral("0"));
+                // Add one dummy element so it's visible
                 initializer.expressions().add(ast.newNumberLiteral("0"));
 
                 ArrayCreation arrayCreation = ast.newArrayCreation();
@@ -4716,53 +4692,6 @@ public class AstRewriter {
 
                 VariableDeclarationStatement varDecl = ast.newVariableDeclarationStatement(fragment);
                 varDecl.setType(ast.newArrayType(ast.newPrimitiveType(PrimitiveType.INT)));
-                return varDecl;
-            }
-
-            case DECLARE_DOUBLE_ARRAY: {
-                VariableDeclarationFragment fragment = ast.newVariableDeclarationFragment();
-                fragment.setName(ast.newSimpleName("decimals"));
-
-                ArrayInitializer initializer = ast.newArrayInitializer();
-                initializer.expressions().add(ast.newNumberLiteral("0.0"));
-                initializer.expressions().add(ast.newNumberLiteral("0.0"));
-                initializer.expressions().add(ast.newNumberLiteral("0.0"));
-
-                ArrayCreation arrayCreation = ast.newArrayCreation();
-                arrayCreation.setType(ast.newArrayType(ast.newPrimitiveType(PrimitiveType.DOUBLE)));
-                arrayCreation.setInitializer(initializer);
-
-                fragment.setInitializer(arrayCreation);
-
-                VariableDeclarationStatement varDecl = ast.newVariableDeclarationStatement(fragment);
-                varDecl.setType(ast.newArrayType(ast.newPrimitiveType(PrimitiveType.DOUBLE)));
-                return varDecl;
-            }
-
-            case DECLARE_STRING_ARRAY: {
-                VariableDeclarationFragment fragment = ast.newVariableDeclarationFragment();
-                fragment.setName(ast.newSimpleName("words"));
-
-                ArrayInitializer initializer = ast.newArrayInitializer();
-                StringLiteral str1 = ast.newStringLiteral();
-                str1.setLiteralValue("item1");
-                StringLiteral str2 = ast.newStringLiteral();
-                str2.setLiteralValue("item2");
-                StringLiteral str3 = ast.newStringLiteral();
-                str3.setLiteralValue("item3");
-
-                initializer.expressions().add(str1);
-                initializer.expressions().add(str2);
-                initializer.expressions().add(str3);
-
-                ArrayCreation arrayCreation = ast.newArrayCreation();
-                arrayCreation.setType(ast.newArrayType(TypeManager.createTypeNode(ast, "String")));
-                arrayCreation.setInitializer(initializer);
-
-                fragment.setInitializer(arrayCreation);
-
-                VariableDeclarationStatement varDecl = ast.newVariableDeclarationStatement(fragment);
-                varDecl.setType(ast.newArrayType(TypeManager.createTypeNode(ast, "String")));
                 return varDecl;
             }
             case IF:
@@ -4946,7 +4875,7 @@ public class AstRewriter {
     public String addElementToArrayInitializer(
             CompilationUnit cu,
             String originalCode,
-            org.eclipse.jdt.core.dom.ArrayInitializer arrayInit,
+            ArrayInitializer arrayInit,
             com.botmaker.ui.AddableExpression type,
             int insertIndex) {
 
@@ -4962,7 +4891,7 @@ public class AstRewriter {
         // Use ListRewrite to insert the element
         ListRewrite listRewrite = rewriter.getListRewrite(
                 arrayInit,
-                org.eclipse.jdt.core.dom.ArrayInitializer.EXPRESSIONS_PROPERTY
+                ArrayInitializer.EXPRESSIONS_PROPERTY
         );
 
         listRewrite.insertAt(newElement, insertIndex, null);
@@ -4976,7 +4905,7 @@ public class AstRewriter {
     public String deleteElementFromArrayInitializer(
             CompilationUnit cu,
             String originalCode,
-            org.eclipse.jdt.core.dom.ArrayInitializer arrayInit,
+            ArrayInitializer arrayInit,
             int elementIndex) {
 
         AST ast = cu.getAST();
@@ -4995,7 +4924,7 @@ public class AstRewriter {
         // Use ListRewrite to remove the element
         ListRewrite listRewrite = rewriter.getListRewrite(
                 arrayInit,
-                org.eclipse.jdt.core.dom.ArrayInitializer.EXPRESSIONS_PROPERTY
+                ArrayInitializer.EXPRESSIONS_PROPERTY
         );
 
         listRewrite.remove(toRemove, null);
@@ -5028,7 +4957,78 @@ public class AstRewriter {
                 return ast.newNullLiteral();
         }
     }
+// [Inside AstRewriter class]
 
+    public String replaceAssignmentOperator(CompilationUnit cu, String originalCode, Assignment assignment, Assignment.Operator newOp) {
+        AST ast = cu.getAST();
+        ASTRewrite rewriter = ASTRewrite.create(ast);
+
+        // Create a new assignment with the same operands but new operator
+        Assignment newAssignment = ast.newAssignment();
+        newAssignment.setLeftHandSide((Expression)
+                ASTNode.copySubtree(ast, assignment.getLeftHandSide()));
+        newAssignment.setRightHandSide((Expression)
+                ASTNode.copySubtree(ast, assignment.getRightHandSide()));
+        newAssignment.setOperator(newOp);
+
+        rewriter.replace(assignment, newAssignment, null);
+
+        org.eclipse.jface.text.IDocument document = new org.eclipse.jface.text.Document(originalCode);
+        try {
+            org.eclipse.text.edits.TextEdit edits = rewriter.rewriteAST(document, null);
+            edits.apply(document);
+            return document.get();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return originalCode;
+        }
+    }
+
+    // Also handle Prefix expressions (++ / --)
+    public String replacePrefixOperator(CompilationUnit cu, String originalCode, PrefixExpression prefix, PrefixExpression.Operator newOp) {
+        AST ast = cu.getAST();
+        ASTRewrite rewriter = ASTRewrite.create(ast);
+
+        PrefixExpression newPrefix = ast.newPrefixExpression();
+        newPrefix.setOperand((Expression)
+                ASTNode.copySubtree(ast, prefix.getOperand()));
+        newPrefix.setOperator(newOp);
+
+        rewriter.replace(prefix, newPrefix, null);
+
+        org.eclipse.jface.text.IDocument document = new org.eclipse.jface.text.Document(originalCode);
+        try {
+            org.eclipse.text.edits.TextEdit edits = rewriter.rewriteAST(document, null);
+            edits.apply(document);
+            return document.get();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return originalCode;
+        }
+    }
+
+    // Also handle Postfix expressions (variable++ / variable--)
+    public String replacePostfixOperator(CompilationUnit cu, String originalCode, PostfixExpression postfix, PostfixExpression.Operator newOp) {
+        AST ast = cu.getAST();
+        ASTRewrite rewriter = ASTRewrite.create(ast);
+
+        PostfixExpression newPostfix = ast.newPostfixExpression();
+        newPostfix.setOperand((Expression)
+                ASTNode.copySubtree(ast, postfix.getOperand()));
+        newPostfix.setOperator(newOp);
+
+        rewriter.replace(postfix, newPostfix, null);
+
+        org.eclipse.jface.text.IDocument document = new org.eclipse.jface.text.Document(originalCode);
+        try {
+            org.eclipse.text.edits.TextEdit edits = rewriter.rewriteAST(document, null);
+            edits.apply(document);
+            return document.get();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return originalCode;
+        }
+    }
     public String replaceVariableType(CompilationUnit cu, String originalCode, VariableDeclarationStatement varDecl, String newTypeName) {
         AST ast = cu.getAST();
         ASTRewrite rewriter = ASTRewrite.create(ast);
@@ -5039,9 +5039,41 @@ public class AstRewriter {
         if (!varDecl.fragments().isEmpty()) {
             VariableDeclarationFragment fragment = (VariableDeclarationFragment) varDecl.fragments().get(0);
             Expression currentInitializer = fragment.getInitializer();
-            Expression newInitializer = createDefaultInitializer(ast, newTypeName);
 
-            if (currentInitializer != null && newInitializer != null) {
+            boolean isNewTypeArray = newTypeName.endsWith("[]");
+            boolean isCurrentTypeArray = currentInitializer instanceof ArrayCreation || currentInitializer instanceof ArrayInitializer;
+
+            Expression newInitializer = null;
+
+            if (isNewTypeArray) {
+                if (!isCurrentTypeArray) {
+                    // Switching Primitive -> Array: Create new empty array
+                    ArrayCreation creation = ast.newArrayCreation();
+                    // We need the element type for 'new int[]' part.
+                    // Rough logic: strip one pair of [] for the creation type
+                    String elementTypeName = newTypeName.substring(0, newTypeName.lastIndexOf("[]"));
+                    creation.setType((ArrayType) TypeManager.createTypeNode(ast, newTypeName));
+                    creation.setInitializer(ast.newArrayInitializer());
+                    newInitializer = creation;
+                } else {
+                    // Array -> Array (e.g. int[] to String[]): Keep structure, but types might mismatch.
+                    // Ideally we walk the tree, but for stability, let's reset to empty array
+                    // or just update the type part of ArrayCreation if it exists.
+                    if (currentInitializer instanceof ArrayCreation) {
+                        ArrayCreation oldAc = (ArrayCreation) currentInitializer;
+                        ArrayCreation newAc = ast.newArrayCreation();
+                        newAc.setType((ArrayType) TypeManager.createTypeNode(ast, newTypeName));
+                        // Preserve elements if possible? Complex. Let's reset to empty for safety.
+                        newAc.setInitializer(ast.newArrayInitializer());
+                        newInitializer = newAc;
+                    }
+                }
+            } else {
+                // Switching Array -> Primitive
+                newInitializer = createDefaultInitializer(ast, newTypeName);
+            }
+
+            if (newInitializer != null) {
                 rewriter.replace(currentInitializer, newInitializer, null);
             }
         }
@@ -5735,8 +5767,6 @@ import com.botmaker.core.BodyBlock;
 import com.botmaker.core.StatementBlock;
 import com.botmaker.events.CoreApplicationEvents;
 import com.botmaker.events.EventBus;
-import com.botmaker.parser.AstRewriter;
-import com.botmaker.parser.BlockFactory;
 import com.botmaker.ui.AddableBlock;
 import org.eclipse.jdt.core.dom.*;
 
@@ -5768,13 +5798,6 @@ public class CodeEditor {
         eventBus.publish(new CoreApplicationEvents.CodeUpdatedEvent(newCode, previousCode));
     }
 
-    /**
-     * Moves an existing statement block to a new position.
-     * @param blockToMove The statement block to move
-     * @param sourceBody The body containing the block
-     * @param targetBody The body where the block should be moved
-     * @param targetIndex The index where the block should be inserted
-     */
     public void moveStatement(StatementBlock blockToMove, BodyBlock sourceBody,
                               BodyBlock targetBody, int targetIndex) {
         String newCode = astRewriter.moveStatement(
@@ -5814,6 +5837,7 @@ public class CodeEditor {
         );
         triggerUpdate(newCode);
     }
+
     public void addElementToArrayInitializer(
             org.eclipse.jdt.core.dom.ArrayInitializer arrayInit,
             com.botmaker.ui.AddableExpression type,
@@ -5830,9 +5854,6 @@ public class CodeEditor {
         triggerUpdate(newCode);
     }
 
-    /**
-     * Deletes an element from an ArrayInitializer at the specified index
-     */
     public void deleteElementFromArrayInitializer(
             org.eclipse.jdt.core.dom.ArrayInitializer arrayInit,
             int elementIndex) {
@@ -5845,6 +5866,7 @@ public class CodeEditor {
         );
         triggerUpdate(newCode);
     }
+
     public void updateComment(Comment commentNode, String newText) {
         String newCode = astRewriter.updateComment(
                 getCurrentCode(),
@@ -5853,6 +5875,7 @@ public class CodeEditor {
         );
         triggerUpdate(newCode);
     }
+
     public void deleteComment(Comment commentNode) {
         String newCode = astRewriter.deleteComment(
                 getCurrentCode(),
@@ -5860,6 +5883,7 @@ public class CodeEditor {
         );
         triggerUpdate(newCode);
     }
+
     public void replaceExpression(Expression toReplace, com.botmaker.ui.AddableExpression type) {
         blockFactory.setMarkNewIdentifiersAsUnedited(true);
         String newCode = astRewriter.replaceExpression(
@@ -5938,6 +5962,58 @@ public class CodeEditor {
         );
         triggerUpdate(newCode);
     }
+
+    // --- FIX START: Manual Mapping instead of .values() ---
+
+    public void updateAssignmentOperator(org.eclipse.jdt.core.dom.ASTNode node, String newOperatorSymbol) {
+        String newCode = null;
+
+        if (node instanceof Assignment) {
+            Assignment.Operator op = getAssignmentOperator(newOperatorSymbol);
+            if (op != null) {
+                newCode = astRewriter.replaceAssignmentOperator(getCompilationUnit(), getCurrentCode(), (Assignment) node, op);
+            }
+        } else if (node instanceof org.eclipse.jdt.core.dom.PrefixExpression) {
+            org.eclipse.jdt.core.dom.PrefixExpression.Operator op = getPrefixOperator(newOperatorSymbol);
+            if (op != null) {
+                newCode = astRewriter.replacePrefixOperator(getCompilationUnit(), getCurrentCode(), (org.eclipse.jdt.core.dom.PrefixExpression) node, op);
+            }
+        } else if (node instanceof org.eclipse.jdt.core.dom.PostfixExpression) {
+            org.eclipse.jdt.core.dom.PostfixExpression.Operator op = getPostfixOperator(newOperatorSymbol);
+            if (op != null) {
+                newCode = astRewriter.replacePostfixOperator(getCompilationUnit(), getCurrentCode(), (org.eclipse.jdt.core.dom.PostfixExpression) node, op);
+            }
+        }
+
+        if (newCode != null) {
+            triggerUpdate(newCode);
+        }
+    }
+
+    private Assignment.Operator getAssignmentOperator(String symbol) {
+        // Manual mapping because JDT Operators are not Enums
+        if ("=".equals(symbol)) return Assignment.Operator.ASSIGN;
+        if ("+=".equals(symbol)) return Assignment.Operator.PLUS_ASSIGN;
+        if ("-=".equals(symbol)) return Assignment.Operator.MINUS_ASSIGN;
+        if ("*=".equals(symbol)) return Assignment.Operator.TIMES_ASSIGN;
+        if ("/=".equals(symbol)) return Assignment.Operator.DIVIDE_ASSIGN;
+        if ("%=".equals(symbol)) return Assignment.Operator.REMAINDER_ASSIGN;
+        // Add other assignment operators if necessary (e.g. &=, |=, etc.)
+        return null;
+    }
+
+    private org.eclipse.jdt.core.dom.PrefixExpression.Operator getPrefixOperator(String symbol) {
+        if ("++".equals(symbol)) return org.eclipse.jdt.core.dom.PrefixExpression.Operator.INCREMENT;
+        if ("--".equals(symbol)) return org.eclipse.jdt.core.dom.PrefixExpression.Operator.DECREMENT;
+        return null;
+    }
+
+    private org.eclipse.jdt.core.dom.PostfixExpression.Operator getPostfixOperator(String symbol) {
+        if ("++".equals(symbol)) return org.eclipse.jdt.core.dom.PostfixExpression.Operator.INCREMENT;
+        if ("--".equals(symbol)) return org.eclipse.jdt.core.dom.PostfixExpression.Operator.DECREMENT;
+        return null;
+    }
+    // --- FIX END ---
 }
 
 =================================================================================
@@ -6534,19 +6610,18 @@ package com.botmaker.runtime;
 
 import com.botmaker.config.ApplicationConfig;
 import com.botmaker.validation.DiagnosticsManager;
-import com.botmaker.validation.ErrorTranslator;
 import javafx.application.Platform;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.Scanner;
-import java.util.concurrent.ArrayBlockingQueue;
-import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
-import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Consumer;
 
 public class CodeExecutionService {
@@ -6558,14 +6633,11 @@ public class CodeExecutionService {
     private final DiagnosticsManager diagnosticsManager;
     private final ApplicationConfig config;
 
-    // NEW: Process management for stopping infinite loops
     private volatile Process currentRunningProcess;
     private final AtomicBoolean isRunning = new AtomicBoolean(false);
 
-    // Output throttling constants
-    private static final int MAX_OUTPUT_LINES = 1000; // Max lines to display
-    private static final int THROTTLE_DELAY_MS = 50; // Batch updates every 50ms
-    private static final int MAX_LINE_LENGTH = 500; // Truncate very long lines
+    private static final int MAX_UI_BUFFER_SIZE = 4096;
+    private static final int UI_UPDATE_RATE_MS = 100;
 
     public CodeExecutionService(
             Consumer<String> appendOutputConsumer,
@@ -6582,130 +6654,85 @@ public class CodeExecutionService {
         this.config = config;
     }
 
+    /**
+     * BLOCKING method to run code.
+     * Must be called from a background thread.
+     */
     public void runCode(String code) {
+        // 1. Validation
         if (diagnosticsManager.hasErrors()) {
-            String translatedErrors = ErrorTranslator.translate(diagnosticsManager.getDiagnostics());
-            System.err.println(translatedErrors);
-            Platform.runLater(() -> {
-                statusConsumer.accept("Run aborted due to errors.");
-            });
+            Platform.runLater(() -> statusConsumer.accept("Run aborted due to errors."));
             return;
         }
 
-        // Check if already running
         if (isRunning.get()) {
-            Platform.runLater(() -> {
-                statusConsumer.accept("Program is already running. Stop it first.");
-            });
+            Platform.runLater(() -> statusConsumer.accept("Program is already running. Stop it first."));
             return;
         }
 
-        new Thread(() -> {
-            try {
-                Path sourceFilePath = config.getSourceFilePath();
-                Path compiledOutputPath = config.getCompiledOutputPath();
+        try {
+            Path sourceFilePath = config.getSourceFilePath();
+            Path compiledOutputPath = config.getCompiledOutputPath();
 
-                if (!compileAndWait(code, sourceFilePath, compiledOutputPath)) {
-                    Platform.runLater(() -> statusConsumer.accept("Run aborted due to compilation failure."));
-                    return;
-                }
-
-                Platform.runLater(() -> {
-                    statusConsumer.accept("Running code... (Press Stop to terminate)");
-                    clearOutputConsumer.run();
-                });
-
-                isRunning.set(true);
-
-                String classPath = compiledOutputPath.toString();
-                String className = config.getMainClassName();
-                String javaExecutable = config.getJavaExecutable();
-
-                ProcessBuilder pb = new ProcessBuilder(javaExecutable, "-cp", classPath, className);
-                currentRunningProcess = pb.start();
-
-                // NEW: Use throttled stream redirection
-                redirectStreamThrottled(currentRunningProcess.getInputStream());
-                redirectStreamThrottled(currentRunningProcess.getErrorStream());
-
-                int exitCode = currentRunningProcess.waitFor();
-
-                Platform.runLater(() -> {
-                    if (exitCode == 0) {
-                        statusConsumer.accept("Program completed successfully.");
-                    } else if (exitCode == 143 || exitCode == 130) {
-                        statusConsumer.accept("Program stopped by user.");
-                    } else {
-                        statusConsumer.accept("Program exited with code: " + exitCode);
-                    }
-                });
-
-            } catch (InterruptedException e) {
-                Platform.runLater(() -> statusConsumer.accept("Program stopped by user."));
-            } catch (IOException e) {
-                Platform.runLater(() -> statusConsumer.accept("Run Error: " + e.getMessage()));
-            } finally {
-                isRunning.set(false);
-                currentRunningProcess = null;
+            // 2. Compile (Blocking)
+            if (!compileAndWait(code, sourceFilePath, compiledOutputPath)) {
+                Platform.runLater(() -> statusConsumer.accept("Run aborted due to compilation failure."));
+                return;
             }
-        }).start();
-    }
 
-    /**
-     * NEW: Stops the currently running program
-     */
-    public void stopRunningProgram() {
-        if (currentRunningProcess != null && currentRunningProcess.isAlive()) {
-            Platform.runLater(() -> statusConsumer.accept("Stopping program..."));
+            // 3. Setup Execution
+            Platform.runLater(() -> {
+                statusConsumer.accept("Running... (Press Stop to terminate)");
+                clearOutputConsumer.run();
+            });
 
-            new Thread(() -> {
-                try {
-                    // Try graceful shutdown first
-                    currentRunningProcess.destroy();
+            isRunning.set(true);
 
-                    // Wait up to 2 seconds
-                    boolean exited = currentRunningProcess.waitFor(2, java.util.concurrent.TimeUnit.SECONDS);
+            String classPath = compiledOutputPath.toString();
+            String className = config.getMainClassName();
+            String javaExecutable = config.getJavaExecutable();
 
-                    if (!exited) {
-                        // Force kill if still running
-                        currentRunningProcess.destroyForcibly();
-                        currentRunningProcess.waitFor();
-                    }
+            ProcessBuilder pb = new ProcessBuilder(javaExecutable, "-cp", classPath, className);
+            currentRunningProcess = pb.start();
 
-                    Platform.runLater(() -> statusConsumer.accept("Program stopped."));
-                } catch (InterruptedException e) {
-                    Platform.runLater(() -> statusConsumer.accept("Error stopping program."));
+            // 4. Start IO (Leaky Bucket)
+            startLeakyBucketReader(currentRunningProcess.getInputStream());
+            startLeakyBucketReader(currentRunningProcess.getErrorStream());
+
+            // 5. WAIT FOR PROCESS (BLOCKING)
+            // This keeps the caller thread alive until the process finishes or is killed.
+            int exitCode = currentRunningProcess.waitFor();
+
+            Platform.runLater(() -> {
+                if (exitCode == 0) {
+                    statusConsumer.accept("Program completed successfully.");
+                } else if (exitCode == 143 || exitCode == 130 || exitCode == 1 || exitCode == -1) {
+                    statusConsumer.accept("Program stopped.");
+                } else {
+                    statusConsumer.accept("Program exited with code: " + exitCode);
                 }
-            }).start();
-        } else {
-            Platform.runLater(() -> statusConsumer.accept("No program is running."));
+            });
+
+        } catch (InterruptedException e) {
+            Platform.runLater(() -> statusConsumer.accept("Program stopped by user."));
+        } catch (Exception e) {
+            Platform.runLater(() -> statusConsumer.accept("Error: " + e.getMessage()));
+        } finally {
+            // Cleanup
+            isRunning.set(false);
+            currentRunningProcess = null;
         }
     }
 
-    /**
-     * Check if a program is currently running
-     */
-    public boolean isRunning() {
-        return isRunning.get();
-    }
+    // ... (compileCode, compileAndWait, stopRunningProgram, isRunning, startLeakyBucketReader remain unchanged)
 
     public void compileCode(String code) {
-        if (diagnosticsManager.hasErrors()) {
-            String translatedErrors = ErrorTranslator.translate(diagnosticsManager.getDiagnostics());
-            System.err.println(translatedErrors);
-            Platform.runLater(() -> {
-                statusConsumer.accept("Compilation failed. See errors above.");
-            });
-            return;
-        }
-
+        // Need to wrap in thread because we made runCode blocking, but compileCode is usually called from UI
         new Thread(() -> {
             try {
                 Platform.runLater(() -> setOutputConsumer.accept("Saving and compiling..."));
-
                 Path sourceFilePath = config.getSourceFilePath();
                 Path compiledOutputPath = config.getCompiledOutputPath();
-
                 if (compileAndWait(code, sourceFilePath, compiledOutputPath)) {
                     Platform.runLater(() -> setOutputConsumer.accept("Compilation successful."));
                 }
@@ -6727,83 +6754,73 @@ public class CodeExecutionService {
         String errors = new String(process.getErrorStream().readAllBytes());
         int exitCode = process.waitFor();
 
-        if (exitCode == 0) {
-            return true;
-        } else {
-            final String errorMessage = "Compilation Failed:\n" + errors;
-            System.err.println(errorMessage);
-            Platform.runLater(() -> {
-                setOutputConsumer.accept(errorMessage);
-            });
+        if (exitCode != 0) {
+            Platform.runLater(() -> setOutputConsumer.accept("Compilation Failed:\n" + errors));
             return false;
+        }
+        return true;
+    }
+
+    public void stopRunningProgram() {
+        if (currentRunningProcess != null && currentRunningProcess.isAlive()) {
+            // Force kill is safest for infinite loops
+            currentRunningProcess.destroyForcibly();
         }
     }
 
-    /**
-     * NEW: Throttled stream redirection with line limits and batching
-     * Prevents UI freeze from infinite loops with print statements
-     */
-    private void redirectStreamThrottled(InputStream stream) {
-        new Thread(() -> {
-            try (Scanner scanner = new Scanner(stream)) {
-                StringBuilder batch = new StringBuilder();
-                AtomicInteger lineCount = new AtomicInteger(0);
-                long lastUpdateTime = System.currentTimeMillis();
-                boolean limitWarningShown = false;
+    public boolean isRunning() {
+        return isRunning.get();
+    }
 
-                while (scanner.hasNextLine() && isRunning.get()) {
-                    String line = scanner.nextLine();
+    private void startLeakyBucketReader(InputStream inputStream) {
+        final StringBuilder buffer = new StringBuilder();
+        final ScheduledExecutorService uiUpdater = Executors.newSingleThreadScheduledExecutor();
 
-                    // Truncate very long lines
-                    if (line.length() > MAX_LINE_LENGTH) {
-                        line = line.substring(0, MAX_LINE_LENGTH) + "... (truncated)";
-                    }
-
-                    int currentCount = lineCount.incrementAndGet();
-
-                    // Check if we've hit the line limit
-                    if (currentCount > MAX_OUTPUT_LINES) {
-                        if (!limitWarningShown) {
-                            batch.append("\n⚠️ OUTPUT LIMIT REACHED (")
-                                    .append(MAX_OUTPUT_LINES)
-                                    .append(" lines). Further output suppressed.\n")
-                                    .append("💡 TIP: Your program may be in an infinite loop. Press Stop to terminate.\n");
-                            limitWarningShown = true;
-
-                            // Force update the warning
-                            final String finalBatch = batch.toString();
-                            Platform.runLater(() -> appendOutputConsumer.accept(finalBatch));
-                            batch.setLength(0);
-                        }
-                        // Don't process more lines
-                        continue;
-                    }
-
-                    batch.append(line).append("\n");
-
-                    // Batch updates: only update UI every THROTTLE_DELAY_MS
-                    long currentTime = System.currentTimeMillis();
-                    if (currentTime - lastUpdateTime >= THROTTLE_DELAY_MS || currentCount % 100 == 0) {
-                        final String batchToSend = batch.toString();
-                        if (!batchToSend.isEmpty()) {
-                            Platform.runLater(() -> appendOutputConsumer.accept(batchToSend));
-                            batch.setLength(0);
-                        }
-                        lastUpdateTime = currentTime;
-                    }
-                }
-
-                // Send any remaining output
-                if (batch.length() > 0) {
-                    final String finalBatch = batch.toString();
-                    Platform.runLater(() -> appendOutputConsumer.accept(finalBatch));
-                }
-
-            } catch (Exception e) {
-                // Stream closed or other error - this is normal when process stops
-                System.err.println("Stream redirection ended: " + e.getMessage());
+        uiUpdater.scheduleAtFixedRate(() -> {
+            if (!isRunning.get() && buffer.length() == 0) {
+                uiUpdater.shutdown();
+                return;
             }
-        }).start();
+
+            String textToSend = "";
+            synchronized (buffer) {
+                if (buffer.length() > 0) {
+                    textToSend = buffer.toString();
+                    buffer.setLength(0);
+                }
+            }
+
+            if (!textToSend.isEmpty()) {
+                String finalTx = textToSend;
+                Platform.runLater(() -> appendOutputConsumer.accept(finalTx));
+            }
+        }, UI_UPDATE_RATE_MS, UI_UPDATE_RATE_MS, TimeUnit.MILLISECONDS);
+
+        new Thread(() -> {
+            byte[] readBuf = new byte[1024];
+            int len;
+            long droppedBytes = 0;
+            try {
+                while ((len = inputStream.read(readBuf)) != -1) {
+                    synchronized (buffer) {
+                        if (buffer.length() >= MAX_UI_BUFFER_SIZE) {
+                            droppedBytes += len;
+                        } else {
+                            if (droppedBytes > 0) {
+                                buffer.append("\n[... SKIPPED " + droppedBytes + " BYTES ...]\n");
+                                droppedBytes = 0;
+                            }
+                            int spaceLeft = MAX_UI_BUFFER_SIZE - buffer.length();
+                            int writeLen = Math.min(len, spaceLeft);
+                            buffer.append(new String(readBuf, 0, writeLen, StandardCharsets.UTF_8));
+                        }
+                    }
+                }
+            } catch (IOException ignored) {
+            } finally {
+                uiUpdater.shutdown();
+            }
+        }, "Leaky-Reader").start();
     }
 }
 
@@ -7529,14 +7546,15 @@ public class ExecutionService {
      * Runs the current code
      */
     public void run() {
-        // Publish event that program is starting
+        // 1. UI Updates to RUNNING state
         eventBus.publish(new CoreApplicationEvents.ProgramStartedEvent());
 
-        // Run in background thread to not block
+        // 2. Thread Starts
         new Thread(() -> {
+            // 3. Blocks here while program runs
             codeExecutionService.runCode(state.getCurrentCode());
 
-            // Publish event when done (successful completion)
+            // 4. Program finishes/dies, then UI Updates to IDLE state
             eventBus.publish(new CoreApplicationEvents.ProgramStoppedEvent());
         }).start();
     }
@@ -8025,10 +8043,8 @@ public enum AddableBlock {
     DECLARE_BOOLEAN("Bool Variable", VariableDeclarationBlock.class, BlockCategory.VARIABLES),
     DECLARE_STRING("String Variable", VariableDeclarationBlock.class, BlockCategory.VARIABLES),
 
-    // NEW: Array declarations
-    DECLARE_INT_ARRAY("Int List", VariableDeclarationBlock.class, BlockCategory.VARIABLES),
-    DECLARE_DOUBLE_ARRAY("Double List", VariableDeclarationBlock.class, BlockCategory.VARIABLES),
-    DECLARE_STRING_ARRAY("String List", VariableDeclarationBlock.class, BlockCategory.VARIABLES),
+    // NEW: Generic Array Declaration
+    DECLARE_ARRAY("Create List", VariableDeclarationBlock.class, BlockCategory.VARIABLES),
 
     ASSIGNMENT("Set Variable", AssignmentBlock.class, BlockCategory.VARIABLES),
 
@@ -8082,6 +8098,9 @@ public enum AddableExpression {
     TRUE("True"),
     FALSE("False"),
     VARIABLE("Variable"),
+
+    // NEW: Allow nested lists
+    LIST("Sub-List"),
 
     // Math Operations
     ADD("Addition (+)", "+"),
@@ -8963,7 +8982,6 @@ import com.botmaker.services.CodeEditorService;
 import com.botmaker.ui.AddableBlock.BlockCategory;
 import com.botmaker.validation.DiagnosticsManager;
 import com.botmaker.validation.ErrorTranslator;
-import javafx.animation.PauseTransition;
 import javafx.application.Platform;
 import javafx.geometry.Insets;
 import javafx.geometry.Orientation;
@@ -8972,7 +8990,6 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.*;
 import javafx.stage.Stage;
-import javafx.util.Duration;
 import org.eclipse.lsp4j.Diagnostic;
 import org.eclipse.lsp4j.DiagnosticSeverity;
 
@@ -8981,7 +8998,6 @@ import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
 public class UIManager {
-
 
     private final BlockDragAndDropManager dragAndDropManager;
     private final EventBus eventBus;
@@ -8996,18 +9012,21 @@ public class UIManager {
     private TabPane bottomTabPane;
     private Tab terminalTab;
     private ScrollPane scrollPane;
-    private boolean isDarkMode = false;
     private MenuBarManager menuBarManager;
     private Consumer<Void> onSelectProject;
 
     // Controls
     private Button debugButton;
+    private Button runButton;
+    private Button unifiedStopButton; // UNIFIED BUTTON
     private Button stepOverButton;
     private Button continueButton;
-    private Button stopDebugButton;
     private Button undoButton;
     private Button redoButton;
-    private Button stopRunButton;
+
+    // Application State Tracking
+    private enum AppState { IDLE, RUNNING, DEBUGGING }
+    private AppState currentAppState = AppState.IDLE;
 
     public UIManager(BlockDragAndDropManager dragAndDropManager,
                      EventBus eventBus,
@@ -9023,10 +9042,20 @@ public class UIManager {
         setupEventHandlers();
     }
 
-
     private void setupEventHandlers() {
         eventBus.subscribe(CoreApplicationEvents.UIBlocksUpdatedEvent.class, this::handleBlocksUpdate, true);
-        eventBus.subscribe(CoreApplicationEvents.OutputAppendedEvent.class, event -> outputArea.appendText(event.getText()), true);
+        eventBus.subscribe(CoreApplicationEvents.OutputAppendedEvent.class, event -> {
+            // Protect the UI Component from holding too much text
+            if (outputArea.getText().length() > 10_000) {
+                // If too long, cut the top half
+                String current = outputArea.getText();
+                outputArea.setText("[...Old Output Trimmed...]\n" + current.substring(current.length() - 5000) + event.getText());
+                outputArea.positionCaret(outputArea.getLength());
+            } else {
+                outputArea.appendText(event.getText());
+            }
+        }, true);
+
         eventBus.subscribe(CoreApplicationEvents.OutputClearedEvent.class, event -> outputArea.clear(), true);
         eventBus.subscribe(CoreApplicationEvents.OutputSetEvent.class, event -> outputArea.setText(event.getText()), true);
         eventBus.subscribe(CoreApplicationEvents.StatusMessageEvent.class, event -> statusLabel.setText(event.getMessage()), true);
@@ -9037,15 +9066,16 @@ public class UIManager {
             statusLabel.setText(diagnosticsManager.getErrorSummary());
         }, true);
 
-        // Debug Session UI States
-        eventBus.subscribe(CoreApplicationEvents.DebugSessionStartedEvent.class, event -> onDebuggerStarted(), true);
-        eventBus.subscribe(CoreApplicationEvents.DebugSessionPausedEvent.class, event -> onDebuggerPaused(), true);
-        eventBus.subscribe(CoreApplicationEvents.DebugSessionResumedEvent.class, event -> onDebuggerResumed(), true);
-        eventBus.subscribe(CoreApplicationEvents.DebugSessionFinishedEvent.class, event -> onDebuggerFinished(), true);
 
-        eventBus.subscribe(CoreApplicationEvents.ProgramStartedEvent.class, event -> onProgramStarted(), true);
-        eventBus.subscribe(CoreApplicationEvents.ProgramStoppedEvent.class, event -> onProgramStopped(), true);
+        // State Management Handlers
+        eventBus.subscribe(CoreApplicationEvents.ProgramStartedEvent.class, e -> setAppState(AppState.RUNNING), true);
+        eventBus.subscribe(CoreApplicationEvents.ProgramStoppedEvent.class, e -> setAppState(AppState.IDLE), true);
+        eventBus.subscribe(CoreApplicationEvents.DebugSessionStartedEvent.class, e -> setAppState(AppState.DEBUGGING), true);
+        eventBus.subscribe(CoreApplicationEvents.DebugSessionFinishedEvent.class, e -> setAppState(AppState.IDLE), true);
 
+        // Debugging specific controls
+        eventBus.subscribe(CoreApplicationEvents.DebugSessionPausedEvent.class, e -> updateDebugControls(true), true);
+        eventBus.subscribe(CoreApplicationEvents.DebugSessionResumedEvent.class, e -> updateDebugControls(false), true);
 
         eventBus.subscribe(CoreApplicationEvents.HistoryStateChangedEvent.class, event -> {
             Platform.runLater(() -> {
@@ -9053,6 +9083,47 @@ public class UIManager {
                 if (redoButton != null) redoButton.setDisable(!event.canRedo());
             });
         }, true);
+    }
+
+    private void setAppState(AppState state) {
+        this.currentAppState = state;
+        updateToolbarState();
+    }
+
+    private void updateToolbarState() {
+        boolean isBusy = (currentAppState != AppState.IDLE);
+
+        runButton.setDisable(isBusy);
+        debugButton.setDisable(isBusy);
+        unifiedStopButton.setDisable(!isBusy); // Enable only when busy
+
+        if (currentAppState == AppState.DEBUGGING) {
+            unifiedStopButton.setText("Stop Debugging ⏹");
+            unifiedStopButton.setStyle("-fx-background-color: #E74C3C; -fx-text-fill: white;");
+            bottomTabPane.getSelectionModel().select(terminalTab);
+        } else if (currentAppState == AppState.RUNNING) {
+            unifiedStopButton.setText("Stop Run ⏹");
+            unifiedStopButton.setStyle("-fx-background-color: #E74C3C; -fx-text-fill: white;");
+            bottomTabPane.getSelectionModel().select(terminalTab);
+
+            // Disable debug specific buttons during run
+            stepOverButton.setDisable(true);
+            continueButton.setDisable(true);
+        } else {
+            // Idle
+            unifiedStopButton.setText("Stop ⏹");
+            unifiedStopButton.setStyle(""); // Reset style
+            stepOverButton.setDisable(true);
+            continueButton.setDisable(true);
+        }
+    }
+
+    private void updateDebugControls(boolean isPaused) {
+        // Only relevant if we are actually debugging
+        if (currentAppState == AppState.DEBUGGING) {
+            stepOverButton.setDisable(!isPaused);
+            continueButton.setDisable(!isPaused);
+        }
     }
 
     private void handleBlocksUpdate(CoreApplicationEvents.UIBlocksUpdatedEvent event) {
@@ -9067,18 +9138,13 @@ public class UIManager {
 
             blocksContainer.getChildren().add(rootNode);
         }
-        if (scrollPane != null) {
-            scrollPane.requestFocus();
-        }
     }
 
-    // --- UPDATED UI CREATION ---
     public Scene createScene() {
         menuBarManager = new MenuBarManager(primaryStage);
         menuBarManager.setEventBus(eventBus);
         menuBarManager.setOnSelectProject(v -> { if (onSelectProject != null) onSelectProject.accept(null); });
 
-        // 1. Main Block Canvas
         blocksContainer = new VBox(10);
         blocksContainer.getStyleClass().add("blocks-canvas");
 
@@ -9086,13 +9152,11 @@ public class UIManager {
         scrollPane.setFitToWidth(true);
         scrollPane.getStyleClass().add("code-scroll-pane");
 
-        // 2. Categorized Palette (Left Sidebar)
         Accordion paletteAccordion = createCategorizedPalette();
         VBox paletteContainer = new VBox(paletteAccordion);
         paletteContainer.setPrefWidth(220);
         paletteContainer.getStyleClass().add("palette-sidebar");
 
-        // 3. Bottom Panels (Output/Errors)
         statusLabel = new Label("Ready");
         statusLabel.setId("status-label");
 
@@ -9100,9 +9164,8 @@ public class UIManager {
         outputArea.setEditable(false);
         outputArea.getStyleClass().add("console-area");
 
-        // Error list setup (Keep your existing ListCell implementation here)
         errorListView = new ListView<>();
-        configureErrorList(errorListView); // Extracted to helper for brevity
+        configureErrorList(errorListView);
 
         bottomTabPane = new TabPane();
         terminalTab = new Tab("Terminal", outputArea);
@@ -9111,10 +9174,8 @@ public class UIManager {
         errorsTab.setClosable(false);
         bottomTabPane.getTabs().addAll(terminalTab, errorsTab);
 
-        // 4. Toolbar
         HBox toolBar = createToolBar();
 
-        // 5. Layout Assembly
         SplitPane verticalSplit = new SplitPane();
         verticalSplit.setOrientation(Orientation.VERTICAL);
         verticalSplit.getItems().addAll(scrollPane, bottomTabPane);
@@ -9127,74 +9188,14 @@ public class UIManager {
         mainLayout.setCenter(verticalSplit);
         mainLayout.setBottom(statusLabel);
 
-        // Root
         VBox root = new VBox(menuBarManager.getMenuBar(), mainLayout);
         VBox.setVgrow(mainLayout, Priority.ALWAYS);
-
         root.getStyleClass().add("light-theme");
 
         Scene scene = new Scene(root, 1000, 700);
         scene.getStylesheets().add(getClass().getResource("/com/botmaker/styles.css").toExternalForm());
 
         return scene;
-    }
-    private void onProgramStarted() {
-        if (stopRunButton != null) {
-            stopRunButton.setDisable(false);
-        }
-    }
-
-    private void onProgramStopped() {
-        if (stopRunButton != null) {
-            stopRunButton.setDisable(true);
-        }
-    }
-    private Accordion createCategorizedPalette() {
-        Accordion accordion = new Accordion();
-
-        Map<BlockCategory, List<AddableBlock>> grouped = Arrays.stream(AddableBlock.values())
-                .collect(Collectors.groupingBy(AddableBlock::getCategory));
-
-        // Define order of categories
-        BlockCategory[] order = {
-                BlockCategory.OUTPUT,
-                BlockCategory.INPUT,
-                BlockCategory.VARIABLES,
-                BlockCategory.FLOW,
-                BlockCategory.LOOPS,
-                BlockCategory.CONTROL,
-                BlockCategory.UTILITY
-        };
-
-        for (BlockCategory category : order) {
-            List<AddableBlock> blocks = grouped.get(category);
-            if (blocks == null) continue;
-
-            VBox content = new VBox(8); // Spacing between items
-            content.setPadding(new Insets(10));
-
-            for (AddableBlock blockType : blocks) {
-                Label blockLabel = new Label(blockType.getDisplayName());
-                blockLabel.setMaxWidth(Double.MAX_VALUE);
-
-                // Style classes: "palette-item", "palette-output", etc.
-                blockLabel.getStyleClass().addAll("palette-item", "palette-" + category.name().toLowerCase());
-
-                dragAndDropManager.makeDraggable(blockLabel, blockType);
-                content.getChildren().add(blockLabel);
-            }
-
-            TitledPane pane = new TitledPane(category.getLabel(), content);
-            pane.getStyleClass().add("palette-pane");
-            accordion.getPanes().add(pane);
-        }
-
-        // Expand the first one by default
-        if (!accordion.getPanes().isEmpty()) {
-            accordion.setExpandedPane(accordion.getPanes().get(0));
-        }
-
-        return accordion;
     }
 
     private HBox createToolBar() {
@@ -9213,26 +9214,24 @@ public class UIManager {
         compileButton.getStyleClass().add("toolbar-btn");
         compileButton.setOnAction(e -> eventBus.publish(new CoreApplicationEvents.CompilationRequestedEvent()));
 
-        Button runButton = new Button("Run ▶");
+        runButton = new Button("Run ▶");
         runButton.getStyleClass().addAll("toolbar-btn", "btn-run");
-        runButton.setOnAction(e -> {
-            bottomTabPane.getSelectionModel().select(terminalTab);
-            eventBus.publish(new CoreApplicationEvents.ExecutionRequestedEvent());
-        });
-
-        // NEW: Stop Run button
-        stopRunButton = new Button("Stop ⏹");
-        stopRunButton.getStyleClass().addAll("toolbar-btn", "btn-stop");
-        stopRunButton.setDisable(true); // Disabled until program runs
-        stopRunButton.setOnAction(e -> {
-            eventBus.publish(new CoreApplicationEvents.StopRunRequestedEvent());
-        });
+        runButton.setOnAction(e -> eventBus.publish(new CoreApplicationEvents.ExecutionRequestedEvent()));
 
         debugButton = new Button("Debug 🐞");
         debugButton.getStyleClass().addAll("toolbar-btn", "btn-debug");
-        debugButton.setOnAction(e -> {
-            bottomTabPane.getSelectionModel().select(terminalTab);
-            eventBus.publish(new CoreApplicationEvents.DebugStartRequestedEvent());
+        debugButton.setOnAction(e -> eventBus.publish(new CoreApplicationEvents.DebugStartRequestedEvent()));
+
+        // UNIFIED STOP BUTTON
+        unifiedStopButton = new Button("Stop ⏹");
+        unifiedStopButton.getStyleClass().addAll("toolbar-btn", "btn-stop");
+        unifiedStopButton.setDisable(true);
+        unifiedStopButton.setOnAction(e -> {
+            if (currentAppState == AppState.RUNNING) {
+                eventBus.publish(new CoreApplicationEvents.StopRunRequestedEvent());
+            } else if (currentAppState == AppState.DEBUGGING) {
+                eventBus.publish(new CoreApplicationEvents.DebugStopRequestedEvent());
+            }
         });
 
         Region spacer2 = new Region();
@@ -9246,26 +9245,54 @@ public class UIManager {
         continueButton.setDisable(true);
         continueButton.setOnAction(e -> eventBus.publish(new CoreApplicationEvents.DebugContinueRequestedEvent()));
 
-        stopDebugButton = new Button("Stop ⏹");
-        stopDebugButton.setDisable(true);
-        stopDebugButton.getStyleClass().add("btn-stop");
-        stopDebugButton.setOnAction(e -> eventBus.publish(new CoreApplicationEvents.DebugStopRequestedEvent()));
-
         HBox toolbar = new HBox(10,
                 undoButton, redoButton,
                 spacer1,
-                compileButton, runButton, stopRunButton, // NEW: Added stopRunButton
-                debugButton,
+                compileButton, runButton, debugButton, unifiedStopButton,
                 spacer2,
-                stepOverButton, continueButton, stopDebugButton
+                stepOverButton, continueButton
         );
         toolbar.setPadding(new Insets(10));
         toolbar.getStyleClass().add("main-toolbar");
         return toolbar;
     }
 
+    // ... (Helper methods createCategorizedPalette, configureErrorList, updateErrors match previous implementation)
+
+    private Accordion createCategorizedPalette() {
+        Accordion accordion = new Accordion();
+        Map<BlockCategory, List<AddableBlock>> grouped = Arrays.stream(AddableBlock.values())
+                .collect(Collectors.groupingBy(AddableBlock::getCategory));
+
+        BlockCategory[] order = {
+                BlockCategory.OUTPUT, BlockCategory.INPUT, BlockCategory.VARIABLES,
+                BlockCategory.FLOW, BlockCategory.LOOPS, BlockCategory.CONTROL, BlockCategory.UTILITY
+        };
+
+        for (BlockCategory category : order) {
+            List<AddableBlock> blocks = grouped.get(category);
+            if (blocks == null) continue;
+
+            VBox content = new VBox(8);
+            content.setPadding(new Insets(10));
+
+            for (AddableBlock blockType : blocks) {
+                Label blockLabel = new Label(blockType.getDisplayName());
+                blockLabel.setMaxWidth(Double.MAX_VALUE);
+                blockLabel.getStyleClass().addAll("palette-item", "palette-" + category.name().toLowerCase());
+                dragAndDropManager.makeDraggable(blockLabel, blockType);
+                content.getChildren().add(blockLabel);
+            }
+
+            TitledPane pane = new TitledPane(category.getLabel(), content);
+            pane.getStyleClass().add("palette-pane");
+            accordion.getPanes().add(pane);
+        }
+        if (!accordion.getPanes().isEmpty()) accordion.setExpandedPane(accordion.getPanes().get(0));
+        return accordion;
+    }
+
     private void configureErrorList(ListView<Diagnostic> lv) {
-        // (Paste your existing ListCell factory code here)
         lv.setPlaceholder(new Label("No errors to display."));
         lv.setCellFactory(list -> new ListCell<>() {
             @Override
@@ -9286,9 +9313,7 @@ public class UIManager {
                         if (event.getClickCount() >= 1) {
                             diagnosticsManager.findBlockForDiagnostic(diagnostic).ifPresent(block -> {
                                 Node uiNode = block.getUINode();
-                                if (uiNode != null) {
-                                    uiNode.requestFocus();
-                                }
+                                if (uiNode != null) uiNode.requestFocus();
                             });
                         }
                     });
@@ -9297,37 +9322,10 @@ public class UIManager {
         });
     }
 
-    // ... (Keep helper methods: updateErrors, onDebuggerStarted, etc.) ...
     private void updateErrors(List<Diagnostic> diagnostics) {
         if (diagnostics == null) errorListView.getItems().clear();
         else errorListView.getItems().setAll(diagnostics);
         if (diagnostics != null && !diagnostics.isEmpty()) bottomTabPane.getSelectionModel().select(1);
-    }
-
-    private void onDebuggerStarted() {
-        debugButton.setDisable(true);
-        stepOverButton.setDisable(true);
-        continueButton.setDisable(true);
-        stopDebugButton.setDisable(false);
-    }
-
-    private void onDebuggerPaused() {
-        stepOverButton.setDisable(false);
-        continueButton.setDisable(false);
-        stopDebugButton.setDisable(false);
-    }
-
-    private void onDebuggerResumed() {
-        stepOverButton.setDisable(true);
-        continueButton.setDisable(true);
-        stopDebugButton.setDisable(false);
-    }
-
-    private void onDebuggerFinished() {
-        debugButton.setDisable(false);
-        stepOverButton.setDisable(true);
-        continueButton.setDisable(true);
-        stopDebugButton.setDisable(true);
     }
 
     public void setOnSelectProject(Consumer<Void> callback) { this.onSelectProject = callback; }
@@ -9486,41 +9484,47 @@ import java.util.List;
 public class TypeManager {
 
     private static final List<String> FUNDAMENTAL_TYPES = List.of(
-        "int", "double", "boolean", "String", "long", "float", "char", "short", "byte"
+            "int", "double", "boolean", "String", "long", "float", "char"
     );
 
-    /**
-     * Returns a list of fundamental Java type names (primitives + String).
-     */
     public static List<String> getFundamentalTypeNames() {
         return FUNDAMENTAL_TYPES;
     }
 
     /**
-     * Creates a JDT AST Type node from a string representation of the type name.
-     * Handles both primitive types and class/interface names.
-     *
-     * @param ast The AST instance to use for creating the node.
-     * @param typeName The name of the type (e.g., "int", "String", "java.util.List").
-     * @return The constructed Type node.
+     * Creates a JDT AST Type node from a string representation.
+     * Handles arrays (e.g., "int[]", "String[][]").
      */
     public static Type createTypeNode(AST ast, String typeName) {
-        switch (typeName) {
-            case "int": return ast.newPrimitiveType(PrimitiveType.INT);
-            case "double": return ast.newPrimitiveType(PrimitiveType.DOUBLE);
-            case "boolean": return ast.newPrimitiveType(PrimitiveType.BOOLEAN);
-            case "char": return ast.newPrimitiveType(PrimitiveType.CHAR);
-            case "long": return ast.newPrimitiveType(PrimitiveType.LONG);
-            case "float": return ast.newPrimitiveType(PrimitiveType.FLOAT);
-            case "short": return ast.newPrimitiveType(PrimitiveType.SHORT);
-            case "byte": return ast.newPrimitiveType(PrimitiveType.BYTE);
-            default:
-                // For non-primitives, ast.newName() can handle simple and qualified names.
-                return ast.newSimpleType(ast.newName(typeName));
+        // count array dimensions
+        int dimensions = 0;
+        String baseName = typeName;
+
+        while (baseName.endsWith("[]")) {
+            dimensions++;
+            baseName = baseName.substring(0, baseName.length() - 2);
+        }
+
+        Type baseType;
+        switch (baseName) {
+            case "int": baseType = ast.newPrimitiveType(PrimitiveType.INT); break;
+            case "double": baseType = ast.newPrimitiveType(PrimitiveType.DOUBLE); break;
+            case "boolean": baseType = ast.newPrimitiveType(PrimitiveType.BOOLEAN); break;
+            case "char": baseType = ast.newPrimitiveType(PrimitiveType.CHAR); break;
+            case "long": baseType = ast.newPrimitiveType(PrimitiveType.LONG); break;
+            case "float": baseType = ast.newPrimitiveType(PrimitiveType.FLOAT); break;
+            case "short": baseType = ast.newPrimitiveType(PrimitiveType.SHORT); break;
+            case "byte": baseType = ast.newPrimitiveType(PrimitiveType.BYTE); break;
+            default: baseType = ast.newSimpleType(ast.newName(baseName)); break;
+        }
+
+        if (dimensions > 0) {
+            return ast.newArrayType(baseType, dimensions);
+        } else {
+            return baseType;
         }
     }
 }
-
 
 =================================================================================
 FILE: ./src/main/java/com/botmaker/validation/DiagnosticsManager.java

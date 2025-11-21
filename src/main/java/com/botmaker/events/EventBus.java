@@ -17,6 +17,8 @@ public class EventBus {
     private static final Logger LOGGER = Logger.getLogger(EventBus.class.getName());
 
     private final Map<Class<? extends ApplicationEvent>, List<EventHandler<?>>> handlers;
+    // NEW: List for listeners that want to receive EVERY event (like the Event Log)
+    private final List<Consumer<ApplicationEvent>> globalListeners;
     private final boolean enableLogging;
 
     public EventBus() {
@@ -25,6 +27,7 @@ public class EventBus {
 
     public EventBus(boolean enableLogging) {
         this.handlers = new ConcurrentHashMap<>();
+        this.globalListeners = new CopyOnWriteArrayList<>(); // NEW
         this.enableLogging = enableLogging;
     }
 
@@ -52,6 +55,14 @@ public class EventBus {
     }
 
     /**
+     * NEW: Subscribe to ALL events passing through the bus.
+     * Useful for logging and debugging consoles.
+     */
+    public void subscribeAll(Consumer<ApplicationEvent> listener) {
+        globalListeners.add(listener);
+    }
+
+    /**
      * Publish an event to all subscribers
      */
     public void publish(ApplicationEvent event) {
@@ -63,21 +74,28 @@ public class EventBus {
             LOGGER.info("Publishing: " + event.getSource());
         }
 
+        // 1. Notify specific handlers
         Class<? extends ApplicationEvent> eventType = event.getClass();
         List<EventHandler<?>> eventHandlers = handlers.get(eventType);
 
-        if (eventHandlers == null || eventHandlers.isEmpty()) {
-            if (enableLogging) {
-                LOGGER.warning("No handlers for event: " + eventType.getSimpleName());
+        if (eventHandlers != null && !eventHandlers.isEmpty()) {
+            for (EventHandler<?> handler : eventHandlers) {
+                try {
+                    handler.handle(event);
+                } catch (Exception e) {
+                    LOGGER.log(Level.SEVERE, "Error handling event: " + eventType.getSimpleName(), e);
+                }
             }
-            return;
+        } else if (enableLogging) {
+            LOGGER.warning("No specific handlers for event: " + eventType.getSimpleName());
         }
 
-        for (EventHandler<?> handler : eventHandlers) {
+        // 2. NEW: Notify global listeners
+        for (Consumer<ApplicationEvent> globalListener : globalListeners) {
             try {
-                handler.handle(event);
+                globalListener.accept(event);
             } catch (Exception e) {
-                LOGGER.log(Level.SEVERE, "Error handling event: " + eventType.getSimpleName(), e);
+                e.printStackTrace();
             }
         }
     }
@@ -104,19 +122,14 @@ public class EventBus {
      */
     public void clearAllHandlers() {
         handlers.clear();
+        globalListeners.clear(); // NEW
     }
 
-    /**
-     * Get count of handlers for an event type (useful for debugging)
-     */
     public int getHandlerCount(Class<? extends ApplicationEvent> eventType) {
         List<EventHandler<?>> eventHandlers = handlers.get(eventType);
         return eventHandlers != null ? eventHandlers.size() : 0;
     }
 
-    /**
-     * Internal wrapper for event handlers
-     */
     private static class EventHandler<T extends ApplicationEvent> {
         private final Consumer<T> handler;
         private final boolean runOnFxThread;

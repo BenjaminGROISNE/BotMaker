@@ -4,23 +4,16 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="cba04025-c331-4634-a893-436bad03efc0" name="Changes" comment="Started List">
+    <list default="true" id="cba04025-c331-4634-a893-436bad03efc0" name="Changes" comment="fix stop button, reworked list variable, assignment operator not working yet">
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/botmaker/ui/EventLogManager.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/java_files_concat.txt" beforeDir="false" afterPath="$PROJECT_DIR$/java_files_concat.txt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/projects/.botmaker-config.json" beforeDir="false" afterPath="$PROJECT_DIR$/projects/.botmaker-config.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/projects/Demo/src/main/java/com/demo/Demo.java" beforeDir="false" afterPath="$PROJECT_DIR$/projects/Demo/src/main/java/com/demo/Demo.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/botmaker/blocks/AssignmentBlock.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/botmaker/blocks/AssignmentBlock.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/botmaker/blocks/ListBlock.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/botmaker/blocks/ListBlock.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/botmaker/blocks/VariableDeclarationBlock.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/botmaker/blocks/VariableDeclarationBlock.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/botmaker/events/CoreApplicationEvents.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/botmaker/events/CoreApplicationEvents.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/botmaker/parser/AstRewriter.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/botmaker/parser/AstRewriter.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/botmaker/parser/CodeEditor.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/botmaker/parser/CodeEditor.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/botmaker/runtime/CodeExecutionService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/botmaker/runtime/CodeExecutionService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/botmaker/services/ExecutionService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/botmaker/services/ExecutionService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/botmaker/ui/AddableBlock.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/botmaker/ui/AddableBlock.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/botmaker/ui/AddableExpression.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/botmaker/ui/AddableExpression.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/botmaker/events/EventBus.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/botmaker/events/EventBus.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/botmaker/ui/UIManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/botmaker/ui/UIManager.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/botmaker/util/TypeManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/botmaker/util/TypeManager.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -102,7 +95,7 @@
     "Gradle.BotMaker [:com.astblocks.demo.Main.main()].executor": "Run",
     "Gradle.BotMaker [:com.botmaker.Main.main()].executor": "Run",
     "Gradle.BotMaker [:org.example.Main.main()].executor": "Run",
-    "Gradle.BotMaker [run].executor": "Debug",
+    "Gradle.BotMaker [run].executor": "Run",
     "Gradle.BotMaker.executor": "Run",
     "Gradle.Build BotMaker.executor": "Run",
     "Gradle.Download Sources.executor": "Run",
@@ -199,14 +192,6 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1759617202271</updated>
-    </task>
-    <task id="LOCAL-00003" summary="Refactored CodeBlocks and UI">
-      <option name="closed" value="true" />
-      <created>1760129476485</created>
-      <option name="number" value="00003" />
-      <option name="presentableId" value="LOCAL-00003" />
-      <option name="project" value="LOCAL" />
-      <updated>1760129476485</updated>
     </task>
     <task id="LOCAL-00004" summary="start debugging">
       <option name="closed" value="true" />
@@ -592,7 +577,15 @@
       <option name="project" value="LOCAL" />
       <updated>1763754907096</updated>
     </task>
-    <option name="localTasksCounter" value="52" />
+    <task id="LOCAL-00052" summary="fix stop button, reworked list variable, assignment operator not working yet">
+      <option name="closed" value="true" />
+      <created>1763761946501</created>
+      <option name="number" value="00052" />
+      <option name="presentableId" value="LOCAL-00052" />
+      <option name="project" value="LOCAL" />
+      <updated>1763761946501</updated>
+    </task>
+    <option name="localTasksCounter" value="53" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -620,7 +613,6 @@
     <ignored-roots>
       <path value="$PROJECT_DIR$/.." />
     </ignored-roots>
-    <MESSAGE value="Tried gradle project" />
     <MESSAGE value="Tried Maven project" />
     <MESSAGE value="HOLY SHIT CLAUDE LE BOSS" />
     <MESSAGE value="Terminal refactor, two windows, error translation" />
@@ -645,7 +637,8 @@
     <MESSAGE value="TypeValidator, styles revamp, comment removed // and /*" />
     <MESSAGE value="upgrades errors" />
     <MESSAGE value="Started List" />
-    <option name="LAST_COMMIT_MESSAGE" value="Started List" />
+    <MESSAGE value="fix stop button, reworked list variable, assignment operator not working yet" />
+    <option name="LAST_COMMIT_MESSAGE" value="fix stop button, reworked list variable, assignment operator not working yet" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

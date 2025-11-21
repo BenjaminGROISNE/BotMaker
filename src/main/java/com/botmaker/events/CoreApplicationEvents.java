@@ -7,7 +7,7 @@ import java.util.List;
 
 public class CoreApplicationEvents {
 
-    // ... (Keep existing events: CodeUpdatedEvent, DiagnosticsUpdatedEvent, UIRefreshRequestedEvent, BlockHighlightEvent) ...
+
 
     public static class CodeUpdatedEvent extends AbstractApplicationEvent {
         private final String newCode;

@@ -41,10 +41,13 @@ public class UIManager {
     private MenuBarManager menuBarManager;
     private Consumer<Void> onSelectProject;
 
+    // NEW: Event Log Manager
+    private EventLogManager eventLogManager;
+
     // Controls
     private Button debugButton;
     private Button runButton;
-    private Button unifiedStopButton; // UNIFIED BUTTON
+    private Button unifiedStopButton;
     private Button stepOverButton;
     private Button continueButton;
     private Button undoButton;
@@ -64,6 +67,9 @@ public class UIManager {
         this.codeEditorService = codeEditorService;
         this.diagnosticsManager = diagnosticsManager;
         this.primaryStage = primaryStage;
+
+        // Initialize the EventLogManager immediately
+        this.eventLogManager = new EventLogManager(eventBus);
 
         setupEventHandlers();
     }
@@ -121,7 +127,7 @@ public class UIManager {
 
         runButton.setDisable(isBusy);
         debugButton.setDisable(isBusy);
-        unifiedStopButton.setDisable(!isBusy); // Enable only when busy
+        unifiedStopButton.setDisable(!isBusy);
 
         if (currentAppState == AppState.DEBUGGING) {
             unifiedStopButton.setText("Stop Debugging ⏹");
@@ -132,20 +138,17 @@ public class UIManager {
             unifiedStopButton.setStyle("-fx-background-color: #E74C3C; -fx-text-fill: white;");
             bottomTabPane.getSelectionModel().select(terminalTab);
 
-            // Disable debug specific buttons during run
             stepOverButton.setDisable(true);
             continueButton.setDisable(true);
         } else {
-            // Idle
             unifiedStopButton.setText("Stop ⏹");
-            unifiedStopButton.setStyle(""); // Reset style
+            unifiedStopButton.setStyle("");
             stepOverButton.setDisable(true);
             continueButton.setDisable(true);
         }
     }
 
     private void updateDebugControls(boolean isPaused) {
-        // Only relevant if we are actually debugging
         if (currentAppState == AppState.DEBUGGING) {
             stepOverButton.setDisable(!isPaused);
             continueButton.setDisable(!isPaused);
@@ -186,19 +189,31 @@ public class UIManager {
         statusLabel = new Label("Ready");
         statusLabel.setId("status-label");
 
+        // Terminal Area
         outputArea = new TextArea();
         outputArea.setEditable(false);
         outputArea.getStyleClass().add("console-area");
 
+        // Error List Area
         errorListView = new ListView<>();
         configureErrorList(errorListView);
 
+        // NEW: Event Log Area
+        ListView<String> eventView = eventLogManager.getView();
+
+        // Tabs
         bottomTabPane = new TabPane();
         terminalTab = new Tab("Terminal", outputArea);
         terminalTab.setClosable(false);
+
         Tab errorsTab = new Tab("Errors", errorListView);
         errorsTab.setClosable(false);
-        bottomTabPane.getTabs().addAll(terminalTab, errorsTab);
+
+        // New Event Log Tab
+        Tab eventsTab = new Tab("Event Log", eventView);
+        eventsTab.setClosable(false);
+
+        bottomTabPane.getTabs().addAll(terminalTab, errorsTab, eventsTab);
 
         HBox toolBar = createToolBar();
 
@@ -217,6 +232,9 @@ public class UIManager {
         VBox root = new VBox(menuBarManager.getMenuBar(), mainLayout);
         VBox.setVgrow(mainLayout, Priority.ALWAYS);
         root.getStyleClass().add("light-theme");
+
+        // Cleanup executor on close
+        primaryStage.setOnHidden(e -> eventLogManager.shutdown());
 
         Scene scene = new Scene(root, 1000, 700);
         scene.getStylesheets().add(getClass().getResource("/com/botmaker/styles.css").toExternalForm());
@@ -248,7 +266,6 @@ public class UIManager {
         debugButton.getStyleClass().addAll("toolbar-btn", "btn-debug");
         debugButton.setOnAction(e -> eventBus.publish(new CoreApplicationEvents.DebugStartRequestedEvent()));
 
-        // UNIFIED STOP BUTTON
         unifiedStopButton = new Button("Stop ⏹");
         unifiedStopButton.getStyleClass().addAll("toolbar-btn", "btn-stop");
         unifiedStopButton.setDisable(true);
@@ -282,8 +299,6 @@ public class UIManager {
         toolbar.getStyleClass().add("main-toolbar");
         return toolbar;
     }
-
-    // ... (Helper methods createCategorizedPalette, configureErrorList, updateErrors match previous implementation)
 
     private Accordion createCategorizedPalette() {
         Accordion accordion = new Accordion();
