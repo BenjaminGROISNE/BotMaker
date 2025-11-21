@@ -11,7 +11,7 @@ import javafx.scene.control.MenuItem;
 import javafx.scene.control.Tooltip;
 import javafx.scene.layout.HBox;
 import javafx.scene.text.Text;
-import org.eclipse.jdt.core.dom.SimpleName;
+import org.eclipse.jdt.core.dom.*;
 import org.eclipse.lsp4j.*;
 
 import java.util.List;
@@ -62,7 +62,7 @@ public class IdentifierBlock extends AbstractExpressionBlock {
 
         String tooltipText = isUnedited
                 ? "⚠️ Default variable name - Click to choose a variable"
-                : "Click to see available variables";
+                : "Click to change variable";
 
         Tooltip tooltip = new Tooltip(tooltipText);
         Tooltip.install(container, tooltip);
@@ -81,42 +81,16 @@ public class IdentifierBlock extends AbstractExpressionBlock {
     }
 
     private void autoPopulateWithSuggestion(Node uiNode, CompletionContext context) {
-        try {
-            Position pos = getPositionFromOffset(context.sourceCode(), this.astNode.getStartPosition());
-            CompletionParams params = new CompletionParams(new TextDocumentIdentifier(context.docUri()), pos);
-
-            context.server().getTextDocumentService().completion(params).thenAccept(result -> {
-                if (result == null || (result.isLeft() && result.getLeft().isEmpty()) ||
-                        (result.isRight() && result.getRight().getItems().isEmpty())) {
-                    return;
-                }
-
-                List<CompletionItem> items = result.isLeft() ? result.getLeft() : result.getRight().getItems();
-
-                // Filter for user-friendly variables only
-                CompletionItem firstVariable = items.stream()
-                        .filter(item -> item.getKind() == CompletionItemKind.Variable)
-                        .filter(item -> TypeValidator.isUserVariable(item.getLabel()))
-                        .findFirst()
-                        .orElse(null);
-
-                if (firstVariable != null) {
-                    Platform.runLater(() -> {
-                        applySuggestion(firstVariable, context);
-                        Tooltip newTooltip = new Tooltip("✓ Auto-selected variable - Click to change");
-                        Tooltip.install(uiNode, newTooltip);
-                    });
-                }
-            });
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        // Logic for auto-populating if needed
     }
 
     private void requestSuggestions(Node uiNode, CompletionContext context) {
         try {
             Position pos = getPositionFromOffset(context.sourceCode(), this.astNode.getStartPosition());
             CompletionParams params = new CompletionParams(new TextDocumentIdentifier(context.docUri()), pos);
+
+            // 1. Determine expected type based on AST context
+            String expectedType = determineExpectedType();
 
             context.server().getTextDocumentService().completion(params).thenAccept(result -> {
                 if (result == null || (result.isLeft() && result.getLeft().isEmpty()) ||
@@ -128,25 +102,36 @@ public class IdentifierBlock extends AbstractExpressionBlock {
 
                 Platform.runLater(() -> {
                     ContextMenu menu = new ContextMenu();
+                    menu.setStyle("-fx-control-inner-background: white;");
 
-                    // Filter for user-friendly variables only
-                    List<CompletionItem> userVariables = items.stream()
-                            .filter(item -> item.getKind() == CompletionItemKind.Variable)
+                    // 2. Filter items
+                    List<CompletionItem> filteredItems = items.stream()
+                            // FIX: Use Variable and Field (Parameters are treated as Variables in JDTLS)
+                            .filter(item -> item.getKind() == CompletionItemKind.Variable || item.getKind() == CompletionItemKind.Field)
+                            // HIDE system vars like 'args'
                             .filter(item -> TypeValidator.isUserVariable(item.getLabel()))
+                            // FILTER by Context Type (e.g. only show booleans if inside a While)
+                            .filter(item -> TypeValidator.isTypeCompatible(item.getDetail(), expectedType))
                             .collect(Collectors.toList());
 
-                    if (userVariables.isEmpty()) {
-                        MenuItem noVars = new MenuItem("(No variables available yet)");
+                    if (filteredItems.isEmpty()) {
+                        MenuItem noVars = new MenuItem("(No " + (expectedType.equals("any") ? "" : expectedType + " ") + "variables found)");
                         noVars.setDisable(true);
+                        noVars.setStyle("-fx-text-fill: #999;");
                         menu.getItems().add(noVars);
                     } else {
-                        for (CompletionItem item : userVariables) {
-                            MenuItem mi = new MenuItem(item.getLabel());
+                        for (CompletionItem item : filteredItems) {
+                            // Clean label for display
+                            String label = item.getLabel();
+                            String detail = item.getDetail(); // "int", "String", etc.
 
-                            // Add type information if available
-                            if (item.getDetail() != null && !item.getDetail().isEmpty()) {
-                                mi.setText(item.getLabel() + " (" + getSimpleTypeName(item.getDetail()) + ")");
+                            String display = label;
+                            if (detail != null && !detail.isEmpty()) {
+                                display += " (" + getSimpleTypeName(detail) + ")";
                             }
+
+                            MenuItem mi = new MenuItem(display);
+                            mi.setStyle("-fx-text-fill: black;");
 
                             mi.setOnAction(event -> {
                                 applySuggestion(item, context);
@@ -156,9 +141,7 @@ public class IdentifierBlock extends AbstractExpressionBlock {
                         }
                     }
 
-                    if (!menu.getItems().isEmpty()) {
-                        menu.show(uiNode, javafx.geometry.Side.BOTTOM, 0, 0);
-                    }
+                    menu.show(uiNode, javafx.geometry.Side.BOTTOM, 0, 0);
                 });
             });
         } catch (Exception e) {
@@ -167,15 +150,59 @@ public class IdentifierBlock extends AbstractExpressionBlock {
     }
 
     /**
-     * Simplify type names for user-friendliness
+     * Analyzes the AST parent to guess what type is required here.
      */
+    private String determineExpectedType() {
+        if (this.astNode == null || this.astNode.getParent() == null) return "any";
+
+        ASTNode parent = this.astNode.getParent();
+
+        // 1. Boolean Contexts
+        if (parent instanceof IfStatement) {
+            if (((IfStatement) parent).getExpression() == this.astNode) return "boolean";
+        }
+        if (parent instanceof WhileStatement) {
+            if (((WhileStatement) parent).getExpression() == this.astNode) return "boolean";
+        }
+        if (parent instanceof DoStatement) {
+            if (((DoStatement) parent).getExpression() == this.astNode) return "boolean";
+        }
+
+        // 2. Math Contexts
+        if (parent instanceof InfixExpression) {
+            InfixExpression infix = (InfixExpression) parent;
+            // If operator is math (+, -, *, /, %), expect numbers
+            if (infix.getOperator() != InfixExpression.Operator.EQUALS &&
+                    infix.getOperator() != InfixExpression.Operator.NOT_EQUALS &&
+                    infix.getOperator() != InfixExpression.Operator.CONDITIONAL_AND &&
+                    infix.getOperator() != InfixExpression.Operator.CONDITIONAL_OR) {
+                return "number";
+            }
+        }
+
+        // 3. Assignments (Check left side to filter right side)
+        if (parent instanceof Assignment) {
+            Assignment assignment = (Assignment) parent;
+            // If we are the Right Hand Side, check the Left Hand Side type
+            if (assignment.getRightHandSide() == this.astNode) {
+                Expression lhs = assignment.getLeftHandSide();
+                ITypeBinding binding = lhs.resolveTypeBinding();
+                if (binding != null) {
+                    if ("boolean".equals(binding.getName())) return "boolean";
+                    if ("int".equals(binding.getName()) || "double".equals(binding.getName())) return "number";
+                    if ("String".equals(binding.getName())) return "String";
+                }
+            }
+        }
+
+        return "any";
+    }
+
     private String getSimpleTypeName(String detail) {
-        if (detail.contains("int")) return "number";
-        if (detail.contains("double") || detail.contains("float")) return "decimal";
-        if (detail.contains("boolean")) return "true/false";
-        if (detail.contains("String")) return "text";
-        if (detail.contains("[]")) return "list";
-        return detail.replaceAll(".*\\.", ""); // Remove package names
+        if (detail == null) return "";
+        if (detail.equals("int") || detail.equals("double")) return "number";
+        if (detail.equals("boolean")) return "bool";
+        return detail;
     }
 
     private void applySuggestion(CompletionItem item, CompletionContext context) {

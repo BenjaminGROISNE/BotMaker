@@ -12,30 +12,25 @@ public class TypeValidator {
 
     // Variables that should be hidden from users (system/special variables)
     private static final Set<String> HIDDEN_VARIABLES = Set.of(
-            "args",      // Command line arguments array
-            "this",      // Current object reference
-            "super",     // Parent class reference
-            "scanner"    // System scanner object
+            "args", "this", "super", "scanner"
     );
+
 
     /**
      * Check if a variable should be visible to users in autocomplete
      */
     public static boolean isUserVariable(String variableName) {
-        if (variableName == null) return false;
+        if (variableName == null || variableName.isEmpty()) return false;
 
-        // Hide system variables
-        if (HIDDEN_VARIABLES.contains(variableName)) {
-            return false;
-        }
+        // Clean the name (LSP sometimes sends "args : String[]")
+        String cleanName = variableName.split(" ")[0].split(":")[0];
 
-        // Hide variables starting with underscore (convention for internal)
-        if (variableName.startsWith("_")) {
-            return false;
-        }
+        if (HIDDEN_VARIABLES.contains(cleanName)) return false;
+        if (cleanName.startsWith("_")) return false;
 
         return true;
     }
+
 
     /**
      * Get a user-friendly type name (no technical jargon)
@@ -88,7 +83,33 @@ public class TypeValidator {
                 return typeName;
         }
     }
+    public static boolean isTypeCompatible(String javaType, String targetUiType) {
+        if (targetUiType == null || targetUiType.equals("any")) return true;
+        if (javaType == null) return true; // If unknown, let it pass to be safe
 
+        // Normalize
+        javaType = javaType.trim();
+
+        switch (targetUiType) {
+            case "boolean":
+                return javaType.equals("boolean") || javaType.equals("Boolean");
+
+            case "number":
+                return javaType.equals("int") || javaType.equals("Integer") ||
+                        javaType.equals("double") || javaType.equals("Double") ||
+                        javaType.equals("float") || javaType.equals("Float") ||
+                        javaType.equals("long") || javaType.equals("Long") ||
+                        javaType.equals("short") || javaType.equals("Short") ||
+                        javaType.equals("byte") || javaType.equals("Byte");
+
+            case "String":
+            case "Text":
+                return javaType.equals("String");
+
+            default:
+                return true;
+        }
+    }
     /**
      * Check if two types are compatible for assignment
      */
