@@ -74,7 +74,6 @@ public class IdentifierBlock extends AbstractExpressionBlock {
             context.server().getTextDocumentService().completion(params).thenAccept(result -> {
                 if (result == null || (result.isLeft() && result.getLeft().isEmpty()) ||
                         (result.isRight() && result.getRight().getItems().isEmpty())) {
-                    System.out.println("[Debug] No completion items returned.");
                     return;
                 }
 
@@ -104,8 +103,6 @@ public class IdentifierBlock extends AbstractExpressionBlock {
                                 }
 
                                 boolean match = TypeManager.isCompatible(typeInfo, expectedType);
-                                System.out.println(String.format("[Debug] Item: %-15s | Type: %-10s | Expected: %-10s | Match: %s",
-                                        item.getLabel(), typeInfo, expectedType, match));
                                 return match;
                             })
                             .collect(Collectors.toList());
@@ -118,14 +115,12 @@ public class IdentifierBlock extends AbstractExpressionBlock {
                     } else {
                         for (CompletionItem item : filteredItems) {
                             String label = item.getLabel();
-                            // If detail is missing, we still want to display useful info
                             String detail = item.getDetail();
                             if (detail == null && label.contains(" : ")) {
                                 detail = label.split(" : ")[1].trim();
                             }
 
                             String display = label;
-                            // Avoid duplicating info if label is "x : int" and detail is "int"
                             if (!label.contains(":") && detail != null && !detail.isEmpty()) {
                                 display += " (" + getSimpleTypeName(detail) + ")";
                             }
@@ -178,18 +173,15 @@ public class IdentifierBlock extends AbstractExpressionBlock {
         // 3. Unary Contexts (Prefix/Postfix)
         if (parent instanceof PrefixExpression) {
             PrefixExpression.Operator op = ((PrefixExpression) parent).getOperator();
-            // Logical NOT (!) expects boolean
             if (op == PrefixExpression.Operator.NOT) {
                 return TypeManager.UI_TYPE_BOOLEAN;
             }
-            // Increment/Decrement/Plus/Minus (++x, -x) expect numbers
             if (op == PrefixExpression.Operator.INCREMENT || op == PrefixExpression.Operator.DECREMENT ||
                     op == PrefixExpression.Operator.PLUS || op == PrefixExpression.Operator.MINUS) {
                 return TypeManager.UI_TYPE_NUMBER;
             }
         }
         if (parent instanceof PostfixExpression) {
-            // x++, x-- expect numbers
             return TypeManager.UI_TYPE_NUMBER;
         }
 
@@ -198,18 +190,15 @@ public class IdentifierBlock extends AbstractExpressionBlock {
             InfixExpression infix = (InfixExpression) parent;
             InfixExpression.Operator op = infix.getOperator();
 
-            // Arithmetic operators (+, -, *, /, %) expect numbers
             if (op == InfixExpression.Operator.PLUS || op == InfixExpression.Operator.MINUS ||
                     op == InfixExpression.Operator.TIMES || op == InfixExpression.Operator.DIVIDE ||
                     op == InfixExpression.Operator.REMAINDER) {
                 return TypeManager.UI_TYPE_NUMBER;
             }
-            // Comparison operators (<, >, <=, >=) expect numbers
             if (op == InfixExpression.Operator.LESS || op == InfixExpression.Operator.GREATER ||
                     op == InfixExpression.Operator.LESS_EQUALS || op == InfixExpression.Operator.GREATER_EQUALS) {
                 return TypeManager.UI_TYPE_NUMBER;
             }
-            // Conditional operators (&&, ||) expect booleans
             if (op == InfixExpression.Operator.CONDITIONAL_AND || op == InfixExpression.Operator.CONDITIONAL_OR) {
                 return TypeManager.UI_TYPE_BOOLEAN;
             }
@@ -229,6 +218,19 @@ public class IdentifierBlock extends AbstractExpressionBlock {
             }
         }
 
+        // 6. Variable Declaration Initialization (Target must match Variable Type)
+        // e.g. int x = [variable]
+        if (parent instanceof VariableDeclarationFragment) {
+            VariableDeclarationFragment frag = (VariableDeclarationFragment) parent;
+            if (frag.getInitializer() == child) {
+                ASTNode grandParent = frag.getParent();
+                if (grandParent instanceof VariableDeclarationStatement) {
+                    Type type = ((VariableDeclarationStatement) grandParent).getType();
+                    return TypeManager.determineUiType(type.toString());
+                }
+            }
+        }
+
         return TypeManager.UI_TYPE_ANY;
     }
 
@@ -241,14 +243,9 @@ public class IdentifierBlock extends AbstractExpressionBlock {
 
     private void applySuggestion(CompletionItem item, CompletionContext context) {
         try {
-            // Sometimes insertText is missing, fallback to label.
-            // Also handle label formats like "myVar : int" -> we only want "myVar"
-            String insertText = item.getInsertText();
-            if (insertText == null) {
-                insertText = item.getLabel();
-                if (insertText.contains(" : ")) {
-                    insertText = insertText.split(" : ")[0];
-                }
+            String insertText = item.getInsertText() != null ? item.getInsertText() : item.getLabel();
+            if (insertText.contains(" : ")) {
+                insertText = insertText.split(" : ")[0];
             }
             context.codeEditor().replaceSimpleName((SimpleName) this.astNode, insertText);
         } catch (Exception e) {
