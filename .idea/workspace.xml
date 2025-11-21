@@ -4,7 +4,10 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="cba04025-c331-4634-a893-436bad03efc0" name="Changes" comment="init BotMaker" />
+    <list default="true" id="cba04025-c331-4634-a893-436bad03efc0" name="Changes" comment="Expression type filtering">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/botmaker/blocks/IdentifierBlock.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/botmaker/blocks/IdentifierBlock.java" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -18,6 +21,9 @@
   <component name="ExternalProjectsManager">
     <system id="GRADLE">
       <state>
+        <task path="$PROJECT_DIR$">
+          <activation />
+        </task>
         <projects_view>
           <tree_state>
             <expand>
@@ -32,13 +38,46 @@
       </state>
     </system>
   </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Class" />
+      </list>
+    </option>
+  </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+    <option name="RESET_MODE" value="HARD" />
+  </component>
+  <component name="GitHubPullRequestSearchHistory">{
+  &quot;lastFilter&quot;: {
+    &quot;state&quot;: &quot;OPEN&quot;,
+    &quot;assignee&quot;: &quot;HiddenDev568&quot;
+  }
+}</component>
+  <component name="GithubPullRequestsUISettings">{
+  &quot;selectedUrlAndAccountId&quot;: {
+    &quot;url&quot;: &quot;git@github.com:BenjaminGROISNE/BotMaker.git&quot;,
+    &quot;accountId&quot;: &quot;ec7e42a5-ccc3-4159-bc2d-66779d152957&quot;
+  }
+}</component>
+  <component name="HighlightingSettingsPerFile">
+    <setting file="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.eclipse.lsp4j/org.eclipse.lsp4j.jsonrpc/0.21.0/bfd3025b2f10c8cbb428d539a76f02a128440480/org.eclipse.lsp4j.jsonrpc-0.21.0-sources.jar!/org/eclipse/lsp4j/jsonrpc/Endpoint.java" root0="SKIP_INSPECTION" />
+    <setting file="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.eclipse.lsp4j/org.eclipse.lsp4j/0.21.0/59f263c9f254fe06c7699b62c4e9a19ac9b43909/org.eclipse.lsp4j-0.21.0-sources.jar!/org/eclipse/lsp4j/InitializeParams.java" root0="SKIP_INSPECTION" />
+    <setting file="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.eclipse.lsp4j/org.eclipse.lsp4j/0.21.0/59f263c9f254fe06c7699b62c4e9a19ac9b43909/org.eclipse.lsp4j-0.21.0-sources.jar!/org/eclipse/lsp4j/MessageActionItem.java" root0="SKIP_INSPECTION" />
+    <setting file="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.eclipse.lsp4j/org.eclipse.lsp4j/0.21.0/59f263c9f254fe06c7699b62c4e9a19ac9b43909/org.eclipse.lsp4j-0.21.0-sources.jar!/org/eclipse/lsp4j/launch/LSPLauncher.java" root0="SKIP_INSPECTION" />
+    <setting file="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.eclipse.lsp4j/org.eclipse.lsp4j/0.21.0/59f263c9f254fe06c7699b62c4e9a19ac9b43909/org.eclipse.lsp4j-0.21.0-sources.jar!/org/eclipse/lsp4j/services/LanguageServer.java" root0="SKIP_INSPECTION" />
+  </component>
+  <component name="ProblemsViewState">
+    <option name="selectedTabId" value="ProjectErrors" />
   </component>
   <component name="ProjectColorInfo">{
   &quot;associatedIndex&quot;: 8
 }</component>
   <component name="ProjectId" id="33cXBsuKjTa26M215n7HMRjyzMz" />
+  <component name="ProjectLevelVcsManager">
+    <ConfirmationsSetting value="2" id="Add" />
+  </component>
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
@@ -46,17 +85,99 @@
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
     "ASKED_SHARE_PROJECT_CONFIGURATION_FILES": "true",
+    "Gradle.BotMaker [:com.astblocks.demo.Main.main()].executor": "Run",
+    "Gradle.BotMaker [:com.botmaker.Main.main()].executor": "Run",
+    "Gradle.BotMaker [:org.example.Main.main()].executor": "Run",
+    "Gradle.BotMaker [run].executor": "Run",
+    "Gradle.BotMaker.executor": "Run",
+    "Gradle.Build BotMaker.executor": "Run",
+    "Gradle.Download Sources.executor": "Run",
     "ModuleVcsDetector.initialDetectionPerformed": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252": "true",
     "RunOnceActivity.git.unshallow": "true",
-    "git-widget-placeholder": "main",
+    "SHELLCHECK.PATH": "/home/groisnebenjamin/.local/share/JetBrains/IdeaIC2025.2/Shell Script/shellcheck",
+    "git-widget-placeholder": "dev",
     "kotlin-language-version-configured": "true",
-    "last_opened_file_path": "/home/groisnebenjamin/IdeaProjects",
+    "last_opened_file_path": "/home/groisnebenjamin/IdeaProjects/BotMaker",
     "onboarding.tips.debug.path": "/home/groisnebenjamin/IdeaProjects/BotMaker/src/main/java/org/example/Main.java",
-    "settings.editor.selected.configurable": "project.propVCSSupport.DirectoryMappings"
+    "project.structure.last.edited": "Modules",
+    "project.structure.proportion": "0.15",
+    "project.structure.side.proportion": "0.2",
+    "settings.editor.selected.configurable": "preferences.pluginManager"
   }
 }]]></component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/tools" />
+    </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/projects/Demo" />
+      <recent name="$PROJECT_DIR$" />
+      <recent name="$PROJECT_DIR$/projects/src/main/java" />
+    </key>
+  </component>
+  <component name="RunManager" selected="Gradle.BotMaker [run]">
+    <configuration name="Main" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="com.botmaker.Main" />
+      <module name="BotMaker.main" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="com.botmaker.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="com.astblocks.demo.Main" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="com.astblocks.demo.Main" />
+      <module name="BotMaker.main" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="com.astblocks.demo.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="BotMaker [run]" type="GradleRunConfiguration" factoryName="Gradle" nameIsGenerated="true">
+      <ExternalSystemSettings>
+        <option name="executionName" />
+        <option name="externalProjectPath" value="$PROJECT_DIR$" />
+        <option name="externalSystemIdString" value="GRADLE" />
+        <option name="scriptParameters" value="--info" />
+        <option name="taskDescriptions">
+          <list />
+        </option>
+        <option name="taskNames">
+          <list>
+            <option value="run" />
+          </list>
+        </option>
+        <option name="vmOptions" />
+      </ExternalSystemSettings>
+      <ExternalSystemDebugServerProcess>true</ExternalSystemDebugServerProcess>
+      <ExternalSystemReattachDebugProcess>true</ExternalSystemReattachDebugProcess>
+      <DebugAllEnabled>false</DebugAllEnabled>
+      <RunAsTest>false</RunAsTest>
+      <method v="2" />
+    </configuration>
+    <list>
+      <item itemvalue="Application.com.astblocks.demo.Main" />
+      <item itemvalue="Application.Main" />
+      <item itemvalue="Gradle.BotMaker [run]" />
+    </list>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Application.com.astblocks.demo.Main" />
+        <item itemvalue="Application.Main" />
+      </list>
+    </recent_temporary>
+  </component>
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
       <changelist id="cba04025-c331-4634-a893-436bad03efc0" name="Changes" comment="" />
@@ -65,20 +186,414 @@
       <option name="presentableId" value="Default" />
       <updated>1759617202271</updated>
     </task>
-    <task id="LOCAL-00001" summary="init BotMaker">
+    <task id="LOCAL-00009" summary="correct debug highlight with ifblock">
       <option name="closed" value="true" />
-      <created>1759617517305</created>
-      <option name="number" value="00001" />
-      <option name="presentableId" value="LOCAL-00001" />
+      <created>1760197259535</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
       <option name="project" value="LOCAL" />
-      <updated>1759617517305</updated>
+      <updated>1760197259535</updated>
     </task>
-    <option name="localTasksCounter" value="2" />
+    <task id="LOCAL-00010" summary="correct debug highlight with ifblock and binaryexpressionblock">
+      <option name="closed" value="true" />
+      <created>1760197281727</created>
+      <option name="number" value="00010" />
+      <option name="presentableId" value="LOCAL-00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1760197281727</updated>
+    </task>
+    <task id="LOCAL-00011" summary="Refactor Main file. ifcondition block still doesn't work">
+      <option name="closed" value="true" />
+      <created>1760223934148</created>
+      <option name="number" value="00011" />
+      <option name="presentableId" value="LOCAL-00011" />
+      <option name="project" value="LOCAL" />
+      <updated>1760223934148</updated>
+    </task>
+    <task id="LOCAL-00012" summary="Working if condition highlight">
+      <option name="closed" value="true" />
+      <created>1760224538321</created>
+      <option name="number" value="00012" />
+      <option name="presentableId" value="LOCAL-00012" />
+      <option name="project" value="LOCAL" />
+      <updated>1760224538321</updated>
+    </task>
+    <task id="LOCAL-00013" summary="&#10;   1 feat(ui): Implement drag-and-drop for adding new blocks&#10;   2 &#10;   3 Adds a drag-and-drop system for adding new statement blocks to the visual editor.&#10;   4 &#10;   5 This includes a draggable block palette and highlighting separator lines to indicate insertion points on `BodyBlock` drop targets. The hover-event logging has also been refactored to be more detailed and object-oriented.">
+      <option name="closed" value="true" />
+      <created>1760387960335</created>
+      <option name="number" value="00013" />
+      <option name="presentableId" value="LOCAL-00013" />
+      <option name="project" value="LOCAL" />
+      <updated>1760387960335</updated>
+    </task>
+    <task id="LOCAL-00014" summary="working drag block and hover effect">
+      <option name="closed" value="true" />
+      <created>1760471557976</created>
+      <option name="number" value="00014" />
+      <option name="presentableId" value="LOCAL-00014" />
+      <option name="project" value="LOCAL" />
+      <updated>1760471557976</updated>
+    </task>
+    <task id="LOCAL-00015" summary="update rewriter print has some problem loading empty messages">
+      <option name="closed" value="true" />
+      <created>1760740377441</created>
+      <option name="number" value="00015" />
+      <option name="presentableId" value="LOCAL-00015" />
+      <option name="project" value="LOCAL" />
+      <updated>1760740377441</updated>
+    </task>
+    <task id="LOCAL-00016" summary="Working println rewriter">
+      <option name="closed" value="true" />
+      <created>1760785954742</created>
+      <option name="number" value="00016" />
+      <option name="presentableId" value="LOCAL-00016" />
+      <option name="project" value="LOCAL" />
+      <updated>1760785954742</updated>
+    </task>
+    <task id="LOCAL-00017" summary="Started Main refactor">
+      <option name="closed" value="true" />
+      <created>1760786917844</created>
+      <option name="number" value="00017" />
+      <option name="presentableId" value="LOCAL-00017" />
+      <option name="project" value="LOCAL" />
+      <updated>1760786917844</updated>
+    </task>
+    <task id="LOCAL-00018" summary="added deletebutton">
+      <option name="closed" value="true" />
+      <created>1760787953350</created>
+      <option name="number" value="00018" />
+      <option name="presentableId" value="LOCAL-00018" />
+      <option name="project" value="LOCAL" />
+      <updated>1760787953350</updated>
+    </task>
+    <task id="LOCAL-00019" summary="Fixed stackOverflow error adjusted hover effect on blocks and block palette">
+      <option name="closed" value="true" />
+      <created>1760893175944</created>
+      <option name="number" value="00019" />
+      <option name="presentableId" value="LOCAL-00019" />
+      <option name="project" value="LOCAL" />
+      <updated>1760893175944</updated>
+    </task>
+    <task id="LOCAL-00020" summary="some ui changes">
+      <option name="closed" value="true" />
+      <created>1760894009416</created>
+      <option name="number" value="00020" />
+      <option name="presentableId" value="LOCAL-00020" />
+      <option name="project" value="LOCAL" />
+      <updated>1760894009416</updated>
+    </task>
+    <task id="LOCAL-00021" summary="some ui changes">
+      <option name="closed" value="true" />
+      <created>1760894711350</created>
+      <option name="number" value="00021" />
+      <option name="presentableId" value="LOCAL-00021" />
+      <option name="project" value="LOCAL" />
+      <updated>1760894711350</updated>
+    </task>
+    <task id="LOCAL-00022" summary="can edit declare variable name">
+      <option name="closed" value="true" />
+      <created>1760894984994</created>
+      <option name="number" value="00022" />
+      <option name="presentableId" value="LOCAL-00022" />
+      <option name="project" value="LOCAL" />
+      <updated>1760894984994</updated>
+    </task>
+    <task id="LOCAL-00023" summary="First shot at validating blocks (can identify the block but to proceed further">
+      <option name="closed" value="true" />
+      <created>1760895752685</created>
+      <option name="number" value="00023" />
+      <option name="presentableId" value="LOCAL-00023" />
+      <option name="project" value="LOCAL" />
+      <updated>1760895752685</updated>
+    </task>
+    <task id="LOCAL-00024" summary="Fixed ifblock partially">
+      <option name="closed" value="true" />
+      <created>1760900919927</created>
+      <option name="number" value="00024" />
+      <option name="presentableId" value="LOCAL-00024" />
+      <option name="project" value="LOCAL" />
+      <updated>1760900919927</updated>
+    </task>
+    <task id="LOCAL-00025" summary="changed else block">
+      <option name="closed" value="true" />
+      <created>1760902091184</created>
+      <option name="number" value="00025" />
+      <option name="presentableId" value="LOCAL-00025" />
+      <option name="project" value="LOCAL" />
+      <updated>1760902091184</updated>
+    </task>
+    <task id="LOCAL-00026" summary="empty body drag fixed">
+      <option name="closed" value="true" />
+      <created>1760903007366</created>
+      <option name="number" value="00026" />
+      <option name="presentableId" value="LOCAL-00026" />
+      <option name="project" value="LOCAL" />
+      <updated>1760903007366</updated>
+    </task>
+    <task id="LOCAL-00027" summary="Tried gradle project">
+      <option name="closed" value="true" />
+      <created>1761931992782</created>
+      <option name="number" value="00027" />
+      <option name="presentableId" value="LOCAL-00027" />
+      <option name="project" value="LOCAL" />
+      <updated>1761931992782</updated>
+    </task>
+    <task id="LOCAL-00028" summary="Tried Maven project">
+      <option name="closed" value="true" />
+      <created>1761933394462</created>
+      <option name="number" value="00028" />
+      <option name="presentableId" value="LOCAL-00028" />
+      <option name="project" value="LOCAL" />
+      <updated>1761933394462</updated>
+    </task>
+    <task id="LOCAL-00029" summary="HOLY SHIT CLAUDE LE BOSS">
+      <option name="closed" value="true" />
+      <created>1762981770747</created>
+      <option name="number" value="00029" />
+      <option name="presentableId" value="LOCAL-00029" />
+      <option name="project" value="LOCAL" />
+      <updated>1762981770747</updated>
+    </task>
+    <task id="LOCAL-00030" summary="Terminal refactor, two windows, error translation">
+      <option name="closed" value="true" />
+      <created>1763160135194</created>
+      <option name="number" value="00030" />
+      <option name="presentableId" value="LOCAL-00030" />
+      <option name="project" value="LOCAL" />
+      <updated>1763160135194</updated>
+    </task>
+    <task id="LOCAL-00031" summary="auto variable replacement">
+      <option name="closed" value="true" />
+      <created>1763324418690</created>
+      <option name="number" value="00031" />
+      <option name="presentableId" value="LOCAL-00031" />
+      <option name="project" value="LOCAL" />
+      <updated>1763324418690</updated>
+    </task>
+    <task id="LOCAL-00032" summary="auto switch to terminal when running, create declare variable fixed. can rewrite var name">
+      <option name="closed" value="true" />
+      <created>1763325297918</created>
+      <option name="number" value="00032" />
+      <option name="presentableId" value="LOCAL-00032" />
+      <option name="project" value="LOCAL" />
+      <updated>1763325297918</updated>
+    </task>
+    <task id="LOCAL-00033" summary="Claude refactor, compiles, shows UI but a few problems to fix still">
+      <option name="closed" value="true" />
+      <created>1763414348506</created>
+      <option name="number" value="00033" />
+      <option name="presentableId" value="LOCAL-00033" />
+      <option name="project" value="LOCAL" />
+      <updated>1763414348506</updated>
+    </task>
+    <task id="LOCAL-00034" summary="Fixed refactor bugs">
+      <option name="closed" value="true" />
+      <created>1763496496141</created>
+      <option name="number" value="00034" />
+      <option name="presentableId" value="LOCAL-00034" />
+      <option name="project" value="LOCAL" />
+      <updated>1763496496141</updated>
+    </task>
+    <task id="LOCAL-00035" summary="small refactor">
+      <option name="closed" value="true" />
+      <created>1763497628975</created>
+      <option name="number" value="00035" />
+      <option name="presentableId" value="LOCAL-00035" />
+      <option name="project" value="LOCAL" />
+      <updated>1763497628975</updated>
+    </task>
+    <task id="LOCAL-00036" summary="fixed project dependance on Demo.java and compile/run DEmo.java recreated">
+      <option name="closed" value="true" />
+      <created>1763499560772</created>
+      <option name="number" value="00036" />
+      <option name="presentableId" value="LOCAL-00036" />
+      <option name="project" value="LOCAL" />
+      <updated>1763499560772</updated>
+    </task>
+    <task id="LOCAL-00037" summary="Project selection works">
+      <option name="closed" value="true" />
+      <created>1763500918264</created>
+      <option name="number" value="00037" />
+      <option name="presentableId" value="LOCAL-00037" />
+      <option name="project" value="LOCAL" />
+      <updated>1763500918264</updated>
+    </task>
+    <task id="LOCAL-00038" summary="README.md">
+      <option name="closed" value="true" />
+      <created>1763501103875</created>
+      <option name="number" value="00038" />
+      <option name="presentableId" value="LOCAL-00038" />
+      <option name="project" value="LOCAL" />
+      <updated>1763501103875</updated>
+    </task>
+    <task id="LOCAL-00039" summary="Project Creation and opens most recent project">
+      <option name="closed" value="true" />
+      <created>1763578177527</created>
+      <option name="number" value="00039" />
+      <option name="presentableId" value="LOCAL-00039" />
+      <option name="project" value="LOCAL" />
+      <updated>1763578177527</updated>
+    </task>
+    <task id="LOCAL-00040" summary="Added MenuBar">
+      <option name="closed" value="true" />
+      <created>1763578768926</created>
+      <option name="number" value="00040" />
+      <option name="presentableId" value="LOCAL-00040" />
+      <option name="project" value="LOCAL" />
+      <updated>1763578768926</updated>
+    </task>
+    <task id="LOCAL-00041" summary="Kinda working debug next step and continue">
+      <option name="closed" value="true" />
+      <created>1763582756754</created>
+      <option name="number" value="00041" />
+      <option name="presentableId" value="LOCAL-00041" />
+      <option name="project" value="LOCAL" />
+      <updated>1763582756754</updated>
+    </task>
+    <task id="LOCAL-00042" summary="wanky visble breakpoints">
+      <option name="closed" value="true" />
+      <created>1763583468149</created>
+      <option name="number" value="00042" />
+      <option name="presentableId" value="LOCAL-00042" />
+      <option name="project" value="LOCAL" />
+      <updated>1763583468149</updated>
+    </task>
+    <task id="LOCAL-00043" summary="fixed exit app added stop button that needs to stop finishing running">
+      <option name="closed" value="true" />
+      <created>1763583993628</created>
+      <option name="number" value="00043" />
+      <option name="presentableId" value="LOCAL-00043" />
+      <option name="project" value="LOCAL" />
+      <updated>1763583993628</updated>
+    </task>
+    <task id="LOCAL-00044" summary="Added block dragging">
+      <option name="closed" value="true" />
+      <created>1763672206806</created>
+      <option name="number" value="00044" />
+      <option name="presentableId" value="LOCAL-00044" />
+      <option name="project" value="LOCAL" />
+      <updated>1763672206806</updated>
+    </task>
+    <task id="LOCAL-00045" summary="Added many new blocks. Still some issues to fix with them. Check for unreachable code error">
+      <option name="closed" value="true" />
+      <created>1763674734388</created>
+      <option name="number" value="00045" />
+      <option name="presentableId" value="LOCAL-00045" />
+      <option name="project" value="LOCAL" />
+      <updated>1763674734388</updated>
+    </task>
+    <task id="LOCAL-00046" summary="Added clear jdt ls workspace cache">
+      <option name="closed" value="true" />
+      <created>1763739736655</created>
+      <option name="number" value="00046" />
+      <option name="presentableId" value="LOCAL-00046" />
+      <option name="project" value="LOCAL" />
+      <updated>1763739736655</updated>
+    </task>
+    <task id="LOCAL-00047" summary="Uno and Redo button working">
+      <option name="closed" value="true" />
+      <created>1763747071949</created>
+      <option name="number" value="00047" />
+      <option name="presentableId" value="LOCAL-00047" />
+      <option name="project" value="LOCAL" />
+      <updated>1763747071949</updated>
+    </task>
+    <task id="LOCAL-00048" summary="Comment block fix">
+      <option name="closed" value="true" />
+      <created>1763750456300</created>
+      <option name="number" value="00048" />
+      <option name="presentableId" value="LOCAL-00048" />
+      <option name="project" value="LOCAL" />
+      <updated>1763750456300</updated>
+    </task>
+    <task id="LOCAL-00049" summary="TypeValidator, styles revamp, comment removed // and /*">
+      <option name="closed" value="true" />
+      <created>1763752293035</created>
+      <option name="number" value="00049" />
+      <option name="presentableId" value="LOCAL-00049" />
+      <option name="project" value="LOCAL" />
+      <updated>1763752293035</updated>
+    </task>
+    <task id="LOCAL-00050" summary="upgrades errors">
+      <option name="closed" value="true" />
+      <created>1763753761795</created>
+      <option name="number" value="00050" />
+      <option name="presentableId" value="LOCAL-00050" />
+      <option name="project" value="LOCAL" />
+      <updated>1763753761795</updated>
+    </task>
+    <task id="LOCAL-00051" summary="Started List">
+      <option name="closed" value="true" />
+      <created>1763754907096</created>
+      <option name="number" value="00051" />
+      <option name="presentableId" value="LOCAL-00051" />
+      <option name="project" value="LOCAL" />
+      <updated>1763754907096</updated>
+    </task>
+    <task id="LOCAL-00052" summary="fix stop button, reworked list variable, assignment operator not working yet">
+      <option name="closed" value="true" />
+      <created>1763761946501</created>
+      <option name="number" value="00052" />
+      <option name="presentableId" value="LOCAL-00052" />
+      <option name="project" value="LOCAL" />
+      <updated>1763761946501</updated>
+    </task>
+    <task id="LOCAL-00053" summary="Assignment operator update and event log console">
+      <option name="closed" value="true" />
+      <created>1763763364258</created>
+      <option name="number" value="00053" />
+      <option name="presentableId" value="LOCAL-00053" />
+      <option name="project" value="LOCAL" />
+      <updated>1763763364258</updated>
+    </task>
+    <task id="LOCAL-00054" summary="Only expressions of correct type are visible">
+      <option name="closed" value="true" />
+      <created>1763764695314</created>
+      <option name="number" value="00054" />
+      <option name="presentableId" value="LOCAL-00054" />
+      <option name="project" value="LOCAL" />
+      <updated>1763764695315</updated>
+    </task>
+    <task id="LOCAL-00055" summary="Started variable filtering based on type">
+      <option name="closed" value="true" />
+      <created>1763765254934</created>
+      <option name="number" value="00055" />
+      <option name="presentableId" value="LOCAL-00055" />
+      <option name="project" value="LOCAL" />
+      <updated>1763765254934</updated>
+    </task>
+    <task id="LOCAL-00056" summary="Variable proposition works for boolean">
+      <option name="closed" value="true" />
+      <created>1763766635497</created>
+      <option name="number" value="00056" />
+      <option name="presentableId" value="LOCAL-00056" />
+      <option name="project" value="LOCAL" />
+      <updated>1763766635497</updated>
+    </task>
+    <task id="LOCAL-00057" summary="Expression type filtering">
+      <option name="closed" value="true" />
+      <created>1763767078405</created>
+      <option name="number" value="00057" />
+      <option name="presentableId" value="LOCAL-00057" />
+      <option name="project" value="LOCAL" />
+      <updated>1763767078405</updated>
+    </task>
+    <option name="localTasksCounter" value="58" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
+    <option name="OPEN_GENERIC_TABS">
+      <map>
+        <entry key="54275284-16e8-4ad8-839d-917173fc8757" value="TOOL_WINDOW" />
+      </map>
+    </option>
     <option name="TAB_STATES">
       <map>
+        <entry key="54275284-16e8-4ad8-839d-917173fc8757">
+          <value>
+            <State />
+          </value>
+        </entry>
         <entry key="MAIN">
           <value>
             <State />
@@ -91,7 +606,47 @@
     <ignored-roots>
       <path value="$PROJECT_DIR$/.." />
     </ignored-roots>
-    <MESSAGE value="init BotMaker" />
-    <option name="LAST_COMMIT_MESSAGE" value="init BotMaker" />
+    <MESSAGE value="Claude refactor, compiles, shows UI but a few problems to fix still" />
+    <MESSAGE value="Fixed refactor bugs" />
+    <MESSAGE value="small refactor" />
+    <MESSAGE value="fixed project dependance on Demo.java and compile/run DEmo.java recreated" />
+    <MESSAGE value="Project selection works" />
+    <MESSAGE value="README.md" />
+    <MESSAGE value="Project Creation and opens most recent project" />
+    <MESSAGE value="Added MenuBar" />
+    <MESSAGE value="Kinda working debug next step and continue" />
+    <MESSAGE value="wanky visble breakpoints" />
+    <MESSAGE value="fixed exit app added stop button that needs to stop finishing running" />
+    <MESSAGE value="Added block dragging" />
+    <MESSAGE value="Added many new blocks. Still some issues to fix with them. Check for unreachable code error" />
+    <MESSAGE value="Added clear jdt ls workspace cache" />
+    <MESSAGE value="Uno and Redo button working" />
+    <MESSAGE value="Comment block fix" />
+    <MESSAGE value="TypeValidator, styles revamp, comment removed // and /*" />
+    <MESSAGE value="upgrades errors" />
+    <MESSAGE value="Started List" />
+    <MESSAGE value="fix stop button, reworked list variable, assignment operator not working yet" />
+    <MESSAGE value="Assignment operator update and event log console" />
+    <MESSAGE value="Only expressions of correct type are visible" />
+    <MESSAGE value="Started variable filtering based on type" />
+    <MESSAGE value="Variable proposition works for boolean" />
+    <MESSAGE value="Expression type filtering" />
+    <option name="LAST_COMMIT_MESSAGE" value="Expression type filtering" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/com/botmaker/AstToBlocksConverter.java</url>
+          <line>94</line>
+          <option name="timeStamp" value="4" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
+    <watches-manager>
+      <configuration name="GradleRunConfiguration">
+        <watch expression="&#10;        // 7. Array Index Out of Bounds&#10;        int[] numbers = {1, 2, 3};" />
+      </configuration>
+    </watches-manager>
   </component>
 </project>
