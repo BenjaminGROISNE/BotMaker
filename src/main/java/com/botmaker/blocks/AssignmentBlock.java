@@ -3,6 +3,7 @@ package com.botmaker.blocks;
 import com.botmaker.core.AbstractStatementBlock;
 import com.botmaker.core.ExpressionBlock;
 import com.botmaker.lsp.CompletionContext;
+import com.botmaker.ui.AddableExpression;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
@@ -93,11 +94,8 @@ public class AssignmentBlock extends AbstractStatementBlock {
             if (newOperator != null && !newOperator.equals(this.operator)) {
                 this.operator = newOperator;
 
-                // FIX: Extract the inner Expression from the ExpressionStatement wrapper
-                // The astNode field holds the statement (e.g., "i++;"), but the CodeEditor
-                // expects the expression (e.g., "i++" or "a = b") to determine the node type.
                 if (this.astNode instanceof ExpressionStatement) {
-                    Expression expr = ((ExpressionStatement) this.astNode).getExpression();
+                    org.eclipse.jdt.core.dom.Expression expr = ((ExpressionStatement) this.astNode).getExpression();
                     context.codeEditor().updateAssignmentOperator(expr, newOperator);
                 }
             }
@@ -124,7 +122,7 @@ public class AssignmentBlock extends AbstractStatementBlock {
 
         Button deleteButton = new Button("X");
         deleteButton.setOnAction(e -> {
-            context.codeEditor().deleteStatement((Statement) this.astNode);
+            context.codeEditor().deleteStatement((org.eclipse.jdt.core.dom.Statement) this.astNode);
         });
 
         container.getChildren().addAll(spacer, deleteButton);
@@ -134,12 +132,17 @@ public class AssignmentBlock extends AbstractStatementBlock {
 
     private void showExpressionMenu(Button button, CompletionContext context) {
         ContextMenu menu = new ContextMenu();
+        // FIX: Apply style consistency
+        menu.setStyle("-fx-control-inner-background: white;");
 
         for (com.botmaker.ui.AddableExpression type : com.botmaker.ui.AddableExpression.values()) {
             MenuItem menuItem = new MenuItem(type.getDisplayName());
+            // FIX: Ensure text is visible
+            menuItem.setStyle("-fx-text-fill: black;");
+
             menuItem.setOnAction(e -> {
                 if (rightHandSide != null) {
-                    Expression toReplace = (Expression) rightHandSide.getAstNode();
+                    org.eclipse.jdt.core.dom.Expression toReplace = (org.eclipse.jdt.core.dom.Expression) rightHandSide.getAstNode();
                     context.codeEditor().replaceExpression(toReplace, type);
                 }
             });

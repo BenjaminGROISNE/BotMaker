@@ -26,36 +26,18 @@ public class IfBlock extends AbstractStatementBlock {
         super(id, astNode);
     }
 
-    public ExpressionBlock getCondition() {
-        return condition;
-    }
-
-    public void setCondition(ExpressionBlock condition) {
-        this.condition = condition;
-    }
-
-    public BodyBlock getThenBody() {
-        return thenBody;
-    }
-
-    public void setThenBody(BodyBlock thenBody) {
-        this.thenBody = thenBody;
-    }
-
-    public com.botmaker.core.StatementBlock getElseStatement() {
-        return elseStatement;
-    }
-
-    public void setElseStatement(com.botmaker.core.StatementBlock elseStatement) {
-        this.elseStatement = elseStatement;
-    }
+    public ExpressionBlock getCondition() { return condition; }
+    public void setCondition(ExpressionBlock condition) { this.condition = condition; }
+    public BodyBlock getThenBody() { return thenBody; }
+    public void setThenBody(BodyBlock thenBody) { this.thenBody = thenBody; }
+    public com.botmaker.core.StatementBlock getElseStatement() { return elseStatement; }
+    public void setElseStatement(com.botmaker.core.StatementBlock elseStatement) { this.elseStatement = elseStatement; }
 
     @Override
     protected Node createUINode(CompletionContext context) {
         VBox container = new VBox(5);
         container.getStyleClass().add("if-block");
 
-        // Header: If + condition + + button + delete button
         HBox header = new HBox(5);
         header.setAlignment(Pos.CENTER_LEFT);
 
@@ -69,10 +51,12 @@ public class IfBlock extends AbstractStatementBlock {
             header.getChildren().add(createExpressionDropZone(context));
         }
 
-        // + Button for changing condition
         Button addButton = new Button("+");
         addButton.getStyleClass().add("expression-add-button");
-        addButton.setOnAction(e -> showExpressionMenu(addButton, context));
+
+        // UPDATED: Pass "boolean" as target type
+        addButton.setOnAction(e -> showExpressionMenu(addButton, context, "boolean"));
+
         header.getChildren().add(addButton);
 
         javafx.scene.layout.Pane spacer = new javafx.scene.layout.Pane();
@@ -84,7 +68,6 @@ public class IfBlock extends AbstractStatementBlock {
         header.getChildren().addAll(spacer, deleteButton);
         container.getChildren().add(header);
 
-        // Then body
         if (thenBody != null) {
             Node thenBodyNode = thenBody.getUINode(context);
             thenBodyNode.getStyleClass().add("if-body");
@@ -92,7 +75,6 @@ public class IfBlock extends AbstractStatementBlock {
             container.getChildren().add(thenBodyNode);
         }
 
-        // Else part
         if (elseStatement != null) {
             if (elseStatement instanceof com.botmaker.core.BodyBlock) {
                 VBox elseContainer = new VBox(5);
@@ -133,11 +115,15 @@ public class IfBlock extends AbstractStatementBlock {
         return container;
     }
 
-    private void showExpressionMenu(Button button, CompletionContext context) {
+    // UPDATED: Accepts targetType
+    private void showExpressionMenu(Button button, CompletionContext context, String targetType) {
         ContextMenu menu = new ContextMenu();
+        menu.setStyle("-fx-control-inner-background: white;");
 
-        for (com.botmaker.ui.AddableExpression type : com.botmaker.ui.AddableExpression.values()) {
+        for (com.botmaker.ui.AddableExpression type : com.botmaker.ui.AddableExpression.getForType(targetType)) {
             MenuItem menuItem = new MenuItem(type.getDisplayName());
+            menuItem.setStyle("-fx-text-fill: black;");
+
             menuItem.setOnAction(e -> {
                 if (condition != null) {
                     org.eclipse.jdt.core.dom.Expression toReplace = (org.eclipse.jdt.core.dom.Expression) condition.getAstNode();

@@ -32,21 +32,10 @@ public class WhileBlock extends AbstractStatementBlock implements BlockWithChild
         this.dragAndDropManager = dragAndDropManager;
     }
 
-    public ExpressionBlock getCondition() {
-        return condition;
-    }
-
-    public void setCondition(ExpressionBlock condition) {
-        this.condition = condition;
-    }
-
-    public BodyBlock getBody() {
-        return body;
-    }
-
-    public void setBody(BodyBlock body) {
-        this.body = body;
-    }
+    public ExpressionBlock getCondition() { return condition; }
+    public void setCondition(ExpressionBlock condition) { this.condition = condition; }
+    public BodyBlock getBody() { return body; }
+    public void setBody(BodyBlock body) { this.body = body; }
 
     @Override
     public List<CodeBlock> getChildren() {
@@ -61,11 +50,9 @@ public class WhileBlock extends AbstractStatementBlock implements BlockWithChild
         VBox mainContainer = new VBox(5);
         mainContainer.getStyleClass().add("while-block");
 
-        // Header row with delete button
         HBox headerRow = new HBox(5);
         headerRow.setAlignment(Pos.CENTER_LEFT);
 
-        // While condition part
         HBox header = new HBox(5);
         header.setAlignment(Pos.CENTER_LEFT);
         header.getStyleClass().add("while-header");
@@ -78,13 +65,14 @@ public class WhileBlock extends AbstractStatementBlock implements BlockWithChild
             header.getChildren().add(condition.getUINode(context));
         }
 
-        // + Button for changing condition
         Button addButton = new Button("+");
         addButton.getStyleClass().add("expression-add-button");
-        addButton.setOnAction(e -> showExpressionMenu(addButton, context));
+
+        // UPDATED: Pass expected type
+        addButton.setOnAction(e -> showExpressionMenu(addButton, context, "boolean"));
+
         header.getChildren().add(addButton);
 
-        // Add spacer and delete button
         javafx.scene.layout.Pane spacer = new javafx.scene.layout.Pane();
         HBox.setHgrow(spacer, javafx.scene.layout.Priority.ALWAYS);
 
@@ -96,7 +84,6 @@ public class WhileBlock extends AbstractStatementBlock implements BlockWithChild
         headerRow.getChildren().addAll(header, spacer, deleteButton);
         mainContainer.getChildren().add(headerRow);
 
-        // Body
         if (body != null) {
             VBox bodyContainer = new VBox();
             bodyContainer.getStyleClass().add("while-body");
@@ -108,11 +95,16 @@ public class WhileBlock extends AbstractStatementBlock implements BlockWithChild
         return mainContainer;
     }
 
-    private void showExpressionMenu(Button button, CompletionContext context) {
+    // UPDATED: Now accepts targetType and filters the enum
+    private void showExpressionMenu(Button button, CompletionContext context, String targetType) {
         ContextMenu menu = new ContextMenu();
+        menu.setStyle("-fx-control-inner-background: white;");
 
-        for (com.botmaker.ui.AddableExpression type : com.botmaker.ui.AddableExpression.values()) {
+        // Use the filter method we created in Step 1
+        for (com.botmaker.ui.AddableExpression type : com.botmaker.ui.AddableExpression.getForType(targetType)) {
             MenuItem menuItem = new MenuItem(type.getDisplayName());
+            menuItem.setStyle("-fx-text-fill: black;");
+
             menuItem.setOnAction(e -> {
                 if (condition != null) {
                     org.eclipse.jdt.core.dom.Expression toReplace = (org.eclipse.jdt.core.dom.Expression) condition.getAstNode();
