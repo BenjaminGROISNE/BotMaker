@@ -85,7 +85,12 @@ public class VariableDeclarationBlock extends AbstractStatementBlock {
         // --- ADD BUTTON ---
         Button addButton = new Button("+");
         addButton.getStyleClass().add("expression-add-button");
-        addButton.setOnAction(e -> showExpressionMenu(addButton, context));
+
+        // DYNAMIC TYPE FILTERING
+        // Calculate the UI type string (number, boolean, list, String) from the AST Type
+        String uiTargetType = TypeManager.determineUiType(variableType.toString());
+        addButton.setOnAction(e -> showExpressionMenu(addButton, context, uiTargetType));
+
         container.getChildren().add(addButton);
 
         // --- SPACER & DELETE ---
@@ -190,16 +195,20 @@ public class VariableDeclarationBlock extends AbstractStatementBlock {
         String typeName = type.toString();
         if (typeName.endsWith("[]")) {
             // Convert "int[][]" to "int list list" for display, or keep symbols
-            // Keeping symbols is often clearer for nested lists
             return typeName.replace("[]", " list");
         }
         return typeName;
     }
 
-    private void showExpressionMenu(Button button, CompletionContext context) {
+    // UPDATED: Accepts targetType and filters
+    private void showExpressionMenu(Button button, CompletionContext context, String targetType) {
         ContextMenu menu = new ContextMenu();
-        for (com.botmaker.ui.AddableExpression type : com.botmaker.ui.AddableExpression.values()) {
+        menu.setStyle("-fx-control-inner-background: white;");
+
+        for (com.botmaker.ui.AddableExpression type : com.botmaker.ui.AddableExpression.getForType(targetType)) {
             MenuItem menuItem = new MenuItem(type.getDisplayName());
+            menuItem.setStyle("-fx-text-fill: black;");
+
             menuItem.setOnAction(e -> {
                 if (initializer != null) {
                     context.codeEditor().replaceExpression(

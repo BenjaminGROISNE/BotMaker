@@ -1,6 +1,5 @@
 package com.botmaker.ui;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -11,10 +10,11 @@ public enum AddableExpression {
     NUMBER("Number", "number"),
     TRUE("True", "boolean"),
     FALSE("False", "boolean"),
-    VARIABLE("Variable", "any"), // Variables can be anything
+    VARIABLE("Variable", "any"), // Variables can be anything (IdentifierBlock handles specific filtering)
 
     // Nested
-    LIST("Sub-List", "any"),
+    // Changed from "any" to "list" to restrict array initializers to array contexts
+    LIST("Sub-List", "list"),
 
     // Math Operations (Return numbers)
     ADD("Addition (+)", "+", "number"),
@@ -47,7 +47,7 @@ public enum AddableExpression {
 
     /**
      * Returns a list of expressions suitable for a specific target type.
-     * @param targetType "boolean", "number", "String", or "any"
+     * @param targetType "boolean", "number", "String", "list", or "any"
      */
     public static List<AddableExpression> getForType(String targetType) {
         if (targetType == null || targetType.equals("any")) {
@@ -55,7 +55,12 @@ public enum AddableExpression {
         }
 
         return Arrays.stream(values())
-                .filter(e -> e.returnType.equals("any") || e.returnType.equals(targetType))
+                .filter(e -> {
+                    // Always allow "any" items (like Variable)
+                    if (e.returnType.equals("any")) return true;
+                    // Exact match
+                    return e.returnType.equals(targetType);
+                })
                 .collect(Collectors.toList());
     }
 }
