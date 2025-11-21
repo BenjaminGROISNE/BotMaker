@@ -84,7 +84,37 @@ public class CodeEditor {
         );
         triggerUpdate(newCode);
     }
+    public void addElementToArrayInitializer(
+            org.eclipse.jdt.core.dom.ArrayInitializer arrayInit,
+            com.botmaker.ui.AddableExpression type,
+            int insertIndex) {
 
+        blockFactory.setMarkNewIdentifiersAsUnedited(true);
+        String newCode = astRewriter.addElementToArrayInitializer(
+                getCompilationUnit(),
+                getCurrentCode(),
+                arrayInit,
+                type,
+                insertIndex
+        );
+        triggerUpdate(newCode);
+    }
+
+    /**
+     * Deletes an element from an ArrayInitializer at the specified index
+     */
+    public void deleteElementFromArrayInitializer(
+            org.eclipse.jdt.core.dom.ArrayInitializer arrayInit,
+            int elementIndex) {
+
+        String newCode = astRewriter.deleteElementFromArrayInitializer(
+                getCompilationUnit(),
+                getCurrentCode(),
+                arrayInit,
+                elementIndex
+        );
+        triggerUpdate(newCode);
+    }
     public void updateComment(Comment commentNode, String newText) {
         String newCode = astRewriter.updateComment(
                 getCurrentCode(),

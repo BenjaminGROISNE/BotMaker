@@ -3,6 +3,7 @@ package com.botmaker.parser;
 import com.botmaker.core.BodyBlock;
 import com.botmaker.core.StatementBlock;
 import com.botmaker.ui.AddableBlock;
+import com.botmaker.ui.AddableExpression;
 import com.botmaker.util.DefaultNames;
 import com.botmaker.util.TypeManager;
 import org.eclipse.jdt.core.dom.*;
@@ -11,6 +12,8 @@ import org.eclipse.jdt.core.dom.rewrite.ListRewrite;
 import org.eclipse.jface.text.Document;
 import org.eclipse.jface.text.IDocument;
 import org.eclipse.text.edits.TextEdit;
+
+import java.util.List;
 
 public class AstRewriter {
 
@@ -306,7 +309,7 @@ public class AstRewriter {
 
     // ADD THIS METHOD TO AstRewriter.java - replaces the existing createDefaultExpression
 
-    private Expression createDefaultExpression(AST ast, com.botmaker.ui.AddableExpression type) {
+    private Expression createDefaultExpression(AST ast, AddableExpression type) {
         switch (type) {
             case TEXT:
                 StringLiteral newString = ast.newStringLiteral();
@@ -324,6 +327,7 @@ public class AstRewriter {
 
             case VARIABLE:
                 return ast.newSimpleName(DefaultNames.DEFAULT_VARIABLE);
+
 
             case ADD:
             case SUBTRACT:
@@ -409,7 +413,73 @@ public class AstRewriter {
                 varDecl.setType(TypeManager.createTypeNode(ast, "String"));
                 return varDecl;
             }
+            case DECLARE_INT_ARRAY: {
+                VariableDeclarationFragment fragment = ast.newVariableDeclarationFragment();
+                fragment.setName(ast.newSimpleName("numbers"));
 
+                // Create empty array initializer: new int[]{0, 0, 0}
+                ArrayInitializer initializer = ast.newArrayInitializer();
+                initializer.expressions().add(ast.newNumberLiteral("0"));
+                initializer.expressions().add(ast.newNumberLiteral("0"));
+                initializer.expressions().add(ast.newNumberLiteral("0"));
+
+                ArrayCreation arrayCreation = ast.newArrayCreation();
+                arrayCreation.setType(ast.newArrayType(ast.newPrimitiveType(PrimitiveType.INT)));
+                arrayCreation.setInitializer(initializer);
+
+                fragment.setInitializer(arrayCreation);
+
+                VariableDeclarationStatement varDecl = ast.newVariableDeclarationStatement(fragment);
+                varDecl.setType(ast.newArrayType(ast.newPrimitiveType(PrimitiveType.INT)));
+                return varDecl;
+            }
+
+            case DECLARE_DOUBLE_ARRAY: {
+                VariableDeclarationFragment fragment = ast.newVariableDeclarationFragment();
+                fragment.setName(ast.newSimpleName("decimals"));
+
+                ArrayInitializer initializer = ast.newArrayInitializer();
+                initializer.expressions().add(ast.newNumberLiteral("0.0"));
+                initializer.expressions().add(ast.newNumberLiteral("0.0"));
+                initializer.expressions().add(ast.newNumberLiteral("0.0"));
+
+                ArrayCreation arrayCreation = ast.newArrayCreation();
+                arrayCreation.setType(ast.newArrayType(ast.newPrimitiveType(PrimitiveType.DOUBLE)));
+                arrayCreation.setInitializer(initializer);
+
+                fragment.setInitializer(arrayCreation);
+
+                VariableDeclarationStatement varDecl = ast.newVariableDeclarationStatement(fragment);
+                varDecl.setType(ast.newArrayType(ast.newPrimitiveType(PrimitiveType.DOUBLE)));
+                return varDecl;
+            }
+
+            case DECLARE_STRING_ARRAY: {
+                VariableDeclarationFragment fragment = ast.newVariableDeclarationFragment();
+                fragment.setName(ast.newSimpleName("words"));
+
+                ArrayInitializer initializer = ast.newArrayInitializer();
+                StringLiteral str1 = ast.newStringLiteral();
+                str1.setLiteralValue("item1");
+                StringLiteral str2 = ast.newStringLiteral();
+                str2.setLiteralValue("item2");
+                StringLiteral str3 = ast.newStringLiteral();
+                str3.setLiteralValue("item3");
+
+                initializer.expressions().add(str1);
+                initializer.expressions().add(str2);
+                initializer.expressions().add(str3);
+
+                ArrayCreation arrayCreation = ast.newArrayCreation();
+                arrayCreation.setType(ast.newArrayType(TypeManager.createTypeNode(ast, "String")));
+                arrayCreation.setInitializer(initializer);
+
+                fragment.setInitializer(arrayCreation);
+
+                VariableDeclarationStatement varDecl = ast.newVariableDeclarationStatement(fragment);
+                varDecl.setType(ast.newArrayType(TypeManager.createTypeNode(ast, "String")));
+                return varDecl;
+            }
             case IF:
                 // if (true) {}
                 IfStatement ifStatement = ast.newIfStatement();
@@ -587,6 +657,67 @@ public class AstRewriter {
                 return null;
         }
     }
+
+    public String addElementToArrayInitializer(
+            CompilationUnit cu,
+            String originalCode,
+            org.eclipse.jdt.core.dom.ArrayInitializer arrayInit,
+            com.botmaker.ui.AddableExpression type,
+            int insertIndex) {
+
+        AST ast = cu.getAST();
+        ASTRewrite rewriter = ASTRewrite.create(ast);
+
+        // Create the new expression based on type
+        Expression newElement = createDefaultExpression(ast, type);
+        if (newElement == null) {
+            return originalCode;
+        }
+
+        // Use ListRewrite to insert the element
+        ListRewrite listRewrite = rewriter.getListRewrite(
+                arrayInit,
+                org.eclipse.jdt.core.dom.ArrayInitializer.EXPRESSIONS_PROPERTY
+        );
+
+        listRewrite.insertAt(newElement, insertIndex, null);
+
+        return applyRewrite(rewriter, originalCode);
+    }
+
+    /**
+     * Deletes an element from an ArrayInitializer at the specified index
+     */
+    public String deleteElementFromArrayInitializer(
+            CompilationUnit cu,
+            String originalCode,
+            org.eclipse.jdt.core.dom.ArrayInitializer arrayInit,
+            int elementIndex) {
+
+        AST ast = cu.getAST();
+        ASTRewrite rewriter = ASTRewrite.create(ast);
+
+        // Get the list of expressions
+        @SuppressWarnings("unchecked")
+        List<Expression> expressions = arrayInit.expressions();
+
+        if (elementIndex < 0 || elementIndex >= expressions.size()) {
+            return originalCode; // Invalid index
+        }
+
+        Expression toRemove = expressions.get(elementIndex);
+
+        // Use ListRewrite to remove the element
+        ListRewrite listRewrite = rewriter.getListRewrite(
+                arrayInit,
+                org.eclipse.jdt.core.dom.ArrayInitializer.EXPRESSIONS_PROPERTY
+        );
+
+        listRewrite.remove(toRemove, null);
+
+        return applyRewrite(rewriter, originalCode);
+    }
+
 
     private Expression createDefaultInitializer(AST ast, String typeName) {
         switch (typeName) {

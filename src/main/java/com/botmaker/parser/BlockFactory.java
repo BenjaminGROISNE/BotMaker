@@ -517,6 +517,7 @@ public class BlockFactory {
             nodeToBlockMap.put(astExpression, block);
             return Optional.of(block);
         }
+
         if (astExpression instanceof BooleanLiteral) {
             System.out.println("Creating Boolean LiteralBlock for: " + astExpression);
             BooleanLiteral literalNode = (BooleanLiteral) astExpression;
@@ -524,6 +525,22 @@ public class BlockFactory {
             nodeToBlockMap.put(astExpression, block);
             return Optional.of(block);
         }
+
+        // NEW: Handle ArrayInitializer (list literals)
+        if (astExpression instanceof ArrayInitializer) {
+            System.out.println("Creating ListBlock for: " + astExpression);
+            ArrayInitializer arrayInit = (ArrayInitializer) astExpression;
+            ListBlock listBlock = new ListBlock(BlockIdPrefix.generate(BlockIdPrefix.LIST, arrayInit), arrayInit);
+            nodeToBlockMap.put(astExpression, listBlock);
+
+            // Parse each element recursively
+            for (Object expr : arrayInit.expressions()) {
+                parseExpression((Expression) expr, nodeToBlockMap).ifPresent(listBlock::addElement);
+            }
+
+            return Optional.of(listBlock);
+        }
+
         if (astExpression instanceof SimpleName) {
             // Do not convert type names into identifier blocks
             if (astExpression.getParent() instanceof Type) {
@@ -542,11 +559,14 @@ public class BlockFactory {
             nodeToBlockMap.put(astExpression, block);
             return Optional.of(block);
         }
+
         if (astExpression instanceof InfixExpression) {
             return Optional.of(parseBinaryExpression((InfixExpression) astExpression, nodeToBlockMap));
         }
+
         return Optional.empty();
     }
+
 
     private boolean isPrintStatement(Expression expression) {
         if (!(expression instanceof MethodInvocation)) {

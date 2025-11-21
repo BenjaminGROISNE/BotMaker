@@ -29,8 +29,8 @@ public class BlockIdPrefix {
     public static final String SWITCH = "switch_";
     public static final String RETURN = "return_";
     public static final String COMMENT = "comment_";
-    public static final String WAIT = "wait_";     // Add this
-// ...
+    public static final String WAIT = "wait_";
+    public static final String LIST = "list_";
 
     private BlockIdPrefix() {} // Prevent instantiation
 
