@@ -68,22 +68,29 @@ public class AstRewriter {
         AST ast = cu.getAST();
         ASTRewrite rewriter = ASTRewrite.create(ast);
 
-        Statement newStatement = createDefaultStatement(ast, type);
-        if (newStatement == null) {
-            return originalCode;
+        if (type == AddableBlock.COMMENT) {
+            // SPECIAL HANDLING FOR COMMENTS
+            // We use a String Placeholder. It is not a real statement, but JDT ListRewrite accepts it.
+            // ASTNode.EMPTY_STATEMENT is passed as a type hint for formatting.
+            Statement commentPlaceholder = (Statement) rewriter.createStringPlaceholder("// Comment", ASTNode.EMPTY_STATEMENT);
+
+            Block targetAstBlock = (Block) targetBody.getAstNode();
+            ListRewrite listRewrite = rewriter.getListRewrite(targetAstBlock, Block.STATEMENTS_PROPERTY);
+            listRewrite.insertAt(commentPlaceholder, index, null);
+        } else {
+            // Standard Statement Handling
+            Statement newStatement = createDefaultStatement(ast, type);
+            if (newStatement == null) return originalCode;
+
+            Block targetAstBlock = (Block) targetBody.getAstNode();
+            ListRewrite listRewrite = rewriter.getListRewrite(targetAstBlock, Block.STATEMENTS_PROPERTY);
+            listRewrite.insertAt(newStatement, index, null);
         }
 
-        // Special handling for Switch statements:
-        // If we are dropping a CASE into a SWITCH block, the targetBody might actually be
-        // a synthetic block or the switch itself. However, strictly speaking,
-        // Switch cases are children of the SwitchStatement, not a Block.
-        // But in this architecture, we usually drop into BodyBlocks.
-        // Standard blocks (If/While) use Block bodies. Switch statements have a list of statements.
+        return applyRewrite(rewriter, originalCode);
+    }
 
-        Block targetAstBlock = (Block) targetBody.getAstNode();
-        ListRewrite listRewrite = rewriter.getListRewrite(targetAstBlock, Block.STATEMENTS_PROPERTY);
-        listRewrite.insertAt(newStatement, index, null);
-
+    private String applyRewrite(ASTRewrite rewriter, String originalCode) {
         IDocument document = new Document(originalCode);
         try {
             TextEdit edits = rewriter.rewriteAST(document, null);
@@ -116,6 +123,45 @@ public class AstRewriter {
             return originalCode;
         }
     }
+
+    public String updateComment(String originalCode, Comment commentNode, String newText) {
+        try {
+            IDocument document = new Document(originalCode);
+
+            String replacement;
+            if (newText.contains("\n")) {
+                // Use Block Comment for multi-line text
+                replacement = "/* " + newText + " */";
+            } else {
+                // Use Line Comment for single-line text
+                replacement = "// " + newText;
+            }
+
+            // Directly replace the text range in the document
+            document.replace(commentNode.getStartPosition(), commentNode.getLength(), replacement);
+
+            return document.get();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return originalCode;
+        }
+    }
+
+    /**
+     * Deletes a comment node by removing its text range.
+     */
+    public String deleteComment(String originalCode, Comment commentNode) {
+        try {
+            IDocument document = new Document(originalCode);
+            // Replace content with empty string
+            document.replace(commentNode.getStartPosition(), commentNode.getLength(), "");
+            return document.get();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return originalCode;
+        }
+    }
+
 
     public String replaceLiteral(CompilationUnit cu, String originalCode, Expression toReplace, String newLiteralValue) {
         AST ast = cu.getAST();

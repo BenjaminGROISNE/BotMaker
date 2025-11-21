@@ -8,16 +8,18 @@ import org.eclipse.jdt.core.dom.*;
 import org.eclipse.jdt.core.dom.IMethodBinding;
 import org.eclipse.jdt.core.dom.ITypeBinding;
 
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 
 public class BlockFactory {
 
     private CompilationUnit ast;
+    private String currentSourceCode;
+    // Cache for all comments in the file
+    private List<Comment> allComments;
     private boolean markNewIdentifiersAsUnedited = false;
 
     public MainBlock convert(String javaCode, Map<ASTNode, CodeBlock> nodeToBlockMap, BlockDragAndDropManager manager) {
+        this.currentSourceCode = javaCode;
         try {
             ASTParser parser = ASTParser.newParser(AST.getJLSLatest());
             parser.setSource(javaCode.toCharArray());
@@ -26,6 +28,14 @@ public class BlockFactory {
             parser.setUnitName("Demo.java");
             parser.setEnvironment(null, null, null, true);
             this.ast = (CompilationUnit) parser.createAST(null);
+
+            // 1. Extract ALL comments from the global list
+            this.allComments = new ArrayList<>();
+            for (Object obj : ast.getCommentList()) {
+                if (obj instanceof Comment && !(obj instanceof Javadoc)) {
+                    allComments.add((Comment) obj);
+                }
+            }
 
             MainMethodVisitor visitor = new MainMethodVisitor();
             ast.accept(visitor);
@@ -55,13 +65,55 @@ public class BlockFactory {
     }
 
     private BodyBlock parseBodyBlock(Block astBlock, Map<ASTNode, CodeBlock> nodeToBlockMap, BlockDragAndDropManager manager) {
-        System.out.println("Creating BodyBlock for: " + astBlock.hashCode());
         BodyBlock bodyBlock = new BodyBlock(BlockIdPrefix.generate(BlockIdPrefix.BODY, astBlock), astBlock, manager);
         nodeToBlockMap.put(astBlock, bodyBlock);
+
+        List<CodeBlock> allChildren = new ArrayList<>();
+
+        // A. Add all real Java Statements
         for (Object statementObj : astBlock.statements()) {
             Statement statement = (Statement) statementObj;
-            parseStatement(statement, nodeToBlockMap, manager).ifPresent(bodyBlock::addStatement);
+            parseStatement(statement, nodeToBlockMap, manager).ifPresent(allChildren::add);
         }
+
+        // B. Find Comments that belong physically inside this block
+        int blockStart = astBlock.getStartPosition() + 1; // Skip '{'
+        int blockEnd = astBlock.getStartPosition() + astBlock.getLength() - 1; // Skip '}'
+
+        for (Comment comment : allComments) {
+            int cPos = comment.getStartPosition();
+
+            // 1. Is the comment inside this body?
+            if (cPos > blockStart && cPos < blockEnd) {
+
+                // 2. Is the comment captured by a child statement?
+                // (e.g., inside an IF block that is inside this body)
+                boolean isInsideChild = false;
+                for (Object stmtObj : astBlock.statements()) {
+                    Statement s = (Statement) stmtObj;
+                    if (cPos >= s.getStartPosition() && cPos <= s.getStartPosition() + s.getLength()) {
+                        isInsideChild = true;
+                        break;
+                    }
+                }
+
+                // If it's not inside a child, it belongs to us
+                if (!isInsideChild) {
+                    allChildren.add(parseCommentBlock(comment, nodeToBlockMap));
+                }
+            }
+        }
+
+        // C. Sort everything by start position so comments appear in context
+        allChildren.sort(Comparator.comparingInt(b -> b.getAstNode().getStartPosition()));
+
+        // D. Add to the BodyBlock
+        for (CodeBlock cb : allChildren) {
+            if (cb instanceof StatementBlock) {
+                bodyBlock.addStatement((StatementBlock) cb);
+            }
+        }
+
         return bodyBlock;
     }
 
@@ -245,13 +297,32 @@ public class BlockFactory {
         return switchBlock;
     }
 
-    // Parse comment block (for when we add comment support)
-    private CommentBlock parseCommentBlock(LineComment astNode, Map<ASTNode, CodeBlock> nodeToBlockMap, String commentText) {
-        System.out.println("Creating CommentBlock for: " + astNode);
+    private CommentBlock parseCommentBlock(Comment astNode, Map<ASTNode, CodeBlock> nodeToBlockMap) {
+        String text = "Comment";
+
+        // Extract text from source string based on range
+        if (currentSourceCode != null) {
+            try {
+                int start = astNode.getStartPosition();
+                int length = astNode.getLength();
+                String raw = currentSourceCode.substring(start, start + length);
+
+                if (astNode.isLineComment()) {
+                    // Remove "//"
+                    text = raw.substring(2).trim();
+                } else if (astNode.isBlockComment()) {
+                    // Remove "/*" and "*/"
+                    if (raw.length() >= 4) {
+                        text = raw.substring(2, raw.length() - 2).trim();
+                    }
+                }
+            } catch (Exception ignored) {}
+        }
+
         CommentBlock commentBlock = new CommentBlock(
                 BlockIdPrefix.generate(BlockIdPrefix.COMMENT, astNode),
                 astNode,
-                commentText
+                text
         );
         nodeToBlockMap.put(astNode, commentBlock);
         return commentBlock;

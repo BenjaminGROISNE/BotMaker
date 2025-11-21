@@ -9,26 +9,15 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.Priority;
-import org.eclipse.jdt.core.dom.LineComment;
+import org.eclipse.jdt.core.dom.Comment; // Generic JDT Comment
 
-/**
- * A comment block that exists only in the visual block structure.
- * When generating code, it's converted to an actual // comment.
- */
 public class CommentBlock extends AbstractStatementBlock {
 
     private String commentText;
 
-    public CommentBlock(String id, LineComment astNode, String commentText) {
+    // Note: Accepts generic 'Comment' (covers LineComment and BlockComment)
+    public CommentBlock(String id, Comment astNode, String commentText) {
         super(id, astNode);
-        this.commentText = commentText;
-    }
-
-    public String getCommentText() {
-        return commentText;
-    }
-
-    public void setCommentText(String commentText) {
         this.commentText = commentText;
     }
 
@@ -38,47 +27,52 @@ public class CommentBlock extends AbstractStatementBlock {
         container.setAlignment(Pos.CENTER_LEFT);
         container.getStyleClass().add("comment-block");
 
-        // Comment indicator
-        javafx.scene.control.Label commentLabel = new javafx.scene.control.Label("//");
+        // Visual indicator: // or /*
+        boolean isLine = ((Comment)astNode).isLineComment();
+        javafx.scene.control.Label commentLabel = new javafx.scene.control.Label(isLine ? "//" : "/*");
         commentLabel.getStyleClass().add("comment-indicator");
         commentLabel.setStyle("-fx-font-weight: bold; -fx-text-fill: #666;");
 
-        // Editable text field for the comment
+        // Text Field
         TextField commentField = new TextField(commentText != null ? commentText : "");
         commentField.setPromptText("Enter comment...");
         commentField.getStyleClass().add("comment-text-field");
         HBox.setHgrow(commentField, Priority.ALWAYS);
 
-        // Update comment text on change
-        commentField.textProperty().addListener((obs, oldVal, newVal) -> {
-            this.commentText = newVal;
-            // Trigger code regeneration
-            rebuildCode(context);
+        // Save on Focus Lost
+        commentField.focusedProperty().addListener((obs, oldVal, newVal) -> {
+            if (!newVal) { // Focus lost
+                if (!commentField.getText().equals(commentText)) {
+                    this.commentText = commentField.getText();
+                    rebuildCode(context);
+                }
+            }
         });
 
-        // Spacer and delete button
+        // Save on Enter
+        commentField.setOnAction(e -> {
+            this.commentText = commentField.getText();
+            rebuildCode(context);
+            // Remove focus from field to trigger visual update/prevent stickiness
+            container.requestFocus();
+        });
+
         Pane spacer = new Pane();
         HBox.setHgrow(spacer, Priority.ALWAYS);
 
+        // Delete Button
         Button deleteButton = new Button("X");
         deleteButton.setOnAction(e -> {
-            context.codeEditor().deleteStatement((org.eclipse.jdt.core.dom.Statement) this.astNode);
+            context.codeEditor().deleteComment((Comment) this.astNode);
         });
 
         container.getChildren().addAll(commentLabel, commentField, spacer, deleteButton);
         return container;
     }
 
-    /**
-     * Trigger code regeneration when comment text changes
-     */
     private void rebuildCode(CompletionContext context) {
-        // Get the current code and trigger a refresh
-        // This will cause the AST to be regenerated with the new comment
         javafx.application.Platform.runLater(() -> {
-            // We need to trigger a code update through the proper channels
-            // For now, we'll just mark that the comment changed
-            // The actual regeneration will happen when needed
+            context.codeEditor().updateComment((Comment) this.astNode, this.commentText);
         });
     }
 

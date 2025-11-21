@@ -5,6 +5,7 @@ import com.botmaker.events.CoreApplicationEvents;
 import com.botmaker.events.EventBus;
 import com.botmaker.lsp.CompletionContext;
 import com.botmaker.services.CodeEditorService;
+import com.botmaker.ui.AddableBlock.BlockCategory;
 import com.botmaker.validation.DiagnosticsManager;
 import com.botmaker.validation.ErrorTranslator;
 import javafx.animation.PauseTransition;
@@ -14,20 +15,19 @@ import javafx.geometry.Orientation;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
-import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.Priority;
-import javafx.scene.layout.VBox;
+import javafx.scene.layout.*;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 import org.eclipse.lsp4j.Diagnostic;
 import org.eclipse.lsp4j.DiagnosticSeverity;
 
-import java.util.List;
+import java.util.*;
 import java.util.function.Consumer;
+import java.util.stream.Collectors;
 
 public class UIManager {
 
+    // ... (Keep existing fields: dragAndDropManager, eventBus, etc.) ...
     private final BlockDragAndDropManager dragAndDropManager;
     private final EventBus eventBus;
     private final CodeEditorService codeEditorService;
@@ -47,8 +47,8 @@ public class UIManager {
 
     // Controls
     private Button debugButton;
-    private Button stepOverButton; // Was Resume
-    private Button continueButton; // New
+    private Button stepOverButton;
+    private Button continueButton;
     private Button stopDebugButton;
     private Button undoButton;
     private Button redoButton;
@@ -56,7 +56,7 @@ public class UIManager {
     public UIManager(BlockDragAndDropManager dragAndDropManager,
                      EventBus eventBus,
                      CodeEditorService codeEditorService,
-                     com.botmaker.validation.DiagnosticsManager diagnosticsManager,
+                     DiagnosticsManager diagnosticsManager,
                      Stage primaryStage) {
         this.dragAndDropManager = dragAndDropManager;
         this.eventBus = eventBus;
@@ -67,6 +67,7 @@ public class UIManager {
         setupEventHandlers();
     }
 
+    // ... (Keep setupEventHandlers and handleBlocksUpdate exactly as they were) ...
     private void setupEventHandlers() {
         eventBus.subscribe(CoreApplicationEvents.UIBlocksUpdatedEvent.class, this::handleBlocksUpdate, true);
         eventBus.subscribe(CoreApplicationEvents.OutputAppendedEvent.class, event -> outputArea.appendText(event.getText()), true);
@@ -86,7 +87,6 @@ public class UIManager {
         eventBus.subscribe(CoreApplicationEvents.DebugSessionResumedEvent.class, event -> onDebuggerResumed(), true);
         eventBus.subscribe(CoreApplicationEvents.DebugSessionFinishedEvent.class, event -> onDebuggerFinished(), true);
 
-        // Enable/Disable buttons based on history availability
         eventBus.subscribe(CoreApplicationEvents.HistoryStateChangedEvent.class, event -> {
             Platform.runLater(() -> {
                 if (undoButton != null) undoButton.setDisable(!event.canUndo());
@@ -101,38 +101,194 @@ public class UIManager {
             CompletionContext context = codeEditorService.createCompletionContext();
             Node rootNode = event.getRootBlock().getUINode(context);
 
-            // IMPORTANT: Listen for the custom BreakpointToggleEvent bubbled up from blocks
             rootNode.addEventHandler(BlockEvent.BreakpointToggleEvent.TOGGLE_BREAKPOINT, e -> {
-                // Publish to EventBus so CodeEditorService can update state
                 eventBus.publish(new CoreApplicationEvents.BreakpointToggledEvent(e.getBlock(), e.isEnabled()));
             });
 
             blocksContainer.getChildren().add(rootNode);
         }
-
-        // --- FIX START ---
-        // Restore focus to the ScrollPane so input (scrolling) works immediately
-        // without requiring a mouse click.
         if (scrollPane != null) {
             scrollPane.requestFocus();
         }
-        // --- FIX END ---
     }
+
+    // --- UPDATED UI CREATION ---
     public Scene createScene() {
         menuBarManager = new MenuBarManager(primaryStage);
         menuBarManager.setEventBus(eventBus);
         menuBarManager.setOnSelectProject(v -> { if (onSelectProject != null) onSelectProject.accept(null); });
 
+        // 1. Main Block Canvas
         blocksContainer = new VBox(10);
+        blocksContainer.getStyleClass().add("blocks-canvas");
+
+        scrollPane = new ScrollPane(blocksContainer);
+        scrollPane.setFitToWidth(true);
+        scrollPane.getStyleClass().add("code-scroll-pane");
+
+        // 2. Categorized Palette (Left Sidebar)
+        Accordion paletteAccordion = createCategorizedPalette();
+        VBox paletteContainer = new VBox(paletteAccordion);
+        paletteContainer.setPrefWidth(220);
+        paletteContainer.getStyleClass().add("palette-sidebar");
+
+        // 3. Bottom Panels (Output/Errors)
         statusLabel = new Label("Ready");
         statusLabel.setId("status-label");
 
         outputArea = new TextArea();
         outputArea.setEditable(false);
+        outputArea.getStyleClass().add("console-area");
 
+        // Error list setup (Keep your existing ListCell implementation here)
         errorListView = new ListView<>();
-        errorListView.setPlaceholder(new Label("No errors to display."));
-        errorListView.setCellFactory(lv -> new ListCell<>() {
+        configureErrorList(errorListView); // Extracted to helper for brevity
+
+        bottomTabPane = new TabPane();
+        terminalTab = new Tab("Terminal", outputArea);
+        terminalTab.setClosable(false);
+        Tab errorsTab = new Tab("Errors", errorListView);
+        errorsTab.setClosable(false);
+        bottomTabPane.getTabs().addAll(terminalTab, errorsTab);
+
+        // 4. Toolbar
+        HBox toolBar = createToolBar();
+
+        // 5. Layout Assembly
+        SplitPane verticalSplit = new SplitPane();
+        verticalSplit.setOrientation(Orientation.VERTICAL);
+        verticalSplit.getItems().addAll(scrollPane, bottomTabPane);
+        verticalSplit.setDividerPositions(0.75);
+        VBox.setVgrow(verticalSplit, Priority.ALWAYS);
+
+        BorderPane mainLayout = new BorderPane();
+        mainLayout.setTop(toolBar);
+        mainLayout.setLeft(paletteContainer);
+        mainLayout.setCenter(verticalSplit);
+        mainLayout.setBottom(statusLabel);
+
+        // Root
+        VBox root = new VBox(menuBarManager.getMenuBar(), mainLayout);
+        VBox.setVgrow(mainLayout, Priority.ALWAYS);
+
+        root.getStyleClass().add("light-theme");
+
+        Scene scene = new Scene(root, 1000, 700);
+        scene.getStylesheets().add(getClass().getResource("/com/botmaker/styles.css").toExternalForm());
+
+        return scene;
+    }
+
+    private Accordion createCategorizedPalette() {
+        Accordion accordion = new Accordion();
+
+        Map<BlockCategory, List<AddableBlock>> grouped = Arrays.stream(AddableBlock.values())
+                .collect(Collectors.groupingBy(AddableBlock::getCategory));
+
+        // Define order of categories
+        BlockCategory[] order = {
+                BlockCategory.OUTPUT,
+                BlockCategory.INPUT,
+                BlockCategory.VARIABLES,
+                BlockCategory.FLOW,
+                BlockCategory.LOOPS,
+                BlockCategory.CONTROL,
+                BlockCategory.UTILITY
+        };
+
+        for (BlockCategory category : order) {
+            List<AddableBlock> blocks = grouped.get(category);
+            if (blocks == null) continue;
+
+            VBox content = new VBox(8); // Spacing between items
+            content.setPadding(new Insets(10));
+
+            for (AddableBlock blockType : blocks) {
+                Label blockLabel = new Label(blockType.getDisplayName());
+                blockLabel.setMaxWidth(Double.MAX_VALUE);
+
+                // Style classes: "palette-item", "palette-output", etc.
+                blockLabel.getStyleClass().addAll("palette-item", "palette-" + category.name().toLowerCase());
+
+                dragAndDropManager.makeDraggable(blockLabel, blockType);
+                content.getChildren().add(blockLabel);
+            }
+
+            TitledPane pane = new TitledPane(category.getLabel(), content);
+            pane.getStyleClass().add("palette-pane");
+            accordion.getPanes().add(pane);
+        }
+
+        // Expand the first one by default
+        if (!accordion.getPanes().isEmpty()) {
+            accordion.setExpandedPane(accordion.getPanes().get(0));
+        }
+
+        return accordion;
+    }
+
+    private HBox createToolBar() {
+        undoButton = new Button("Undo");
+        undoButton.setDisable(true);
+        undoButton.setOnAction(e -> eventBus.publish(new CoreApplicationEvents.UndoRequestedEvent()));
+
+        redoButton = new Button("Redo");
+        redoButton.setDisable(true);
+        redoButton.setOnAction(e -> eventBus.publish(new CoreApplicationEvents.RedoRequestedEvent()));
+
+        Region spacer1 = new Region();
+        HBox.setHgrow(spacer1, Priority.ALWAYS);
+
+        Button compileButton = new Button("Compile");
+        compileButton.getStyleClass().add("toolbar-btn");
+        compileButton.setOnAction(e -> eventBus.publish(new CoreApplicationEvents.CompilationRequestedEvent()));
+
+        Button runButton = new Button("Run ▶");
+        runButton.getStyleClass().addAll("toolbar-btn", "btn-run");
+        runButton.setOnAction(e -> {
+            bottomTabPane.getSelectionModel().select(terminalTab);
+            eventBus.publish(new CoreApplicationEvents.ExecutionRequestedEvent());
+        });
+
+        debugButton = new Button("Debug 🐞");
+        debugButton.getStyleClass().addAll("toolbar-btn", "btn-debug");
+        debugButton.setOnAction(e -> {
+            bottomTabPane.getSelectionModel().select(terminalTab);
+            eventBus.publish(new CoreApplicationEvents.DebugStartRequestedEvent());
+        });
+
+        Region spacer2 = new Region();
+        HBox.setHgrow(spacer2, Priority.ALWAYS);
+
+        stepOverButton = new Button("Step ⤵");
+        stepOverButton.setDisable(true);
+        stepOverButton.setOnAction(e -> eventBus.publish(new CoreApplicationEvents.DebugStepOverRequestedEvent()));
+
+        continueButton = new Button("Continue ⏩");
+        continueButton.setDisable(true);
+        continueButton.setOnAction(e -> eventBus.publish(new CoreApplicationEvents.DebugContinueRequestedEvent()));
+
+        stopDebugButton = new Button("Stop ⏹");
+        stopDebugButton.setDisable(true);
+        stopDebugButton.getStyleClass().add("btn-stop");
+        stopDebugButton.setOnAction(e -> eventBus.publish(new CoreApplicationEvents.DebugStopRequestedEvent()));
+
+        HBox toolbar = new HBox(10,
+                undoButton, redoButton,
+                spacer1,
+                compileButton, runButton, debugButton,
+                spacer2,
+                stepOverButton, continueButton, stopDebugButton
+        );
+        toolbar.setPadding(new Insets(10));
+        toolbar.getStyleClass().add("main-toolbar");
+        return toolbar;
+    }
+
+    private void configureErrorList(ListView<Diagnostic> lv) {
+        // (Paste your existing ListCell factory code here)
+        lv.setPlaceholder(new Label("No errors to display."));
+        lv.setCellFactory(list -> new ListCell<>() {
             @Override
             protected void updateItem(Diagnostic diagnostic, boolean empty) {
                 super.updateItem(diagnostic, empty);
@@ -149,132 +305,20 @@ public class UIManager {
 
                     setOnMouseClicked(event -> {
                         if (event.getClickCount() >= 1) {
-                            diagnosticsManager.findBlockForDiagnostic(diagnostic).ifPresent(this::scrollToBlock);
+                            diagnosticsManager.findBlockForDiagnostic(diagnostic).ifPresent(block -> {
+                                Node uiNode = block.getUINode();
+                                if (uiNode != null) {
+                                    uiNode.requestFocus();
+                                }
+                            });
                         }
                     });
                 }
             }
-            private void scrollToBlock(CodeBlock block) {
-                Node uiNode = block.getUINode();
-                if (uiNode == null) return;
-                final String blinkStyle = "error-block-blink";
-                if (!uiNode.getStyleClass().contains(blinkStyle)) {
-                    uiNode.getStyleClass().add(blinkStyle);
-                    PauseTransition blinkOff = new PauseTransition(Duration.seconds(1));
-                    blinkOff.setOnFinished(event -> uiNode.getStyleClass().remove(blinkStyle));
-                    blinkOff.play();
-                }
-                uiNode.requestFocus();
-                // Simplified scroll logic
-                double containerHeight = blocksContainer.getBoundsInLocal().getHeight();
-                double blockY = uiNode.getBoundsInParent().getMinY();
-                double scrollPaneHeight = scrollPane.getViewportBounds().getHeight();
-                double vValue = blockY / (containerHeight - scrollPaneHeight);
-                scrollPane.setVvalue(Math.max(0, Math.min(1, vValue)));
-            }
         });
-
-        bottomTabPane = new TabPane();
-        terminalTab = new Tab("Terminal", outputArea);
-        terminalTab.setClosable(false);
-        Tab errorsTab = new Tab("Errors", errorListView);
-        errorsTab.setClosable(false);
-        bottomTabPane.getTabs().addAll(terminalTab, errorsTab);
-
-        HBox palette = createBlockPalette();
-        palette.getStyleClass().add("palette");
-
-
-        // --- Create Buttons ---
-        undoButton = new Button("Undo");
-        undoButton.setDisable(true);
-        undoButton.setOnAction(e -> eventBus.publish(new CoreApplicationEvents.UndoRequestedEvent()));
-
-        redoButton = new Button("Redo");
-        redoButton.setDisable(true);
-        redoButton.setOnAction(e -> eventBus.publish(new CoreApplicationEvents.RedoRequestedEvent()));
-
-        Button compileButton = new Button("Compile");
-        compileButton.setOnAction(e -> eventBus.publish(new CoreApplicationEvents.CompilationRequestedEvent()));
-
-        Button runButton = new Button("Run");
-        runButton.setOnAction(e -> {
-            bottomTabPane.getSelectionModel().select(terminalTab);
-            eventBus.publish(new CoreApplicationEvents.ExecutionRequestedEvent());
-        });
-
-        debugButton = new Button("Debug");
-        debugButton.setOnAction(e -> {
-            bottomTabPane.getSelectionModel().select(terminalTab);
-            eventBus.publish(new CoreApplicationEvents.DebugStartRequestedEvent());
-        });
-
-        // UPDATED BUTTONS
-        stepOverButton = new Button("Step Over");
-        stepOverButton.setDisable(true);
-        stepOverButton.setOnAction(e -> eventBus.publish(new CoreApplicationEvents.DebugStepOverRequestedEvent()));
-
-        continueButton = new Button("Continue");
-        continueButton.setDisable(true);
-        continueButton.setOnAction(e -> eventBus.publish(new CoreApplicationEvents.DebugContinueRequestedEvent()));
-
-        stopDebugButton = new Button("Stop");
-        stopDebugButton.setDisable(true); // Disabled until debugging starts
-        stopDebugButton.setStyle("-fx-text-fill: red;"); // Visual hint
-        stopDebugButton.setOnAction(e -> eventBus.publish(new CoreApplicationEvents.DebugStopRequestedEvent()));
-
-        HBox buttonBox = new HBox(10,
-                undoButton, redoButton,
-                new Separator(Orientation.VERTICAL),
-                compileButton, runButton, debugButton, stepOverButton, continueButton, stopDebugButton
-        );
-
-        Button themeButton = new Button("Toggle Theme");
-        HBox topBar = new HBox(10, themeButton);
-
-        scrollPane = new ScrollPane(blocksContainer);
-        scrollPane.setFitToWidth(true);
-
-        SplitPane splitPane = new SplitPane();
-        splitPane.setOrientation(Orientation.VERTICAL);
-        splitPane.getItems().addAll(scrollPane, bottomTabPane);
-        splitPane.setDividerPositions(0.7);
-        VBox.setVgrow(splitPane, Priority.ALWAYS);
-
-        VBox contentArea = new VBox(10, topBar, palette, buttonBox, splitPane, statusLabel);
-        contentArea.setPadding(new Insets(10));
-        VBox.setVgrow(splitPane, Priority.ALWAYS);
-
-        BorderPane root = new BorderPane();
-        root.setTop(menuBarManager.getMenuBar());
-        root.setCenter(contentArea);
-
-        Scene scene = new Scene(root, 600, 800);
-        scene.getStylesheets().add(getClass().getResource("/com/botmaker/styles.css").toExternalForm());
-        root.getStyleClass().add("light-theme");
-
-        themeButton.setOnAction(e -> {
-            isDarkMode = !isDarkMode;
-            root.getStyleClass().remove(isDarkMode ? "light-theme" : "dark-theme");
-            root.getStyleClass().add(isDarkMode ? "dark-theme" : "light-theme");
-        });
-
-        return scene;
     }
 
-    private HBox createBlockPalette() {
-        HBox palette = new HBox(10);
-        palette.setPadding(new Insets(5));
-        for (AddableBlock blockType : AddableBlock.values()) {
-            Label blockLabel = new Label(blockType.getDisplayName());
-            blockLabel.getStyleClass().add("palette-block-label");
-            blockLabel.getStyleClass().add("palette-" + blockType.name().toLowerCase() + "-label");
-            dragAndDropManager.makeDraggable(blockLabel, blockType);
-            palette.getChildren().add(blockLabel);
-        }
-        return palette;
-    }
-
+    // ... (Keep helper methods: updateErrors, onDebuggerStarted, etc.) ...
     private void updateErrors(List<Diagnostic> diagnostics) {
         if (diagnostics == null) errorListView.getItems().clear();
         else errorListView.getItems().setAll(diagnostics);

@@ -4,51 +4,63 @@ import com.botmaker.blocks.*;
 import com.botmaker.core.StatementBlock;
 
 public enum AddableBlock {
-    // Output
-    PRINT("Print", PrintBlock.class),
+    // --- OUTPUT ---
+    PRINT("Print", PrintBlock.class, BlockCategory.OUTPUT),
 
-    // Control Flow
-    IF("If", IfBlock.class),
-    WHILE("While Loop", WhileBlock.class),
-    FOR("For Each", ForBlock.class),
-    DO_WHILE("Do While", DoWhileBlock.class),
-    SWITCH("Switch", SwitchBlock.class),
-    CASE("Case", SwitchBlock.SwitchCaseBlock.class),
-    BREAK("Break", BreakBlock.class),
-    CONTINUE("Continue", ContinueBlock.class),
-    RETURN("Return", ReturnBlock.class),  // Added Return
-    WAIT("Wait (ms)", WaitBlock.class),   // Added Wait
+    // --- FLOW CONTROL ---
+    IF("If Statement", IfBlock.class, BlockCategory.FLOW),
+    WHILE("While Loop", WhileBlock.class, BlockCategory.LOOPS),
+    FOR("For Each Loop", ForBlock.class, BlockCategory.LOOPS),
+    DO_WHILE("Do While", DoWhileBlock.class, BlockCategory.LOOPS),
+    SWITCH("Switch", SwitchBlock.class, BlockCategory.FLOW),
+    CASE("Case", SwitchBlock.SwitchCaseBlock.class, BlockCategory.FLOW),
 
-    // Variable Declaration
-    DECLARE_INT("Declare Int", VariableDeclarationBlock.class),
-    DECLARE_DOUBLE("Declare Double", VariableDeclarationBlock.class),
-    DECLARE_BOOLEAN("Declare Boolean", VariableDeclarationBlock.class),
-    DECLARE_STRING("Declare String", VariableDeclarationBlock.class),
+    // --- CONTROL COMMANDS ---
+    BREAK("Break", BreakBlock.class, BlockCategory.CONTROL),
+    CONTINUE("Continue", ContinueBlock.class, BlockCategory.CONTROL),
+    RETURN("Return", ReturnBlock.class, BlockCategory.CONTROL),
+    WAIT("Wait (ms)", WaitBlock.class, BlockCategory.CONTROL),
 
-    // Variable Operations
-    ASSIGNMENT("Assignment", AssignmentBlock.class),
+    // --- VARIABLES ---
+    DECLARE_INT("Int Variable", VariableDeclarationBlock.class, BlockCategory.VARIABLES),
+    DECLARE_DOUBLE("Double Variable", VariableDeclarationBlock.class, BlockCategory.VARIABLES),
+    DECLARE_BOOLEAN("Bool Variable", VariableDeclarationBlock.class, BlockCategory.VARIABLES),
+    DECLARE_STRING("String Variable", VariableDeclarationBlock.class, BlockCategory.VARIABLES),
+    ASSIGNMENT("Set Variable", AssignmentBlock.class, BlockCategory.VARIABLES),
 
-    // Input
-    READ_LINE("Read Line (String)", ReadInputBlock.class),
-    READ_INT("Read Int", ReadInputBlock.class),
-    READ_DOUBLE("Read Double", ReadInputBlock.class),
+    // --- INPUT ---
+    READ_LINE("Read Text", ReadInputBlock.class, BlockCategory.INPUT),
+    READ_INT("Read Int", ReadInputBlock.class, BlockCategory.INPUT),
+    READ_DOUBLE("Read Double", ReadInputBlock.class, BlockCategory.INPUT),
 
-    // Comment
-    COMMENT("Comment", CommentBlock.class);
+    // --- UTILITY ---
+    COMMENT("Comment", CommentBlock.class, BlockCategory.UTILITY);
 
     private final String displayName;
     private final Class<? extends StatementBlock> blockClass;
+    private final BlockCategory category;
 
-    AddableBlock(String displayName, Class<? extends StatementBlock> blockClass) {
+    AddableBlock(String displayName, Class<? extends StatementBlock> blockClass, BlockCategory category) {
         this.displayName = displayName;
         this.blockClass = blockClass;
+        this.category = category;
     }
 
-    public String getDisplayName() {
-        return displayName;
-    }
+    public String getDisplayName() { return displayName; }
+    public Class<? extends StatementBlock> getBlockClass() { return blockClass; }
+    public BlockCategory getCategory() { return category; }
 
-    public Class<? extends StatementBlock> getBlockClass() {
-        return blockClass;
+    public enum BlockCategory {
+        OUTPUT("Output"),
+        INPUT("Input"),
+        VARIABLES("Variables"),
+        FLOW("Logic"),
+        LOOPS("Loops"),
+        CONTROL("Control"),
+        UTILITY("Utility");
+
+        private final String label;
+        BlockCategory(String label) { this.label = label; }
+        public String getLabel() { return label; }
     }
 }

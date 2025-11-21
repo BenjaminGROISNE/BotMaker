@@ -85,6 +85,21 @@ public class CodeEditor {
         triggerUpdate(newCode);
     }
 
+    public void updateComment(Comment commentNode, String newText) {
+        String newCode = astRewriter.updateComment(
+                getCurrentCode(),
+                commentNode,
+                newText
+        );
+        triggerUpdate(newCode);
+    }
+    public void deleteComment(Comment commentNode) {
+        String newCode = astRewriter.deleteComment(
+                getCurrentCode(),
+                commentNode
+        );
+        triggerUpdate(newCode);
+    }
     public void replaceExpression(Expression toReplace, com.botmaker.ui.AddableExpression type) {
         blockFactory.setMarkNewIdentifiersAsUnedited(true);
         String newCode = astRewriter.replaceExpression(
