@@ -2,6 +2,7 @@ package com.botmaker.blocks;
 
 import com.botmaker.core.AbstractExpressionBlock;
 import com.botmaker.lsp.CompletionContext;
+import com.botmaker.validation.TypeValidator;
 import javafx.application.Platform;
 import javafx.scene.Cursor;
 import javafx.scene.Node;
@@ -14,20 +15,17 @@ import org.eclipse.jdt.core.dom.SimpleName;
 import org.eclipse.lsp4j.*;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class IdentifierBlock extends AbstractExpressionBlock {
     private final String identifier;
-    private boolean isUnedited = false; // Track if this is a default/auto-populated identifier
+    private boolean isUnedited = false;
     private static final String UNEDITED_STYLE_CLASS = "unedited-identifier";
 
     public IdentifierBlock(String id, SimpleName astNode) {
         this(id, astNode, false);
     }
 
-    /**
-     * Constructor for creating new IdentifierBlocks
-     * @param markAsUnedited true if this identifier was auto-generated and should prompt user to edit
-     */
     public IdentifierBlock(String id, SimpleName astNode, boolean markAsUnedited) {
         super(id, astNode);
         this.identifier = astNode.getIdentifier();
@@ -56,29 +54,25 @@ public class IdentifierBlock extends AbstractExpressionBlock {
         container.setAlignment(javafx.geometry.Pos.CENTER_LEFT);
         container.getStyleClass().add("identifier-block");
 
-        // Add unedited styling if applicable
         if (isUnedited) {
             container.getStyleClass().add(UNEDITED_STYLE_CLASS);
         }
 
-        // Add visual cues for interaction
         container.setCursor(Cursor.HAND);
 
         String tooltipText = isUnedited
-                ? "⚠️ Default variable name - Click to choose a variable or edit it"
-                : "Click for variable suggestions";
+                ? "⚠️ Default variable name - Click to choose a variable"
+                : "Click to see available variables";
 
         Tooltip tooltip = new Tooltip(tooltipText);
         Tooltip.install(container, tooltip);
 
-        // Add the click handler for suggestions
         container.setOnMouseClicked(e -> {
             if (e.getClickCount() == 1) {
                 requestSuggestions(container, context);
             }
         });
 
-        // If this is unedited, automatically request suggestions once to auto-populate
         if (isUnedited) {
             Platform.runLater(() -> autoPopulateWithSuggestion(container, context));
         }
@@ -86,34 +80,30 @@ public class IdentifierBlock extends AbstractExpressionBlock {
         return container;
     }
 
-    /**
-     * Automatically populate with the first available variable suggestion
-     */
     private void autoPopulateWithSuggestion(Node uiNode, CompletionContext context) {
         try {
             Position pos = getPositionFromOffset(context.sourceCode(), this.astNode.getStartPosition());
             CompletionParams params = new CompletionParams(new TextDocumentIdentifier(context.docUri()), pos);
 
             context.server().getTextDocumentService().completion(params).thenAccept(result -> {
-                if (result == null || (result.isLeft() && result.getLeft().isEmpty()) || (result.isRight() && result.getRight().getItems().isEmpty())) {
-                    return; // No suggestions found, keep default value
+                if (result == null || (result.isLeft() && result.getLeft().isEmpty()) ||
+                        (result.isRight() && result.getRight().getItems().isEmpty())) {
+                    return;
                 }
 
                 List<CompletionItem> items = result.isLeft() ? result.getLeft() : result.getRight().getItems();
 
-                // Find the first variable suggestion
+                // Filter for user-friendly variables only
                 CompletionItem firstVariable = items.stream()
                         .filter(item -> item.getKind() == CompletionItemKind.Variable)
+                        .filter(item -> TypeValidator.isUserVariable(item.getLabel()))
                         .findFirst()
                         .orElse(null);
 
                 if (firstVariable != null) {
                     Platform.runLater(() -> {
-                        // Auto-apply the first suggestion
                         applySuggestion(firstVariable, context);
-
-                        // Update tooltip to reflect the auto-population
-                        Tooltip newTooltip = new Tooltip("✓ Auto-selected variable - Click to change or confirm");
+                        Tooltip newTooltip = new Tooltip("✓ Auto-selected variable - Click to change");
                         Tooltip.install(uiNode, newTooltip);
                     });
                 }
@@ -129,46 +119,74 @@ public class IdentifierBlock extends AbstractExpressionBlock {
             CompletionParams params = new CompletionParams(new TextDocumentIdentifier(context.docUri()), pos);
 
             context.server().getTextDocumentService().completion(params).thenAccept(result -> {
-                if (result == null || (result.isLeft() && result.getLeft().isEmpty()) || (result.isRight() && result.getRight().getItems().isEmpty())) {
-                    return; // No suggestions found
+                if (result == null || (result.isLeft() && result.getLeft().isEmpty()) ||
+                        (result.isRight() && result.getRight().getItems().isEmpty())) {
+                    return;
                 }
 
                 List<CompletionItem> items = result.isLeft() ? result.getLeft() : result.getRight().getItems();
 
                 Platform.runLater(() -> {
                     ContextMenu menu = new ContextMenu();
-                    for (CompletionItem item : items) {
-                        // Filter for variables, as requested by the user
-                        if (item.getKind() == CompletionItemKind.Variable) {
+
+                    // Filter for user-friendly variables only
+                    List<CompletionItem> userVariables = items.stream()
+                            .filter(item -> item.getKind() == CompletionItemKind.Variable)
+                            .filter(item -> TypeValidator.isUserVariable(item.getLabel()))
+                            .collect(Collectors.toList());
+
+                    if (userVariables.isEmpty()) {
+                        MenuItem noVars = new MenuItem("(No variables available yet)");
+                        noVars.setDisable(true);
+                        menu.getItems().add(noVars);
+                    } else {
+                        for (CompletionItem item : userVariables) {
                             MenuItem mi = new MenuItem(item.getLabel());
+
+                            // Add type information if available
+                            if (item.getDetail() != null && !item.getDetail().isEmpty()) {
+                                mi.setText(item.getLabel() + " (" + getSimpleTypeName(item.getDetail()) + ")");
+                            }
+
                             mi.setOnAction(event -> {
                                 applySuggestion(item, context);
-                                markAsEdited(); // Mark as edited when user explicitly selects
+                                markAsEdited();
                             });
                             menu.getItems().add(mi);
                         }
                     }
+
                     if (!menu.getItems().isEmpty()) {
                         menu.show(uiNode, javafx.geometry.Side.BOTTOM, 0, 0);
                     }
                 });
             });
         } catch (Exception e) {
-            e.printStackTrace(); // Log error
+            e.printStackTrace();
         }
+    }
+
+    /**
+     * Simplify type names for user-friendliness
+     */
+    private String getSimpleTypeName(String detail) {
+        if (detail.contains("int")) return "number";
+        if (detail.contains("double") || detail.contains("float")) return "decimal";
+        if (detail.contains("boolean")) return "true/false";
+        if (detail.contains("String")) return "text";
+        if (detail.contains("[]")) return "list";
+        return detail.replaceAll(".*\\.", ""); // Remove package names
     }
 
     private void applySuggestion(CompletionItem item, CompletionContext context) {
         try {
             String insertText = item.getInsertText() != null ? item.getInsertText() : item.getLabel();
-            // The astNode for an IdentifierBlock is a SimpleName.
             context.codeEditor().replaceSimpleName((SimpleName) this.astNode, insertText);
         } catch (Exception e) {
-            e.printStackTrace(); // Log error
+            e.printStackTrace();
         }
     }
 
-    // Helper to convert a string offset to a line/character position
     private Position getPositionFromOffset(String code, int offset) {
         int line = 0;
         int lastNewline = -1;

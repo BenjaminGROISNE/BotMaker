@@ -2,6 +2,7 @@ package com.demo;
 public class Demo {
     public static void main(String[] args) {
 		int number = 0;
+		double decimal = 0.0;
         /*
         multiline
         comment
