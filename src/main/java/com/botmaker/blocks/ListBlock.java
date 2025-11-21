@@ -27,6 +27,10 @@ public class ListBlock extends AbstractExpressionBlock {
 
     public ListBlock(String id, ArrayInitializer astNode) {
         super(id, astNode);
+        for (Object expr : astNode.expressions()) {
+            // The BlockFactory handles the recursive creation of children,
+            // we just hold the references.
+        }
     }
 
     public List<ExpressionBlock> getElements() {
@@ -46,17 +50,29 @@ public class ListBlock extends AbstractExpressionBlock {
         VBox container = new VBox(5);
         container.setAlignment(Pos.TOP_LEFT);
         container.getStyleClass().add("list-block");
-        container.setPadding(new Insets(8, 12, 8, 12));
+
+        // Add padding and a slight background diff for nested lists
+        // (You should add .nested-list to your CSS, or we use inline style for now)
+        if (this.astNode.getParent() instanceof ArrayInitializer) {
+            container.setStyle("-fx-background-color: rgba(255,255,255,0.1); -fx-background-radius: 4; -fx-border-color: rgba(255,255,255,0.2); -fx-border-width: 1;");
+            container.setPadding(new Insets(4, 8, 4, 8));
+        } else {
+            container.setPadding(new Insets(8, 12, 8, 12));
+        }
 
         // Header row: "List [...]" label + Add button
         HBox headerRow = new HBox(8);
         headerRow.setAlignment(Pos.CENTER_LEFT);
 
-        Label listLabel = new Label("List [" + elements.size() + " items]");
+        // Determine depth/context for label
+        String labelText = (this.astNode.getParent() instanceof ArrayInitializer) ? "Sub-List" : "List";
+        Label listLabel = new Label(labelText + " [" + elements.size() + "]");
         listLabel.getStyleClass().add("list-label");
 
-        Button addButton = new Button("+ Add Item");
+        Button addButton = new Button("+");
         addButton.getStyleClass().add("expression-add-button");
+        // Compact the button slightly for nested views
+        addButton.setStyle("-fx-font-size: 10px; -fx-padding: 2px 6px;");
         addButton.setOnAction(e -> showAddElementMenu(addButton, context, elements.size()));
 
         headerRow.getChildren().addAll(listLabel, addButton);
@@ -64,12 +80,12 @@ public class ListBlock extends AbstractExpressionBlock {
 
         // Display each element with controls
         if (elements.isEmpty()) {
-            Label emptyLabel = new Label("(empty list)");
-            emptyLabel.setStyle("-fx-font-style: italic; -fx-text-fill: rgba(255,255,255,0.6);");
+            Label emptyLabel = new Label("(empty)");
+            emptyLabel.setStyle("-fx-font-style: italic; -fx-text-fill: rgba(255,255,255,0.6); -fx-font-size: 10px;");
             container.getChildren().add(emptyLabel);
         } else {
-            VBox elementsContainer = new VBox(5);
-            elementsContainer.setPadding(new Insets(5, 0, 0, 10));
+            VBox elementsContainer = new VBox(2); // Tighter spacing
+            elementsContainer.setPadding(new Insets(2, 0, 0, 10)); // Indent content
 
             for (int i = 0; i < elements.size(); i++) {
                 HBox elementRow = createElementRow(i, elements.get(i), context);
@@ -82,42 +98,52 @@ public class ListBlock extends AbstractExpressionBlock {
         return container;
     }
 
-    /**
-     * Creates a row for a single list element with controls
-     */
     private HBox createElementRow(int index, ExpressionBlock element, CompletionContext context) {
-        HBox row = new HBox(8);
+        HBox row = new HBox(5);
         row.setAlignment(Pos.CENTER_LEFT);
 
         // Index label
-        Label indexLabel = new Label("[" + index + "]");
-        indexLabel.setStyle("-fx-font-weight: bold; -fx-text-fill: white; -fx-min-width: 30px;");
+        Label indexLabel = new Label(String.valueOf(index));
+        indexLabel.setStyle("-fx-font-family: monospace; -fx-text-fill: #888; -fx-min-width: 15px; -fx-font-size: 10px;");
 
         // Element display
         Node elementNode = element.getUINode(context);
 
-        // Change button (replace with different expression)
+        // Logic to handle nested UI resizing
+        if (element instanceof ListBlock) {
+            // Allow nested list to expand
+            HBox.setHgrow(elementNode, javafx.scene.layout.Priority.ALWAYS);
+        }
+
+        // Change button
         Button changeButton = new Button("↻");
-        changeButton.setStyle("-fx-font-size: 10px; -fx-padding: 2px 6px;");
+        changeButton.getStyleClass().add("icon-button");
+        changeButton.setStyle("-fx-font-size: 9px; -fx-padding: 1px 4px; -fx-opacity: 0.6;");
         changeButton.setOnAction(e -> showChangeElementMenu(changeButton, context, index));
 
         // Delete button
         Button deleteButton = new Button("✕");
-        deleteButton.setStyle("-fx-font-size: 10px; -fx-padding: 2px 6px; -fx-text-fill: #E74C3C;");
+        deleteButton.getStyleClass().add("icon-button");
+        deleteButton.setStyle("-fx-font-size: 9px; -fx-padding: 1px 4px; -fx-text-fill: #E74C3C; -fx-opacity: 0.6;");
         deleteButton.setOnAction(e -> deleteElement(index, context));
 
-        // Insert before button (optional, for reordering)
-        Button insertButton = new Button("+ Insert");
-        insertButton.setStyle("-fx-font-size: 10px; -fx-padding: 2px 6px;");
-        insertButton.setOnAction(e -> showAddElementMenu(insertButton, context, index));
+        // Hover effects for buttons
+        row.setOnMouseEntered(e -> {
+            changeButton.setStyle("-fx-font-size: 9px; -fx-padding: 1px 4px; -fx-opacity: 1.0;");
+            deleteButton.setStyle("-fx-font-size: 9px; -fx-padding: 1px 4px; -fx-text-fill: #E74C3C; -fx-opacity: 1.0;");
+        });
+        row.setOnMouseExited(e -> {
+            changeButton.setStyle("-fx-font-size: 9px; -fx-padding: 1px 4px; -fx-opacity: 0.6;");
+            deleteButton.setStyle("-fx-font-size: 9px; -fx-padding: 1px 4px; -fx-text-fill: #E74C3C; -fx-opacity: 0.6;");
+        });
 
-        row.getChildren().addAll(indexLabel, elementNode, changeButton, insertButton, deleteButton);
+        row.getChildren().addAll(indexLabel, elementNode, changeButton, deleteButton);
         return row;
     }
 
-    /**
-     * Shows menu to add a new element at the specified index
-     */
+    // ... (Rest of methods: showAddElementMenu, showChangeElementMenu, deleteElement, getDetails remain the same)
+    // Ensure AddableExpression.values() now includes LIST, so the menu automatically picks it up.
+
     private void showAddElementMenu(Button button, CompletionContext context, int insertIndex) {
         ContextMenu menu = new ContextMenu();
 
@@ -132,13 +158,9 @@ public class ListBlock extends AbstractExpressionBlock {
             });
             menu.getItems().add(menuItem);
         }
-
         menu.show(button, javafx.geometry.Side.BOTTOM, 0, 0);
     }
 
-    /**
-     * Shows menu to change an existing element
-     */
     private void showChangeElementMenu(Button button, CompletionContext context, int elementIndex) {
         ContextMenu menu = new ContextMenu();
 
@@ -155,13 +177,9 @@ public class ListBlock extends AbstractExpressionBlock {
             });
             menu.getItems().add(menuItem);
         }
-
         menu.show(button, javafx.geometry.Side.BOTTOM, 0, 0);
     }
 
-    /**
-     * Deletes an element from the list
-     */
     private void deleteElement(int index, CompletionContext context) {
         if (index >= 0 && index < elements.size()) {
             context.codeEditor().deleteElementFromArrayInitializer(
@@ -173,6 +191,6 @@ public class ListBlock extends AbstractExpressionBlock {
 
     @Override
     public String getDetails() {
-        return "List with " + elements.size() + " elements";
+        return "List (" + elements.size() + ")";
     }
 }

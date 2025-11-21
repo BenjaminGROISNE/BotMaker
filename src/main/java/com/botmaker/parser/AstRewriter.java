@@ -6,9 +6,9 @@ import com.botmaker.ui.AddableBlock;
 import com.botmaker.ui.AddableExpression;
 import com.botmaker.util.DefaultNames;
 import com.botmaker.util.TypeManager;
+
 import org.eclipse.jdt.core.dom.*;
-import org.eclipse.jdt.core.dom.rewrite.ASTRewrite;
-import org.eclipse.jdt.core.dom.rewrite.ListRewrite;
+import org.eclipse.jdt.core.dom.rewrite.*;
 import org.eclipse.jface.text.Document;
 import org.eclipse.jface.text.IDocument;
 import org.eclipse.text.edits.TextEdit;
@@ -328,6 +328,9 @@ public class AstRewriter {
             case VARIABLE:
                 return ast.newSimpleName(DefaultNames.DEFAULT_VARIABLE);
 
+            // NEW: Handle Sub-List creation
+            case LIST:
+                return ast.newArrayInitializer();
 
             case ADD:
             case SUBTRACT:
@@ -413,14 +416,13 @@ public class AstRewriter {
                 varDecl.setType(TypeManager.createTypeNode(ast, "String"));
                 return varDecl;
             }
-            case DECLARE_INT_ARRAY: {
+            case DECLARE_ARRAY: {
                 VariableDeclarationFragment fragment = ast.newVariableDeclarationFragment();
-                fragment.setName(ast.newSimpleName("numbers"));
+                fragment.setName(ast.newSimpleName("myList"));
 
-                // Create empty array initializer: new int[]{0, 0, 0}
+                // Default to int[]
                 ArrayInitializer initializer = ast.newArrayInitializer();
-                initializer.expressions().add(ast.newNumberLiteral("0"));
-                initializer.expressions().add(ast.newNumberLiteral("0"));
+                // Add one dummy element so it's visible
                 initializer.expressions().add(ast.newNumberLiteral("0"));
 
                 ArrayCreation arrayCreation = ast.newArrayCreation();
@@ -431,53 +433,6 @@ public class AstRewriter {
 
                 VariableDeclarationStatement varDecl = ast.newVariableDeclarationStatement(fragment);
                 varDecl.setType(ast.newArrayType(ast.newPrimitiveType(PrimitiveType.INT)));
-                return varDecl;
-            }
-
-            case DECLARE_DOUBLE_ARRAY: {
-                VariableDeclarationFragment fragment = ast.newVariableDeclarationFragment();
-                fragment.setName(ast.newSimpleName("decimals"));
-
-                ArrayInitializer initializer = ast.newArrayInitializer();
-                initializer.expressions().add(ast.newNumberLiteral("0.0"));
-                initializer.expressions().add(ast.newNumberLiteral("0.0"));
-                initializer.expressions().add(ast.newNumberLiteral("0.0"));
-
-                ArrayCreation arrayCreation = ast.newArrayCreation();
-                arrayCreation.setType(ast.newArrayType(ast.newPrimitiveType(PrimitiveType.DOUBLE)));
-                arrayCreation.setInitializer(initializer);
-
-                fragment.setInitializer(arrayCreation);
-
-                VariableDeclarationStatement varDecl = ast.newVariableDeclarationStatement(fragment);
-                varDecl.setType(ast.newArrayType(ast.newPrimitiveType(PrimitiveType.DOUBLE)));
-                return varDecl;
-            }
-
-            case DECLARE_STRING_ARRAY: {
-                VariableDeclarationFragment fragment = ast.newVariableDeclarationFragment();
-                fragment.setName(ast.newSimpleName("words"));
-
-                ArrayInitializer initializer = ast.newArrayInitializer();
-                StringLiteral str1 = ast.newStringLiteral();
-                str1.setLiteralValue("item1");
-                StringLiteral str2 = ast.newStringLiteral();
-                str2.setLiteralValue("item2");
-                StringLiteral str3 = ast.newStringLiteral();
-                str3.setLiteralValue("item3");
-
-                initializer.expressions().add(str1);
-                initializer.expressions().add(str2);
-                initializer.expressions().add(str3);
-
-                ArrayCreation arrayCreation = ast.newArrayCreation();
-                arrayCreation.setType(ast.newArrayType(TypeManager.createTypeNode(ast, "String")));
-                arrayCreation.setInitializer(initializer);
-
-                fragment.setInitializer(arrayCreation);
-
-                VariableDeclarationStatement varDecl = ast.newVariableDeclarationStatement(fragment);
-                varDecl.setType(ast.newArrayType(TypeManager.createTypeNode(ast, "String")));
                 return varDecl;
             }
             case IF:
@@ -661,7 +616,7 @@ public class AstRewriter {
     public String addElementToArrayInitializer(
             CompilationUnit cu,
             String originalCode,
-            org.eclipse.jdt.core.dom.ArrayInitializer arrayInit,
+            ArrayInitializer arrayInit,
             com.botmaker.ui.AddableExpression type,
             int insertIndex) {
 
@@ -677,7 +632,7 @@ public class AstRewriter {
         // Use ListRewrite to insert the element
         ListRewrite listRewrite = rewriter.getListRewrite(
                 arrayInit,
-                org.eclipse.jdt.core.dom.ArrayInitializer.EXPRESSIONS_PROPERTY
+                ArrayInitializer.EXPRESSIONS_PROPERTY
         );
 
         listRewrite.insertAt(newElement, insertIndex, null);
@@ -691,7 +646,7 @@ public class AstRewriter {
     public String deleteElementFromArrayInitializer(
             CompilationUnit cu,
             String originalCode,
-            org.eclipse.jdt.core.dom.ArrayInitializer arrayInit,
+            ArrayInitializer arrayInit,
             int elementIndex) {
 
         AST ast = cu.getAST();
@@ -710,7 +665,7 @@ public class AstRewriter {
         // Use ListRewrite to remove the element
         ListRewrite listRewrite = rewriter.getListRewrite(
                 arrayInit,
-                org.eclipse.jdt.core.dom.ArrayInitializer.EXPRESSIONS_PROPERTY
+                ArrayInitializer.EXPRESSIONS_PROPERTY
         );
 
         listRewrite.remove(toRemove, null);
@@ -743,7 +698,78 @@ public class AstRewriter {
                 return ast.newNullLiteral();
         }
     }
+// [Inside AstRewriter class]
 
+    public String replaceAssignmentOperator(CompilationUnit cu, String originalCode, Assignment assignment, Assignment.Operator newOp) {
+        AST ast = cu.getAST();
+        ASTRewrite rewriter = ASTRewrite.create(ast);
+
+        // Create a new assignment with the same operands but new operator
+        Assignment newAssignment = ast.newAssignment();
+        newAssignment.setLeftHandSide((Expression)
+                ASTNode.copySubtree(ast, assignment.getLeftHandSide()));
+        newAssignment.setRightHandSide((Expression)
+                ASTNode.copySubtree(ast, assignment.getRightHandSide()));
+        newAssignment.setOperator(newOp);
+
+        rewriter.replace(assignment, newAssignment, null);
+
+        org.eclipse.jface.text.IDocument document = new org.eclipse.jface.text.Document(originalCode);
+        try {
+            org.eclipse.text.edits.TextEdit edits = rewriter.rewriteAST(document, null);
+            edits.apply(document);
+            return document.get();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return originalCode;
+        }
+    }
+
+    // Also handle Prefix expressions (++ / --)
+    public String replacePrefixOperator(CompilationUnit cu, String originalCode, PrefixExpression prefix, PrefixExpression.Operator newOp) {
+        AST ast = cu.getAST();
+        ASTRewrite rewriter = ASTRewrite.create(ast);
+
+        PrefixExpression newPrefix = ast.newPrefixExpression();
+        newPrefix.setOperand((Expression)
+                ASTNode.copySubtree(ast, prefix.getOperand()));
+        newPrefix.setOperator(newOp);
+
+        rewriter.replace(prefix, newPrefix, null);
+
+        org.eclipse.jface.text.IDocument document = new org.eclipse.jface.text.Document(originalCode);
+        try {
+            org.eclipse.text.edits.TextEdit edits = rewriter.rewriteAST(document, null);
+            edits.apply(document);
+            return document.get();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return originalCode;
+        }
+    }
+
+    // Also handle Postfix expressions (variable++ / variable--)
+    public String replacePostfixOperator(CompilationUnit cu, String originalCode, PostfixExpression postfix, PostfixExpression.Operator newOp) {
+        AST ast = cu.getAST();
+        ASTRewrite rewriter = ASTRewrite.create(ast);
+
+        PostfixExpression newPostfix = ast.newPostfixExpression();
+        newPostfix.setOperand((Expression)
+                ASTNode.copySubtree(ast, postfix.getOperand()));
+        newPostfix.setOperator(newOp);
+
+        rewriter.replace(postfix, newPostfix, null);
+
+        org.eclipse.jface.text.IDocument document = new org.eclipse.jface.text.Document(originalCode);
+        try {
+            org.eclipse.text.edits.TextEdit edits = rewriter.rewriteAST(document, null);
+            edits.apply(document);
+            return document.get();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return originalCode;
+        }
+    }
     public String replaceVariableType(CompilationUnit cu, String originalCode, VariableDeclarationStatement varDecl, String newTypeName) {
         AST ast = cu.getAST();
         ASTRewrite rewriter = ASTRewrite.create(ast);
@@ -754,9 +780,41 @@ public class AstRewriter {
         if (!varDecl.fragments().isEmpty()) {
             VariableDeclarationFragment fragment = (VariableDeclarationFragment) varDecl.fragments().get(0);
             Expression currentInitializer = fragment.getInitializer();
-            Expression newInitializer = createDefaultInitializer(ast, newTypeName);
 
-            if (currentInitializer != null && newInitializer != null) {
+            boolean isNewTypeArray = newTypeName.endsWith("[]");
+            boolean isCurrentTypeArray = currentInitializer instanceof ArrayCreation || currentInitializer instanceof ArrayInitializer;
+
+            Expression newInitializer = null;
+
+            if (isNewTypeArray) {
+                if (!isCurrentTypeArray) {
+                    // Switching Primitive -> Array: Create new empty array
+                    ArrayCreation creation = ast.newArrayCreation();
+                    // We need the element type for 'new int[]' part.
+                    // Rough logic: strip one pair of [] for the creation type
+                    String elementTypeName = newTypeName.substring(0, newTypeName.lastIndexOf("[]"));
+                    creation.setType((ArrayType) TypeManager.createTypeNode(ast, newTypeName));
+                    creation.setInitializer(ast.newArrayInitializer());
+                    newInitializer = creation;
+                } else {
+                    // Array -> Array (e.g. int[] to String[]): Keep structure, but types might mismatch.
+                    // Ideally we walk the tree, but for stability, let's reset to empty array
+                    // or just update the type part of ArrayCreation if it exists.
+                    if (currentInitializer instanceof ArrayCreation) {
+                        ArrayCreation oldAc = (ArrayCreation) currentInitializer;
+                        ArrayCreation newAc = ast.newArrayCreation();
+                        newAc.setType((ArrayType) TypeManager.createTypeNode(ast, newTypeName));
+                        // Preserve elements if possible? Complex. Let's reset to empty for safety.
+                        newAc.setInitializer(ast.newArrayInitializer());
+                        newInitializer = newAc;
+                    }
+                }
+            } else {
+                // Switching Array -> Primitive
+                newInitializer = createDefaultInitializer(ast, newTypeName);
+            }
+
+            if (newInitializer != null) {
                 rewriter.replace(currentInitializer, newInitializer, null);
             }
         }

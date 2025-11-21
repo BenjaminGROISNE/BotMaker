@@ -27,10 +27,8 @@ public enum AddableBlock {
     DECLARE_BOOLEAN("Bool Variable", VariableDeclarationBlock.class, BlockCategory.VARIABLES),
     DECLARE_STRING("String Variable", VariableDeclarationBlock.class, BlockCategory.VARIABLES),
 
-    // NEW: Array declarations
-    DECLARE_INT_ARRAY("Int List", VariableDeclarationBlock.class, BlockCategory.VARIABLES),
-    DECLARE_DOUBLE_ARRAY("Double List", VariableDeclarationBlock.class, BlockCategory.VARIABLES),
-    DECLARE_STRING_ARRAY("String List", VariableDeclarationBlock.class, BlockCategory.VARIABLES),
+    // NEW: Generic Array Declaration
+    DECLARE_ARRAY("Create List", VariableDeclarationBlock.class, BlockCategory.VARIABLES),
 
     ASSIGNMENT("Set Variable", AssignmentBlock.class, BlockCategory.VARIABLES),
 

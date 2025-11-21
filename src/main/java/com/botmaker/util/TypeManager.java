@@ -9,37 +9,44 @@ import java.util.List;
 public class TypeManager {
 
     private static final List<String> FUNDAMENTAL_TYPES = List.of(
-        "int", "double", "boolean", "String", "long", "float", "char", "short", "byte"
+            "int", "double", "boolean", "String", "long", "float", "char"
     );
 
-    /**
-     * Returns a list of fundamental Java type names (primitives + String).
-     */
     public static List<String> getFundamentalTypeNames() {
         return FUNDAMENTAL_TYPES;
     }
 
     /**
-     * Creates a JDT AST Type node from a string representation of the type name.
-     * Handles both primitive types and class/interface names.
-     *
-     * @param ast The AST instance to use for creating the node.
-     * @param typeName The name of the type (e.g., "int", "String", "java.util.List").
-     * @return The constructed Type node.
+     * Creates a JDT AST Type node from a string representation.
+     * Handles arrays (e.g., "int[]", "String[][]").
      */
     public static Type createTypeNode(AST ast, String typeName) {
-        switch (typeName) {
-            case "int": return ast.newPrimitiveType(PrimitiveType.INT);
-            case "double": return ast.newPrimitiveType(PrimitiveType.DOUBLE);
-            case "boolean": return ast.newPrimitiveType(PrimitiveType.BOOLEAN);
-            case "char": return ast.newPrimitiveType(PrimitiveType.CHAR);
-            case "long": return ast.newPrimitiveType(PrimitiveType.LONG);
-            case "float": return ast.newPrimitiveType(PrimitiveType.FLOAT);
-            case "short": return ast.newPrimitiveType(PrimitiveType.SHORT);
-            case "byte": return ast.newPrimitiveType(PrimitiveType.BYTE);
-            default:
-                // For non-primitives, ast.newName() can handle simple and qualified names.
-                return ast.newSimpleType(ast.newName(typeName));
+        // count array dimensions
+        int dimensions = 0;
+        String baseName = typeName;
+
+        while (baseName.endsWith("[]")) {
+            dimensions++;
+            baseName = baseName.substring(0, baseName.length() - 2);
+        }
+
+        Type baseType;
+        switch (baseName) {
+            case "int": baseType = ast.newPrimitiveType(PrimitiveType.INT); break;
+            case "double": baseType = ast.newPrimitiveType(PrimitiveType.DOUBLE); break;
+            case "boolean": baseType = ast.newPrimitiveType(PrimitiveType.BOOLEAN); break;
+            case "char": baseType = ast.newPrimitiveType(PrimitiveType.CHAR); break;
+            case "long": baseType = ast.newPrimitiveType(PrimitiveType.LONG); break;
+            case "float": baseType = ast.newPrimitiveType(PrimitiveType.FLOAT); break;
+            case "short": baseType = ast.newPrimitiveType(PrimitiveType.SHORT); break;
+            case "byte": baseType = ast.newPrimitiveType(PrimitiveType.BYTE); break;
+            default: baseType = ast.newSimpleType(ast.newName(baseName)); break;
+        }
+
+        if (dimensions > 0) {
+            return ast.newArrayType(baseType, dimensions);
+        } else {
+            return baseType;
         }
     }
 }

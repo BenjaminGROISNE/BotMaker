@@ -48,6 +48,13 @@ public class ExecutionService {
                 event -> run(),
                 false
         );
+
+        // NEW: Subscribe to stop run requests
+        eventBus.subscribe(
+                CoreApplicationEvents.StopRunRequestedEvent.class,
+                event -> stopRun(),
+                false
+        );
     }
 
     /**
@@ -61,7 +68,25 @@ public class ExecutionService {
      * Runs the current code
      */
     public void run() {
-        codeExecutionService.runCode(state.getCurrentCode());
+        // 1. UI Updates to RUNNING state
+        eventBus.publish(new CoreApplicationEvents.ProgramStartedEvent());
+
+        // 2. Thread Starts
+        new Thread(() -> {
+            // 3. Blocks here while program runs
+            codeExecutionService.runCode(state.getCurrentCode());
+
+            // 4. Program finishes/dies, then UI Updates to IDLE state
+            eventBus.publish(new CoreApplicationEvents.ProgramStoppedEvent());
+        }).start();
+    }
+
+    /**
+     * NEW: Stops the currently running program
+     */
+    public void stopRun() {
+        codeExecutionService.stopRunningProgram();
+        eventBus.publish(new CoreApplicationEvents.ProgramStoppedEvent());
     }
 
     /**

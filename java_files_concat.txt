@@ -11,6 +11,8 @@ import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.ContextMenu;
+import javafx.scene.control.MenuItem;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.Priority;
@@ -25,18 +27,10 @@ public class AssignmentBlock extends AbstractStatementBlock {
     private ExpressionBlock rightHandSide;
     private String operator;
 
-    // Operator display names (user-friendly)
     private static final String[] OPERATOR_NAMES = {
-            "set to",           // =
-            "add",              // +=
-            "subtract",         // -=
-            "multiply by",      // *=
-            "divide by",        // /=
-            "increment",        // ++
-            "decrement"         // --
+            "set to", "add", "subtract", "multiply by", "divide by", "increment", "decrement"
     };
 
-    // Corresponding Java operators
     private static final String[] OPERATOR_SYMBOLS = {
             "=", "+=", "-=", "*=", "/=", "++", "--"
     };
@@ -44,7 +38,6 @@ public class AssignmentBlock extends AbstractStatementBlock {
     public AssignmentBlock(String id, ExpressionStatement astNode) {
         super(id, astNode);
 
-        // Detect the operator from the AST node
         if (astNode.getExpression() instanceof Assignment) {
             Assignment assignment = (Assignment) astNode.getExpression();
             this.operator = assignment.getOperator().toString();
@@ -55,7 +48,7 @@ public class AssignmentBlock extends AbstractStatementBlock {
             PrefixExpression prefix = (PrefixExpression) astNode.getExpression();
             this.operator = prefix.getOperator().toString();
         } else {
-            this.operator = "="; // default
+            this.operator = "=";
         }
     }
 
@@ -90,38 +83,40 @@ public class AssignmentBlock extends AbstractStatementBlock {
             container.getChildren().add(leftHandSide.getUINode(context));
         }
 
-        // Operator selector - shows user-friendly names
+        // Operator selector
         ComboBox<String> operatorSelector = new ComboBox<>();
         operatorSelector.getItems().addAll(OPERATOR_NAMES);
         operatorSelector.getStyleClass().add("operator-selector");
-        operatorSelector.setEditable(false); // Not text-editable, just dropdown selection
+        operatorSelector.setEditable(false);
 
-        // Set current operator
         String currentName = getOperatorDisplayName(operator);
         operatorSelector.setValue(currentName);
 
-        // Handle operator change
         operatorSelector.setOnAction(e -> {
             String selectedName = operatorSelector.getValue();
             String newOperator = getOperatorSymbol(selectedName);
             if (newOperator != null && !newOperator.equals(operator)) {
                 this.operator = newOperator;
-                // Trigger code regeneration with new operator
                 System.out.println("Operator changed to: " + newOperator);
-                // Note: This will take effect on next code regeneration
             }
         });
 
         container.getChildren().add(operatorSelector);
 
-        // Right hand side (only show for non-increment/decrement)
+        // Right hand side (only for non-increment/decrement)
         if (!operator.equals("++") && !operator.equals("--")) {
             if (rightHandSide != null) {
                 container.getChildren().add(rightHandSide.getUINode(context));
             }
+
+            // + Button for changing right side expression
+            Button addButton = new Button("+");
+            addButton.getStyleClass().add("expression-add-button");
+            addButton.setOnAction(e -> showExpressionMenu(addButton, context));
+            container.getChildren().add(addButton);
         }
 
-        // Add spacer and delete button (NO semicolon!)
+        // Spacer and delete button
         Pane spacer = new Pane();
         HBox.setHgrow(spacer, Priority.ALWAYS);
 
@@ -135,28 +130,39 @@ public class AssignmentBlock extends AbstractStatementBlock {
         return container;
     }
 
-    /**
-     * Convert operator symbol to display name
-     */
+    private void showExpressionMenu(Button button, CompletionContext context) {
+        ContextMenu menu = new ContextMenu();
+
+        for (com.botmaker.ui.AddableExpression type : com.botmaker.ui.AddableExpression.values()) {
+            MenuItem menuItem = new MenuItem(type.getDisplayName());
+            menuItem.setOnAction(e -> {
+                if (rightHandSide != null) {
+                    org.eclipse.jdt.core.dom.Expression toReplace = (org.eclipse.jdt.core.dom.Expression) rightHandSide.getAstNode();
+                    context.codeEditor().replaceExpression(toReplace, type);
+                }
+            });
+            menu.getItems().add(menuItem);
+        }
+
+        menu.show(button, javafx.geometry.Side.BOTTOM, 0, 0);
+    }
+
     private String getOperatorDisplayName(String symbol) {
         for (int i = 0; i < OPERATOR_SYMBOLS.length; i++) {
             if (OPERATOR_SYMBOLS[i].equals(symbol)) {
                 return OPERATOR_NAMES[i];
             }
         }
-        return "set to"; // default
+        return "set to";
     }
 
-    /**
-     * Convert display name to operator symbol
-     */
     private String getOperatorSymbol(String displayName) {
         for (int i = 0; i < OPERATOR_NAMES.length; i++) {
             if (OPERATOR_NAMES[i].equals(displayName)) {
                 return OPERATOR_SYMBOLS[i];
             }
         }
-        return "="; // default
+        return "=";
     }
 }
 
@@ -329,6 +335,75 @@ public class BinaryExpressionBlock extends AbstractExpressionBlock {
 }
 
 =================================================================================
+FILE: ./src/main/java/com/botmaker/blocks/BooleanLiteralBlock.java
+=================================================================================
+
+package com.botmaker.blocks;
+
+import com.botmaker.core.AbstractExpressionBlock;
+import com.botmaker.lsp.CompletionContext;
+import javafx.scene.Node;
+import javafx.scene.control.ComboBox;
+import javafx.scene.layout.HBox;
+import org.eclipse.jdt.core.dom.BooleanLiteral;
+
+/**
+ * Block for true/false values with dropdown selection
+ * User-friendly for non-coders
+ */
+public class BooleanLiteralBlock extends AbstractExpressionBlock {
+
+    private boolean value;
+
+    public BooleanLiteralBlock(String id, BooleanLiteral astNode) {
+        super(id, astNode);
+        this.value = astNode.booleanValue();
+    }
+
+    public boolean getValue() {
+        return value;
+    }
+
+    @Override
+    protected Node createUINode(CompletionContext context) {
+        HBox container = new HBox();
+        container.setAlignment(javafx.geometry.Pos.CENTER_LEFT);
+        container.getStyleClass().add("boolean-literal-block");
+
+        // Dropdown for true/false
+        ComboBox<String> booleanSelector = new ComboBox<>();
+        booleanSelector.getItems().addAll("true", "false");
+        booleanSelector.setValue(value ? "true" : "false");
+        booleanSelector.getStyleClass().add("boolean-selector");
+        booleanSelector.setEditable(false);
+
+        // Handle value change
+        booleanSelector.setOnAction(e -> {
+            String selected = booleanSelector.getValue();
+            boolean newValue = "true".equals(selected);
+
+            if (newValue != value) {
+                this.value = newValue;
+                // Update the AST
+                context.codeEditor().replaceLiteralValue(
+                        (org.eclipse.jdt.core.dom.Expression) this.astNode,
+                        String.valueOf(newValue)
+                );
+            }
+        });
+
+        container.getChildren().add(booleanSelector);
+
+        return container;
+    }
+
+    @Override
+    public String getDetails() {
+        return "Boolean: " + value;
+    }
+}
+
+=================================================================================
 FILE: ./src/main/java/com/botmaker/blocks/BreakBlock.java
 =================================================================================
 
@@ -386,26 +461,14 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.Priority;
-import org.eclipse.jdt.core.dom.LineComment;
+import org.eclipse.jdt.core.dom.Comment;
 
-/**
- * A comment block that exists only in the visual block structure.
- * When generating code, it's converted to an actual // comment.
- */
 public class CommentBlock extends AbstractStatementBlock {
 
     private String commentText;
 
-    public CommentBlock(String id, LineComment astNode, String commentText) {
+    public CommentBlock(String id, Comment astNode, String commentText) {
         super(id, astNode);
-        this.commentText = commentText;
-    }
-
-    public String getCommentText() {
-        return commentText;
-    }
-
-    public void setCommentText(String commentText) {
         this.commentText = commentText;
     }
 
@@ -415,47 +478,49 @@ public class CommentBlock extends AbstractStatementBlock {
         container.setAlignment(Pos.CENTER_LEFT);
         container.getStyleClass().add("comment-block");
 
-        // Comment indicator
-        javafx.scene.control.Label commentLabel = new javafx.scene.control.Label("//");
+        // Simple user-friendly label
+        javafx.scene.control.Label commentLabel = new javafx.scene.control.Label("Comment:");
         commentLabel.getStyleClass().add("comment-indicator");
-        commentLabel.setStyle("-fx-font-weight: bold; -fx-text-fill: #666;");
 
-        // Editable text field for the comment
+        // Text Field
         TextField commentField = new TextField(commentText != null ? commentText : "");
-        commentField.setPromptText("Enter comment...");
+        commentField.setPromptText("Write your note here...");
         commentField.getStyleClass().add("comment-text-field");
         HBox.setHgrow(commentField, Priority.ALWAYS);
 
-        // Update comment text on change
-        commentField.textProperty().addListener((obs, oldVal, newVal) -> {
-            this.commentText = newVal;
-            // Trigger code regeneration
-            rebuildCode(context);
+        // Save on Focus Lost
+        commentField.focusedProperty().addListener((obs, oldVal, newVal) -> {
+            if (!newVal) {
+                if (!commentField.getText().equals(commentText)) {
+                    this.commentText = commentField.getText();
+                    rebuildCode(context);
+                }
+            }
         });
 
-        // Spacer and delete button
+        // Save on Enter
+        commentField.setOnAction(e -> {
+            this.commentText = commentField.getText();
+            rebuildCode(context);
+            container.requestFocus();
+        });
+
         Pane spacer = new Pane();
         HBox.setHgrow(spacer, Priority.ALWAYS);
 
+        // Delete Button
         Button deleteButton = new Button("X");
         deleteButton.setOnAction(e -> {
-            context.codeEditor().deleteStatement((org.eclipse.jdt.core.dom.Statement) this.astNode);
+            context.codeEditor().deleteComment((Comment) this.astNode);
         });
 
         container.getChildren().addAll(commentLabel, commentField, spacer, deleteButton);
         return container;
     }
 
-    /**
-     * Trigger code regeneration when comment text changes
-     */
     private void rebuildCode(CompletionContext context) {
-        // Get the current code and trigger a refresh
-        // This will cause the AST to be regenerated with the new comment
         javafx.application.Platform.runLater(() -> {
-            // We need to trigger a code update through the proper channels
-            // For now, we'll just mark that the comment changed
-            // The actual regeneration will happen when needed
+            context.codeEditor().updateComment((Comment) this.astNode, this.commentText);
         });
     }
 
@@ -894,6 +959,7 @@ package com.botmaker.blocks;
 
 import com.botmaker.core.AbstractExpressionBlock;
 import com.botmaker.lsp.CompletionContext;
+import com.botmaker.validation.TypeValidator;
 import javafx.application.Platform;
 import javafx.scene.Cursor;
 import javafx.scene.Node;
@@ -906,20 +972,17 @@ import org.eclipse.jdt.core.dom.SimpleName;
 import org.eclipse.lsp4j.*;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class IdentifierBlock extends AbstractExpressionBlock {
     private final String identifier;
-    private boolean isUnedited = false; // Track if this is a default/auto-populated identifier
+    private boolean isUnedited = false;
     private static final String UNEDITED_STYLE_CLASS = "unedited-identifier";
 
     public IdentifierBlock(String id, SimpleName astNode) {
         this(id, astNode, false);
     }
 
-    /**
-     * Constructor for creating new IdentifierBlocks
-     * @param markAsUnedited true if this identifier was auto-generated and should prompt user to edit
-     */
     public IdentifierBlock(String id, SimpleName astNode, boolean markAsUnedited) {
         super(id, astNode);
         this.identifier = astNode.getIdentifier();
@@ -948,29 +1011,25 @@ public class IdentifierBlock extends AbstractExpressionBlock {
         container.setAlignment(javafx.geometry.Pos.CENTER_LEFT);
         container.getStyleClass().add("identifier-block");
 
-        // Add unedited styling if applicable
         if (isUnedited) {
             container.getStyleClass().add(UNEDITED_STYLE_CLASS);
         }
 
-        // Add visual cues for interaction
         container.setCursor(Cursor.HAND);
 
         String tooltipText = isUnedited
-                ? "⚠️ Default variable name - Click to choose a variable or edit it"
-                : "Click for variable suggestions";
+                ? "⚠️ Default variable name - Click to choose a variable"
+                : "Click to see available variables";
 
         Tooltip tooltip = new Tooltip(tooltipText);
         Tooltip.install(container, tooltip);
 
-        // Add the click handler for suggestions
         container.setOnMouseClicked(e -> {
             if (e.getClickCount() == 1) {
                 requestSuggestions(container, context);
             }
         });
 
-        // If this is unedited, automatically request suggestions once to auto-populate
         if (isUnedited) {
             Platform.runLater(() -> autoPopulateWithSuggestion(container, context));
         }
@@ -978,34 +1037,30 @@ public class IdentifierBlock extends AbstractExpressionBlock {
         return container;
     }
 
-    /**
-     * Automatically populate with the first available variable suggestion
-     */
     private void autoPopulateWithSuggestion(Node uiNode, CompletionContext context) {
         try {
             Position pos = getPositionFromOffset(context.sourceCode(), this.astNode.getStartPosition());
             CompletionParams params = new CompletionParams(new TextDocumentIdentifier(context.docUri()), pos);
 
             context.server().getTextDocumentService().completion(params).thenAccept(result -> {
-                if (result == null || (result.isLeft() && result.getLeft().isEmpty()) || (result.isRight() && result.getRight().getItems().isEmpty())) {
-                    return; // No suggestions found, keep default value
+                if (result == null || (result.isLeft() && result.getLeft().isEmpty()) ||
+                        (result.isRight() && result.getRight().getItems().isEmpty())) {
+                    return;
                 }
 
                 List<CompletionItem> items = result.isLeft() ? result.getLeft() : result.getRight().getItems();
 
-                // Find the first variable suggestion
+                // Filter for user-friendly variables only
                 CompletionItem firstVariable = items.stream()
                         .filter(item -> item.getKind() == CompletionItemKind.Variable)
+                        .filter(item -> TypeValidator.isUserVariable(item.getLabel()))
                         .findFirst()
                         .orElse(null);
 
                 if (firstVariable != null) {
                     Platform.runLater(() -> {
-                        // Auto-apply the first suggestion
                         applySuggestion(firstVariable, context);
-
-                        // Update tooltip to reflect the auto-population
-                        Tooltip newTooltip = new Tooltip("✓ Auto-selected variable - Click to change or confirm");
+                        Tooltip newTooltip = new Tooltip("✓ Auto-selected variable - Click to change");
                         Tooltip.install(uiNode, newTooltip);
                     });
                 }
@@ -1021,46 +1076,74 @@ public class IdentifierBlock extends AbstractExpressionBlock {
             CompletionParams params = new CompletionParams(new TextDocumentIdentifier(context.docUri()), pos);
 
             context.server().getTextDocumentService().completion(params).thenAccept(result -> {
-                if (result == null || (result.isLeft() && result.getLeft().isEmpty()) || (result.isRight() && result.getRight().getItems().isEmpty())) {
-                    return; // No suggestions found
+                if (result == null || (result.isLeft() && result.getLeft().isEmpty()) ||
+                        (result.isRight() && result.getRight().getItems().isEmpty())) {
+                    return;
                 }
 
                 List<CompletionItem> items = result.isLeft() ? result.getLeft() : result.getRight().getItems();
 
                 Platform.runLater(() -> {
                     ContextMenu menu = new ContextMenu();
-                    for (CompletionItem item : items) {
-                        // Filter for variables, as requested by the user
-                        if (item.getKind() == CompletionItemKind.Variable) {
+
+                    // Filter for user-friendly variables only
+                    List<CompletionItem> userVariables = items.stream()
+                            .filter(item -> item.getKind() == CompletionItemKind.Variable)
+                            .filter(item -> TypeValidator.isUserVariable(item.getLabel()))
+                            .collect(Collectors.toList());
+
+                    if (userVariables.isEmpty()) {
+                        MenuItem noVars = new MenuItem("(No variables available yet)");
+                        noVars.setDisable(true);
+                        menu.getItems().add(noVars);
+                    } else {
+                        for (CompletionItem item : userVariables) {
                             MenuItem mi = new MenuItem(item.getLabel());
+
+                            // Add type information if available
+                            if (item.getDetail() != null && !item.getDetail().isEmpty()) {
+                                mi.setText(item.getLabel() + " (" + getSimpleTypeName(item.getDetail()) + ")");
+                            }
+
                             mi.setOnAction(event -> {
                                 applySuggestion(item, context);
-                                markAsEdited(); // Mark as edited when user explicitly selects
+                                markAsEdited();
                             });
                             menu.getItems().add(mi);
                         }
                     }
+
                     if (!menu.getItems().isEmpty()) {
                         menu.show(uiNode, javafx.geometry.Side.BOTTOM, 0, 0);
                     }
                 });
             });
         } catch (Exception e) {
-            e.printStackTrace(); // Log error
+            e.printStackTrace();
         }
+    }
+
+    /**
+     * Simplify type names for user-friendliness
+     */
+    private String getSimpleTypeName(String detail) {
+        if (detail.contains("int")) return "number";
+        if (detail.contains("double") || detail.contains("float")) return "decimal";
+        if (detail.contains("boolean")) return "true/false";
+        if (detail.contains("String")) return "text";
+        if (detail.contains("[]")) return "list";
+        return detail.replaceAll(".*\\.", ""); // Remove package names
     }
 
     private void applySuggestion(CompletionItem item, CompletionContext context) {
         try {
             String insertText = item.getInsertText() != null ? item.getInsertText() : item.getLabel();
-            // The astNode for an IdentifierBlock is a SimpleName.
             context.codeEditor().replaceSimpleName((SimpleName) this.astNode, insertText);
         } catch (Exception e) {
-            e.printStackTrace(); // Log error
+            e.printStackTrace();
         }
     }
 
-    // Helper to convert a string offset to a line/character position
     private Position getPositionFromOffset(String code, int offset) {
         int line = 0;
         int lastNewline = -1;
@@ -1088,7 +1171,10 @@ import com.botmaker.core.ExpressionBlock;
 import com.botmaker.lsp.CompletionContext;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
+import javafx.scene.control.Button;
+import javafx.scene.control.ContextMenu;
 import javafx.scene.control.Label;
+import javafx.scene.control.MenuItem;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import org.eclipse.jdt.core.dom.CompilationUnit;
@@ -1098,7 +1184,7 @@ public class IfBlock extends AbstractStatementBlock {
 
     private ExpressionBlock condition;
     private BodyBlock thenBody;
-    private com.botmaker.core.StatementBlock elseStatement; // Can be null
+    private com.botmaker.core.StatementBlock elseStatement;
 
     public IfBlock(String id, IfStatement astNode) {
         super(id, astNode);
@@ -1133,19 +1219,32 @@ public class IfBlock extends AbstractStatementBlock {
         VBox container = new VBox(5);
         container.getStyleClass().add("if-block");
 
-        // Header: If + condition + delete button
+        // Header: If + condition + + button + delete button
         HBox header = new HBox(5);
         header.setAlignment(Pos.CENTER_LEFT);
-        header.getChildren().add(new Label("If"));
+
+        Label ifLabel = new Label("If");
+        ifLabel.getStyleClass().add("keyword-label");
+        header.getChildren().add(ifLabel);
+
         if (condition != null) {
             header.getChildren().add(condition.getUINode(context));
         } else {
             header.getChildren().add(createExpressionDropZone(context));
         }
+
+        // + Button for changing condition
+        Button addButton = new Button("+");
+        addButton.getStyleClass().add("expression-add-button");
+        addButton.setOnAction(e -> showExpressionMenu(addButton, context));
+        header.getChildren().add(addButton);
+
         javafx.scene.layout.Pane spacer = new javafx.scene.layout.Pane();
         HBox.setHgrow(spacer, javafx.scene.layout.Priority.ALWAYS);
+
         javafx.scene.control.Button deleteButton = new javafx.scene.control.Button("X");
         deleteButton.setOnAction(e -> context.codeEditor().deleteStatement((org.eclipse.jdt.core.dom.Statement) this.astNode));
+
         header.getChildren().addAll(spacer, deleteButton);
         container.getChildren().add(header);
 
@@ -1164,6 +1263,7 @@ public class IfBlock extends AbstractStatementBlock {
                 HBox elseHeader = new HBox(5);
                 elseHeader.setAlignment(Pos.CENTER_LEFT);
                 Label elseLabel = new Label("Else");
+                elseLabel.getStyleClass().add("keyword-label");
                 javafx.scene.control.Button addElseIfButton = new javafx.scene.control.Button("+ if");
                 addElseIfButton.setOnAction(e -> context.codeEditor().convertElseToElseIf((IfStatement) this.astNode));
                 javafx.scene.layout.Pane elseSpacer = new javafx.scene.layout.Pane();
@@ -1177,10 +1277,12 @@ public class IfBlock extends AbstractStatementBlock {
                 HBox.setHgrow(elseBodyNode, javafx.scene.layout.Priority.ALWAYS);
                 elseContainer.getChildren().addAll(elseHeader, elseBodyNode);
                 container.getChildren().add(elseContainer);
-            } else { // Assuming IfBlock
+            } else {
                 HBox elseIfContainer = new HBox(5);
                 elseIfContainer.setAlignment(Pos.CENTER_LEFT);
-                elseIfContainer.getChildren().add(new Label("Else"));
+                Label elseLabel = new Label("Else");
+                elseLabel.getStyleClass().add("keyword-label");
+                elseIfContainer.getChildren().add(elseLabel);
                 Node elseNode = elseStatement.getUINode(context);
                 HBox.setHgrow(elseNode, javafx.scene.layout.Priority.ALWAYS);
                 elseIfContainer.getChildren().add(elseNode);
@@ -1193,6 +1295,23 @@ public class IfBlock extends AbstractStatementBlock {
         }
 
         return container;
+    }
+
+    private void showExpressionMenu(Button button, CompletionContext context) {
+        ContextMenu menu = new ContextMenu();
+
+        for (com.botmaker.ui.AddableExpression type : com.botmaker.ui.AddableExpression.values()) {
+            MenuItem menuItem = new MenuItem(type.getDisplayName());
+            menuItem.setOnAction(e -> {
+                if (condition != null) {
+                    org.eclipse.jdt.core.dom.Expression toReplace = (org.eclipse.jdt.core.dom.Expression) condition.getAstNode();
+                    context.codeEditor().replaceExpression(toReplace, type);
+                }
+            });
+            menu.getItems().add(menuItem);
+        }
+
+        menu.show(button, javafx.geometry.Side.BOTTOM, 0, 0);
     }
 
     @Override
@@ -1215,7 +1334,6 @@ public class IfBlock extends AbstractStatementBlock {
 
     @Override
     public int getBreakpointLine(CompilationUnit cu) {
-        // The breakpoint for an IfBlock should be on its condition.
         if (condition != null) {
             return condition.getBreakpointLine(cu);
         }
@@ -1235,6 +1353,189 @@ public class IfBlock extends AbstractStatementBlock {
 }
 
 =================================================================================
+FILE: ./src/main/java/com/botmaker/blocks/ListBlock.java
+=================================================================================
+
+package com.botmaker.blocks;
+
+import com.botmaker.core.AbstractExpressionBlock;
+import com.botmaker.core.ExpressionBlock;
+import com.botmaker.lsp.CompletionContext;
+import javafx.geometry.Insets;
+import javafx.geometry.Pos;
+import javafx.scene.Node;
+import javafx.scene.control.Button;
+import javafx.scene.control.ContextMenu;
+import javafx.scene.control.Label;
+import javafx.scene.control.MenuItem;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
+import org.eclipse.jdt.core.dom.ArrayInitializer;
+
+import java.util.ArrayList;
+import java.util.List;
+
+/**
+ * Visual block for array/list literals like {1, 2, 3}
+ * Allows users to add, remove, and edit elements inline
+ */
+public class ListBlock extends AbstractExpressionBlock {
+
+    private final List<ExpressionBlock> elements = new ArrayList<>();
+
+    public ListBlock(String id, ArrayInitializer astNode) {
+        super(id, astNode);
+    }
+
+    public List<ExpressionBlock> getElements() {
+        return elements;
+    }
+
+    public void addElement(ExpressionBlock element) {
+        this.elements.add(element);
+    }
+
+    public void clearElements() {
+        this.elements.clear();
+    }
+
+    @Override
+    protected Node createUINode(CompletionContext context) {
+        VBox container = new VBox(5);
+        container.setAlignment(Pos.TOP_LEFT);
+        container.getStyleClass().add("list-block");
+        container.setPadding(new Insets(8, 12, 8, 12));
+
+        // Header row: "List [...]" label + Add button
+        HBox headerRow = new HBox(8);
+        headerRow.setAlignment(Pos.CENTER_LEFT);
+
+        Label listLabel = new Label("List [" + elements.size() + " items]");
+        listLabel.getStyleClass().add("list-label");
+
+        Button addButton = new Button("+ Add Item");
+        addButton.getStyleClass().add("expression-add-button");
+        addButton.setOnAction(e -> showAddElementMenu(addButton, context, elements.size()));
+
+        headerRow.getChildren().addAll(listLabel, addButton);
+        container.getChildren().add(headerRow);
+
+        // Display each element with controls
+        if (elements.isEmpty()) {
+            Label emptyLabel = new Label("(empty list)");
+            emptyLabel.setStyle("-fx-font-style: italic; -fx-text-fill: rgba(255,255,255,0.6);");
+            container.getChildren().add(emptyLabel);
+        } else {
+            VBox elementsContainer = new VBox(5);
+            elementsContainer.setPadding(new Insets(5, 0, 0, 10));
+
+            for (int i = 0; i < elements.size(); i++) {
+                HBox elementRow = createElementRow(i, elements.get(i), context);
+                elementsContainer.getChildren().add(elementRow);
+            }
+
+            container.getChildren().add(elementsContainer);
+        }
+
+        return container;
+    }
+
+    /**
+     * Creates a row for a single list element with controls
+     */
+    private HBox createElementRow(int index, ExpressionBlock element, CompletionContext context) {
+        HBox row = new HBox(8);
+        row.setAlignment(Pos.CENTER_LEFT);
+
+        // Index label
+        Label indexLabel = new Label("[" + index + "]");
+        indexLabel.setStyle("-fx-font-weight: bold; -fx-text-fill: white; -fx-min-width: 30px;");
+
+        // Element display
+        Node elementNode = element.getUINode(context);
+
+        // Change button (replace with different expression)
+        Button changeButton = new Button("↻");
+        changeButton.setStyle("-fx-font-size: 10px; -fx-padding: 2px 6px;");
+        changeButton.setOnAction(e -> showChangeElementMenu(changeButton, context, index));
+
+        // Delete button
+        Button deleteButton = new Button("✕");
+        deleteButton.setStyle("-fx-font-size: 10px; -fx-padding: 2px 6px; -fx-text-fill: #E74C3C;");
+        deleteButton.setOnAction(e -> deleteElement(index, context));
+
+        // Insert before button (optional, for reordering)
+        Button insertButton = new Button("+ Insert");
+        insertButton.setStyle("-fx-font-size: 10px; -fx-padding: 2px 6px;");
+        insertButton.setOnAction(e -> showAddElementMenu(insertButton, context, index));
+
+        row.getChildren().addAll(indexLabel, elementNode, changeButton, insertButton, deleteButton);
+        return row;
+    }
+
+    /**
+     * Shows menu to add a new element at the specified index
+     */
+    private void showAddElementMenu(Button button, CompletionContext context, int insertIndex) {
+        ContextMenu menu = new ContextMenu();
+
+        for (com.botmaker.ui.AddableExpression type : com.botmaker.ui.AddableExpression.values()) {
+            MenuItem menuItem = new MenuItem(type.getDisplayName());
+            menuItem.setOnAction(e -> {
+                context.codeEditor().addElementToArrayInitializer(
+                        (ArrayInitializer) this.astNode,
+                        type,
+                        insertIndex
+                );
+            });
+            menu.getItems().add(menuItem);
+        }
+
+        menu.show(button, javafx.geometry.Side.BOTTOM, 0, 0);
+    }
+
+    /**
+     * Shows menu to change an existing element
+     */
+    private void showChangeElementMenu(Button button, CompletionContext context, int elementIndex) {
+        ContextMenu menu = new ContextMenu();
+
+        for (com.botmaker.ui.AddableExpression type : com.botmaker.ui.AddableExpression.values()) {
+            MenuItem menuItem = new MenuItem(type.getDisplayName());
+            menuItem.setOnAction(e -> {
+                if (elementIndex < elements.size()) {
+                    ExpressionBlock oldElement = elements.get(elementIndex);
+                    context.codeEditor().replaceExpression(
+                            (org.eclipse.jdt.core.dom.Expression) oldElement.getAstNode(),
+                            type
+                    );
+                }
+            });
+            menu.getItems().add(menuItem);
+        }
+
+        menu.show(button, javafx.geometry.Side.BOTTOM, 0, 0);
+    }
+
+    /**
+     * Deletes an element from the list
+     */
+    private void deleteElement(int index, CompletionContext context) {
+        if (index >= 0 && index < elements.size()) {
+            context.codeEditor().deleteElementFromArrayInitializer(
+                    (ArrayInitializer) this.astNode,
+                    index
+            );
+        }
+    }
+
+    @Override
+    public String getDetails() {
+        return "List with " + elements.size() + " elements";
+    }
+}
+
+=================================================================================
 FILE: ./src/main/java/com/botmaker/blocks/LiteralBlock.java
 =================================================================================
 
@@ -1246,7 +1547,6 @@ import javafx.scene.Cursor;
 import javafx.scene.Node;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.HBox;
-import javafx.scene.text.Text;
 import org.eclipse.jdt.core.dom.Expression;
 
 public class LiteralBlock<T> extends AbstractExpressionBlock {
@@ -1274,7 +1574,9 @@ public class LiteralBlock<T> extends AbstractExpressionBlock {
         if (initialText.isEmpty() && value instanceof String) {
             textField.setPromptText("Type a value...");
         }
+
         textField.setCursor(Cursor.TEXT);
+        textField.getStyleClass().add("literal-text-field"); // Use specific style class
 
         textField.focusedProperty().addListener((obs, oldVal, newVal) -> {
             if (!newVal) {
@@ -1300,7 +1602,6 @@ public class LiteralBlock<T> extends AbstractExpressionBlock {
         return container;
     }
 }
-
 
 =================================================================================
 FILE: ./src/main/java/com/botmaker/blocks/MainBlock.java
@@ -1807,7 +2108,7 @@ public class VariableDeclarationBlock extends AbstractStatementBlock {
         VariableDeclarationFragment fragment = (VariableDeclarationFragment) astNode.fragments().get(0);
         this.variableName = fragment.getName().getIdentifier();
         this.variableType = astNode.getType();
-        this.initializer = null; // This will be set by the converter
+        this.initializer = null;
     }
 
     public String getVariableName() {
@@ -1826,21 +2127,28 @@ public class VariableDeclarationBlock extends AbstractStatementBlock {
         this.initializer = initializer;
     }
 
+    // ENHANCEMENT for VariableDeclarationBlock.java
+
+// In the createUINode method, after displaying the type and name,
+// check if initializer is an ArrayInitializer and display it specially:
+
     @Override
     protected Node createUINode(CompletionContext context) {
         HBox container = new HBox(5);
         container.setAlignment(Pos.CENTER_LEFT);
         container.getStyleClass().add("variable-declaration-block");
 
-        Label typeLabel = new Label(variableType.toString());
+        // Type label
+        Label typeLabel = new Label(getDisplayTypeName(variableType));
         typeLabel.getStyleClass().add("type-label");
         typeLabel.setCursor(Cursor.HAND);
         typeLabel.setOnMouseClicked(e -> requestTypeSuggestions(typeLabel, context));
         container.getChildren().add(typeLabel);
 
+        // Name field
         TextField nameField = new TextField(variableName);
         nameField.focusedProperty().addListener((obs, oldVal, newVal) -> {
-            if (!newVal) { // Focus lost
+            if (!newVal) {
                 String newName = nameField.getText();
                 VariableDeclarationFragment fragment = (VariableDeclarationFragment) ((VariableDeclarationStatement) this.astNode).fragments().get(0);
                 String currentName = fragment.getName().getIdentifier();
@@ -1852,14 +2160,32 @@ public class VariableDeclarationBlock extends AbstractStatementBlock {
         });
         container.getChildren().add(nameField);
 
-        container.getChildren().add(new Label("="));
+        Label equalsLabel = new Label("=");
+        equalsLabel.getStyleClass().add("keyword-label");
+        container.getChildren().add(equalsLabel);
 
+        // Initializer display
         if (initializer != null) {
-            container.getChildren().add(initializer.getUINode(context));
+            // Check if it's a list/array initializer
+            if (initializer.getAstNode() instanceof org.eclipse.jdt.core.dom.ArrayInitializer) {
+                // Display list specially
+                HBox listDisplay = createListDisplay(context);
+                container.getChildren().add(listDisplay);
+            } else {
+                // Normal expression
+                container.getChildren().add(initializer.getUINode(context));
+            }
         } else {
             container.getChildren().add(createExpressionDropZone(context));
         }
 
+        // + Button for changing initializer expression
+        Button addButton = new Button("+");
+        addButton.getStyleClass().add("expression-add-button");
+        addButton.setOnAction(e -> showExpressionMenu(addButton, context));
+        container.getChildren().add(addButton);
+
+        // Delete button
         javafx.scene.control.Button deleteButton = new javafx.scene.control.Button("X");
         deleteButton.setOnAction(e -> {
             context.codeEditor().deleteStatement((org.eclipse.jdt.core.dom.Statement) this.astNode);
@@ -1873,6 +2199,76 @@ public class VariableDeclarationBlock extends AbstractStatementBlock {
         return container;
     }
 
+    // Helper method to display list nicely
+    private HBox createListDisplay(CompletionContext context) {
+        HBox listBox = new HBox(3);
+        listBox.setAlignment(Pos.CENTER_LEFT);
+        listBox.getStyleClass().add("inline-list-display");
+
+        Label openBracket = new Label("[");
+        openBracket.setStyle("-fx-font-weight: bold; -fx-font-size: 14px;");
+        listBox.getChildren().add(openBracket);
+
+        // Show "empty" or element count
+        if (initializer instanceof ListBlock) {
+            ListBlock listBlock = (ListBlock) initializer;
+            if (listBlock.getElements().isEmpty()) {
+                Label emptyLabel = new Label("empty");
+                emptyLabel.setStyle("-fx-font-style: italic; -fx-text-fill: #999;");
+                listBox.getChildren().add(emptyLabel);
+            } else {
+                Label countLabel = new Label(listBlock.getElements().size() + " items");
+                countLabel.setStyle("-fx-font-style: italic;");
+                listBox.getChildren().add(countLabel);
+            }
+        } else {
+            // Fallback: just show the initializer
+            listBox.getChildren().add(initializer.getUINode(context));
+        }
+
+        Label closeBracket = new Label("]");
+        closeBracket.setStyle("-fx-font-weight: bold; -fx-font-size: 14px;");
+        listBox.getChildren().add(closeBracket);
+
+        return listBox;
+    }
+
+    // Helper to get friendly type name
+    private String getDisplayTypeName(Type type) {
+        String typeName = type.toString();
+
+        // Handle arrays
+        if (typeName.endsWith("[]")) {
+            String baseType = typeName.substring(0, typeName.length() - 2);
+            switch (baseType) {
+                case "int": return "int list";
+                case "double": return "double list";
+                case "String": return "text list";
+                case "boolean": return "boolean list";
+                default: return typeName;
+            }
+        }
+
+        return typeName;
+    }
+
+    private void showExpressionMenu(Button button, CompletionContext context) {
+        ContextMenu menu = new ContextMenu();
+
+        for (com.botmaker.ui.AddableExpression type : com.botmaker.ui.AddableExpression.values()) {
+            MenuItem menuItem = new MenuItem(type.getDisplayName());
+            menuItem.setOnAction(e -> {
+                if (initializer != null) {
+                    org.eclipse.jdt.core.dom.Expression toReplace = (org.eclipse.jdt.core.dom.Expression) initializer.getAstNode();
+                    context.codeEditor().replaceExpression(toReplace, type);
+                }
+            });
+            menu.getItems().add(menuItem);
+        }
+
+        menu.show(button, javafx.geometry.Side.BOTTOM, 0, 0);
+    }
+
     private void requestTypeSuggestions(Node uiNode, CompletionContext context) {
         try {
             Position pos = getPositionFromOffset(context.sourceCode(), this.variableType.getStartPosition());
@@ -1882,7 +2278,6 @@ public class VariableDeclarationBlock extends AbstractStatementBlock {
                 Platform.runLater(() -> {
                     ContextMenu menu = new ContextMenu();
 
-                    // Manually add fundamental types from TypeManager
                     for (String typeName : TypeManager.getFundamentalTypeNames()) {
                         CompletionItem dummyItem = new CompletionItem(typeName);
                         MenuItem mi = new MenuItem(typeName);
@@ -1891,14 +2286,11 @@ public class VariableDeclarationBlock extends AbstractStatementBlock {
                     }
                     menu.getItems().add(new SeparatorMenuItem());
 
-                    // Add types from language server if any
                     if (result != null && (result.isRight() || (result.isLeft() && !result.getLeft().isEmpty()))) {
                         List<CompletionItem> items = result.isLeft() ? result.getLeft() : result.getRight().getItems();
                         for (CompletionItem item : items) {
                             CompletionItemKind kind = item.getKind();
-                            // Filter for classes and interfaces suggested by the server
                             if (kind == CompletionItemKind.Class || kind == CompletionItemKind.Interface) {
-                                // Avoid duplicating types we added manually
                                 if (TypeManager.getFundamentalTypeNames().contains(item.getLabel())) continue;
 
                                 MenuItem mi = new MenuItem(item.getLabel());
@@ -1927,12 +2319,11 @@ public class VariableDeclarationBlock extends AbstractStatementBlock {
     private Position getPositionFromOffset(String code, int offset) {
         int line = 0;
         int lastNewline = -1;
-        // Handle case where offset is at the beginning of the file
         if (offset == 0) {
             return new Position(0, 0);
         }
         for (int i = 0; i < offset; i++) {
-            if (i >= code.length()) { // Boundary check
+            if (i >= code.length()) {
                 return new Position(line, i - lastNewline - 1);
             }
             if (code.charAt(i) == '\n') {
@@ -1943,7 +2334,6 @@ public class VariableDeclarationBlock extends AbstractStatementBlock {
         int character = offset - lastNewline - 1;
         return new Position(line, character);
     }
-
 
     @Override
     public String getDetails() {
@@ -2043,7 +2433,10 @@ import com.botmaker.ui.BlockDragAndDropManager;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
+import javafx.scene.control.Button;
+import javafx.scene.control.ContextMenu;
 import javafx.scene.control.Label;
+import javafx.scene.control.MenuItem;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import org.eclipse.jdt.core.dom.WhileStatement;
@@ -2102,11 +2495,17 @@ public class WhileBlock extends AbstractStatementBlock implements BlockWithChild
 
         Label whileLabel = new Label("while");
         whileLabel.getStyleClass().add("keyword-label");
-
         header.getChildren().add(whileLabel);
+
         if (condition != null) {
             header.getChildren().add(condition.getUINode(context));
         }
+
+        // + Button for changing condition
+        Button addButton = new Button("+");
+        addButton.getStyleClass().add("expression-add-button");
+        addButton.setOnAction(e -> showExpressionMenu(addButton, context));
+        header.getChildren().add(addButton);
 
         // Add spacer and delete button
         javafx.scene.layout.Pane spacer = new javafx.scene.layout.Pane();
@@ -2130,6 +2529,23 @@ public class WhileBlock extends AbstractStatementBlock implements BlockWithChild
         }
 
         return mainContainer;
+    }
+
+    private void showExpressionMenu(Button button, CompletionContext context) {
+        ContextMenu menu = new ContextMenu();
+
+        for (com.botmaker.ui.AddableExpression type : com.botmaker.ui.AddableExpression.values()) {
+            MenuItem menuItem = new MenuItem(type.getDisplayName());
+            menuItem.setOnAction(e -> {
+                if (condition != null) {
+                    org.eclipse.jdt.core.dom.Expression toReplace = (org.eclipse.jdt.core.dom.Expression) condition.getAstNode();
+                    context.codeEditor().replaceExpression(toReplace, type);
+                }
+            });
+            menu.getItems().add(menuItem);
+        }
+
+        menu.show(button, javafx.geometry.Side.BOTTOM, 0, 0);
     }
 }
 
@@ -3115,6 +3531,35 @@ public class CoreApplicationEvents {
         public boolean canRedo() { return canRedo; }
     }
 
+
+    // ADD THESE EVENT CLASSES TO CoreApplicationEvents.java:
+
+    /**
+     * Fired when a user requests to stop the currently running program
+     */
+    public static class StopRunRequestedEvent extends AbstractApplicationEvent {
+        public StopRunRequestedEvent() {
+            super("User");
+        }
+    }
+
+    /**
+     * Fired when a program starts executing (not debugging)
+     */
+    public static class ProgramStartedEvent extends AbstractApplicationEvent {
+        public ProgramStartedEvent() {
+            super("ExecutionService");
+        }
+    }
+
+    /**
+     * Fired when a program stops executing (completed or terminated)
+     */
+    public static class ProgramStoppedEvent extends AbstractApplicationEvent {
+        public ProgramStoppedEvent() {
+            super("ExecutionService");
+        }
+    }
     /**
      * Fired when a user wants to step over the current line
      */
@@ -3843,6 +4288,7 @@ package com.botmaker.parser;
 import com.botmaker.core.BodyBlock;
 import com.botmaker.core.StatementBlock;
 import com.botmaker.ui.AddableBlock;
+import com.botmaker.ui.AddableExpression;
 import com.botmaker.util.DefaultNames;
 import com.botmaker.util.TypeManager;
 import org.eclipse.jdt.core.dom.*;
@@ -3851,6 +4297,8 @@ import org.eclipse.jdt.core.dom.rewrite.ListRewrite;
 import org.eclipse.jface.text.Document;
 import org.eclipse.jface.text.IDocument;
 import org.eclipse.text.edits.TextEdit;
+
+import java.util.List;
 
 public class AstRewriter {
 
@@ -3908,22 +4356,29 @@ public class AstRewriter {
         AST ast = cu.getAST();
         ASTRewrite rewriter = ASTRewrite.create(ast);
 
-        Statement newStatement = createDefaultStatement(ast, type);
-        if (newStatement == null) {
-            return originalCode;
+        if (type == AddableBlock.COMMENT) {
+            // SPECIAL HANDLING FOR COMMENTS
+            // We use a String Placeholder. It is not a real statement, but JDT ListRewrite accepts it.
+            // ASTNode.EMPTY_STATEMENT is passed as a type hint for formatting.
+            Statement commentPlaceholder = (Statement) rewriter.createStringPlaceholder("// Comment", ASTNode.EMPTY_STATEMENT);
+
+            Block targetAstBlock = (Block) targetBody.getAstNode();
+            ListRewrite listRewrite = rewriter.getListRewrite(targetAstBlock, Block.STATEMENTS_PROPERTY);
+            listRewrite.insertAt(commentPlaceholder, index, null);
+        } else {
+            // Standard Statement Handling
+            Statement newStatement = createDefaultStatement(ast, type);
+            if (newStatement == null) return originalCode;
+
+            Block targetAstBlock = (Block) targetBody.getAstNode();
+            ListRewrite listRewrite = rewriter.getListRewrite(targetAstBlock, Block.STATEMENTS_PROPERTY);
+            listRewrite.insertAt(newStatement, index, null);
         }
 
-        // Special handling for Switch statements:
-        // If we are dropping a CASE into a SWITCH block, the targetBody might actually be
-        // a synthetic block or the switch itself. However, strictly speaking,
-        // Switch cases are children of the SwitchStatement, not a Block.
-        // But in this architecture, we usually drop into BodyBlocks.
-        // Standard blocks (If/While) use Block bodies. Switch statements have a list of statements.
+        return applyRewrite(rewriter, originalCode);
+    }
 
-        Block targetAstBlock = (Block) targetBody.getAstNode();
-        ListRewrite listRewrite = rewriter.getListRewrite(targetAstBlock, Block.STATEMENTS_PROPERTY);
-        listRewrite.insertAt(newStatement, index, null);
-
+    private String applyRewrite(ASTRewrite rewriter, String originalCode) {
         IDocument document = new Document(originalCode);
         try {
             TextEdit edits = rewriter.rewriteAST(document, null);
@@ -3956,6 +4411,45 @@ public class AstRewriter {
             return originalCode;
         }
     }
+
+    public String updateComment(String originalCode, Comment commentNode, String newText) {
+        try {
+            IDocument document = new Document(originalCode);
+
+            String replacement;
+            if (newText.contains("\n")) {
+                // Use Block Comment for multi-line text
+                replacement = "/* " + newText + " */";
+            } else {
+                // Use Line Comment for single-line text
+                replacement = "// " + newText;
+            }
+
+            // Directly replace the text range in the document
+            document.replace(commentNode.getStartPosition(), commentNode.getLength(), replacement);
+
+            return document.get();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return originalCode;
+        }
+    }
+
+    /**
+     * Deletes a comment node by removing its text range.
+     */
+    public String deleteComment(String originalCode, Comment commentNode) {
+        try {
+            IDocument document = new Document(originalCode);
+            // Replace content with empty string
+            document.replace(commentNode.getStartPosition(), commentNode.getLength(), "");
+            return document.get();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return originalCode;
+        }
+    }
+
 
     public String replaceLiteral(CompilationUnit cu, String originalCode, Expression toReplace, String newLiteralValue) {
         AST ast = cu.getAST();
@@ -4098,7 +4592,9 @@ public class AstRewriter {
         }
     }
 
-    private Expression createDefaultExpression(AST ast, com.botmaker.ui.AddableExpression type) {
+    // ADD THIS METHOD TO AstRewriter.java - replaces the existing createDefaultExpression
+
+    private Expression createDefaultExpression(AST ast, AddableExpression type) {
         switch (type) {
             case TEXT:
                 StringLiteral newString = ast.newStringLiteral();
@@ -4108,8 +4604,15 @@ public class AstRewriter {
             case NUMBER:
                 return ast.newNumberLiteral("0");
 
+            case TRUE:
+                return ast.newBooleanLiteral(true);
+
+            case FALSE:
+                return ast.newBooleanLiteral(false);
+
             case VARIABLE:
                 return ast.newSimpleName(DefaultNames.DEFAULT_VARIABLE);
+
 
             case ADD:
             case SUBTRACT:
@@ -4160,7 +4663,6 @@ public class AstRewriter {
                 emptyString.setLiteralValue("");
                 println.arguments().add(emptyString);
                 return ast.newExpressionStatement(println);
-
             case DECLARE_INT: {
                 VariableDeclarationFragment fragment = ast.newVariableDeclarationFragment();
                 fragment.setName(ast.newSimpleName(DefaultNames.DEFAULT_INT));
@@ -4196,7 +4698,73 @@ public class AstRewriter {
                 varDecl.setType(TypeManager.createTypeNode(ast, "String"));
                 return varDecl;
             }
+            case DECLARE_INT_ARRAY: {
+                VariableDeclarationFragment fragment = ast.newVariableDeclarationFragment();
+                fragment.setName(ast.newSimpleName("numbers"));
 
+                // Create empty array initializer: new int[]{0, 0, 0}
+                ArrayInitializer initializer = ast.newArrayInitializer();
+                initializer.expressions().add(ast.newNumberLiteral("0"));
+                initializer.expressions().add(ast.newNumberLiteral("0"));
+                initializer.expressions().add(ast.newNumberLiteral("0"));
+
+                ArrayCreation arrayCreation = ast.newArrayCreation();
+                arrayCreation.setType(ast.newArrayType(ast.newPrimitiveType(PrimitiveType.INT)));
+                arrayCreation.setInitializer(initializer);
+
+                fragment.setInitializer(arrayCreation);
+
+                VariableDeclarationStatement varDecl = ast.newVariableDeclarationStatement(fragment);
+                varDecl.setType(ast.newArrayType(ast.newPrimitiveType(PrimitiveType.INT)));
+                return varDecl;
+            }
+
+            case DECLARE_DOUBLE_ARRAY: {
+                VariableDeclarationFragment fragment = ast.newVariableDeclarationFragment();
+                fragment.setName(ast.newSimpleName("decimals"));
+
+                ArrayInitializer initializer = ast.newArrayInitializer();
+                initializer.expressions().add(ast.newNumberLiteral("0.0"));
+                initializer.expressions().add(ast.newNumberLiteral("0.0"));
+                initializer.expressions().add(ast.newNumberLiteral("0.0"));
+
+                ArrayCreation arrayCreation = ast.newArrayCreation();
+                arrayCreation.setType(ast.newArrayType(ast.newPrimitiveType(PrimitiveType.DOUBLE)));
+                arrayCreation.setInitializer(initializer);
+
+                fragment.setInitializer(arrayCreation);
+
+                VariableDeclarationStatement varDecl = ast.newVariableDeclarationStatement(fragment);
+                varDecl.setType(ast.newArrayType(ast.newPrimitiveType(PrimitiveType.DOUBLE)));
+                return varDecl;
+            }
+
+            case DECLARE_STRING_ARRAY: {
+                VariableDeclarationFragment fragment = ast.newVariableDeclarationFragment();
+                fragment.setName(ast.newSimpleName("words"));
+
+                ArrayInitializer initializer = ast.newArrayInitializer();
+                StringLiteral str1 = ast.newStringLiteral();
+                str1.setLiteralValue("item1");
+                StringLiteral str2 = ast.newStringLiteral();
+                str2.setLiteralValue("item2");
+                StringLiteral str3 = ast.newStringLiteral();
+                str3.setLiteralValue("item3");
+
+                initializer.expressions().add(str1);
+                initializer.expressions().add(str2);
+                initializer.expressions().add(str3);
+
+                ArrayCreation arrayCreation = ast.newArrayCreation();
+                arrayCreation.setType(ast.newArrayType(TypeManager.createTypeNode(ast, "String")));
+                arrayCreation.setInitializer(initializer);
+
+                fragment.setInitializer(arrayCreation);
+
+                VariableDeclarationStatement varDecl = ast.newVariableDeclarationStatement(fragment);
+                varDecl.setType(ast.newArrayType(TypeManager.createTypeNode(ast, "String")));
+                return varDecl;
+            }
             case IF:
                 // if (true) {}
                 IfStatement ifStatement = ast.newIfStatement();
@@ -4375,6 +4943,67 @@ public class AstRewriter {
         }
     }
 
+    public String addElementToArrayInitializer(
+            CompilationUnit cu,
+            String originalCode,
+            org.eclipse.jdt.core.dom.ArrayInitializer arrayInit,
+            com.botmaker.ui.AddableExpression type,
+            int insertIndex) {
+
+        AST ast = cu.getAST();
+        ASTRewrite rewriter = ASTRewrite.create(ast);
+
+        // Create the new expression based on type
+        Expression newElement = createDefaultExpression(ast, type);
+        if (newElement == null) {
+            return originalCode;
+        }
+
+        // Use ListRewrite to insert the element
+        ListRewrite listRewrite = rewriter.getListRewrite(
+                arrayInit,
+                org.eclipse.jdt.core.dom.ArrayInitializer.EXPRESSIONS_PROPERTY
+        );
+
+        listRewrite.insertAt(newElement, insertIndex, null);
+
+        return applyRewrite(rewriter, originalCode);
+    }
+
+    /**
+     * Deletes an element from an ArrayInitializer at the specified index
+     */
+    public String deleteElementFromArrayInitializer(
+            CompilationUnit cu,
+            String originalCode,
+            org.eclipse.jdt.core.dom.ArrayInitializer arrayInit,
+            int elementIndex) {
+
+        AST ast = cu.getAST();
+        ASTRewrite rewriter = ASTRewrite.create(ast);
+
+        // Get the list of expressions
+        @SuppressWarnings("unchecked")
+        List<Expression> expressions = arrayInit.expressions();
+
+        if (elementIndex < 0 || elementIndex >= expressions.size()) {
+            return originalCode; // Invalid index
+        }
+
+        Expression toRemove = expressions.get(elementIndex);
+
+        // Use ListRewrite to remove the element
+        ListRewrite listRewrite = rewriter.getListRewrite(
+                arrayInit,
+                org.eclipse.jdt.core.dom.ArrayInitializer.EXPRESSIONS_PROPERTY
+        );
+
+        listRewrite.remove(toRemove, null);
+
+        return applyRewrite(rewriter, originalCode);
+    }
+
+
     private Expression createDefaultInitializer(AST ast, String typeName) {
         switch (typeName) {
             case "int":
@@ -4443,16 +5072,18 @@ import org.eclipse.jdt.core.dom.*;
 import org.eclipse.jdt.core.dom.IMethodBinding;
 import org.eclipse.jdt.core.dom.ITypeBinding;
 
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 
 public class BlockFactory {
 
     private CompilationUnit ast;
+    private String currentSourceCode;
+    // Cache for all comments in the file
+    private List<Comment> allComments;
     private boolean markNewIdentifiersAsUnedited = false;
 
     public MainBlock convert(String javaCode, Map<ASTNode, CodeBlock> nodeToBlockMap, BlockDragAndDropManager manager) {
+        this.currentSourceCode = javaCode;
         try {
             ASTParser parser = ASTParser.newParser(AST.getJLSLatest());
             parser.setSource(javaCode.toCharArray());
@@ -4461,6 +5092,14 @@ public class BlockFactory {
             parser.setUnitName("Demo.java");
             parser.setEnvironment(null, null, null, true);
             this.ast = (CompilationUnit) parser.createAST(null);
+
+            // 1. Extract ALL comments from the global list
+            this.allComments = new ArrayList<>();
+            for (Object obj : ast.getCommentList()) {
+                if (obj instanceof Comment && !(obj instanceof Javadoc)) {
+                    allComments.add((Comment) obj);
+                }
+            }
 
             MainMethodVisitor visitor = new MainMethodVisitor();
             ast.accept(visitor);
@@ -4490,13 +5129,55 @@ public class BlockFactory {
     }
 
     private BodyBlock parseBodyBlock(Block astBlock, Map<ASTNode, CodeBlock> nodeToBlockMap, BlockDragAndDropManager manager) {
-        System.out.println("Creating BodyBlock for: " + astBlock.hashCode());
         BodyBlock bodyBlock = new BodyBlock(BlockIdPrefix.generate(BlockIdPrefix.BODY, astBlock), astBlock, manager);
         nodeToBlockMap.put(astBlock, bodyBlock);
+
+        List<CodeBlock> allChildren = new ArrayList<>();
+
+        // A. Add all real Java Statements
         for (Object statementObj : astBlock.statements()) {
             Statement statement = (Statement) statementObj;
-            parseStatement(statement, nodeToBlockMap, manager).ifPresent(bodyBlock::addStatement);
+            parseStatement(statement, nodeToBlockMap, manager).ifPresent(allChildren::add);
         }
+
+        // B. Find Comments that belong physically inside this block
+        int blockStart = astBlock.getStartPosition() + 1; // Skip '{'
+        int blockEnd = astBlock.getStartPosition() + astBlock.getLength() - 1; // Skip '}'
+
+        for (Comment comment : allComments) {
+            int cPos = comment.getStartPosition();
+
+            // 1. Is the comment inside this body?
+            if (cPos > blockStart && cPos < blockEnd) {
+
+                // 2. Is the comment captured by a child statement?
+                // (e.g., inside an IF block that is inside this body)
+                boolean isInsideChild = false;
+                for (Object stmtObj : astBlock.statements()) {
+                    Statement s = (Statement) stmtObj;
+                    if (cPos >= s.getStartPosition() && cPos <= s.getStartPosition() + s.getLength()) {
+                        isInsideChild = true;
+                        break;
+                    }
+                }
+
+                // If it's not inside a child, it belongs to us
+                if (!isInsideChild) {
+                    allChildren.add(parseCommentBlock(comment, nodeToBlockMap));
+                }
+            }
+        }
+
+        // C. Sort everything by start position so comments appear in context
+        allChildren.sort(Comparator.comparingInt(b -> b.getAstNode().getStartPosition()));
+
+        // D. Add to the BodyBlock
+        for (CodeBlock cb : allChildren) {
+            if (cb instanceof StatementBlock) {
+                bodyBlock.addStatement((StatementBlock) cb);
+            }
+        }
+
         return bodyBlock;
     }
 
@@ -4680,13 +5361,32 @@ public class BlockFactory {
         return switchBlock;
     }
 
-    // Parse comment block (for when we add comment support)
-    private CommentBlock parseCommentBlock(LineComment astNode, Map<ASTNode, CodeBlock> nodeToBlockMap, String commentText) {
-        System.out.println("Creating CommentBlock for: " + astNode);
+    private CommentBlock parseCommentBlock(Comment astNode, Map<ASTNode, CodeBlock> nodeToBlockMap) {
+        String text = "Comment";
+
+        // Extract text from source string based on range
+        if (currentSourceCode != null) {
+            try {
+                int start = astNode.getStartPosition();
+                int length = astNode.getLength();
+                String raw = currentSourceCode.substring(start, start + length);
+
+                if (astNode.isLineComment()) {
+                    // Remove "//"
+                    text = raw.substring(2).trim();
+                } else if (astNode.isBlockComment()) {
+                    // Remove "/*" and "*/"
+                    if (raw.length() >= 4) {
+                        text = raw.substring(2, raw.length() - 2).trim();
+                    }
+                }
+            } catch (Exception ignored) {}
+        }
+
         CommentBlock commentBlock = new CommentBlock(
                 BlockIdPrefix.generate(BlockIdPrefix.COMMENT, astNode),
                 astNode,
-                commentText
+                text
         );
         nodeToBlockMap.put(astNode, commentBlock);
         return commentBlock;
@@ -4865,6 +5565,7 @@ public class BlockFactory {
             nodeToBlockMap.put(astExpression, block);
             return Optional.of(block);
         }
+
         if (astExpression instanceof NumberLiteral) {
             System.out.println("Creating Number LiteralBlock for: " + astExpression);
             NumberLiteral literalNode = (NumberLiteral) astExpression;
@@ -4880,6 +5581,7 @@ public class BlockFactory {
             nodeToBlockMap.put(astExpression, block);
             return Optional.of(block);
         }
+
         if (astExpression instanceof BooleanLiteral) {
             System.out.println("Creating Boolean LiteralBlock for: " + astExpression);
             BooleanLiteral literalNode = (BooleanLiteral) astExpression;
@@ -4887,6 +5589,22 @@ public class BlockFactory {
             nodeToBlockMap.put(astExpression, block);
             return Optional.of(block);
         }
+
+        // NEW: Handle ArrayInitializer (list literals)
+        if (astExpression instanceof ArrayInitializer) {
+            System.out.println("Creating ListBlock for: " + astExpression);
+            ArrayInitializer arrayInit = (ArrayInitializer) astExpression;
+            ListBlock listBlock = new ListBlock(BlockIdPrefix.generate(BlockIdPrefix.LIST, arrayInit), arrayInit);
+            nodeToBlockMap.put(astExpression, listBlock);
+
+            // Parse each element recursively
+            for (Object expr : arrayInit.expressions()) {
+                parseExpression((Expression) expr, nodeToBlockMap).ifPresent(listBlock::addElement);
+            }
+
+            return Optional.of(listBlock);
+        }
+
         if (astExpression instanceof SimpleName) {
             // Do not convert type names into identifier blocks
             if (astExpression.getParent() instanceof Type) {
@@ -4905,11 +5623,14 @@ public class BlockFactory {
             nodeToBlockMap.put(astExpression, block);
             return Optional.of(block);
         }
+
         if (astExpression instanceof InfixExpression) {
             return Optional.of(parseBinaryExpression((InfixExpression) astExpression, nodeToBlockMap));
         }
+
         return Optional.empty();
     }
+
 
     private boolean isPrintStatement(Expression expression) {
         if (!(expression instanceof MethodInvocation)) {
@@ -4990,8 +5711,8 @@ public class BlockIdPrefix {
     public static final String SWITCH = "switch_";
     public static final String RETURN = "return_";
     public static final String COMMENT = "comment_";
-    public static final String WAIT = "wait_";     // Add this
-// ...
+    public static final String WAIT = "wait_";
+    public static final String LIST = "list_";
 
     private BlockIdPrefix() {} // Prevent instantiation
 
@@ -5093,7 +5814,52 @@ public class CodeEditor {
         );
         triggerUpdate(newCode);
     }
+    public void addElementToArrayInitializer(
+            org.eclipse.jdt.core.dom.ArrayInitializer arrayInit,
+            com.botmaker.ui.AddableExpression type,
+            int insertIndex) {
 
+        blockFactory.setMarkNewIdentifiersAsUnedited(true);
+        String newCode = astRewriter.addElementToArrayInitializer(
+                getCompilationUnit(),
+                getCurrentCode(),
+                arrayInit,
+                type,
+                insertIndex
+        );
+        triggerUpdate(newCode);
+    }
+
+    /**
+     * Deletes an element from an ArrayInitializer at the specified index
+     */
+    public void deleteElementFromArrayInitializer(
+            org.eclipse.jdt.core.dom.ArrayInitializer arrayInit,
+            int elementIndex) {
+
+        String newCode = astRewriter.deleteElementFromArrayInitializer(
+                getCompilationUnit(),
+                getCurrentCode(),
+                arrayInit,
+                elementIndex
+        );
+        triggerUpdate(newCode);
+    }
+    public void updateComment(Comment commentNode, String newText) {
+        String newCode = astRewriter.updateComment(
+                getCurrentCode(),
+                commentNode,
+                newText
+        );
+        triggerUpdate(newCode);
+    }
+    public void deleteComment(Comment commentNode) {
+        String newCode = astRewriter.deleteComment(
+                getCurrentCode(),
+                commentNode
+        );
+        triggerUpdate(newCode);
+    }
     public void replaceExpression(Expression toReplace, com.botmaker.ui.AddableExpression type) {
         blockFactory.setMarkNewIdentifiersAsUnedited(true);
         String newCode = astRewriter.replaceExpression(
@@ -5777,6 +6543,10 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Scanner;
+import java.util.concurrent.ArrayBlockingQueue;
+import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Consumer;
 
 public class CodeExecutionService {
@@ -5787,6 +6557,16 @@ public class CodeExecutionService {
     private final Consumer<String> setOutputConsumer;
     private final DiagnosticsManager diagnosticsManager;
     private final ApplicationConfig config;
+
+    // NEW: Process management for stopping infinite loops
+    private volatile Process currentRunningProcess;
+    private final AtomicBoolean isRunning = new AtomicBoolean(false);
+
+    // Output throttling constants
+    private static final int MAX_OUTPUT_LINES = 1000; // Max lines to display
+    private static final int THROTTLE_DELAY_MS = 50; // Batch updates every 50ms
+    private static final int MAX_LINE_LENGTH = 500; // Truncate very long lines
+
     public CodeExecutionService(
             Consumer<String> appendOutputConsumer,
             Runnable clearOutputConsumer,
@@ -5804,7 +6584,7 @@ public class CodeExecutionService {
 
     public void runCode(String code) {
         if (diagnosticsManager.hasErrors()) {
-            String translatedErrors = com.botmaker.validation.ErrorTranslator.translate(diagnosticsManager.getDiagnostics());
+            String translatedErrors = ErrorTranslator.translate(diagnosticsManager.getDiagnostics());
             System.err.println(translatedErrors);
             Platform.runLater(() -> {
                 statusConsumer.accept("Run aborted due to errors.");
@@ -5812,9 +6592,16 @@ public class CodeExecutionService {
             return;
         }
 
+        // Check if already running
+        if (isRunning.get()) {
+            Platform.runLater(() -> {
+                statusConsumer.accept("Program is already running. Stop it first.");
+            });
+            return;
+        }
+
         new Thread(() -> {
             try {
-                // ADD: Get paths from config
                 Path sourceFilePath = config.getSourceFilePath();
                 Path compiledOutputPath = config.getCompiledOutputPath();
 
@@ -5824,32 +6611,87 @@ public class CodeExecutionService {
                 }
 
                 Platform.runLater(() -> {
-                    statusConsumer.accept("Running code...");
+                    statusConsumer.accept("Running code... (Press Stop to terminate)");
                     clearOutputConsumer.run();
                 });
+
+                isRunning.set(true);
 
                 String classPath = compiledOutputPath.toString();
                 String className = config.getMainClassName();
                 String javaExecutable = config.getJavaExecutable();
 
                 ProcessBuilder pb = new ProcessBuilder(javaExecutable, "-cp", classPath, className);
-                Process process = pb.start();
+                currentRunningProcess = pb.start();
 
-                redirectStream(process.getInputStream());
-                redirectStream(process.getErrorStream());
+                // NEW: Use throttled stream redirection
+                redirectStreamThrottled(currentRunningProcess.getInputStream());
+                redirectStreamThrottled(currentRunningProcess.getErrorStream());
 
-                int exitCode = process.waitFor();
-                Platform.runLater(() -> statusConsumer.accept("Run finished with exit code: " + exitCode));
+                int exitCode = currentRunningProcess.waitFor();
 
-            } catch (IOException | InterruptedException e) {
+                Platform.runLater(() -> {
+                    if (exitCode == 0) {
+                        statusConsumer.accept("Program completed successfully.");
+                    } else if (exitCode == 143 || exitCode == 130) {
+                        statusConsumer.accept("Program stopped by user.");
+                    } else {
+                        statusConsumer.accept("Program exited with code: " + exitCode);
+                    }
+                });
+
+            } catch (InterruptedException e) {
+                Platform.runLater(() -> statusConsumer.accept("Program stopped by user."));
+            } catch (IOException e) {
                 Platform.runLater(() -> statusConsumer.accept("Run Error: " + e.getMessage()));
+            } finally {
+                isRunning.set(false);
+                currentRunningProcess = null;
             }
         }).start();
     }
 
+    /**
+     * NEW: Stops the currently running program
+     */
+    public void stopRunningProgram() {
+        if (currentRunningProcess != null && currentRunningProcess.isAlive()) {
+            Platform.runLater(() -> statusConsumer.accept("Stopping program..."));
+
+            new Thread(() -> {
+                try {
+                    // Try graceful shutdown first
+                    currentRunningProcess.destroy();
+
+                    // Wait up to 2 seconds
+                    boolean exited = currentRunningProcess.waitFor(2, java.util.concurrent.TimeUnit.SECONDS);
+
+                    if (!exited) {
+                        // Force kill if still running
+                        currentRunningProcess.destroyForcibly();
+                        currentRunningProcess.waitFor();
+                    }
+
+                    Platform.runLater(() -> statusConsumer.accept("Program stopped."));
+                } catch (InterruptedException e) {
+                    Platform.runLater(() -> statusConsumer.accept("Error stopping program."));
+                }
+            }).start();
+        } else {
+            Platform.runLater(() -> statusConsumer.accept("No program is running."));
+        }
+    }
+
+    /**
+     * Check if a program is currently running
+     */
+    public boolean isRunning() {
+        return isRunning.get();
+    }
+
     public void compileCode(String code) {
         if (diagnosticsManager.hasErrors()) {
-            String translatedErrors = com.botmaker.validation.ErrorTranslator.translate(diagnosticsManager.getDiagnostics());
+            String translatedErrors = ErrorTranslator.translate(diagnosticsManager.getDiagnostics());
             System.err.println(translatedErrors);
             Platform.runLater(() -> {
                 statusConsumer.accept("Compilation failed. See errors above.");
@@ -5861,7 +6703,6 @@ public class CodeExecutionService {
             try {
                 Platform.runLater(() -> setOutputConsumer.accept("Saving and compiling..."));
 
-                // ADD: Get paths from config
                 Path sourceFilePath = config.getSourceFilePath();
                 Path compiledOutputPath = config.getCompiledOutputPath();
 
@@ -5875,15 +6716,11 @@ public class CodeExecutionService {
     }
 
     public boolean compileAndWait(String code, Path sourceFilePath, Path compiledOutputPath) throws IOException, InterruptedException {
-        // Ensure parent directories exist
         Files.createDirectories(sourceFilePath.getParent());
         Files.writeString(sourceFilePath, code);
-
-        // Ensure output directory exists
         Files.createDirectories(compiledOutputPath);
 
         String javacExecutable = Paths.get(System.getProperty("java.home"), "bin", "javac").toString();
-        // Add -g to include debug information for the debugger
         ProcessBuilder pb = new ProcessBuilder(javacExecutable, "-g", "-d", compiledOutputPath.toString(), sourceFilePath.toString());
         Process process = pb.start();
 
@@ -5902,18 +6739,73 @@ public class CodeExecutionService {
         }
     }
 
-    private void redirectStream(InputStream stream) {
+    /**
+     * NEW: Throttled stream redirection with line limits and batching
+     * Prevents UI freeze from infinite loops with print statements
+     */
+    private void redirectStreamThrottled(InputStream stream) {
         new Thread(() -> {
-            try (Scanner s = new Scanner(stream)) {
-                while (s.hasNextLine()) {
-                    String line = s.nextLine();
-                    Platform.runLater(() -> appendOutputConsumer.accept(line + "\n"));
+            try (Scanner scanner = new Scanner(stream)) {
+                StringBuilder batch = new StringBuilder();
+                AtomicInteger lineCount = new AtomicInteger(0);
+                long lastUpdateTime = System.currentTimeMillis();
+                boolean limitWarningShown = false;
+
+                while (scanner.hasNextLine() && isRunning.get()) {
+                    String line = scanner.nextLine();
+
+                    // Truncate very long lines
+                    if (line.length() > MAX_LINE_LENGTH) {
+                        line = line.substring(0, MAX_LINE_LENGTH) + "... (truncated)";
+                    }
+
+                    int currentCount = lineCount.incrementAndGet();
+
+                    // Check if we've hit the line limit
+                    if (currentCount > MAX_OUTPUT_LINES) {
+                        if (!limitWarningShown) {
+                            batch.append("\n⚠️ OUTPUT LIMIT REACHED (")
+                                    .append(MAX_OUTPUT_LINES)
+                                    .append(" lines). Further output suppressed.\n")
+                                    .append("💡 TIP: Your program may be in an infinite loop. Press Stop to terminate.\n");
+                            limitWarningShown = true;
+
+                            // Force update the warning
+                            final String finalBatch = batch.toString();
+                            Platform.runLater(() -> appendOutputConsumer.accept(finalBatch));
+                            batch.setLength(0);
+                        }
+                        // Don't process more lines
+                        continue;
+                    }
+
+                    batch.append(line).append("\n");
+
+                    // Batch updates: only update UI every THROTTLE_DELAY_MS
+                    long currentTime = System.currentTimeMillis();
+                    if (currentTime - lastUpdateTime >= THROTTLE_DELAY_MS || currentCount % 100 == 0) {
+                        final String batchToSend = batch.toString();
+                        if (!batchToSend.isEmpty()) {
+                            Platform.runLater(() -> appendOutputConsumer.accept(batchToSend));
+                            batch.setLength(0);
+                        }
+                        lastUpdateTime = currentTime;
+                    }
                 }
+
+                // Send any remaining output
+                if (batch.length() > 0) {
+                    final String finalBatch = batch.toString();
+                    Platform.runLater(() -> appendOutputConsumer.accept(finalBatch));
+                }
+
+            } catch (Exception e) {
+                // Stream closed or other error - this is normal when process stops
+                System.err.println("Stream redirection ended: " + e.getMessage());
             }
         }).start();
     }
 }
-
 
 =================================================================================
 FILE: ./src/main/java/com/botmaker/runtime/DebuggerService.java
@@ -6617,6 +7509,13 @@ public class ExecutionService {
                 event -> run(),
                 false
         );
+
+        // NEW: Subscribe to stop run requests
+        eventBus.subscribe(
+                CoreApplicationEvents.StopRunRequestedEvent.class,
+                event -> stopRun(),
+                false
+        );
     }
 
     /**
@@ -6630,7 +7529,24 @@ public class ExecutionService {
      * Runs the current code
      */
     public void run() {
-        codeExecutionService.runCode(state.getCurrentCode());
+        // Publish event that program is starting
+        eventBus.publish(new CoreApplicationEvents.ProgramStartedEvent());
+
+        // Run in background thread to not block
+        new Thread(() -> {
+            codeExecutionService.runCode(state.getCurrentCode());
+
+            // Publish event when done (successful completion)
+            eventBus.publish(new CoreApplicationEvents.ProgramStoppedEvent());
+        }).start();
+    }
+
+    /**
+     * NEW: Stops the currently running program
+     */
+    public void stopRun() {
+        codeExecutionService.stopRunningProgram();
+        eventBus.publish(new CoreApplicationEvents.ProgramStoppedEvent());
     }
 
     /**
@@ -7086,52 +8002,70 @@ import com.botmaker.blocks.*;
 import com.botmaker.core.StatementBlock;
 
 public enum AddableBlock {
-    // Output
-    PRINT("Print", PrintBlock.class),
+    // --- OUTPUT ---
+    PRINT("Print", PrintBlock.class, BlockCategory.OUTPUT),
 
-    // Control Flow
-    IF("If", IfBlock.class),
-    WHILE("While Loop", WhileBlock.class),
-    FOR("For Each", ForBlock.class),
-    DO_WHILE("Do While", DoWhileBlock.class),
-    SWITCH("Switch", SwitchBlock.class),
-    CASE("Case", SwitchBlock.SwitchCaseBlock.class),
-    BREAK("Break", BreakBlock.class),
-    CONTINUE("Continue", ContinueBlock.class),
-    RETURN("Return", ReturnBlock.class),  // Added Return
-    WAIT("Wait (ms)", WaitBlock.class),   // Added Wait
+    // --- FLOW CONTROL ---
+    IF("If Statement", IfBlock.class, BlockCategory.FLOW),
+    WHILE("While Loop", WhileBlock.class, BlockCategory.LOOPS),
+    FOR("For Each Loop", ForBlock.class, BlockCategory.LOOPS),
+    DO_WHILE("Do While", DoWhileBlock.class, BlockCategory.LOOPS),
+    SWITCH("Switch", SwitchBlock.class, BlockCategory.FLOW),
+    CASE("Case", SwitchBlock.SwitchCaseBlock.class, BlockCategory.FLOW),
 
-    // Variable Declaration
-    DECLARE_INT("Declare Int", VariableDeclarationBlock.class),
-    DECLARE_DOUBLE("Declare Double", VariableDeclarationBlock.class),
-    DECLARE_BOOLEAN("Declare Boolean", VariableDeclarationBlock.class),
-    DECLARE_STRING("Declare String", VariableDeclarationBlock.class),
+    // --- CONTROL COMMANDS ---
+    BREAK("Break", BreakBlock.class, BlockCategory.CONTROL),
+    CONTINUE("Continue", ContinueBlock.class, BlockCategory.CONTROL),
+    RETURN("Return", ReturnBlock.class, BlockCategory.CONTROL),
+    WAIT("Wait (ms)", WaitBlock.class, BlockCategory.CONTROL),
 
-    // Variable Operations
-    ASSIGNMENT("Assignment", AssignmentBlock.class),
+    // --- VARIABLES ---
+    DECLARE_INT("Int Variable", VariableDeclarationBlock.class, BlockCategory.VARIABLES),
+    DECLARE_DOUBLE("Double Variable", VariableDeclarationBlock.class, BlockCategory.VARIABLES),
+    DECLARE_BOOLEAN("Bool Variable", VariableDeclarationBlock.class, BlockCategory.VARIABLES),
+    DECLARE_STRING("String Variable", VariableDeclarationBlock.class, BlockCategory.VARIABLES),
 
-    // Input
-    READ_LINE("Read Line (String)", ReadInputBlock.class),
-    READ_INT("Read Int", ReadInputBlock.class),
-    READ_DOUBLE("Read Double", ReadInputBlock.class),
+    // NEW: Array declarations
+    DECLARE_INT_ARRAY("Int List", VariableDeclarationBlock.class, BlockCategory.VARIABLES),
+    DECLARE_DOUBLE_ARRAY("Double List", VariableDeclarationBlock.class, BlockCategory.VARIABLES),
+    DECLARE_STRING_ARRAY("String List", VariableDeclarationBlock.class, BlockCategory.VARIABLES),
 
-    // Comment
-    COMMENT("Comment", CommentBlock.class);
+    ASSIGNMENT("Set Variable", AssignmentBlock.class, BlockCategory.VARIABLES),
+
+    // --- INPUT ---
+    READ_LINE("Read Text", ReadInputBlock.class, BlockCategory.INPUT),
+    READ_INT("Read Int", ReadInputBlock.class, BlockCategory.INPUT),
+    READ_DOUBLE("Read Double", ReadInputBlock.class, BlockCategory.INPUT),
+
+    // --- UTILITY ---
+    COMMENT("Comment", CommentBlock.class, BlockCategory.UTILITY);
 
     private final String displayName;
     private final Class<? extends StatementBlock> blockClass;
+    private final BlockCategory category;
 
-    AddableBlock(String displayName, Class<? extends StatementBlock> blockClass) {
+    AddableBlock(String displayName, Class<? extends StatementBlock> blockClass, BlockCategory category) {
         this.displayName = displayName;
         this.blockClass = blockClass;
+        this.category = category;
     }
 
-    public String getDisplayName() {
-        return displayName;
-    }
+    public String getDisplayName() { return displayName; }
+    public Class<? extends StatementBlock> getBlockClass() { return blockClass; }
+    public BlockCategory getCategory() { return category; }
 
-    public Class<? extends StatementBlock> getBlockClass() {
-        return blockClass;
+    public enum BlockCategory {
+        OUTPUT("Output"),
+        INPUT("Input"),
+        VARIABLES("Variables"),
+        FLOW("Logic"),
+        LOOPS("Loops"),
+        CONTROL("Control"),
+        UTILITY("Utility");
+
+        private final String label;
+        BlockCategory(String label) { this.label = label; }
+        public String getLabel() { return label; }
     }
 }
 
@@ -7145,6 +8079,8 @@ public enum AddableExpression {
     // Literals
     TEXT("Text"),
     NUMBER("Number"),
+    TRUE("True"),
+    FALSE("False"),
     VARIABLE("Variable"),
 
     // Math Operations
@@ -7155,7 +8091,7 @@ public enum AddableExpression {
     MODULO("Modulo (%)", "%");
 
     private final String displayName;
-    private final String operator; // null for non-operations
+    private final String operator;
 
     AddableExpression(String displayName) {
         this.displayName = displayName;
@@ -8024,6 +8960,7 @@ import com.botmaker.events.CoreApplicationEvents;
 import com.botmaker.events.EventBus;
 import com.botmaker.lsp.CompletionContext;
 import com.botmaker.services.CodeEditorService;
+import com.botmaker.ui.AddableBlock.BlockCategory;
 import com.botmaker.validation.DiagnosticsManager;
 import com.botmaker.validation.ErrorTranslator;
 import javafx.animation.PauseTransition;
@@ -8033,19 +8970,18 @@ import javafx.geometry.Orientation;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
-import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.Priority;
-import javafx.scene.layout.VBox;
+import javafx.scene.layout.*;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 import org.eclipse.lsp4j.Diagnostic;
 import org.eclipse.lsp4j.DiagnosticSeverity;
 
-import java.util.List;
+import java.util.*;
 import java.util.function.Consumer;
+import java.util.stream.Collectors;
 
 public class UIManager {
+
 
     private final BlockDragAndDropManager dragAndDropManager;
     private final EventBus eventBus;
@@ -8066,16 +9002,17 @@ public class UIManager {
 
     // Controls
     private Button debugButton;
-    private Button stepOverButton; // Was Resume
-    private Button continueButton; // New
+    private Button stepOverButton;
+    private Button continueButton;
     private Button stopDebugButton;
     private Button undoButton;
     private Button redoButton;
+    private Button stopRunButton;
 
     public UIManager(BlockDragAndDropManager dragAndDropManager,
                      EventBus eventBus,
                      CodeEditorService codeEditorService,
-                     com.botmaker.validation.DiagnosticsManager diagnosticsManager,
+                     DiagnosticsManager diagnosticsManager,
                      Stage primaryStage) {
         this.dragAndDropManager = dragAndDropManager;
         this.eventBus = eventBus;
@@ -8085,6 +9022,7 @@ public class UIManager {
 
         setupEventHandlers();
     }
+
 
     private void setupEventHandlers() {
         eventBus.subscribe(CoreApplicationEvents.UIBlocksUpdatedEvent.class, this::handleBlocksUpdate, true);
@@ -8105,7 +9043,10 @@ public class UIManager {
         eventBus.subscribe(CoreApplicationEvents.DebugSessionResumedEvent.class, event -> onDebuggerResumed(), true);
         eventBus.subscribe(CoreApplicationEvents.DebugSessionFinishedEvent.class, event -> onDebuggerFinished(), true);
 
-        // Enable/Disable buttons based on history availability
+        eventBus.subscribe(CoreApplicationEvents.ProgramStartedEvent.class, event -> onProgramStarted(), true);
+        eventBus.subscribe(CoreApplicationEvents.ProgramStoppedEvent.class, event -> onProgramStopped(), true);
+
+
         eventBus.subscribe(CoreApplicationEvents.HistoryStateChangedEvent.class, event -> {
             Platform.runLater(() -> {
                 if (undoButton != null) undoButton.setDisable(!event.canUndo());
@@ -8120,38 +9061,213 @@ public class UIManager {
             CompletionContext context = codeEditorService.createCompletionContext();
             Node rootNode = event.getRootBlock().getUINode(context);
 
-            // IMPORTANT: Listen for the custom BreakpointToggleEvent bubbled up from blocks
             rootNode.addEventHandler(BlockEvent.BreakpointToggleEvent.TOGGLE_BREAKPOINT, e -> {
-                // Publish to EventBus so CodeEditorService can update state
                 eventBus.publish(new CoreApplicationEvents.BreakpointToggledEvent(e.getBlock(), e.isEnabled()));
             });
 
             blocksContainer.getChildren().add(rootNode);
         }
-
-        // --- FIX START ---
-        // Restore focus to the ScrollPane so input (scrolling) works immediately
-        // without requiring a mouse click.
         if (scrollPane != null) {
             scrollPane.requestFocus();
         }
-        // --- FIX END ---
     }
+
+    // --- UPDATED UI CREATION ---
     public Scene createScene() {
         menuBarManager = new MenuBarManager(primaryStage);
         menuBarManager.setEventBus(eventBus);
         menuBarManager.setOnSelectProject(v -> { if (onSelectProject != null) onSelectProject.accept(null); });
 
+        // 1. Main Block Canvas
         blocksContainer = new VBox(10);
+        blocksContainer.getStyleClass().add("blocks-canvas");
+
+        scrollPane = new ScrollPane(blocksContainer);
+        scrollPane.setFitToWidth(true);
+        scrollPane.getStyleClass().add("code-scroll-pane");
+
+        // 2. Categorized Palette (Left Sidebar)
+        Accordion paletteAccordion = createCategorizedPalette();
+        VBox paletteContainer = new VBox(paletteAccordion);
+        paletteContainer.setPrefWidth(220);
+        paletteContainer.getStyleClass().add("palette-sidebar");
+
+        // 3. Bottom Panels (Output/Errors)
         statusLabel = new Label("Ready");
         statusLabel.setId("status-label");
 
         outputArea = new TextArea();
         outputArea.setEditable(false);
+        outputArea.getStyleClass().add("console-area");
 
+        // Error list setup (Keep your existing ListCell implementation here)
         errorListView = new ListView<>();
-        errorListView.setPlaceholder(new Label("No errors to display."));
-        errorListView.setCellFactory(lv -> new ListCell<>() {
+        configureErrorList(errorListView); // Extracted to helper for brevity
+
+        bottomTabPane = new TabPane();
+        terminalTab = new Tab("Terminal", outputArea);
+        terminalTab.setClosable(false);
+        Tab errorsTab = new Tab("Errors", errorListView);
+        errorsTab.setClosable(false);
+        bottomTabPane.getTabs().addAll(terminalTab, errorsTab);
+
+        // 4. Toolbar
+        HBox toolBar = createToolBar();
+
+        // 5. Layout Assembly
+        SplitPane verticalSplit = new SplitPane();
+        verticalSplit.setOrientation(Orientation.VERTICAL);
+        verticalSplit.getItems().addAll(scrollPane, bottomTabPane);
+        verticalSplit.setDividerPositions(0.75);
+        VBox.setVgrow(verticalSplit, Priority.ALWAYS);
+
+        BorderPane mainLayout = new BorderPane();
+        mainLayout.setTop(toolBar);
+        mainLayout.setLeft(paletteContainer);
+        mainLayout.setCenter(verticalSplit);
+        mainLayout.setBottom(statusLabel);
+
+        // Root
+        VBox root = new VBox(menuBarManager.getMenuBar(), mainLayout);
+        VBox.setVgrow(mainLayout, Priority.ALWAYS);
+
+        root.getStyleClass().add("light-theme");
+
+        Scene scene = new Scene(root, 1000, 700);
+        scene.getStylesheets().add(getClass().getResource("/com/botmaker/styles.css").toExternalForm());
+
+        return scene;
+    }
+    private void onProgramStarted() {
+        if (stopRunButton != null) {
+            stopRunButton.setDisable(false);
+        }
+    }
+
+    private void onProgramStopped() {
+        if (stopRunButton != null) {
+            stopRunButton.setDisable(true);
+        }
+    }
+    private Accordion createCategorizedPalette() {
+        Accordion accordion = new Accordion();
+
+        Map<BlockCategory, List<AddableBlock>> grouped = Arrays.stream(AddableBlock.values())
+                .collect(Collectors.groupingBy(AddableBlock::getCategory));
+
+        // Define order of categories
+        BlockCategory[] order = {
+                BlockCategory.OUTPUT,
+                BlockCategory.INPUT,
+                BlockCategory.VARIABLES,
+                BlockCategory.FLOW,
+                BlockCategory.LOOPS,
+                BlockCategory.CONTROL,
+                BlockCategory.UTILITY
+        };
+
+        for (BlockCategory category : order) {
+            List<AddableBlock> blocks = grouped.get(category);
+            if (blocks == null) continue;
+
+            VBox content = new VBox(8); // Spacing between items
+            content.setPadding(new Insets(10));
+
+            for (AddableBlock blockType : blocks) {
+                Label blockLabel = new Label(blockType.getDisplayName());
+                blockLabel.setMaxWidth(Double.MAX_VALUE);
+
+                // Style classes: "palette-item", "palette-output", etc.
+                blockLabel.getStyleClass().addAll("palette-item", "palette-" + category.name().toLowerCase());
+
+                dragAndDropManager.makeDraggable(blockLabel, blockType);
+                content.getChildren().add(blockLabel);
+            }
+
+            TitledPane pane = new TitledPane(category.getLabel(), content);
+            pane.getStyleClass().add("palette-pane");
+            accordion.getPanes().add(pane);
+        }
+
+        // Expand the first one by default
+        if (!accordion.getPanes().isEmpty()) {
+            accordion.setExpandedPane(accordion.getPanes().get(0));
+        }
+
+        return accordion;
+    }
+
+    private HBox createToolBar() {
+        undoButton = new Button("Undo");
+        undoButton.setDisable(true);
+        undoButton.setOnAction(e -> eventBus.publish(new CoreApplicationEvents.UndoRequestedEvent()));
+
+        redoButton = new Button("Redo");
+        redoButton.setDisable(true);
+        redoButton.setOnAction(e -> eventBus.publish(new CoreApplicationEvents.RedoRequestedEvent()));
+
+        Region spacer1 = new Region();
+        HBox.setHgrow(spacer1, Priority.ALWAYS);
+
+        Button compileButton = new Button("Compile");
+        compileButton.getStyleClass().add("toolbar-btn");
+        compileButton.setOnAction(e -> eventBus.publish(new CoreApplicationEvents.CompilationRequestedEvent()));
+
+        Button runButton = new Button("Run ▶");
+        runButton.getStyleClass().addAll("toolbar-btn", "btn-run");
+        runButton.setOnAction(e -> {
+            bottomTabPane.getSelectionModel().select(terminalTab);
+            eventBus.publish(new CoreApplicationEvents.ExecutionRequestedEvent());
+        });
+
+        // NEW: Stop Run button
+        stopRunButton = new Button("Stop ⏹");
+        stopRunButton.getStyleClass().addAll("toolbar-btn", "btn-stop");
+        stopRunButton.setDisable(true); // Disabled until program runs
+        stopRunButton.setOnAction(e -> {
+            eventBus.publish(new CoreApplicationEvents.StopRunRequestedEvent());
+        });
+
+        debugButton = new Button("Debug 🐞");
+        debugButton.getStyleClass().addAll("toolbar-btn", "btn-debug");
+        debugButton.setOnAction(e -> {
+            bottomTabPane.getSelectionModel().select(terminalTab);
+            eventBus.publish(new CoreApplicationEvents.DebugStartRequestedEvent());
+        });
+
+        Region spacer2 = new Region();
+        HBox.setHgrow(spacer2, Priority.ALWAYS);
+
+        stepOverButton = new Button("Step ⤵");
+        stepOverButton.setDisable(true);
+        stepOverButton.setOnAction(e -> eventBus.publish(new CoreApplicationEvents.DebugStepOverRequestedEvent()));
+
+        continueButton = new Button("Continue ⏩");
+        continueButton.setDisable(true);
+        continueButton.setOnAction(e -> eventBus.publish(new CoreApplicationEvents.DebugContinueRequestedEvent()));
+
+        stopDebugButton = new Button("Stop ⏹");
+        stopDebugButton.setDisable(true);
+        stopDebugButton.getStyleClass().add("btn-stop");
+        stopDebugButton.setOnAction(e -> eventBus.publish(new CoreApplicationEvents.DebugStopRequestedEvent()));
+
+        HBox toolbar = new HBox(10,
+                undoButton, redoButton,
+                spacer1,
+                compileButton, runButton, stopRunButton, // NEW: Added stopRunButton
+                debugButton,
+                spacer2,
+                stepOverButton, continueButton, stopDebugButton
+        );
+        toolbar.setPadding(new Insets(10));
+        toolbar.getStyleClass().add("main-toolbar");
+        return toolbar;
+    }
+
+    private void configureErrorList(ListView<Diagnostic> lv) {
+        // (Paste your existing ListCell factory code here)
+        lv.setPlaceholder(new Label("No errors to display."));
+        lv.setCellFactory(list -> new ListCell<>() {
             @Override
             protected void updateItem(Diagnostic diagnostic, boolean empty) {
                 super.updateItem(diagnostic, empty);
@@ -8168,132 +9284,20 @@ public class UIManager {
 
                     setOnMouseClicked(event -> {
                         if (event.getClickCount() >= 1) {
-                            diagnosticsManager.findBlockForDiagnostic(diagnostic).ifPresent(this::scrollToBlock);
+                            diagnosticsManager.findBlockForDiagnostic(diagnostic).ifPresent(block -> {
+                                Node uiNode = block.getUINode();
+                                if (uiNode != null) {
+                                    uiNode.requestFocus();
+                                }
+                            });
                         }
                     });
                 }
             }
-            private void scrollToBlock(CodeBlock block) {
-                Node uiNode = block.getUINode();
-                if (uiNode == null) return;
-                final String blinkStyle = "error-block-blink";
-                if (!uiNode.getStyleClass().contains(blinkStyle)) {
-                    uiNode.getStyleClass().add(blinkStyle);
-                    PauseTransition blinkOff = new PauseTransition(Duration.seconds(1));
-                    blinkOff.setOnFinished(event -> uiNode.getStyleClass().remove(blinkStyle));
-                    blinkOff.play();
-                }
-                uiNode.requestFocus();
-                // Simplified scroll logic
-                double containerHeight = blocksContainer.getBoundsInLocal().getHeight();
-                double blockY = uiNode.getBoundsInParent().getMinY();
-                double scrollPaneHeight = scrollPane.getViewportBounds().getHeight();
-                double vValue = blockY / (containerHeight - scrollPaneHeight);
-                scrollPane.setVvalue(Math.max(0, Math.min(1, vValue)));
-            }
         });
-
-        bottomTabPane = new TabPane();
-        terminalTab = new Tab("Terminal", outputArea);
-        terminalTab.setClosable(false);
-        Tab errorsTab = new Tab("Errors", errorListView);
-        errorsTab.setClosable(false);
-        bottomTabPane.getTabs().addAll(terminalTab, errorsTab);
-
-        HBox palette = createBlockPalette();
-        palette.getStyleClass().add("palette");
-
-
-        // --- Create Buttons ---
-        undoButton = new Button("Undo");
-        undoButton.setDisable(true);
-        undoButton.setOnAction(e -> eventBus.publish(new CoreApplicationEvents.UndoRequestedEvent()));
-
-        redoButton = new Button("Redo");
-        redoButton.setDisable(true);
-        redoButton.setOnAction(e -> eventBus.publish(new CoreApplicationEvents.RedoRequestedEvent()));
-
-        Button compileButton = new Button("Compile");
-        compileButton.setOnAction(e -> eventBus.publish(new CoreApplicationEvents.CompilationRequestedEvent()));
-
-        Button runButton = new Button("Run");
-        runButton.setOnAction(e -> {
-            bottomTabPane.getSelectionModel().select(terminalTab);
-            eventBus.publish(new CoreApplicationEvents.ExecutionRequestedEvent());
-        });
-
-        debugButton = new Button("Debug");
-        debugButton.setOnAction(e -> {
-            bottomTabPane.getSelectionModel().select(terminalTab);
-            eventBus.publish(new CoreApplicationEvents.DebugStartRequestedEvent());
-        });
-
-        // UPDATED BUTTONS
-        stepOverButton = new Button("Step Over");
-        stepOverButton.setDisable(true);
-        stepOverButton.setOnAction(e -> eventBus.publish(new CoreApplicationEvents.DebugStepOverRequestedEvent()));
-
-        continueButton = new Button("Continue");
-        continueButton.setDisable(true);
-        continueButton.setOnAction(e -> eventBus.publish(new CoreApplicationEvents.DebugContinueRequestedEvent()));
-
-        stopDebugButton = new Button("Stop");
-        stopDebugButton.setDisable(true); // Disabled until debugging starts
-        stopDebugButton.setStyle("-fx-text-fill: red;"); // Visual hint
-        stopDebugButton.setOnAction(e -> eventBus.publish(new CoreApplicationEvents.DebugStopRequestedEvent()));
-
-        HBox buttonBox = new HBox(10,
-                undoButton, redoButton,
-                new Separator(Orientation.VERTICAL),
-                compileButton, runButton, debugButton, stepOverButton, continueButton, stopDebugButton
-        );
-
-        Button themeButton = new Button("Toggle Theme");
-        HBox topBar = new HBox(10, themeButton);
-
-        scrollPane = new ScrollPane(blocksContainer);
-        scrollPane.setFitToWidth(true);
-
-        SplitPane splitPane = new SplitPane();
-        splitPane.setOrientation(Orientation.VERTICAL);
-        splitPane.getItems().addAll(scrollPane, bottomTabPane);
-        splitPane.setDividerPositions(0.7);
-        VBox.setVgrow(splitPane, Priority.ALWAYS);
-
-        VBox contentArea = new VBox(10, topBar, palette, buttonBox, splitPane, statusLabel);
-        contentArea.setPadding(new Insets(10));
-        VBox.setVgrow(splitPane, Priority.ALWAYS);
-
-        BorderPane root = new BorderPane();
-        root.setTop(menuBarManager.getMenuBar());
-        root.setCenter(contentArea);
-
-        Scene scene = new Scene(root, 600, 800);
-        scene.getStylesheets().add(getClass().getResource("/com/botmaker/styles.css").toExternalForm());
-        root.getStyleClass().add("light-theme");
-
-        themeButton.setOnAction(e -> {
-            isDarkMode = !isDarkMode;
-            root.getStyleClass().remove(isDarkMode ? "light-theme" : "dark-theme");
-            root.getStyleClass().add(isDarkMode ? "dark-theme" : "light-theme");
-        });
-
-        return scene;
     }
 
-    private HBox createBlockPalette() {
-        HBox palette = new HBox(10);
-        palette.setPadding(new Insets(5));
-        for (AddableBlock blockType : AddableBlock.values()) {
-            Label blockLabel = new Label(blockType.getDisplayName());
-            blockLabel.getStyleClass().add("palette-block-label");
-            blockLabel.getStyleClass().add("palette-" + blockType.name().toLowerCase() + "-label");
-            dragAndDropManager.makeDraggable(blockLabel, blockType);
-            palette.getChildren().add(blockLabel);
-        }
-        return palette;
-    }
-
+    // ... (Keep helper methods: updateErrors, onDebuggerStarted, etc.) ...
     private void updateErrors(List<Diagnostic> diagnostics) {
         if (diagnostics == null) errorListView.getItems().clear();
         else errorListView.getItems().setAll(diagnostics);
@@ -9143,4 +10147,241 @@ public class ErrorTranslator {
     }
 }
 
+
+=================================================================================
+FILE: ./src/main/java/com/botmaker/validation/TypeValidator.java
+=================================================================================
+
+package com.botmaker.validation;
+
+import org.eclipse.jdt.core.dom.*;
+
+import java.util.*;
+
+/**
+ * Simple, user-friendly type validation for non-coders.
+ * Prevents common mistakes without technical jargon.
+ */
+public class TypeValidator {
+
+    // Variables that should be hidden from users (system/special variables)
+    private static final Set<String> HIDDEN_VARIABLES = Set.of(
+            "args",      // Command line arguments array
+            "this",      // Current object reference
+            "super",     // Parent class reference
+            "scanner"    // System scanner object
+    );
+
+    /**
+     * Check if a variable should be visible to users in autocomplete
+     */
+    public static boolean isUserVariable(String variableName) {
+        if (variableName == null) return false;
+
+        // Hide system variables
+        if (HIDDEN_VARIABLES.contains(variableName)) {
+            return false;
+        }
+
+        // Hide variables starting with underscore (convention for internal)
+        if (variableName.startsWith("_")) {
+            return false;
+        }
+
+        return true;
+    }
+
+    /**
+     * Get a user-friendly type name (no technical jargon)
+     */
+    public static String getFriendlyTypeName(ITypeBinding typeBinding) {
+        if (typeBinding == null) return "unknown";
+
+        String typeName = typeBinding.getName();
+
+        // Handle arrays
+        if (typeBinding.isArray()) {
+            ITypeBinding elementType = typeBinding.getElementType();
+            return "list of " + getFriendlyTypeName(elementType);
+        }
+
+        // Handle common types with friendly names
+        switch (typeName) {
+            case "int":
+            case "Integer":
+            case "long":
+            case "Long":
+            case "short":
+            case "Short":
+            case "byte":
+            case "Byte":
+                return "number (whole)";
+
+            case "double":
+            case "Double":
+            case "float":
+            case "Float":
+                return "number (decimal)";
+
+            case "boolean":
+            case "Boolean":
+                return "true/false";
+
+            case "String":
+                return "text";
+
+            case "char":
+            case "Character":
+                return "character";
+
+            default:
+                // For collections, extract simple name
+                if (typeName.contains("<")) {
+                    return "collection";
+                }
+                return typeName;
+        }
+    }
+
+    /**
+     * Check if two types are compatible for assignment
+     */
+    public static boolean areTypesCompatible(ITypeBinding targetType, ITypeBinding sourceType) {
+        if (targetType == null || sourceType == null) return true; // Can't check, allow
+
+        // Same type - always OK
+        if (targetType.isEqualTo(sourceType)) return true;
+
+        // Handle numeric widening (safe conversions)
+        if (isNumericWideningAllowed(targetType, sourceType)) return true;
+
+        // Check if source is subtype of target (inheritance)
+        if (sourceType.isAssignmentCompatible(targetType)) return true;
+
+        return false;
+    }
+
+    /**
+     * Check if numeric widening conversion is allowed (safe)
+     */
+    private static boolean isNumericWideningAllowed(ITypeBinding target, ITypeBinding source) {
+        String targetName = target.getQualifiedName();
+        String sourceName = source.getQualifiedName();
+
+        // Widening conversions that don't lose data
+        Map<String, Set<String>> wideningMap = Map.of(
+                "int", Set.of("byte", "short"),
+                "long", Set.of("byte", "short", "int"),
+                "float", Set.of("byte", "short", "int", "long"),
+                "double", Set.of("byte", "short", "int", "long", "float")
+        );
+
+        Set<String> allowedSources = wideningMap.get(targetName);
+        return allowedSources != null && allowedSources.contains(sourceName);
+    }
+
+    /**
+     * Get a user-friendly error message for type mismatch
+     */
+    public static String getTypeMismatchMessage(ITypeBinding expected, ITypeBinding actual) {
+        String expectedName = getFriendlyTypeName(expected);
+        String actualName = getFriendlyTypeName(actual);
+
+        return String.format(
+                "Type mismatch: You're using %s but %s is needed here.",
+                actualName,
+                expectedName
+        );
+    }
+
+    /**
+     * Check if an expression can be used as a boolean (in if/while conditions)
+     */
+    public static boolean isBooleanExpression(Expression expr) {
+        if (expr == null) return false;
+
+        ITypeBinding typeBinding = expr.resolveTypeBinding();
+        if (typeBinding == null) return true; // Can't check, allow
+
+        return typeBinding.getName().equals("boolean") ||
+                typeBinding.getName().equals("Boolean");
+    }
+
+    /**
+     * Check if an expression is numeric
+     */
+    public static boolean isNumericExpression(Expression expr) {
+        if (expr == null) return false;
+
+        ITypeBinding typeBinding = expr.resolveTypeBinding();
+        if (typeBinding == null) return true; // Can't check, allow
+
+        String name = typeBinding.getName();
+        return name.equals("int") || name.equals("Integer") ||
+                name.equals("long") || name.equals("Long") ||
+                name.equals("float") || name.equals("Float") ||
+                name.equals("double") || name.equals("Double") ||
+                name.equals("byte") || name.equals("Byte") ||
+                name.equals("short") || name.equals("Short");
+    }
+
+    /**
+     * Check if an expression is a collection (List, array, etc.)
+     */
+    public static boolean isCollectionExpression(Expression expr) {
+        if (expr == null) return false;
+
+        ITypeBinding typeBinding = expr.resolveTypeBinding();
+        if (typeBinding == null) return false;
+
+        return typeBinding.isArray() ||
+                typeBinding.getName().contains("List") ||
+                typeBinding.getName().contains("Collection") ||
+                typeBinding.getName().contains("Set");
+    }
+
+    /**
+     * Suggest appropriate variable name based on type
+     */
+    public static String suggestVariableName(ITypeBinding typeBinding) {
+        if (typeBinding == null) return "value";
+
+        String typeName = typeBinding.getName();
+
+        if (typeBinding.isArray()) {
+            return "items";
+        }
+
+        switch (typeName) {
+            case "int":
+            case "Integer":
+            case "long":
+            case "Long":
+                return "number";
+
+            case "double":
+            case "Double":
+            case "float":
+            case "Float":
+                return "decimal";
+
+            case "boolean":
+            case "Boolean":
+                return "flag";
+
+            case "String":
+                return "text";
+
+            case "char":
+            case "Character":
+                return "letter";
+
+            default:
+                if (typeName.contains("List")) return "list";
+                if (typeName.contains("Map")) return "dictionary";
+                if (typeName.contains("Set")) return "collection";
+                return "value";
+        }
+    }
+}
 

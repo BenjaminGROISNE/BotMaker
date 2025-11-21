@@ -2,15 +2,18 @@ package com.botmaker.runtime;
 
 import com.botmaker.config.ApplicationConfig;
 import com.botmaker.validation.DiagnosticsManager;
-import com.botmaker.validation.ErrorTranslator;
 import javafx.application.Platform;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.Scanner;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.function.Consumer;
 
 public class CodeExecutionService {
@@ -21,6 +24,13 @@ public class CodeExecutionService {
     private final Consumer<String> setOutputConsumer;
     private final DiagnosticsManager diagnosticsManager;
     private final ApplicationConfig config;
+
+    private volatile Process currentRunningProcess;
+    private final AtomicBoolean isRunning = new AtomicBoolean(false);
+
+    private static final int MAX_UI_BUFFER_SIZE = 4096;
+    private static final int UI_UPDATE_RATE_MS = 100;
+
     public CodeExecutionService(
             Consumer<String> appendOutputConsumer,
             Runnable clearOutputConsumer,
@@ -36,69 +46,85 @@ public class CodeExecutionService {
         this.config = config;
     }
 
+    /**
+     * BLOCKING method to run code.
+     * Must be called from a background thread.
+     */
     public void runCode(String code) {
+        // 1. Validation
         if (diagnosticsManager.hasErrors()) {
-            String translatedErrors = com.botmaker.validation.ErrorTranslator.translate(diagnosticsManager.getDiagnostics());
-            System.err.println(translatedErrors);
-            Platform.runLater(() -> {
-                statusConsumer.accept("Run aborted due to errors.");
-            });
+            Platform.runLater(() -> statusConsumer.accept("Run aborted due to errors."));
             return;
         }
 
-        new Thread(() -> {
-            try {
-                // ADD: Get paths from config
-                Path sourceFilePath = config.getSourceFilePath();
-                Path compiledOutputPath = config.getCompiledOutputPath();
+        if (isRunning.get()) {
+            Platform.runLater(() -> statusConsumer.accept("Program is already running. Stop it first."));
+            return;
+        }
 
-                if (!compileAndWait(code, sourceFilePath, compiledOutputPath)) {
-                    Platform.runLater(() -> statusConsumer.accept("Run aborted due to compilation failure."));
-                    return;
-                }
+        try {
+            Path sourceFilePath = config.getSourceFilePath();
+            Path compiledOutputPath = config.getCompiledOutputPath();
 
-                Platform.runLater(() -> {
-                    statusConsumer.accept("Running code...");
-                    clearOutputConsumer.run();
-                });
-
-                String classPath = compiledOutputPath.toString();
-                String className = config.getMainClassName();
-                String javaExecutable = config.getJavaExecutable();
-
-                ProcessBuilder pb = new ProcessBuilder(javaExecutable, "-cp", classPath, className);
-                Process process = pb.start();
-
-                redirectStream(process.getInputStream());
-                redirectStream(process.getErrorStream());
-
-                int exitCode = process.waitFor();
-                Platform.runLater(() -> statusConsumer.accept("Run finished with exit code: " + exitCode));
-
-            } catch (IOException | InterruptedException e) {
-                Platform.runLater(() -> statusConsumer.accept("Run Error: " + e.getMessage()));
+            // 2. Compile (Blocking)
+            if (!compileAndWait(code, sourceFilePath, compiledOutputPath)) {
+                Platform.runLater(() -> statusConsumer.accept("Run aborted due to compilation failure."));
+                return;
             }
-        }).start();
+
+            // 3. Setup Execution
+            Platform.runLater(() -> {
+                statusConsumer.accept("Running... (Press Stop to terminate)");
+                clearOutputConsumer.run();
+            });
+
+            isRunning.set(true);
+
+            String classPath = compiledOutputPath.toString();
+            String className = config.getMainClassName();
+            String javaExecutable = config.getJavaExecutable();
+
+            ProcessBuilder pb = new ProcessBuilder(javaExecutable, "-cp", classPath, className);
+            currentRunningProcess = pb.start();
+
+            // 4. Start IO (Leaky Bucket)
+            startLeakyBucketReader(currentRunningProcess.getInputStream());
+            startLeakyBucketReader(currentRunningProcess.getErrorStream());
+
+            // 5. WAIT FOR PROCESS (BLOCKING)
+            // This keeps the caller thread alive until the process finishes or is killed.
+            int exitCode = currentRunningProcess.waitFor();
+
+            Platform.runLater(() -> {
+                if (exitCode == 0) {
+                    statusConsumer.accept("Program completed successfully.");
+                } else if (exitCode == 143 || exitCode == 130 || exitCode == 1 || exitCode == -1) {
+                    statusConsumer.accept("Program stopped.");
+                } else {
+                    statusConsumer.accept("Program exited with code: " + exitCode);
+                }
+            });
+
+        } catch (InterruptedException e) {
+            Platform.runLater(() -> statusConsumer.accept("Program stopped by user."));
+        } catch (Exception e) {
+            Platform.runLater(() -> statusConsumer.accept("Error: " + e.getMessage()));
+        } finally {
+            // Cleanup
+            isRunning.set(false);
+            currentRunningProcess = null;
+        }
     }
 
-    public void compileCode(String code) {
-        if (diagnosticsManager.hasErrors()) {
-            String translatedErrors = com.botmaker.validation.ErrorTranslator.translate(diagnosticsManager.getDiagnostics());
-            System.err.println(translatedErrors);
-            Platform.runLater(() -> {
-                statusConsumer.accept("Compilation failed. See errors above.");
-            });
-            return;
-        }
+    // ... (compileCode, compileAndWait, stopRunningProgram, isRunning, startLeakyBucketReader remain unchanged)
 
+    public void compileCode(String code) {
+        // Need to wrap in thread because we made runCode blocking, but compileCode is usually called from UI
         new Thread(() -> {
             try {
                 Platform.runLater(() -> setOutputConsumer.accept("Saving and compiling..."));
-
-                // ADD: Get paths from config
                 Path sourceFilePath = config.getSourceFilePath();
                 Path compiledOutputPath = config.getCompiledOutputPath();
-
                 if (compileAndWait(code, sourceFilePath, compiledOutputPath)) {
                     Platform.runLater(() -> setOutputConsumer.accept("Compilation successful."));
                 }
@@ -109,41 +135,83 @@ public class CodeExecutionService {
     }
 
     public boolean compileAndWait(String code, Path sourceFilePath, Path compiledOutputPath) throws IOException, InterruptedException {
-        // Ensure parent directories exist
         Files.createDirectories(sourceFilePath.getParent());
         Files.writeString(sourceFilePath, code);
-
-        // Ensure output directory exists
         Files.createDirectories(compiledOutputPath);
 
         String javacExecutable = Paths.get(System.getProperty("java.home"), "bin", "javac").toString();
-        // Add -g to include debug information for the debugger
         ProcessBuilder pb = new ProcessBuilder(javacExecutable, "-g", "-d", compiledOutputPath.toString(), sourceFilePath.toString());
         Process process = pb.start();
 
         String errors = new String(process.getErrorStream().readAllBytes());
         int exitCode = process.waitFor();
 
-        if (exitCode == 0) {
-            return true;
-        } else {
-            final String errorMessage = "Compilation Failed:\n" + errors;
-            System.err.println(errorMessage);
-            Platform.runLater(() -> {
-                setOutputConsumer.accept(errorMessage);
-            });
+        if (exitCode != 0) {
+            Platform.runLater(() -> setOutputConsumer.accept("Compilation Failed:\n" + errors));
             return false;
+        }
+        return true;
+    }
+
+    public void stopRunningProgram() {
+        if (currentRunningProcess != null && currentRunningProcess.isAlive()) {
+            // Force kill is safest for infinite loops
+            currentRunningProcess.destroyForcibly();
         }
     }
 
-    private void redirectStream(InputStream stream) {
-        new Thread(() -> {
-            try (Scanner s = new Scanner(stream)) {
-                while (s.hasNextLine()) {
-                    String line = s.nextLine();
-                    Platform.runLater(() -> appendOutputConsumer.accept(line + "\n"));
+    public boolean isRunning() {
+        return isRunning.get();
+    }
+
+    private void startLeakyBucketReader(InputStream inputStream) {
+        final StringBuilder buffer = new StringBuilder();
+        final ScheduledExecutorService uiUpdater = Executors.newSingleThreadScheduledExecutor();
+
+        uiUpdater.scheduleAtFixedRate(() -> {
+            if (!isRunning.get() && buffer.length() == 0) {
+                uiUpdater.shutdown();
+                return;
+            }
+
+            String textToSend = "";
+            synchronized (buffer) {
+                if (buffer.length() > 0) {
+                    textToSend = buffer.toString();
+                    buffer.setLength(0);
                 }
             }
-        }).start();
+
+            if (!textToSend.isEmpty()) {
+                String finalTx = textToSend;
+                Platform.runLater(() -> appendOutputConsumer.accept(finalTx));
+            }
+        }, UI_UPDATE_RATE_MS, UI_UPDATE_RATE_MS, TimeUnit.MILLISECONDS);
+
+        new Thread(() -> {
+            byte[] readBuf = new byte[1024];
+            int len;
+            long droppedBytes = 0;
+            try {
+                while ((len = inputStream.read(readBuf)) != -1) {
+                    synchronized (buffer) {
+                        if (buffer.length() >= MAX_UI_BUFFER_SIZE) {
+                            droppedBytes += len;
+                        } else {
+                            if (droppedBytes > 0) {
+                                buffer.append("\n[... SKIPPED " + droppedBytes + " BYTES ...]\n");
+                                droppedBytes = 0;
+                            }
+                            int spaceLeft = MAX_UI_BUFFER_SIZE - buffer.length();
+                            int writeLen = Math.min(len, spaceLeft);
+                            buffer.append(new String(readBuf, 0, writeLen, StandardCharsets.UTF_8));
+                        }
+                    }
+                }
+            } catch (IOException ignored) {
+            } finally {
+                uiUpdater.shutdown();
+            }
+        }, "Leaky-Reader").start();
     }
 }

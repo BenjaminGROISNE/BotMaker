@@ -91,9 +91,13 @@ public class AssignmentBlock extends AbstractStatementBlock {
         operatorSelector.setOnAction(e -> {
             String selectedName = operatorSelector.getValue();
             String newOperator = getOperatorSymbol(selectedName);
-            if (newOperator != null && !newOperator.equals(operator)) {
+
+            // Only update if it actually changed
+            if (newOperator != null && !newOperator.equals(this.operator)) {
                 this.operator = newOperator;
-                System.out.println("Operator changed to: " + newOperator);
+
+                // THE FIX: Actually write to file
+                context.codeEditor().updateAssignmentOperator(this.astNode, newOperator);
             }
         });
 

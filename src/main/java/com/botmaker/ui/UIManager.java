@@ -8,7 +8,6 @@ import com.botmaker.services.CodeEditorService;
 import com.botmaker.ui.AddableBlock.BlockCategory;
 import com.botmaker.validation.DiagnosticsManager;
 import com.botmaker.validation.ErrorTranslator;
-import javafx.animation.PauseTransition;
 import javafx.application.Platform;
 import javafx.geometry.Insets;
 import javafx.geometry.Orientation;
@@ -17,7 +16,6 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.*;
 import javafx.stage.Stage;
-import javafx.util.Duration;
 import org.eclipse.lsp4j.Diagnostic;
 import org.eclipse.lsp4j.DiagnosticSeverity;
 
@@ -27,7 +25,6 @@ import java.util.stream.Collectors;
 
 public class UIManager {
 
-    // ... (Keep existing fields: dragAndDropManager, eventBus, etc.) ...
     private final BlockDragAndDropManager dragAndDropManager;
     private final EventBus eventBus;
     private final CodeEditorService codeEditorService;
@@ -41,17 +38,21 @@ public class UIManager {
     private TabPane bottomTabPane;
     private Tab terminalTab;
     private ScrollPane scrollPane;
-    private boolean isDarkMode = false;
     private MenuBarManager menuBarManager;
     private Consumer<Void> onSelectProject;
 
     // Controls
     private Button debugButton;
+    private Button runButton;
+    private Button unifiedStopButton; // UNIFIED BUTTON
     private Button stepOverButton;
     private Button continueButton;
-    private Button stopDebugButton;
     private Button undoButton;
     private Button redoButton;
+
+    // Application State Tracking
+    private enum AppState { IDLE, RUNNING, DEBUGGING }
+    private AppState currentAppState = AppState.IDLE;
 
     public UIManager(BlockDragAndDropManager dragAndDropManager,
                      EventBus eventBus,
@@ -67,10 +68,20 @@ public class UIManager {
         setupEventHandlers();
     }
 
-    // ... (Keep setupEventHandlers and handleBlocksUpdate exactly as they were) ...
     private void setupEventHandlers() {
         eventBus.subscribe(CoreApplicationEvents.UIBlocksUpdatedEvent.class, this::handleBlocksUpdate, true);
-        eventBus.subscribe(CoreApplicationEvents.OutputAppendedEvent.class, event -> outputArea.appendText(event.getText()), true);
+        eventBus.subscribe(CoreApplicationEvents.OutputAppendedEvent.class, event -> {
+            // Protect the UI Component from holding too much text
+            if (outputArea.getText().length() > 10_000) {
+                // If too long, cut the top half
+                String current = outputArea.getText();
+                outputArea.setText("[...Old Output Trimmed...]\n" + current.substring(current.length() - 5000) + event.getText());
+                outputArea.positionCaret(outputArea.getLength());
+            } else {
+                outputArea.appendText(event.getText());
+            }
+        }, true);
+
         eventBus.subscribe(CoreApplicationEvents.OutputClearedEvent.class, event -> outputArea.clear(), true);
         eventBus.subscribe(CoreApplicationEvents.OutputSetEvent.class, event -> outputArea.setText(event.getText()), true);
         eventBus.subscribe(CoreApplicationEvents.StatusMessageEvent.class, event -> statusLabel.setText(event.getMessage()), true);
@@ -81,11 +92,16 @@ public class UIManager {
             statusLabel.setText(diagnosticsManager.getErrorSummary());
         }, true);
 
-        // Debug Session UI States
-        eventBus.subscribe(CoreApplicationEvents.DebugSessionStartedEvent.class, event -> onDebuggerStarted(), true);
-        eventBus.subscribe(CoreApplicationEvents.DebugSessionPausedEvent.class, event -> onDebuggerPaused(), true);
-        eventBus.subscribe(CoreApplicationEvents.DebugSessionResumedEvent.class, event -> onDebuggerResumed(), true);
-        eventBus.subscribe(CoreApplicationEvents.DebugSessionFinishedEvent.class, event -> onDebuggerFinished(), true);
+
+        // State Management Handlers
+        eventBus.subscribe(CoreApplicationEvents.ProgramStartedEvent.class, e -> setAppState(AppState.RUNNING), true);
+        eventBus.subscribe(CoreApplicationEvents.ProgramStoppedEvent.class, e -> setAppState(AppState.IDLE), true);
+        eventBus.subscribe(CoreApplicationEvents.DebugSessionStartedEvent.class, e -> setAppState(AppState.DEBUGGING), true);
+        eventBus.subscribe(CoreApplicationEvents.DebugSessionFinishedEvent.class, e -> setAppState(AppState.IDLE), true);
+
+        // Debugging specific controls
+        eventBus.subscribe(CoreApplicationEvents.DebugSessionPausedEvent.class, e -> updateDebugControls(true), true);
+        eventBus.subscribe(CoreApplicationEvents.DebugSessionResumedEvent.class, e -> updateDebugControls(false), true);
 
         eventBus.subscribe(CoreApplicationEvents.HistoryStateChangedEvent.class, event -> {
             Platform.runLater(() -> {
@@ -93,6 +109,47 @@ public class UIManager {
                 if (redoButton != null) redoButton.setDisable(!event.canRedo());
             });
         }, true);
+    }
+
+    private void setAppState(AppState state) {
+        this.currentAppState = state;
+        updateToolbarState();
+    }
+
+    private void updateToolbarState() {
+        boolean isBusy = (currentAppState != AppState.IDLE);
+
+        runButton.setDisable(isBusy);
+        debugButton.setDisable(isBusy);
+        unifiedStopButton.setDisable(!isBusy); // Enable only when busy
+
+        if (currentAppState == AppState.DEBUGGING) {
+            unifiedStopButton.setText("Stop Debugging ⏹");
+            unifiedStopButton.setStyle("-fx-background-color: #E74C3C; -fx-text-fill: white;");
+            bottomTabPane.getSelectionModel().select(terminalTab);
+        } else if (currentAppState == AppState.RUNNING) {
+            unifiedStopButton.setText("Stop Run ⏹");
+            unifiedStopButton.setStyle("-fx-background-color: #E74C3C; -fx-text-fill: white;");
+            bottomTabPane.getSelectionModel().select(terminalTab);
+
+            // Disable debug specific buttons during run
+            stepOverButton.setDisable(true);
+            continueButton.setDisable(true);
+        } else {
+            // Idle
+            unifiedStopButton.setText("Stop ⏹");
+            unifiedStopButton.setStyle(""); // Reset style
+            stepOverButton.setDisable(true);
+            continueButton.setDisable(true);
+        }
+    }
+
+    private void updateDebugControls(boolean isPaused) {
+        // Only relevant if we are actually debugging
+        if (currentAppState == AppState.DEBUGGING) {
+            stepOverButton.setDisable(!isPaused);
+            continueButton.setDisable(!isPaused);
+        }
     }
 
     private void handleBlocksUpdate(CoreApplicationEvents.UIBlocksUpdatedEvent event) {
@@ -107,18 +164,13 @@ public class UIManager {
 
             blocksContainer.getChildren().add(rootNode);
         }
-        if (scrollPane != null) {
-            scrollPane.requestFocus();
-        }
     }
 
-    // --- UPDATED UI CREATION ---
     public Scene createScene() {
         menuBarManager = new MenuBarManager(primaryStage);
         menuBarManager.setEventBus(eventBus);
         menuBarManager.setOnSelectProject(v -> { if (onSelectProject != null) onSelectProject.accept(null); });
 
-        // 1. Main Block Canvas
         blocksContainer = new VBox(10);
         blocksContainer.getStyleClass().add("blocks-canvas");
 
@@ -126,13 +178,11 @@ public class UIManager {
         scrollPane.setFitToWidth(true);
         scrollPane.getStyleClass().add("code-scroll-pane");
 
-        // 2. Categorized Palette (Left Sidebar)
         Accordion paletteAccordion = createCategorizedPalette();
         VBox paletteContainer = new VBox(paletteAccordion);
         paletteContainer.setPrefWidth(220);
         paletteContainer.getStyleClass().add("palette-sidebar");
 
-        // 3. Bottom Panels (Output/Errors)
         statusLabel = new Label("Ready");
         statusLabel.setId("status-label");
 
@@ -140,9 +190,8 @@ public class UIManager {
         outputArea.setEditable(false);
         outputArea.getStyleClass().add("console-area");
 
-        // Error list setup (Keep your existing ListCell implementation here)
         errorListView = new ListView<>();
-        configureErrorList(errorListView); // Extracted to helper for brevity
+        configureErrorList(errorListView);
 
         bottomTabPane = new TabPane();
         terminalTab = new Tab("Terminal", outputArea);
@@ -151,10 +200,8 @@ public class UIManager {
         errorsTab.setClosable(false);
         bottomTabPane.getTabs().addAll(terminalTab, errorsTab);
 
-        // 4. Toolbar
         HBox toolBar = createToolBar();
 
-        // 5. Layout Assembly
         SplitPane verticalSplit = new SplitPane();
         verticalSplit.setOrientation(Orientation.VERTICAL);
         verticalSplit.getItems().addAll(scrollPane, bottomTabPane);
@@ -167,64 +214,14 @@ public class UIManager {
         mainLayout.setCenter(verticalSplit);
         mainLayout.setBottom(statusLabel);
 
-        // Root
         VBox root = new VBox(menuBarManager.getMenuBar(), mainLayout);
         VBox.setVgrow(mainLayout, Priority.ALWAYS);
-
         root.getStyleClass().add("light-theme");
 
         Scene scene = new Scene(root, 1000, 700);
         scene.getStylesheets().add(getClass().getResource("/com/botmaker/styles.css").toExternalForm());
 
         return scene;
-    }
-
-    private Accordion createCategorizedPalette() {
-        Accordion accordion = new Accordion();
-
-        Map<BlockCategory, List<AddableBlock>> grouped = Arrays.stream(AddableBlock.values())
-                .collect(Collectors.groupingBy(AddableBlock::getCategory));
-
-        // Define order of categories
-        BlockCategory[] order = {
-                BlockCategory.OUTPUT,
-                BlockCategory.INPUT,
-                BlockCategory.VARIABLES,
-                BlockCategory.FLOW,
-                BlockCategory.LOOPS,
-                BlockCategory.CONTROL,
-                BlockCategory.UTILITY
-        };
-
-        for (BlockCategory category : order) {
-            List<AddableBlock> blocks = grouped.get(category);
-            if (blocks == null) continue;
-
-            VBox content = new VBox(8); // Spacing between items
-            content.setPadding(new Insets(10));
-
-            for (AddableBlock blockType : blocks) {
-                Label blockLabel = new Label(blockType.getDisplayName());
-                blockLabel.setMaxWidth(Double.MAX_VALUE);
-
-                // Style classes: "palette-item", "palette-output", etc.
-                blockLabel.getStyleClass().addAll("palette-item", "palette-" + category.name().toLowerCase());
-
-                dragAndDropManager.makeDraggable(blockLabel, blockType);
-                content.getChildren().add(blockLabel);
-            }
-
-            TitledPane pane = new TitledPane(category.getLabel(), content);
-            pane.getStyleClass().add("palette-pane");
-            accordion.getPanes().add(pane);
-        }
-
-        // Expand the first one by default
-        if (!accordion.getPanes().isEmpty()) {
-            accordion.setExpandedPane(accordion.getPanes().get(0));
-        }
-
-        return accordion;
     }
 
     private HBox createToolBar() {
@@ -243,18 +240,24 @@ public class UIManager {
         compileButton.getStyleClass().add("toolbar-btn");
         compileButton.setOnAction(e -> eventBus.publish(new CoreApplicationEvents.CompilationRequestedEvent()));
 
-        Button runButton = new Button("Run ▶");
+        runButton = new Button("Run ▶");
         runButton.getStyleClass().addAll("toolbar-btn", "btn-run");
-        runButton.setOnAction(e -> {
-            bottomTabPane.getSelectionModel().select(terminalTab);
-            eventBus.publish(new CoreApplicationEvents.ExecutionRequestedEvent());
-        });
+        runButton.setOnAction(e -> eventBus.publish(new CoreApplicationEvents.ExecutionRequestedEvent()));
 
         debugButton = new Button("Debug 🐞");
         debugButton.getStyleClass().addAll("toolbar-btn", "btn-debug");
-        debugButton.setOnAction(e -> {
-            bottomTabPane.getSelectionModel().select(terminalTab);
-            eventBus.publish(new CoreApplicationEvents.DebugStartRequestedEvent());
+        debugButton.setOnAction(e -> eventBus.publish(new CoreApplicationEvents.DebugStartRequestedEvent()));
+
+        // UNIFIED STOP BUTTON
+        unifiedStopButton = new Button("Stop ⏹");
+        unifiedStopButton.getStyleClass().addAll("toolbar-btn", "btn-stop");
+        unifiedStopButton.setDisable(true);
+        unifiedStopButton.setOnAction(e -> {
+            if (currentAppState == AppState.RUNNING) {
+                eventBus.publish(new CoreApplicationEvents.StopRunRequestedEvent());
+            } else if (currentAppState == AppState.DEBUGGING) {
+                eventBus.publish(new CoreApplicationEvents.DebugStopRequestedEvent());
+            }
         });
 
         Region spacer2 = new Region();
@@ -268,25 +271,54 @@ public class UIManager {
         continueButton.setDisable(true);
         continueButton.setOnAction(e -> eventBus.publish(new CoreApplicationEvents.DebugContinueRequestedEvent()));
 
-        stopDebugButton = new Button("Stop ⏹");
-        stopDebugButton.setDisable(true);
-        stopDebugButton.getStyleClass().add("btn-stop");
-        stopDebugButton.setOnAction(e -> eventBus.publish(new CoreApplicationEvents.DebugStopRequestedEvent()));
-
         HBox toolbar = new HBox(10,
                 undoButton, redoButton,
                 spacer1,
-                compileButton, runButton, debugButton,
+                compileButton, runButton, debugButton, unifiedStopButton,
                 spacer2,
-                stepOverButton, continueButton, stopDebugButton
+                stepOverButton, continueButton
         );
         toolbar.setPadding(new Insets(10));
         toolbar.getStyleClass().add("main-toolbar");
         return toolbar;
     }
 
+    // ... (Helper methods createCategorizedPalette, configureErrorList, updateErrors match previous implementation)
+
+    private Accordion createCategorizedPalette() {
+        Accordion accordion = new Accordion();
+        Map<BlockCategory, List<AddableBlock>> grouped = Arrays.stream(AddableBlock.values())
+                .collect(Collectors.groupingBy(AddableBlock::getCategory));
+
+        BlockCategory[] order = {
+                BlockCategory.OUTPUT, BlockCategory.INPUT, BlockCategory.VARIABLES,
+                BlockCategory.FLOW, BlockCategory.LOOPS, BlockCategory.CONTROL, BlockCategory.UTILITY
+        };
+
+        for (BlockCategory category : order) {
+            List<AddableBlock> blocks = grouped.get(category);
+            if (blocks == null) continue;
+
+            VBox content = new VBox(8);
+            content.setPadding(new Insets(10));
+
+            for (AddableBlock blockType : blocks) {
+                Label blockLabel = new Label(blockType.getDisplayName());
+                blockLabel.setMaxWidth(Double.MAX_VALUE);
+                blockLabel.getStyleClass().addAll("palette-item", "palette-" + category.name().toLowerCase());
+                dragAndDropManager.makeDraggable(blockLabel, blockType);
+                content.getChildren().add(blockLabel);
+            }
+
+            TitledPane pane = new TitledPane(category.getLabel(), content);
+            pane.getStyleClass().add("palette-pane");
+            accordion.getPanes().add(pane);
+        }
+        if (!accordion.getPanes().isEmpty()) accordion.setExpandedPane(accordion.getPanes().get(0));
+        return accordion;
+    }
+
     private void configureErrorList(ListView<Diagnostic> lv) {
-        // (Paste your existing ListCell factory code here)
         lv.setPlaceholder(new Label("No errors to display."));
         lv.setCellFactory(list -> new ListCell<>() {
             @Override
@@ -307,9 +339,7 @@ public class UIManager {
                         if (event.getClickCount() >= 1) {
                             diagnosticsManager.findBlockForDiagnostic(diagnostic).ifPresent(block -> {
                                 Node uiNode = block.getUINode();
-                                if (uiNode != null) {
-                                    uiNode.requestFocus();
-                                }
+                                if (uiNode != null) uiNode.requestFocus();
                             });
                         }
                     });
@@ -318,37 +348,10 @@ public class UIManager {
         });
     }
 
-    // ... (Keep helper methods: updateErrors, onDebuggerStarted, etc.) ...
     private void updateErrors(List<Diagnostic> diagnostics) {
         if (diagnostics == null) errorListView.getItems().clear();
         else errorListView.getItems().setAll(diagnostics);
         if (diagnostics != null && !diagnostics.isEmpty()) bottomTabPane.getSelectionModel().select(1);
-    }
-
-    private void onDebuggerStarted() {
-        debugButton.setDisable(true);
-        stepOverButton.setDisable(true);
-        continueButton.setDisable(true);
-        stopDebugButton.setDisable(false);
-    }
-
-    private void onDebuggerPaused() {
-        stepOverButton.setDisable(false);
-        continueButton.setDisable(false);
-        stopDebugButton.setDisable(false);
-    }
-
-    private void onDebuggerResumed() {
-        stepOverButton.setDisable(true);
-        continueButton.setDisable(true);
-        stopDebugButton.setDisable(false);
-    }
-
-    private void onDebuggerFinished() {
-        debugButton.setDisable(false);
-        stepOverButton.setDisable(true);
-        continueButton.setDisable(true);
-        stopDebugButton.setDisable(true);
     }
 
     public void setOnSelectProject(Consumer<Void> callback) { this.onSelectProject = callback; }

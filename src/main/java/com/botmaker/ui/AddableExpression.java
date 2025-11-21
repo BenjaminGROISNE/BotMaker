@@ -8,6 +8,9 @@ public enum AddableExpression {
     FALSE("False"),
     VARIABLE("Variable"),
 
+    // NEW: Allow nested lists
+    LIST("Sub-List"),
+
     // Math Operations
     ADD("Addition (+)", "+"),
     SUBTRACT("Subtraction (-)", "-"),

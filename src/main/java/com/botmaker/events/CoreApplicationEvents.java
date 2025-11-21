@@ -111,6 +111,35 @@ public class CoreApplicationEvents {
         public boolean canRedo() { return canRedo; }
     }
 
+
+    // ADD THESE EVENT CLASSES TO CoreApplicationEvents.java:
+
+    /**
+     * Fired when a user requests to stop the currently running program
+     */
+    public static class StopRunRequestedEvent extends AbstractApplicationEvent {
+        public StopRunRequestedEvent() {
+            super("User");
+        }
+    }
+
+    /**
+     * Fired when a program starts executing (not debugging)
+     */
+    public static class ProgramStartedEvent extends AbstractApplicationEvent {
+        public ProgramStartedEvent() {
+            super("ExecutionService");
+        }
+    }
+
+    /**
+     * Fired when a program stops executing (completed or terminated)
+     */
+    public static class ProgramStoppedEvent extends AbstractApplicationEvent {
+        public ProgramStoppedEvent() {
+            super("ExecutionService");
+        }
+    }
     /**
      * Fired when a user wants to step over the current line
      */
