@@ -4,10 +4,14 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="cba04025-c331-4634-a893-436bad03efc0" name="Changes" comment="Only expressions of correct type are visible">
+    <list default="true" id="cba04025-c331-4634-a893-436bad03efc0" name="Changes" comment="Started variable filtering based on type">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/java_files_concat.txt" beforeDir="false" afterPath="$PROJECT_DIR$/java_files_concat.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/projects/.botmaker-config.json" beforeDir="false" afterPath="$PROJECT_DIR$/projects/.botmaker-config.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/projects/Demo/src/main/java/com/demo/Demo.java" beforeDir="false" afterPath="$PROJECT_DIR$/projects/Demo/src/main/java/com/demo/Demo.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/botmaker/blocks/IdentifierBlock.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/botmaker/blocks/IdentifierBlock.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/botmaker/validation/TypeValidator.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/botmaker/validation/TypeValidator.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/botmaker/util/TypeManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/botmaker/util/TypeManager.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/botmaker/validation/TypeValidator.java" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -186,14 +190,6 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1759617202271</updated>
-    </task>
-    <task id="LOCAL-00006" summary="Really Partially working debugger">
-      <option name="closed" value="true" />
-      <created>1760183969549</created>
-      <option name="number" value="00006" />
-      <option name="presentableId" value="LOCAL-00006" />
-      <option name="project" value="LOCAL" />
-      <updated>1760183969549</updated>
     </task>
     <task id="LOCAL-00007" summary="Fixed relaunch debug session crash">
       <option name="closed" value="true" />
@@ -579,7 +575,15 @@
       <option name="project" value="LOCAL" />
       <updated>1763764695315</updated>
     </task>
-    <option name="localTasksCounter" value="55" />
+    <task id="LOCAL-00055" summary="Started variable filtering based on type">
+      <option name="closed" value="true" />
+      <created>1763765254934</created>
+      <option name="number" value="00055" />
+      <option name="presentableId" value="LOCAL-00055" />
+      <option name="project" value="LOCAL" />
+      <updated>1763765254934</updated>
+    </task>
+    <option name="localTasksCounter" value="56" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -607,7 +611,6 @@
     <ignored-roots>
       <path value="$PROJECT_DIR$/.." />
     </ignored-roots>
-    <MESSAGE value="Terminal refactor, two windows, error translation" />
     <MESSAGE value="auto variable replacement" />
     <MESSAGE value="auto switch to terminal when running, create declare variable fixed. can rewrite var name" />
     <MESSAGE value="Claude refactor, compiles, shows UI but a few problems to fix still" />
@@ -632,7 +635,8 @@
     <MESSAGE value="fix stop button, reworked list variable, assignment operator not working yet" />
     <MESSAGE value="Assignment operator update and event log console" />
     <MESSAGE value="Only expressions of correct type are visible" />
-    <option name="LAST_COMMIT_MESSAGE" value="Only expressions of correct type are visible" />
+    <MESSAGE value="Started variable filtering based on type" />
+    <option name="LAST_COMMIT_MESSAGE" value="Started variable filtering based on type" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
