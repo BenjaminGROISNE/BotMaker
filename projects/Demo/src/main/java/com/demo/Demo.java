@@ -3,16 +3,9 @@ public class Demo {
     public static void main(String[] args) {
 		int number = 0;
 		double decimal = 0.0;
-        /*
-        multiline
-        comment
-         */
+        // multiline        comment
 		while (true) {
 			System.out.println("hygrdh");
-		}
-		switch (args) {
-		default:
-			break;
 		}
     }
 }

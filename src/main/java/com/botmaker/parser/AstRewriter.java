@@ -304,6 +304,8 @@ public class AstRewriter {
         }
     }
 
+    // ADD THIS METHOD TO AstRewriter.java - replaces the existing createDefaultExpression
+
     private Expression createDefaultExpression(AST ast, com.botmaker.ui.AddableExpression type) {
         switch (type) {
             case TEXT:
@@ -313,6 +315,12 @@ public class AstRewriter {
 
             case NUMBER:
                 return ast.newNumberLiteral("0");
+
+            case TRUE:
+                return ast.newBooleanLiteral(true);
+
+            case FALSE:
+                return ast.newBooleanLiteral(false);
 
             case VARIABLE:
                 return ast.newSimpleName(DefaultNames.DEFAULT_VARIABLE);
@@ -366,7 +374,6 @@ public class AstRewriter {
                 emptyString.setLiteralValue("");
                 println.arguments().add(emptyString);
                 return ast.newExpressionStatement(println);
-
             case DECLARE_INT: {
                 VariableDeclarationFragment fragment = ast.newVariableDeclarationFragment();
                 fragment.setName(ast.newSimpleName(DefaultNames.DEFAULT_INT));

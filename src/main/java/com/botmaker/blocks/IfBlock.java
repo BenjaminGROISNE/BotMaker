@@ -7,7 +7,10 @@ import com.botmaker.core.ExpressionBlock;
 import com.botmaker.lsp.CompletionContext;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
+import javafx.scene.control.Button;
+import javafx.scene.control.ContextMenu;
 import javafx.scene.control.Label;
+import javafx.scene.control.MenuItem;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import org.eclipse.jdt.core.dom.CompilationUnit;
@@ -17,7 +20,7 @@ public class IfBlock extends AbstractStatementBlock {
 
     private ExpressionBlock condition;
     private BodyBlock thenBody;
-    private com.botmaker.core.StatementBlock elseStatement; // Can be null
+    private com.botmaker.core.StatementBlock elseStatement;
 
     public IfBlock(String id, IfStatement astNode) {
         super(id, astNode);
@@ -52,19 +55,32 @@ public class IfBlock extends AbstractStatementBlock {
         VBox container = new VBox(5);
         container.getStyleClass().add("if-block");
 
-        // Header: If + condition + delete button
+        // Header: If + condition + + button + delete button
         HBox header = new HBox(5);
         header.setAlignment(Pos.CENTER_LEFT);
-        header.getChildren().add(new Label("If"));
+
+        Label ifLabel = new Label("If");
+        ifLabel.getStyleClass().add("keyword-label");
+        header.getChildren().add(ifLabel);
+
         if (condition != null) {
             header.getChildren().add(condition.getUINode(context));
         } else {
             header.getChildren().add(createExpressionDropZone(context));
         }
+
+        // + Button for changing condition
+        Button addButton = new Button("+");
+        addButton.getStyleClass().add("expression-add-button");
+        addButton.setOnAction(e -> showExpressionMenu(addButton, context));
+        header.getChildren().add(addButton);
+
         javafx.scene.layout.Pane spacer = new javafx.scene.layout.Pane();
         HBox.setHgrow(spacer, javafx.scene.layout.Priority.ALWAYS);
+
         javafx.scene.control.Button deleteButton = new javafx.scene.control.Button("X");
         deleteButton.setOnAction(e -> context.codeEditor().deleteStatement((org.eclipse.jdt.core.dom.Statement) this.astNode));
+
         header.getChildren().addAll(spacer, deleteButton);
         container.getChildren().add(header);
 
@@ -83,6 +99,7 @@ public class IfBlock extends AbstractStatementBlock {
                 HBox elseHeader = new HBox(5);
                 elseHeader.setAlignment(Pos.CENTER_LEFT);
                 Label elseLabel = new Label("Else");
+                elseLabel.getStyleClass().add("keyword-label");
                 javafx.scene.control.Button addElseIfButton = new javafx.scene.control.Button("+ if");
                 addElseIfButton.setOnAction(e -> context.codeEditor().convertElseToElseIf((IfStatement) this.astNode));
                 javafx.scene.layout.Pane elseSpacer = new javafx.scene.layout.Pane();
@@ -96,10 +113,12 @@ public class IfBlock extends AbstractStatementBlock {
                 HBox.setHgrow(elseBodyNode, javafx.scene.layout.Priority.ALWAYS);
                 elseContainer.getChildren().addAll(elseHeader, elseBodyNode);
                 container.getChildren().add(elseContainer);
-            } else { // Assuming IfBlock
+            } else {
                 HBox elseIfContainer = new HBox(5);
                 elseIfContainer.setAlignment(Pos.CENTER_LEFT);
-                elseIfContainer.getChildren().add(new Label("Else"));
+                Label elseLabel = new Label("Else");
+                elseLabel.getStyleClass().add("keyword-label");
+                elseIfContainer.getChildren().add(elseLabel);
                 Node elseNode = elseStatement.getUINode(context);
                 HBox.setHgrow(elseNode, javafx.scene.layout.Priority.ALWAYS);
                 elseIfContainer.getChildren().add(elseNode);
@@ -112,6 +131,23 @@ public class IfBlock extends AbstractStatementBlock {
         }
 
         return container;
+    }
+
+    private void showExpressionMenu(Button button, CompletionContext context) {
+        ContextMenu menu = new ContextMenu();
+
+        for (com.botmaker.ui.AddableExpression type : com.botmaker.ui.AddableExpression.values()) {
+            MenuItem menuItem = new MenuItem(type.getDisplayName());
+            menuItem.setOnAction(e -> {
+                if (condition != null) {
+                    org.eclipse.jdt.core.dom.Expression toReplace = (org.eclipse.jdt.core.dom.Expression) condition.getAstNode();
+                    context.codeEditor().replaceExpression(toReplace, type);
+                }
+            });
+            menu.getItems().add(menuItem);
+        }
+
+        menu.show(button, javafx.geometry.Side.BOTTOM, 0, 0);
     }
 
     @Override
@@ -134,7 +170,6 @@ public class IfBlock extends AbstractStatementBlock {
 
     @Override
     public int getBreakpointLine(CompilationUnit cu) {
-        // The breakpoint for an IfBlock should be on its condition.
         if (condition != null) {
             return condition.getBreakpointLine(cu);
         }

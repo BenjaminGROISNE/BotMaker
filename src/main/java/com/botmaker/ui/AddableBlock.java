@@ -27,7 +27,6 @@ public enum AddableBlock {
     DECLARE_BOOLEAN("Bool Variable", VariableDeclarationBlock.class, BlockCategory.VARIABLES),
     DECLARE_STRING("String Variable", VariableDeclarationBlock.class, BlockCategory.VARIABLES),
     ASSIGNMENT("Set Variable", AssignmentBlock.class, BlockCategory.VARIABLES),
-
     // --- INPUT ---
     READ_LINE("Read Text", ReadInputBlock.class, BlockCategory.INPUT),
     READ_INT("Read Int", ReadInputBlock.class, BlockCategory.INPUT),

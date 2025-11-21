@@ -10,7 +10,10 @@ import com.botmaker.ui.BlockDragAndDropManager;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
+import javafx.scene.control.Button;
+import javafx.scene.control.ContextMenu;
 import javafx.scene.control.Label;
+import javafx.scene.control.MenuItem;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import org.eclipse.jdt.core.dom.WhileStatement;
@@ -69,11 +72,17 @@ public class WhileBlock extends AbstractStatementBlock implements BlockWithChild
 
         Label whileLabel = new Label("while");
         whileLabel.getStyleClass().add("keyword-label");
-
         header.getChildren().add(whileLabel);
+
         if (condition != null) {
             header.getChildren().add(condition.getUINode(context));
         }
+
+        // + Button for changing condition
+        Button addButton = new Button("+");
+        addButton.getStyleClass().add("expression-add-button");
+        addButton.setOnAction(e -> showExpressionMenu(addButton, context));
+        header.getChildren().add(addButton);
 
         // Add spacer and delete button
         javafx.scene.layout.Pane spacer = new javafx.scene.layout.Pane();
@@ -97,5 +106,22 @@ public class WhileBlock extends AbstractStatementBlock implements BlockWithChild
         }
 
         return mainContainer;
+    }
+
+    private void showExpressionMenu(Button button, CompletionContext context) {
+        ContextMenu menu = new ContextMenu();
+
+        for (com.botmaker.ui.AddableExpression type : com.botmaker.ui.AddableExpression.values()) {
+            MenuItem menuItem = new MenuItem(type.getDisplayName());
+            menuItem.setOnAction(e -> {
+                if (condition != null) {
+                    org.eclipse.jdt.core.dom.Expression toReplace = (org.eclipse.jdt.core.dom.Expression) condition.getAstNode();
+                    context.codeEditor().replaceExpression(toReplace, type);
+                }
+            });
+            menu.getItems().add(menuItem);
+        }
+
+        menu.show(button, javafx.geometry.Side.BOTTOM, 0, 0);
     }
 }

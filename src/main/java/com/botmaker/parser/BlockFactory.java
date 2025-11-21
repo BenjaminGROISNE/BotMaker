@@ -501,6 +501,7 @@ public class BlockFactory {
             nodeToBlockMap.put(astExpression, block);
             return Optional.of(block);
         }
+
         if (astExpression instanceof NumberLiteral) {
             System.out.println("Creating Number LiteralBlock for: " + astExpression);
             NumberLiteral literalNode = (NumberLiteral) astExpression;

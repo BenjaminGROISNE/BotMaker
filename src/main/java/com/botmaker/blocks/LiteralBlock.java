@@ -6,7 +6,6 @@ import javafx.scene.Cursor;
 import javafx.scene.Node;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.HBox;
-import javafx.scene.text.Text;
 import org.eclipse.jdt.core.dom.Expression;
 
 public class LiteralBlock<T> extends AbstractExpressionBlock {
@@ -34,7 +33,9 @@ public class LiteralBlock<T> extends AbstractExpressionBlock {
         if (initialText.isEmpty() && value instanceof String) {
             textField.setPromptText("Type a value...");
         }
+
         textField.setCursor(Cursor.TEXT);
+        textField.getStyleClass().add("literal-text-field"); // Use specific style class
 
         textField.focusedProperty().addListener((obs, oldVal, newVal) -> {
             if (!newVal) {

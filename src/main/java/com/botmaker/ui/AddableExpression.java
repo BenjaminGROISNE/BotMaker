@@ -4,6 +4,8 @@ public enum AddableExpression {
     // Literals
     TEXT("Text"),
     NUMBER("Number"),
+    TRUE("True"),
+    FALSE("False"),
     VARIABLE("Variable"),
 
     // Math Operations
@@ -14,7 +16,7 @@ public enum AddableExpression {
     MODULO("Modulo (%)", "%");
 
     private final String displayName;
-    private final String operator; // null for non-operations
+    private final String operator;
 
     AddableExpression(String displayName) {
         this.displayName = displayName;
