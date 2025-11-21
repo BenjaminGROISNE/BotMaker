@@ -38,20 +38,13 @@ public class AstRewriter {
         ListRewrite sourceListRewrite = rewriter.getListRewrite(sourceBlock, Block.STATEMENTS_PROPERTY);
         ListRewrite targetListRewrite = rewriter.getListRewrite(targetBlock, Block.STATEMENTS_PROPERTY);
 
-        // --- FIX START ---
-        // JDT ASTRewrite handles indices based on the ORIGINAL AST.
-        // We do NOT need to manually adjust the index for the removal shift
-        // because the removal hasn't actually happened to the underlying list yet.
-
         // If moving to the exact same position (same body, same index), do nothing
         if (sourceBody == targetBody) {
             int currentIndex = sourceBlock.statements().indexOf(statement);
             if (currentIndex == targetIndex) {
                 return originalCode;
             }
-            // The logic "if (targetIndex > currentIndex) targetIndex--;" was removed here.
         }
-        // --- FIX END ---
 
         // Create a copy of the statement for the new location
         Statement copiedStatement = (Statement) ASTNode.copySubtree(ast, statement);
@@ -79,6 +72,13 @@ public class AstRewriter {
         if (newStatement == null) {
             return originalCode;
         }
+
+        // Special handling for Switch statements:
+        // If we are dropping a CASE into a SWITCH block, the targetBody might actually be
+        // a synthetic block or the switch itself. However, strictly speaking,
+        // Switch cases are children of the SwitchStatement, not a Block.
+        // But in this architecture, we usually drop into BodyBlocks.
+        // Standard blocks (If/While) use Block bodies. Switch statements have a list of statements.
 
         Block targetAstBlock = (Block) targetBody.getAstNode();
         ListRewrite listRewrite = rewriter.getListRewrite(targetAstBlock, Block.STATEMENTS_PROPERTY);
@@ -372,33 +372,22 @@ public class AstRewriter {
                 return whileStatement;
 
             case FOR:
-                // for (int i = 0; i < 10; i++) {}
-                ForStatement forStatement = ast.newForStatement();
+                // Enhanced for loop (foreach): for(String item : array) {}
+                EnhancedForStatement enhancedFor = ast.newEnhancedForStatement();
 
-                // Initialization: int i = 0
-                VariableDeclarationFragment initFragment = ast.newVariableDeclarationFragment();
-                initFragment.setName(ast.newSimpleName("i"));
-                initFragment.setInitializer(ast.newNumberLiteral("0"));
-                VariableDeclarationExpression initExpr = ast.newVariableDeclarationExpression(initFragment);
-                initExpr.setType(ast.newPrimitiveType(PrimitiveType.INT));
-                forStatement.initializers().add(initExpr);
+                // Parameter: String item
+                SingleVariableDeclaration parameter = ast.newSingleVariableDeclaration();
+                parameter.setType(TypeManager.createTypeNode(ast, "String"));
+                parameter.setName(ast.newSimpleName("item"));
+                enhancedFor.setParameter(parameter);
 
-                // Condition: i < 10
-                InfixExpression condition = ast.newInfixExpression();
-                condition.setLeftOperand(ast.newSimpleName("i"));
-                condition.setOperator(InfixExpression.Operator.LESS);
-                condition.setRightOperand(ast.newNumberLiteral("10"));
-                forStatement.setExpression(condition);
-
-                // Update: i++
-                PostfixExpression update = ast.newPostfixExpression();
-                update.setOperand(ast.newSimpleName("i"));
-                update.setOperator(PostfixExpression.Operator.INCREMENT);
-                forStatement.updaters().add(update);
+                // Expression: array (or any collection)
+                enhancedFor.setExpression(ast.newSimpleName("array"));
 
                 // Body
-                forStatement.setBody(ast.newBlock());
-                return forStatement;
+                enhancedFor.setBody(ast.newBlock());
+
+                return enhancedFor;
 
             case BREAK:
                 return ast.newBreakStatement();
@@ -413,22 +402,6 @@ public class AstRewriter {
                 assignment.setOperator(Assignment.Operator.ASSIGN);
                 assignment.setRightHandSide(ast.newNumberLiteral("0"));
                 return ast.newExpressionStatement(assignment);
-            }
-
-            case INCREMENT: {
-                // variable++
-                PostfixExpression postfix = ast.newPostfixExpression();
-                postfix.setOperand(ast.newSimpleName(DefaultNames.DEFAULT_VARIABLE));
-                postfix.setOperator(PostfixExpression.Operator.INCREMENT);
-                return ast.newExpressionStatement(postfix);
-            }
-
-            case DECREMENT: {
-                // variable--
-                PostfixExpression postfix = ast.newPostfixExpression();
-                postfix.setOperand(ast.newSimpleName(DefaultNames.DEFAULT_VARIABLE));
-                postfix.setOperator(PostfixExpression.Operator.DECREMENT);
-                return ast.newExpressionStatement(postfix);
             }
 
             case READ_LINE: {
@@ -475,6 +448,87 @@ public class AstRewriter {
                 varDecl.setType(ast.newPrimitiveType(PrimitiveType.DOUBLE));
                 return varDecl;
             }
+
+            case DO_WHILE:
+                // do { } while (true)
+                DoStatement doStatement = ast.newDoStatement();
+                doStatement.setExpression(ast.newBooleanLiteral(true));
+                doStatement.setBody(ast.newBlock());
+                return doStatement;
+
+            case SWITCH:
+                // switch (variable) { default: break; }
+                SwitchStatement switchStatement = ast.newSwitchStatement();
+                switchStatement.setExpression(ast.newSimpleName(DefaultNames.DEFAULT_VARIABLE));
+
+                // Add a default case
+                SwitchCase defaultCase = ast.newSwitchCase();
+                // In JDT AST, a SwitchCase with empty/null expression is treated as 'default'.
+                // We do NOT call setDefault(true) as it doesn't exist in modern AST.
+
+                switchStatement.statements().add(defaultCase);
+
+                BreakStatement breakStmt = ast.newBreakStatement();
+                switchStatement.statements().add(breakStmt);
+
+                return switchStatement;
+
+            case CASE:
+                // case 0:
+                SwitchCase switchCase = ast.newSwitchCase();
+                // We assume JDK 8+ style (case expression:)
+                // In newer JDT versions, we use expressions().add()
+                try {
+                    // Using reflection to handle different JDT versions if necessary,
+                    // but assuming we are on a modern version based on AST.getJLSLatest()
+                    switchCase.expressions().add(ast.newNumberLiteral("0"));
+                } catch (Exception e) {
+                    // Fallback for older JDT where setExpression is used
+                    // switchCase.setExpression(ast.newNumberLiteral("0"));
+                }
+                return switchCase;
+
+            case RETURN:
+                // return;
+                return ast.newReturnStatement();
+
+            case WAIT:
+                // try { Thread.sleep(1000); } catch (InterruptedException e) { e.printStackTrace(); }
+                TryStatement tryStmt = ast.newTryStatement();
+                Block tryBody = ast.newBlock();
+
+                // Thread.sleep(1000)
+                MethodInvocation sleepCall = ast.newMethodInvocation();
+                sleepCall.setExpression(ast.newSimpleName("Thread"));
+                sleepCall.setName(ast.newSimpleName("sleep"));
+                sleepCall.arguments().add(ast.newNumberLiteral("1000"));
+
+                tryBody.statements().add(ast.newExpressionStatement(sleepCall));
+                tryStmt.setBody(tryBody);
+
+                // catch (InterruptedException e)
+                CatchClause catchClause = ast.newCatchClause();
+                SingleVariableDeclaration exceptionDecl = ast.newSingleVariableDeclaration();
+                exceptionDecl.setType(ast.newSimpleType(ast.newSimpleName("InterruptedException")));
+                exceptionDecl.setName(ast.newSimpleName("e"));
+                catchClause.setException(exceptionDecl);
+
+                // e.printStackTrace()
+                Block catchBody = ast.newBlock();
+                MethodInvocation printStackTrace = ast.newMethodInvocation();
+                printStackTrace.setExpression(ast.newSimpleName("e"));
+                printStackTrace.setName(ast.newSimpleName("printStackTrace"));
+                catchBody.statements().add(ast.newExpressionStatement(printStackTrace));
+                catchClause.setBody(catchBody);
+
+                tryStmt.catchClauses().add(catchClause);
+                return tryStmt;
+            case COMMENT:
+                // Comments are special - they're not real statements
+                // We'll use an EmptyStatement as a placeholder
+                // The actual comment text is stored in the CommentBlock
+                EmptyStatement emptyStmt = ast.newEmptyStatement();
+                return emptyStmt;
 
             default:
                 return null;

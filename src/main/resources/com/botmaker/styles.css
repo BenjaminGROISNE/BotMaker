@@ -390,17 +390,32 @@
     -fx-background-color: -fx-if-body-background !important;
 }
 
+/* Make sure if-body inherits the hover styling */
+.if-body.empty-body-drop-hover {
+    -fx-background-color: rgba(0, 123, 255, 0.15) !important;
+    -fx-border-color: #007bff !important;
+    -fx-border-width: 2px !important;
+    -fx-border-style: dashed !important;
+}
+
 .main-block .body-block {
     -fx-background-color: -fx-main-body-background;
 }
 
+
+/* Ensure body-block itself can show the hover */
 .body-block.empty-body-drop-hover {
-    -fx-background-color: yellow;
+    -fx-background-color: rgba(0, 123, 255, 0.1) !important;
+    -fx-border-color: #007bff !important;
+    -fx-border-width: 2px !important;
 }
+
 
 .dark-theme .body-block-separator {
     -fx-background-color: #444444; /* Dark gray for dark theme */
 }
+
+
 
 /* Main Block Styles */
 .main-block {
@@ -574,9 +589,32 @@
     -fx-font-weight: bold;
 }
 
+/* While body hover (for reference - this works) */
+.while-body .body-block {
+    -fx-background-color: transparent;
+}
+
+.while-body .body-block.empty-body-drop-hover {
+    -fx-background-color: rgba(0, 123, 255, 0.1) !important;
+    -fx-border-color: #007bff !important;
+}
+
 .while-body, .for-body {
     -fx-background-color: rgba(255, 255, 255, 0.5);
     -fx-padding: 5px;
+}
+
+/* Empty body drop zone styling */
+.empty-body-placeholder {
+    -fx-text-fill: #999;
+    -fx-font-style: italic;
+}
+
+.empty-body-drop-hover {
+    -fx-background-color: rgba(0, 123, 255, 0.1) !important;
+    -fx-border-color: #007bff !important;
+    -fx-border-width: 2px !important;
+    -fx-border-style: dashed !important;
 }
 
 .break-block, .continue-block {

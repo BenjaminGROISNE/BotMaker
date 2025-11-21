@@ -4,24 +4,26 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="cba04025-c331-4634-a893-436bad03efc0" name="Changes" comment="Added block dragging">
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/botmaker/blocks/AssignmentBlock.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/botmaker/blocks/BreakBlock.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/botmaker/blocks/ContinueBlock.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/botmaker/blocks/ForBlock.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/botmaker/blocks/IncrementDecrementBlock.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/botmaker/blocks/ReadInputBlock.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/botmaker/blocks/WhileBlock.java" afterDir="false" />
+    <list default="true" id="cba04025-c331-4634-a893-436bad03efc0" name="Changes" comment="Added many new blocks. Still some issues to fix with them. Check for unreachable code error">
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/botmaker/blocks/CommentBlock.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/botmaker/blocks/ComparisonExpressionBlock.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/botmaker/blocks/DoWhileBlock.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/botmaker/blocks/ReturnBlock.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/botmaker/blocks/SwitchBlock.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/botmaker/blocks/WaitBlock.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/java_files_concat.txt" beforeDir="false" afterPath="$PROJECT_DIR$/java_files_concat.txt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/projects/.botmaker-config.json" beforeDir="false" afterPath="$PROJECT_DIR$/projects/.botmaker-config.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/projects/Demo/src/main/java/com/demo/Demo.java" beforeDir="false" afterPath="$PROJECT_DIR$/projects/Demo/src/main/java/com/demo/Demo.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/botmaker/blocks/AssignmentBlock.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/botmaker/blocks/AssignmentBlock.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/botmaker/blocks/BinaryExpressionBlock.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/botmaker/blocks/BinaryExpressionBlock.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/botmaker/blocks/ForBlock.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/botmaker/blocks/ForBlock.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/botmaker/blocks/IncrementDecrementBlock.java" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/botmaker/parser/AstRewriter.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/botmaker/parser/AstRewriter.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/botmaker/parser/BlockFactory.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/botmaker/parser/BlockFactory.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/botmaker/parser/BlockIdPrefix.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/botmaker/parser/BlockIdPrefix.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/botmaker/ui/AddableBlock.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/botmaker/ui/AddableBlock.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/botmaker/ui/AddableExpression.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/botmaker/ui/AddableExpression.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/botmaker/ui/BlockDragAndDropManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/botmaker/ui/BlockDragAndDropManager.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/botmaker/ui/UIManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/botmaker/ui/UIManager.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/resources/com/botmaker/styles.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/com/botmaker/styles.css" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -554,7 +556,15 @@
       <option name="project" value="LOCAL" />
       <updated>1763672206806</updated>
     </task>
-    <option name="localTasksCounter" value="45" />
+    <task id="LOCAL-00045" summary="Added many new blocks. Still some issues to fix with them. Check for unreachable code error">
+      <option name="closed" value="true" />
+      <created>1763674734388</created>
+      <option name="number" value="00045" />
+      <option name="presentableId" value="LOCAL-00045" />
+      <option name="project" value="LOCAL" />
+      <updated>1763674734388</updated>
+    </task>
+    <option name="localTasksCounter" value="46" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -582,7 +592,6 @@
     <ignored-roots>
       <path value="$PROJECT_DIR$/.." />
     </ignored-roots>
-    <MESSAGE value="Fixed stackOverflow error adjusted hover effect on blocks and block palette" />
     <MESSAGE value="some ui changes" />
     <MESSAGE value="can edit declare variable name" />
     <MESSAGE value="First shot at validating blocks (can identify the block but to proceed further" />
@@ -607,7 +616,8 @@
     <MESSAGE value="wanky visble breakpoints" />
     <MESSAGE value="fixed exit app added stop button that needs to stop finishing running" />
     <MESSAGE value="Added block dragging" />
-    <option name="LAST_COMMIT_MESSAGE" value="Added block dragging" />
+    <MESSAGE value="Added many new blocks. Still some issues to fix with them. Check for unreachable code error" />
+    <option name="LAST_COMMIT_MESSAGE" value="Added many new blocks. Still some issues to fix with them. Check for unreachable code error" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -616,16 +626,6 @@
           <url>file://$PROJECT_DIR$/src/main/java/com/botmaker/AstToBlocksConverter.java</url>
           <line>94</line>
           <option name="timeStamp" value="4" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/main/java/com/botmaker/services/ExecutionService.java</url>
-          <line>56</line>
-          <option name="timeStamp" value="6" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/main/java/com/botmaker/services/ExecutionService.java</url>
-          <line>63</line>
-          <option name="timeStamp" value="7" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>

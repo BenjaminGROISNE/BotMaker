@@ -193,9 +193,10 @@ public class BlockDragAndDropManager {
 
     public void addEmptyBodyDropHandlers(Region target, BodyBlock targetBody) {
         target.setOnDragEntered(event -> {
-            Dragboard db = event.getDragboard();
-            if (db.hasContent(ADDABLE_BLOCK_FORMAT) || db.hasContent(EXISTING_BLOCK_FORMAT)) {
+            if (event.getDragboard().hasContent(ADDABLE_BLOCK_FORMAT) ||
+                    event.getDragboard().hasContent(EXISTING_BLOCK_FORMAT)) {
                 target.getStyleClass().add("empty-body-drop-hover");
+                System.out.println("Added hover class to: " + target.getClass().getSimpleName());
             }
             event.consume();
         });

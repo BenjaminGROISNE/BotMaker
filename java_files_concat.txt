@@ -1,4 +1,166 @@
 =================================================================================
+FILE: ./src/main/java/com/botmaker/blocks/AssignmentBlock.java
+=================================================================================
+
+package com.botmaker.blocks;
+
+import com.botmaker.core.AbstractStatementBlock;
+import com.botmaker.core.ExpressionBlock;
+import com.botmaker.lsp.CompletionContext;
+import javafx.geometry.Pos;
+import javafx.scene.Node;
+import javafx.scene.control.Button;
+import javafx.scene.control.ComboBox;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.Pane;
+import javafx.scene.layout.Priority;
+import org.eclipse.jdt.core.dom.Assignment;
+import org.eclipse.jdt.core.dom.ExpressionStatement;
+import org.eclipse.jdt.core.dom.PostfixExpression;
+import org.eclipse.jdt.core.dom.PrefixExpression;
+
+public class AssignmentBlock extends AbstractStatementBlock {
+
+    private ExpressionBlock leftHandSide;
+    private ExpressionBlock rightHandSide;
+    private String operator;
+
+    // Operator display names (user-friendly)
+    private static final String[] OPERATOR_NAMES = {
+            "set to",           // =
+            "add",              // +=
+            "subtract",         // -=
+            "multiply by",      // *=
+            "divide by",        // /=
+            "increment",        // ++
+            "decrement"         // --
+    };
+
+    // Corresponding Java operators
+    private static final String[] OPERATOR_SYMBOLS = {
+            "=", "+=", "-=", "*=", "/=", "++", "--"
+    };
+
+    public AssignmentBlock(String id, ExpressionStatement astNode) {
+        super(id, astNode);
+
+        // Detect the operator from the AST node
+        if (astNode.getExpression() instanceof Assignment) {
+            Assignment assignment = (Assignment) astNode.getExpression();
+            this.operator = assignment.getOperator().toString();
+        } else if (astNode.getExpression() instanceof PostfixExpression) {
+            PostfixExpression postfix = (PostfixExpression) astNode.getExpression();
+            this.operator = postfix.getOperator().toString();
+        } else if (astNode.getExpression() instanceof PrefixExpression) {
+            PrefixExpression prefix = (PrefixExpression) astNode.getExpression();
+            this.operator = prefix.getOperator().toString();
+        } else {
+            this.operator = "="; // default
+        }
+    }
+
+    public ExpressionBlock getLeftHandSide() {
+        return leftHandSide;
+    }
+
+    public void setLeftHandSide(ExpressionBlock leftHandSide) {
+        this.leftHandSide = leftHandSide;
+    }
+
+    public ExpressionBlock getRightHandSide() {
+        return rightHandSide;
+    }
+
+    public void setRightHandSide(ExpressionBlock rightHandSide) {
+        this.rightHandSide = rightHandSide;
+    }
+
+    public String getOperator() {
+        return operator;
+    }
+
+    @Override
+    protected Node createUINode(CompletionContext context) {
+        HBox container = new HBox(5);
+        container.setAlignment(Pos.CENTER_LEFT);
+        container.getStyleClass().add("assignment-block");
+
+        // Left hand side
+        if (leftHandSide != null) {
+            container.getChildren().add(leftHandSide.getUINode(context));
+        }
+
+        // Operator selector - shows user-friendly names
+        ComboBox<String> operatorSelector = new ComboBox<>();
+        operatorSelector.getItems().addAll(OPERATOR_NAMES);
+        operatorSelector.getStyleClass().add("operator-selector");
+        operatorSelector.setEditable(false); // Not text-editable, just dropdown selection
+
+        // Set current operator
+        String currentName = getOperatorDisplayName(operator);
+        operatorSelector.setValue(currentName);
+
+        // Handle operator change
+        operatorSelector.setOnAction(e -> {
+            String selectedName = operatorSelector.getValue();
+            String newOperator = getOperatorSymbol(selectedName);
+            if (newOperator != null && !newOperator.equals(operator)) {
+                this.operator = newOperator;
+                // Trigger code regeneration with new operator
+                System.out.println("Operator changed to: " + newOperator);
+                // Note: This will take effect on next code regeneration
+            }
+        });
+
+        container.getChildren().add(operatorSelector);
+
+        // Right hand side (only show for non-increment/decrement)
+        if (!operator.equals("++") && !operator.equals("--")) {
+            if (rightHandSide != null) {
+                container.getChildren().add(rightHandSide.getUINode(context));
+            }
+        }
+
+        // Add spacer and delete button (NO semicolon!)
+        Pane spacer = new Pane();
+        HBox.setHgrow(spacer, Priority.ALWAYS);
+
+        Button deleteButton = new Button("X");
+        deleteButton.setOnAction(e -> {
+            context.codeEditor().deleteStatement((org.eclipse.jdt.core.dom.Statement) this.astNode);
+        });
+
+        container.getChildren().addAll(spacer, deleteButton);
+
+        return container;
+    }
+
+    /**
+     * Convert operator symbol to display name
+     */
+    private String getOperatorDisplayName(String symbol) {
+        for (int i = 0; i < OPERATOR_SYMBOLS.length; i++) {
+            if (OPERATOR_SYMBOLS[i].equals(symbol)) {
+                return OPERATOR_NAMES[i];
+            }
+        }
+        return "set to"; // default
+    }
+
+    /**
+     * Convert display name to operator symbol
+     */
+    private String getOperatorSymbol(String displayName) {
+        for (int i = 0; i < OPERATOR_NAMES.length; i++) {
+            if (OPERATOR_NAMES[i].equals(displayName)) {
+                return OPERATOR_SYMBOLS[i];
+            }
+        }
+        return "="; // default
+    }
+}
+
+=================================================================================
 FILE: ./src/main/java/com/botmaker/blocks/BinaryExpressionBlock.java
 =================================================================================
 
@@ -9,6 +171,7 @@ import com.botmaker.core.ExpressionBlock;
 import com.botmaker.lsp.CompletionContext;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;
 import org.eclipse.jdt.core.dom.ITypeBinding;
@@ -18,8 +181,22 @@ public class BinaryExpressionBlock extends AbstractExpressionBlock {
 
     private ExpressionBlock leftOperand;
     private ExpressionBlock rightOperand;
-    private final String operator;
+    private String operator;
     private final ITypeBinding returnType;
+
+    // Math operator display names (user-friendly)
+    private static final String[] MATH_OPERATOR_NAMES = {
+            "plus",         // +
+            "minus",        // -
+            "times",        // *
+            "divided by",   // /
+            "modulo"        // %
+    };
+
+    // Corresponding Java operators
+    private static final String[] MATH_OPERATOR_SYMBOLS = {
+            "+", "-", "*", "/", "%"
+    };
 
     public BinaryExpressionBlock(String id, InfixExpression astNode) {
         super(id, astNode);
@@ -59,29 +236,655 @@ public class BinaryExpressionBlock extends AbstractExpressionBlock {
 
         HBox expressionBox = new HBox(5);
         expressionBox.setAlignment(Pos.CENTER_LEFT);
+
+        // Left operand
         if (leftOperand != null) {
             expressionBox.getChildren().add(leftOperand.getUINode(context));
         }
-        expressionBox.getChildren().add(new Label(operator));
+
+        // Check if this is a math operator or comparison/logical operator
+        if (isMathOperator(operator)) {
+            // Operator selector for math operations
+            ComboBox<String> operatorSelector = new ComboBox<>();
+            operatorSelector.getItems().addAll(MATH_OPERATOR_NAMES);
+            operatorSelector.getStyleClass().add("math-operator-selector");
+
+            // Set current operator
+            String currentName = getOperatorDisplayName(operator);
+            operatorSelector.setValue(currentName);
+
+            // Handle operator change
+            operatorSelector.setOnAction(e -> {
+                String selectedName = operatorSelector.getValue();
+                String newOperator = getOperatorSymbol(selectedName);
+                if (newOperator != null && !newOperator.equals(operator)) {
+                    this.operator = newOperator;
+                    System.out.println("Math operator changed to: " + newOperator);
+                    // Note: Operator change will take effect on next code regeneration
+                }
+            });
+
+            expressionBox.getChildren().add(operatorSelector);
+        } else {
+            // For non-math operators (comparisons, logical), just show the symbol
+            Label operatorLabel = new Label(operator);
+            operatorLabel.getStyleClass().add("operator-label");
+            expressionBox.getChildren().add(operatorLabel);
+        }
+
+        // Right operand
         if (rightOperand != null) {
             expressionBox.getChildren().add(rightOperand.getUINode(context));
         }
 
         container.getChildren().add(expressionBox);
 
+        // Type indicator (optional, can be removed if too cluttered)
         String typeName = "unknown";
         if (returnType != null) {
             typeName = returnType.getName();
         }
-        Label typeLabel = new Label("-> " + typeName);
-        typeLabel.setStyle("-fx-font-style: italic; -fx-text-fill: #555;");
+        Label typeLabel = new Label("→ " + typeName);
+        typeLabel.setStyle("-fx-font-style: italic; -fx-text-fill: #999; -fx-font-size: 10px;");
         container.getChildren().add(typeLabel);
 
+        return container;
+    }
 
+    /**
+     * Check if operator is a math operator
+     */
+    private boolean isMathOperator(String op) {
+        for (String mathOp : MATH_OPERATOR_SYMBOLS) {
+            if (mathOp.equals(op)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * Convert operator symbol to display name
+     */
+    private String getOperatorDisplayName(String symbol) {
+        for (int i = 0; i < MATH_OPERATOR_SYMBOLS.length; i++) {
+            if (MATH_OPERATOR_SYMBOLS[i].equals(symbol)) {
+                return MATH_OPERATOR_NAMES[i];
+            }
+        }
+        return symbol; // Return as-is if not found
+    }
+
+    /**
+     * Convert display name to operator symbol
+     */
+    private String getOperatorSymbol(String displayName) {
+        for (int i = 0; i < MATH_OPERATOR_NAMES.length; i++) {
+            if (MATH_OPERATOR_NAMES[i].equals(displayName)) {
+                return MATH_OPERATOR_SYMBOLS[i];
+            }
+        }
+        return "+"; // default
+    }
+}
+
+=================================================================================
+FILE: ./src/main/java/com/botmaker/blocks/BreakBlock.java
+=================================================================================
+
+package com.botmaker.blocks;
+
+import com.botmaker.core.AbstractStatementBlock;
+import com.botmaker.lsp.CompletionContext;
+import javafx.geometry.Pos;
+import javafx.scene.Node;
+import javafx.scene.control.Label;
+import javafx.scene.layout.HBox;
+import org.eclipse.jdt.core.dom.BreakStatement;
+
+public class BreakBlock extends AbstractStatementBlock {
+
+    public BreakBlock(String id, BreakStatement astNode) {
+        super(id, astNode);
+    }
+
+    @Override
+    protected Node createUINode(CompletionContext context) {
+        HBox container = new HBox(5);
+        container.setAlignment(Pos.CENTER_LEFT);
+        container.getStyleClass().add("break-block");
+
+        Label breakLabel = new Label("break");
+        breakLabel.getStyleClass().add("keyword-label");
+
+        // Add spacer and delete button
+        javafx.scene.layout.Pane spacer = new javafx.scene.layout.Pane();
+        HBox.setHgrow(spacer, javafx.scene.layout.Priority.ALWAYS);
+
+        javafx.scene.control.Button deleteButton = new javafx.scene.control.Button("X");
+        deleteButton.setOnAction(e -> {
+            context.codeEditor().deleteStatement((org.eclipse.jdt.core.dom.Statement) this.astNode);
+        });
+
+        container.getChildren().addAll(breakLabel, spacer, deleteButton);
         return container;
     }
 }
 
+=================================================================================
+FILE: ./src/main/java/com/botmaker/blocks/CommentBlock.java
+=================================================================================
+
+package com.botmaker.blocks;
+
+import com.botmaker.core.AbstractStatementBlock;
+import com.botmaker.lsp.CompletionContext;
+import javafx.geometry.Pos;
+import javafx.scene.Node;
+import javafx.scene.control.Button;
+import javafx.scene.control.TextField;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.Pane;
+import javafx.scene.layout.Priority;
+import org.eclipse.jdt.core.dom.LineComment;
+
+/**
+ * A comment block that exists only in the visual block structure.
+ * When generating code, it's converted to an actual // comment.
+ */
+public class CommentBlock extends AbstractStatementBlock {
+
+    private String commentText;
+
+    public CommentBlock(String id, LineComment astNode, String commentText) {
+        super(id, astNode);
+        this.commentText = commentText;
+    }
+
+    public String getCommentText() {
+        return commentText;
+    }
+
+    public void setCommentText(String commentText) {
+        this.commentText = commentText;
+    }
+
+    @Override
+    protected Node createUINode(CompletionContext context) {
+        HBox container = new HBox(5);
+        container.setAlignment(Pos.CENTER_LEFT);
+        container.getStyleClass().add("comment-block");
+
+        // Comment indicator
+        javafx.scene.control.Label commentLabel = new javafx.scene.control.Label("//");
+        commentLabel.getStyleClass().add("comment-indicator");
+        commentLabel.setStyle("-fx-font-weight: bold; -fx-text-fill: #666;");
+
+        // Editable text field for the comment
+        TextField commentField = new TextField(commentText != null ? commentText : "");
+        commentField.setPromptText("Enter comment...");
+        commentField.getStyleClass().add("comment-text-field");
+        HBox.setHgrow(commentField, Priority.ALWAYS);
+
+        // Update comment text on change
+        commentField.textProperty().addListener((obs, oldVal, newVal) -> {
+            this.commentText = newVal;
+            // Trigger code regeneration
+            rebuildCode(context);
+        });
+
+        // Spacer and delete button
+        Pane spacer = new Pane();
+        HBox.setHgrow(spacer, Priority.ALWAYS);
+
+        Button deleteButton = new Button("X");
+        deleteButton.setOnAction(e -> {
+            context.codeEditor().deleteStatement((org.eclipse.jdt.core.dom.Statement) this.astNode);
+        });
+
+        container.getChildren().addAll(commentLabel, commentField, spacer, deleteButton);
+        return container;
+    }
+
+    /**
+     * Trigger code regeneration when comment text changes
+     */
+    private void rebuildCode(CompletionContext context) {
+        // Get the current code and trigger a refresh
+        // This will cause the AST to be regenerated with the new comment
+        javafx.application.Platform.runLater(() -> {
+            // We need to trigger a code update through the proper channels
+            // For now, we'll just mark that the comment changed
+            // The actual regeneration will happen when needed
+        });
+    }
+
+    @Override
+    public String getDetails() {
+        return "Comment: " + (commentText != null ? commentText : "");
+    }
+}
+
+=================================================================================
+FILE: ./src/main/java/com/botmaker/blocks/ComparisonExpressionBlock.java
+=================================================================================
+
+package com.botmaker.blocks;
+
+import com.botmaker.core.AbstractExpressionBlock;
+import com.botmaker.core.ExpressionBlock;
+import com.botmaker.lsp.CompletionContext;
+import javafx.geometry.Pos;
+import javafx.scene.Node;
+import javafx.scene.control.ComboBox;
+import javafx.scene.layout.HBox;
+import org.eclipse.jdt.core.dom.ITypeBinding;
+import org.eclipse.jdt.core.dom.InfixExpression;
+
+public class ComparisonExpressionBlock extends AbstractExpressionBlock {
+
+    private ExpressionBlock leftOperand;
+    private ExpressionBlock rightOperand;
+    private String operator;
+    private final ITypeBinding returnType;
+
+    // Operator display names (user-friendly)
+    private static final String[] OPERATOR_NAMES = {
+            "less than",                    // <
+            "less than or equal",           // <=
+            "greater than",                 // >
+            "greater than or equal",        // >=
+            "equal to",                     // ==
+            "not equal to"                  // !=
+    };
+
+    // Corresponding Java operators
+    private static final String[] OPERATOR_SYMBOLS = {
+            "<", "<=", ">", ">=", "==", "!="
+    };
+
+    public ComparisonExpressionBlock(String id, InfixExpression astNode) {
+        super(id, astNode);
+        this.operator = astNode.getOperator().toString();
+        this.returnType = astNode.resolveTypeBinding();
+    }
+
+    public ExpressionBlock getLeftOperand() {
+        return leftOperand;
+    }
+
+    public void setLeftOperand(ExpressionBlock leftOperand) {
+        this.leftOperand = leftOperand;
+    }
+
+    public ExpressionBlock getRightOperand() {
+        return rightOperand;
+    }
+
+    public void setRightOperand(ExpressionBlock rightOperand) {
+        this.rightOperand = rightOperand;
+    }
+
+    public String getOperator() {
+        return operator;
+    }
+
+    public ITypeBinding getReturnType() {
+        return returnType;
+    }
+
+    @Override
+    protected Node createUINode(CompletionContext context) {
+        HBox container = new HBox(5);
+        container.setAlignment(Pos.CENTER_LEFT);
+        container.getStyleClass().add("comparison-expression-block");
+
+        // Left operand
+        if (leftOperand != null) {
+            container.getChildren().add(leftOperand.getUINode(context));
+        }
+
+        // Operator selector - shows user-friendly names
+        ComboBox<String> operatorSelector = new ComboBox<>();
+        operatorSelector.getItems().addAll(OPERATOR_NAMES);
+        operatorSelector.getStyleClass().add("comparison-operator-selector");
+
+        // Set current operator
+        String currentName = getOperatorDisplayName(operator);
+        operatorSelector.setValue(currentName);
+
+        // Handle operator change
+        operatorSelector.setOnAction(e -> {
+            String selectedName = operatorSelector.getValue();
+            String newOperator = getOperatorSymbol(selectedName);
+            if (newOperator != null && !newOperator.equals(operator)) {
+                this.operator = newOperator;
+                // Trigger code regeneration with new operator
+                System.out.println("Comparison operator changed to: " + newOperator);
+            }
+        });
+
+        container.getChildren().add(operatorSelector);
+
+        // Right operand
+        if (rightOperand != null) {
+            container.getChildren().add(rightOperand.getUINode(context));
+        }
+
+        return container;
+    }
+
+    /**
+     * Convert operator symbol to display name
+     */
+    private String getOperatorDisplayName(String symbol) {
+        for (int i = 0; i < OPERATOR_SYMBOLS.length; i++) {
+            if (OPERATOR_SYMBOLS[i].equals(symbol)) {
+                return OPERATOR_NAMES[i];
+            }
+        }
+        return "equal to"; // default
+    }
+
+    /**
+     * Convert display name to operator symbol
+     */
+    private String getOperatorSymbol(String displayName) {
+        for (int i = 0; i < OPERATOR_NAMES.length; i++) {
+            if (OPERATOR_NAMES[i].equals(displayName)) {
+                return OPERATOR_SYMBOLS[i];
+            }
+        }
+        return "=="; // default
+    }
+}
+
+=================================================================================
+FILE: ./src/main/java/com/botmaker/blocks/ContinueBlock.java
+=================================================================================
+
+package com.botmaker.blocks;
+
+import com.botmaker.core.AbstractStatementBlock;
+import com.botmaker.lsp.CompletionContext;
+import javafx.geometry.Pos;
+import javafx.scene.Node;
+import javafx.scene.control.Label;
+import javafx.scene.layout.HBox;
+import org.eclipse.jdt.core.dom.ContinueStatement;
+
+public class ContinueBlock extends AbstractStatementBlock {
+
+    public ContinueBlock(String id, ContinueStatement astNode) {
+        super(id, astNode);
+    }
+
+    @Override
+    protected Node createUINode(CompletionContext context) {
+        HBox container = new HBox(5);
+        container.setAlignment(Pos.CENTER_LEFT);
+        container.getStyleClass().add("continue-block");
+
+        Label continueLabel = new Label("continue");
+        continueLabel.getStyleClass().add("keyword-label");
+
+        // Add spacer and delete button
+        javafx.scene.layout.Pane spacer = new javafx.scene.layout.Pane();
+        HBox.setHgrow(spacer, javafx.scene.layout.Priority.ALWAYS);
+
+        javafx.scene.control.Button deleteButton = new javafx.scene.control.Button("X");
+        deleteButton.setOnAction(e -> {
+            context.codeEditor().deleteStatement((org.eclipse.jdt.core.dom.Statement) this.astNode);
+        });
+
+        container.getChildren().addAll(continueLabel, spacer, deleteButton);
+        return container;
+    }
+}
+
+=================================================================================
+FILE: ./src/main/java/com/botmaker/blocks/DoWhileBlock.java
+=================================================================================
+
+package com.botmaker.blocks;
+
+import com.botmaker.core.AbstractStatementBlock;
+import com.botmaker.core.BodyBlock;
+import com.botmaker.core.BlockWithChildren;
+import com.botmaker.core.CodeBlock;
+import com.botmaker.core.ExpressionBlock;
+import com.botmaker.lsp.CompletionContext;
+import com.botmaker.ui.BlockDragAndDropManager;
+import javafx.geometry.Insets;
+import javafx.geometry.Pos;
+import javafx.scene.Node;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.Pane;
+import javafx.scene.layout.Priority;
+import javafx.scene.layout.VBox;
+import org.eclipse.jdt.core.dom.DoStatement;
+
+import java.util.ArrayList;
+import java.util.List;
+
+public class DoWhileBlock extends AbstractStatementBlock implements BlockWithChildren {
+
+    private ExpressionBlock condition;
+    private BodyBlock body;
+    private final BlockDragAndDropManager dragAndDropManager;
+
+    public DoWhileBlock(String id, DoStatement astNode, BlockDragAndDropManager dragAndDropManager) {
+        super(id, astNode);
+        this.dragAndDropManager = dragAndDropManager;
+    }
+
+    public ExpressionBlock getCondition() {
+        return condition;
+    }
+
+    public void setCondition(ExpressionBlock condition) {
+        this.condition = condition;
+    }
+
+    public BodyBlock getBody() {
+        return body;
+    }
+
+    public void setBody(BodyBlock body) {
+        this.body = body;
+    }
+
+    @Override
+    public List<CodeBlock> getChildren() {
+        List<CodeBlock> children = new ArrayList<>();
+        if (body != null) children.add(body);
+        if (condition != null) children.add(condition);
+        return children;
+    }
+
+    @Override
+    protected Node createUINode(CompletionContext context) {
+        VBox mainContainer = new VBox(5);
+        mainContainer.getStyleClass().add("do-while-block");
+
+        // Do header with delete button
+        HBox doHeaderRow = new HBox(5);
+        doHeaderRow.setAlignment(Pos.CENTER_LEFT);
+
+        Label doLabel = new Label("do");
+        doLabel.getStyleClass().add("keyword-label");
+
+        // Add spacer and delete button
+        Pane spacer = new Pane();
+        HBox.setHgrow(spacer, Priority.ALWAYS);
+
+        Button deleteButton = new Button("X");
+        deleteButton.setOnAction(e -> {
+            context.codeEditor().deleteStatement((org.eclipse.jdt.core.dom.Statement) this.astNode);
+        });
+
+        doHeaderRow.getChildren().addAll(doLabel, spacer, deleteButton);
+        mainContainer.getChildren().add(doHeaderRow);
+
+        // Body
+        if (body != null) {
+            VBox bodyContainer = new VBox();
+            bodyContainer.getStyleClass().add("do-while-body");
+            bodyContainer.setPadding(new Insets(5, 0, 0, 20));
+            bodyContainer.getChildren().add(body.getUINode(context));
+            mainContainer.getChildren().add(bodyContainer);
+        }
+
+        // While condition
+        HBox whileCondition = new HBox(5);
+        whileCondition.setAlignment(Pos.CENTER_LEFT);
+        whileCondition.getStyleClass().add("do-while-condition");
+
+        Label whileLabel = new Label("while");
+        whileLabel.getStyleClass().add("keyword-label");
+
+        whileCondition.getChildren().add(whileLabel);
+        if (condition != null) {
+            whileCondition.getChildren().add(condition.getUINode(context));
+        }
+
+        mainContainer.getChildren().add(whileCondition);
+
+        return mainContainer;
+    }
+}
+
+=================================================================================
+FILE: ./src/main/java/com/botmaker/blocks/ForBlock.java
+=================================================================================
+
+package com.botmaker.blocks;
+
+import com.botmaker.core.AbstractStatementBlock;
+import com.botmaker.core.BodyBlock;
+import com.botmaker.core.BlockWithChildren;
+import com.botmaker.core.CodeBlock;
+import com.botmaker.core.ExpressionBlock;
+import com.botmaker.lsp.CompletionContext;
+import com.botmaker.ui.BlockDragAndDropManager;
+import javafx.geometry.Insets;
+import javafx.geometry.Pos;
+import javafx.scene.Node;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.Pane;
+import javafx.scene.layout.Priority;
+import javafx.scene.layout.VBox;
+import org.eclipse.jdt.core.dom.EnhancedForStatement;
+
+import java.util.ArrayList;
+import java.util.List;
+
+/**
+ * ForEach loop block: for(Type variable : collection) { }
+ */
+public class ForBlock extends AbstractStatementBlock implements BlockWithChildren {
+
+    private ExpressionBlock variable;
+    private ExpressionBlock collection;
+    private BodyBlock body;
+    private final BlockDragAndDropManager dragAndDropManager;
+
+    public ForBlock(String id, EnhancedForStatement astNode, BlockDragAndDropManager dragAndDropManager) {
+        super(id, astNode);
+        this.dragAndDropManager = dragAndDropManager;
+    }
+
+    public ExpressionBlock getVariable() {
+        return variable;
+    }
+
+    public void setVariable(ExpressionBlock variable) {
+        this.variable = variable;
+    }
+
+    public ExpressionBlock getCollection() {
+        return collection;
+    }
+
+    public void setCollection(ExpressionBlock collection) {
+        this.collection = collection;
+    }
+
+    public BodyBlock getBody() {
+        return body;
+    }
+
+    public void setBody(BodyBlock body) {
+        this.body = body;
+    }
+
+    @Override
+    public List<CodeBlock> getChildren() {
+        List<CodeBlock> children = new ArrayList<>();
+        if (variable != null) children.add(variable);
+        if (collection != null) children.add(collection);
+        if (body != null) children.add(body);
+        return children;
+    }
+
+    @Override
+    protected Node createUINode(CompletionContext context) {
+        VBox mainContainer = new VBox(5);
+        mainContainer.getStyleClass().add("for-block");
+
+        // Header row with delete button
+        HBox headerRow = new HBox(5);
+        headerRow.setAlignment(Pos.CENTER_LEFT);
+
+        // For each parts
+        HBox header = new HBox(5);
+        header.setAlignment(Pos.CENTER_LEFT);
+        header.getStyleClass().add("for-header");
+
+        Label forLabel = new Label("for each");
+        forLabel.getStyleClass().add("keyword-label");
+
+        header.getChildren().add(forLabel);
+
+        if (variable != null) {
+            header.getChildren().add(variable.getUINode(context));
+        }
+
+        Label inLabel = new Label("in");
+        header.getChildren().add(inLabel);
+
+        if (collection != null) {
+            header.getChildren().add(collection.getUINode(context));
+        }
+
+        // Add spacer and delete button
+        Pane spacer = new Pane();
+        HBox.setHgrow(spacer, Priority.ALWAYS);
+
+        Button deleteButton = new Button("X");
+        deleteButton.setOnAction(e -> {
+            context.codeEditor().deleteStatement((org.eclipse.jdt.core.dom.Statement) this.astNode);
+        });
+
+        headerRow.getChildren().addAll(header, spacer, deleteButton);
+        mainContainer.getChildren().add(headerRow);
+
+        // Body
+        if (body != null) {
+            VBox bodyContainer = new VBox();
+            bodyContainer.getStyleClass().add("for-body");
+            bodyContainer.setPadding(new Insets(5, 0, 0, 20));
+            bodyContainer.getChildren().add(body.getUINode(context));
+            mainContainer.getChildren().add(bodyContainer);
+        }
+
+        return mainContainer;
+    }
+}
 
 =================================================================================
 FILE: ./src/main/java/com/botmaker/blocks/IdentifierBlock.java
@@ -654,6 +1457,276 @@ public class PrintBlock extends AbstractStatementBlock {
 
 
 =================================================================================
+FILE: ./src/main/java/com/botmaker/blocks/ReadInputBlock.java
+=================================================================================
+
+package com.botmaker.blocks;
+
+import com.botmaker.core.AbstractStatementBlock;
+import com.botmaker.core.ExpressionBlock;
+import com.botmaker.lsp.CompletionContext;
+import javafx.geometry.Pos;
+import javafx.scene.Node;
+import javafx.scene.control.Label;
+import javafx.scene.layout.HBox;
+import org.eclipse.jdt.core.dom.VariableDeclarationStatement;
+
+public class ReadInputBlock extends AbstractStatementBlock {
+
+    private ExpressionBlock variableName;
+    private String inputType; // "nextLine", "nextInt", "nextDouble", etc.
+
+    public ReadInputBlock(String id, VariableDeclarationStatement astNode, String inputType) {
+        super(id, astNode);
+        this.inputType = inputType;
+    }
+
+    public ExpressionBlock getVariableName() {
+        return variableName;
+    }
+
+    public void setVariableName(ExpressionBlock variableName) {
+        this.variableName = variableName;
+    }
+
+    public String getInputType() {
+        return inputType;
+    }
+
+    @Override
+    protected Node createUINode(CompletionContext context) {
+        HBox container = new HBox(5);
+        container.setAlignment(Pos.CENTER_LEFT);
+        container.getStyleClass().add("read-input-block");
+
+        // Display based on input type
+        Label typeLabel = new Label(getTypeDisplayName());
+        typeLabel.getStyleClass().add("type-label");
+
+        if (variableName != null) {
+            container.getChildren().add(variableName.getUINode(context));
+        }
+
+        Label equalsLabel = new Label("=");
+        Label scannerLabel = new Label("scanner." + inputType + "()");
+        scannerLabel.getStyleClass().add("method-call-label");
+
+        container.getChildren().addAll(typeLabel, equalsLabel, scannerLabel);
+
+        // Add spacer and delete button
+        javafx.scene.layout.Pane spacer = new javafx.scene.layout.Pane();
+        HBox.setHgrow(spacer, javafx.scene.layout.Priority.ALWAYS);
+
+        javafx.scene.control.Button deleteButton = new javafx.scene.control.Button("X");
+        deleteButton.setOnAction(e -> {
+            context.codeEditor().deleteStatement((org.eclipse.jdt.core.dom.Statement) this.astNode);
+        });
+
+        container.getChildren().addAll(spacer, deleteButton);
+
+        return container;
+    }
+
+    private String getTypeDisplayName() {
+        switch (inputType) {
+            case "nextLine":
+                return "String";
+            case "nextInt":
+                return "int";
+            case "nextDouble":
+                return "double";
+            case "nextBoolean":
+                return "boolean";
+            default:
+                return "var";
+        }
+    }
+}
+
+=================================================================================
+FILE: ./src/main/java/com/botmaker/blocks/SwitchBlock.java
+=================================================================================
+
+package com.botmaker.blocks;
+
+import com.botmaker.core.AbstractStatementBlock;
+import com.botmaker.core.BodyBlock;
+import com.botmaker.core.BlockWithChildren;
+import com.botmaker.core.CodeBlock;
+import com.botmaker.core.ExpressionBlock;
+import com.botmaker.lsp.CompletionContext;
+import com.botmaker.ui.BlockDragAndDropManager;
+import javafx.geometry.Insets;
+import javafx.geometry.Pos;
+import javafx.scene.Node;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.Pane;
+import javafx.scene.layout.Priority;
+import javafx.scene.layout.VBox;
+import org.eclipse.jdt.core.dom.SwitchStatement;
+
+import java.util.ArrayList;
+import java.util.List;
+
+public class SwitchBlock extends AbstractStatementBlock implements BlockWithChildren {
+
+    private ExpressionBlock expression;
+    private final List<SwitchCaseBlock> cases = new ArrayList<>();
+    private final BlockDragAndDropManager dragAndDropManager;
+
+    public SwitchBlock(String id, SwitchStatement astNode, BlockDragAndDropManager dragAndDropManager) {
+        super(id, astNode);
+        this.dragAndDropManager = dragAndDropManager;
+    }
+
+    public ExpressionBlock getExpression() {
+        return expression;
+    }
+
+    public void setExpression(ExpressionBlock expression) {
+        this.expression = expression;
+    }
+
+    public List<SwitchCaseBlock> getCases() {
+        return cases;
+    }
+
+    public void addCase(SwitchCaseBlock caseBlock) {
+        this.cases.add(caseBlock);
+    }
+
+    @Override
+    public List<CodeBlock> getChildren() {
+        List<CodeBlock> children = new ArrayList<>();
+        if (expression != null) children.add(expression);
+        children.addAll(cases);
+        return children;
+    }
+
+    @Override
+    protected Node createUINode(CompletionContext context) {
+        VBox mainContainer = new VBox(5);
+        mainContainer.getStyleClass().add("switch-block");
+
+        // Header row with delete button
+        HBox headerRow = new HBox(5);
+        headerRow.setAlignment(Pos.CENTER_LEFT);
+
+        // Switch expression part
+        HBox header = new HBox(5);
+        header.setAlignment(Pos.CENTER_LEFT);
+        header.getStyleClass().add("switch-header");
+
+        Label switchLabel = new Label("switch");
+        switchLabel.getStyleClass().add("keyword-label");
+
+        header.getChildren().add(switchLabel);
+        if (expression != null) {
+            header.getChildren().add(expression.getUINode(context));
+        }
+
+        // Add spacer and delete button
+        Pane spacer = new Pane();
+        HBox.setHgrow(spacer, Priority.ALWAYS);
+
+        Button deleteButton = new Button("X");
+        deleteButton.setOnAction(e -> {
+            context.codeEditor().deleteStatement((org.eclipse.jdt.core.dom.Statement) this.astNode);
+        });
+
+        headerRow.getChildren().addAll(header, spacer, deleteButton);
+        mainContainer.getChildren().add(headerRow);
+
+        // Cases
+        VBox casesContainer = new VBox(5);
+        casesContainer.getStyleClass().add("switch-cases");
+        casesContainer.setPadding(new Insets(5, 0, 0, 20));
+
+        for (SwitchCaseBlock caseBlock : cases) {
+            casesContainer.getChildren().add(caseBlock.getUINode(context));
+        }
+
+        mainContainer.getChildren().add(casesContainer);
+
+        return mainContainer;
+    }
+
+    /**
+     * Inner class representing a single case in the switch
+     */
+    public static class SwitchCaseBlock extends AbstractStatementBlock implements BlockWithChildren {
+        private ExpressionBlock caseExpression; // null for default case
+        private BodyBlock body;
+        private final BlockDragAndDropManager dragAndDropManager;
+
+        public SwitchCaseBlock(String id, org.eclipse.jdt.core.dom.SwitchCase astNode, BlockDragAndDropManager dragAndDropManager) {
+            super(id, astNode);
+            this.dragAndDropManager = dragAndDropManager;
+        }
+
+        public void setCaseExpression(ExpressionBlock caseExpression) {
+            this.caseExpression = caseExpression;
+        }
+
+        public void setBody(BodyBlock body) {
+            this.body = body;
+        }
+
+        public boolean isDefault() {
+            return caseExpression == null;
+        }
+
+        @Override
+        public List<CodeBlock> getChildren() {
+            List<CodeBlock> children = new ArrayList<>();
+            if (caseExpression != null) children.add(caseExpression);
+            if (body != null) children.add(body);
+            return children;
+        }
+
+        @Override
+        protected Node createUINode(CompletionContext context) {
+            VBox container = new VBox(5);
+            container.getStyleClass().add("switch-case-block");
+
+            // Case label
+            HBox caseHeader = new HBox(5);
+            caseHeader.setAlignment(Pos.CENTER_LEFT);
+
+            if (isDefault()) {
+                Label defaultLabel = new Label("default:");
+                defaultLabel.getStyleClass().add("keyword-label");
+                caseHeader.getChildren().add(defaultLabel);
+            } else {
+                Label caseLabel = new Label("case");
+                caseLabel.getStyleClass().add("keyword-label");
+                caseHeader.getChildren().add(caseLabel);
+                if (caseExpression != null) {
+                    caseHeader.getChildren().add(caseExpression.getUINode(context));
+                }
+                Label colon = new Label(":");
+                caseHeader.getChildren().add(colon);
+            }
+
+            container.getChildren().add(caseHeader);
+
+            // Case body
+            if (body != null) {
+                VBox bodyContainer = new VBox();
+                bodyContainer.getStyleClass().add("switch-case-body");
+                bodyContainer.setPadding(new Insets(5, 0, 0, 20));
+                bodyContainer.getChildren().add(body.getUINode(context));
+                container.getChildren().add(bodyContainer);
+            }
+
+            return container;
+        }
+    }
+}
+
+=================================================================================
 FILE: ./src/main/java/com/botmaker/blocks/VariableDeclarationBlock.java
 =================================================================================
 
@@ -829,6 +1902,112 @@ public class VariableDeclarationBlock extends AbstractStatementBlock {
     public String getDetails() {
         String initializerText = initializer != null ? " = ..." : "";
         return "Variable Declaration: " + variableType.toString() + " " + variableName + initializerText;
+    }
+}
+
+=================================================================================
+FILE: ./src/main/java/com/botmaker/blocks/WhileBlock.java
+=================================================================================
+
+package com.botmaker.blocks;
+
+import com.botmaker.core.AbstractStatementBlock;
+import com.botmaker.core.BodyBlock;
+import com.botmaker.core.BlockWithChildren;
+import com.botmaker.core.CodeBlock;
+import com.botmaker.core.ExpressionBlock;
+import com.botmaker.lsp.CompletionContext;
+import com.botmaker.ui.BlockDragAndDropManager;
+import javafx.geometry.Insets;
+import javafx.geometry.Pos;
+import javafx.scene.Node;
+import javafx.scene.control.Label;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
+import org.eclipse.jdt.core.dom.WhileStatement;
+
+import java.util.ArrayList;
+import java.util.List;
+
+public class WhileBlock extends AbstractStatementBlock implements BlockWithChildren {
+
+    private ExpressionBlock condition;
+    private BodyBlock body;
+    private final BlockDragAndDropManager dragAndDropManager;
+
+    public WhileBlock(String id, WhileStatement astNode, BlockDragAndDropManager dragAndDropManager) {
+        super(id, astNode);
+        this.dragAndDropManager = dragAndDropManager;
+    }
+
+    public ExpressionBlock getCondition() {
+        return condition;
+    }
+
+    public void setCondition(ExpressionBlock condition) {
+        this.condition = condition;
+    }
+
+    public BodyBlock getBody() {
+        return body;
+    }
+
+    public void setBody(BodyBlock body) {
+        this.body = body;
+    }
+
+    @Override
+    public List<CodeBlock> getChildren() {
+        List<CodeBlock> children = new ArrayList<>();
+        if (condition != null) children.add(condition);
+        if (body != null) children.add(body);
+        return children;
+    }
+
+    @Override
+    protected Node createUINode(CompletionContext context) {
+        VBox mainContainer = new VBox(5);
+        mainContainer.getStyleClass().add("while-block");
+
+        // Header row with delete button
+        HBox headerRow = new HBox(5);
+        headerRow.setAlignment(Pos.CENTER_LEFT);
+
+        // While condition part
+        HBox header = new HBox(5);
+        header.setAlignment(Pos.CENTER_LEFT);
+        header.getStyleClass().add("while-header");
+
+        Label whileLabel = new Label("while");
+        whileLabel.getStyleClass().add("keyword-label");
+
+        header.getChildren().add(whileLabel);
+        if (condition != null) {
+            header.getChildren().add(condition.getUINode(context));
+        }
+
+        // Add spacer and delete button
+        javafx.scene.layout.Pane spacer = new javafx.scene.layout.Pane();
+        HBox.setHgrow(spacer, javafx.scene.layout.Priority.ALWAYS);
+
+        javafx.scene.control.Button deleteButton = new javafx.scene.control.Button("X");
+        deleteButton.setOnAction(e -> {
+            context.codeEditor().deleteStatement((org.eclipse.jdt.core.dom.Statement) this.astNode);
+        });
+
+        headerRow.getChildren().addAll(header, spacer, deleteButton);
+        mainContainer.getChildren().add(headerRow);
+
+        // Body
+        if (body != null) {
+            VBox bodyContainer = new VBox();
+            bodyContainer.getStyleClass().add("while-body");
+            bodyContainer.setPadding(new Insets(5, 0, 0, 20));
+            bodyContainer.getChildren().add(body.getUINode(context));
+            mainContainer.getChildren().add(bodyContainer);
+        }
+
+        return mainContainer;
     }
 }
 
@@ -2577,22 +3756,20 @@ public class AstRewriter {
         ListRewrite sourceListRewrite = rewriter.getListRewrite(sourceBlock, Block.STATEMENTS_PROPERTY);
         ListRewrite targetListRewrite = rewriter.getListRewrite(targetBlock, Block.STATEMENTS_PROPERTY);
 
-        // If moving within the same body, we need to be careful with indices
+        // --- FIX START ---
+        // JDT ASTRewrite handles indices based on the ORIGINAL AST.
+        // We do NOT need to manually adjust the index for the removal shift
+        // because the removal hasn't actually happened to the underlying list yet.
+
+        // If moving to the exact same position (same body, same index), do nothing
         if (sourceBody == targetBody) {
             int currentIndex = sourceBlock.statements().indexOf(statement);
-
-            // If moving to the exact same position, do nothing
             if (currentIndex == targetIndex) {
                 return originalCode;
             }
-
-            // When moving down (targetIndex > currentIndex):
-            // After removing the block, all indices shift down by 1
-            // So we need to decrease targetIndex by 1
-            if (targetIndex > currentIndex) {
-                targetIndex--;
-            }
+            // The logic "if (targetIndex > currentIndex) targetIndex--;" was removed here.
         }
+        // --- FIX END ---
 
         // Create a copy of the statement for the new location
         Statement copiedStatement = (Statement) ASTNode.copySubtree(ast, statement);
@@ -2805,8 +3982,43 @@ public class AstRewriter {
                 StringLiteral newString = ast.newStringLiteral();
                 newString.setLiteralValue("text");
                 return newString;
+
+            case NUMBER:
+                return ast.newNumberLiteral("0");
+
             case VARIABLE:
                 return ast.newSimpleName(DefaultNames.DEFAULT_VARIABLE);
+
+            case ADD:
+            case SUBTRACT:
+            case MULTIPLY:
+            case DIVIDE:
+            case MODULO:
+                // Create a binary expression: variable <op> 0
+                InfixExpression infixExpr = ast.newInfixExpression();
+                infixExpr.setLeftOperand(ast.newSimpleName(DefaultNames.DEFAULT_VARIABLE));
+                infixExpr.setRightOperand(ast.newNumberLiteral("0"));
+
+                // Set the operator based on type
+                switch (type) {
+                    case ADD:
+                        infixExpr.setOperator(InfixExpression.Operator.PLUS);
+                        break;
+                    case SUBTRACT:
+                        infixExpr.setOperator(InfixExpression.Operator.MINUS);
+                        break;
+                    case MULTIPLY:
+                        infixExpr.setOperator(InfixExpression.Operator.TIMES);
+                        break;
+                    case DIVIDE:
+                        infixExpr.setOperator(InfixExpression.Operator.DIVIDE);
+                        break;
+                    case MODULO:
+                        infixExpr.setOperator(InfixExpression.Operator.REMAINDER);
+                        break;
+                }
+                return infixExpr;
+
             default:
                 return null;
         }
@@ -2815,6 +4027,7 @@ public class AstRewriter {
     private Statement createDefaultStatement(AST ast, AddableBlock type) {
         switch (type) {
             case PRINT:
+                // System.out.println("");
                 MethodInvocation println = ast.newMethodInvocation();
                 println.setExpression(ast.newQualifiedName(
                         ast.newSimpleName("System"),
@@ -2834,6 +4047,7 @@ public class AstRewriter {
                 varDecl.setType(ast.newPrimitiveType(PrimitiveType.INT));
                 return varDecl;
             }
+
             case DECLARE_DOUBLE: {
                 VariableDeclarationFragment fragment = ast.newVariableDeclarationFragment();
                 fragment.setName(ast.newSimpleName(DefaultNames.DEFAULT_DOUBLE));
@@ -2842,6 +4056,7 @@ public class AstRewriter {
                 varDecl.setType(ast.newPrimitiveType(PrimitiveType.DOUBLE));
                 return varDecl;
             }
+
             case DECLARE_BOOLEAN: {
                 VariableDeclarationFragment fragment = ast.newVariableDeclarationFragment();
                 fragment.setName(ast.newSimpleName(DefaultNames.DEFAULT_BOOLEAN));
@@ -2850,6 +4065,7 @@ public class AstRewriter {
                 varDecl.setType(ast.newPrimitiveType(PrimitiveType.BOOLEAN));
                 return varDecl;
             }
+
             case DECLARE_STRING: {
                 VariableDeclarationFragment fragment = ast.newVariableDeclarationFragment();
                 fragment.setName(ast.newSimpleName(DefaultNames.DEFAULT_STRING));
@@ -2860,10 +4076,125 @@ public class AstRewriter {
             }
 
             case IF:
+                // if (true) {}
                 IfStatement ifStatement = ast.newIfStatement();
                 ifStatement.setExpression(ast.newBooleanLiteral(true));
                 ifStatement.setThenStatement(ast.newBlock());
                 return ifStatement;
+
+            case WHILE:
+                // while (true) {}
+                WhileStatement whileStatement = ast.newWhileStatement();
+                whileStatement.setExpression(ast.newBooleanLiteral(true));
+                whileStatement.setBody(ast.newBlock());
+                return whileStatement;
+
+            case FOR:
+                // Enhanced for loop (foreach): for(String item : array) {}
+                EnhancedForStatement enhancedFor = ast.newEnhancedForStatement();
+
+                // Parameter: String item
+                SingleVariableDeclaration parameter = ast.newSingleVariableDeclaration();
+                parameter.setType(TypeManager.createTypeNode(ast, "String"));
+                parameter.setName(ast.newSimpleName("item"));
+                enhancedFor.setParameter(parameter);
+
+                // Expression: array (or any collection)
+                enhancedFor.setExpression(ast.newSimpleName("array"));
+
+                // Body
+                enhancedFor.setBody(ast.newBlock());
+
+                return enhancedFor;
+
+            case BREAK:
+                return ast.newBreakStatement();
+
+            case CONTINUE:
+                return ast.newContinueStatement();
+
+            case ASSIGNMENT: {
+                // variable = 0
+                Assignment assignment = ast.newAssignment();
+                assignment.setLeftHandSide(ast.newSimpleName(DefaultNames.DEFAULT_VARIABLE));
+                assignment.setOperator(Assignment.Operator.ASSIGN);
+                assignment.setRightHandSide(ast.newNumberLiteral("0"));
+                return ast.newExpressionStatement(assignment);
+            }
+
+            case READ_LINE: {
+                // String input = scanner.nextLine()
+                VariableDeclarationFragment fragment = ast.newVariableDeclarationFragment();
+                fragment.setName(ast.newSimpleName("input"));
+
+                MethodInvocation scannerCall = ast.newMethodInvocation();
+                scannerCall.setExpression(ast.newSimpleName("scanner"));
+                scannerCall.setName(ast.newSimpleName("nextLine"));
+                fragment.setInitializer(scannerCall);
+
+                VariableDeclarationStatement varDecl = ast.newVariableDeclarationStatement(fragment);
+                varDecl.setType(TypeManager.createTypeNode(ast, "String"));
+                return varDecl;
+            }
+
+            case READ_INT: {
+                // int num = scanner.nextInt()
+                VariableDeclarationFragment fragment = ast.newVariableDeclarationFragment();
+                fragment.setName(ast.newSimpleName("num"));
+
+                MethodInvocation scannerCall = ast.newMethodInvocation();
+                scannerCall.setExpression(ast.newSimpleName("scanner"));
+                scannerCall.setName(ast.newSimpleName("nextInt"));
+                fragment.setInitializer(scannerCall);
+
+                VariableDeclarationStatement varDecl = ast.newVariableDeclarationStatement(fragment);
+                varDecl.setType(ast.newPrimitiveType(PrimitiveType.INT));
+                return varDecl;
+            }
+
+            case READ_DOUBLE: {
+                // double num = scanner.nextDouble()
+                VariableDeclarationFragment fragment = ast.newVariableDeclarationFragment();
+                fragment.setName(ast.newSimpleName("num"));
+
+                MethodInvocation scannerCall = ast.newMethodInvocation();
+                scannerCall.setExpression(ast.newSimpleName("scanner"));
+                scannerCall.setName(ast.newSimpleName("nextDouble"));
+                fragment.setInitializer(scannerCall);
+
+                VariableDeclarationStatement varDecl = ast.newVariableDeclarationStatement(fragment);
+                varDecl.setType(ast.newPrimitiveType(PrimitiveType.DOUBLE));
+                return varDecl;
+            }
+
+            case DO_WHILE:
+                // do { } while (true)
+                DoStatement doStatement = ast.newDoStatement();
+                doStatement.setExpression(ast.newBooleanLiteral(true));
+                doStatement.setBody(ast.newBlock());
+                return doStatement;
+
+            case SWITCH:
+                // switch (variable) { case 0: break; default: break; }
+                SwitchStatement switchStatement = ast.newSwitchStatement();
+                switchStatement.setExpression(ast.newSimpleName(DefaultNames.DEFAULT_VARIABLE));
+
+                // Add a default case with break
+                SwitchCase defaultCase = ast.newSwitchCase();
+                defaultCase.setDefault(true);
+                switchStatement.statements().add(defaultCase);
+
+                BreakStatement breakStmt = ast.newBreakStatement();
+                switchStatement.statements().add(breakStmt);
+
+                return switchStatement;
+
+            case COMMENT:
+                // Comments are special - they're not real statements
+                // We'll use an EmptyStatement as a placeholder
+                // The actual comment text is stored in the CommentBlock
+                EmptyStatement emptyStmt = ast.newEmptyStatement();
+                return emptyStmt;
 
             default:
                 return null;
@@ -2933,10 +4264,12 @@ package com.botmaker.parser;
 import com.botmaker.blocks.*;
 import com.botmaker.core.*;
 import com.botmaker.ui.BlockDragAndDropManager;
+import com.botmaker.util.BlockIdPrefix;
 import org.eclipse.jdt.core.dom.*;
 import org.eclipse.jdt.core.dom.IMethodBinding;
 import org.eclipse.jdt.core.dom.ITypeBinding;
 
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
@@ -2991,25 +4324,146 @@ public class BlockFactory {
         return bodyBlock;
     }
 
+
     private Optional<StatementBlock> parseStatement(Statement astStatement, Map<ASTNode, CodeBlock> nodeToBlockMap, BlockDragAndDropManager manager) {
         if (astStatement instanceof Block) {
             return Optional.of(parseBodyBlock((Block) astStatement, nodeToBlockMap, manager));
         }
         if (astStatement instanceof VariableDeclarationStatement) {
-            return Optional.of(parseVariableDeclaration((VariableDeclarationStatement) astStatement, nodeToBlockMap));
+            VariableDeclarationStatement varDecl = (VariableDeclarationStatement) astStatement;
+            // Check if it's a scanner read input
+            if (isReadInputStatement(varDecl)) {
+                return Optional.of(parseReadInputStatement(varDecl, nodeToBlockMap));
+            }
+            return Optional.of(parseVariableDeclaration(varDecl, nodeToBlockMap));
         }
         if (astStatement instanceof IfStatement) {
             return Optional.of(parseIfStatement((IfStatement) astStatement, nodeToBlockMap, manager));
+        }
+        if (astStatement instanceof WhileStatement) {
+            return Optional.of(parseWhileStatement((WhileStatement) astStatement, nodeToBlockMap, manager));
+        }
+        // CHANGE THIS LINE:
+        if (astStatement instanceof EnhancedForStatement) {  // ← Changed from ForStatement
+            return Optional.of(parseForStatement((EnhancedForStatement) astStatement, nodeToBlockMap, manager));
+        }
+        if (astStatement instanceof DoStatement) {
+            return Optional.of(parseDoWhileStatement((DoStatement) astStatement, nodeToBlockMap, manager));
+        }
+        if (astStatement instanceof SwitchStatement) {
+            return Optional.of(parseSwitchStatement((SwitchStatement) astStatement, nodeToBlockMap, manager));
+        }
+        if (astStatement instanceof BreakStatement) {
+            return Optional.of(parseBreakStatement((BreakStatement) astStatement, nodeToBlockMap));
+        }
+        if (astStatement instanceof ContinueStatement) {
+            return Optional.of(parseContinueStatement((ContinueStatement) astStatement, nodeToBlockMap));
         }
         if (astStatement instanceof ExpressionStatement) {
             Expression expression = ((ExpressionStatement) astStatement).getExpression();
             if (isPrintStatement(expression)) {
                 return Optional.of(parsePrintStatement((ExpressionStatement) astStatement, nodeToBlockMap));
             }
+            if (expression instanceof Assignment) {
+                return Optional.of(parseAssignmentStatement((ExpressionStatement) astStatement, nodeToBlockMap));
+            }
+            if (expression instanceof PostfixExpression) {
+                PostfixExpression postfix = (PostfixExpression) expression;
+                if (postfix.getOperator() == PostfixExpression.Operator.INCREMENT ||
+                        postfix.getOperator() == PostfixExpression.Operator.DECREMENT) {
+                    return Optional.of(parseAssignmentStatement((ExpressionStatement) astStatement, nodeToBlockMap));
+                }
+            }
+            if (expression instanceof PrefixExpression) {
+                PrefixExpression prefix = (PrefixExpression) expression;
+                if (prefix.getOperator() == PrefixExpression.Operator.INCREMENT ||
+                        prefix.getOperator() == PrefixExpression.Operator.DECREMENT) {
+                    return Optional.of(parseAssignmentStatement((ExpressionStatement) astStatement, nodeToBlockMap));
+                }
+            }
         }
         return Optional.empty();
     }
 
+
+
+    private DoWhileBlock parseDoWhileStatement(DoStatement astNode, Map<ASTNode, CodeBlock> nodeToBlockMap, BlockDragAndDropManager manager) {
+        System.out.println("Creating DoWhileBlock for: " + astNode);
+        DoWhileBlock doWhileBlock = new DoWhileBlock(BlockIdPrefix.generate(BlockIdPrefix.DO_WHILE, astNode), astNode, manager);
+        nodeToBlockMap.put(astNode, doWhileBlock);
+
+        // Parse body first (do part)
+        if (astNode.getBody() instanceof Block) {
+            doWhileBlock.setBody(parseBodyBlock((Block) astNode.getBody(), nodeToBlockMap, manager));
+        }
+
+        // Parse condition (while part)
+        if (astNode.getExpression() != null) {
+            parseExpression(astNode.getExpression(), nodeToBlockMap).ifPresent(doWhileBlock::setCondition);
+        }
+
+        return doWhileBlock;
+    }
+
+    // Parse switch statement
+    private SwitchBlock parseSwitchStatement(SwitchStatement astNode, Map<ASTNode, CodeBlock> nodeToBlockMap, BlockDragAndDropManager manager) {
+        System.out.println("Creating SwitchBlock for: " + astNode);
+        SwitchBlock switchBlock = new SwitchBlock(BlockIdPrefix.generate(BlockIdPrefix.SWITCH, astNode), astNode, manager);
+        nodeToBlockMap.put(astNode, switchBlock);
+
+        // Parse the switch expression
+        if (astNode.getExpression() != null) {
+            parseExpression(astNode.getExpression(), nodeToBlockMap).ifPresent(switchBlock::setExpression);
+        }
+
+        // Parse switch cases
+        List<Statement> statements = astNode.statements();
+        BodyBlock currentCaseBody = null;
+        SwitchBlock.SwitchCaseBlock currentCase = null;
+
+        for (Statement stmt : statements) {
+            if (stmt instanceof SwitchCase) {
+                // Start a new case
+                SwitchCase switchCase = (SwitchCase) stmt;
+                String caseId = BlockIdPrefix.generate(BlockIdPrefix.SWITCH + "_case_", switchCase);
+                currentCase = new SwitchBlock.SwitchCaseBlock(caseId, switchCase, manager);
+                nodeToBlockMap.put(switchCase, currentCase);
+
+                // Parse case expression (null for default)
+                if (!switchCase.isDefault() && switchCase.expressions().size() > 0) {
+                    Expression caseExpr = (Expression) switchCase.expressions().get(0);
+                    parseExpression(caseExpr, nodeToBlockMap).ifPresent(currentCase::setCaseExpression);
+                }
+
+                // Create body for this case
+                currentCaseBody = new BodyBlock(
+                        BlockIdPrefix.generate(BlockIdPrefix.BODY, switchCase),
+                        ast.newBlock(), // Synthetic block
+                        manager
+                );
+                currentCase.setBody(currentCaseBody);
+                switchBlock.addCase(currentCase);
+
+            } else if (currentCaseBody != null) {
+                // Add statement to current case body
+                parseStatement(stmt, nodeToBlockMap, manager).ifPresent(currentCaseBody::addStatement);
+            }
+        }
+
+        return switchBlock;
+    }
+
+    // Parse comment block (for when we add comment support)
+    private CommentBlock parseCommentBlock(LineComment astNode, Map<ASTNode, CodeBlock> nodeToBlockMap, String commentText) {
+        System.out.println("Creating CommentBlock for: " + astNode);
+        CommentBlock commentBlock = new CommentBlock(
+                BlockIdPrefix.generate(BlockIdPrefix.COMMENT, astNode),
+                astNode,
+                commentText
+        );
+        nodeToBlockMap.put(astNode, commentBlock);
+        return commentBlock;
+    }
     private VariableDeclarationBlock parseVariableDeclaration(VariableDeclarationStatement astNode, Map<ASTNode, CodeBlock> nodeToBlockMap) {
         System.out.println("Creating VariableDeclarationBlock for: " + astNode);
         VariableDeclarationBlock varBlock = new VariableDeclarationBlock(BlockIdPrefix.generate(BlockIdPrefix.VARIABLE, astNode), astNode);        nodeToBlockMap.put(astNode, varBlock);
@@ -3055,6 +4509,116 @@ public class BlockFactory {
         }
         return printBlock;
     }
+
+
+    private boolean isReadInputStatement(VariableDeclarationStatement varDecl) {
+        if (varDecl.fragments().isEmpty()) return false;
+        VariableDeclarationFragment fragment = (VariableDeclarationFragment) varDecl.fragments().get(0);
+        Expression initializer = fragment.getInitializer();
+
+        if (initializer instanceof MethodInvocation) {
+            MethodInvocation mi = (MethodInvocation) initializer;
+            Expression expr = mi.getExpression();
+            if (expr instanceof SimpleName) {
+                SimpleName name = (SimpleName) expr;
+                String methodName = mi.getName().getIdentifier();
+                return name.getIdentifier().equals("scanner") &&
+                        (methodName.equals("nextLine") || methodName.equals("nextInt") ||
+                                methodName.equals("nextDouble") || methodName.equals("nextBoolean"));
+            }
+        }
+        return false;
+    }
+
+    // Parse while statement
+    private WhileBlock parseWhileStatement(WhileStatement astNode, Map<ASTNode, CodeBlock> nodeToBlockMap, BlockDragAndDropManager manager) {
+        System.out.println("Creating WhileBlock for: " + astNode);
+        WhileBlock whileBlock = new WhileBlock(BlockIdPrefix.generate(BlockIdPrefix.WHILE, astNode), astNode, manager);
+        nodeToBlockMap.put(astNode, whileBlock);
+
+        parseExpression(astNode.getExpression(), nodeToBlockMap).ifPresent(whileBlock::setCondition);
+
+        if (astNode.getBody() instanceof Block) {
+            whileBlock.setBody(parseBodyBlock((Block) astNode.getBody(), nodeToBlockMap, manager));
+        }
+
+        return whileBlock;
+    }
+
+    private ForBlock parseForStatement(EnhancedForStatement astNode, Map<ASTNode, CodeBlock> nodeToBlockMap, BlockDragAndDropManager manager) {
+        System.out.println("Creating ForBlock (foreach) for: " + astNode);
+        ForBlock forBlock = new ForBlock(BlockIdPrefix.generate(BlockIdPrefix.FOR, astNode), astNode, manager);
+        nodeToBlockMap.put(astNode, forBlock);
+
+        // Parse the variable parameter (e.g., "String item")
+        SingleVariableDeclaration param = astNode.getParameter();
+        if (param != null) {
+            // Create an identifier block for the variable name
+            parseExpression(param.getName(), nodeToBlockMap).ifPresent(forBlock::setVariable);
+        }
+
+        // Parse the collection/array expression
+        if (astNode.getExpression() != null) {
+            parseExpression(astNode.getExpression(), nodeToBlockMap).ifPresent(forBlock::setCollection);
+        }
+
+        // Parse the body
+        if (astNode.getBody() instanceof Block) {
+            forBlock.setBody(parseBodyBlock((Block) astNode.getBody(), nodeToBlockMap, manager));
+        }
+
+        return forBlock;
+    }
+
+    // Parse break statement
+    private BreakBlock parseBreakStatement(BreakStatement astNode, Map<ASTNode, CodeBlock> nodeToBlockMap) {
+        System.out.println("Creating BreakBlock for: " + astNode);
+        BreakBlock breakBlock = new BreakBlock(BlockIdPrefix.generate(BlockIdPrefix.BREAK, astNode), astNode);
+        nodeToBlockMap.put(astNode, breakBlock);
+        return breakBlock;
+    }
+
+    // Parse continue statement
+    private ContinueBlock parseContinueStatement(ContinueStatement astNode, Map<ASTNode, CodeBlock> nodeToBlockMap) {
+        System.out.println("Creating ContinueBlock for: " + astNode);
+        ContinueBlock continueBlock = new ContinueBlock(BlockIdPrefix.generate(BlockIdPrefix.CONTINUE, astNode), astNode);
+        nodeToBlockMap.put(astNode, continueBlock);
+        return continueBlock;
+    }
+
+    // Parse assignment statement
+    private AssignmentBlock parseAssignmentStatement(ExpressionStatement astNode, Map<ASTNode, CodeBlock> nodeToBlockMap) {
+        System.out.println("Creating AssignmentBlock for: " + astNode);
+        AssignmentBlock assignBlock = new AssignmentBlock(BlockIdPrefix.generate(BlockIdPrefix.ASSIGNMENT, astNode), astNode);
+        nodeToBlockMap.put(astNode, assignBlock);
+
+        Assignment assignment = (Assignment) astNode.getExpression();
+        parseExpression(assignment.getLeftHandSide(), nodeToBlockMap).ifPresent(assignBlock::setLeftHandSide);
+        parseExpression(assignment.getRightHandSide(), nodeToBlockMap).ifPresent(assignBlock::setRightHandSide);
+
+        return assignBlock;
+    }
+
+
+
+    // Parse read input statement
+    private ReadInputBlock parseReadInputStatement(VariableDeclarationStatement astNode, Map<ASTNode, CodeBlock> nodeToBlockMap) {
+        System.out.println("Creating ReadInputBlock for: " + astNode);
+
+        VariableDeclarationFragment fragment = (VariableDeclarationFragment) astNode.fragments().get(0);
+        MethodInvocation mi = (MethodInvocation) fragment.getInitializer();
+        String inputType = mi.getName().getIdentifier();
+
+        ReadInputBlock readBlock = new ReadInputBlock(
+                BlockIdPrefix.generate(BlockIdPrefix.READ_INPUT, astNode), astNode, inputType
+        );
+        nodeToBlockMap.put(astNode, readBlock);
+
+        parseExpression(fragment.getName(), nodeToBlockMap).ifPresent(readBlock::setVariableName);
+
+        return readBlock;
+    }
+
 
     private BinaryExpressionBlock parseBinaryExpression(InfixExpression astNode, Map<ASTNode, CodeBlock> nodeToBlockMap) {
         System.out.println("Creating BinaryExpressionBlock for: " + astNode);
@@ -3161,16 +4725,24 @@ public class BlockFactory {
 FILE: ./src/main/java/com/botmaker/parser/BlockIdPrefix.java
 =================================================================================
 
-package com.botmaker.parser;
+package com.botmaker.util;
 
 /**
- * Constants for block ID generation
+ * Constants for block ID prefixes
  */
 public class BlockIdPrefix {
     public static final String MAIN = "main_";
     public static final String BODY = "body_";
     public static final String VARIABLE = "var_";
     public static final String IF = "if_";
+    public static final String WHILE = "while_";
+    public static final String FOR = "for_";
+    public static final String BREAK = "break_";
+    public static final String CONTINUE = "continue_";
+    public static final String ASSIGNMENT = "assign_";
+    public static final String INCREMENT = "inc_";
+    public static final String DECREMENT = "dec_";
+    public static final String READ_INPUT = "read_";
     public static final String PRINT = "print_";
     public static final String BINARY = "binary_";
     public static final String STRING = "string_";
@@ -3180,6 +4752,10 @@ public class BlockIdPrefix {
     public static final String BOOLEAN = "boolean_";
     public static final String IDENTIFIER = "id_";
     public static final String SYNTHETIC_STRING = "synthetic_string_";
+    public static final String DO_WHILE = "do_while_";
+    public static final String SWITCH = "switch_";
+    public static final String RETURN = "return_";
+    public static final String COMMENT = "comment_";
 
     private BlockIdPrefix() {} // Prevent instantiation
 
@@ -5157,18 +6733,38 @@ FILE: ./src/main/java/com/botmaker/ui/AddableBlock.java
 
 package com.botmaker.ui;
 
-import com.botmaker.blocks.IfBlock;
-import com.botmaker.blocks.PrintBlock;
-import com.botmaker.blocks.VariableDeclarationBlock;
+import com.botmaker.blocks.*;
 import com.botmaker.core.StatementBlock;
 
 public enum AddableBlock {
+    // Output
     PRINT("Print", PrintBlock.class),
+
+    // Control Flow
     IF("If", IfBlock.class),
+    WHILE("While Loop", WhileBlock.class),
+    FOR("For Each", ForBlock.class),
+    DO_WHILE("Do While", DoWhileBlock.class),
+    SWITCH("Switch", SwitchBlock.class),
+    BREAK("Break", BreakBlock.class),
+    CONTINUE("Continue", ContinueBlock.class),
+
+    // Variable Declaration
     DECLARE_INT("Declare Int", VariableDeclarationBlock.class),
     DECLARE_DOUBLE("Declare Double", VariableDeclarationBlock.class),
     DECLARE_BOOLEAN("Declare Boolean", VariableDeclarationBlock.class),
-    DECLARE_STRING("Declare String", VariableDeclarationBlock.class);
+    DECLARE_STRING("Declare String", VariableDeclarationBlock.class),
+
+    // Variable Operations (now unified in AssignmentBlock)
+    ASSIGNMENT("Assignment", AssignmentBlock.class),
+
+    // Input
+    READ_LINE("Read Line (String)", ReadInputBlock.class),
+    READ_INT("Read Int", ReadInputBlock.class),
+    READ_DOUBLE("Read Double", ReadInputBlock.class),
+
+    // Comment
+    COMMENT("Comment", CommentBlock.class);
 
     private final String displayName;
     private final Class<? extends StatementBlock> blockClass;
@@ -5187,7 +6783,6 @@ public enum AddableBlock {
     }
 }
 
-
 =================================================================================
 FILE: ./src/main/java/com/botmaker/ui/AddableExpression.java
 =================================================================================
@@ -5195,17 +6790,41 @@ FILE: ./src/main/java/com/botmaker/ui/AddableExpression.java
 package com.botmaker.ui;
 
 public enum AddableExpression {
+    // Literals
     TEXT("Text"),
-    VARIABLE("Variable");
+    NUMBER("Number"),
+    VARIABLE("Variable"),
+
+    // Math Operations
+    ADD("Addition (+)", "+"),
+    SUBTRACT("Subtraction (-)", "-"),
+    MULTIPLY("Multiplication (*)", "*"),
+    DIVIDE("Division (/)", "/"),
+    MODULO("Modulo (%)", "%");
 
     private final String displayName;
+    private final String operator; // null for non-operations
 
     AddableExpression(String displayName) {
         this.displayName = displayName;
+        this.operator = null;
+    }
+
+    AddableExpression(String displayName, String operator) {
+        this.displayName = displayName;
+        this.operator = operator;
     }
 
     public String getDisplayName() {
         return displayName;
+    }
+
+    public String getOperator() {
+        return operator;
+    }
+
+    public boolean isOperation() {
+        return operator != null;
     }
 }
 
@@ -5288,10 +6907,37 @@ public class BlockDragAndDropManager {
             event.consume();
         });
 
-        // Reset opacity when drag is done
+        // Reset opacity and release focus when drag is done
         node.setOnDragDone(event -> {
             node.setOpacity(1.0);
-            event.consume();
+            // DON'T consume - let the event propagate to restore normal mouse behavior
+            // event.consume();
+
+            // Multiple approaches to ensure drag is fully released
+            javafx.application.Platform.runLater(() -> {
+                // 1. Find and focus ScrollPane
+                javafx.scene.Node current = node;
+                javafx.scene.control.ScrollPane scrollPane = null;
+                while (current != null) {
+                    if (current instanceof javafx.scene.control.ScrollPane) {
+                        scrollPane = (javafx.scene.control.ScrollPane) current;
+                        break;
+                    }
+                    current = current.getParent();
+                }
+
+                if (scrollPane != null) {
+                    // Make sure ScrollPane can receive focus
+                    scrollPane.setFocusTraversable(true);
+                    scrollPane.requestFocus();
+
+                    // Also try to release any event filters
+                    final javafx.scene.control.ScrollPane sp = scrollPane;
+                    javafx.application.Platform.runLater(() -> {
+                        sp.requestFocus();
+                    });
+                }
+            });
         });
     }
 
@@ -5381,9 +7027,10 @@ public class BlockDragAndDropManager {
 
     public void addEmptyBodyDropHandlers(Region target, BodyBlock targetBody) {
         target.setOnDragEntered(event -> {
-            Dragboard db = event.getDragboard();
-            if (db.hasContent(ADDABLE_BLOCK_FORMAT) || db.hasContent(EXISTING_BLOCK_FORMAT)) {
+            if (event.getDragboard().hasContent(ADDABLE_BLOCK_FORMAT) ||
+                    event.getDragboard().hasContent(EXISTING_BLOCK_FORMAT)) {
                 target.getStyleClass().add("empty-body-drop-hover");
+                System.out.println("Added hover class to: " + target.getClass().getSimpleName());
             }
             event.consume();
         });
@@ -6153,8 +7800,15 @@ public class UIManager {
 
             blocksContainer.getChildren().add(rootNode);
         }
-    }
 
+        // --- FIX START ---
+        // Restore focus to the ScrollPane so input (scrolling) works immediately
+        // without requiring a mouse click.
+        if (scrollPane != null) {
+            scrollPane.requestFocus();
+        }
+        // --- FIX END ---
+    }
     public Scene createScene() {
         menuBarManager = new MenuBarManager(primaryStage);
         menuBarManager.setOnSelectProject(v -> { if (onSelectProject != null) onSelectProject.accept(null); });

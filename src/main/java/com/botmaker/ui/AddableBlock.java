@@ -10,9 +10,14 @@ public enum AddableBlock {
     // Control Flow
     IF("If", IfBlock.class),
     WHILE("While Loop", WhileBlock.class),
-    FOR("For Loop", ForBlock.class),
+    FOR("For Each", ForBlock.class),
+    DO_WHILE("Do While", DoWhileBlock.class),
+    SWITCH("Switch", SwitchBlock.class),
+    CASE("Case", SwitchBlock.SwitchCaseBlock.class),
     BREAK("Break", BreakBlock.class),
     CONTINUE("Continue", ContinueBlock.class),
+    RETURN("Return", ReturnBlock.class),  // Added Return
+    WAIT("Wait (ms)", WaitBlock.class),   // Added Wait
 
     // Variable Declaration
     DECLARE_INT("Declare Int", VariableDeclarationBlock.class),
@@ -22,13 +27,14 @@ public enum AddableBlock {
 
     // Variable Operations
     ASSIGNMENT("Assignment", AssignmentBlock.class),
-    INCREMENT("Increment (++)", IncrementDecrementBlock.class),
-    DECREMENT("Decrement (--)", IncrementDecrementBlock.class),
 
     // Input
     READ_LINE("Read Line (String)", ReadInputBlock.class),
     READ_INT("Read Int", ReadInputBlock.class),
-    READ_DOUBLE("Read Double", ReadInputBlock.class);
+    READ_DOUBLE("Read Double", ReadInputBlock.class),
+
+    // Comment
+    COMMENT("Comment", CommentBlock.class);
 
     private final String displayName;
     private final Class<? extends StatementBlock> blockClass;

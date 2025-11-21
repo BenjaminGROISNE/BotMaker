@@ -25,6 +25,12 @@ public class BlockIdPrefix {
     public static final String BOOLEAN = "boolean_";
     public static final String IDENTIFIER = "id_";
     public static final String SYNTHETIC_STRING = "synthetic_string_";
+    public static final String DO_WHILE = "do_while_";
+    public static final String SWITCH = "switch_";
+    public static final String RETURN = "return_";
+    public static final String COMMENT = "comment_";
+    public static final String WAIT = "wait_";     // Add this
+// ...
 
     private BlockIdPrefix() {} // Prevent instantiation
 

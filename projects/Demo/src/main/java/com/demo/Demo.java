@@ -1,10 +1,14 @@
 package com.demo;
 public class Demo {
     public static void main(String[] args) {
-		int number = 0;
-		while (true) {
-			System.out.println(0);
-		}
-
+        do {
+			int number2 = 0;
+			try {
+				Thread.sleep(2000);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+			System.out.println(number2 + 52156165);
+		} while (true);
     }
 }
