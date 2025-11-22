@@ -36,7 +36,7 @@ public class MethodInvocationBlock extends AbstractExpressionBlock implements St
         if (mi.getExpression() != null) {
             this.scopeName = mi.getExpression().toString();
         } else {
-            this.scopeName = ""; // Represents implicit local call
+            this.scopeName = ""; // Local
         }
     }
 
@@ -72,36 +72,25 @@ public class MethodInvocationBlock extends AbstractExpressionBlock implements St
             currentFileClass = context.applicationState().getActiveFile().getClassName();
         }
 
-        // --- File/Class Selector ---
+        // --- File Selector ---
         ComboBox<String> fileSelector = new ComboBox<>();
-
-        // 1. Populate with REAL files only
         if (context.applicationState() != null) {
             for (ProjectFile file : context.applicationState().getAllFiles()) {
                 fileSelector.getItems().add(file.getClassName());
             }
         }
 
-        // 2. Set Display Value
-        String displayValue;
-        if (scopeName.isEmpty()) {
-            displayValue = currentFileClass;
-        } else {
-            displayValue = scopeName;
-        }
-
-        // 3. Handle "Phantom" Values
+        String displayValue = scopeName.isEmpty() ? currentFileClass : scopeName;
         if (!fileSelector.getItems().contains(displayValue)) {
             fileSelector.getItems().add(0, displayValue);
         }
-
         fileSelector.setValue(displayValue);
         fileSelector.setStyle("-fx-font-size: 11px; -fx-pref-width: 100px;");
 
         // --- Method Selector ---
         ComboBox<String> methodSelector = new ComboBox<>();
         methodSelector.setValue(methodName);
-        methodSelector.setEditable(false); // CHANGED: No longer editable manually
+        methodSelector.setEditable(false);
         methodSelector.setStyle("-fx-font-size: 11px; -fx-pref-width: 120px; -fx-font-weight: bold;");
 
         final String finalCurrentFileClass = currentFileClass;
@@ -111,40 +100,17 @@ public class MethodInvocationBlock extends AbstractExpressionBlock implements St
             String selectedFile = fileSelector.getValue();
             methodSelector.getItems().clear();
 
-            ProjectFile targetFile = null;
-
-            // Find the target file object
-            if (context.applicationState() != null) {
-                for (ProjectFile file : context.applicationState().getAllFiles()) {
-                    if (file.getClassName().equals(selectedFile)) {
-                        targetFile = file;
-                        break;
-                    }
-                }
-            }
+            ProjectFile targetFile = findProjectFile(context, selectedFile);
 
             if (targetFile != null) {
-                // BUG FIX: Parse AST if it doesn't exist (file hasn't been opened yet)
-                if (targetFile.getAst() == null) {
-                    try {
-                        ASTParser parser = ASTParser.newParser(AST.getJLSLatest());
-                        parser.setSource(targetFile.getContent().toCharArray());
-                        parser.setKind(ASTParser.K_COMPILATION_UNIT);
-                        CompilationUnit cu = (CompilationUnit) parser.createAST(null);
-                        targetFile.setAst(cu);
-                    } catch (Exception e) {
-                        System.err.println("Error parsing file for methods: " + e.getMessage());
-                    }
-                }
+                ensureAstParsed(targetFile);
 
-                // Populate list from AST
                 if (targetFile.getAst() != null && !targetFile.getAst().types().isEmpty()) {
                     TypeDeclaration type = (TypeDeclaration) targetFile.getAst().types().get(0);
                     boolean isLocal = selectedFile.equals(finalCurrentFileClass);
 
                     for (MethodDeclaration md : type.getMethods()) {
                         int mods = md.getModifiers();
-                        // Show methods if they are Static+Public (External) OR if it's the local file
                         boolean isStatic = Modifier.isStatic(mods);
                         boolean isPublic = Modifier.isPublic(mods);
 
@@ -153,13 +119,18 @@ public class MethodInvocationBlock extends AbstractExpressionBlock implements St
                         }
                     }
                 }
+
+                // NEW: Auto-select if only one option
+                if (methodSelector.getItems().size() == 1) {
+                    methodSelector.getSelectionModel().select(0);
+                }
             }
         };
 
-        // Listener: When Method is selected, update code structure
+        // Listener: Update Code on Method Selection
         methodSelector.setOnAction(e -> {
             String newMethodName = methodSelector.getValue();
-            if (newMethodName == null) return; // Ignore null selections (e.g. during clear)
+            if (newMethodName == null) return;
 
             String newScopeDisplay = fileSelector.getValue();
             String newScopeAST = newScopeDisplay.equals(finalCurrentFileClass) ? "" : newScopeDisplay;
@@ -176,13 +147,11 @@ public class MethodInvocationBlock extends AbstractExpressionBlock implements St
             );
         });
 
-        // Listener: When File changes, repopulate methods
         fileSelector.setOnAction(e -> {
             populateMethodList.run();
             methodSelector.show();
         });
 
-        // Initial Population
         populateMethodList.run();
 
         container.getChildren().addAll(callLabel, fileSelector, new Label("."), methodSelector);
@@ -192,8 +161,35 @@ public class MethodInvocationBlock extends AbstractExpressionBlock implements St
         argsLabel.setStyle("-fx-text-fill: white;");
         container.getChildren().add(argsLabel);
 
-        for (ExpressionBlock arg : arguments) {
-            container.getChildren().add(arg.getUINode(context));
+        // Fetch parameter names for display labels
+        List<String> paramNames = findParameterNames(context, displayValue, methodName);
+
+        for (int i = 0; i < arguments.size(); i++) {
+            ExpressionBlock arg = arguments.get(i);
+            HBox argBox = new HBox(2);
+            argBox.setAlignment(Pos.CENTER_LEFT);
+            argBox.setStyle("-fx-background-color: rgba(255,255,255,0.1); -fx-background-radius: 4; -fx-padding: 2;");
+
+            // Parameter Name Label
+            if (i < paramNames.size()) {
+                Label paramNameLabel = new Label(paramNames.get(i) + ":");
+                paramNameLabel.setStyle("-fx-text-fill: #aaa; -fx-font-size: 9px; -fx-padding: 0 4 0 2;");
+                argBox.getChildren().add(paramNameLabel);
+            }
+
+            argBox.getChildren().add(arg.getUINode(context));
+
+            // Delete Button
+            Button delBtn = new Button("×");
+            delBtn.setStyle("-fx-background-color: transparent; -fx-text-fill: #E74C3C; -fx-font-size: 10px; -fx-padding: 0 0 0 2; -fx-cursor: hand;");
+            int index = i;
+            delBtn.setOnAction(e -> {
+                // Use generic list deletion
+                context.codeEditor().deleteElementFromList(this.astNode, index);
+            });
+            argBox.getChildren().add(delBtn);
+
+            container.getChildren().add(argBox);
         }
 
         MenuButton addArgBtn = new MenuButton("+");
@@ -225,30 +221,36 @@ public class MethodInvocationBlock extends AbstractExpressionBlock implements St
         return container;
     }
 
-    private List<String> findParameterTypes(CompletionContext context, String className, String methodName) {
-        List<String> types = new ArrayList<>();
-        if (context.applicationState() == null) return types;
+    // --- Helpers ---
 
-        ProjectFile targetFile = null;
+    private ProjectFile findProjectFile(CompletionContext context, String className) {
+        if (context.applicationState() == null) return null;
         for (ProjectFile file : context.applicationState().getAllFiles()) {
             if (file.getClassName().equals(className)) {
-                targetFile = file;
-                break;
+                return file;
             }
         }
+        return null;
+    }
+
+    private void ensureAstParsed(ProjectFile file) {
+        if (file.getAst() == null) {
+            try {
+                ASTParser parser = ASTParser.newParser(AST.getJLSLatest());
+                parser.setSource(file.getContent().toCharArray());
+                parser.setKind(ASTParser.K_COMPILATION_UNIT);
+                CompilationUnit cu = (CompilationUnit) parser.createAST(null);
+                file.setAst(cu);
+            } catch (Exception ignored) {}
+        }
+    }
+
+    private List<String> findParameterTypes(CompletionContext context, String className, String methodName) {
+        List<String> types = new ArrayList<>();
+        ProjectFile targetFile = findProjectFile(context, className);
 
         if (targetFile != null) {
-            // Ensure AST exists for parameter lookup as well
-            if (targetFile.getAst() == null) {
-                try {
-                    ASTParser parser = ASTParser.newParser(AST.getJLSLatest());
-                    parser.setSource(targetFile.getContent().toCharArray());
-                    parser.setKind(ASTParser.K_COMPILATION_UNIT);
-                    CompilationUnit cu = (CompilationUnit) parser.createAST(null);
-                    targetFile.setAst(cu);
-                } catch (Exception ignored) {}
-            }
-
+            ensureAstParsed(targetFile);
             if (targetFile.getAst() != null && !targetFile.getAst().types().isEmpty()) {
                 TypeDeclaration type = (TypeDeclaration) targetFile.getAst().types().get(0);
                 for (MethodDeclaration md : type.getMethods()) {
@@ -263,5 +265,28 @@ public class MethodInvocationBlock extends AbstractExpressionBlock implements St
             }
         }
         return types;
+    }
+
+    // NEW: Helper to get parameter names for UI labels
+    private List<String> findParameterNames(CompletionContext context, String className, String methodName) {
+        List<String> names = new ArrayList<>();
+        ProjectFile targetFile = findProjectFile(context, className);
+
+        if (targetFile != null) {
+            ensureAstParsed(targetFile);
+            if (targetFile.getAst() != null && !targetFile.getAst().types().isEmpty()) {
+                TypeDeclaration type = (TypeDeclaration) targetFile.getAst().types().get(0);
+                for (MethodDeclaration md : type.getMethods()) {
+                    if (md.getName().getIdentifier().equals(methodName)) {
+                        for (Object p : md.parameters()) {
+                            SingleVariableDeclaration param = (SingleVariableDeclaration) p;
+                            names.add(param.getName().getIdentifier());
+                        }
+                        return names;
+                    }
+                }
+            }
+        }
+        return names;
     }
 }

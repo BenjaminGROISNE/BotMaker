@@ -9,7 +9,6 @@ import org.eclipse.jdt.core.dom.rewrite.ASTRewrite;
 
 import java.util.List;
 
-import static com.botmaker.ui.AddableBlock.CALL_FUNCTION;
 import static com.botmaker.util.TypeManager.toWrapperType;
 
 /**
@@ -25,8 +24,6 @@ public class NodeCreator {
                 return newString;
             case FUNCTION_CALL:
                 MethodInvocation call = ast.newMethodInvocation();
-                // Changed from "MyLibrary" to "SelectFile" to indicate action needed
-                call.setExpression(ast.newSimpleName("SelectFile"));
                 call.setName(ast.newSimpleName("selectMethod"));
                 return call;
             case NUMBER:
@@ -84,12 +81,6 @@ public class NodeCreator {
                 return createVariableDeclaration(ast, DefaultNames.DEFAULT_BOOLEAN, false, PrimitiveType.BOOLEAN);
             case DECLARE_STRING:
                 return createStringDeclaration(ast);
-            case CALL_FUNCTION:
-                MethodInvocation call = ast.newMethodInvocation();
-                // Default to a placeholder call
-                call.setExpression(ast.newSimpleName("MyLibrary"));
-                call.setName(ast.newSimpleName("myFunction"));
-                return ast.newExpressionStatement(call);
             case DECLARE_ARRAY:
                 if (cu != null && rewriter != null) {
                     ImportManager.addImport(cu, rewriter, "java.util.ArrayList");
@@ -101,7 +92,6 @@ public class NodeCreator {
                 VariableDeclarationStatement listDecl = ast.newVariableDeclarationStatement(frag);
                 listDecl.setType(TypeManager.createTypeNode(ast, "ArrayList<Integer>"));
                 return listDecl;
-
             case IF:
                 IfStatement ifStatement = ast.newIfStatement();
                 ifStatement.setExpression(ast.newBooleanLiteral(true));

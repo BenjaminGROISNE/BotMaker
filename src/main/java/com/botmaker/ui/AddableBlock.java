@@ -14,7 +14,7 @@ public enum AddableBlock {
     DO_WHILE("Do While", DoWhileBlock.class, BlockCategory.LOOPS),
     SWITCH("Switch", SwitchBlock.class, BlockCategory.FLOW),
     CASE("Case", SwitchBlock.SwitchCaseBlock.class, BlockCategory.FLOW),
-    CALL_FUNCTION("Call Function", MethodInvocationBlock.class, BlockCategory.FLOW),
+    FUNCTION_CALL("Call Function", MethodInvocationBlock.class, BlockCategory.FLOW),
     // --- CONTROL COMMANDS ---
     BREAK("Break", BreakBlock.class, BlockCategory.CONTROL),
     CONTINUE("Continue", ContinueBlock.class, BlockCategory.CONTROL),
