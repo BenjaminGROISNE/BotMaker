@@ -1455,6 +1455,67 @@ public class IfBlock extends AbstractStatementBlock {
 }
 
 =================================================================================
+FILE: ./src/main/java/com/botmaker/blocks/LibraryBlock.java
+=================================================================================
+
+package com.botmaker.blocks;
+
+import com.botmaker.core.AbstractCodeBlock;
+import com.botmaker.core.BlockWithChildren;
+import com.botmaker.core.CodeBlock;
+import com.botmaker.lsp.CompletionContext;
+import javafx.geometry.Insets;
+import javafx.scene.Node;
+import javafx.scene.control.Label;
+import javafx.scene.layout.VBox;
+import org.eclipse.jdt.core.dom.TypeDeclaration;
+
+import java.util.ArrayList;
+import java.util.List;
+
+public class LibraryBlock extends AbstractCodeBlock implements BlockWithChildren {
+
+    private final String className;
+    private final List<MethodDeclarationBlock> methods = new ArrayList<>();
+
+    public LibraryBlock(String id, TypeDeclaration astNode) {
+        super(id, astNode);
+        this.className = astNode.getName().getIdentifier();
+    }
+
+    public void addMethod(MethodDeclarationBlock method) {
+        methods.add(method);
+    }
+
+    @Override
+    public List<CodeBlock> getChildren() {
+        return new ArrayList<>(methods);
+    }
+
+    @Override
+    protected Node createUINode(CompletionContext context) {
+        VBox container = new VBox(10);
+        container.getStyleClass().add("library-block");
+        container.setPadding(new Insets(10));
+        // Ensure background is set so white text (if any) is visible,
+        // OR enforce text color to be dark.
+        container.setStyle("-fx-background-color: #f4f6f9;");
+
+        Label header = new Label("Library: " + className);
+        // Using specific styling instead of generic main-block-header which might be designed for dark backgrounds
+        header.setStyle("-fx-font-size: 18px; -fx-font-weight: bold; -fx-text-fill: #2c3e50; -fx-padding: 0 0 10 0;");
+
+        container.getChildren().add(header);
+
+        for (MethodDeclarationBlock method : methods) {
+            container.getChildren().add(method.getUINode(context));
+        }
+
+        return container;
+    }
+}
+
+=================================================================================
 FILE: ./src/main/java/com/botmaker/blocks/ListBlock.java
 =================================================================================
 
@@ -1998,6 +2059,519 @@ public class MainBlock extends AbstractCodeBlock implements BlockWithChildren {
 
 
 =================================================================================
+FILE: ./src/main/java/com/botmaker/blocks/MethodDeclarationBlock.java
+=================================================================================
+
+package com.botmaker.blocks;
+
+import com.botmaker.core.AbstractStatementBlock;
+import com.botmaker.core.BlockWithChildren;
+import com.botmaker.core.BodyBlock;
+import com.botmaker.core.CodeBlock;
+import com.botmaker.lsp.CompletionContext;
+import com.botmaker.ui.BlockDragAndDropManager;
+import com.botmaker.util.DefaultNames;
+import com.botmaker.util.TypeManager;
+import javafx.geometry.Insets;
+import javafx.geometry.Pos;
+import javafx.scene.Node;
+import javafx.scene.control.*;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.Priority;
+import javafx.scene.layout.Region;
+import javafx.scene.layout.VBox;
+import org.eclipse.jdt.core.dom.MethodDeclaration;
+import org.eclipse.jdt.core.dom.SingleVariableDeclaration;
+
+import java.util.Collections;
+import java.util.List;
+
+public class MethodDeclarationBlock extends AbstractStatementBlock implements BlockWithChildren {
+
+    private final String methodName;
+    private final String returnType;
+    private BodyBlock body;
+
+    public MethodDeclarationBlock(String id, MethodDeclaration astNode, BlockDragAndDropManager manager) {
+        super(id, astNode);
+        this.methodName = astNode.getName().getIdentifier();
+        if (astNode.getReturnType2() != null) {
+            this.returnType = astNode.getReturnType2().toString();
+        } else {
+            this.returnType = "void";
+        }
+    }
+
+    public void setBody(BodyBlock body) {
+        this.body = body;
+    }
+
+    @Override
+    public List<CodeBlock> getChildren() {
+        return body != null ? Collections.singletonList(body) : Collections.emptyList();
+    }
+
+    @Override
+    protected Node createUINode(CompletionContext context) {
+        VBox container = new VBox(0); // 0 spacing, handled by padding
+        container.getStyleClass().add("method-block");
+        // CSS: .method-block { -fx-background-color: transparent; }
+
+        // --- HEADER SECTION ---
+        VBox headerBox = new VBox(5);
+        headerBox.getStyleClass().add("method-header");
+        // We will do inline styles here for immediate results, but moving to CSS is better
+        // A nice purple/indigo for functions
+        headerBox.setStyle(
+                "-fx-background-color: #8E44AD; " +
+                        "-fx-background-radius: 8 8 0 0; " +
+                        "-fx-padding: 8 10 8 10;"
+        );
+
+        // Row 1: "Function [Name] returns [Type]"
+        HBox topRow = new HBox(8);
+        topRow.setAlignment(Pos.CENTER_LEFT);
+
+        Label funcLabel = new Label("Function");
+        funcLabel.setStyle("-fx-text-fill: rgba(255,255,255,0.8); -fx-font-weight: bold; -fx-font-size: 10px; -fx-text-transform: uppercase;");
+
+        Label nameLabel = new Label(methodName);
+        nameLabel.setStyle("-fx-text-fill: white; -fx-font-family: 'Segoe UI', sans-serif; -fx-font-weight: bold; -fx-font-size: 14px;");
+
+        Region spacer = new Region();
+        HBox.setHgrow(spacer, Priority.ALWAYS);
+
+        Label returnsLabel = new Label("returns");
+        returnsLabel.setStyle("-fx-text-fill: rgba(255,255,255,0.7); -fx-font-style: italic; -fx-font-size: 11px;");
+
+        ComboBox<String> typeSelector = new ComboBox<>();
+        typeSelector.getItems().add("void");
+        typeSelector.getItems().addAll(TypeManager.getFundamentalTypeNames());
+        typeSelector.setValue(returnType);
+        typeSelector.setStyle("-fx-font-size: 11px; -fx-background-color: rgba(255,255,255,0.2); -fx-text-fill: white; -fx-background-radius: 4;");
+        // Force the text inside combo to be visible (JavaFX Combobox styling can be tricky)
+        typeSelector.setButtonCell(new ListCell<String>() {
+            @Override
+            protected void updateItem(String item, boolean empty) {
+                super.updateItem(item, empty);
+                if(empty || item == null) { setText(null); }
+                else {
+                    setText(item);
+                    setStyle("-fx-text-fill: white;"); // Make selected text white
+                }
+            }
+        });
+
+        typeSelector.setOnAction(e -> {
+            String selected = typeSelector.getValue();
+            if (!selected.equals(returnType)) {
+                context.codeEditor().setMethodReturnType((MethodDeclaration) this.astNode, selected);
+            }
+        });
+
+        topRow.getChildren().addAll(funcLabel, nameLabel, spacer, returnsLabel, typeSelector);
+
+        // Row 2: Parameters
+        HBox paramRow = new HBox(6);
+        paramRow.setAlignment(Pos.CENTER_LEFT);
+
+        Label paramsLabel = new Label("Inputs:");
+        paramsLabel.setStyle("-fx-text-fill: rgba(255,255,255,0.7); -fx-font-size: 11px;");
+        paramRow.getChildren().add(paramsLabel);
+
+        MethodDeclaration md = (MethodDeclaration) this.astNode;
+        List<?> params = md.parameters();
+
+        for (int i = 0; i < params.size(); i++) {
+            SingleVariableDeclaration param = (SingleVariableDeclaration) params.get(i);
+            Node paramNode = createParamNode(param, i, context);
+            paramRow.getChildren().add(paramNode);
+        }
+
+        MenuButton addParamBtn = new MenuButton("+");
+        addParamBtn.setStyle("-fx-font-size: 10px; -fx-padding: 2 6 2 6; -fx-background-color: rgba(255,255,255,0.2); -fx-text-fill: white; -fx-background-radius: 10;");
+
+        for (String type : TypeManager.getFundamentalTypeNames()) {
+            MenuItem item = new MenuItem(type);
+            item.setOnAction(e -> {
+                String defaultName = DefaultNames.forType(type);
+                context.codeEditor().addParameterToMethod(
+                        (MethodDeclaration) this.astNode, type, defaultName
+                );
+            });
+            addParamBtn.getItems().add(item);
+        }
+        paramRow.getChildren().add(addParamBtn);
+
+        headerBox.getChildren().addAll(topRow, paramRow);
+        container.getChildren().add(headerBox);
+
+        // --- BODY ---
+        VBox bodyWrapper = new VBox();
+        // Add a left border to visually connect header to body
+        bodyWrapper.setStyle("-fx-border-color: #8E44AD; -fx-border-width: 0 0 0 4; -fx-background-color: rgba(142, 68, 173, 0.05);");
+
+        if (body != null) {
+            Node bodyNode = body.getUINode(context);
+            VBox.setVgrow(bodyNode, Priority.ALWAYS);
+            bodyWrapper.getChildren().add(bodyNode);
+        }
+        container.getChildren().add(bodyWrapper);
+
+        return container;
+    }
+
+    private Node createParamNode(SingleVariableDeclaration param, int index, CompletionContext context) {
+        HBox box = new HBox(4);
+        box.setAlignment(Pos.CENTER_LEFT);
+        // Pill style: Semi-transparent white background
+        box.setStyle("-fx-background-color: rgba(255,255,255,0.9); -fx-background-radius: 12; -fx-padding: 3 8 3 8;");
+
+        Label typeLabel = new Label(param.getType().toString());
+        typeLabel.setStyle("-fx-text-fill: #8E44AD; -fx-font-weight: bold; -fx-font-size: 11px;");
+
+        String currentName = param.getName().getIdentifier();
+        TextField nameField = new TextField(currentName);
+
+        // Make the TextField look like a label unless clicked
+        nameField.setStyle(
+                "-fx-background-color: transparent; " +
+                        "-fx-padding: 0; " +
+                        "-fx-font-size: 11px; " +
+                        "-fx-text-fill: #333;"
+        );
+        nameField.setPrefWidth(Math.max(30, currentName.length() * 7));
+
+        // When focused, add a subtle underline or border
+        nameField.focusedProperty().addListener((obs, oldVal, newVal) -> {
+            if (newVal) {
+                nameField.setStyle("-fx-background-color: white; -fx-padding: 0; -fx-font-size: 11px; -fx-text-fill: black; -fx-border-color: #8E44AD; -fx-border-width: 0 0 1 0;");
+            } else {
+                // Lost focus - save and revert style
+                nameField.setStyle("-fx-background-color: transparent; -fx-padding: 0; -fx-font-size: 11px; -fx-text-fill: #333;");
+                String val = nameField.getText().trim();
+                if (!val.isEmpty() && !val.equals(currentName)) {
+                    context.codeEditor().renameMethodParameter((MethodDeclaration) this.astNode, index, val);
+                } else {
+                    nameField.setText(currentName);
+                }
+            }
+        });
+
+        nameField.setOnAction(e -> box.requestFocus()); // Commit on Enter
+
+        Button deleteBtn = new Button("×");
+        deleteBtn.setStyle("-fx-background-color: transparent; -fx-text-fill: #999; -fx-font-size: 12px; -fx-padding: 0; -fx-cursor: hand;");
+        deleteBtn.setOnAction(e -> {
+            context.codeEditor().deleteParameterFromMethod((MethodDeclaration) this.astNode, index);
+        });
+        // Hover effect for delete
+        deleteBtn.setOnMouseEntered(e -> deleteBtn.setStyle("-fx-background-color: transparent; -fx-text-fill: #E74C3C; -fx-font-size: 12px; -fx-padding: 0; -fx-cursor: hand;"));
+        deleteBtn.setOnMouseExited(e -> deleteBtn.setStyle("-fx-background-color: transparent; -fx-text-fill: #999; -fx-font-size: 12px; -fx-padding: 0; -fx-cursor: hand;"));
+
+        box.getChildren().addAll(typeLabel, nameField, deleteBtn);
+        return box;
+    }
+}
+
+=================================================================================
+FILE: ./src/main/java/com/botmaker/blocks/MethodInvocationBlock.java
+=================================================================================
+
+package com.botmaker.blocks;
+
+import com.botmaker.core.AbstractExpressionBlock;
+import com.botmaker.core.ExpressionBlock;
+import com.botmaker.core.StatementBlock;
+import com.botmaker.lsp.CompletionContext;
+import com.botmaker.project.ProjectFile;
+import com.botmaker.ui.AddableExpression;
+import javafx.geometry.Pos;
+import javafx.scene.Node;
+import javafx.scene.control.*;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.Priority;
+import javafx.scene.layout.Region;
+import org.eclipse.jdt.core.dom.*;
+
+import java.util.ArrayList;
+import java.util.List;
+
+public class MethodInvocationBlock extends AbstractExpressionBlock implements StatementBlock {
+
+    private String scopeName;
+    private String methodName;
+    private final List<ExpressionBlock> arguments = new ArrayList<>();
+    private boolean isStatementContext = false;
+
+    public MethodInvocationBlock(String id, ASTNode astNode) {
+        super(id, resolveExpressionNode(astNode));
+
+        if (astNode instanceof ExpressionStatement) {
+            this.isStatementContext = true;
+        }
+
+        MethodInvocation mi = (MethodInvocation) this.astNode;
+        this.methodName = mi.getName().getIdentifier();
+        if (mi.getExpression() != null) {
+            this.scopeName = mi.getExpression().toString();
+        } else {
+            this.scopeName = ""; // Local
+        }
+    }
+
+    private static MethodInvocation resolveExpressionNode(ASTNode node) {
+        if (node instanceof ExpressionStatement) {
+            return (MethodInvocation) ((ExpressionStatement) node).getExpression();
+        }
+        return (MethodInvocation) node;
+    }
+
+    public void addArgument(ExpressionBlock arg) {
+        arguments.add(arg);
+    }
+
+    @Override
+    protected Node createUINode(CompletionContext context) {
+        HBox container = new HBox(6);
+        container.setAlignment(Pos.CENTER_LEFT);
+        container.getStyleClass().add("method-call-block");
+
+        if (!isStatementContext) {
+            container.setStyle("-fx-background-color: #34495E; -fx-background-radius: 12; -fx-padding: 3 8 3 8;");
+        } else {
+            container.setStyle("-fx-background-color: #34495E; -fx-background-radius: 4; -fx-padding: 5 10 5 10;");
+        }
+
+        Label callLabel = new Label("Call");
+        callLabel.setStyle("-fx-text-fill: #aaa; -fx-font-weight: bold; -fx-font-size: 10px;");
+
+        // --- Prepare Data ---
+        String currentFileClass = "";
+        if (context.applicationState() != null && context.applicationState().getActiveFile() != null) {
+            currentFileClass = context.applicationState().getActiveFile().getClassName();
+        }
+
+        // --- File Selector ---
+        ComboBox<String> fileSelector = new ComboBox<>();
+        if (context.applicationState() != null) {
+            for (ProjectFile file : context.applicationState().getAllFiles()) {
+                fileSelector.getItems().add(file.getClassName());
+            }
+        }
+
+        String displayValue = scopeName.isEmpty() ? currentFileClass : scopeName;
+        if (!fileSelector.getItems().contains(displayValue)) {
+            fileSelector.getItems().add(0, displayValue);
+        }
+        fileSelector.setValue(displayValue);
+        fileSelector.setStyle("-fx-font-size: 11px; -fx-pref-width: 100px;");
+
+        // --- Method Selector ---
+        ComboBox<String> methodSelector = new ComboBox<>();
+        methodSelector.setValue(methodName);
+        methodSelector.setEditable(false);
+        methodSelector.setStyle("-fx-font-size: 11px; -fx-pref-width: 120px; -fx-font-weight: bold;");
+
+        final String finalCurrentFileClass = currentFileClass;
+
+        // --- Logic to populate methods ---
+        Runnable populateMethodList = () -> {
+            String selectedFile = fileSelector.getValue();
+            methodSelector.getItems().clear();
+
+            ProjectFile targetFile = findProjectFile(context, selectedFile);
+
+            if (targetFile != null) {
+                ensureAstParsed(targetFile);
+
+                if (targetFile.getAst() != null && !targetFile.getAst().types().isEmpty()) {
+                    TypeDeclaration type = (TypeDeclaration) targetFile.getAst().types().get(0);
+                    boolean isLocal = selectedFile.equals(finalCurrentFileClass);
+
+                    for (MethodDeclaration md : type.getMethods()) {
+                        int mods = md.getModifiers();
+                        boolean isStatic = Modifier.isStatic(mods);
+                        boolean isPublic = Modifier.isPublic(mods);
+
+                        if (isLocal || (isPublic && isStatic)) {
+                            methodSelector.getItems().add(md.getName().getIdentifier());
+                        }
+                    }
+                }
+
+                // NEW: Auto-select if only one option
+                if (methodSelector.getItems().size() == 1) {
+                    methodSelector.getSelectionModel().select(0);
+                }
+            }
+        };
+
+        // Listener: Update Code on Method Selection
+        methodSelector.setOnAction(e -> {
+            String newMethodName = methodSelector.getValue();
+            if (newMethodName == null) return;
+
+            String newScopeDisplay = fileSelector.getValue();
+            String newScopeAST = newScopeDisplay.equals(finalCurrentFileClass) ? "" : newScopeDisplay;
+
+            if (newMethodName.equals(methodName) && newScopeAST.equals(scopeName)) return;
+
+            List<String> paramTypes = findParameterTypes(context, newScopeDisplay, newMethodName);
+
+            context.codeEditor().updateMethodInvocation(
+                    (MethodInvocation) this.astNode,
+                    newScopeAST,
+                    newMethodName,
+                    paramTypes
+            );
+        });
+
+        fileSelector.setOnAction(e -> {
+            populateMethodList.run();
+            methodSelector.show();
+        });
+
+        populateMethodList.run();
+
+        container.getChildren().addAll(callLabel, fileSelector, new Label("."), methodSelector);
+
+        // --- Arguments UI ---
+        Label argsLabel = new Label("(");
+        argsLabel.setStyle("-fx-text-fill: white;");
+        container.getChildren().add(argsLabel);
+
+        // Fetch parameter names for display labels
+        List<String> paramNames = findParameterNames(context, displayValue, methodName);
+
+        for (int i = 0; i < arguments.size(); i++) {
+            ExpressionBlock arg = arguments.get(i);
+            HBox argBox = new HBox(2);
+            argBox.setAlignment(Pos.CENTER_LEFT);
+            argBox.setStyle("-fx-background-color: rgba(255,255,255,0.1); -fx-background-radius: 4; -fx-padding: 2;");
+
+            // Parameter Name Label
+            if (i < paramNames.size()) {
+                Label paramNameLabel = new Label(paramNames.get(i) + ":");
+                paramNameLabel.setStyle("-fx-text-fill: #aaa; -fx-font-size: 9px; -fx-padding: 0 4 0 2;");
+                argBox.getChildren().add(paramNameLabel);
+            }
+
+            argBox.getChildren().add(arg.getUINode(context));
+
+            // Delete Button
+            Button delBtn = new Button("×");
+            delBtn.setStyle("-fx-background-color: transparent; -fx-text-fill: #E74C3C; -fx-font-size: 10px; -fx-padding: 0 0 0 2; -fx-cursor: hand;");
+            int index = i;
+            delBtn.setOnAction(e -> {
+                // Use generic list deletion
+                context.codeEditor().deleteElementFromList(this.astNode, index);
+            });
+            argBox.getChildren().add(delBtn);
+
+            container.getChildren().add(argBox);
+        }
+
+        MenuButton addArgBtn = new MenuButton("+");
+        addArgBtn.setStyle("-fx-font-size: 9px; -fx-padding: 2 4 2 4;");
+        for (AddableExpression type : AddableExpression.values()) {
+            MenuItem item = new MenuItem(type.getDisplayName());
+            item.setOnAction(e -> {
+                context.codeEditor().addArgumentToMethodInvocation(
+                        (MethodInvocation) this.astNode,
+                        type
+                );
+            });
+            addArgBtn.getItems().add(item);
+        }
+        container.getChildren().add(addArgBtn);
+
+        Label closeParen = new Label(")");
+        closeParen.setStyle("-fx-text-fill: white;");
+        container.getChildren().add(closeParen);
+
+        if (isStatementContext) {
+            Region spacer = new Region();
+            HBox.setHgrow(spacer, Priority.ALWAYS);
+            Button deleteButton = new Button("X");
+            deleteButton.setOnAction(e -> context.codeEditor().deleteStatement((Statement) this.astNode.getParent()));
+            container.getChildren().addAll(spacer, deleteButton);
+        }
+
+        return container;
+    }
+
+    // --- Helpers ---
+
+    private ProjectFile findProjectFile(CompletionContext context, String className) {
+        if (context.applicationState() == null) return null;
+        for (ProjectFile file : context.applicationState().getAllFiles()) {
+            if (file.getClassName().equals(className)) {
+                return file;
+            }
+        }
+        return null;
+    }
+
+    private void ensureAstParsed(ProjectFile file) {
+        if (file.getAst() == null) {
+            try {
+                ASTParser parser = ASTParser.newParser(AST.getJLSLatest());
+                parser.setSource(file.getContent().toCharArray());
+                parser.setKind(ASTParser.K_COMPILATION_UNIT);
+                CompilationUnit cu = (CompilationUnit) parser.createAST(null);
+                file.setAst(cu);
+            } catch (Exception ignored) {}
+        }
+    }
+
+    private List<String> findParameterTypes(CompletionContext context, String className, String methodName) {
+        List<String> types = new ArrayList<>();
+        ProjectFile targetFile = findProjectFile(context, className);
+
+        if (targetFile != null) {
+            ensureAstParsed(targetFile);
+            if (targetFile.getAst() != null && !targetFile.getAst().types().isEmpty()) {
+                TypeDeclaration type = (TypeDeclaration) targetFile.getAst().types().get(0);
+                for (MethodDeclaration md : type.getMethods()) {
+                    if (md.getName().getIdentifier().equals(methodName)) {
+                        for (Object p : md.parameters()) {
+                            SingleVariableDeclaration param = (SingleVariableDeclaration) p;
+                            types.add(param.getType().toString());
+                        }
+                        return types;
+                    }
+                }
+            }
+        }
+        return types;
+    }
+
+    // NEW: Helper to get parameter names for UI labels
+    private List<String> findParameterNames(CompletionContext context, String className, String methodName) {
+        List<String> names = new ArrayList<>();
+        ProjectFile targetFile = findProjectFile(context, className);
+
+        if (targetFile != null) {
+            ensureAstParsed(targetFile);
+            if (targetFile.getAst() != null && !targetFile.getAst().types().isEmpty()) {
+                TypeDeclaration type = (TypeDeclaration) targetFile.getAst().types().get(0);
+                for (MethodDeclaration md : type.getMethods()) {
+                    if (md.getName().getIdentifier().equals(methodName)) {
+                        for (Object p : md.parameters()) {
+                            SingleVariableDeclaration param = (SingleVariableDeclaration) p;
+                            names.add(param.getName().getIdentifier());
+                        }
+                        return names;
+                    }
+                }
+            }
+        }
+        return names;
+    }
+}
+
+=================================================================================
 FILE: ./src/main/java/com/botmaker/blocks/PrintBlock.java
 =================================================================================
 
@@ -2184,20 +2758,34 @@ FILE: ./src/main/java/com/botmaker/blocks/ReturnBlock.java
 package com.botmaker.blocks;
 
 import com.botmaker.core.AbstractStatementBlock;
+import com.botmaker.core.ExpressionBlock;
 import com.botmaker.lsp.CompletionContext;
+import com.botmaker.ui.AddableExpression;
+import com.botmaker.util.TypeManager;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
+import javafx.scene.control.ContextMenu;
 import javafx.scene.control.Label;
+import javafx.scene.control.MenuItem;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.Priority;
+import org.eclipse.jdt.core.dom.ASTNode;
+import org.eclipse.jdt.core.dom.MethodDeclaration;
+import org.eclipse.jdt.core.dom.ReturnStatement;
 import org.eclipse.jdt.core.dom.Statement;
 
 public class ReturnBlock extends AbstractStatementBlock {
 
-    public ReturnBlock(String id, Statement astNode) {
+    private ExpressionBlock expression;
+
+    public ReturnBlock(String id, ReturnStatement astNode) {
         super(id, astNode);
+    }
+
+    public void setExpression(ExpressionBlock expression) {
+        this.expression = expression;
     }
 
     @Override
@@ -2208,6 +2796,33 @@ public class ReturnBlock extends AbstractStatementBlock {
 
         Label returnLabel = new Label("return");
         returnLabel.getStyleClass().add("keyword-label");
+        container.getChildren().add(returnLabel);
+
+        // Determine parent method return type
+        String methodReturnType = findParentMethodReturnType();
+        boolean isVoid = "void".equals(methodReturnType);
+
+        if (expression != null) {
+            container.getChildren().add(expression.getUINode(context));
+
+            // Allow changing it
+            Button changeBtn = new Button("↻");
+            changeBtn.getStyleClass().add("icon-button");
+            changeBtn.setOnAction(e -> showExpressionMenu(changeBtn, context, methodReturnType));
+            container.getChildren().add(changeBtn);
+
+        } else if (!isVoid) {
+            // Only show "Add" button if not void
+            Button addButton = new Button("+");
+            addButton.getStyleClass().add("expression-add-button");
+            addButton.setOnAction(e -> showExpressionMenu(addButton, context, methodReturnType));
+            container.getChildren().add(addButton);
+        } else {
+            // It's void and has no expression -> Just show implicit "void" label or nothing
+            Label voidLabel = new Label("(void)");
+            voidLabel.setStyle("-fx-text-fill: #aaa; -fx-font-size: 10px; -fx-font-style: italic;");
+            container.getChildren().add(voidLabel);
+        }
 
         // Spacer and Delete Button
         Pane spacer = new Pane();
@@ -2218,9 +2833,43 @@ public class ReturnBlock extends AbstractStatementBlock {
             context.codeEditor().deleteStatement((Statement) this.astNode);
         });
 
-        container.getChildren().addAll(returnLabel, spacer, deleteButton);
+        container.getChildren().addAll(spacer, deleteButton);
 
         return container;
+    }
+
+    private String findParentMethodReturnType() {
+        ASTNode current = this.astNode.getParent();
+        while (current != null) {
+            if (current instanceof MethodDeclaration) {
+                MethodDeclaration md = (MethodDeclaration) current;
+                if (md.getReturnType2() != null) {
+                    return md.getReturnType2().toString();
+                }
+                return "void";
+            }
+            current = current.getParent();
+        }
+        return "void"; // Default safe fallback
+    }
+
+    private void showExpressionMenu(Button button, CompletionContext context, String targetType) {
+        ContextMenu menu = new ContextMenu();
+
+        // Convert Java type (e.g., int) to UI type (e.g., number)
+        String uiType = TypeManager.determineUiType(targetType);
+
+        for (AddableExpression type : AddableExpression.getForType(uiType)) {
+            MenuItem menuItem = new MenuItem(type.getDisplayName());
+            menuItem.setOnAction(e -> {
+                context.codeEditor().setReturnExpression(
+                        (ReturnStatement) this.astNode,
+                        type
+                );
+            });
+            menu.getItems().add(menuItem);
+        }
+        menu.show(button, javafx.geometry.Side.BOTTOM, 0, 0);
     }
 }
 
@@ -3733,6 +4382,7 @@ FILE: ./src/main/java/com/botmaker/events/CoreApplicationEvents.java
 
 package com.botmaker.events;
 
+import com.botmaker.core.AbstractCodeBlock;
 import com.botmaker.core.CodeBlock;
 import org.eclipse.lsp4j.Diagnostic;
 import java.util.Collections;
@@ -3798,13 +4448,17 @@ public class CoreApplicationEvents {
         public String getMessage() { return message; }
     }
 
+    // Inside CoreApplicationEvents class
     public static class UIBlocksUpdatedEvent extends AbstractApplicationEvent {
-        private final com.botmaker.blocks.MainBlock rootBlock;
-        public UIBlocksUpdatedEvent(com.botmaker.blocks.MainBlock rootBlock) {
+        // CHANGED: From MainBlock to com.botmaker.core.AbstractCodeBlock
+        private final AbstractCodeBlock rootBlock;
+
+        public UIBlocksUpdatedEvent(AbstractCodeBlock rootBlock) {
             super("CodeEditorService");
             this.rootBlock = rootBlock;
         }
-        public com.botmaker.blocks.MainBlock getRootBlock() { return rootBlock; }
+
+        public AbstractCodeBlock getRootBlock() { return rootBlock; }
     }
 
     public static class OutputAppendedEvent extends AbstractApplicationEvent {
@@ -4118,13 +4772,15 @@ public class AppDependencyConfigurator {
 
         // UI Manager (Requires Stage)
         container.registerLazySingleton(UIManager.class, () -> {
-            // We don't pass the callback here yet, Main handles the screen switching logic
             return new UIManager(
                     container.resolve(BlockDragAndDropManager.class),
                     container.resolve(EventBus.class),
                     container.resolve(CodeEditorService.class),
                     container.resolve(DiagnosticsManager.class),
-                    primaryStage
+                    primaryStage,
+                    // New Dependencies:
+                    container.resolve(ApplicationConfig.class),
+                    container.resolve(ApplicationState.class)
             );
         });
     }
@@ -4147,7 +4803,8 @@ public class AppDependencyConfigurator {
                     text -> eventBus.publish(new com.botmaker.events.CoreApplicationEvents.OutputSetEvent(text)),
                     msg -> eventBus.publish(new com.botmaker.events.CoreApplicationEvents.StatusMessageEvent(msg)),
                     container.resolve(DiagnosticsManager.class),
-                    container.resolve(ApplicationConfig.class)
+                    container.resolve(ApplicationConfig.class),
+                    container.resolve(ApplicationState.class) // <--- ADD THIS
             );
         });
 
@@ -4267,22 +4924,19 @@ FILE: ./src/main/java/com/botmaker/lsp/CompletionContext.java
 package com.botmaker.lsp;
 
 import com.botmaker.parser.CodeEditor;
+import com.botmaker.state.ApplicationState; // Import State
 import com.botmaker.ui.BlockDragAndDropManager;
 import org.eclipse.lsp4j.services.LanguageServer;
 
-/**
- * Context object passed to blocks for UI rendering and editing operations.
- * Phase 3: Removed Main dependency - blocks now use only what they need.
- */
 public record CompletionContext(
         CodeEditor codeEditor,
         LanguageServer server,
         String docUri,
         String sourceCode,
         long docVersion,
-        BlockDragAndDropManager dragAndDropManager
+        BlockDragAndDropManager dragAndDropManager,
+        ApplicationState applicationState // Added field
 ) {
-    // All the data blocks need, without Main reference
 }
 
 =================================================================================
@@ -4971,6 +5625,142 @@ public class AstRewriter {
         }
     }
 
+
+    /**
+     * Updates a method call's scope, name, and synchronizes its arguments to match the target definition.
+     */
+    public String updateMethodInvocation(CompilationUnit cu, String originalCode, MethodInvocation mi,
+                                         String newScope, String newMethodName, List<String> newParamTypes) {
+        AST ast = cu.getAST();
+        ASTRewrite rewriter = ASTRewrite.create(ast);
+
+        // 1. Update Scope (File/Class Name)
+        if (newScope == null || newScope.isEmpty() || newScope.equals("Local")) {
+            if (mi.getExpression() != null) {
+                rewriter.remove(mi.getExpression(), null);
+            }
+        } else {
+            SimpleName newScopeNode = ast.newSimpleName(newScope);
+            if (mi.getExpression() == null) {
+                rewriter.set(mi, MethodInvocation.EXPRESSION_PROPERTY, newScopeNode, null);
+            } else {
+                rewriter.replace(mi.getExpression(), newScopeNode, null);
+            }
+        }
+
+        // 2. Update Method Name
+        if (!mi.getName().getIdentifier().equals(newMethodName)) {
+            rewriter.replace(mi.getName(), ast.newSimpleName(newMethodName), null);
+        }
+
+        // 3. Sync Arguments (Adaptive Parameters)
+        ListRewrite argsRewrite = rewriter.getListRewrite(mi, MethodInvocation.ARGUMENTS_PROPERTY);
+        List<?> currentArgs = mi.arguments();
+
+        // Logic: Match count.
+        // If target has MORE params -> Add default values.
+        // If target has FEWER params -> Remove extra arguments.
+
+        int targetCount = newParamTypes.size();
+        int currentCount = currentArgs.size();
+
+        if (currentCount > targetCount) {
+            // Remove excess
+            for (int i = currentCount - 1; i >= targetCount; i--) {
+                argsRewrite.remove((ASTNode) currentArgs.get(i), null);
+            }
+        } else if (currentCount < targetCount) {
+            // Add missing defaults based on type
+            for (int i = currentCount; i < targetCount; i++) {
+                String typeName = newParamTypes.get(i);
+                Expression defaultExpr = nodeCreator.createDefaultInitializer(ast, typeName);
+                argsRewrite.insertLast(defaultExpr, null);
+            }
+        }
+
+        return applyRewrite(rewriter, originalCode);
+    }
+
+    public String addArgumentToMethodInvocation(CompilationUnit cu, String originalCode, MethodInvocation mi, AddableExpression type) {
+        AST ast = cu.getAST();
+        ASTRewrite rewriter = ASTRewrite.create(ast);
+        ListRewrite listRewrite = rewriter.getListRewrite(mi, MethodInvocation.ARGUMENTS_PROPERTY);
+
+        Expression newArg = nodeCreator.createDefaultExpression(ast, type, cu, rewriter);
+        if (newArg != null) {
+            listRewrite.insertLast(newArg, null);
+        }
+        return applyRewrite(rewriter, originalCode);
+    }
+
+    public String renameMethodParameter(CompilationUnit cu, String originalCode, MethodDeclaration method, int index, String newName) {
+        AST ast = cu.getAST();
+        ASTRewrite rewriter = ASTRewrite.create(ast);
+        List<?> params = method.parameters();
+
+        if (index >= 0 && index < params.size()) {
+            SingleVariableDeclaration param = (SingleVariableDeclaration) params.get(index);
+            SimpleName newNameNode = ast.newSimpleName(newName);
+            rewriter.replace(param.getName(), newNameNode, null);
+        }
+
+        return applyRewrite(rewriter, originalCode);
+    }
+
+    public String setMethodReturnType(CompilationUnit cu, String originalCode, MethodDeclaration method, String newTypeName) {
+        AST ast = cu.getAST();
+        ASTRewrite rewriter = ASTRewrite.create(ast);
+
+        Type newType;
+        if ("void".equals(newTypeName)) {
+            newType = ast.newPrimitiveType(PrimitiveType.VOID);
+        } else {
+            newType = TypeManager.createTypeNode(ast, newTypeName);
+        }
+
+        rewriter.replace(method.getReturnType2(), newType, null);
+        return applyRewrite(rewriter, originalCode);
+    }
+
+    public String addParameterToMethod(CompilationUnit cu, String originalCode, MethodDeclaration method, String typeName, String paramName) {
+        AST ast = cu.getAST();
+        ASTRewrite rewriter = ASTRewrite.create(ast);
+        ListRewrite listRewrite = rewriter.getListRewrite(method, MethodDeclaration.PARAMETERS_PROPERTY);
+
+        SingleVariableDeclaration newParam = ast.newSingleVariableDeclaration();
+        newParam.setType(TypeManager.createTypeNode(ast, typeName));
+        newParam.setName(ast.newSimpleName(paramName));
+
+        listRewrite.insertLast(newParam, null);
+        return applyRewrite(rewriter, originalCode);
+    }
+
+    public String deleteParameterFromMethod(CompilationUnit cu, String originalCode, MethodDeclaration method, int index) {
+        ASTRewrite rewriter = ASTRewrite.create(cu.getAST());
+        ListRewrite listRewrite = rewriter.getListRewrite(method, MethodDeclaration.PARAMETERS_PROPERTY);
+        List<?> params = method.parameters();
+
+        if (index >= 0 && index < params.size()) {
+            listRewrite.remove((ASTNode) params.get(index), null);
+        }
+        return applyRewrite(rewriter, originalCode);
+    }
+
+    public String setReturnExpression(CompilationUnit cu, String originalCode, ReturnStatement returnStmt, AddableExpression type) {
+        AST ast = cu.getAST();
+        ASTRewrite rewriter = ASTRewrite.create(ast);
+
+        Expression newExpr = nodeCreator.createDefaultExpression(ast, type, cu, rewriter);
+        if (newExpr == null) return originalCode;
+
+        if (returnStmt.getExpression() == null) {
+            rewriter.set(returnStmt, ReturnStatement.EXPRESSION_PROPERTY, newExpr, null);
+        } else {
+            rewriter.replace(returnStmt.getExpression(), newExpr, null);
+        }
+        return applyRewrite(rewriter, originalCode);
+    }
+
     private void collectLeafValues(Expression expr, List<Expression> accumulator) {
         if (expr == null) return;
         boolean isContainer = false;
@@ -5022,17 +5812,17 @@ public class BlockFactory {
     private boolean markNewIdentifiersAsUnedited = false;
     private BlockParser blockParser;
 
-    public MainBlock convert(String javaCode, Map<ASTNode, CodeBlock> nodeToBlockMap, BlockDragAndDropManager manager) {
+    // CHANGED: Return type is AbstractCodeBlock (parent of MainBlock and LibraryBlock)
+    public AbstractCodeBlock convert(String javaCode, Map<ASTNode, CodeBlock> nodeToBlockMap, BlockDragAndDropManager manager) {
         this.currentSourceCode = javaCode;
-        // Initialize parser helper with current context
         this.blockParser = new BlockParser(this, manager, markNewIdentifiersAsUnedited);
 
         try {
             ASTParser parser = ASTParser.newParser(AST.getJLSLatest());
             parser.setSource(javaCode.toCharArray());
-            parser.setResolveBindings(true);
             parser.setKind(ASTParser.K_COMPILATION_UNIT);
-            parser.setUnitName("Demo.java");
+            parser.setResolveBindings(true);
+            parser.setUnitName("Unit.java"); // Name doesn't matter for parsing structure
             parser.setEnvironment(null, null, null, true);
             this.ast = (CompilationUnit) parser.createAST(null);
 
@@ -5041,40 +5831,69 @@ public class BlockFactory {
                 if (obj instanceof Comment && !(obj instanceof Javadoc)) allComments.add((Comment) obj);
             }
 
-            MainMethodVisitor visitor = new MainMethodVisitor();
-            ast.accept(visitor);
+            if (ast.types().isEmpty()) return null;
 
-            return visitor.getMainMethodDeclaration()
-                    .map(mainMethodDecl -> {
-                        MainBlock mainBlock = new MainBlock(BlockIdPrefix.generate(BlockIdPrefix.MAIN, mainMethodDecl), mainMethodDecl);
-                        nodeToBlockMap.put(mainMethodDecl, mainBlock);
-                        visitor.getMainMethodBody().ifPresent(bodyAstNode -> {
-                            BodyBlock bodyBlock = parseBodyBlock(bodyAstNode, nodeToBlockMap, manager);
-                            mainBlock.setMainBody(bodyBlock);
-                        });
-                        return mainBlock;
-                    })
-                    .orElse(null);
+            TypeDeclaration typeDecl = (TypeDeclaration) ast.types().get(0);
+
+            // Check for Main Method
+            MethodDeclaration mainMethod = findMainMethod(typeDecl);
+
+            if (mainMethod != null) {
+                // It's a Main File
+                MainBlock mainBlock = new MainBlock(BlockIdPrefix.generate(BlockIdPrefix.MAIN, mainMethod), mainMethod);
+                nodeToBlockMap.put(mainMethod, mainBlock);
+                if (mainMethod.getBody() != null) {
+                    BodyBlock bodyBlock = parseBodyBlock(mainMethod.getBody(), nodeToBlockMap, manager);
+                    mainBlock.setMainBody(bodyBlock);
+                }
+                return mainBlock;
+            } else {
+                // It's a Library File (Standard Class)
+                LibraryBlock libBlock = new LibraryBlock(BlockIdPrefix.generate("lib_", typeDecl), typeDecl);
+                nodeToBlockMap.put(typeDecl, libBlock);
+
+                for (MethodDeclaration method : typeDecl.getMethods()) {
+                    MethodDeclarationBlock methodBlock = new MethodDeclarationBlock(
+                            BlockIdPrefix.generate("func_", method), method, manager);
+                    nodeToBlockMap.put(method, methodBlock);
+
+                    if (method.getBody() != null) {
+                        methodBlock.setBody(parseBodyBlock(method.getBody(), nodeToBlockMap, manager));
+                    }
+                    libBlock.addMethod(methodBlock);
+                }
+                return libBlock;
+            }
+
         } finally {
             setMarkNewIdentifiersAsUnedited(false);
         }
     }
 
-    public void setMarkNewIdentifiersAsUnedited(boolean mark) {
-        this.markNewIdentifiersAsUnedited = mark;
+    private MethodDeclaration findMainMethod(TypeDeclaration type) {
+        for (MethodDeclaration method : type.getMethods()) {
+            if ("main".equals(method.getName().getIdentifier()) &&
+                    Modifier.isStatic(method.getModifiers()) &&
+                    method.parameters().size() == 1) { // Simplified check
+                return method;
+            }
+        }
+        return null;
     }
 
+    // ... (Existing parseBodyBlock, parseStatement, etc. remain exactly the same) ...
+    public void setMarkNewIdentifiersAsUnedited(boolean mark) { this.markNewIdentifiersAsUnedited = mark; }
     public BodyBlock parseBodyBlock(Block astBlock, Map<ASTNode, CodeBlock> nodeToBlockMap, BlockDragAndDropManager manager) {
+        // [Existing implementation...]
+        // COPY YOUR PREVIOUS IMPLEMENTATION HERE
         BodyBlock bodyBlock = new BodyBlock(BlockIdPrefix.generate(BlockIdPrefix.BODY, astBlock), astBlock, manager);
         nodeToBlockMap.put(astBlock, bodyBlock);
 
         List<CodeBlock> allChildren = new ArrayList<>();
-
         for (Object statementObj : astBlock.statements()) {
             blockParser.parseStatement((Statement) statementObj, nodeToBlockMap).ifPresent(allChildren::add);
         }
-
-        // Handle Comments
+        // [Comment handling logic...]
         int blockStart = astBlock.getStartPosition() + 1;
         int blockEnd = astBlock.getStartPosition() + astBlock.getLength() - 1;
 
@@ -5102,6 +5921,8 @@ public class BlockFactory {
         return bodyBlock;
     }
 
+    // ... Copy parseStatement, parseExpression, parseCommentBlock, isPrintStatement, isReadInputStatement, getCompilationUnit
+    // NO CHANGES NEEDED TO THEM
     public Optional<StatementBlock> parseStatement(Statement stmt, Map<ASTNode, CodeBlock> map, BlockDragAndDropManager manager) {
         return blockParser.parseStatement(stmt, map);
     }
@@ -5140,20 +5961,6 @@ public class BlockFactory {
     }
 
     public CompilationUnit getCompilationUnit() { return ast; }
-
-    private static class MainMethodVisitor extends ASTVisitor {
-        private MethodDeclaration mainMethodDeclaration;
-        @Override
-        public boolean visit(MethodDeclaration node) {
-            if ("main".equals(node.getName().getIdentifier())) {
-                mainMethodDeclaration = node;
-                return false;
-            }
-            return true;
-        }
-        public Optional<MethodDeclaration> getMainMethodDeclaration() { return Optional.ofNullable(mainMethodDeclaration); }
-        public Optional<Block> getMainMethodBody() { return Optional.ofNullable(mainMethodDeclaration != null ? mainMethodDeclaration.getBody() : null); }
-    }
 }
 
 =================================================================================
@@ -5248,10 +6055,21 @@ public class BlockParser {
         if (stmt instanceof SwitchStatement) return parseSwitch((SwitchStatement) stmt, map);
         if (stmt instanceof BreakStatement) return Optional.of(new BreakBlock(BlockIdPrefix.generate(BlockIdPrefix.BREAK, stmt), (BreakStatement) stmt));
         if (stmt instanceof ContinueStatement) return Optional.of(new ContinueBlock(BlockIdPrefix.generate(BlockIdPrefix.CONTINUE, stmt), (ContinueStatement) stmt));
-        if (stmt instanceof ReturnStatement) return Optional.of(new ReturnBlock(BlockIdPrefix.generate(BlockIdPrefix.RETURN, stmt), (ReturnStatement) stmt));
+        if (stmt instanceof ReturnStatement) return parseReturn((ReturnStatement) stmt, map);
         if (stmt instanceof TryStatement) return parseTry((TryStatement) stmt, map);
         if (stmt instanceof ExpressionStatement) return parseExprStmt((ExpressionStatement) stmt, map);
+
         return Optional.empty();
+    }
+
+    private Optional<StatementBlock> parseReturn(ReturnStatement stmt, Map<ASTNode, CodeBlock> map) {
+        ReturnBlock block = new ReturnBlock(BlockIdPrefix.generate(BlockIdPrefix.RETURN, stmt), stmt);
+        map.put(stmt, block);
+
+        if (stmt.getExpression() != null) {
+            factory.parseExpression(stmt.getExpression(), map).ifPresent(block::setExpression);
+        }
+        return Optional.of(block);
     }
 
     private Optional<StatementBlock> parseExprStmt(ExpressionStatement stmt, Map<ASTNode, CodeBlock> map) {
@@ -5266,6 +6084,20 @@ public class BlockParser {
             if (expr instanceof PrefixExpression) factory.parseExpression(((PrefixExpression) expr).getOperand(), map).ifPresent(block::setLeftHandSide);
             return Optional.of(block);
         }
+
+        if (expr instanceof MethodInvocation) {
+            MethodInvocationBlock block = new MethodInvocationBlock(
+                    BlockIdPrefix.generate("call_", stmt), stmt);
+            map.put(stmt, block);
+
+            MethodInvocation mi = (MethodInvocation) expr;
+            // Parse arguments
+            for (Object arg : mi.arguments()) {
+                factory.parseExpression((Expression) arg, map).ifPresent(block::addArgument);
+            }
+            return Optional.of(block);
+        }
+
         return Optional.empty();
     }
 
@@ -5402,6 +6234,18 @@ public class BlockParser {
             map.put(expr, b);
             return Optional.of(b);
         }
+        if (expr instanceof MethodInvocation) {
+            MethodInvocation mi = (MethodInvocation) expr;
+            MethodInvocationBlock block = new MethodInvocationBlock(
+                    BlockIdPrefix.generate("call_expr_", expr), expr);
+
+            map.put(expr, block);
+
+            for (Object arg : mi.arguments()) {
+                factory.parseExpression((Expression) arg, map).ifPresent(block::addArgument);
+            }
+            return Optional.of(block);
+        }
         if (expr instanceof NumberLiteral) {
             String t = ((NumberLiteral) expr).getToken();
             ExpressionBlock b;
@@ -5473,6 +6317,8 @@ import com.botmaker.ui.AddableBlock;
 import com.botmaker.ui.AddableExpression;
 import org.eclipse.jdt.core.dom.*;
 
+import java.util.List;
+
 public class CodeEditor {
 
     private final ApplicationState state;
@@ -5499,6 +6345,31 @@ public class CodeEditor {
     private void triggerUpdate(String newCode) {
         String previousCode = getCurrentCode();
         eventBus.publish(new CoreApplicationEvents.CodeUpdatedEvent(newCode, previousCode));
+    }
+
+    public void updateMethodInvocation(MethodInvocation mi, String newScope, String newMethodName, List<String> newParamTypes) {
+        blockFactory.setMarkNewIdentifiersAsUnedited(true);
+        String newCode = astRewriter.updateMethodInvocation(
+                getCompilationUnit(),
+                getCurrentCode(),
+                mi,
+                newScope,
+                newMethodName,
+                newParamTypes
+        );
+        triggerUpdate(newCode);
+    }
+
+    // Add this method
+    public void addArgumentToMethodInvocation(MethodInvocation mi, AddableExpression type) {
+        blockFactory.setMarkNewIdentifiersAsUnedited(true);
+        String newCode = astRewriter.addArgumentToMethodInvocation(
+                getCompilationUnit(),
+                getCurrentCode(),
+                mi,
+                type
+        );
+        triggerUpdate(newCode);
     }
 
     public void moveStatement(StatementBlock blockToMove, BodyBlock sourceBody,
@@ -5540,6 +6411,62 @@ public class CodeEditor {
         );
         triggerUpdate(newCode);
     }
+
+
+    public void renameMethodParameter(MethodDeclaration method, int index, String newName) {
+        String newCode = astRewriter.renameMethodParameter(
+                getCompilationUnit(),
+                getCurrentCode(),
+                method,
+                index,
+                newName
+        );
+        triggerUpdate(newCode);
+    }
+
+    public void setMethodReturnType(MethodDeclaration method, String newTypeName) {
+        String newCode = astRewriter.setMethodReturnType(
+                getCompilationUnit(),
+                getCurrentCode(),
+                method,
+                newTypeName
+        );
+        triggerUpdate(newCode);
+    }
+
+    public void addParameterToMethod(MethodDeclaration method, String typeName, String paramName) {
+        String newCode = astRewriter.addParameterToMethod(
+                getCompilationUnit(),
+                getCurrentCode(),
+                method,
+                typeName,
+                paramName
+        );
+        triggerUpdate(newCode);
+    }
+
+    public void deleteParameterFromMethod(MethodDeclaration method, int index) {
+        String newCode = astRewriter.deleteParameterFromMethod(
+                getCompilationUnit(),
+                getCurrentCode(),
+                method,
+                index
+        );
+        triggerUpdate(newCode);
+    }
+
+    public void setReturnExpression(ReturnStatement returnStmt, AddableExpression type) {
+        blockFactory.setMarkNewIdentifiersAsUnedited(true);
+        String newCode = astRewriter.setReturnExpression(
+                getCompilationUnit(),
+                getCurrentCode(),
+                returnStmt,
+                type
+        );
+        triggerUpdate(newCode);
+    }
+
+
 
     /**
      * Adds an element to either an ArrayInitializer or a MethodInvocation (List).
@@ -5817,6 +6744,10 @@ public class NodeCreator {
                 StringLiteral newString = ast.newStringLiteral();
                 newString.setLiteralValue("text");
                 return newString;
+            case FUNCTION_CALL:
+                MethodInvocation call = ast.newMethodInvocation();
+                call.setName(ast.newSimpleName("selectMethod"));
+                return call;
             case NUMBER:
                 return ast.newNumberLiteral("0");
             case TRUE:
@@ -5831,6 +6762,7 @@ public class NodeCreator {
                 asList.setExpression(ast.newSimpleName("Arrays"));
                 asList.setName(ast.newSimpleName("asList"));
                 return asList;
+
             case ADD:
             case SUBTRACT:
             case MULTIPLY:
@@ -5871,7 +6803,6 @@ public class NodeCreator {
                 return createVariableDeclaration(ast, DefaultNames.DEFAULT_BOOLEAN, false, PrimitiveType.BOOLEAN);
             case DECLARE_STRING:
                 return createStringDeclaration(ast);
-
             case DECLARE_ARRAY:
                 if (cu != null && rewriter != null) {
                     ImportManager.addImport(cu, rewriter, "java.util.ArrayList");
@@ -5883,7 +6814,6 @@ public class NodeCreator {
                 VariableDeclarationStatement listDecl = ast.newVariableDeclarationStatement(frag);
                 listDecl.setType(TypeManager.createTypeNode(ast, "ArrayList<Integer>"));
                 return listDecl;
-
             case IF:
                 IfStatement ifStatement = ast.newIfStatement();
                 ifStatement.setExpression(ast.newBooleanLiteral(true));
@@ -6534,6 +7464,43 @@ public class ProjectCreator {
 }
 
 =================================================================================
+FILE: ./src/main/java/com/botmaker/project/ProjectFile.java
+=================================================================================
+
+package com.botmaker.project;
+
+import org.eclipse.jdt.core.dom.CompilationUnit;
+import java.nio.file.Path;
+
+public class ProjectFile {
+    private final Path path;
+    private String content;
+    private CompilationUnit ast;
+    private final String className; // e.g., "Movement"
+
+    public ProjectFile(Path path, String content) {
+        this.path = path;
+        this.content = content;
+        String filename = path.getFileName().toString();
+        this.className = filename.substring(0, filename.lastIndexOf('.'));
+    }
+
+    public Path getPath() { return path; }
+
+    public String getContent() { return content; }
+    public void setContent(String content) { this.content = content; }
+
+    public CompilationUnit getAst() { return ast; }
+    public void setAst(CompilationUnit ast) { this.ast = ast; }
+
+    public String getClassName() { return className; }
+
+    public String getUri() {
+        return path.toUri().toString();
+    }
+}
+
+=================================================================================
 FILE: ./src/main/java/com/botmaker/project/ProjectInfo.java
 =================================================================================
 
@@ -6669,6 +7636,8 @@ FILE: ./src/main/java/com/botmaker/runtime/CodeExecutionService.java
 package com.botmaker.runtime;
 
 import com.botmaker.config.ApplicationConfig;
+import com.botmaker.project.ProjectFile;
+import com.botmaker.state.ApplicationState;
 import com.botmaker.validation.DiagnosticsManager;
 import javafx.application.Platform;
 
@@ -6688,10 +7657,11 @@ public class CodeExecutionService {
 
     private final Consumer<String> appendOutputConsumer;
     private final Runnable clearOutputConsumer;
-    private final Consumer<String> statusConsumer;
     private final Consumer<String> setOutputConsumer;
+    private final Consumer<String> statusConsumer;
     private final DiagnosticsManager diagnosticsManager;
     private final ApplicationConfig config;
+    private final ApplicationState state;
 
     private volatile Process currentRunningProcess;
     private final AtomicBoolean isRunning = new AtomicBoolean(false);
@@ -6705,21 +7675,18 @@ public class CodeExecutionService {
             Consumer<String> setOutputConsumer,
             Consumer<String> statusConsumer,
             DiagnosticsManager diagnosticsManager,
-            ApplicationConfig config) {
+            ApplicationConfig config,
+            ApplicationState state) {
         this.appendOutputConsumer = appendOutputConsumer;
         this.clearOutputConsumer = clearOutputConsumer;
         this.setOutputConsumer = setOutputConsumer;
         this.statusConsumer = statusConsumer;
         this.diagnosticsManager = diagnosticsManager;
         this.config = config;
+        this.state = state;
     }
 
-    /**
-     * BLOCKING method to run code.
-     * Must be called from a background thread.
-     */
-    public void runCode(String code) {
-        // 1. Validation
+    public void runCode(String currentEditorCode) {
         if (diagnosticsManager.hasErrors()) {
             Platform.runLater(() -> statusConsumer.accept("Run aborted due to errors."));
             return;
@@ -6731,16 +7698,15 @@ public class CodeExecutionService {
         }
 
         try {
-            Path sourceFilePath = config.getSourceFilePath();
             Path compiledOutputPath = config.getCompiledOutputPath();
 
-            // 2. Compile (Blocking)
-            if (!compileAndWait(code, sourceFilePath, compiledOutputPath)) {
+            // 1. Compile (Blocking)
+            if (!compileAndWait(currentEditorCode, compiledOutputPath)) {
                 Platform.runLater(() -> statusConsumer.accept("Run aborted due to compilation failure."));
                 return;
             }
 
-            // 3. Setup Execution
+            // 2. Setup Execution
             Platform.runLater(() -> {
                 statusConsumer.accept("Running... (Press Stop to terminate)");
                 clearOutputConsumer.run();
@@ -6755,45 +7721,42 @@ public class CodeExecutionService {
             ProcessBuilder pb = new ProcessBuilder(javaExecutable, "-cp", classPath, className);
             currentRunningProcess = pb.start();
 
-            // 4. Start IO (Leaky Bucket)
-            startLeakyBucketReader(currentRunningProcess.getInputStream());
-            startLeakyBucketReader(currentRunningProcess.getErrorStream());
+            // 3. Start IO Readers and keep references to them
+            Thread outReader = startLeakyBucketReader(currentRunningProcess.getInputStream());
+            Thread errReader = startLeakyBucketReader(currentRunningProcess.getErrorStream());
 
-            // 5. WAIT FOR PROCESS (BLOCKING)
-            // This keeps the caller thread alive until the process finishes or is killed.
+            // 4. Wait for process to exit
             int exitCode = currentRunningProcess.waitFor();
 
+            // 5. CRITICAL FIX: Wait for readers to drain the stream before stopping UI updates
+            try {
+                outReader.join(1000); // Wait up to 1s for streams to flush
+                errReader.join(1000);
+            } catch (InterruptedException ignored) {}
+
             Platform.runLater(() -> {
-                if (exitCode == 0) {
-                    statusConsumer.accept("Program completed successfully.");
-                } else if (exitCode == 143 || exitCode == 130 || exitCode == 1 || exitCode == -1) {
-                    statusConsumer.accept("Program stopped.");
-                } else {
-                    statusConsumer.accept("Program exited with code: " + exitCode);
-                }
+                if (exitCode == 0) statusConsumer.accept("Program completed successfully.");
+                else if (exitCode == 143 || exitCode == 130 || exitCode == 1 || exitCode == -1) statusConsumer.accept("Program stopped.");
+                else statusConsumer.accept("Program exited with code: " + exitCode);
             });
 
         } catch (InterruptedException e) {
             Platform.runLater(() -> statusConsumer.accept("Program stopped by user."));
         } catch (Exception e) {
+            e.printStackTrace();
             Platform.runLater(() -> statusConsumer.accept("Error: " + e.getMessage()));
         } finally {
-            // Cleanup
-            isRunning.set(false);
+            isRunning.set(false); // NOW safe to stop UI updates
             currentRunningProcess = null;
         }
     }
 
-    // ... (compileCode, compileAndWait, stopRunningProgram, isRunning, startLeakyBucketReader remain unchanged)
-
     public void compileCode(String code) {
-        // Need to wrap in thread because we made runCode blocking, but compileCode is usually called from UI
         new Thread(() -> {
             try {
                 Platform.runLater(() -> setOutputConsumer.accept("Saving and compiling..."));
-                Path sourceFilePath = config.getSourceFilePath();
                 Path compiledOutputPath = config.getCompiledOutputPath();
-                if (compileAndWait(code, sourceFilePath, compiledOutputPath)) {
+                if (compileAndWait(code, compiledOutputPath)) {
                     Platform.runLater(() -> setOutputConsumer.accept("Compilation successful."));
                 }
             } catch (IOException | InterruptedException e) {
@@ -6802,13 +7765,34 @@ public class CodeExecutionService {
         }).start();
     }
 
-    public boolean compileAndWait(String code, Path sourceFilePath, Path compiledOutputPath) throws IOException, InterruptedException {
-        Files.createDirectories(sourceFilePath.getParent());
-        Files.writeString(sourceFilePath, code);
+    public boolean compileAndWait(String currentActiveCode, Path compiledOutputPath) throws IOException, InterruptedException {
+        // Sync memory
+        state.setCurrentCode(currentActiveCode);
+
+        // Save ALL files to disk
+        for (ProjectFile file : state.getAllFiles()) {
+            Path path = file.getPath();
+            if (path != null) {
+                Files.createDirectories(path.getParent());
+                Files.writeString(path, file.getContent());
+            }
+        }
+
         Files.createDirectories(compiledOutputPath);
 
         String javacExecutable = Paths.get(System.getProperty("java.home"), "bin", "javac").toString();
-        ProcessBuilder pb = new ProcessBuilder(javacExecutable, "-g", "-d", compiledOutputPath.toString(), sourceFilePath.toString());
+
+        // Calculate source root (3 levels up from Main file: com/pkg/Main.java -> src/main/java)
+        Path sourcePathRoot = config.getSourceFilePath().getParent().getParent().getParent();
+
+        ProcessBuilder pb = new ProcessBuilder(
+                javacExecutable,
+                "-g",
+                "-d", compiledOutputPath.toString(),
+                "-sourcepath", sourcePathRoot.toString(),
+                config.getSourceFilePath().toString()
+        );
+
         Process process = pb.start();
 
         String errors = new String(process.getErrorStream().readAllBytes());
@@ -6823,20 +7807,20 @@ public class CodeExecutionService {
 
     public void stopRunningProgram() {
         if (currentRunningProcess != null && currentRunningProcess.isAlive()) {
-            // Force kill is safest for infinite loops
             currentRunningProcess.destroyForcibly();
         }
     }
 
-    public boolean isRunning() {
-        return isRunning.get();
-    }
+    public boolean isRunning() { return isRunning.get(); }
 
-    private void startLeakyBucketReader(InputStream inputStream) {
+    // CHANGED: Returns the Thread so we can join() it
+    private Thread startLeakyBucketReader(InputStream inputStream) {
         final StringBuilder buffer = new StringBuilder();
         final ScheduledExecutorService uiUpdater = Executors.newSingleThreadScheduledExecutor();
 
+        // UI Pusher Loop
         uiUpdater.scheduleAtFixedRate(() -> {
+            // Only stop if process is dead AND buffer is empty
             if (!isRunning.get() && buffer.length() == 0) {
                 uiUpdater.shutdown();
                 return;
@@ -6856,31 +7840,26 @@ public class CodeExecutionService {
             }
         }, UI_UPDATE_RATE_MS, UI_UPDATE_RATE_MS, TimeUnit.MILLISECONDS);
 
-        new Thread(() -> {
+        // Stream Reader Thread
+        Thread readerThread = new Thread(() -> {
             byte[] readBuf = new byte[1024];
             int len;
-            long droppedBytes = 0;
             try {
                 while ((len = inputStream.read(readBuf)) != -1) {
                     synchronized (buffer) {
-                        if (buffer.length() >= MAX_UI_BUFFER_SIZE) {
-                            droppedBytes += len;
-                        } else {
-                            if (droppedBytes > 0) {
-                                buffer.append("\n[... SKIPPED " + droppedBytes + " BYTES ...]\n");
-                                droppedBytes = 0;
-                            }
-                            int spaceLeft = MAX_UI_BUFFER_SIZE - buffer.length();
-                            int writeLen = Math.min(len, spaceLeft);
-                            buffer.append(new String(readBuf, 0, writeLen, StandardCharsets.UTF_8));
+                        if (buffer.length() < MAX_UI_BUFFER_SIZE) {
+                            buffer.append(new String(readBuf, 0, len, StandardCharsets.UTF_8));
                         }
                     }
                 }
             } catch (IOException ignored) {
             } finally {
-                uiUpdater.shutdown();
+                // Do not shut down UI updater here; let the scheduler decide based on buffer/isRunning state
             }
-        }, "Leaky-Reader").start();
+        }, "Leaky-Reader");
+
+        readerThread.start();
+        return readerThread;
     }
 }
 
@@ -6892,6 +7871,7 @@ package com.botmaker.services;
 
 import com.botmaker.blocks.MainBlock;
 import com.botmaker.config.ApplicationConfig;
+import com.botmaker.core.AbstractCodeBlock;
 import com.botmaker.core.CodeBlock;
 import com.botmaker.events.CoreApplicationEvents;
 import com.botmaker.events.EventBus;
@@ -6899,11 +7879,16 @@ import com.botmaker.lsp.CompletionContext;
 import com.botmaker.parser.AstRewriter;
 import com.botmaker.parser.BlockFactory;
 import com.botmaker.parser.CodeEditor;
+import com.botmaker.project.ProjectFile;
 import com.botmaker.state.ApplicationState;
 import com.botmaker.state.HistoryManager;
 import com.botmaker.ui.BlockDragAndDropManager;
 import com.botmaker.validation.DiagnosticsManager;
 import javafx.application.Platform;
+
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.util.stream.Stream;
 
 public class CodeEditorService {
 
@@ -7017,11 +8002,78 @@ public class CodeEditorService {
     }
 
     public void loadInitialCode() {
-        String currentCode = state.getCurrentCode();
-        historyManager.clear();
-        broadcastHistoryState();
-        Platform.runLater(() -> refreshUI(currentCode));
+        try {
+            Path mainFile = config.getSourceFilePath();
+            Path sourceDir = mainFile.getParent();
+
+            // Load all java files in the directory
+            try (Stream<Path> files = Files.list(sourceDir)) {
+                files.filter(p -> p.toString().endsWith(".java")).forEach(path -> {
+                    try {
+                        String content = Files.readString(path);
+                        ProjectFile pf = new ProjectFile(path, content);
+                        state.addFile(pf);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                });
+            }
+
+            // Set Active File to Main
+            switchToFile(mainFile);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
+
+    public void switchToFile(Path path) {
+        ProjectFile file = state.getAllFiles().stream()
+                .filter(f -> f.getPath().equals(path))
+                .findFirst().orElse(null);
+
+        if (file == null) return;
+
+        // 1. Refresh UI
+        state.setActiveFile(path);
+
+        // Clear history when switching (optional, or keep separate history per file)
+        // historyManager.clear();
+
+        refreshUI(file.getContent());
+    }
+
+
+    public void createFile(String className) {
+        try {
+            String packageName = config.getMainClassName().substring(0, config.getMainClassName().lastIndexOf('.'));
+            Path dir = config.getSourceFilePath().getParent();
+            Path newPath = dir.resolve(className + ".java");
+
+            String template = "package " + packageName + ";\n\n" +
+                    "public class " + className + " {\n" +
+                    "    // Add functions here\n" +
+                    "    public static void action() {\n" +
+                    "        System.out.println(\"Action from " + className + "\");\n" +
+                    "    }\n" +
+                    "}";
+
+            Files.writeString(newPath, template);
+
+            ProjectFile pf = new ProjectFile(newPath, template);
+            state.addFile(pf);
+
+            // Notify LSP
+            languageServerService.openFile(newPath, template);
+
+            switchToFile(newPath);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+
 
     private void refreshUI(String javaCode) {
         state.setCurrentCode(javaCode);
@@ -7031,7 +8083,7 @@ public class CodeEditorService {
             diagnosticsManager.updateSource(state.getMutableNodeToBlockMap(), javaCode);
         }
 
-        MainBlock rootBlock = blockFactory.convert(
+        AbstractCodeBlock rootBlock = blockFactory.convert(
                 javaCode,
                 state.getMutableNodeToBlockMap(),
                 dragAndDropManager
@@ -7047,7 +8099,7 @@ public class CodeEditorService {
         state.setCompilationUnit(blockFactory.getCompilationUnit());
 
         eventBus.publish(new CoreApplicationEvents.UIBlocksUpdatedEvent(rootBlock));
-        eventBus.publish(new CoreApplicationEvents.StatusMessageEvent("UI Refreshed."));
+        eventBus.publish(new CoreApplicationEvents.StatusMessageEvent("Loaded: " + state.getActiveFile().getClassName()));
     }
 
     public CompletionContext createCompletionContext() {
@@ -7057,7 +8109,8 @@ public class CodeEditorService {
                 state.getDocUri(),
                 state.getCurrentCode(),
                 state.getDocVersion(),
-                dragAndDropManager
+                dragAndDropManager,
+                state // Pass the state instance
         );
     }
 
@@ -7089,7 +8142,6 @@ import com.sun.jdi.request.ClassPrepareRequest;
 import com.sun.jdi.request.EventRequestManager;
 import com.sun.jdi.request.StepRequest;
 import javafx.application.Platform;
-import org.eclipse.jdt.core.dom.ASTNode;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 
 import java.io.IOException;
@@ -7111,7 +8163,6 @@ public class DebuggingService {
     private static final String ANSI_RESET = "\u001B[0m";
     private static final String ANSI_BLUE = "\u001B[34m";
     private static final String ANSI_GREEN = "\u001B[32m";
-    private static final String ANSI_YELLOW = "\u001B[33m";
     private static final String ANSI_RED = "\u001B[31m";
 
     private final ApplicationState state;
@@ -7157,13 +8208,16 @@ public class DebuggingService {
                 String code = state.getCurrentCode();
 
                 // 1. Compile
-                if (!codeExecutionService.compileAndWait(code, config.getSourceFilePath(), config.getCompiledOutputPath())) {
+                // FIXED: Removed config.getSourceFilePath() argument to match new signature
+                if (!codeExecutionService.compileAndWait(code, config.getCompiledOutputPath())) {
                     eventBus.publish(new CoreApplicationEvents.StatusMessageEvent("Debug aborted due to compilation failure."));
                     return;
                 }
 
                 // 2. Map Breakpoints (AST -> Line Numbers)
                 CompilationUnit cu = factory.getCompilationUnit();
+                // Note: getNodeToBlockMap only refers to the ACTIVE file.
+                // Multi-file debugging requires mapping logic expansion, but this works for the active file.
                 if (cu == null || state.getNodeToBlockMap().isEmpty()) {
                     eventBus.publish(new CoreApplicationEvents.StatusMessageEvent("Error: Could not parse code to get breakpoints."));
                     return;
@@ -7175,7 +8229,7 @@ public class DebuggingService {
                 for (CodeBlock block : state.getNodeToBlockMap().values()) {
                     int line = block.getBreakpointLine(cu);
                     if (line > 0) {
-                        // Only map StatementBlocks (executable lines) to avoid mapping expressions mid-line awkwardly
+                        // Only map StatementBlocks (executable lines)
                         if (!lineToBlockMap.containsKey(line) || block instanceof StatementBlock) {
                             lineToBlockMap.put(line, block);
                         }
@@ -7205,8 +8259,10 @@ public class DebuggingService {
                 Platform.runLater(() -> eventBus.publish(new CoreApplicationEvents.OutputClearedEvent()));
 
                 String classPath = config.getCompiledOutputPath().toString();
+                // We debug the Main class defined in config
                 String className = config.getMainClassName();
                 String javaExecutable = config.getJavaExecutable();
+
                 // Suspend=y waits for us to attach before running main()
                 String debugAgent = String.format("-agentlib:jdwp=transport=dt_socket,server=y,suspend=y,address=%d", freePort);
 
@@ -7242,7 +8298,7 @@ public class DebuggingService {
         arguments.get("port").setValue(String.valueOf(port));
         arguments.get("hostname").setValue("localhost");
 
-        // Retry logic for connection (Process might take a moment to open port)
+        // Retry logic for connection
         int maxRetries = Constants.DEBUGGER_MAX_CONNECT_RETRIES;
         for (int i = 0; i < maxRetries; i++) {
             try {
@@ -7257,12 +8313,11 @@ public class DebuggingService {
 
         EventRequestManager erm = vm.eventRequestManager();
 
-        // Handle Breakpoints (Class might not be loaded yet, so check both)
+        // Handle Breakpoints
         List<ReferenceType> classes = vm.classesByName(mainClassName);
         if (!classes.isEmpty()) {
             applyBreakpointsToClass(classes.get(0), breakpointLines);
         } else {
-            // Class not loaded yet -> Listen for preparation
             ClassPrepareRequest classPrepareRequest = erm.createClassPrepareRequest();
             classPrepareRequest.addClassFilter(mainClassName);
             classPrepareRequest.enable();
@@ -7272,18 +8327,12 @@ public class DebuggingService {
         CountDownLatch listenerReadyLatch = new CountDownLatch(1);
         new Thread(() -> jdiEventLoop(listenerReadyLatch, mainClassName, breakpointLines)).start();
 
-        // Wait for listener to be ready before resuming VM (so we don't miss events)
         listenerReadyLatch.await();
         vm.resume();
     }
 
-    /**
-     * The main loop that listens for events coming from the JVM (Breakpoints, Steps, etc).
-     */
     private void jdiEventLoop(CountDownLatch listenerReadyLatch, String mainClassName, List<Integer> breakpointLines) {
         EventQueue eventQueue = vm.eventQueue();
-
-        // Signal that we are listening
         listenerReadyLatch.countDown();
 
         while (true) {
@@ -7293,22 +8342,19 @@ public class DebuggingService {
 
                 for (Event event : eventSet) {
                     if (event instanceof VMDisconnectEvent) {
-                        System.out.println(ANSI_RED + "VM Disconnected." + ANSI_RESET);
                         handleDisconnect();
-                        return; // Exit loop
+                        return;
                     }
 
                     if (event instanceof ClassPrepareEvent) {
-                        // Class loaded, now we can set breakpoints
                         ClassPrepareEvent cpe = (ClassPrepareEvent) event;
                         if (cpe.referenceType().name().equals(mainClassName)) {
                             applyBreakpointsToClass(cpe.referenceType(), breakpointLines);
                         }
                     }
                     else if (event instanceof LocatableEvent) {
-                        // BreakpointEvent or StepEvent -> PAUSE UI
                         handleLocatableEvent((LocatableEvent) event);
-                        shouldResume = false; // Don't resume VM, wait for user input
+                        shouldResume = false;
                     }
                 }
 
@@ -7343,7 +8389,6 @@ public class DebuggingService {
     private void handleLocatableEvent(LocatableEvent event) {
         this.currentDebugThread = event.thread();
 
-        // Remove step request if this was a step event
         if (event instanceof StepEvent) {
             vm.eventRequestManager().deleteEventRequest(event.request());
         }
@@ -7351,8 +8396,6 @@ public class DebuggingService {
         int lineNumber = event.location().lineNumber();
         CodeBlock block = lineToBlockMap.get(lineNumber);
         CodeBlock target = (block != null) ? block.getHighlightTarget() : null;
-
-        System.out.println(ANSI_GREEN + "---> Paused at line: " + lineNumber + ANSI_RESET);
 
         eventBus.publish(new CoreApplicationEvents.DebugSessionPausedEvent(lineNumber, target));
         eventBus.publish(new CoreApplicationEvents.BlockHighlightEvent(target));
@@ -7369,20 +8412,16 @@ public class DebuggingService {
         eventBus.publish(new CoreApplicationEvents.BlockHighlightEvent(null));
     }
 
-    // --- Public Control Methods ---
-
     public void stepOver() {
         if (vm == null || currentDebugThread == null) return;
         try {
             eventBus.publish(new CoreApplicationEvents.DebugSessionResumedEvent());
             EventRequestManager erm = vm.eventRequestManager();
 
-            // Clear previous step requests
             erm.stepRequests().stream()
                     .filter(r -> r.thread().equals(currentDebugThread))
                     .forEach(erm::deleteEventRequest);
 
-            // Create new StepOver
             StepRequest request = erm.createStepRequest(currentDebugThread, StepRequest.STEP_LINE, StepRequest.STEP_OVER);
             request.addCountFilter(1);
             request.enable();
@@ -7401,15 +8440,13 @@ public class DebuggingService {
     }
 
     public void stopDebugging() {
-        // 1. Disconnect JDI nicely
         if (vm != null) {
             try {
-                vm.dispose(); // Triggers VMDisconnectEvent loop exit
+                vm.dispose();
             } catch (VMDisconnectedException ignored) {
             } catch (Exception e) { e.printStackTrace(); }
         }
 
-        // 2. Kill process forcefully
         if (currentProcess != null && currentProcess.isAlive()) {
             try {
                 currentProcess.destroyForcibly();
@@ -7417,7 +8454,7 @@ public class DebuggingService {
             } catch (Exception e) { e.printStackTrace(); }
         }
 
-        handleDisconnect(); // Ensure UI state is reset
+        handleDisconnect();
     }
 
     private void redirectStream(InputStream stream) {
@@ -7677,6 +8714,14 @@ public class LanguageServerService {
         }
     }
 
+    public void openFile(Path path, String content) {
+        if (server == null) return;
+        String uri = path.toUri().toString();
+        server.getTextDocumentService().didOpen(new DidOpenTextDocumentParams(
+                new TextDocumentItem(uri, "java", 1, content)
+        ));
+    }
+
     public void shutdown() {
         if (launcher != null) {
             try {
@@ -7708,91 +8753,101 @@ FILE: ./src/main/java/com/botmaker/state/ApplicationState.java
 package com.botmaker.state;
 
 import com.botmaker.core.CodeBlock;
+import com.botmaker.project.ProjectFile;
 import org.eclipse.jdt.core.dom.ASTNode;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 
+import java.nio.file.Path;
 import java.util.*;
 
-/**
- * Central application state container.
- * Manages the current state of the code editor and related metadata.
- * Thread-safe through immutability and defensive copying.
- */
 public class ApplicationState {
 
-    // Code-related state
-    private String currentCode;
-    private String docUri;
-    private long docVersion;
+    // Multi-file state
+    private final Map<Path, ProjectFile> openFiles = new HashMap<>();
+    private ProjectFile activeFile;
 
-    // AST and block mappings
-    private CompilationUnit compilationUnit;
-    private Map<ASTNode, CodeBlock> nodeToBlockMap;
+    // AST and block mappings (For the ACTIVE file)
+    private Map<ASTNode, CodeBlock> nodeToBlockMap = new HashMap<>();
 
     // UI state
     private CodeBlock highlightedBlock;
-
-    // Debug state
     private boolean isDebugging;
     private final Set<String> breakpointIds = new HashSet<>();
-    public ApplicationState() {
-        this.currentCode = "";
-        this.docUri = "";
-        this.docVersion = 1;
-        this.nodeToBlockMap = new HashMap<>();
-        this.isDebugging = false;
+    private long docVersion = 1;
+
+    // --- File Management ---
+
+    public void addFile(ProjectFile file) {
+        openFiles.put(file.getPath(), file);
     }
 
-    // Code state
+    public void setActiveFile(Path path) {
+        this.activeFile = openFiles.get(path);
+        // Reset or sync doc version when switching if necessary,
+        // though usually we track version per file.
+        // For now, we keep a global version counter for LSP sync simplicity.
+    }
+
+    public ProjectFile getActiveFile() {
+        return activeFile;
+    }
+
+    public Collection<ProjectFile> getAllFiles() {
+        return Collections.unmodifiableCollection(openFiles.values());
+    }
+
+    // --- Helpers (Delegate to Active File) ---
 
     public String getCurrentCode() {
-        return currentCode;
+        return activeFile != null ? activeFile.getContent() : "";
     }
 
-    public void setCurrentCode(String currentCode) {
-        this.currentCode = currentCode != null ? currentCode : "";
+    public void setCurrentCode(String code) {
+        if (activeFile != null) activeFile.setContent(code);
     }
 
     public String getDocUri() {
-        return docUri;
+        return activeFile != null ? activeFile.getUri() : "";
     }
 
+    /**
+     * Set Doc URI.
+     * Note: In multi-file mode, the URI is derived from the ProjectFile path.
+     * This method exists for backward compatibility with LanguageServerService.
+     */
     public void setDocUri(String docUri) {
-        this.docUri = docUri != null ? docUri : "";
+        // No-op: The URI is determined by the active file's path.
+        // We accept the call to satisfy the compiler, but rely on setActiveFile() being called previously.
     }
+
+    public Optional<CompilationUnit> getCompilationUnit() {
+        return activeFile != null ? Optional.ofNullable(activeFile.getAst()) : Optional.empty();
+    }
+
+    public void setCompilationUnit(CompilationUnit cu) {
+        if (activeFile != null) activeFile.setAst(cu);
+    }
+
+    // --- Versioning ---
 
     public long getDocVersion() {
         return docVersion;
+    }
+
+    public void setDocVersion(long version) {
+        this.docVersion = version;
     }
 
     public void incrementDocVersion() {
         this.docVersion++;
     }
 
-    public void setDocVersion(long docVersion) {
-        this.docVersion = docVersion;
-    }
+    // --- Mappings & UI State ---
 
-    // AST and block mappings
-
-    public Optional<CompilationUnit> getCompilationUnit() {
-        return Optional.ofNullable(compilationUnit);
-    }
-
-    public void setCompilationUnit(CompilationUnit compilationUnit) {
-        this.compilationUnit = compilationUnit;
-    }
-
-    /**
-     * Returns an unmodifiable view of the node-to-block map
-     */
     public Map<ASTNode, CodeBlock> getNodeToBlockMap() {
         return Collections.unmodifiableMap(nodeToBlockMap);
     }
 
-    /**
-     * Returns the mutable node-to-block map for updates
-     */
     public Map<ASTNode, CodeBlock> getMutableNodeToBlockMap() {
         return nodeToBlockMap;
     }
@@ -7810,21 +8865,15 @@ public class ApplicationState {
         return Optional.ofNullable(nodeToBlockMap.get(node));
     }
 
-    // UI state
-
     public Optional<CodeBlock> getHighlightedBlock() {
         return Optional.ofNullable(highlightedBlock);
     }
 
     public void setHighlightedBlock(CodeBlock block) {
-        // Clear previous highlight
         if (this.highlightedBlock != null) {
             this.highlightedBlock.unhighlight();
         }
-
         this.highlightedBlock = block;
-
-        // Apply new highlight
         if (this.highlightedBlock != null) {
             this.highlightedBlock.highlight();
         }
@@ -7834,7 +8883,7 @@ public class ApplicationState {
         setHighlightedBlock(null);
     }
 
-    // Debug state
+    // --- Debugging ---
 
     public boolean isDebugging() {
         return isDebugging;
@@ -7843,7 +8892,7 @@ public class ApplicationState {
     public void setDebugging(boolean debugging) {
         this.isDebugging = debugging;
     }
-    // NEW: Breakpoint Management
+
     public Set<String> getBreakpointIds() {
         return Collections.unmodifiableSet(breakpointIds);
     }
@@ -7859,15 +8908,14 @@ public class ApplicationState {
     public boolean hasBreakpoint(String blockId) {
         return breakpointIds.contains(blockId);
     }
-    // Utility methods
 
     /**
-     * Creates a snapshot of the current state for debugging/logging
+     * Snapshot for debugging/logging
      */
     public StateSnapshot createSnapshot() {
         return new StateSnapshot(
-                currentCode,
-                docUri,
+                getCurrentCode(),
+                getDocUri(),
                 docVersion,
                 nodeToBlockMap.size(),
                 highlightedBlock != null,
@@ -7875,9 +8923,6 @@ public class ApplicationState {
         );
     }
 
-    /**
-     * Immutable snapshot of state for debugging
-     */
     public static class StateSnapshot {
         public final String currentCode;
         public final String docUri;
@@ -7900,7 +8945,7 @@ public class ApplicationState {
         public String toString() {
             return String.format(
                     "StateSnapshot{docVersion=%d, codeLength=%d, blockCount=%d, hasHighlight=%s, isDebugging=%s}",
-                    docVersion, currentCode.length(), blockCount, hasHighlight, isDebugging
+                    docVersion, currentCode != null ? currentCode.length() : 0, blockCount, hasHighlight, isDebugging
             );
         }
     }
@@ -7990,7 +9035,7 @@ public enum AddableBlock {
     DO_WHILE("Do While", DoWhileBlock.class, BlockCategory.LOOPS),
     SWITCH("Switch", SwitchBlock.class, BlockCategory.FLOW),
     CASE("Case", SwitchBlock.SwitchCaseBlock.class, BlockCategory.FLOW),
-
+    FUNCTION_CALL("Call Function", MethodInvocationBlock.class, BlockCategory.FLOW),
     // --- CONTROL COMMANDS ---
     BREAK("Break", BreakBlock.class, BlockCategory.CONTROL),
     CONTINUE("Continue", ContinueBlock.class, BlockCategory.CONTROL),
@@ -8015,6 +9060,7 @@ public enum AddableBlock {
 
     // --- UTILITY ---
     COMMENT("Comment", CommentBlock.class, BlockCategory.UTILITY);
+
 
     private final String displayName;
     private final Class<? extends StatementBlock> blockClass;
@@ -8061,13 +9107,15 @@ public enum AddableExpression {
     NUMBER("Number", "number"),
     TRUE("True", "boolean"),
     FALSE("False", "boolean"),
-    VARIABLE("Variable", "any"), // Variables can be anything (IdentifierBlock handles specific filtering)
+    VARIABLE("Variable", "any"),
+
+    // NEW: Function Call
+    FUNCTION_CALL("Function Call", "any"), // Can return anything
 
     // Nested
-    // Changed from "any" to "list" to restrict array initializers to array contexts
     LIST("Sub-List", "list"),
 
-    // Math Operations (Return numbers)
+    // Math Operations
     ADD("Addition (+)", "+", "number"),
     SUBTRACT("Subtraction (-)", "-", "number"),
     MULTIPLY("Multiplication (*)", "*", "number"),
@@ -8088,28 +9136,16 @@ public enum AddableExpression {
         this.returnType = returnType;
     }
 
-    public String getDisplayName() {
-        return displayName;
-    }
+    public String getDisplayName() { return displayName; }
+    public String getOperator() { return operator; }
 
-    public String getOperator() {
-        return operator;
-    }
-
-    /**
-     * Returns a list of expressions suitable for a specific target type.
-     * @param targetType "boolean", "number", "String", "list", or "any"
-     */
     public static List<AddableExpression> getForType(String targetType) {
         if (targetType == null || targetType.equals("any")) {
             return Arrays.asList(values());
         }
-
         return Arrays.stream(values())
                 .filter(e -> {
-                    // Always allow "any" items (like Variable)
                     if (e.returnType.equals("any")) return true;
-                    // Exact match
                     return e.returnType.equals(targetType);
                 })
                 .collect(Collectors.toList());
@@ -8580,6 +9616,121 @@ public class EventLogManager {
 }
 
 =================================================================================
+FILE: ./src/main/java/com/botmaker/ui/FileExplorerManager.java
+=================================================================================
+
+package com.botmaker.ui;
+
+import com.botmaker.config.ApplicationConfig;
+import com.botmaker.services.CodeEditorService;
+import com.botmaker.state.ApplicationState;
+import javafx.scene.control.*;
+import javafx.scene.layout.VBox;
+
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.util.Optional;
+import java.util.stream.Stream;
+
+public class FileExplorerManager {
+
+    private final ApplicationConfig config;
+    private final CodeEditorService codeEditorService;
+    private final ApplicationState state;
+    private final TreeView<Path> fileTree;
+
+    public FileExplorerManager(ApplicationConfig config, CodeEditorService codeEditorService, ApplicationState state) {
+        this.config = config;
+        this.codeEditorService = codeEditorService;
+        this.state = state;
+        this.fileTree = new TreeView<>();
+    }
+
+    public VBox createView() {
+        VBox container = new VBox();
+        container.getStyleClass().add("file-explorer");
+
+        Label header = new Label("Project Files");
+        header.getStyleClass().add("sidebar-header");
+
+        Button newFileBtn = new Button("New Function Library");
+        newFileBtn.setMaxWidth(Double.MAX_VALUE);
+        newFileBtn.setOnAction(e -> showCreateFileDialog());
+
+        configureTree();
+        refreshTree();
+
+        container.getChildren().addAll(header, newFileBtn, fileTree);
+        return container;
+    }
+
+    private void configureTree() {
+        fileTree.setShowRoot(false);
+        fileTree.setCellFactory(tv -> new TreeCell<>() {
+            @Override
+            protected void updateItem(Path item, boolean empty) {
+                super.updateItem(item, empty);
+                if (empty || item == null) {
+                    setText(null);
+                } else {
+                    setText(item.getFileName().toString());
+                    // Highlight active file
+                    if (state.getActiveFile() != null && item.equals(state.getActiveFile().getPath())) {
+                        setStyle("-fx-font-weight: bold; -fx-text-fill: #007bff;");
+                    } else {
+                        setStyle("");
+                    }
+                }
+            }
+        });
+
+        fileTree.getSelectionModel().selectedItemProperty().addListener((obs, oldVal, newVal) -> {
+            if (newVal != null && newVal.getValue() != null) {
+                // Switch file
+                Path selectedPath = newVal.getValue();
+                // Avoid reloading if already active
+                if (state.getActiveFile() == null || !state.getActiveFile().getPath().equals(selectedPath)) {
+                    codeEditorService.switchToFile(selectedPath);
+                    fileTree.refresh(); // Update bold styling
+                }
+            }
+        });
+    }
+
+    public void refreshTree() {
+        // Find src directory
+        Path sourceDir = config.getSourceFilePath().getParent();
+
+        TreeItem<Path> root = new TreeItem<>(sourceDir);
+
+        try (Stream<Path> files = Files.list(sourceDir)) {
+            files.filter(p -> p.toString().endsWith(".java"))
+                    .forEach(path -> root.getChildren().add(new TreeItem<>(path)));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        fileTree.setRoot(root);
+    }
+
+    private void showCreateFileDialog() {
+        TextInputDialog dialog = new TextInputDialog();
+        dialog.setTitle("New Function Library");
+        dialog.setHeaderText("Create a new library of functions");
+        dialog.setContentText("Name (e.g. Movement):");
+
+        Optional<String> result = dialog.showAndWait();
+        result.ifPresent(name -> {
+            String className = name.trim().replaceAll("[^a-zA-Z0-9]", "");
+            if (!className.isEmpty()) {
+                codeEditorService.createFile(className);
+                refreshTree();
+            }
+        });
+    }
+}
+
+=================================================================================
 FILE: ./src/main/java/com/botmaker/ui/MenuBarManager.java
 =================================================================================
 
@@ -8883,6 +10034,10 @@ public class PaletteManager {
                 Label blockLabel = new Label(blockType.getDisplayName());
                 blockLabel.setMaxWidth(Double.MAX_VALUE);
                 blockLabel.getStyleClass().addAll("palette-item", "palette-" + category.name().toLowerCase());
+
+                // --- FIX: Force Black Text Color ---
+                blockLabel.setStyle("-fx-text-fill: black; -fx-font-weight: bold;");
+
                 dragAndDropManager.makeDraggable(blockLabel, blockType);
                 content.getChildren().add(blockLabel);
             }
@@ -9268,11 +10423,13 @@ FILE: ./src/main/java/com/botmaker/ui/UIManager.java
 
 package com.botmaker.ui;
 
+import com.botmaker.config.ApplicationConfig;
 import com.botmaker.core.CodeBlock;
 import com.botmaker.events.CoreApplicationEvents;
 import com.botmaker.events.EventBus;
 import com.botmaker.lsp.CompletionContext;
 import com.botmaker.services.CodeEditorService;
+import com.botmaker.state.ApplicationState;
 import com.botmaker.validation.DiagnosticsManager;
 import com.botmaker.validation.ErrorTranslator;
 import javafx.geometry.Orientation;
@@ -9294,10 +10451,12 @@ public class UIManager {
     private final DiagnosticsManager diagnosticsManager;
     private final Stage primaryStage;
 
+    // UI Managers
     private final PaletteManager paletteManager;
     private final ToolbarManager toolbarManager;
     private final EventLogManager eventLogManager;
     private final MenuBarManager menuBarManager;
+    private final FileExplorerManager fileExplorerManager; // New Manager
 
     private VBox blocksContainer;
     private Label statusLabel;
@@ -9310,7 +10469,9 @@ public class UIManager {
                      EventBus eventBus,
                      CodeEditorService codeEditorService,
                      DiagnosticsManager diagnosticsManager,
-                     Stage primaryStage) {
+                     Stage primaryStage,
+                     ApplicationConfig config,   // Added
+                     ApplicationState state) {   // Added
         this.eventBus = eventBus;
         this.codeEditorService = codeEditorService;
         this.diagnosticsManager = diagnosticsManager;
@@ -9322,6 +10483,9 @@ public class UIManager {
         this.eventLogManager = new EventLogManager(eventBus);
         this.menuBarManager = new MenuBarManager(primaryStage);
         this.menuBarManager.setEventBus(eventBus);
+
+        // Initialize File Explorer
+        this.fileExplorerManager = new FileExplorerManager(config, codeEditorService, state);
 
         setupEventHandlers();
     }
@@ -9363,19 +10527,34 @@ public class UIManager {
     public Scene createScene() {
         menuBarManager.setOnSelectProject(v -> { if (onSelectProject != null) onSelectProject.accept(null); });
 
+        // 1. Center Code Area
         blocksContainer = new VBox(10);
         blocksContainer.getStyleClass().add("blocks-canvas");
         ScrollPane scrollPane = new ScrollPane(blocksContainer);
         scrollPane.setFitToWidth(true);
         scrollPane.getStyleClass().add("code-scroll-pane");
 
-        VBox paletteContainer = new VBox(paletteManager.createCategorizedPalette());
-        paletteContainer.setPrefWidth(220);
-        paletteContainer.getStyleClass().add("palette-sidebar");
+        // 2. Left Sidebar (Files + Palette)
+        VBox paletteContent = new VBox(paletteManager.createCategorizedPalette());
+        paletteContent.getStyleClass().add("palette-sidebar");
 
+        VBox fileExplorerContent = fileExplorerManager.createView();
+
+        TabPane sidebarTabs = new TabPane();
+        sidebarTabs.setTabClosingPolicy(TabPane.TabClosingPolicy.UNAVAILABLE);
+
+        Tab filesTab = new Tab("Files", fileExplorerContent);
+        Tab blocksTab = new Tab("Blocks", paletteContent);
+
+        sidebarTabs.getTabs().addAll(filesTab, blocksTab);
+        sidebarTabs.setPrefWidth(260); // Slightly wider to accommodate file names
+        sidebarTabs.getStyleClass().add("sidebar-tabs");
+
+        // 3. Status Bar
         statusLabel = new Label("Ready");
         statusLabel.setId("status-label");
 
+        // 4. Bottom Panel (Output, Errors, Logs)
         outputArea = new TextArea();
         outputArea.setEditable(false);
         outputArea.getStyleClass().add("console-area");
@@ -9389,6 +10568,7 @@ public class UIManager {
         Tab eventsTab = new Tab("Event Log", eventLogManager.getView()); eventsTab.setClosable(false);
         bottomTabPane.getTabs().addAll(terminalTab, errorsTab, eventsTab);
 
+        // 5. Layout Assembly
         SplitPane verticalSplit = new SplitPane();
         verticalSplit.setOrientation(Orientation.VERTICAL);
         verticalSplit.getItems().addAll(scrollPane, bottomTabPane);
@@ -9397,7 +10577,7 @@ public class UIManager {
 
         BorderPane mainLayout = new BorderPane();
         mainLayout.setTop(toolbarManager.createToolBar());
-        mainLayout.setLeft(paletteContainer);
+        mainLayout.setLeft(sidebarTabs); // Changed from paletteContainer to sidebarTabs
         mainLayout.setCenter(verticalSplit);
         mainLayout.setBottom(statusLabel);
 

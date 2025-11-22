@@ -135,8 +135,8 @@ public class MethodInvocationBlock extends AbstractExpressionBlock implements St
             String newScopeDisplay = fileSelector.getValue();
             String newScopeAST = newScopeDisplay.equals(finalCurrentFileClass) ? "" : newScopeDisplay;
 
-            if (newMethodName.equals(methodName) && newScopeAST.equals(scopeName)) return;
-
+            // FIXED: Always sync arguments when method changes, even if name is same
+            // (in case signature was updated in the other file)
             List<String> paramTypes = findParameterTypes(context, newScopeDisplay, newMethodName);
 
             context.codeEditor().updateMethodInvocation(
@@ -155,6 +155,35 @@ public class MethodInvocationBlock extends AbstractExpressionBlock implements St
         populateMethodList.run();
 
         container.getChildren().addAll(callLabel, fileSelector, new Label("."), methodSelector);
+
+        // Calculate expected parameter count and mismatch status FIRST
+        int expectedParamCount = findParameterTypes(context, displayValue, methodName).size();
+        boolean hasMismatch = arguments.size() != expectedParamCount;
+
+        // NEW: Add a "Sync Arguments" button to fix mismatches
+        Button syncBtn = new Button("⟳");
+        if (hasMismatch) {
+            syncBtn.setStyle("-fx-font-size: 10px; -fx-padding: 2 4 2 4; -fx-background-color: #FFA500; -fx-text-fill: white; -fx-font-weight: bold;");
+            syncBtn.setTooltip(new Tooltip("⚠ Arguments don't match! Click to sync with function signature"));
+        } else {
+            syncBtn.setStyle("-fx-font-size: 10px; -fx-padding: 2 4 2 4; -fx-background-color: rgba(255,255,255,0.2); -fx-text-fill: #90EE90;");
+            syncBtn.setTooltip(new Tooltip("Arguments match signature ✓"));
+        }
+        syncBtn.setOnAction(e -> {
+            String currentScope = fileSelector.getValue();
+            String currentMethod = methodSelector.getValue();
+            String scopeForAST = currentScope.equals(finalCurrentFileClass) ? "" : currentScope;
+
+            List<String> paramTypes = findParameterTypes(context, currentScope, currentMethod);
+
+            context.codeEditor().updateMethodInvocation(
+                    (MethodInvocation) this.astNode,
+                    scopeForAST,
+                    currentMethod,
+                    paramTypes
+            );
+        });
+        container.getChildren().add(syncBtn);
 
         // --- Arguments UI ---
         Label argsLabel = new Label("(");
@@ -179,7 +208,8 @@ public class MethodInvocationBlock extends AbstractExpressionBlock implements St
 
             argBox.getChildren().add(arg.getUINode(context));
 
-            // Delete Button
+            // FIXED: Only show delete button if we have more arguments than expected
+            // OR if we're within expected range (always allow manual deletion)
             Button delBtn = new Button("×");
             delBtn.setStyle("-fx-background-color: transparent; -fx-text-fill: #E74C3C; -fx-font-size: 10px; -fx-padding: 0 0 0 2; -fx-cursor: hand;");
             int index = i;
@@ -192,19 +222,39 @@ public class MethodInvocationBlock extends AbstractExpressionBlock implements St
             container.getChildren().add(argBox);
         }
 
-        MenuButton addArgBtn = new MenuButton("+");
-        addArgBtn.setStyle("-fx-font-size: 9px; -fx-padding: 2 4 2 4;");
-        for (AddableExpression type : AddableExpression.values()) {
-            MenuItem item = new MenuItem(type.getDisplayName());
-            item.setOnAction(e -> {
-                context.codeEditor().addArgumentToMethodInvocation(
-                        (MethodInvocation) this.astNode,
-                        type
-                );
-            });
-            addArgBtn.getItems().add(item);
+        // FIXED: Only show "+" button if we have fewer arguments than expected parameters
+        if (arguments.size() < expectedParamCount) {
+            MenuButton addArgBtn = new MenuButton("+");
+            addArgBtn.setStyle("-fx-font-size: 9px; -fx-padding: 2 4 2 4;");
+
+            // IMPROVED: Show appropriate expression types based on next parameter type
+            String nextParamType = getParameterTypeAt(context, displayValue, methodName, arguments.size());
+            List<AddableExpression> availableTypes = AddableExpression.getForType(nextParamType);
+
+            for (AddableExpression type : availableTypes) {
+                MenuItem item = new MenuItem(type.getDisplayName());
+                item.setOnAction(e -> {
+                    context.codeEditor().addArgumentToMethodInvocation(
+                            (MethodInvocation) this.astNode,
+                            type
+                    );
+                });
+                addArgBtn.getItems().add(item);
+            }
+            container.getChildren().add(addArgBtn);
+        } else if (arguments.size() > expectedParamCount) {
+            // Visual indicator that there are too many arguments
+            Label warningLabel = new Label("⚠ Too many");
+            warningLabel.setStyle("-fx-text-fill: #FFA500; -fx-font-size: 9px; -fx-font-weight: bold;");
+            warningLabel.setTooltip(new Tooltip(String.format("Expected %d argument(s), got %d", expectedParamCount, arguments.size())));
+            container.getChildren().add(warningLabel);
+        } else if (arguments.size() < expectedParamCount) {
+            // Visual indicator that arguments are missing
+            Label missingLabel = new Label(String.format("⚠ Need %d more", expectedParamCount - arguments.size()));
+            missingLabel.setStyle("-fx-text-fill: #FF6B6B; -fx-font-size: 9px; -fx-font-weight: bold;");
+            missingLabel.setTooltip(new Tooltip(String.format("Expected %d argument(s), got %d", expectedParamCount, arguments.size())));
+            container.getChildren().add(missingLabel);
         }
-        container.getChildren().add(addArgBtn);
 
         Label closeParen = new Label(")");
         closeParen.setStyle("-fx-text-fill: white;");
@@ -288,5 +338,14 @@ public class MethodInvocationBlock extends AbstractExpressionBlock implements St
             }
         }
         return names;
+    }
+
+    // NEW: Helper to get the UI type for a specific parameter position
+    private String getParameterTypeAt(CompletionContext context, String className, String methodName, int index) {
+        List<String> types = findParameterTypes(context, className, methodName);
+        if (index >= 0 && index < types.size()) {
+            return com.botmaker.util.TypeManager.determineUiType(types.get(index));
+        }
+        return "any"; // Fallback
     }
 }
