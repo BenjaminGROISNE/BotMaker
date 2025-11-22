@@ -574,8 +574,7 @@
     -fx-border-width: 3px;
     -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.3), 8, 0, 0, 2);
 }
-
-/* Palette items by category - ensure all have white text */
+/* Palette items by category - FIXED: Logic category now has dark text */
 .palette-output {
     -fx-background-color: #4A90E2;
     -fx-border-color: #357ABD;
@@ -594,7 +593,7 @@
 .palette-logic {
     -fx-background-color: #F39C12;
     -fx-border-color: #D68910;
-    -fx-text-fill: white;
+    -fx-text-fill: #2C3E50; /* FIXED: Dark text on orange background */
     -fx-font-weight: bold;
 }
 .palette-loops {

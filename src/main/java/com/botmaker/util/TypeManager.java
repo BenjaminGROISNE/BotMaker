@@ -1,9 +1,6 @@
 package com.botmaker.util;
 
-import org.eclipse.jdt.core.dom.AST;
-import org.eclipse.jdt.core.dom.ITypeBinding;
-import org.eclipse.jdt.core.dom.PrimitiveType;
-import org.eclipse.jdt.core.dom.Type;
+import org.eclipse.jdt.core.dom.*;
 
 import java.util.List;
 import java.util.Set;
@@ -70,6 +67,10 @@ public class TypeManager {
         if (typeName == null || typeName.isBlank()) return UI_TYPE_ANY;
         String clean = typeName.trim();
 
+        // Check for ArrayList first
+        if (isArrayList(clean)) return UI_TYPE_LIST;
+
+        // Then check for arrays
         if (clean.endsWith("[]")) return UI_TYPE_LIST;
 
         if (NUMBER_TYPES.contains(clean)) return UI_TYPE_NUMBER;
@@ -78,6 +79,7 @@ public class TypeManager {
 
         return UI_TYPE_ANY;
     }
+
 
     // --- Type Compatibility (ITypeBinding) ---
 
@@ -104,6 +106,16 @@ public class TypeManager {
                 return targetUiType.equals(simpleName) || targetUiType.equals(qualifiedName);
         }
     }
+
+    /**
+     * Determines if a type string represents an ArrayList
+     */
+    public static boolean isArrayList(String typeName) {
+        if (typeName == null) return false;
+        return typeName.startsWith("ArrayList<") || typeName.equals("ArrayList");
+    }
+
+
 
     // --- Type Compatibility (String) ---
 
@@ -144,7 +156,124 @@ public class TypeManager {
 
     // --- AST Node Creation ---
 
+    /**
+     * Converts primitive type names to their wrapper classes.
+     * Required for ArrayList and other generics which don't support primitives.
+     *
+     * @param typeName The type name to convert (e.g., "int", "boolean")
+     * @return The wrapper class name (e.g., "Integer", "Boolean")
+     */
+    public static String toWrapperType(String typeName) {
+        if (typeName == null) return typeName;
+
+        switch (typeName) {
+            case "int": return "Integer";
+            case "double": return "Double";
+            case "boolean": return "Boolean";
+            case "char": return "Character";
+            case "long": return "Long";
+            case "float": return "Float";
+            case "short": return "Short";
+            case "byte": return "Byte";
+            default: return typeName; // Already a reference type
+        }
+    }
+
+    /**
+     * Checks if a type name is a primitive type.
+     *
+     * @param typeName The type name to check
+     * @return true if the type is a Java primitive
+     */
+    public static boolean isPrimitive(String typeName) {
+        if (typeName == null) return false;
+
+        return typeName.equals("int") ||
+                typeName.equals("double") ||
+                typeName.equals("boolean") ||
+                typeName.equals("char") ||
+                typeName.equals("long") ||
+                typeName.equals("float") ||
+                typeName.equals("short") ||
+                typeName.equals("byte");
+    }
+
+    /**
+     * Converts wrapper class names back to primitives.
+     * Opposite of toWrapperType().
+     *
+     * @param typeName The wrapper class name (e.g., "Integer")
+     * @return The primitive type name (e.g., "int")
+     */
+    public static String toPrimitiveType(String typeName) {
+        if (typeName == null) return typeName;
+
+        switch (typeName) {
+            case "Integer": return "int";
+            case "Double": return "double";
+            case "Boolean": return "boolean";
+            case "Character": return "char";
+            case "Long": return "long";
+            case "Float": return "float";
+            case "Short": return "short";
+            case "Byte": return "byte";
+            default: return typeName; // Not a wrapper
+        }
+    }
+
+    public static int getListNestingLevel(String typeName) {
+        if (typeName == null) return 0;
+        int level = 0;
+        String temp = typeName;
+        while (temp.startsWith("ArrayList<") || temp.startsWith("List<")) {
+            level++;
+            int start = temp.indexOf("<") + 1;
+            int end = temp.lastIndexOf(">");
+            if (start < end) {
+                temp = temp.substring(start, end);
+            } else {
+                break;
+            }
+        }
+        return level;
+    }
+
+    public static String getLeafType(String typeName) {
+        if (typeName == null) return "Object";
+        String temp = typeName;
+        while (temp.startsWith("ArrayList<") || temp.startsWith("List<")) {
+            int start = temp.indexOf("<") + 1;
+            int end = temp.lastIndexOf(">");
+            if (start < end) {
+                temp = temp.substring(start, end);
+            } else {
+                break;
+            }
+        }
+        return temp;
+    }
+
     public static Type createTypeNode(AST ast, String typeName) {
+        // Handle ArrayList<Type>
+        if (typeName.startsWith("ArrayList<") && typeName.endsWith(">")) {
+            // Extract element type
+            int start = typeName.indexOf("<") + 1;
+            int end = typeName.lastIndexOf(">");
+            String elementTypeName = typeName.substring(start, end);
+
+            // Create parameterized type: ArrayList<ElementType>
+            ParameterizedType paramType = ast.newParameterizedType(
+                    ast.newSimpleType(ast.newName("ArrayList"))
+            );
+
+            // Handle nested ArrayList recursively
+            Type elementType = createTypeNode(ast, elementTypeName);
+            paramType.typeArguments().add(elementType);
+
+            return paramType;
+        }
+
+        // Handle arrays
         int dimensions = 0;
         String baseName = typeName;
 

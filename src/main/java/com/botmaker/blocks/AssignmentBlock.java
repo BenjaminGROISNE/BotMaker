@@ -15,6 +15,8 @@ import javafx.scene.layout.Pane;
 import javafx.scene.layout.Priority;
 import org.eclipse.jdt.core.dom.*;
 
+
+
 public class AssignmentBlock extends AbstractStatementBlock {
 
     private ExpressionBlock leftHandSide;
@@ -132,12 +134,21 @@ public class AssignmentBlock extends AbstractStatementBlock {
 
     private void showExpressionMenu(Button button, CompletionContext context) {
         ContextMenu menu = new ContextMenu();
-        // FIX: Apply style consistency
         menu.setStyle("-fx-control-inner-background: white;");
 
-        for (com.botmaker.ui.AddableExpression type : com.botmaker.ui.AddableExpression.values()) {
+        // FIXED: Determine the target type from the left-hand side
+        String targetType = "any";
+        if (leftHandSide != null && leftHandSide.getAstNode() != null) {
+            org.eclipse.jdt.core.dom.Expression lhsExpr = (org.eclipse.jdt.core.dom.Expression) leftHandSide.getAstNode();
+            org.eclipse.jdt.core.dom.ITypeBinding binding = lhsExpr.resolveTypeBinding();
+            if (binding != null) {
+                targetType = com.botmaker.util.TypeManager.determineUiType(binding.getName());
+            }
+        }
+
+        // FIXED: Filter expressions based on target type
+        for (com.botmaker.ui.AddableExpression type : com.botmaker.ui.AddableExpression.getForType(targetType)) {
             MenuItem menuItem = new MenuItem(type.getDisplayName());
-            // FIX: Ensure text is visible
             menuItem.setStyle("-fx-text-fill: black;");
 
             menuItem.setOnAction(e -> {

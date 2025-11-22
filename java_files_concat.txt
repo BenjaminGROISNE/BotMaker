@@ -19,6 +19,8 @@ import javafx.scene.layout.Pane;
 import javafx.scene.layout.Priority;
 import org.eclipse.jdt.core.dom.*;
 
+
+
 public class AssignmentBlock extends AbstractStatementBlock {
 
     private ExpressionBlock leftHandSide;
@@ -136,12 +138,21 @@ public class AssignmentBlock extends AbstractStatementBlock {
 
     private void showExpressionMenu(Button button, CompletionContext context) {
         ContextMenu menu = new ContextMenu();
-        // FIX: Apply style consistency
         menu.setStyle("-fx-control-inner-background: white;");
 
-        for (com.botmaker.ui.AddableExpression type : com.botmaker.ui.AddableExpression.values()) {
+        // FIXED: Determine the target type from the left-hand side
+        String targetType = "any";
+        if (leftHandSide != null && leftHandSide.getAstNode() != null) {
+            org.eclipse.jdt.core.dom.Expression lhsExpr = (org.eclipse.jdt.core.dom.Expression) leftHandSide.getAstNode();
+            org.eclipse.jdt.core.dom.ITypeBinding binding = lhsExpr.resolveTypeBinding();
+            if (binding != null) {
+                targetType = com.botmaker.util.TypeManager.determineUiType(binding.getName());
+            }
+        }
+
+        // FIXED: Filter expressions based on target type
+        for (com.botmaker.ui.AddableExpression type : com.botmaker.ui.AddableExpression.getForType(targetType)) {
             MenuItem menuItem = new MenuItem(type.getDisplayName());
-            // FIX: Ensure text is visible
             menuItem.setStyle("-fx-text-fill: black;");
 
             menuItem.setOnAction(e -> {
@@ -998,7 +1009,7 @@ package com.botmaker.blocks;
 
 import com.botmaker.core.AbstractExpressionBlock;
 import com.botmaker.lsp.CompletionContext;
-import com.botmaker.validation.TypeValidator;
+import com.botmaker.util.TypeManager;
 import javafx.application.Platform;
 import javafx.scene.Cursor;
 import javafx.scene.Node;
@@ -1055,12 +1066,8 @@ public class IdentifierBlock extends AbstractExpressionBlock {
             if (e.getClickCount() == 1) requestSuggestions(container, context);
         });
 
-        if (isUnedited) Platform.runLater(() -> autoPopulateWithSuggestion(container, context));
-
         return container;
     }
-
-    private void autoPopulateWithSuggestion(Node uiNode, CompletionContext context) { /* ... */ }
 
     private void requestSuggestions(Node uiNode, CompletionContext context) {
         try {
@@ -1087,14 +1094,22 @@ public class IdentifierBlock extends AbstractExpressionBlock {
                             // Only Variables and Fields
                             .filter(item -> item.getKind() == CompletionItemKind.Variable || item.getKind() == CompletionItemKind.Field)
                             // Filter hidden (args, scanner)
-                            .filter(item -> TypeValidator.isUserVariable(item.getLabel()))
-                            // Filter by Type
+                            .filter(item -> TypeManager.isUserVariable(item.getLabel()))
+                            // Filter by Type using TypeManager
                             .filter(item -> {
-                                boolean match = TypeValidator.isTypeCompatible(item.getDetail(), expectedType);
-                                if (!match) {
-                                    // Optional: Log rejected items to understand why they failed
-                                    // System.out.println("Rejected " + item.getLabel() + " (" + item.getDetail() + ") for " + expectedType);
+                                // Extract type info: prefer detail, fallback to label parsing
+                                String typeInfo = item.getDetail();
+                                if (typeInfo == null || typeInfo.isBlank()) {
+                                    // Try to parse "name : type" from label
+                                    if (item.getLabel().contains(" : ")) {
+                                        String[] parts = item.getLabel().split(" : ");
+                                        if (parts.length > 1) {
+                                            typeInfo = parts[1].trim();
+                                        }
+                                    }
                                 }
+
+                                boolean match = TypeManager.isCompatible(typeInfo, expectedType);
                                 return match;
                             })
                             .collect(Collectors.toList());
@@ -1108,7 +1123,14 @@ public class IdentifierBlock extends AbstractExpressionBlock {
                         for (CompletionItem item : filteredItems) {
                             String label = item.getLabel();
                             String detail = item.getDetail();
-                            String display = label + (detail != null && !detail.isEmpty() ? " (" + getSimpleTypeName(detail) + ")" : "");
+                            if (detail == null && label.contains(" : ")) {
+                                detail = label.split(" : ")[1].trim();
+                            }
+
+                            String display = label;
+                            if (!label.contains(":") && detail != null && !detail.isEmpty()) {
+                                display += " (" + getSimpleTypeName(detail) + ")";
+                            }
 
                             MenuItem mi = new MenuItem(display);
                             mi.setStyle("-fx-text-fill: black;");
@@ -1131,7 +1153,7 @@ public class IdentifierBlock extends AbstractExpressionBlock {
      * Walks up the AST skipping parentheses to find the true semantic parent.
      */
     private String determineExpectedType() {
-        if (this.astNode == null) return "any";
+        if (this.astNode == null) return TypeManager.UI_TYPE_ANY;
 
         ASTNode child = this.astNode;
         ASTNode parent = this.astNode.getParent();
@@ -1142,64 +1164,96 @@ public class IdentifierBlock extends AbstractExpressionBlock {
             parent = parent.getParent();
         }
 
-        if (parent == null) return "any";
+        if (parent == null) return TypeManager.UI_TYPE_ANY;
 
         // 2. Boolean Contexts
         if (parent instanceof IfStatement) {
-            if (((IfStatement) parent).getExpression() == child) return "boolean";
+            if (((IfStatement) parent).getExpression() == child) return TypeManager.UI_TYPE_BOOLEAN;
         }
         if (parent instanceof WhileStatement) {
-            if (((WhileStatement) parent).getExpression() == child) return "boolean";
+            if (((WhileStatement) parent).getExpression() == child) return TypeManager.UI_TYPE_BOOLEAN;
         }
         if (parent instanceof DoStatement) {
-            if (((DoStatement) parent).getExpression() == child) return "boolean";
+            if (((DoStatement) parent).getExpression() == child) return TypeManager.UI_TYPE_BOOLEAN;
         }
 
-        // 3. Math Contexts (Binary Expressions)
+        // 3. Unary Contexts (Prefix/Postfix)
+        if (parent instanceof PrefixExpression) {
+            PrefixExpression.Operator op = ((PrefixExpression) parent).getOperator();
+            if (op == PrefixExpression.Operator.NOT) {
+                return TypeManager.UI_TYPE_BOOLEAN;
+            }
+            if (op == PrefixExpression.Operator.INCREMENT || op == PrefixExpression.Operator.DECREMENT ||
+                    op == PrefixExpression.Operator.PLUS || op == PrefixExpression.Operator.MINUS) {
+                return TypeManager.UI_TYPE_NUMBER;
+            }
+        }
+        if (parent instanceof PostfixExpression) {
+            return TypeManager.UI_TYPE_NUMBER;
+        }
+
+        // 4. Binary Contexts (Infix Expressions)
         if (parent instanceof InfixExpression) {
             InfixExpression infix = (InfixExpression) parent;
             InfixExpression.Operator op = infix.getOperator();
 
-            // Comparison operators (==, !=, <, >) accept anything compatible, but return boolean
-            // Arithmetic operators (+, -, *, /) expect numbers
             if (op == InfixExpression.Operator.PLUS || op == InfixExpression.Operator.MINUS ||
                     op == InfixExpression.Operator.TIMES || op == InfixExpression.Operator.DIVIDE ||
                     op == InfixExpression.Operator.REMAINDER) {
-                return "number";
+                return TypeManager.UI_TYPE_NUMBER;
             }
-            // Conditional operators (&&, ||) expect booleans
+            if (op == InfixExpression.Operator.LESS || op == InfixExpression.Operator.GREATER ||
+                    op == InfixExpression.Operator.LESS_EQUALS || op == InfixExpression.Operator.GREATER_EQUALS) {
+                return TypeManager.UI_TYPE_NUMBER;
+            }
             if (op == InfixExpression.Operator.CONDITIONAL_AND || op == InfixExpression.Operator.CONDITIONAL_OR) {
-                return "boolean";
+                return TypeManager.UI_TYPE_BOOLEAN;
             }
         }
 
-        // 4. Assignment (RHS must match LHS)
+        // 5. Assignment (RHS must match LHS)
         if (parent instanceof Assignment) {
             Assignment assignment = (Assignment) parent;
             if (assignment.getRightHandSide() == child) {
                 Expression lhs = assignment.getLeftHandSide();
                 ITypeBinding binding = lhs.resolveTypeBinding();
                 if (binding != null) {
-                    if ("boolean".equals(binding.getName())) return "boolean";
-                    if ("int".equals(binding.getName()) || "double".equals(binding.getName())) return "number";
-                    if ("String".equals(binding.getName())) return "String";
+                    if (TypeManager.isCompatible(binding, TypeManager.UI_TYPE_BOOLEAN)) return TypeManager.UI_TYPE_BOOLEAN;
+                    if (TypeManager.isCompatible(binding, TypeManager.UI_TYPE_NUMBER)) return TypeManager.UI_TYPE_NUMBER;
+                    if (TypeManager.isCompatible(binding, TypeManager.UI_TYPE_STRING)) return TypeManager.UI_TYPE_STRING;
                 }
             }
         }
 
-        return "any";
+        // 6. Variable Declaration Initialization (Target must match Variable Type)
+        // e.g. int x = [variable]
+        if (parent instanceof VariableDeclarationFragment) {
+            VariableDeclarationFragment frag = (VariableDeclarationFragment) parent;
+            if (frag.getInitializer() == child) {
+                ASTNode grandParent = frag.getParent();
+                if (grandParent instanceof VariableDeclarationStatement) {
+                    Type type = ((VariableDeclarationStatement) grandParent).getType();
+                    return TypeManager.determineUiType(type.toString());
+                }
+            }
+        }
+
+        return TypeManager.UI_TYPE_ANY;
     }
 
     private String getSimpleTypeName(String detail) {
         if (detail == null) return "";
-        if (detail.equals("int") || detail.equals("double")) return "number";
-        if (detail.equals("boolean")) return "bool";
+        if (TypeManager.isCompatible(detail, TypeManager.UI_TYPE_NUMBER)) return "number";
+        if (TypeManager.isCompatible(detail, TypeManager.UI_TYPE_BOOLEAN)) return "bool";
         return detail;
     }
 
     private void applySuggestion(CompletionItem item, CompletionContext context) {
         try {
             String insertText = item.getInsertText() != null ? item.getInsertText() : item.getLabel();
+            if (insertText.contains(" : ")) {
+                insertText = insertText.split(" : ")[0];
+            }
             context.codeEditor().replaceSimpleName((SimpleName) this.astNode, insertText);
         } catch (Exception e) {
             e.printStackTrace();
@@ -2149,6 +2203,7 @@ package com.botmaker.blocks;
 import com.botmaker.core.AbstractStatementBlock;
 import com.botmaker.core.ExpressionBlock;
 import com.botmaker.lsp.CompletionContext;
+import com.botmaker.ui.AddableExpression;
 import com.botmaker.util.TypeManager;
 import javafx.geometry.Pos;
 import javafx.scene.Cursor;
@@ -2189,7 +2244,7 @@ public class VariableDeclarationBlock extends AbstractStatementBlock {
         typeLabel.getStyleClass().add("type-label");
         typeLabel.setCursor(Cursor.HAND);
 
-        Tooltip tooltip = new Tooltip("Click to change type (List/Base)");
+        Tooltip tooltip = new Tooltip("Click to change type (ArrayList/Base)");
         Tooltip.install(typeLabel, tooltip);
 
         typeLabel.setOnMouseClicked(e -> showTypeMenu(typeLabel, context));
@@ -2221,6 +2276,9 @@ public class VariableDeclarationBlock extends AbstractStatementBlock {
         if (initializer != null) {
             if (initializer.getAstNode() instanceof org.eclipse.jdt.core.dom.ArrayInitializer) {
                 container.getChildren().add(createListDisplay(context));
+            } else if (isArrayList(variableType)) {
+                // Show ArrayList constructor
+                container.getChildren().add(createArrayListDisplay());
             } else {
                 container.getChildren().add(initializer.getUINode(context));
             }
@@ -2231,7 +2289,11 @@ public class VariableDeclarationBlock extends AbstractStatementBlock {
         // --- ADD BUTTON ---
         Button addButton = new Button("+");
         addButton.getStyleClass().add("expression-add-button");
-        addButton.setOnAction(e -> showExpressionMenu(addButton, context));
+
+        // DYNAMIC TYPE FILTERING
+        String uiTargetType = TypeManager.determineUiType(variableType.toString());
+        addButton.setOnAction(e -> showExpressionMenu(addButton, context, uiTargetType));
+
         container.getChildren().add(addButton);
 
         // --- SPACER & DELETE ---
@@ -2252,31 +2314,34 @@ public class VariableDeclarationBlock extends AbstractStatementBlock {
         ContextMenu menu = new ContextMenu();
 
         String currentStr = variableType.toString();
+        boolean isArrayListType = isArrayList(variableType);
         boolean isArray = variableType.isArrayType();
-        String baseType = isArray ? currentStr.replace("[]", "") : currentStr;
 
-        // 1. Option to toggle List status
-        MenuItem toggleList = new MenuItem(isArray ? "Convert to Single Value" : "Convert to List");
+        // FIXED: Make baseType effectively final by extracting to final variable
+        final String baseType = extractBaseType(currentStr, isArrayListType, isArray);
+
+        // 1. Toggle between ArrayList and Single Value
+        MenuItem toggleList = new MenuItem(isArrayListType ? "Convert to Single Value" : "Convert to ArrayList");
         toggleList.setStyle("-fx-font-weight: bold;");
         toggleList.setOnAction(e -> {
             String newType;
-            if (isArray) {
-                // Remove one level of array (int[][] -> int[])
-                int lastIndex = currentStr.lastIndexOf("[]");
-                newType = currentStr.substring(0, lastIndex);
+            if (isArrayListType) {
+                // ArrayList<Type> -> Type
+                newType = baseType;
             } else {
-                // Add array level
-                newType = currentStr + "[]";
+                // Type -> ArrayList<Type>
+                newType = "ArrayList<" + baseType + ">";
             }
             context.codeEditor().replaceVariableType((VariableDeclarationStatement) this.astNode, newType);
         });
         menu.getItems().add(toggleList);
 
-        // Option for nested list if already a list
-        if (isArray) {
-            MenuItem makeNested = new MenuItem("Make List of Lists");
+        // Option for nested list if already ArrayList
+        if (isArrayListType) {
+            MenuItem makeNested = new MenuItem("Make ArrayList of ArrayLists");
             makeNested.setOnAction(e -> {
-                String newType = currentStr + "[]";
+                // FIXED: Use final baseType variable
+                String newType = "ArrayList<ArrayList<" + baseType + ">>";
                 context.codeEditor().replaceVariableType((VariableDeclarationStatement) this.astNode, newType);
             });
             menu.getItems().add(makeNested);
@@ -2288,10 +2353,15 @@ public class VariableDeclarationBlock extends AbstractStatementBlock {
         Menu changeBaseMenu = new Menu("Change Base Type");
         for (String type : TypeManager.getFundamentalTypeNames()) {
             MenuItem item = new MenuItem(type);
+            // FIXED: Capture type in final variable for lambda
+            final String finalType = type;
             item.setOnAction(e -> {
-                // Preserve array dimensions, just change base
-                String dims = currentStr.substring(currentStr.indexOf(baseType) + baseType.length());
-                String newType = type + dims;
+                String newType;
+                if (isArrayListType) {
+                    newType = "ArrayList<" + finalType + ">";
+                } else {
+                    newType = finalType;
+                }
                 context.codeEditor().replaceVariableType((VariableDeclarationStatement) this.astNode, newType);
             });
             changeBaseMenu.getItems().add(item);
@@ -2299,6 +2369,35 @@ public class VariableDeclarationBlock extends AbstractStatementBlock {
         menu.getItems().add(changeBaseMenu);
 
         menu.show(anchor, javafx.geometry.Side.BOTTOM, 0, 0);
+    }
+
+    /**
+     * FIXED: Extract base type logic to separate method to avoid lambda capture issues
+     */
+    private String extractBaseType(String currentStr, boolean isArrayListType, boolean isArray) {
+        if (isArrayListType) {
+            // Extract from "ArrayList<Type>"
+            if (currentStr.contains("<") && currentStr.contains(">")) {
+                int start = currentStr.indexOf("<") + 1;
+                int end = currentStr.indexOf(">");
+                return currentStr.substring(start, end);
+            }
+        } else if (isArray) {
+            return currentStr.replace("[]", "");
+        }
+        return currentStr;
+    }
+
+    private HBox createArrayListDisplay() {
+        HBox listBox = new HBox(3);
+        listBox.setAlignment(Pos.CENTER_LEFT);
+        listBox.getStyleClass().add("inline-list-display");
+
+        Label newLabel = new Label("new ArrayList<>()");
+        newLabel.setStyle("-fx-font-family: monospace; -fx-font-weight: bold;");
+        listBox.getChildren().add(newLabel);
+
+        return listBox;
     }
 
     private HBox createListDisplay(CompletionContext context) {
@@ -2334,18 +2433,31 @@ public class VariableDeclarationBlock extends AbstractStatementBlock {
 
     private String getDisplayTypeName(Type type) {
         String typeName = type.toString();
+
+        if (isArrayList(type)) {
+            return typeName; // Show "ArrayList<String>" as-is
+        }
+
         if (typeName.endsWith("[]")) {
-            // Convert "int[][]" to "int list list" for display, or keep symbols
-            // Keeping symbols is often clearer for nested lists
             return typeName.replace("[]", " list");
         }
         return typeName;
     }
 
-    private void showExpressionMenu(Button button, CompletionContext context) {
+    private boolean isArrayList(Type type) {
+        String typeName = type.toString();
+        return typeName.startsWith("ArrayList<") || typeName.equals("ArrayList");
+    }
+
+    // UPDATED: Accepts targetType and filters
+    private void showExpressionMenu(Button button, CompletionContext context, String targetType) {
         ContextMenu menu = new ContextMenu();
-        for (com.botmaker.ui.AddableExpression type : com.botmaker.ui.AddableExpression.values()) {
+        menu.setStyle("-fx-control-inner-background: white;");
+
+        for (AddableExpression type : AddableExpression.getForType(targetType)) {
             MenuItem menuItem = new MenuItem(type.getDisplayName());
+            menuItem.setStyle("-fx-text-fill: black;");
+
             menuItem.setOnAction(e -> {
                 if (initializer != null) {
                     context.codeEditor().replaceExpression(
@@ -4323,6 +4435,8 @@ import org.eclipse.text.edits.TextEdit;
 
 import java.util.List;
 
+import static com.botmaker.util.TypeManager.toWrapperType;
+
 public class AstRewriter {
 
     /**
@@ -4728,19 +4842,24 @@ public class AstRewriter {
                 VariableDeclarationFragment fragment = ast.newVariableDeclarationFragment();
                 fragment.setName(ast.newSimpleName("myList"));
 
-                // Default to int[]
-                ArrayInitializer initializer = ast.newArrayInitializer();
-                // Add one dummy element so it's visible
-                initializer.expressions().add(ast.newNumberLiteral("0"));
+                // Use wrapper type for generics
+                String wrapperType = toWrapperType("int"); // or "Integer" directly
 
-                ArrayCreation arrayCreation = ast.newArrayCreation();
-                arrayCreation.setType(ast.newArrayType(ast.newPrimitiveType(PrimitiveType.INT)));
-                arrayCreation.setInitializer(initializer);
-
-                fragment.setInitializer(arrayCreation);
+                ClassInstanceCreation arrayListCreation = ast.newClassInstanceCreation();
+                ParameterizedType paramType = ast.newParameterizedType(
+                        ast.newSimpleType(ast.newName("ArrayList"))
+                );
+                paramType.typeArguments().add(ast.newSimpleType(ast.newName(wrapperType)));
+                arrayListCreation.setType(paramType);
+                fragment.setInitializer(arrayListCreation);
 
                 VariableDeclarationStatement varDecl = ast.newVariableDeclarationStatement(fragment);
-                varDecl.setType(ast.newArrayType(ast.newPrimitiveType(PrimitiveType.INT)));
+                ParameterizedType declType = ast.newParameterizedType(
+                        ast.newSimpleType(ast.newName("ArrayList"))
+                );
+                declType.typeArguments().add(ast.newSimpleType(ast.newName(wrapperType)));
+                varDecl.setType(declType);
+
                 return varDecl;
             }
             case IF:
@@ -5078,7 +5197,10 @@ public class AstRewriter {
             return originalCode;
         }
     }
-    public String replaceVariableType(CompilationUnit cu, String originalCode, VariableDeclarationStatement varDecl, String newTypeName) {
+// ADD THIS METHOD TO AstRewriter.java
+
+    public String replaceVariableType(CompilationUnit cu, String originalCode,
+                                      VariableDeclarationStatement varDecl, String newTypeName) {
         AST ast = cu.getAST();
         ASTRewrite rewriter = ASTRewrite.create(ast);
 
@@ -5086,39 +5208,34 @@ public class AstRewriter {
         rewriter.replace(varDecl.getType(), newType, null);
 
         if (!varDecl.fragments().isEmpty()) {
-            VariableDeclarationFragment fragment = (VariableDeclarationFragment) varDecl.fragments().get(0);
+            VariableDeclarationFragment fragment =
+                    (VariableDeclarationFragment) varDecl.fragments().get(0);
             Expression currentInitializer = fragment.getInitializer();
 
-            boolean isNewTypeArray = newTypeName.endsWith("[]");
-            boolean isCurrentTypeArray = currentInitializer instanceof ArrayCreation || currentInitializer instanceof ArrayInitializer;
-
+            boolean isNewTypeArrayList = newTypeName.startsWith("ArrayList<");
             Expression newInitializer = null;
 
-            if (isNewTypeArray) {
-                if (!isCurrentTypeArray) {
-                    // Switching Primitive -> Array: Create new empty array
-                    ArrayCreation creation = ast.newArrayCreation();
-                    // We need the element type for 'new int[]' part.
-                    // Rough logic: strip one pair of [] for the creation type
-                    String elementTypeName = newTypeName.substring(0, newTypeName.lastIndexOf("[]"));
-                    creation.setType((ArrayType) TypeManager.createTypeNode(ast, newTypeName));
-                    creation.setInitializer(ast.newArrayInitializer());
-                    newInitializer = creation;
-                } else {
-                    // Array -> Array (e.g. int[] to String[]): Keep structure, but types might mismatch.
-                    // Ideally we walk the tree, but for stability, let's reset to empty array
-                    // or just update the type part of ArrayCreation if it exists.
-                    if (currentInitializer instanceof ArrayCreation) {
-                        ArrayCreation oldAc = (ArrayCreation) currentInitializer;
-                        ArrayCreation newAc = ast.newArrayCreation();
-                        newAc.setType((ArrayType) TypeManager.createTypeNode(ast, newTypeName));
-                        // Preserve elements if possible? Complex. Let's reset to empty for safety.
-                        newAc.setInitializer(ast.newArrayInitializer());
-                        newInitializer = newAc;
-                    }
-                }
+            if (isNewTypeArrayList) {
+                ClassInstanceCreation creation = ast.newClassInstanceCreation();
+                String elementType = extractArrayListElementType(newTypeName);
+
+                // FIXED: Use wrapper type if it's a primitive
+                String wrapperType = toWrapperType(elementType);
+
+                ParameterizedType paramType = ast.newParameterizedType(
+                        ast.newSimpleType(ast.newName("ArrayList"))
+                );
+                paramType.typeArguments().add(
+                        TypeManager.createTypeNode(ast, wrapperType)
+                );
+                creation.setType(paramType);
+                newInitializer = creation;
+            } else if (newTypeName.endsWith("[]")) {
+                ArrayCreation creation = ast.newArrayCreation();
+                creation.setType((ArrayType) TypeManager.createTypeNode(ast, newTypeName));
+                creation.setInitializer(ast.newArrayInitializer());
+                newInitializer = creation;
             } else {
-                // Switching Array -> Primitive
                 newInitializer = createDefaultInitializer(ast, newTypeName);
             }
 
@@ -5136,6 +5253,15 @@ public class AstRewriter {
             e.printStackTrace();
             return originalCode;
         }
+    }
+
+    private String extractArrayListElementType(String arrayListType) {
+        if (arrayListType.contains("<") && arrayListType.contains(">")) {
+            int start = arrayListType.indexOf("<") + 1;
+            int end = arrayListType.lastIndexOf(">");
+            return arrayListType.substring(start, end);
+        }
+        return "Object";
     }
 }
 
@@ -8023,7 +8149,6 @@ FILE: ./src/main/java/com/botmaker/ui/AddableExpression.java
 
 package com.botmaker.ui;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -8034,10 +8159,11 @@ public enum AddableExpression {
     NUMBER("Number", "number"),
     TRUE("True", "boolean"),
     FALSE("False", "boolean"),
-    VARIABLE("Variable", "any"), // Variables can be anything
+    VARIABLE("Variable", "any"), // Variables can be anything (IdentifierBlock handles specific filtering)
 
     // Nested
-    LIST("Sub-List", "any"),
+    // Changed from "any" to "list" to restrict array initializers to array contexts
+    LIST("Sub-List", "list"),
 
     // Math Operations (Return numbers)
     ADD("Addition (+)", "+", "number"),
@@ -8070,7 +8196,7 @@ public enum AddableExpression {
 
     /**
      * Returns a list of expressions suitable for a specific target type.
-     * @param targetType "boolean", "number", "String", or "any"
+     * @param targetType "boolean", "number", "String", "list", or "any"
      */
     public static List<AddableExpression> getForType(String targetType) {
         if (targetType == null || targetType.equals("any")) {
@@ -8078,7 +8204,12 @@ public enum AddableExpression {
         }
 
         return Arrays.stream(values())
-                .filter(e -> e.returnType.equals("any") || e.returnType.equals(targetType))
+                .filter(e -> {
+                    // Always allow "any" items (like Variable)
+                    if (e.returnType.equals("any")) return true;
+                    // Exact match
+                    return e.returnType.equals(targetType);
+                })
                 .collect(Collectors.toList());
     }
 }
@@ -9563,28 +9694,248 @@ FILE: ./src/main/java/com/botmaker/util/TypeManager.java
 
 package com.botmaker.util;
 
-import org.eclipse.jdt.core.dom.AST;
-import org.eclipse.jdt.core.dom.PrimitiveType;
-import org.eclipse.jdt.core.dom.Type;
+import org.eclipse.jdt.core.dom.*;
 
 import java.util.List;
+import java.util.Set;
 
 public class TypeManager {
 
+    // --- Constants for UI Categories ---
+    public static final String UI_TYPE_ANY = "any";
+    public static final String UI_TYPE_NUMBER = "number";
+    public static final String UI_TYPE_BOOLEAN = "boolean";
+    public static final String UI_TYPE_STRING = "String";
+    public static final String UI_TYPE_TEXT = "Text"; // Alias for String
+    public static final String UI_TYPE_LIST = "list";
+
+    // --- Mapping Tables ---
+
+    // Fundamental types for dropdown menus
     private static final List<String> FUNDAMENTAL_TYPES = List.of(
             "int", "double", "boolean", "String", "long", "float", "char"
+    );
+
+    // Hidden variables that shouldn't appear in autocomplete
+    private static final Set<String> HIDDEN_VARIABLES = Set.of(
+            "args", "this", "super", "scanner", "class"
+    );
+
+    // Groupings for Type Checking
+    private static final Set<String> NUMBER_TYPES = Set.of(
+            "int", "double", "float", "long", "short", "byte",
+            "java.lang.Integer", "java.lang.Double", "java.lang.Float",
+            "java.lang.Long", "java.lang.Short", "java.lang.Byte",
+            "Integer", "Double", "Float", "Long", "Short", "Byte" // Simple names
+    );
+
+    private static final Set<String> BOOLEAN_TYPES = Set.of(
+            "boolean", "java.lang.Boolean", "Boolean"
+    );
+
+    private static final Set<String> STRING_TYPES = Set.of(
+            "String", "java.lang.String", "char", "java.lang.Character", "Character"
     );
 
     public static List<String> getFundamentalTypeNames() {
         return FUNDAMENTAL_TYPES;
     }
 
+    // --- Validation Logic ---
+
+    public static boolean isUserVariable(String variableName) {
+        if (variableName == null || variableName.isEmpty()) return false;
+        String cleanName = variableName.split(" ")[0].split(":")[0].trim();
+        if (HIDDEN_VARIABLES.contains(cleanName)) return false;
+        if (cleanName.startsWith("_")) return false;
+        return true;
+    }
+
+    // --- UI Type Determination ---
+
     /**
-     * Creates a JDT AST Type node from a string representation.
-     * Handles arrays (e.g., "int[]", "String[][]").
+     * Determines the UI Category (number, boolean, String, list) from a Java type name.
+     * Used to filter available expressions in blocks.
      */
+    public static String determineUiType(String typeName) {
+        if (typeName == null || typeName.isBlank()) return UI_TYPE_ANY;
+        String clean = typeName.trim();
+
+        // Check for ArrayList first
+        if (isArrayList(clean)) return UI_TYPE_LIST;
+
+        // Then check for arrays
+        if (clean.endsWith("[]")) return UI_TYPE_LIST;
+
+        if (NUMBER_TYPES.contains(clean)) return UI_TYPE_NUMBER;
+        if (BOOLEAN_TYPES.contains(clean)) return UI_TYPE_BOOLEAN;
+        if (STRING_TYPES.contains(clean)) return UI_TYPE_STRING;
+
+        return UI_TYPE_ANY;
+    }
+
+
+    // --- Type Compatibility (ITypeBinding) ---
+
+    public static boolean isCompatible(ITypeBinding binding, String targetUiType) {
+        if (targetUiType == null || targetUiType.equals(UI_TYPE_ANY)) return true;
+        if (binding == null) return true;
+
+        if (binding.isArray()) {
+            return targetUiType.equals(UI_TYPE_LIST) || targetUiType.endsWith("[]");
+        }
+
+        String qualifiedName = binding.getQualifiedName();
+        String simpleName = binding.getName();
+
+        switch (targetUiType) {
+            case UI_TYPE_NUMBER:
+                return NUMBER_TYPES.contains(simpleName) || NUMBER_TYPES.contains(qualifiedName);
+            case UI_TYPE_BOOLEAN:
+                return BOOLEAN_TYPES.contains(simpleName) || BOOLEAN_TYPES.contains(qualifiedName);
+            case UI_TYPE_STRING:
+            case UI_TYPE_TEXT:
+                return STRING_TYPES.contains(simpleName) || STRING_TYPES.contains(qualifiedName);
+            default:
+                return targetUiType.equals(simpleName) || targetUiType.equals(qualifiedName);
+        }
+    }
+
+    /**
+     * Determines if a type string represents an ArrayList
+     */
+    public static boolean isArrayList(String typeName) {
+        if (typeName == null) return false;
+        return typeName.startsWith("ArrayList<") || typeName.equals("ArrayList");
+    }
+
+
+
+    // --- Type Compatibility (String) ---
+
+    public static boolean isCompatible(String typeName, String targetUiType) {
+        if (targetUiType == null || targetUiType.equals(UI_TYPE_ANY)) return true;
+        if (typeName == null || typeName.isBlank()) return true;
+
+        String cleanType = typeName.trim();
+
+        if (cleanType.endsWith("[]")) {
+            return targetUiType.equals(UI_TYPE_LIST) || targetUiType.endsWith("[]");
+        }
+
+        switch (targetUiType) {
+            case UI_TYPE_NUMBER:
+                return NUMBER_TYPES.contains(cleanType);
+            case UI_TYPE_BOOLEAN:
+                return BOOLEAN_TYPES.contains(cleanType);
+            case UI_TYPE_STRING:
+            case UI_TYPE_TEXT:
+                return STRING_TYPES.contains(cleanType) || cleanType.endsWith("String");
+            default:
+                return cleanType.equals(targetUiType);
+        }
+    }
+
+    // --- Display Utilities ---
+
+    public static String getFriendlyTypeName(ITypeBinding typeBinding) {
+        if (typeBinding == null) return "unknown";
+        if (typeBinding.isArray()) return "list";
+        String name = typeBinding.getName();
+        if (NUMBER_TYPES.contains(name)) return "number";
+        if (STRING_TYPES.contains(name)) return "text";
+        if (BOOLEAN_TYPES.contains(name)) return "bool";
+        return name;
+    }
+
+    // --- AST Node Creation ---
+
+    /**
+     * Converts primitive type names to their wrapper classes.
+     * Required for ArrayList and other generics which don't support primitives.
+     *
+     * @param typeName The type name to convert (e.g., "int", "boolean")
+     * @return The wrapper class name (e.g., "Integer", "Boolean")
+     */
+    public static String toWrapperType(String typeName) {
+        if (typeName == null) return typeName;
+
+        switch (typeName) {
+            case "int": return "Integer";
+            case "double": return "Double";
+            case "boolean": return "Boolean";
+            case "char": return "Character";
+            case "long": return "Long";
+            case "float": return "Float";
+            case "short": return "Short";
+            case "byte": return "Byte";
+            default: return typeName; // Already a reference type
+        }
+    }
+
+    /**
+     * Checks if a type name is a primitive type.
+     *
+     * @param typeName The type name to check
+     * @return true if the type is a Java primitive
+     */
+    public static boolean isPrimitive(String typeName) {
+        if (typeName == null) return false;
+
+        return typeName.equals("int") ||
+                typeName.equals("double") ||
+                typeName.equals("boolean") ||
+                typeName.equals("char") ||
+                typeName.equals("long") ||
+                typeName.equals("float") ||
+                typeName.equals("short") ||
+                typeName.equals("byte");
+    }
+
+    /**
+     * Converts wrapper class names back to primitives.
+     * Opposite of toWrapperType().
+     *
+     * @param typeName The wrapper class name (e.g., "Integer")
+     * @return The primitive type name (e.g., "int")
+     */
+    public static String toPrimitiveType(String typeName) {
+        if (typeName == null) return typeName;
+
+        switch (typeName) {
+            case "Integer": return "int";
+            case "Double": return "double";
+            case "Boolean": return "boolean";
+            case "Character": return "char";
+            case "Long": return "long";
+            case "Float": return "float";
+            case "Short": return "short";
+            case "Byte": return "byte";
+            default: return typeName; // Not a wrapper
+        }
+    }
+
     public static Type createTypeNode(AST ast, String typeName) {
-        // count array dimensions
+        // Handle ArrayList<Type>
+        if (typeName.startsWith("ArrayList<") && typeName.endsWith(">")) {
+            // Extract element type
+            int start = typeName.indexOf("<") + 1;
+            int end = typeName.lastIndexOf(">");
+            String elementTypeName = typeName.substring(start, end);
+
+            // Create parameterized type: ArrayList<ElementType>
+            ParameterizedType paramType = ast.newParameterizedType(
+                    ast.newSimpleType(ast.newName("ArrayList"))
+            );
+
+            // Handle nested ArrayList recursively
+            Type elementType = createTypeNode(ast, elementTypeName);
+            paramType.typeArguments().add(elementType);
+
+            return paramType;
+        }
+
+        // Handle arrays
         int dimensions = 0;
         String baseName = typeName;
 
@@ -10239,77 +10590,4 @@ public class ErrorTranslator {
     }
 }
 
-
-=================================================================================
-FILE: ./src/main/java/com/botmaker/validation/TypeValidator.java
-=================================================================================
-
-package com.botmaker.validation;
-
-import org.eclipse.jdt.core.dom.*;
-import java.util.*;
-
-public class TypeValidator {
-
-    private static final Set<String> HIDDEN_VARIABLES = Set.of(
-            "args", "this", "super", "scanner"
-    );
-
-    public static boolean isUserVariable(String variableName) {
-        if (variableName == null || variableName.isEmpty()) return false;
-        String cleanName = variableName.split(" ")[0].split(":")[0];
-        if (HIDDEN_VARIABLES.contains(cleanName)) return false;
-        if (cleanName.startsWith("_")) return false;
-        return true;
-    }
-
-    /**
-     * Checks if a Java type (from LSP detail) matches our UI target type.
-     */
-    public static boolean isTypeCompatible(String javaType, String targetUiType) {
-        if (targetUiType == null || targetUiType.equals("any")) return true;
-        if (javaType == null) return true; // Safety fallback if LSP doesn't provide type
-
-        // Normalize: remove whitespace and handle generics "List<String>" -> "List"
-        String cleanType = javaType.trim();
-        // Strip generics for simple checking if needed, or check startsWith
-        // For now, basic matching:
-
-        switch (targetUiType) {
-            case "boolean":
-                return cleanType.equals("boolean") ||
-                        cleanType.endsWith("Boolean"); // Handles java.lang.Boolean
-
-            case "number":
-                return cleanType.equals("int") || cleanType.endsWith("Integer") ||
-                        cleanType.equals("double") || cleanType.endsWith("Double") ||
-                        cleanType.equals("float") || cleanType.endsWith("Float") ||
-                        cleanType.equals("long") || cleanType.endsWith("Long") ||
-                        cleanType.equals("short") || cleanType.endsWith("Short") ||
-                        cleanType.equals("byte") || cleanType.endsWith("Byte");
-
-            case "String":
-            case "Text":
-                return cleanType.endsWith("String"); // Handles java.lang.String
-
-            default:
-                return true;
-        }
-    }
-
-    // (Keep other existing methods like getFriendlyTypeName if you have them)
-    public static String getFriendlyTypeName(ITypeBinding typeBinding) {
-        if (typeBinding == null) return "unknown";
-        String typeName = typeBinding.getName();
-        if (typeBinding.isArray()) return "list";
-        if ("int".equals(typeName) || "double".equals(typeName)) return "number";
-        if ("String".equals(typeName)) return "text";
-        if ("boolean".equals(typeName)) return "bool";
-        return typeName;
-    }
-
-    public static String suggestVariableName(ITypeBinding typeBinding) {
-        return "variable"; // Simplified for now
-    }
-}
 

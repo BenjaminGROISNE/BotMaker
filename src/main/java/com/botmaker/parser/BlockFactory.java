@@ -399,6 +399,48 @@ public class BlockFactory {
             return Optional.of(block);
         }
 
+        if (astExpression instanceof ClassInstanceCreation) {
+            ClassInstanceCreation cic = (ClassInstanceCreation) astExpression;
+            Type type = cic.getType();
+
+            // Check if it is an ArrayList
+            if (type.toString().startsWith("ArrayList")) {
+                // If it has arguments, check if the first arg is Arrays.asList or List.of
+                if (!cic.arguments().isEmpty()) {
+                    Object firstArg = cic.arguments().get(0);
+                    if (firstArg instanceof MethodInvocation) {
+                        // It wraps a list factory -> Parse the inner factory as the list block
+                        return parseExpression((Expression) firstArg, nodeToBlockMap);
+                    }
+                }
+
+                // If it is empty new ArrayList<>(), we need to render an empty list block
+                // However, ListBlock expects an ArrayInitializer or MethodInvocation node.
+                // We will map this ClassInstanceCreation to a ListBlock manually,
+                // but realize it won't allow adding items easily until transformed.
+                // *Correction*: The AstRewriter update above ensures new blocks are created
+                // WITH Arrays.asList, so this case only happens for legacy/manual code.
+            }
+        }
+
+        if (astExpression instanceof MethodInvocation) {
+            MethodInvocation mi = (MethodInvocation) astExpression;
+            String methodName = mi.getName().getIdentifier();
+            String scope = mi.getExpression() != null ? mi.getExpression().toString() : "";
+
+            boolean isListFactory =
+                    (scope.equals("Arrays") && methodName.equals("asList")) ||
+                            (scope.equals("List") && methodName.equals("of"));
+
+            if (isListFactory) {
+                ListBlock listBlock = new ListBlock(BlockIdPrefix.generate(BlockIdPrefix.LIST, mi), mi);
+                nodeToBlockMap.put(astExpression, listBlock);
+                for (Object arg : mi.arguments()) {
+                    parseExpression((Expression) arg, nodeToBlockMap).ifPresent(listBlock::addElement);
+                }
+                return Optional.of(listBlock);
+            }
+        }
         if (astExpression instanceof NumberLiteral) {
             NumberLiteral literalNode = (NumberLiteral) astExpression;
             String token = literalNode.getToken();

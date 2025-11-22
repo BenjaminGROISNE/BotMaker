@@ -3,6 +3,7 @@ package com.botmaker.blocks;
 import com.botmaker.core.AbstractStatementBlock;
 import com.botmaker.core.ExpressionBlock;
 import com.botmaker.lsp.CompletionContext;
+import com.botmaker.ui.AddableExpression;
 import com.botmaker.util.TypeManager;
 import javafx.geometry.Pos;
 import javafx.scene.Cursor;
@@ -43,7 +44,7 @@ public class VariableDeclarationBlock extends AbstractStatementBlock {
         typeLabel.getStyleClass().add("type-label");
         typeLabel.setCursor(Cursor.HAND);
 
-        Tooltip tooltip = new Tooltip("Click to change type (List/Base)");
+        Tooltip tooltip = new Tooltip("Click to change type (ArrayList/Base)");
         Tooltip.install(typeLabel, tooltip);
 
         typeLabel.setOnMouseClicked(e -> showTypeMenu(typeLabel, context));
@@ -73,12 +74,21 @@ public class VariableDeclarationBlock extends AbstractStatementBlock {
 
         // --- INITIALIZER ---
         if (initializer != null) {
-            if (initializer.getAstNode() instanceof org.eclipse.jdt.core.dom.ArrayInitializer) {
+            // FIX: Prioritize rendering the initializer if it exists, especially if it's a ListBlock
+            if (initializer instanceof ListBlock) {
+                // Render the interactive list UI directly
+                container.getChildren().add(initializer.getUINode(context));
+            }
+            else if (initializer.getAstNode() instanceof org.eclipse.jdt.core.dom.ArrayInitializer) {
+                // Fallback for primitive arrays {1,2,3} to use bracket styling if not caught by ListBlock
                 container.getChildren().add(createListDisplay(context));
-            } else {
+            }
+            else {
+                // Standard expression
                 container.getChildren().add(initializer.getUINode(context));
             }
         } else {
+            // Only show placeholder if truly null (e.g. int x;)
             container.getChildren().add(createExpressionDropZone(context));
         }
 
@@ -87,7 +97,6 @@ public class VariableDeclarationBlock extends AbstractStatementBlock {
         addButton.getStyleClass().add("expression-add-button");
 
         // DYNAMIC TYPE FILTERING
-        // Calculate the UI type string (number, boolean, list, String) from the AST Type
         String uiTargetType = TypeManager.determineUiType(variableType.toString());
         addButton.setOnAction(e -> showExpressionMenu(addButton, context, uiTargetType));
 
@@ -111,31 +120,33 @@ public class VariableDeclarationBlock extends AbstractStatementBlock {
         ContextMenu menu = new ContextMenu();
 
         String currentStr = variableType.toString();
+        boolean isArrayListType = isArrayList(variableType);
         boolean isArray = variableType.isArrayType();
-        String baseType = isArray ? currentStr.replace("[]", "") : currentStr;
 
-        // 1. Option to toggle List status
-        MenuItem toggleList = new MenuItem(isArray ? "Convert to Single Value" : "Convert to List");
+        final String baseType = extractBaseType(currentStr, isArrayListType, isArray);
+
+        // 1. Toggle between ArrayList and Single Value
+        MenuItem toggleList = new MenuItem(isArrayListType ? "Convert to Single Value" : "Convert to ArrayList");
         toggleList.setStyle("-fx-font-weight: bold;");
         toggleList.setOnAction(e -> {
             String newType;
-            if (isArray) {
-                // Remove one level of array (int[][] -> int[])
-                int lastIndex = currentStr.lastIndexOf("[]");
-                newType = currentStr.substring(0, lastIndex);
+            if (isArrayListType) {
+                newType = baseType;
             } else {
-                // Add array level
-                newType = currentStr + "[]";
+                // FIX: Ensure wrapper type (e.g., Integer, Boolean) is used
+                newType = "ArrayList<" + TypeManager.toWrapperType(baseType) + ">";
             }
             context.codeEditor().replaceVariableType((VariableDeclarationStatement) this.astNode, newType);
         });
         menu.getItems().add(toggleList);
 
-        // Option for nested list if already a list
-        if (isArray) {
-            MenuItem makeNested = new MenuItem("Make List of Lists");
+        // Option for nested list
+        if (isArrayListType) {
+            MenuItem makeNested = new MenuItem("Make ArrayList of ArrayLists");
             makeNested.setOnAction(e -> {
-                String newType = currentStr + "[]";
+                // FIX: Ensure inner type is also wrapped properly
+                // Result: ArrayList<ArrayList<Boolean>>
+                String newType = "ArrayList<ArrayList<" + TypeManager.toWrapperType(baseType) + ">>";
                 context.codeEditor().replaceVariableType((VariableDeclarationStatement) this.astNode, newType);
             });
             menu.getItems().add(makeNested);
@@ -147,10 +158,15 @@ public class VariableDeclarationBlock extends AbstractStatementBlock {
         Menu changeBaseMenu = new Menu("Change Base Type");
         for (String type : TypeManager.getFundamentalTypeNames()) {
             MenuItem item = new MenuItem(type);
+            final String finalType = type;
             item.setOnAction(e -> {
-                // Preserve array dimensions, just change base
-                String dims = currentStr.substring(currentStr.indexOf(baseType) + baseType.length());
-                String newType = type + dims;
+                String newType;
+                if (isArrayListType) {
+                    // FIX: Ensure wrapper type is used when switching types in a list
+                    newType = "ArrayList<" + TypeManager.toWrapperType(finalType) + ">";
+                } else {
+                    newType = finalType;
+                }
                 context.codeEditor().replaceVariableType((VariableDeclarationStatement) this.astNode, newType);
             });
             changeBaseMenu.getItems().add(item);
@@ -158,6 +174,19 @@ public class VariableDeclarationBlock extends AbstractStatementBlock {
         menu.getItems().add(changeBaseMenu);
 
         menu.show(anchor, javafx.geometry.Side.BOTTOM, 0, 0);
+    }
+
+    private String extractBaseType(String currentStr, boolean isArrayListType, boolean isArray) {
+        if (isArrayListType) {
+            if (currentStr.contains("<") && currentStr.contains(">")) {
+                int start = currentStr.indexOf("<") + 1;
+                int end = currentStr.lastIndexOf(">"); // Fix: use lastIndexOf for nested
+                return currentStr.substring(start, end);
+            }
+        } else if (isArray) {
+            return currentStr.replace("[]", "");
+        }
+        return currentStr;
     }
 
     private HBox createListDisplay(CompletionContext context) {
@@ -170,16 +199,8 @@ public class VariableDeclarationBlock extends AbstractStatementBlock {
         listBox.getChildren().add(openBracket);
 
         if (initializer instanceof ListBlock) {
-            ListBlock listBlock = (ListBlock) initializer;
-            if (listBlock.getElements().isEmpty()) {
-                Label emptyLabel = new Label("empty");
-                emptyLabel.setStyle("-fx-font-style: italic; -fx-text-fill: #999; -fx-font-size: 10px;");
-                listBox.getChildren().add(emptyLabel);
-            } else {
-                Label countLabel = new Label(listBlock.getElements().size() + " items");
-                countLabel.setStyle("-fx-font-style: italic;");
-                listBox.getChildren().add(countLabel);
-            }
+            // If it's a ListBlock but forced here (e.g. array), render it
+            listBox.getChildren().add(initializer.getUINode(context));
         } else {
             listBox.getChildren().add(initializer.getUINode(context));
         }
@@ -193,19 +214,25 @@ public class VariableDeclarationBlock extends AbstractStatementBlock {
 
     private String getDisplayTypeName(Type type) {
         String typeName = type.toString();
+        if (isArrayList(type)) {
+            return typeName;
+        }
         if (typeName.endsWith("[]")) {
-            // Convert "int[][]" to "int list list" for display, or keep symbols
             return typeName.replace("[]", " list");
         }
         return typeName;
     }
 
-    // UPDATED: Accepts targetType and filters
+    private boolean isArrayList(Type type) {
+        String typeName = type.toString();
+        return typeName.startsWith("ArrayList<") || typeName.equals("ArrayList");
+    }
+
     private void showExpressionMenu(Button button, CompletionContext context, String targetType) {
         ContextMenu menu = new ContextMenu();
         menu.setStyle("-fx-control-inner-background: white;");
 
-        for (com.botmaker.ui.AddableExpression type : com.botmaker.ui.AddableExpression.getForType(targetType)) {
+        for (AddableExpression type : AddableExpression.getForType(targetType)) {
             MenuItem menuItem = new MenuItem(type.getDisplayName());
             menuItem.setStyle("-fx-text-fill: black;");
 

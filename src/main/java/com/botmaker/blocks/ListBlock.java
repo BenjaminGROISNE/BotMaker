@@ -3,6 +3,7 @@ package com.botmaker.blocks;
 import com.botmaker.core.AbstractExpressionBlock;
 import com.botmaker.core.ExpressionBlock;
 import com.botmaker.lsp.CompletionContext;
+import com.botmaker.util.TypeManager;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
@@ -12,159 +13,239 @@ import javafx.scene.control.Label;
 import javafx.scene.control.MenuItem;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
-import org.eclipse.jdt.core.dom.ArrayInitializer;
+import org.eclipse.jdt.core.dom.*;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
- * Visual block for array/list literals like {1, 2, 3}
- * Allows users to add, remove, and edit elements inline
+ * Visual block for lists.
+ * Supports:
+ * 1. Array Initializers: {1, 2, 3}
+ * 2. List Factories: Arrays.asList(1, 2, 3) or List.of(1, 2, 3)
  */
 public class ListBlock extends AbstractExpressionBlock {
 
     private final List<ExpressionBlock> elements = new ArrayList<>();
+    private final boolean isFixedArray; // True if it's a {}, False if it's Arrays.asList
 
-    public ListBlock(String id, ArrayInitializer astNode) {
+    public ListBlock(String id, ASTNode astNode) {
         super(id, astNode);
-        for (Object expr : astNode.expressions()) {
-            // The BlockFactory handles the recursive creation of children,
-            // we just hold the references.
-        }
-    }
-
-    public List<ExpressionBlock> getElements() {
-        return elements;
+        this.isFixedArray = (astNode instanceof ArrayInitializer);
     }
 
     public void addElement(ExpressionBlock element) {
         this.elements.add(element);
     }
 
-    public void clearElements() {
-        this.elements.clear();
+    public List<ExpressionBlock> getElements() {
+        return elements;
     }
 
     @Override
     protected Node createUINode(CompletionContext context) {
+        // ... (Container and Style setup remains same)
         VBox container = new VBox(5);
         container.setAlignment(Pos.TOP_LEFT);
         container.getStyleClass().add("list-block");
 
-        // Add padding and a slight background diff for nested lists
-        // (You should add .nested-list to your CSS, or we use inline style for now)
-        if (this.astNode.getParent() instanceof ArrayInitializer) {
-            container.setStyle("-fx-background-color: rgba(255,255,255,0.1); -fx-background-radius: 4; -fx-border-color: rgba(255,255,255,0.2); -fx-border-width: 1;");
-            container.setPadding(new Insets(4, 8, 4, 8));
+        boolean isNested = (this.astNode.getParent() instanceof ArrayInitializer) ||
+                (this.astNode.getParent() instanceof MethodInvocation);
+
+        if (isNested) {
+            container.setStyle("-fx-background-color: rgba(255,255,255,0.08); -fx-background-radius: 6; -fx-border-color: rgba(255,255,255,0.15); -fx-border-width: 1;");
+            container.setPadding(new Insets(4, 6, 4, 6));
         } else {
-            container.setPadding(new Insets(8, 12, 8, 12));
+            container.setPadding(new Insets(6, 10, 6, 10));
         }
 
-        // Header row: "List [...]" label + Add button
+        // --- Header Row ---
         HBox headerRow = new HBox(8);
         headerRow.setAlignment(Pos.CENTER_LEFT);
 
-        // Determine depth/context for label
-        String labelText = (this.astNode.getParent() instanceof ArrayInitializer) ? "Sub-List" : "List";
-        Label listLabel = new Label(labelText + " [" + elements.size() + "]");
+        // Calculate logic
+        String itemType = determineItemType();
+        // If itemType is "list", we are holding sub-lists.
+        // If itemType is "boolean"/"number", we are holding values.
+
+        String typeLabel = isFixedArray ? "Array" : "List";
+
+        // Debug label helpful for verification:
+        // Label listLabel = new Label(typeLabel + "<" + itemType + "> (" + elements.size() + ")");
+        Label listLabel = new Label(typeLabel + " (" + elements.size() + ")");
         listLabel.getStyleClass().add("list-label");
+
+        if (!isFixedArray) {
+            listLabel.setStyle("-fx-text-fill: #aaddff;");
+        }
 
         Button addButton = new Button("+");
         addButton.getStyleClass().add("expression-add-button");
-        // Compact the button slightly for nested views
-        addButton.setStyle("-fx-font-size: 10px; -fx-padding: 2px 6px;");
-        addButton.setOnAction(e -> showAddElementMenu(addButton, context, elements.size()));
+        addButton.setStyle("-fx-font-size: 10px; -fx-padding: 2px 8px;");
+
+        addButton.setOnAction(e -> showAddElementMenu(addButton, context, elements.size(), itemType));
 
         headerRow.getChildren().addAll(listLabel, addButton);
         container.getChildren().add(headerRow);
 
-        // Display each element with controls
+        // --- Elements ---
         if (elements.isEmpty()) {
-            Label emptyLabel = new Label("(empty)");
-            emptyLabel.setStyle("-fx-font-style: italic; -fx-text-fill: rgba(255,255,255,0.6); -fx-font-size: 10px;");
+            Label emptyLabel = new Label(" (empty) ");
+            emptyLabel.setStyle("-fx-font-style: italic; -fx-text-fill: rgba(255,255,255,0.4); -fx-font-size: 10px;");
             container.getChildren().add(emptyLabel);
         } else {
-            VBox elementsContainer = new VBox(2); // Tighter spacing
-            elementsContainer.setPadding(new Insets(2, 0, 0, 10)); // Indent content
+            VBox elementsContainer = new VBox(3);
+            elementsContainer.setPadding(new Insets(2, 0, 0, 12));
 
             for (int i = 0; i < elements.size(); i++) {
-                HBox elementRow = createElementRow(i, elements.get(i), context);
+                // Pass itemType down so row knows what it contains
+                HBox elementRow = createElementRow(i, elements.get(i), context, itemType);
                 elementsContainer.getChildren().add(elementRow);
             }
-
             container.getChildren().add(elementsContainer);
         }
 
         return container;
     }
 
-    private HBox createElementRow(int index, ExpressionBlock element, CompletionContext context) {
-        HBox row = new HBox(5);
+    /**
+     * Determines the UI type of items inside this list (e.g., "number", "text", "boolean", "list").
+     */
+    /**
+     * Logic to determine what kind of items this specific ListBlock should contain.
+     * It walks up the AST to find the Variable Declaration, calculates total nesting depth,
+     * calculates current depth, and decides if we need "list" or a leaf type.
+     */
+    private String determineItemType() {
+        ASTNode current = this.astNode;
+        ASTNode rootDefinition = null;
+        int currentDepth = 0;
+
+        // 1. Walk up to find the root definition and count current depth
+        while (current != null) {
+            // If we hit another Arrays.asList, we are one level deeper
+            if (current instanceof MethodInvocation) {
+                MethodInvocation mi = (MethodInvocation) current;
+                if ("asList".equals(mi.getName().getIdentifier())) {
+                    // If we aren't the starting node, increment depth
+                    if (current != this.astNode) {
+                        currentDepth++;
+                    }
+                }
+            }
+
+            // Found declaration: ArrayList<ArrayList<Boolean>> x = ...
+            if (current instanceof VariableDeclarationFragment) {
+                rootDefinition = current;
+                break;
+            }
+            // Found declaration in standard usage
+            if (current instanceof VariableDeclarationStatement) {
+                rootDefinition = current;
+                break;
+            }
+            // Found usage inside new ArrayList<>(...)
+            if (current instanceof ClassInstanceCreation) {
+                rootDefinition = current;
+                break;
+            }
+
+            current = current.getParent();
+        }
+
+        // 2. Analyze the root type
+        String rootTypeStr = "any";
+
+        if (rootDefinition instanceof VariableDeclarationStatement) {
+            rootTypeStr = ((VariableDeclarationStatement) rootDefinition).getType().toString();
+        } else if (rootDefinition instanceof VariableDeclarationFragment) {
+            ASTNode parent = rootDefinition.getParent();
+            if (parent instanceof VariableDeclarationStatement) {
+                rootTypeStr = ((VariableDeclarationStatement) parent).getType().toString();
+            }
+        } else if (rootDefinition instanceof ClassInstanceCreation) {
+            rootTypeStr = ((ClassInstanceCreation) rootDefinition).getType().toString();
+        }
+
+        // 3. Calculate Dimensions
+        // e.g. ArrayList<ArrayList<Boolean>> -> genericDepth = 2, leafType = "Boolean"
+        int genericDepth = TypeManager.getListNestingLevel(rootTypeStr);
+        String leafType = TypeManager.getLeafType(rootTypeStr); // e.g. "Boolean"
+
+
+        // 4. Determine UI Type based on depth comparison
+        // If genericDepth is 2 (List of List of Bool)
+        // currentDepth 0 (Root) -> needs "list" (to make depth 1)
+        // currentDepth 1 (Middle) -> needs leafType ("Boolean")
+
+        // Note: The depth calculation depends on how the AST creates the structure.
+        // Arrays.asList( Arrays.asList ( ... ) )
+        // Root list is depth 0.
+
+        int remainingLevels = genericDepth - 1 - currentDepth;
+
+        if (remainingLevels > 0) {
+            return "list";
+        } else {
+            return TypeManager.determineUiType(leafType);
+        }
+    }
+
+    private HBox createElementRow(int index, ExpressionBlock element, CompletionContext context, String itemType) {
+        HBox row = new HBox(6);
         row.setAlignment(Pos.CENTER_LEFT);
 
-        // Index label
         Label indexLabel = new Label(String.valueOf(index));
-        indexLabel.setStyle("-fx-font-family: monospace; -fx-text-fill: #888; -fx-min-width: 15px; -fx-font-size: 10px;");
+        indexLabel.setStyle("-fx-font-family: monospace; -fx-text-fill: #666; -fx-font-size: 9px; -fx-min-width: 10px;");
 
-        // Element display
         Node elementNode = element.getUINode(context);
-
-        // Logic to handle nested UI resizing
         if (element instanceof ListBlock) {
-            // Allow nested list to expand
             HBox.setHgrow(elementNode, javafx.scene.layout.Priority.ALWAYS);
         }
 
-        // Change button
         Button changeButton = new Button("↻");
         changeButton.getStyleClass().add("icon-button");
-        changeButton.setStyle("-fx-font-size: 9px; -fx-padding: 1px 4px; -fx-opacity: 0.6;");
-        changeButton.setOnAction(e -> showChangeElementMenu(changeButton, context, index));
+        changeButton.setStyle("-fx-font-size: 8px; -fx-padding: 1px 4px; -fx-opacity: 0.3;");
+        changeButton.setOnAction(e -> showChangeElementMenu(changeButton, context, index, itemType));
 
-        // Delete button
         Button deleteButton = new Button("✕");
         deleteButton.getStyleClass().add("icon-button");
-        deleteButton.setStyle("-fx-font-size: 9px; -fx-padding: 1px 4px; -fx-text-fill: #E74C3C; -fx-opacity: 0.6;");
+        deleteButton.setStyle("-fx-font-size: 8px; -fx-padding: 1px 4px; -fx-text-fill: #ff5555; -fx-opacity: 0.3;");
         deleteButton.setOnAction(e -> deleteElement(index, context));
 
-        // Hover effects for buttons
         row.setOnMouseEntered(e -> {
-            changeButton.setStyle("-fx-font-size: 9px; -fx-padding: 1px 4px; -fx-opacity: 1.0;");
-            deleteButton.setStyle("-fx-font-size: 9px; -fx-padding: 1px 4px; -fx-text-fill: #E74C3C; -fx-opacity: 1.0;");
+            changeButton.setStyle("-fx-font-size: 8px; -fx-padding: 1px 4px; -fx-opacity: 1.0;");
+            deleteButton.setStyle("-fx-font-size: 8px; -fx-padding: 1px 4px; -fx-text-fill: #ff5555; -fx-opacity: 1.0;");
         });
         row.setOnMouseExited(e -> {
-            changeButton.setStyle("-fx-font-size: 9px; -fx-padding: 1px 4px; -fx-opacity: 0.6;");
-            deleteButton.setStyle("-fx-font-size: 9px; -fx-padding: 1px 4px; -fx-text-fill: #E74C3C; -fx-opacity: 0.6;");
+            changeButton.setStyle("-fx-font-size: 8px; -fx-padding: 1px 4px; -fx-opacity: 0.3;");
+            deleteButton.setStyle("-fx-font-size: 8px; -fx-padding: 1px 4px; -fx-text-fill: #ff5555; -fx-opacity: 0.3;");
         });
 
         row.getChildren().addAll(indexLabel, elementNode, changeButton, deleteButton);
         return row;
     }
 
-    // ... (Rest of methods: showAddElementMenu, showChangeElementMenu, deleteElement, getDetails remain the same)
-    // Ensure AddableExpression.values() now includes LIST, so the menu automatically picks it up.
-
-    private void showAddElementMenu(Button button, CompletionContext context, int insertIndex) {
+    private void showAddElementMenu(Button button, CompletionContext context, int insertIndex, String targetType) {
         ContextMenu menu = new ContextMenu();
 
-        for (com.botmaker.ui.AddableExpression type : com.botmaker.ui.AddableExpression.values()) {
+        // Use getForType to filter the options
+        for (com.botmaker.ui.AddableExpression type : com.botmaker.ui.AddableExpression.getForType(targetType)) {
             MenuItem menuItem = new MenuItem(type.getDisplayName());
             menuItem.setOnAction(e -> {
-                context.codeEditor().addElementToArrayInitializer(
-                        (ArrayInitializer) this.astNode,
-                        type,
-                        insertIndex
-                );
+                context.codeEditor().addElementToList(this.astNode, type, insertIndex);
             });
             menu.getItems().add(menuItem);
         }
         menu.show(button, javafx.geometry.Side.BOTTOM, 0, 0);
     }
 
-    private void showChangeElementMenu(Button button, CompletionContext context, int elementIndex) {
+    private void showChangeElementMenu(Button button, CompletionContext context, int elementIndex, String targetType) {
         ContextMenu menu = new ContextMenu();
 
-        for (com.botmaker.ui.AddableExpression type : com.botmaker.ui.AddableExpression.values()) {
+        // Use getForType to filter the options
+        for (com.botmaker.ui.AddableExpression type : com.botmaker.ui.AddableExpression.getForType(targetType)) {
             MenuItem menuItem = new MenuItem(type.getDisplayName());
             menuItem.setOnAction(e -> {
                 if (elementIndex < elements.size()) {
@@ -182,15 +263,12 @@ public class ListBlock extends AbstractExpressionBlock {
 
     private void deleteElement(int index, CompletionContext context) {
         if (index >= 0 && index < elements.size()) {
-            context.codeEditor().deleteElementFromArrayInitializer(
-                    (ArrayInitializer) this.astNode,
-                    index
-            );
+            context.codeEditor().deleteElementFromList(this.astNode, index);
         }
     }
 
     @Override
     public String getDetails() {
-        return "List (" + elements.size() + ")";
+        return (isFixedArray ? "Array" : "List") + " (" + elements.size() + " items)";
     }
 }

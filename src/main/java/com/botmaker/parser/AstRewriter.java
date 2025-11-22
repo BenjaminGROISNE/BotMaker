@@ -15,6 +15,8 @@ import org.eclipse.text.edits.TextEdit;
 
 import java.util.List;
 
+import static com.botmaker.util.TypeManager.toWrapperType;
+
 public class AstRewriter {
 
     /**
@@ -72,17 +74,13 @@ public class AstRewriter {
         ASTRewrite rewriter = ASTRewrite.create(ast);
 
         if (type == AddableBlock.COMMENT) {
-            // SPECIAL HANDLING FOR COMMENTS
-            // We use a String Placeholder. It is not a real statement, but JDT ListRewrite accepts it.
-            // ASTNode.EMPTY_STATEMENT is passed as a type hint for formatting.
             Statement commentPlaceholder = (Statement) rewriter.createStringPlaceholder("// Comment", ASTNode.EMPTY_STATEMENT);
-
             Block targetAstBlock = (Block) targetBody.getAstNode();
             ListRewrite listRewrite = rewriter.getListRewrite(targetAstBlock, Block.STATEMENTS_PROPERTY);
             listRewrite.insertAt(commentPlaceholder, index, null);
         } else {
-            // Standard Statement Handling
-            Statement newStatement = createDefaultStatement(ast, type);
+            // PASS CU AND REWRITER HERE
+            Statement newStatement = createDefaultStatement(ast, type, cu, rewriter);
             if (newStatement == null) return originalCode;
 
             Block targetAstBlock = (Block) targetBody.getAstNode();
@@ -109,22 +107,54 @@ public class AstRewriter {
         AST ast = cu.getAST();
         ASTRewrite rewriter = ASTRewrite.create(ast);
 
-        Expression newExpression = createDefaultExpression(ast, type);
+        Expression newExpression = createDefaultExpression(ast, type, cu, rewriter);
         if (newExpression == null) {
             return originalCode;
         }
 
         rewriter.replace(toReplace, newExpression, null);
+        return applyRewrite(rewriter, originalCode);
+    }
 
-        IDocument document = new Document(originalCode);
-        try {
-            TextEdit edits = rewriter.rewriteAST(document, null);
-            edits.apply(document);
-            return document.get();
-        } catch (Exception e) {
-            e.printStackTrace();
-            return originalCode;
+
+    private Expression createRecursiveListInitializer(AST ast, String typeName, CompilationUnit cu, ASTRewrite rewriter) {
+        // 1. Handle Imports
+        ImportManager.addImport(cu, rewriter, "java.util.ArrayList");
+        ImportManager.addImport(cu, rewriter, "java.util.Arrays");
+
+        // 2. Create the outer "new ArrayList<>()"
+        ClassInstanceCreation creation = ast.newClassInstanceCreation();
+
+        // Create generic type: ArrayList<...>
+        String innerTypeStr = extractArrayListElementType(typeName);
+        String wrapperInnerType = toWrapperType(innerTypeStr); // Handle int->Integer if needed
+
+        ParameterizedType paramType = ast.newParameterizedType(ast.newSimpleType(ast.newName("ArrayList")));
+
+        // Only add type arguments if we aren't at the raw Object level
+        if (!innerTypeStr.equals("Object")) {
+            paramType.typeArguments().add(TypeManager.createTypeNode(ast, wrapperInnerType));
         }
+        creation.setType(paramType);
+
+        // 3. Create "Arrays.asList(...)"
+        MethodInvocation asList = ast.newMethodInvocation();
+        asList.setExpression(ast.newSimpleName("Arrays"));
+        asList.setName(ast.newSimpleName("asList"));
+
+        // 4. Determine what goes INSIDE the list
+        if (innerTypeStr.startsWith("ArrayList<")) {
+            // RECURSION: The inner element is ALSO an ArrayList
+            Expression innerList = createRecursiveListInitializer(ast, innerTypeStr, cu, rewriter);
+            asList.arguments().add(innerList);
+        } else {
+            // BASE CASE: The inner element is a primitive/string value (e.g., 0.0 or true)
+            Expression defaultValue = createDefaultInitializer(ast, innerTypeStr);
+            asList.arguments().add(defaultValue);
+        }
+
+        creation.arguments().add(asList);
+        return creation;
     }
 
     public String updateComment(String originalCode, Comment commentNode, String newText) {
@@ -244,7 +274,37 @@ public class AstRewriter {
             return originalCode;
         }
     }
+    // UPDATED: Handles deletion for both types
+    public String deleteElementFromList(
+            CompilationUnit cu,
+            String originalCode,
+            ASTNode listNode,
+            int elementIndex) {
 
+        AST ast = cu.getAST();
+        ASTRewrite rewriter = ASTRewrite.create(ast);
+        List<Expression> expressions;
+        ChildListPropertyDescriptor property;
+
+        if (listNode instanceof ArrayInitializer) {
+            expressions = ((ArrayInitializer) listNode).expressions();
+            property = ArrayInitializer.EXPRESSIONS_PROPERTY;
+        } else if (listNode instanceof MethodInvocation) {
+            expressions = ((MethodInvocation) listNode).arguments();
+            property = MethodInvocation.ARGUMENTS_PROPERTY;
+        } else {
+            return originalCode;
+        }
+
+        if (elementIndex < 0 || elementIndex >= expressions.size()) {
+            return originalCode;
+        }
+
+        Expression toRemove = expressions.get(elementIndex);
+        rewriter.getListRewrite(listNode, property).remove(toRemove, null);
+
+        return applyRewrite(rewriter, originalCode);
+    }
     public String deleteElseFromIfStatement(CompilationUnit cu, String originalCode, IfStatement ifStatement) {
         ASTRewrite rewriter = ASTRewrite.create(cu.getAST());
         if (ifStatement.getElseStatement() != null) {
@@ -309,7 +369,7 @@ public class AstRewriter {
 
     // ADD THIS METHOD TO AstRewriter.java - replaces the existing createDefaultExpression
 
-    private Expression createDefaultExpression(AST ast, AddableExpression type) {
+    private Expression createDefaultExpression(AST ast, AddableExpression type, CompilationUnit cu, ASTRewrite rewriter) {
         switch (type) {
             case TEXT:
                 StringLiteral newString = ast.newStringLiteral();
@@ -328,37 +388,33 @@ public class AstRewriter {
             case VARIABLE:
                 return ast.newSimpleName(DefaultNames.DEFAULT_VARIABLE);
 
-            // NEW: Handle Sub-List creation
             case LIST:
-                return ast.newArrayInitializer();
+                // Create: Arrays.asList()
+                // This is the versatile list expression used for ArrayLists and Nested Lists
+                ImportManager.addImport(cu, rewriter, "java.util.Arrays");
+
+                MethodInvocation asList = ast.newMethodInvocation();
+                asList.setExpression(ast.newSimpleName("Arrays"));
+                asList.setName(ast.newSimpleName("asList"));
+
+                // Add default elements? No, start empty.
+                return asList;
 
             case ADD:
             case SUBTRACT:
             case MULTIPLY:
             case DIVIDE:
             case MODULO:
-                // Create a binary expression: variable <op> 0
                 InfixExpression infixExpr = ast.newInfixExpression();
                 infixExpr.setLeftOperand(ast.newSimpleName(DefaultNames.DEFAULT_VARIABLE));
                 infixExpr.setRightOperand(ast.newNumberLiteral("0"));
 
-                // Set the operator based on type
                 switch (type) {
-                    case ADD:
-                        infixExpr.setOperator(InfixExpression.Operator.PLUS);
-                        break;
-                    case SUBTRACT:
-                        infixExpr.setOperator(InfixExpression.Operator.MINUS);
-                        break;
-                    case MULTIPLY:
-                        infixExpr.setOperator(InfixExpression.Operator.TIMES);
-                        break;
-                    case DIVIDE:
-                        infixExpr.setOperator(InfixExpression.Operator.DIVIDE);
-                        break;
-                    case MODULO:
-                        infixExpr.setOperator(InfixExpression.Operator.REMAINDER);
-                        break;
+                    case ADD: infixExpr.setOperator(InfixExpression.Operator.PLUS); break;
+                    case SUBTRACT: infixExpr.setOperator(InfixExpression.Operator.MINUS); break;
+                    case MULTIPLY: infixExpr.setOperator(InfixExpression.Operator.TIMES); break;
+                    case DIVIDE: infixExpr.setOperator(InfixExpression.Operator.DIVIDE); break;
+                    case MODULO: infixExpr.setOperator(InfixExpression.Operator.REMAINDER); break;
                 }
                 return infixExpr;
 
@@ -367,7 +423,7 @@ public class AstRewriter {
         }
     }
 
-    private Statement createDefaultStatement(AST ast, AddableBlock type) {
+    private Statement createDefaultStatement(AST ast, AddableBlock type, CompilationUnit cu, ASTRewrite rewriter) {
         switch (type) {
             case PRINT:
                 // System.out.println("");
@@ -417,22 +473,25 @@ public class AstRewriter {
                 return varDecl;
             }
             case DECLARE_ARRAY: {
+                if (cu != null && rewriter != null) {
+                    ImportManager.addImport(cu, rewriter, "java.util.ArrayList");
+                    ImportManager.addImport(cu, rewriter, "java.util.Arrays");
+                }
+
                 VariableDeclarationFragment fragment = ast.newVariableDeclarationFragment();
                 fragment.setName(ast.newSimpleName("myList"));
 
-                // Default to int[]
-                ArrayInitializer initializer = ast.newArrayInitializer();
-                // Add one dummy element so it's visible
-                initializer.expressions().add(ast.newNumberLiteral("0"));
+                // Default to ArrayList<Integer>
+                String defaultType = "ArrayList<Integer>";
 
-                ArrayCreation arrayCreation = ast.newArrayCreation();
-                arrayCreation.setType(ast.newArrayType(ast.newPrimitiveType(PrimitiveType.INT)));
-                arrayCreation.setInitializer(initializer);
+                // Use the helper to generate: new ArrayList<>(Arrays.asList(0))
+                Expression initializer = createRecursiveListInitializer(ast, defaultType, cu, rewriter);
 
-                fragment.setInitializer(arrayCreation);
+                fragment.setInitializer(initializer);
 
                 VariableDeclarationStatement varDecl = ast.newVariableDeclarationStatement(fragment);
-                varDecl.setType(ast.newArrayType(ast.newPrimitiveType(PrimitiveType.INT)));
+                varDecl.setType(TypeManager.createTypeNode(ast, defaultType));
+
                 return varDecl;
             }
             case IF:
@@ -613,66 +672,32 @@ public class AstRewriter {
         }
     }
 
-    public String addElementToArrayInitializer(
+    public String addElementToList(
             CompilationUnit cu,
             String originalCode,
-            ArrayInitializer arrayInit,
+            ASTNode listNode, // Can be ArrayInitializer or MethodInvocation
             com.botmaker.ui.AddableExpression type,
             int insertIndex) {
 
         AST ast = cu.getAST();
         ASTRewrite rewriter = ASTRewrite.create(ast);
 
-        // Create the new expression based on type
-        Expression newElement = createDefaultExpression(ast, type);
-        if (newElement == null) {
-            return originalCode;
+        // Create the new element
+        Expression newElement = createDefaultExpression(ast, type, cu, rewriter);
+        if (newElement == null) return originalCode;
+
+        if (listNode instanceof ArrayInitializer) {
+            ListRewrite listRewrite = rewriter.getListRewrite(listNode, ArrayInitializer.EXPRESSIONS_PROPERTY);
+            listRewrite.insertAt(newElement, insertIndex, null);
         }
-
-        // Use ListRewrite to insert the element
-        ListRewrite listRewrite = rewriter.getListRewrite(
-                arrayInit,
-                ArrayInitializer.EXPRESSIONS_PROPERTY
-        );
-
-        listRewrite.insertAt(newElement, insertIndex, null);
+        else if (listNode instanceof MethodInvocation) {
+            // Handle Arrays.asList(...) or List.of(...)
+            ListRewrite listRewrite = rewriter.getListRewrite(listNode, MethodInvocation.ARGUMENTS_PROPERTY);
+            listRewrite.insertAt(newElement, insertIndex, null);
+        }
 
         return applyRewrite(rewriter, originalCode);
     }
-
-    /**
-     * Deletes an element from an ArrayInitializer at the specified index
-     */
-    public String deleteElementFromArrayInitializer(
-            CompilationUnit cu,
-            String originalCode,
-            ArrayInitializer arrayInit,
-            int elementIndex) {
-
-        AST ast = cu.getAST();
-        ASTRewrite rewriter = ASTRewrite.create(ast);
-
-        // Get the list of expressions
-        @SuppressWarnings("unchecked")
-        List<Expression> expressions = arrayInit.expressions();
-
-        if (elementIndex < 0 || elementIndex >= expressions.size()) {
-            return originalCode; // Invalid index
-        }
-
-        Expression toRemove = expressions.get(elementIndex);
-
-        // Use ListRewrite to remove the element
-        ListRewrite listRewrite = rewriter.getListRewrite(
-                arrayInit,
-                ArrayInitializer.EXPRESSIONS_PROPERTY
-        );
-
-        listRewrite.remove(toRemove, null);
-
-        return applyRewrite(rewriter, originalCode);
-    }
-
 
     private Expression createDefaultInitializer(AST ast, String typeName) {
         switch (typeName) {
@@ -770,47 +795,39 @@ public class AstRewriter {
             return originalCode;
         }
     }
-    public String replaceVariableType(CompilationUnit cu, String originalCode, VariableDeclarationStatement varDecl, String newTypeName) {
+// ADD THIS METHOD TO AstRewriter.java
+
+    public String replaceVariableType(CompilationUnit cu, String originalCode,
+                                      VariableDeclarationStatement varDecl, String newTypeName) {
         AST ast = cu.getAST();
         ASTRewrite rewriter = ASTRewrite.create(ast);
 
+        // 1. Update Type Definition
         Type newType = TypeManager.createTypeNode(ast, newTypeName);
         rewriter.replace(varDecl.getType(), newType, null);
 
+        // 2. Update Imports (Standard)
+        if (newTypeName.contains("ArrayList")) {
+            ImportManager.addImport(cu, rewriter, "java.util.ArrayList");
+            ImportManager.addImport(cu, rewriter, "java.util.List");
+        }
+
+        // 3. Update Initializer
         if (!varDecl.fragments().isEmpty()) {
             VariableDeclarationFragment fragment = (VariableDeclarationFragment) varDecl.fragments().get(0);
             Expression currentInitializer = fragment.getInitializer();
 
-            boolean isNewTypeArray = newTypeName.endsWith("[]");
-            boolean isCurrentTypeArray = currentInitializer instanceof ArrayCreation || currentInitializer instanceof ArrayInitializer;
-
             Expression newInitializer = null;
 
-            if (isNewTypeArray) {
-                if (!isCurrentTypeArray) {
-                    // Switching Primitive -> Array: Create new empty array
-                    ArrayCreation creation = ast.newArrayCreation();
-                    // We need the element type for 'new int[]' part.
-                    // Rough logic: strip one pair of [] for the creation type
-                    String elementTypeName = newTypeName.substring(0, newTypeName.lastIndexOf("[]"));
-                    creation.setType((ArrayType) TypeManager.createTypeNode(ast, newTypeName));
-                    creation.setInitializer(ast.newArrayInitializer());
-                    newInitializer = creation;
-                } else {
-                    // Array -> Array (e.g. int[] to String[]): Keep structure, but types might mismatch.
-                    // Ideally we walk the tree, but for stability, let's reset to empty array
-                    // or just update the type part of ArrayCreation if it exists.
-                    if (currentInitializer instanceof ArrayCreation) {
-                        ArrayCreation oldAc = (ArrayCreation) currentInitializer;
-                        ArrayCreation newAc = ast.newArrayCreation();
-                        newAc.setType((ArrayType) TypeManager.createTypeNode(ast, newTypeName));
-                        // Preserve elements if possible? Complex. Let's reset to empty for safety.
-                        newAc.setInitializer(ast.newArrayInitializer());
-                        newInitializer = newAc;
-                    }
-                }
+            if (newTypeName.startsWith("ArrayList<")) {
+                // USE THE NEW RECURSIVE HELPER
+                newInitializer = createRecursiveListInitializer(ast, newTypeName, cu, rewriter);
+            } else if (newTypeName.endsWith("[]")) {
+                ArrayCreation creation = ast.newArrayCreation();
+                creation.setType((ArrayType) TypeManager.createTypeNode(ast, newTypeName));
+                creation.setInitializer(ast.newArrayInitializer());
+                newInitializer = creation;
             } else {
-                // Switching Array -> Primitive
                 newInitializer = createDefaultInitializer(ast, newTypeName);
             }
 
@@ -819,14 +836,17 @@ public class AstRewriter {
             }
         }
 
-        IDocument document = new Document(originalCode);
-        try {
-            TextEdit edits = rewriter.rewriteAST(document, null);
-            edits.apply(document);
-            return document.get();
-        } catch (Exception e) {
-            e.printStackTrace();
-            return originalCode;
+        return applyRewrite(rewriter, originalCode);
+    }
+
+
+
+    private String extractArrayListElementType(String arrayListType) {
+        if (arrayListType.contains("<") && arrayListType.contains(">")) {
+            int start = arrayListType.indexOf("<") + 1;
+            int end = arrayListType.lastIndexOf(">");
+            return arrayListType.substring(start, end);
         }
+        return "Object";
     }
 }

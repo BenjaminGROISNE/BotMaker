@@ -1,20 +1,25 @@
 package com.demo;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
 public class Demo {
     public static void main(String[] args) {
 		boolean variable2 = true;
 		boolean flag = variable2;
-		int number = 0;
 		boolean flag2 = variable2;
+
 		String text = "";
-		int[] myList = new int[] { 0 };
 		boolean flag875 = false;
-		int[] myList78 = new int[] { 0 };
-		double decimal = number;
+		double decimal = 0;
+		text += flag875;
 		if (flag2) {
 			System.out.println("878");
 		}
+		ArrayList<ArrayList<ArrayList<ArrayList<Integer>>>> myList=new ArrayList<ArrayList<ArrayList<ArrayList<Integer>>>>(Arrays.asList(new ArrayList<ArrayList<ArrayList<Integer>>>(Arrays.asList(new ArrayList<ArrayList<Integer>>(Arrays.asList(new ArrayList<Integer>(Arrays.asList(null))))))));
 		while (flag) {
-			System.out.println(number);
+			System.out.println(decimal);
 		}
 		
     }

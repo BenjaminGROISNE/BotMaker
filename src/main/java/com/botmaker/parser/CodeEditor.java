@@ -6,6 +6,7 @@ import com.botmaker.core.StatementBlock;
 import com.botmaker.events.CoreApplicationEvents;
 import com.botmaker.events.EventBus;
 import com.botmaker.ui.AddableBlock;
+import com.botmaker.ui.AddableExpression;
 import org.eclipse.jdt.core.dom.*;
 
 public class CodeEditor {
@@ -76,30 +77,43 @@ public class CodeEditor {
         triggerUpdate(newCode);
     }
 
-    public void addElementToArrayInitializer(
-            org.eclipse.jdt.core.dom.ArrayInitializer arrayInit,
-            com.botmaker.ui.AddableExpression type,
+    /**
+     * Adds an element to either an ArrayInitializer or a MethodInvocation (List).
+     */
+    public void addElementToList(
+            ASTNode listNode,
+            AddableExpression type,
             int insertIndex) {
 
         blockFactory.setMarkNewIdentifiersAsUnedited(true);
-        String newCode = astRewriter.addElementToArrayInitializer(
+
+        // SPECIAL CASE:
+        // If the user managed to get a raw ClassInstanceCreation (empty ArrayList),
+        // AstRewriter needs to wrap it. However, ListBlock is usually bound to
+        // the MethodInvocation inside.
+
+        String newCode = astRewriter.addElementToList(
                 getCompilationUnit(),
                 getCurrentCode(),
-                arrayInit,
+                listNode,
                 type,
                 insertIndex
         );
         triggerUpdate(newCode);
     }
 
-    public void deleteElementFromArrayInitializer(
-            org.eclipse.jdt.core.dom.ArrayInitializer arrayInit,
+    /**
+     * Deletes an element from either an ArrayInitializer or a MethodInvocation (List).
+     */
+    public void deleteElementFromList(
+            ASTNode listNode,
             int elementIndex) {
 
-        String newCode = astRewriter.deleteElementFromArrayInitializer(
+        // Updated to use the generic 'deleteElementFromList' in Rewriter
+        String newCode = astRewriter.deleteElementFromList(
                 getCompilationUnit(),
                 getCurrentCode(),
-                arrayInit,
+                listNode,
                 elementIndex
         );
         triggerUpdate(newCode);
