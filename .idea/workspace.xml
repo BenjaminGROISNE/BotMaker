@@ -4,11 +4,11 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="cba04025-c331-4634-a893-436bad03efc0" name="Changes" comment="Better working arrays">
+    <list default="true" id="cba04025-c331-4634-a893-436bad03efc0" name="Changes" comment="conserve leaves values">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/projects/.botmaker-config.json" beforeDir="false" afterPath="$PROJECT_DIR$/projects/.botmaker-config.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/projects/Demo/src/main/java/com/demo/Demo.java" beforeDir="false" afterPath="$PROJECT_DIR$/projects/Demo/src/main/java/com/demo/Demo.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/botmaker/parser/AstRewriter.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/botmaker/parser/AstRewriter.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/botmaker/blocks/LiteralBlock.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/botmaker/blocks/LiteralBlock.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -71,7 +71,7 @@
     <setting file="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.eclipse.lsp4j/org.eclipse.lsp4j/0.21.0/59f263c9f254fe06c7699b62c4e9a19ac9b43909/org.eclipse.lsp4j-0.21.0-sources.jar!/org/eclipse/lsp4j/services/LanguageServer.java" root0="SKIP_INSPECTION" />
   </component>
   <component name="ProblemsViewState">
-    <option name="selectedTabId" value="ProjectErrors" />
+    <option name="selectedTabId" value="CurrentFile" />
   </component>
   <component name="ProjectColorInfo">{
   &quot;associatedIndex&quot;: 8
@@ -187,14 +187,6 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1759617202271</updated>
-    </task>
-    <task id="LOCAL-00011" summary="Refactor Main file. ifcondition block still doesn't work">
-      <option name="closed" value="true" />
-      <created>1760223934148</created>
-      <option name="number" value="00011" />
-      <option name="presentableId" value="LOCAL-00011" />
-      <option name="project" value="LOCAL" />
-      <updated>1760223934148</updated>
     </task>
     <task id="LOCAL-00012" summary="Working if condition highlight">
       <option name="closed" value="true" />
@@ -580,7 +572,15 @@
       <option name="project" value="LOCAL" />
       <updated>1763821508746</updated>
     </task>
-    <option name="localTasksCounter" value="60" />
+    <task id="LOCAL-00060" summary="conserve leaves values">
+      <option name="closed" value="true" />
+      <created>1763822226490</created>
+      <option name="number" value="00060" />
+      <option name="presentableId" value="LOCAL-00060" />
+      <option name="project" value="LOCAL" />
+      <updated>1763822226490</updated>
+    </task>
+    <option name="localTasksCounter" value="61" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -608,7 +608,6 @@
     <ignored-roots>
       <path value="$PROJECT_DIR$/.." />
     </ignored-roots>
-    <MESSAGE value="small refactor" />
     <MESSAGE value="fixed project dependance on Demo.java and compile/run DEmo.java recreated" />
     <MESSAGE value="Project selection works" />
     <MESSAGE value="README.md" />
@@ -633,7 +632,8 @@
     <MESSAGE value="Expression type filtering" />
     <MESSAGE value="Variable filtering" />
     <MESSAGE value="Better working arrays" />
-    <option name="LAST_COMMIT_MESSAGE" value="Better working arrays" />
+    <MESSAGE value="conserve leaves values" />
+    <option name="LAST_COMMIT_MESSAGE" value="conserve leaves values" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
