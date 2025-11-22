@@ -16,17 +16,17 @@ public class BlockFactory {
     private boolean markNewIdentifiersAsUnedited = false;
     private BlockParser blockParser;
 
-    public MainBlock convert(String javaCode, Map<ASTNode, CodeBlock> nodeToBlockMap, BlockDragAndDropManager manager) {
+    // CHANGED: Return type is AbstractCodeBlock (parent of MainBlock and LibraryBlock)
+    public AbstractCodeBlock convert(String javaCode, Map<ASTNode, CodeBlock> nodeToBlockMap, BlockDragAndDropManager manager) {
         this.currentSourceCode = javaCode;
-        // Initialize parser helper with current context
         this.blockParser = new BlockParser(this, manager, markNewIdentifiersAsUnedited);
 
         try {
             ASTParser parser = ASTParser.newParser(AST.getJLSLatest());
             parser.setSource(javaCode.toCharArray());
-            parser.setResolveBindings(true);
             parser.setKind(ASTParser.K_COMPILATION_UNIT);
-            parser.setUnitName("Demo.java");
+            parser.setResolveBindings(true);
+            parser.setUnitName("Unit.java"); // Name doesn't matter for parsing structure
             parser.setEnvironment(null, null, null, true);
             this.ast = (CompilationUnit) parser.createAST(null);
 
@@ -35,40 +35,69 @@ public class BlockFactory {
                 if (obj instanceof Comment && !(obj instanceof Javadoc)) allComments.add((Comment) obj);
             }
 
-            MainMethodVisitor visitor = new MainMethodVisitor();
-            ast.accept(visitor);
+            if (ast.types().isEmpty()) return null;
 
-            return visitor.getMainMethodDeclaration()
-                    .map(mainMethodDecl -> {
-                        MainBlock mainBlock = new MainBlock(BlockIdPrefix.generate(BlockIdPrefix.MAIN, mainMethodDecl), mainMethodDecl);
-                        nodeToBlockMap.put(mainMethodDecl, mainBlock);
-                        visitor.getMainMethodBody().ifPresent(bodyAstNode -> {
-                            BodyBlock bodyBlock = parseBodyBlock(bodyAstNode, nodeToBlockMap, manager);
-                            mainBlock.setMainBody(bodyBlock);
-                        });
-                        return mainBlock;
-                    })
-                    .orElse(null);
+            TypeDeclaration typeDecl = (TypeDeclaration) ast.types().get(0);
+
+            // Check for Main Method
+            MethodDeclaration mainMethod = findMainMethod(typeDecl);
+
+            if (mainMethod != null) {
+                // It's a Main File
+                MainBlock mainBlock = new MainBlock(BlockIdPrefix.generate(BlockIdPrefix.MAIN, mainMethod), mainMethod);
+                nodeToBlockMap.put(mainMethod, mainBlock);
+                if (mainMethod.getBody() != null) {
+                    BodyBlock bodyBlock = parseBodyBlock(mainMethod.getBody(), nodeToBlockMap, manager);
+                    mainBlock.setMainBody(bodyBlock);
+                }
+                return mainBlock;
+            } else {
+                // It's a Library File (Standard Class)
+                LibraryBlock libBlock = new LibraryBlock(BlockIdPrefix.generate("lib_", typeDecl), typeDecl);
+                nodeToBlockMap.put(typeDecl, libBlock);
+
+                for (MethodDeclaration method : typeDecl.getMethods()) {
+                    MethodDeclarationBlock methodBlock = new MethodDeclarationBlock(
+                            BlockIdPrefix.generate("func_", method), method, manager);
+                    nodeToBlockMap.put(method, methodBlock);
+
+                    if (method.getBody() != null) {
+                        methodBlock.setBody(parseBodyBlock(method.getBody(), nodeToBlockMap, manager));
+                    }
+                    libBlock.addMethod(methodBlock);
+                }
+                return libBlock;
+            }
+
         } finally {
             setMarkNewIdentifiersAsUnedited(false);
         }
     }
 
-    public void setMarkNewIdentifiersAsUnedited(boolean mark) {
-        this.markNewIdentifiersAsUnedited = mark;
+    private MethodDeclaration findMainMethod(TypeDeclaration type) {
+        for (MethodDeclaration method : type.getMethods()) {
+            if ("main".equals(method.getName().getIdentifier()) &&
+                    Modifier.isStatic(method.getModifiers()) &&
+                    method.parameters().size() == 1) { // Simplified check
+                return method;
+            }
+        }
+        return null;
     }
 
+    // ... (Existing parseBodyBlock, parseStatement, etc. remain exactly the same) ...
+    public void setMarkNewIdentifiersAsUnedited(boolean mark) { this.markNewIdentifiersAsUnedited = mark; }
     public BodyBlock parseBodyBlock(Block astBlock, Map<ASTNode, CodeBlock> nodeToBlockMap, BlockDragAndDropManager manager) {
+        // [Existing implementation...]
+        // COPY YOUR PREVIOUS IMPLEMENTATION HERE
         BodyBlock bodyBlock = new BodyBlock(BlockIdPrefix.generate(BlockIdPrefix.BODY, astBlock), astBlock, manager);
         nodeToBlockMap.put(astBlock, bodyBlock);
 
         List<CodeBlock> allChildren = new ArrayList<>();
-
         for (Object statementObj : astBlock.statements()) {
             blockParser.parseStatement((Statement) statementObj, nodeToBlockMap).ifPresent(allChildren::add);
         }
-
-        // Handle Comments
+        // [Comment handling logic...]
         int blockStart = astBlock.getStartPosition() + 1;
         int blockEnd = astBlock.getStartPosition() + astBlock.getLength() - 1;
 
@@ -96,6 +125,8 @@ public class BlockFactory {
         return bodyBlock;
     }
 
+    // ... Copy parseStatement, parseExpression, parseCommentBlock, isPrintStatement, isReadInputStatement, getCompilationUnit
+    // NO CHANGES NEEDED TO THEM
     public Optional<StatementBlock> parseStatement(Statement stmt, Map<ASTNode, CodeBlock> map, BlockDragAndDropManager manager) {
         return blockParser.parseStatement(stmt, map);
     }
@@ -134,18 +165,4 @@ public class BlockFactory {
     }
 
     public CompilationUnit getCompilationUnit() { return ast; }
-
-    private static class MainMethodVisitor extends ASTVisitor {
-        private MethodDeclaration mainMethodDeclaration;
-        @Override
-        public boolean visit(MethodDeclaration node) {
-            if ("main".equals(node.getName().getIdentifier())) {
-                mainMethodDeclaration = node;
-                return false;
-            }
-            return true;
-        }
-        public Optional<MethodDeclaration> getMainMethodDeclaration() { return Optional.ofNullable(mainMethodDeclaration); }
-        public Optional<Block> getMainMethodBody() { return Optional.ofNullable(mainMethodDeclaration != null ? mainMethodDeclaration.getBody() : null); }
-    }
 }

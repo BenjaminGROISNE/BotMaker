@@ -77,6 +77,62 @@ public class CodeEditor {
         triggerUpdate(newCode);
     }
 
+
+    public void renameMethodParameter(MethodDeclaration method, int index, String newName) {
+        String newCode = astRewriter.renameMethodParameter(
+                getCompilationUnit(),
+                getCurrentCode(),
+                method,
+                index,
+                newName
+        );
+        triggerUpdate(newCode);
+    }
+
+    public void setMethodReturnType(MethodDeclaration method, String newTypeName) {
+        String newCode = astRewriter.setMethodReturnType(
+                getCompilationUnit(),
+                getCurrentCode(),
+                method,
+                newTypeName
+        );
+        triggerUpdate(newCode);
+    }
+
+    public void addParameterToMethod(MethodDeclaration method, String typeName, String paramName) {
+        String newCode = astRewriter.addParameterToMethod(
+                getCompilationUnit(),
+                getCurrentCode(),
+                method,
+                typeName,
+                paramName
+        );
+        triggerUpdate(newCode);
+    }
+
+    public void deleteParameterFromMethod(MethodDeclaration method, int index) {
+        String newCode = astRewriter.deleteParameterFromMethod(
+                getCompilationUnit(),
+                getCurrentCode(),
+                method,
+                index
+        );
+        triggerUpdate(newCode);
+    }
+
+    public void setReturnExpression(ReturnStatement returnStmt, AddableExpression type) {
+        blockFactory.setMarkNewIdentifiersAsUnedited(true);
+        String newCode = astRewriter.setReturnExpression(
+                getCompilationUnit(),
+                getCurrentCode(),
+                returnStmt,
+                type
+        );
+        triggerUpdate(newCode);
+    }
+
+
+
     /**
      * Adds an element to either an ArrayInitializer or a MethodInvocation (List).
      */

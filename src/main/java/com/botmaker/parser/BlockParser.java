@@ -38,10 +38,21 @@ public class BlockParser {
         if (stmt instanceof SwitchStatement) return parseSwitch((SwitchStatement) stmt, map);
         if (stmt instanceof BreakStatement) return Optional.of(new BreakBlock(BlockIdPrefix.generate(BlockIdPrefix.BREAK, stmt), (BreakStatement) stmt));
         if (stmt instanceof ContinueStatement) return Optional.of(new ContinueBlock(BlockIdPrefix.generate(BlockIdPrefix.CONTINUE, stmt), (ContinueStatement) stmt));
-        if (stmt instanceof ReturnStatement) return Optional.of(new ReturnBlock(BlockIdPrefix.generate(BlockIdPrefix.RETURN, stmt), (ReturnStatement) stmt));
+        if (stmt instanceof ReturnStatement) return parseReturn((ReturnStatement) stmt, map);
         if (stmt instanceof TryStatement) return parseTry((TryStatement) stmt, map);
         if (stmt instanceof ExpressionStatement) return parseExprStmt((ExpressionStatement) stmt, map);
+
         return Optional.empty();
+    }
+
+    private Optional<StatementBlock> parseReturn(ReturnStatement stmt, Map<ASTNode, CodeBlock> map) {
+        ReturnBlock block = new ReturnBlock(BlockIdPrefix.generate(BlockIdPrefix.RETURN, stmt), stmt);
+        map.put(stmt, block);
+
+        if (stmt.getExpression() != null) {
+            factory.parseExpression(stmt.getExpression(), map).ifPresent(block::setExpression);
+        }
+        return Optional.of(block);
     }
 
     private Optional<StatementBlock> parseExprStmt(ExpressionStatement stmt, Map<ASTNode, CodeBlock> map) {

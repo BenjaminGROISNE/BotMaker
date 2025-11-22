@@ -1,91 +1,101 @@
 package com.botmaker.state;
 
 import com.botmaker.core.CodeBlock;
+import com.botmaker.project.ProjectFile;
 import org.eclipse.jdt.core.dom.ASTNode;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 
+import java.nio.file.Path;
 import java.util.*;
 
-/**
- * Central application state container.
- * Manages the current state of the code editor and related metadata.
- * Thread-safe through immutability and defensive copying.
- */
 public class ApplicationState {
 
-    // Code-related state
-    private String currentCode;
-    private String docUri;
-    private long docVersion;
+    // Multi-file state
+    private final Map<Path, ProjectFile> openFiles = new HashMap<>();
+    private ProjectFile activeFile;
 
-    // AST and block mappings
-    private CompilationUnit compilationUnit;
-    private Map<ASTNode, CodeBlock> nodeToBlockMap;
+    // AST and block mappings (For the ACTIVE file)
+    private Map<ASTNode, CodeBlock> nodeToBlockMap = new HashMap<>();
 
     // UI state
     private CodeBlock highlightedBlock;
-
-    // Debug state
     private boolean isDebugging;
     private final Set<String> breakpointIds = new HashSet<>();
-    public ApplicationState() {
-        this.currentCode = "";
-        this.docUri = "";
-        this.docVersion = 1;
-        this.nodeToBlockMap = new HashMap<>();
-        this.isDebugging = false;
+    private long docVersion = 1;
+
+    // --- File Management ---
+
+    public void addFile(ProjectFile file) {
+        openFiles.put(file.getPath(), file);
     }
 
-    // Code state
+    public void setActiveFile(Path path) {
+        this.activeFile = openFiles.get(path);
+        // Reset or sync doc version when switching if necessary,
+        // though usually we track version per file.
+        // For now, we keep a global version counter for LSP sync simplicity.
+    }
+
+    public ProjectFile getActiveFile() {
+        return activeFile;
+    }
+
+    public Collection<ProjectFile> getAllFiles() {
+        return Collections.unmodifiableCollection(openFiles.values());
+    }
+
+    // --- Helpers (Delegate to Active File) ---
 
     public String getCurrentCode() {
-        return currentCode;
+        return activeFile != null ? activeFile.getContent() : "";
     }
 
-    public void setCurrentCode(String currentCode) {
-        this.currentCode = currentCode != null ? currentCode : "";
+    public void setCurrentCode(String code) {
+        if (activeFile != null) activeFile.setContent(code);
     }
 
     public String getDocUri() {
-        return docUri;
+        return activeFile != null ? activeFile.getUri() : "";
     }
 
+    /**
+     * Set Doc URI.
+     * Note: In multi-file mode, the URI is derived from the ProjectFile path.
+     * This method exists for backward compatibility with LanguageServerService.
+     */
     public void setDocUri(String docUri) {
-        this.docUri = docUri != null ? docUri : "";
+        // No-op: The URI is determined by the active file's path.
+        // We accept the call to satisfy the compiler, but rely on setActiveFile() being called previously.
     }
+
+    public Optional<CompilationUnit> getCompilationUnit() {
+        return activeFile != null ? Optional.ofNullable(activeFile.getAst()) : Optional.empty();
+    }
+
+    public void setCompilationUnit(CompilationUnit cu) {
+        if (activeFile != null) activeFile.setAst(cu);
+    }
+
+    // --- Versioning ---
 
     public long getDocVersion() {
         return docVersion;
+    }
+
+    public void setDocVersion(long version) {
+        this.docVersion = version;
     }
 
     public void incrementDocVersion() {
         this.docVersion++;
     }
 
-    public void setDocVersion(long docVersion) {
-        this.docVersion = docVersion;
-    }
+    // --- Mappings & UI State ---
 
-    // AST and block mappings
-
-    public Optional<CompilationUnit> getCompilationUnit() {
-        return Optional.ofNullable(compilationUnit);
-    }
-
-    public void setCompilationUnit(CompilationUnit compilationUnit) {
-        this.compilationUnit = compilationUnit;
-    }
-
-    /**
-     * Returns an unmodifiable view of the node-to-block map
-     */
     public Map<ASTNode, CodeBlock> getNodeToBlockMap() {
         return Collections.unmodifiableMap(nodeToBlockMap);
     }
 
-    /**
-     * Returns the mutable node-to-block map for updates
-     */
     public Map<ASTNode, CodeBlock> getMutableNodeToBlockMap() {
         return nodeToBlockMap;
     }
@@ -103,21 +113,15 @@ public class ApplicationState {
         return Optional.ofNullable(nodeToBlockMap.get(node));
     }
 
-    // UI state
-
     public Optional<CodeBlock> getHighlightedBlock() {
         return Optional.ofNullable(highlightedBlock);
     }
 
     public void setHighlightedBlock(CodeBlock block) {
-        // Clear previous highlight
         if (this.highlightedBlock != null) {
             this.highlightedBlock.unhighlight();
         }
-
         this.highlightedBlock = block;
-
-        // Apply new highlight
         if (this.highlightedBlock != null) {
             this.highlightedBlock.highlight();
         }
@@ -127,7 +131,7 @@ public class ApplicationState {
         setHighlightedBlock(null);
     }
 
-    // Debug state
+    // --- Debugging ---
 
     public boolean isDebugging() {
         return isDebugging;
@@ -136,7 +140,7 @@ public class ApplicationState {
     public void setDebugging(boolean debugging) {
         this.isDebugging = debugging;
     }
-    // NEW: Breakpoint Management
+
     public Set<String> getBreakpointIds() {
         return Collections.unmodifiableSet(breakpointIds);
     }
@@ -152,15 +156,14 @@ public class ApplicationState {
     public boolean hasBreakpoint(String blockId) {
         return breakpointIds.contains(blockId);
     }
-    // Utility methods
 
     /**
-     * Creates a snapshot of the current state for debugging/logging
+     * Snapshot for debugging/logging
      */
     public StateSnapshot createSnapshot() {
         return new StateSnapshot(
-                currentCode,
-                docUri,
+                getCurrentCode(),
+                getDocUri(),
                 docVersion,
                 nodeToBlockMap.size(),
                 highlightedBlock != null,
@@ -168,9 +171,6 @@ public class ApplicationState {
         );
     }
 
-    /**
-     * Immutable snapshot of state for debugging
-     */
     public static class StateSnapshot {
         public final String currentCode;
         public final String docUri;
@@ -193,7 +193,7 @@ public class ApplicationState {
         public String toString() {
             return String.format(
                     "StateSnapshot{docVersion=%d, codeLength=%d, blockCount=%d, hasHighlight=%s, isDebugging=%s}",
-                    docVersion, currentCode.length(), blockCount, hasHighlight, isDebugging
+                    docVersion, currentCode != null ? currentCode.length() : 0, blockCount, hasHighlight, isDebugging
             );
         }
     }

@@ -1,10 +1,12 @@
 package com.botmaker.ui;
 
+import com.botmaker.config.ApplicationConfig;
 import com.botmaker.core.CodeBlock;
 import com.botmaker.events.CoreApplicationEvents;
 import com.botmaker.events.EventBus;
 import com.botmaker.lsp.CompletionContext;
 import com.botmaker.services.CodeEditorService;
+import com.botmaker.state.ApplicationState;
 import com.botmaker.validation.DiagnosticsManager;
 import com.botmaker.validation.ErrorTranslator;
 import javafx.geometry.Orientation;
@@ -26,10 +28,12 @@ public class UIManager {
     private final DiagnosticsManager diagnosticsManager;
     private final Stage primaryStage;
 
+    // UI Managers
     private final PaletteManager paletteManager;
     private final ToolbarManager toolbarManager;
     private final EventLogManager eventLogManager;
     private final MenuBarManager menuBarManager;
+    private final FileExplorerManager fileExplorerManager; // New Manager
 
     private VBox blocksContainer;
     private Label statusLabel;
@@ -42,7 +46,9 @@ public class UIManager {
                      EventBus eventBus,
                      CodeEditorService codeEditorService,
                      DiagnosticsManager diagnosticsManager,
-                     Stage primaryStage) {
+                     Stage primaryStage,
+                     ApplicationConfig config,   // Added
+                     ApplicationState state) {   // Added
         this.eventBus = eventBus;
         this.codeEditorService = codeEditorService;
         this.diagnosticsManager = diagnosticsManager;
@@ -54,6 +60,9 @@ public class UIManager {
         this.eventLogManager = new EventLogManager(eventBus);
         this.menuBarManager = new MenuBarManager(primaryStage);
         this.menuBarManager.setEventBus(eventBus);
+
+        // Initialize File Explorer
+        this.fileExplorerManager = new FileExplorerManager(config, codeEditorService, state);
 
         setupEventHandlers();
     }
@@ -95,19 +104,34 @@ public class UIManager {
     public Scene createScene() {
         menuBarManager.setOnSelectProject(v -> { if (onSelectProject != null) onSelectProject.accept(null); });
 
+        // 1. Center Code Area
         blocksContainer = new VBox(10);
         blocksContainer.getStyleClass().add("blocks-canvas");
         ScrollPane scrollPane = new ScrollPane(blocksContainer);
         scrollPane.setFitToWidth(true);
         scrollPane.getStyleClass().add("code-scroll-pane");
 
-        VBox paletteContainer = new VBox(paletteManager.createCategorizedPalette());
-        paletteContainer.setPrefWidth(220);
-        paletteContainer.getStyleClass().add("palette-sidebar");
+        // 2. Left Sidebar (Files + Palette)
+        VBox paletteContent = new VBox(paletteManager.createCategorizedPalette());
+        paletteContent.getStyleClass().add("palette-sidebar");
 
+        VBox fileExplorerContent = fileExplorerManager.createView();
+
+        TabPane sidebarTabs = new TabPane();
+        sidebarTabs.setTabClosingPolicy(TabPane.TabClosingPolicy.UNAVAILABLE);
+
+        Tab filesTab = new Tab("Files", fileExplorerContent);
+        Tab blocksTab = new Tab("Blocks", paletteContent);
+
+        sidebarTabs.getTabs().addAll(filesTab, blocksTab);
+        sidebarTabs.setPrefWidth(260); // Slightly wider to accommodate file names
+        sidebarTabs.getStyleClass().add("sidebar-tabs");
+
+        // 3. Status Bar
         statusLabel = new Label("Ready");
         statusLabel.setId("status-label");
 
+        // 4. Bottom Panel (Output, Errors, Logs)
         outputArea = new TextArea();
         outputArea.setEditable(false);
         outputArea.getStyleClass().add("console-area");
@@ -121,6 +145,7 @@ public class UIManager {
         Tab eventsTab = new Tab("Event Log", eventLogManager.getView()); eventsTab.setClosable(false);
         bottomTabPane.getTabs().addAll(terminalTab, errorsTab, eventsTab);
 
+        // 5. Layout Assembly
         SplitPane verticalSplit = new SplitPane();
         verticalSplit.setOrientation(Orientation.VERTICAL);
         verticalSplit.getItems().addAll(scrollPane, bottomTabPane);
@@ -129,7 +154,7 @@ public class UIManager {
 
         BorderPane mainLayout = new BorderPane();
         mainLayout.setTop(toolbarManager.createToolBar());
-        mainLayout.setLeft(paletteContainer);
+        mainLayout.setLeft(sidebarTabs); // Changed from paletteContainer to sidebarTabs
         mainLayout.setCenter(verticalSplit);
         mainLayout.setBottom(statusLabel);
 

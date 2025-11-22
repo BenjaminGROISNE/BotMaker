@@ -18,7 +18,6 @@ import com.sun.jdi.request.ClassPrepareRequest;
 import com.sun.jdi.request.EventRequestManager;
 import com.sun.jdi.request.StepRequest;
 import javafx.application.Platform;
-import org.eclipse.jdt.core.dom.ASTNode;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 
 import java.io.IOException;
@@ -40,7 +39,6 @@ public class DebuggingService {
     private static final String ANSI_RESET = "\u001B[0m";
     private static final String ANSI_BLUE = "\u001B[34m";
     private static final String ANSI_GREEN = "\u001B[32m";
-    private static final String ANSI_YELLOW = "\u001B[33m";
     private static final String ANSI_RED = "\u001B[31m";
 
     private final ApplicationState state;
@@ -86,13 +84,16 @@ public class DebuggingService {
                 String code = state.getCurrentCode();
 
                 // 1. Compile
-                if (!codeExecutionService.compileAndWait(code, config.getSourceFilePath(), config.getCompiledOutputPath())) {
+                // FIXED: Removed config.getSourceFilePath() argument to match new signature
+                if (!codeExecutionService.compileAndWait(code, config.getCompiledOutputPath())) {
                     eventBus.publish(new CoreApplicationEvents.StatusMessageEvent("Debug aborted due to compilation failure."));
                     return;
                 }
 
                 // 2. Map Breakpoints (AST -> Line Numbers)
                 CompilationUnit cu = factory.getCompilationUnit();
+                // Note: getNodeToBlockMap only refers to the ACTIVE file.
+                // Multi-file debugging requires mapping logic expansion, but this works for the active file.
                 if (cu == null || state.getNodeToBlockMap().isEmpty()) {
                     eventBus.publish(new CoreApplicationEvents.StatusMessageEvent("Error: Could not parse code to get breakpoints."));
                     return;
@@ -104,7 +105,7 @@ public class DebuggingService {
                 for (CodeBlock block : state.getNodeToBlockMap().values()) {
                     int line = block.getBreakpointLine(cu);
                     if (line > 0) {
-                        // Only map StatementBlocks (executable lines) to avoid mapping expressions mid-line awkwardly
+                        // Only map StatementBlocks (executable lines)
                         if (!lineToBlockMap.containsKey(line) || block instanceof StatementBlock) {
                             lineToBlockMap.put(line, block);
                         }
@@ -134,8 +135,10 @@ public class DebuggingService {
                 Platform.runLater(() -> eventBus.publish(new CoreApplicationEvents.OutputClearedEvent()));
 
                 String classPath = config.getCompiledOutputPath().toString();
+                // We debug the Main class defined in config
                 String className = config.getMainClassName();
                 String javaExecutable = config.getJavaExecutable();
+
                 // Suspend=y waits for us to attach before running main()
                 String debugAgent = String.format("-agentlib:jdwp=transport=dt_socket,server=y,suspend=y,address=%d", freePort);
 
@@ -171,7 +174,7 @@ public class DebuggingService {
         arguments.get("port").setValue(String.valueOf(port));
         arguments.get("hostname").setValue("localhost");
 
-        // Retry logic for connection (Process might take a moment to open port)
+        // Retry logic for connection
         int maxRetries = Constants.DEBUGGER_MAX_CONNECT_RETRIES;
         for (int i = 0; i < maxRetries; i++) {
             try {
@@ -186,12 +189,11 @@ public class DebuggingService {
 
         EventRequestManager erm = vm.eventRequestManager();
 
-        // Handle Breakpoints (Class might not be loaded yet, so check both)
+        // Handle Breakpoints
         List<ReferenceType> classes = vm.classesByName(mainClassName);
         if (!classes.isEmpty()) {
             applyBreakpointsToClass(classes.get(0), breakpointLines);
         } else {
-            // Class not loaded yet -> Listen for preparation
             ClassPrepareRequest classPrepareRequest = erm.createClassPrepareRequest();
             classPrepareRequest.addClassFilter(mainClassName);
             classPrepareRequest.enable();
@@ -201,18 +203,12 @@ public class DebuggingService {
         CountDownLatch listenerReadyLatch = new CountDownLatch(1);
         new Thread(() -> jdiEventLoop(listenerReadyLatch, mainClassName, breakpointLines)).start();
 
-        // Wait for listener to be ready before resuming VM (so we don't miss events)
         listenerReadyLatch.await();
         vm.resume();
     }
 
-    /**
-     * The main loop that listens for events coming from the JVM (Breakpoints, Steps, etc).
-     */
     private void jdiEventLoop(CountDownLatch listenerReadyLatch, String mainClassName, List<Integer> breakpointLines) {
         EventQueue eventQueue = vm.eventQueue();
-
-        // Signal that we are listening
         listenerReadyLatch.countDown();
 
         while (true) {
@@ -222,22 +218,19 @@ public class DebuggingService {
 
                 for (Event event : eventSet) {
                     if (event instanceof VMDisconnectEvent) {
-                        System.out.println(ANSI_RED + "VM Disconnected." + ANSI_RESET);
                         handleDisconnect();
-                        return; // Exit loop
+                        return;
                     }
 
                     if (event instanceof ClassPrepareEvent) {
-                        // Class loaded, now we can set breakpoints
                         ClassPrepareEvent cpe = (ClassPrepareEvent) event;
                         if (cpe.referenceType().name().equals(mainClassName)) {
                             applyBreakpointsToClass(cpe.referenceType(), breakpointLines);
                         }
                     }
                     else if (event instanceof LocatableEvent) {
-                        // BreakpointEvent or StepEvent -> PAUSE UI
                         handleLocatableEvent((LocatableEvent) event);
-                        shouldResume = false; // Don't resume VM, wait for user input
+                        shouldResume = false;
                     }
                 }
 
@@ -272,7 +265,6 @@ public class DebuggingService {
     private void handleLocatableEvent(LocatableEvent event) {
         this.currentDebugThread = event.thread();
 
-        // Remove step request if this was a step event
         if (event instanceof StepEvent) {
             vm.eventRequestManager().deleteEventRequest(event.request());
         }
@@ -280,8 +272,6 @@ public class DebuggingService {
         int lineNumber = event.location().lineNumber();
         CodeBlock block = lineToBlockMap.get(lineNumber);
         CodeBlock target = (block != null) ? block.getHighlightTarget() : null;
-
-        System.out.println(ANSI_GREEN + "---> Paused at line: " + lineNumber + ANSI_RESET);
 
         eventBus.publish(new CoreApplicationEvents.DebugSessionPausedEvent(lineNumber, target));
         eventBus.publish(new CoreApplicationEvents.BlockHighlightEvent(target));
@@ -298,20 +288,16 @@ public class DebuggingService {
         eventBus.publish(new CoreApplicationEvents.BlockHighlightEvent(null));
     }
 
-    // --- Public Control Methods ---
-
     public void stepOver() {
         if (vm == null || currentDebugThread == null) return;
         try {
             eventBus.publish(new CoreApplicationEvents.DebugSessionResumedEvent());
             EventRequestManager erm = vm.eventRequestManager();
 
-            // Clear previous step requests
             erm.stepRequests().stream()
                     .filter(r -> r.thread().equals(currentDebugThread))
                     .forEach(erm::deleteEventRequest);
 
-            // Create new StepOver
             StepRequest request = erm.createStepRequest(currentDebugThread, StepRequest.STEP_LINE, StepRequest.STEP_OVER);
             request.addCountFilter(1);
             request.enable();
@@ -330,15 +316,13 @@ public class DebuggingService {
     }
 
     public void stopDebugging() {
-        // 1. Disconnect JDI nicely
         if (vm != null) {
             try {
-                vm.dispose(); // Triggers VMDisconnectEvent loop exit
+                vm.dispose();
             } catch (VMDisconnectedException ignored) {
             } catch (Exception e) { e.printStackTrace(); }
         }
 
-        // 2. Kill process forcefully
         if (currentProcess != null && currentProcess.isAlive()) {
             try {
                 currentProcess.destroyForcibly();
@@ -346,7 +330,7 @@ public class DebuggingService {
             } catch (Exception e) { e.printStackTrace(); }
         }
 
-        handleDisconnect(); // Ensure UI state is reset
+        handleDisconnect();
     }
 
     private void redirectStream(InputStream stream) {

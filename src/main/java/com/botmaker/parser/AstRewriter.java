@@ -302,6 +302,76 @@ public class AstRewriter {
         }
     }
 
+    // Add this method to AstRewriter.java
+
+    public String renameMethodParameter(CompilationUnit cu, String originalCode, MethodDeclaration method, int index, String newName) {
+        AST ast = cu.getAST();
+        ASTRewrite rewriter = ASTRewrite.create(ast);
+        List<?> params = method.parameters();
+
+        if (index >= 0 && index < params.size()) {
+            SingleVariableDeclaration param = (SingleVariableDeclaration) params.get(index);
+            SimpleName newNameNode = ast.newSimpleName(newName);
+            rewriter.replace(param.getName(), newNameNode, null);
+        }
+
+        return applyRewrite(rewriter, originalCode);
+    }
+
+    public String setMethodReturnType(CompilationUnit cu, String originalCode, MethodDeclaration method, String newTypeName) {
+        AST ast = cu.getAST();
+        ASTRewrite rewriter = ASTRewrite.create(ast);
+
+        Type newType;
+        if ("void".equals(newTypeName)) {
+            newType = ast.newPrimitiveType(PrimitiveType.VOID);
+        } else {
+            newType = TypeManager.createTypeNode(ast, newTypeName);
+        }
+
+        rewriter.replace(method.getReturnType2(), newType, null);
+        return applyRewrite(rewriter, originalCode);
+    }
+
+    public String addParameterToMethod(CompilationUnit cu, String originalCode, MethodDeclaration method, String typeName, String paramName) {
+        AST ast = cu.getAST();
+        ASTRewrite rewriter = ASTRewrite.create(ast);
+        ListRewrite listRewrite = rewriter.getListRewrite(method, MethodDeclaration.PARAMETERS_PROPERTY);
+
+        SingleVariableDeclaration newParam = ast.newSingleVariableDeclaration();
+        newParam.setType(TypeManager.createTypeNode(ast, typeName));
+        newParam.setName(ast.newSimpleName(paramName));
+
+        listRewrite.insertLast(newParam, null);
+        return applyRewrite(rewriter, originalCode);
+    }
+
+    public String deleteParameterFromMethod(CompilationUnit cu, String originalCode, MethodDeclaration method, int index) {
+        ASTRewrite rewriter = ASTRewrite.create(cu.getAST());
+        ListRewrite listRewrite = rewriter.getListRewrite(method, MethodDeclaration.PARAMETERS_PROPERTY);
+        List<?> params = method.parameters();
+
+        if (index >= 0 && index < params.size()) {
+            listRewrite.remove((ASTNode) params.get(index), null);
+        }
+        return applyRewrite(rewriter, originalCode);
+    }
+
+    public String setReturnExpression(CompilationUnit cu, String originalCode, ReturnStatement returnStmt, AddableExpression type) {
+        AST ast = cu.getAST();
+        ASTRewrite rewriter = ASTRewrite.create(ast);
+
+        Expression newExpr = nodeCreator.createDefaultExpression(ast, type, cu, rewriter);
+        if (newExpr == null) return originalCode;
+
+        if (returnStmt.getExpression() == null) {
+            rewriter.set(returnStmt, ReturnStatement.EXPRESSION_PROPERTY, newExpr, null);
+        } else {
+            rewriter.replace(returnStmt.getExpression(), newExpr, null);
+        }
+        return applyRewrite(rewriter, originalCode);
+    }
+
     private void collectLeafValues(Expression expr, List<Expression> accumulator) {
         if (expr == null) return;
         boolean isContainer = false;

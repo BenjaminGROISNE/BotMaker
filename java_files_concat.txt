@@ -4076,6 +4076,191 @@ public class EventBus {
 }
 
 =================================================================================
+FILE: ./src/main/java/com/botmaker/init/AppDependencyConfigurator.java
+=================================================================================
+
+package com.botmaker.init;
+
+import com.botmaker.config.ApplicationConfig;
+import com.botmaker.di.DependencyContainer;
+import com.botmaker.events.EventBus;
+import com.botmaker.parser.AstRewriter;
+import com.botmaker.parser.BlockFactory;
+import com.botmaker.parser.NodeCreator;
+import com.botmaker.runtime.CodeExecutionService;
+import com.botmaker.services.*;
+import com.botmaker.state.ApplicationState;
+import com.botmaker.ui.BlockDragAndDropManager;
+import com.botmaker.ui.UIManager;
+import com.botmaker.validation.DiagnosticsManager;
+import javafx.stage.Stage;
+
+public class AppDependencyConfigurator {
+
+    public static void configure(DependencyContainer container, ApplicationConfig config, Stage primaryStage) {
+        // Core Config & State
+        container.registerSingleton(ApplicationConfig.class, config);
+        container.registerSingleton(ApplicationState.class, new ApplicationState());
+        container.registerSingleton(EventBus.class, new EventBus(config.isEnableEventLogging()));
+
+        // Parsing & AST
+        container.registerSingleton(BlockFactory.class, new BlockFactory());
+        container.registerSingleton(NodeCreator.class, new NodeCreator());
+        container.registerLazySingleton(AstRewriter.class, () ->
+                new AstRewriter(container.resolve(NodeCreator.class)));
+
+        // UI Helpers & Validation
+        container.registerSingleton(DiagnosticsManager.class, new DiagnosticsManager());
+        container.registerSingleton(BlockDragAndDropManager.class, new BlockDragAndDropManager(null));
+
+        // Services
+        registerServices(container);
+
+        // UI Manager (Requires Stage)
+        container.registerLazySingleton(UIManager.class, () -> {
+            // We don't pass the callback here yet, Main handles the screen switching logic
+            return new UIManager(
+                    container.resolve(BlockDragAndDropManager.class),
+                    container.resolve(EventBus.class),
+                    container.resolve(CodeEditorService.class),
+                    container.resolve(DiagnosticsManager.class),
+                    primaryStage
+            );
+        });
+    }
+
+    private static void registerServices(DependencyContainer container) {
+        container.registerLazySingleton(LanguageServerService.class, () ->
+                new LanguageServerService(
+                        container.resolve(ApplicationConfig.class),
+                        container.resolve(ApplicationState.class),
+                        container.resolve(EventBus.class),
+                        container.resolve(DiagnosticsManager.class)
+                )
+        );
+
+        container.registerLazySingleton(CodeExecutionService.class, () -> {
+            EventBus eventBus = container.resolve(EventBus.class);
+            return new CodeExecutionService(
+                    text -> eventBus.publish(new com.botmaker.events.CoreApplicationEvents.OutputAppendedEvent(text)),
+                    () -> eventBus.publish(new com.botmaker.events.CoreApplicationEvents.OutputClearedEvent()),
+                    text -> eventBus.publish(new com.botmaker.events.CoreApplicationEvents.OutputSetEvent(text)),
+                    msg -> eventBus.publish(new com.botmaker.events.CoreApplicationEvents.StatusMessageEvent(msg)),
+                    container.resolve(DiagnosticsManager.class),
+                    container.resolve(ApplicationConfig.class)
+            );
+        });
+
+        container.registerLazySingleton(CodeEditorService.class, () ->
+                new CodeEditorService(
+                        container.resolve(ApplicationConfig.class),
+                        container.resolve(ApplicationState.class),
+                        container.resolve(EventBus.class),
+                        container.resolve(BlockFactory.class),
+                        container.resolve(AstRewriter.class),
+                        container.resolve(BlockDragAndDropManager.class),
+                        container.resolve(LanguageServerService.class),
+                        container.resolve(DiagnosticsManager.class)
+                )
+        );
+
+        container.registerLazySingleton(ExecutionService.class, () ->
+                new ExecutionService(
+                        container.resolve(ApplicationConfig.class),
+                        container.resolve(ApplicationState.class),
+                        container.resolve(EventBus.class),
+                        container.resolve(CodeExecutionService.class),
+                        container.resolve(DiagnosticsManager.class)
+                )
+        );
+
+        container.registerLazySingleton(DebuggingService.class, () ->
+                new DebuggingService(
+                        container.resolve(ApplicationState.class),
+                        container.resolve(EventBus.class),
+                        container.resolve(CodeExecutionService.class),
+                        container.resolve(BlockFactory.class),
+                        container.resolve(ApplicationConfig.class)
+                )
+        );
+    }
+}
+
+=================================================================================
+FILE: ./src/main/java/com/botmaker/init/AppServiceInitializer.java
+=================================================================================
+
+package com.botmaker.init;
+
+import com.botmaker.core.BodyBlock;
+import com.botmaker.core.StatementBlock;
+import com.botmaker.di.DependencyContainer;
+import com.botmaker.services.*;
+import com.botmaker.state.ApplicationState;
+import com.botmaker.ui.BlockDragAndDropManager;
+import com.botmaker.ui.UIManager;
+import com.botmaker.util.BlockLookupHelper;
+
+public class AppServiceInitializer {
+
+    public static void initialize(DependencyContainer container) throws Exception {
+        // 1. Initialize Language Server
+        LanguageServerService lss = container.resolve(LanguageServerService.class);
+        lss.initialize();
+
+        // 2. Resolve Services needed for wiring
+        CodeEditorService codeEditorService = container.resolve(CodeEditorService.class);
+        ApplicationState state = container.resolve(ApplicationState.class);
+        BlockDragAndDropManager dragAndDropManager = container.resolve(BlockDragAndDropManager.class);
+
+        // 3. Wire up Drag and Drop Logic
+        setupDragAndDropCallbacks(dragAndDropManager, codeEditorService, state);
+
+        // 4. Ensure other services are instantiated
+        container.resolve(ExecutionService.class);
+        container.resolve(DebuggingService.class);
+        container.resolve(UIManager.class);
+    }
+
+    private static void setupDragAndDropCallbacks(BlockDragAndDropManager manager,
+                                                  CodeEditorService editorService,
+                                                  ApplicationState state) {
+        // Handle adding new blocks
+        manager.setCallback(dropInfo ->
+                editorService.getCodeEditor().addStatement(
+                        dropInfo.targetBody(),
+                        dropInfo.type(),
+                        dropInfo.insertionIndex()
+                )
+        );
+
+        // Handle moving existing blocks
+        manager.setMoveCallback(moveInfo -> {
+            StatementBlock blockToMove = BlockLookupHelper.findBlockById(
+                    moveInfo.blockId(),
+                    state.getNodeToBlockMap()
+            );
+
+            if (blockToMove != null) {
+                BodyBlock sourceBody = BlockLookupHelper.findParentBody(
+                        blockToMove,
+                        state.getNodeToBlockMap()
+                );
+
+                if (sourceBody != null) {
+                    editorService.getCodeEditor().moveStatement(
+                            blockToMove,
+                            sourceBody,
+                            moveInfo.targetBody(),
+                            moveInfo.insertionIndex()
+                    );
+                }
+            }
+        });
+    }
+}
+
+=================================================================================
 FILE: ./src/main/java/com/botmaker/lsp/CompletionContext.java
 =================================================================================
 
@@ -4344,22 +4529,14 @@ FILE: ./src/main/java/com/botmaker/Main.java
 package com.botmaker;
 
 import com.botmaker.config.ApplicationConfig;
-import com.botmaker.core.BodyBlock;
-import com.botmaker.core.StatementBlock;
 import com.botmaker.di.DependencyContainer;
-import com.botmaker.events.CoreApplicationEvents;
-import com.botmaker.events.EventBus;
-import com.botmaker.parser.AstRewriter;
-import com.botmaker.parser.BlockFactory;
+import com.botmaker.init.AppDependencyConfigurator;
+import com.botmaker.init.AppServiceInitializer;
 import com.botmaker.project.ProjectConfig;
-import com.botmaker.runtime.CodeExecutionService;
-import com.botmaker.services.*;
-import com.botmaker.state.ApplicationState;
-import com.botmaker.ui.BlockDragAndDropManager;
+import com.botmaker.services.CodeEditorService;
+import com.botmaker.services.LanguageServerService;
 import com.botmaker.ui.ProjectSelectionScreen;
 import com.botmaker.ui.UIManager;
-import com.botmaker.util.BlockLookupHelper;
-import com.botmaker.validation.DiagnosticsManager;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.scene.control.Alert;
@@ -4374,15 +4551,13 @@ public class Main extends Application {
     private LanguageServerService languageServerService;
 
     @Override
-    public void start(Stage primaryStage) throws Exception {
+    public void start(Stage primaryStage) {
         String lastProject = ProjectConfig.getLastOpened();
 
-        // NOTE: Auto-load disabled if we want to force the cache option availability
-        // But for convenience, we check if it exists.
-        // If you are stuck in a crash loop, delete .botmaker-config.json manually once.
+        // Check if last project exists and auto-load
         if (lastProject != null && projectExists(lastProject)) {
             System.out.println("Auto-loading last project: " + lastProject);
-            openProject(primaryStage, lastProject, false); // Default: don't clear cache on auto-load
+            openProject(primaryStage, lastProject, false);
         } else {
             showProjectSelection(primaryStage);
         }
@@ -4399,68 +4574,81 @@ public class Main extends Application {
         primaryStage.show();
     }
 
-    private boolean projectExists(String projectName) {
-        return Files.exists(Paths.get("projects", projectName)) &&
-                Files.exists(Paths.get("projects", projectName, "build.gradle"));
-    }
-
     private void openProject(Stage primaryStage, String projectName, boolean clearCache) {
         try {
             ProjectConfig.updateLastOpened(projectName);
-
-            container = new DependencyContainer();
             ApplicationConfig config = ApplicationConfig.forProject(projectName);
 
-            setupDependencies(config, primaryStage);
+            // 1. Configure Container
+            container = new DependencyContainer();
+            AppDependencyConfigurator.configure(container, config, primaryStage);
 
-            // --- INJECT CLEAR CACHE FLAG ---
+            // 2. Handle Cache Flag
             if (clearCache) {
-                LanguageServerService lss = container.resolve(LanguageServerService.class);
-                lss.setShouldClearCache(true);
+                container.resolve(LanguageServerService.class).setShouldClearCache(true);
             }
 
-            initializeServices();
+            // 3. Initialize Services & Wiring
+            AppServiceInitializer.initialize(container);
 
+            // 4. Keep reference for shutdown
+            this.languageServerService = container.resolve(LanguageServerService.class);
+
+            // 5. Setup UI
             UIManager uiManager = container.resolve(UIManager.class);
+            uiManager.setOnSelectProject(v -> shutdownAndShowSelector(primaryStage));
+
             primaryStage.setScene(uiManager.createScene());
             primaryStage.setTitle("BotMaker Blocks - " + projectName);
 
-            CodeEditorService codeEditorService = container.resolve(CodeEditorService.class);
-            codeEditorService.loadInitialCode();
-
-            primaryStage.show();
+            // 6. Load Code
+            container.resolve(CodeEditorService.class).loadInitialCode();
 
             primaryStage.setOnCloseRequest(e -> {
                 e.consume();
-                new Thread(() -> {
-                    try {
-                        if (languageServerService != null) {
-                            System.out.println("Shutting down Language Server...");
-                            languageServerService.shutdown();
-                            System.out.println("Language Server shut down successfully.");
-                        }
-                    } catch (Exception ex) {
-                        System.err.println("Error during shutdown: " + ex.getMessage());
-                    } finally {
-                        Platform.runLater(() -> {
-                            Platform.exit();
-                            System.exit(0);
-                        });
-                    }
-                }).start();
+                performShutdown();
             });
+
+            primaryStage.show();
 
         } catch (Exception e) {
             e.printStackTrace();
             showErrorDialog("Error opening project: " + e.getMessage());
-            if (ProjectConfig.getLastOpened() != null) {
-                showProjectSelection(primaryStage);
-            }
+            showProjectSelection(primaryStage);
         }
     }
 
-    // ... rest of Main.java (setupDependencies, initializeServices, showErrorDialog) ...
-    // COPY EXISTING METHODS HERE
+    private void shutdownAndShowSelector(Stage primaryStage) {
+        // Non-terminal shutdown (just stop LSP, keep JVM alive)
+        if (languageServerService != null) {
+            languageServerService.shutdown();
+            languageServerService = null;
+        }
+        showProjectSelection(primaryStage);
+    }
+
+    private void performShutdown() {
+        new Thread(() -> {
+            try {
+                if (languageServerService != null) {
+                    System.out.println("Shutting down Language Server...");
+                    languageServerService.shutdown();
+                }
+            } catch (Exception ex) {
+                System.err.println("Error during shutdown: " + ex.getMessage());
+            } finally {
+                Platform.runLater(() -> {
+                    Platform.exit();
+                    System.exit(0);
+                });
+            }
+        }).start();
+    }
+
+    private boolean projectExists(String projectName) {
+        return Files.exists(Paths.get("projects", projectName)) &&
+                Files.exists(Paths.get("projects", projectName, "build.gradle"));
+    }
 
     private void showErrorDialog(String message) {
         Alert alert = new Alert(Alert.AlertType.ERROR);
@@ -4468,136 +4656,6 @@ public class Main extends Application {
         alert.setHeaderText("Failed to open project");
         alert.setContentText(message);
         alert.showAndWait();
-    }
-
-    private void setupDependencies(ApplicationConfig config, Stage primaryStage) {
-        container.registerSingleton(ApplicationConfig.class, config);
-        container.registerSingleton(ApplicationState.class, new ApplicationState());
-        container.registerSingleton(EventBus.class, new EventBus(config.isEnableEventLogging()));
-
-        container.registerSingleton(BlockFactory.class, new BlockFactory());
-        container.registerSingleton(AstRewriter.class, new AstRewriter());
-        container.registerSingleton(
-                com.botmaker.validation.DiagnosticsManager.class,
-                new com.botmaker.validation.DiagnosticsManager()
-        );
-
-        container.registerSingleton(BlockDragAndDropManager.class,
-                new BlockDragAndDropManager(null)
-        );
-
-        // IMPORTANT: This must return the SAME instance if resolved multiple times
-        // using registerSingleton for the factory result logic in container
-        container.registerLazySingleton(LanguageServerService.class, () ->
-                new LanguageServerService(
-                        container.resolve(ApplicationConfig.class),
-                        container.resolve(ApplicationState.class),
-                        container.resolve(EventBus.class),
-                        container.resolve(com.botmaker.validation.DiagnosticsManager.class)
-                )
-        );
-
-        container.registerLazySingleton(CodeExecutionService.class, () -> {
-            EventBus eventBus = container.resolve(EventBus.class);
-            return new CodeExecutionService(
-                    text -> eventBus.publish(new CoreApplicationEvents.OutputAppendedEvent(text)),
-                    () -> eventBus.publish(new CoreApplicationEvents.OutputClearedEvent()),
-                    text -> eventBus.publish(new CoreApplicationEvents.OutputSetEvent(text)),
-                    msg -> eventBus.publish(new CoreApplicationEvents.StatusMessageEvent(msg)),
-                    container.resolve(DiagnosticsManager.class),
-                    container.resolve(ApplicationConfig.class)
-            );
-        });
-
-        container.registerLazySingleton(CodeEditorService.class, () ->
-                new CodeEditorService(
-                        container.resolve(ApplicationConfig.class),
-                        container.resolve(ApplicationState.class),
-                        container.resolve(EventBus.class),
-                        container.resolve(BlockFactory.class),
-                        container.resolve(AstRewriter.class),
-                        container.resolve(BlockDragAndDropManager.class),
-                        container.resolve(LanguageServerService.class),
-                        container.resolve(com.botmaker.validation.DiagnosticsManager.class)
-                )
-        );
-
-        container.registerLazySingleton(ExecutionService.class, () ->
-                new ExecutionService(
-                        container.resolve(ApplicationConfig.class),
-                        container.resolve(ApplicationState.class),
-                        container.resolve(EventBus.class),
-                        container.resolve(CodeExecutionService.class),
-                        container.resolve(com.botmaker.validation.DiagnosticsManager.class)
-                )
-        );
-
-        container.registerLazySingleton(DebuggingService.class, () ->
-                new DebuggingService(
-                        container.resolve(ApplicationState.class),
-                        container.resolve(EventBus.class),
-                        container.resolve(CodeExecutionService.class),
-                        container.resolve(BlockFactory.class),
-                        container.resolve(ApplicationConfig.class)
-                )
-        );
-
-        container.registerLazySingleton(UIManager.class, () -> {
-            UIManager uiManager = new UIManager(
-                    container.resolve(BlockDragAndDropManager.class),
-                    container.resolve(EventBus.class),
-                    container.resolve(CodeEditorService.class),
-                    container.resolve(com.botmaker.validation.DiagnosticsManager.class),
-                    primaryStage
-            );
-            uiManager.setOnSelectProject(v -> showProjectSelection(primaryStage));
-            return uiManager;
-        });
-    }
-
-    private void initializeServices() throws Exception {
-        languageServerService = container.resolve(LanguageServerService.class);
-        languageServerService.initialize();
-
-        CodeEditorService codeEditorService = container.resolve(CodeEditorService.class);
-        ApplicationState state = container.resolve(ApplicationState.class);
-        BlockDragAndDropManager dragAndDropManager = container.resolve(BlockDragAndDropManager.class);
-
-        dragAndDropManager.setCallback(dropInfo ->
-                codeEditorService.getCodeEditor().addStatement(
-                        dropInfo.targetBody(),
-                        dropInfo.type(),
-                        dropInfo.insertionIndex()
-                )
-        );
-
-        dragAndDropManager.setMoveCallback(moveInfo -> {
-            System.out.println("Move callback triggered for blockId: " + moveInfo.blockId());
-            StatementBlock blockToMove = BlockLookupHelper.findBlockById(
-                    moveInfo.blockId(),
-                    state.getNodeToBlockMap()
-            );
-
-            if (blockToMove != null) {
-                BodyBlock sourceBody = BlockLookupHelper.findParentBody(
-                        blockToMove,
-                        state.getNodeToBlockMap()
-                );
-
-                if (sourceBody != null) {
-                    codeEditorService.getCodeEditor().moveStatement(
-                            blockToMove,
-                            sourceBody,
-                            moveInfo.targetBody(),
-                            moveInfo.insertionIndex()
-                    );
-                }
-            }
-        });
-
-        container.resolve(ExecutionService.class);
-        container.resolve(DebuggingService.class);
-        container.resolve(UIManager.class);
     }
 
     public static void main(String[] args) {
@@ -4615,9 +4673,7 @@ import com.botmaker.core.BodyBlock;
 import com.botmaker.core.StatementBlock;
 import com.botmaker.ui.AddableBlock;
 import com.botmaker.ui.AddableExpression;
-import com.botmaker.util.DefaultNames;
 import com.botmaker.util.TypeManager;
-
 import org.eclipse.jdt.core.dom.*;
 import org.eclipse.jdt.core.dom.rewrite.*;
 import org.eclipse.jface.text.Document;
@@ -4625,210 +4681,77 @@ import org.eclipse.jface.text.IDocument;
 import org.eclipse.text.edits.TextEdit;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
-import static com.botmaker.util.TypeManager.toWrapperType;
-
+/**
+ * Handles modifying existing Java code via AST Rewriting.
+ * Delegates node creation to NodeCreator.
+ */
 public class AstRewriter {
 
-    /**
-     * Moves a statement from one position to another, potentially across different bodies.
-     * @param cu The compilation unit
-     * @param originalCode The current source code
-     * @param blockToMove The StatementBlock to move
-     * @param sourceBody The BodyBlock containing the statement (can be same as targetBody)
-     * @param targetBody The BodyBlock where the statement should be moved to
-     * @param targetIndex The index in the target body where the statement should be inserted
-     * @return The updated source code
-     */
-    public String moveStatement(CompilationUnit cu, String originalCode,
-                                StatementBlock blockToMove, BodyBlock sourceBody,
-                                BodyBlock targetBody, int targetIndex) {
+    private final NodeCreator nodeCreator;
+
+    public AstRewriter(NodeCreator nodeCreator) {
+        this.nodeCreator = nodeCreator;
+    }
+
+    public String moveStatement(CompilationUnit cu, String originalCode, StatementBlock blockToMove, BodyBlock sourceBody, BodyBlock targetBody, int targetIndex) {
         AST ast = cu.getAST();
         ASTRewrite rewriter = ASTRewrite.create(ast);
-
         Statement statement = (Statement) blockToMove.getAstNode();
         Block sourceBlock = (Block) sourceBody.getAstNode();
         Block targetBlock = (Block) targetBody.getAstNode();
 
-        // Get the list rewriters for both source and target
         ListRewrite sourceListRewrite = rewriter.getListRewrite(sourceBlock, Block.STATEMENTS_PROPERTY);
         ListRewrite targetListRewrite = rewriter.getListRewrite(targetBlock, Block.STATEMENTS_PROPERTY);
 
-        // If moving to the exact same position (same body, same index), do nothing
         if (sourceBody == targetBody) {
             int currentIndex = sourceBlock.statements().indexOf(statement);
-            if (currentIndex == targetIndex) {
-                return originalCode;
-            }
+            if (currentIndex == targetIndex) return originalCode;
         }
 
-        // Create a copy of the statement for the new location
         Statement copiedStatement = (Statement) ASTNode.copySubtree(ast, statement);
-
-        // Remove from source and insert at target
         sourceListRewrite.remove(statement, null);
         targetListRewrite.insertAt(copiedStatement, targetIndex, null);
 
-        IDocument document = new Document(originalCode);
-        try {
-            TextEdit edits = rewriter.rewriteAST(document, null);
-            edits.apply(document);
-            return document.get();
-        } catch (Exception e) {
-            e.printStackTrace();
-            return originalCode;
-        }
+        return applyRewrite(rewriter, originalCode);
     }
 
     public String addStatement(CompilationUnit cu, String originalCode, BodyBlock targetBody, AddableBlock type, int index) {
         AST ast = cu.getAST();
         ASTRewrite rewriter = ASTRewrite.create(ast);
 
+        Statement newStatement;
         if (type == AddableBlock.COMMENT) {
-            Statement commentPlaceholder = (Statement) rewriter.createStringPlaceholder("// Comment", ASTNode.EMPTY_STATEMENT);
-            Block targetAstBlock = (Block) targetBody.getAstNode();
-            ListRewrite listRewrite = rewriter.getListRewrite(targetAstBlock, Block.STATEMENTS_PROPERTY);
-            listRewrite.insertAt(commentPlaceholder, index, null);
+            newStatement = (Statement) rewriter.createStringPlaceholder("// Comment", ASTNode.EMPTY_STATEMENT);
         } else {
-            // PASS CU AND REWRITER HERE
-            Statement newStatement = createDefaultStatement(ast, type, cu, rewriter);
-            if (newStatement == null) return originalCode;
-
-            Block targetAstBlock = (Block) targetBody.getAstNode();
-            ListRewrite listRewrite = rewriter.getListRewrite(targetAstBlock, Block.STATEMENTS_PROPERTY);
-            listRewrite.insertAt(newStatement, index, null);
+            newStatement = nodeCreator.createDefaultStatement(ast, type, cu, rewriter);
         }
+
+        if (newStatement == null) return originalCode;
+
+        Block targetAstBlock = (Block) targetBody.getAstNode();
+        ListRewrite listRewrite = rewriter.getListRewrite(targetAstBlock, Block.STATEMENTS_PROPERTY);
+        listRewrite.insertAt(newStatement, index, null);
 
         return applyRewrite(rewriter, originalCode);
     }
 
-    private String applyRewrite(ASTRewrite rewriter, String originalCode) {
-        IDocument document = new Document(originalCode);
-        try {
-            TextEdit edits = rewriter.rewriteAST(document, null);
-            edits.apply(document);
-            return document.get();
-        } catch (Exception e) {
-            e.printStackTrace();
-            return originalCode;
-        }
-    }
-
-    public String replaceExpression(CompilationUnit cu, String originalCode, Expression toReplace, com.botmaker.ui.AddableExpression type) {
+    public String replaceExpression(CompilationUnit cu, String originalCode, Expression toReplace, AddableExpression type) {
         AST ast = cu.getAST();
         ASTRewrite rewriter = ASTRewrite.create(ast);
-
-        Expression newExpression = createDefaultExpression(ast, type, cu, rewriter);
-        if (newExpression == null) {
-            return originalCode;
-        }
+        Expression newExpression = nodeCreator.createDefaultExpression(ast, type, cu, rewriter);
+        if (newExpression == null) return originalCode;
 
         rewriter.replace(toReplace, newExpression, null);
         return applyRewrite(rewriter, originalCode);
     }
 
-
-    private Expression createRecursiveListInitializer(AST ast, String typeName, CompilationUnit cu, ASTRewrite rewriter, List<Expression> leavesToPreserve) {
-        ImportManager.addImport(cu, rewriter, "java.util.ArrayList");
-        ImportManager.addImport(cu, rewriter, "java.util.Arrays");
-
-        // new ArrayList<...>()
-        ClassInstanceCreation creation = ast.newClassInstanceCreation();
-        String innerTypeStr = extractArrayListElementType(typeName);
-        String wrapperInnerType = toWrapperType(innerTypeStr);
-
-        ParameterizedType paramType = ast.newParameterizedType(ast.newSimpleType(ast.newName("ArrayList")));
-
-        if (!innerTypeStr.equals("Object")) {
-            paramType.typeArguments().add(TypeManager.createTypeNode(ast, wrapperInnerType));
-        }
-        creation.setType(paramType);
-
-        // Arrays.asList(...)
-        MethodInvocation asList = ast.newMethodInvocation();
-        asList.setExpression(ast.newSimpleName("Arrays"));
-        asList.setName(ast.newSimpleName("asList"));
-
-        if (innerTypeStr.startsWith("ArrayList<")) {
-            // RECURSION (Deepening):
-            // If we are adding layers (e.g., List<Int> -> List<List<Int>>),
-            // we put ALL existing leaves into the *first* new inner list.
-            // Example: [1, 2] -> [[1, 2]]
-
-            // We pass 'leavesToPreserve' down to the next level.
-            // However, if we passed it directly, the recursive call would consume them.
-            // If we wanted to split them (e.g. [[1], [2]]), that logic would be very complex.
-            // Wrapping them all in one list is the safest default.
-
-            Expression innerList = createRecursiveListInitializer(ast, innerTypeStr, cu, rewriter, leavesToPreserve);
-            asList.arguments().add(innerList);
-
-            // Crucial: Set leavesToPreserve to null/empty for subsequent calls if we were looping,
-            // but here we create exactly one inner list, so it handles all data.
-        } else {
-            // BASE CASE (Bottom Layer):
-            // Dump all collected values here.
-            if (leavesToPreserve != null && !leavesToPreserve.isEmpty()) {
-                for (Expression leaf : leavesToPreserve) {
-                    asList.arguments().add((Expression) ASTNode.copySubtree(ast, leaf));
-                }
-            } else {
-                // Only add default 0 if we have absolutely no data
-                Expression defaultValue = createDefaultInitializer(ast, innerTypeStr);
-                asList.arguments().add(defaultValue);
-            }
-        }
-
-        creation.arguments().add(asList);
-        return creation;
-    }
-
-    public String updateComment(String originalCode, Comment commentNode, String newText) {
-        try {
-            IDocument document = new Document(originalCode);
-
-            String replacement;
-            if (newText.contains("\n")) {
-                // Use Block Comment for multi-line text
-                replacement = "/* " + newText + " */";
-            } else {
-                // Use Line Comment for single-line text
-                replacement = "// " + newText;
-            }
-
-            // Directly replace the text range in the document
-            document.replace(commentNode.getStartPosition(), commentNode.getLength(), replacement);
-
-            return document.get();
-        } catch (Exception e) {
-            e.printStackTrace();
-            return originalCode;
-        }
-    }
-
-    /**
-     * Deletes a comment node by removing its text range.
-     */
-    public String deleteComment(String originalCode, Comment commentNode) {
-        try {
-            IDocument document = new Document(originalCode);
-            // Replace content with empty string
-            document.replace(commentNode.getStartPosition(), commentNode.getLength(), "");
-            return document.get();
-        } catch (Exception e) {
-            e.printStackTrace();
-            return originalCode;
-        }
-    }
-
-
     public String replaceLiteral(CompilationUnit cu, String originalCode, Expression toReplace, String newLiteralValue) {
         AST ast = cu.getAST();
         ASTRewrite rewriter = ASTRewrite.create(ast);
-
         Expression newExpression;
+
         if (toReplace instanceof StringLiteral) {
             StringLiteral newString = ast.newStringLiteral();
             newString.setLiteralValue(newLiteralValue);
@@ -4840,13 +4763,26 @@ public class AstRewriter {
         } else {
             return originalCode;
         }
-
         rewriter.replace(toReplace, newExpression, null);
+        return applyRewrite(rewriter, originalCode);
+    }
 
-        IDocument document = new Document(originalCode);
+    public String updateComment(String originalCode, Comment commentNode, String newText) {
         try {
-            TextEdit edits = rewriter.rewriteAST(document, null);
-            edits.apply(document);
+            IDocument document = new Document(originalCode);
+            String replacement = newText.contains("\n") ? "/* " + newText + " */" : "// " + newText;
+            document.replace(commentNode.getStartPosition(), commentNode.getLength(), replacement);
+            return document.get();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return originalCode;
+        }
+    }
+
+    public String deleteComment(String originalCode, Comment commentNode) {
+        try {
+            IDocument document = new Document(originalCode);
+            document.replace(commentNode.getStartPosition(), commentNode.getLength(), "");
             return document.get();
         } catch (Exception e) {
             e.printStackTrace();
@@ -4859,59 +4795,89 @@ public class AstRewriter {
         ASTRewrite rewriter = ASTRewrite.create(ast);
         ListRewrite listRewrite = rewriter.getListRewrite(mi, MethodInvocation.ARGUMENTS_PROPERTY);
         listRewrite.insertLast(newArgument, null);
-
-        IDocument document = new Document(originalCode);
-        try {
-            TextEdit edits = rewriter.rewriteAST(document, null);
-            edits.apply(document);
-            return document.get();
-        } catch (Exception e) {
-            e.printStackTrace();
-            return originalCode;
-        }
+        return applyRewrite(rewriter, originalCode);
     }
 
     public String replaceSimpleName(CompilationUnit cu, String originalCode, SimpleName toReplace, String newName) {
         AST ast = cu.getAST();
         ASTRewrite rewriter = ASTRewrite.create(ast);
-        SimpleName newSimpleName = ast.newSimpleName(newName);
-        rewriter.replace(toReplace, newSimpleName, null);
-
-        IDocument document = new Document(originalCode);
-        try {
-            TextEdit edits = rewriter.rewriteAST(document, null);
-            edits.apply(document);
-            return document.get();
-        } catch (Exception e) {
-            e.printStackTrace();
-            return originalCode;
-        }
+        rewriter.replace(toReplace, ast.newSimpleName(newName), null);
+        return applyRewrite(rewriter, originalCode);
     }
 
     public String deleteNode(CompilationUnit cu, String originalCode, ASTNode toDelete) {
         ASTRewrite rewriter = ASTRewrite.create(cu.getAST());
         rewriter.remove(toDelete, null);
-
-        IDocument document = new Document(originalCode);
-        try {
-            TextEdit edits = rewriter.rewriteAST(document, null);
-            edits.apply(document);
-            return document.get();
-        } catch (Exception e) {
-            e.printStackTrace();
-            return originalCode;
-        }
+        return applyRewrite(rewriter, originalCode);
     }
-    // UPDATED: Handles deletion for both types
-    public String deleteElementFromList(
-            CompilationUnit cu,
-            String originalCode,
-            ASTNode listNode,
-            int elementIndex) {
 
+    public String replaceVariableType(CompilationUnit cu, String originalCode, VariableDeclarationStatement varDecl, String newTypeName) {
         AST ast = cu.getAST();
         ASTRewrite rewriter = ASTRewrite.create(ast);
-        List<Expression> expressions;
+
+        if (newTypeName.contains("ArrayList")) {
+            ImportManager.addImport(cu, rewriter, "java.util.ArrayList");
+            ImportManager.addImport(cu, rewriter, "java.util.List");
+        }
+
+        Type newType = TypeManager.createTypeNode(ast, newTypeName);
+        rewriter.replace(varDecl.getType(), newType, null);
+
+        if (!varDecl.fragments().isEmpty()) {
+            VariableDeclarationFragment fragment = (VariableDeclarationFragment) varDecl.fragments().get(0);
+            Expression currentInitializer = fragment.getInitializer();
+            Expression newInitializer = null;
+
+            List<Expression> valuesToPreserve = new ArrayList<>();
+            String oldLeaf = TypeManager.getLeafType(varDecl.getType().toString());
+            String newLeaf = TypeManager.getLeafType(newTypeName);
+
+            if (oldLeaf.equals(newLeaf) && currentInitializer != null) {
+                collectLeafValues(currentInitializer, valuesToPreserve);
+            }
+
+            if (newTypeName.startsWith("ArrayList<")) {
+                newInitializer = nodeCreator.createRecursiveListInitializer(ast, newTypeName, cu, rewriter, valuesToPreserve);
+            } else if (newTypeName.endsWith("[]")) {
+                ArrayCreation creation = ast.newArrayCreation();
+                creation.setType((ArrayType) TypeManager.createTypeNode(ast, newTypeName));
+                ArrayInitializer ai = ast.newArrayInitializer();
+                if (!valuesToPreserve.isEmpty()) {
+                    for(Expression val : valuesToPreserve) ai.expressions().add(ASTNode.copySubtree(ast, val));
+                }
+                creation.setInitializer(ai);
+                newInitializer = creation;
+            } else {
+                newInitializer = !valuesToPreserve.isEmpty() ?
+                        (Expression) ASTNode.copySubtree(ast, valuesToPreserve.get(0)) :
+                        nodeCreator.createDefaultInitializer(ast, newTypeName);
+            }
+
+            if (newInitializer != null) {
+                rewriter.replace(currentInitializer, newInitializer, null);
+            }
+        }
+        return applyRewrite(rewriter, originalCode);
+    }
+
+    public String addElementToList(CompilationUnit cu, String originalCode, ASTNode listNode, AddableExpression type, int insertIndex) {
+        AST ast = cu.getAST();
+        ASTRewrite rewriter = ASTRewrite.create(ast);
+        Expression newElement = nodeCreator.createDefaultExpression(ast, type, cu, rewriter);
+        if (newElement == null) return originalCode;
+
+        if (listNode instanceof ArrayInitializer) {
+            rewriter.getListRewrite(listNode, ArrayInitializer.EXPRESSIONS_PROPERTY).insertAt(newElement, insertIndex, null);
+        } else if (listNode instanceof MethodInvocation) {
+            rewriter.getListRewrite(listNode, MethodInvocation.ARGUMENTS_PROPERTY).insertAt(newElement, insertIndex, null);
+        }
+        return applyRewrite(rewriter, originalCode);
+    }
+
+    public String deleteElementFromList(CompilationUnit cu, String originalCode, ASTNode listNode, int elementIndex) {
+        AST ast = cu.getAST();
+        ASTRewrite rewriter = ASTRewrite.create(ast);
+        List<?> expressions;
         ChildListPropertyDescriptor property;
 
         if (listNode instanceof ArrayInitializer) {
@@ -4924,66 +4890,76 @@ public class AstRewriter {
             return originalCode;
         }
 
-        if (elementIndex < 0 || elementIndex >= expressions.size()) {
-            return originalCode;
+        if (elementIndex >= 0 && elementIndex < expressions.size()) {
+            rewriter.getListRewrite(listNode, property).remove((ASTNode) expressions.get(elementIndex), null);
         }
-
-        Expression toRemove = expressions.get(elementIndex);
-        rewriter.getListRewrite(listNode, property).remove(toRemove, null);
-
         return applyRewrite(rewriter, originalCode);
-    }
-    public String deleteElseFromIfStatement(CompilationUnit cu, String originalCode, IfStatement ifStatement) {
-        ASTRewrite rewriter = ASTRewrite.create(cu.getAST());
-        if (ifStatement.getElseStatement() != null) {
-            rewriter.remove(ifStatement.getElseStatement(), null);
-        } else {
-            return originalCode;
-        }
-        IDocument document = new Document(originalCode);
-        try {
-            TextEdit edits = rewriter.rewriteAST(document, null);
-            edits.apply(document);
-            return document.get();
-        } catch (Exception e) {
-            e.printStackTrace();
-            return originalCode;
-        }
     }
 
     public String convertElseToElseIf(CompilationUnit cu, String originalCode, IfStatement ifStatement) {
         AST ast = cu.getAST();
         ASTRewrite rewriter = ASTRewrite.create(ast);
         Statement elseStatement = ifStatement.getElseStatement();
-        if (elseStatement == null || elseStatement.getNodeType() != ASTNode.BLOCK) {
-            return originalCode;
+        if (elseStatement != null && elseStatement.getNodeType() == ASTNode.BLOCK) {
+            IfStatement newElseIf = ast.newIfStatement();
+            newElseIf.setExpression(ast.newBooleanLiteral(true));
+            newElseIf.setThenStatement((Block) ASTNode.copySubtree(ast, elseStatement));
+            rewriter.replace(elseStatement, newElseIf, null);
         }
-        IfStatement newElseIf = ast.newIfStatement();
-        newElseIf.setExpression(ast.newBooleanLiteral(true));
-        newElseIf.setThenStatement((Block) ASTNode.copySubtree(ast, elseStatement));
-        rewriter.replace(elseStatement, newElseIf, null);
-        IDocument document = new Document(originalCode);
-        try {
-            TextEdit edits = rewriter.rewriteAST(document, null);
-            edits.apply(document);
-            return document.get();
-        } catch (Exception e) {
-            e.printStackTrace();
-            return originalCode;
-        }
+        return applyRewrite(rewriter, originalCode);
     }
 
     public String addElseToIfStatement(CompilationUnit cu, String originalCode, IfStatement ifStatement) {
         AST ast = cu.getAST();
         ASTRewrite rewriter = ASTRewrite.create(ast);
-
         if (ifStatement.getElseStatement() == null) {
-            Block elseBlock = ast.newBlock();
-            rewriter.set(ifStatement, IfStatement.ELSE_STATEMENT_PROPERTY, elseBlock, null);
-        } else {
-            return originalCode;
+            rewriter.set(ifStatement, IfStatement.ELSE_STATEMENT_PROPERTY, ast.newBlock(), null);
         }
+        return applyRewrite(rewriter, originalCode);
+    }
 
+    public String deleteElseFromIfStatement(CompilationUnit cu, String originalCode, IfStatement ifStatement) {
+        ASTRewrite rewriter = ASTRewrite.create(cu.getAST());
+        if (ifStatement.getElseStatement() != null) {
+            rewriter.remove(ifStatement.getElseStatement(), null);
+        }
+        return applyRewrite(rewriter, originalCode);
+    }
+
+    // Assignment Operators
+    public String replaceAssignmentOperator(CompilationUnit cu, String originalCode, Assignment assignment, Assignment.Operator newOp) {
+        AST ast = cu.getAST();
+        ASTRewrite rewriter = ASTRewrite.create(ast);
+        Assignment newAssignment = ast.newAssignment();
+        newAssignment.setLeftHandSide((Expression) ASTNode.copySubtree(ast, assignment.getLeftHandSide()));
+        newAssignment.setRightHandSide((Expression) ASTNode.copySubtree(ast, assignment.getRightHandSide()));
+        newAssignment.setOperator(newOp);
+        rewriter.replace(assignment, newAssignment, null);
+        return applyRewrite(rewriter, originalCode);
+    }
+
+    public String replacePrefixOperator(CompilationUnit cu, String originalCode, PrefixExpression prefix, PrefixExpression.Operator newOp) {
+        AST ast = cu.getAST();
+        ASTRewrite rewriter = ASTRewrite.create(ast);
+        PrefixExpression newPrefix = ast.newPrefixExpression();
+        newPrefix.setOperand((Expression) ASTNode.copySubtree(ast, prefix.getOperand()));
+        newPrefix.setOperator(newOp);
+        rewriter.replace(prefix, newPrefix, null);
+        return applyRewrite(rewriter, originalCode);
+    }
+
+    public String replacePostfixOperator(CompilationUnit cu, String originalCode, PostfixExpression postfix, PostfixExpression.Operator newOp) {
+        AST ast = cu.getAST();
+        ASTRewrite rewriter = ASTRewrite.create(ast);
+        PostfixExpression newPostfix = ast.newPostfixExpression();
+        newPostfix.setOperand((Expression) ASTNode.copySubtree(ast, postfix.getOperand()));
+        newPostfix.setOperator(newOp);
+        rewriter.replace(postfix, newPostfix, null);
+        return applyRewrite(rewriter, originalCode);
+    }
+
+    // Private helpers
+    private String applyRewrite(ASTRewrite rewriter, String originalCode) {
         IDocument document = new Document(originalCode);
         try {
             TextEdit edits = rewriter.rewriteAST(document, null);
@@ -4995,559 +4971,32 @@ public class AstRewriter {
         }
     }
 
-    // ADD THIS METHOD TO AstRewriter.java - replaces the existing createDefaultExpression
-
-    private Expression createDefaultExpression(AST ast, AddableExpression type, CompilationUnit cu, ASTRewrite rewriter) {
-        switch (type) {
-            case TEXT:
-                StringLiteral newString = ast.newStringLiteral();
-                newString.setLiteralValue("text");
-                return newString;
-
-            case NUMBER:
-                return ast.newNumberLiteral("0");
-
-            case TRUE:
-                return ast.newBooleanLiteral(true);
-
-            case FALSE:
-                return ast.newBooleanLiteral(false);
-
-            case VARIABLE:
-                return ast.newSimpleName(DefaultNames.DEFAULT_VARIABLE);
-
-            case LIST:
-                // Create: Arrays.asList()
-                // This is the versatile list expression used for ArrayLists and Nested Lists
-                ImportManager.addImport(cu, rewriter, "java.util.Arrays");
-
-                MethodInvocation asList = ast.newMethodInvocation();
-                asList.setExpression(ast.newSimpleName("Arrays"));
-                asList.setName(ast.newSimpleName("asList"));
-
-                // Add default elements? No, start empty.
-                return asList;
-
-            case ADD:
-            case SUBTRACT:
-            case MULTIPLY:
-            case DIVIDE:
-            case MODULO:
-                InfixExpression infixExpr = ast.newInfixExpression();
-                infixExpr.setLeftOperand(ast.newSimpleName(DefaultNames.DEFAULT_VARIABLE));
-                infixExpr.setRightOperand(ast.newNumberLiteral("0"));
-
-                switch (type) {
-                    case ADD: infixExpr.setOperator(InfixExpression.Operator.PLUS); break;
-                    case SUBTRACT: infixExpr.setOperator(InfixExpression.Operator.MINUS); break;
-                    case MULTIPLY: infixExpr.setOperator(InfixExpression.Operator.TIMES); break;
-                    case DIVIDE: infixExpr.setOperator(InfixExpression.Operator.DIVIDE); break;
-                    case MODULO: infixExpr.setOperator(InfixExpression.Operator.REMAINDER); break;
-                }
-                return infixExpr;
-
-            default:
-                return null;
-        }
-    }
-
-    private Statement createDefaultStatement(AST ast, AddableBlock type, CompilationUnit cu, ASTRewrite rewriter) {
-        switch (type) {
-            case PRINT:
-                // System.out.println("");
-                MethodInvocation println = ast.newMethodInvocation();
-                println.setExpression(ast.newQualifiedName(
-                        ast.newSimpleName("System"),
-                        ast.newSimpleName("out"))
-                );
-                println.setName(ast.newSimpleName("println"));
-                StringLiteral emptyString = ast.newStringLiteral();
-                emptyString.setLiteralValue("");
-                println.arguments().add(emptyString);
-                return ast.newExpressionStatement(println);
-            case DECLARE_INT: {
-                VariableDeclarationFragment fragment = ast.newVariableDeclarationFragment();
-                fragment.setName(ast.newSimpleName(DefaultNames.DEFAULT_INT));
-                fragment.setInitializer(ast.newNumberLiteral("0"));
-                VariableDeclarationStatement varDecl = ast.newVariableDeclarationStatement(fragment);
-                varDecl.setType(ast.newPrimitiveType(PrimitiveType.INT));
-                return varDecl;
-            }
-
-            case DECLARE_DOUBLE: {
-                VariableDeclarationFragment fragment = ast.newVariableDeclarationFragment();
-                fragment.setName(ast.newSimpleName(DefaultNames.DEFAULT_DOUBLE));
-                fragment.setInitializer(ast.newNumberLiteral("0.0"));
-                VariableDeclarationStatement varDecl = ast.newVariableDeclarationStatement(fragment);
-                varDecl.setType(ast.newPrimitiveType(PrimitiveType.DOUBLE));
-                return varDecl;
-            }
-
-            case DECLARE_BOOLEAN: {
-                VariableDeclarationFragment fragment = ast.newVariableDeclarationFragment();
-                fragment.setName(ast.newSimpleName(DefaultNames.DEFAULT_BOOLEAN));
-                fragment.setInitializer(ast.newBooleanLiteral(false));
-                VariableDeclarationStatement varDecl = ast.newVariableDeclarationStatement(fragment);
-                varDecl.setType(ast.newPrimitiveType(PrimitiveType.BOOLEAN));
-                return varDecl;
-            }
-
-            case DECLARE_STRING: {
-                VariableDeclarationFragment fragment = ast.newVariableDeclarationFragment();
-                fragment.setName(ast.newSimpleName(DefaultNames.DEFAULT_STRING));
-                fragment.setInitializer(ast.newStringLiteral());
-                VariableDeclarationStatement varDecl = ast.newVariableDeclarationStatement(fragment);
-                varDecl.setType(TypeManager.createTypeNode(ast, "String"));
-                return varDecl;
-            }
-            case DECLARE_ARRAY: {
-                if (cu != null && rewriter != null) {
-                    ImportManager.addImport(cu, rewriter, "java.util.ArrayList");
-                    ImportManager.addImport(cu, rewriter, "java.util.Arrays");
-                }
-
-                VariableDeclarationFragment fragment = ast.newVariableDeclarationFragment();
-                fragment.setName(ast.newSimpleName("myList"));
-
-                String defaultType = "ArrayList<Integer>";
-
-                // Pass empty list or null
-                Expression initializer = createRecursiveListInitializer(ast, defaultType, cu, rewriter, null);
-
-                fragment.setInitializer(initializer);
-
-                VariableDeclarationStatement varDecl = ast.newVariableDeclarationStatement(fragment);
-                varDecl.setType(TypeManager.createTypeNode(ast, defaultType));
-
-                return varDecl;
-            }
-            case IF:
-                // if (true) {}
-                IfStatement ifStatement = ast.newIfStatement();
-                ifStatement.setExpression(ast.newBooleanLiteral(true));
-                ifStatement.setThenStatement(ast.newBlock());
-                return ifStatement;
-
-            case WHILE:
-                // while (true) {}
-                WhileStatement whileStatement = ast.newWhileStatement();
-                whileStatement.setExpression(ast.newBooleanLiteral(true));
-                whileStatement.setBody(ast.newBlock());
-                return whileStatement;
-
-            case FOR:
-                // Enhanced for loop (foreach): for(String item : array) {}
-                EnhancedForStatement enhancedFor = ast.newEnhancedForStatement();
-
-                // Parameter: String item
-                SingleVariableDeclaration parameter = ast.newSingleVariableDeclaration();
-                parameter.setType(TypeManager.createTypeNode(ast, "String"));
-                parameter.setName(ast.newSimpleName("item"));
-                enhancedFor.setParameter(parameter);
-
-                // Expression: array (or any collection)
-                enhancedFor.setExpression(ast.newSimpleName("array"));
-
-                // Body
-                enhancedFor.setBody(ast.newBlock());
-
-                return enhancedFor;
-
-            case BREAK:
-                return ast.newBreakStatement();
-
-            case CONTINUE:
-                return ast.newContinueStatement();
-
-            case ASSIGNMENT: {
-                // variable = 0
-                Assignment assignment = ast.newAssignment();
-                assignment.setLeftHandSide(ast.newSimpleName(DefaultNames.DEFAULT_VARIABLE));
-                assignment.setOperator(Assignment.Operator.ASSIGN);
-                assignment.setRightHandSide(ast.newNumberLiteral("0"));
-                return ast.newExpressionStatement(assignment);
-            }
-
-            case READ_LINE: {
-                // String input = scanner.nextLine()
-                VariableDeclarationFragment fragment = ast.newVariableDeclarationFragment();
-                fragment.setName(ast.newSimpleName("input"));
-
-                MethodInvocation scannerCall = ast.newMethodInvocation();
-                scannerCall.setExpression(ast.newSimpleName("scanner"));
-                scannerCall.setName(ast.newSimpleName("nextLine"));
-                fragment.setInitializer(scannerCall);
-
-                VariableDeclarationStatement varDecl = ast.newVariableDeclarationStatement(fragment);
-                varDecl.setType(TypeManager.createTypeNode(ast, "String"));
-                return varDecl;
-            }
-
-            case READ_INT: {
-                // int num = scanner.nextInt()
-                VariableDeclarationFragment fragment = ast.newVariableDeclarationFragment();
-                fragment.setName(ast.newSimpleName("num"));
-
-                MethodInvocation scannerCall = ast.newMethodInvocation();
-                scannerCall.setExpression(ast.newSimpleName("scanner"));
-                scannerCall.setName(ast.newSimpleName("nextInt"));
-                fragment.setInitializer(scannerCall);
-
-                VariableDeclarationStatement varDecl = ast.newVariableDeclarationStatement(fragment);
-                varDecl.setType(ast.newPrimitiveType(PrimitiveType.INT));
-                return varDecl;
-            }
-
-            case READ_DOUBLE: {
-                // double num = scanner.nextDouble()
-                VariableDeclarationFragment fragment = ast.newVariableDeclarationFragment();
-                fragment.setName(ast.newSimpleName("num"));
-
-                MethodInvocation scannerCall = ast.newMethodInvocation();
-                scannerCall.setExpression(ast.newSimpleName("scanner"));
-                scannerCall.setName(ast.newSimpleName("nextDouble"));
-                fragment.setInitializer(scannerCall);
-
-                VariableDeclarationStatement varDecl = ast.newVariableDeclarationStatement(fragment);
-                varDecl.setType(ast.newPrimitiveType(PrimitiveType.DOUBLE));
-                return varDecl;
-            }
-
-            case DO_WHILE:
-                // do { } while (true)
-                DoStatement doStatement = ast.newDoStatement();
-                doStatement.setExpression(ast.newBooleanLiteral(true));
-                doStatement.setBody(ast.newBlock());
-                return doStatement;
-
-            case SWITCH:
-                // switch (variable) { default: break; }
-                SwitchStatement switchStatement = ast.newSwitchStatement();
-                switchStatement.setExpression(ast.newSimpleName(DefaultNames.DEFAULT_VARIABLE));
-
-                // Add a default case
-                SwitchCase defaultCase = ast.newSwitchCase();
-                // In JDT AST, a SwitchCase with empty/null expression is treated as 'default'.
-                // We do NOT call setDefault(true) as it doesn't exist in modern AST.
-
-                switchStatement.statements().add(defaultCase);
-
-                BreakStatement breakStmt = ast.newBreakStatement();
-                switchStatement.statements().add(breakStmt);
-
-                return switchStatement;
-
-            case CASE:
-                // case 0:
-                SwitchCase switchCase = ast.newSwitchCase();
-                // We assume JDK 8+ style (case expression:)
-                // In newer JDT versions, we use expressions().add()
-                try {
-                    // Using reflection to handle different JDT versions if necessary,
-                    // but assuming we are on a modern version based on AST.getJLSLatest()
-                    switchCase.expressions().add(ast.newNumberLiteral("0"));
-                } catch (Exception e) {
-                    // Fallback for older JDT where setExpression is used
-                    // switchCase.setExpression(ast.newNumberLiteral("0"));
-                }
-                return switchCase;
-
-            case RETURN:
-                // return;
-                return ast.newReturnStatement();
-
-            case WAIT:
-                // try { Thread.sleep(1000); } catch (InterruptedException e) { e.printStackTrace(); }
-                TryStatement tryStmt = ast.newTryStatement();
-                Block tryBody = ast.newBlock();
-
-                // Thread.sleep(1000)
-                MethodInvocation sleepCall = ast.newMethodInvocation();
-                sleepCall.setExpression(ast.newSimpleName("Thread"));
-                sleepCall.setName(ast.newSimpleName("sleep"));
-                sleepCall.arguments().add(ast.newNumberLiteral("1000"));
-
-                tryBody.statements().add(ast.newExpressionStatement(sleepCall));
-                tryStmt.setBody(tryBody);
-
-                // catch (InterruptedException e)
-                CatchClause catchClause = ast.newCatchClause();
-                SingleVariableDeclaration exceptionDecl = ast.newSingleVariableDeclaration();
-                exceptionDecl.setType(ast.newSimpleType(ast.newSimpleName("InterruptedException")));
-                exceptionDecl.setName(ast.newSimpleName("e"));
-                catchClause.setException(exceptionDecl);
-
-                // e.printStackTrace()
-                Block catchBody = ast.newBlock();
-                MethodInvocation printStackTrace = ast.newMethodInvocation();
-                printStackTrace.setExpression(ast.newSimpleName("e"));
-                printStackTrace.setName(ast.newSimpleName("printStackTrace"));
-                catchBody.statements().add(ast.newExpressionStatement(printStackTrace));
-                catchClause.setBody(catchBody);
-
-                tryStmt.catchClauses().add(catchClause);
-                return tryStmt;
-            case COMMENT:
-                // Comments are special - they're not real statements
-                // We'll use an EmptyStatement as a placeholder
-                // The actual comment text is stored in the CommentBlock
-                EmptyStatement emptyStmt = ast.newEmptyStatement();
-                return emptyStmt;
-
-            default:
-                return null;
-        }
-    }
-
     private void collectLeafValues(Expression expr, List<Expression> accumulator) {
         if (expr == null) return;
-
         boolean isContainer = false;
 
-        // Check: new ArrayList<>(...)
         if (expr instanceof ClassInstanceCreation) {
             ClassInstanceCreation cic = (ClassInstanceCreation) expr;
-            if (cic.getType().toString().startsWith("ArrayList")) {
+            if (cic.getType().toString().startsWith("ArrayList") && !cic.arguments().isEmpty()) {
                 isContainer = true;
-                if (!cic.arguments().isEmpty()) {
-                    // Dive into the argument (usually Arrays.asList)
-                    collectLeafValues((Expression) cic.arguments().get(0), accumulator);
-                }
+                collectLeafValues((Expression) cic.arguments().get(0), accumulator);
             }
-        }
-
-        // Check: Arrays.asList(...) or List.of(...)
-        else if (expr instanceof MethodInvocation) {
+        } else if (expr instanceof MethodInvocation) {
             MethodInvocation mi = (MethodInvocation) expr;
             String name = mi.getName().getIdentifier();
             if (name.equals("asList") || name.equals("of")) {
                 isContainer = true;
-                for (Object arg : mi.arguments()) {
-                    collectLeafValues((Expression) arg, accumulator);
-                }
+                for (Object arg : mi.arguments()) collectLeafValues((Expression) arg, accumulator);
             }
-        }
-
-        // Check: Array Initializer {1, 2}
-        else if (expr instanceof ArrayInitializer) {
+        } else if (expr instanceof ArrayInitializer) {
             isContainer = true;
-            ArrayInitializer ai = (ArrayInitializer) expr;
-            for (Object e : ai.expressions()) {
-                collectLeafValues((Expression) e, accumulator);
-            }
-        }
-
-        // Check: new int[] { ... }
-        else if (expr instanceof ArrayCreation) {
+            for (Object e : ((ArrayInitializer) expr).expressions()) collectLeafValues((Expression) e, accumulator);
+        } else if (expr instanceof ArrayCreation) {
             isContainer = true;
-            ArrayCreation ac = (ArrayCreation) expr;
-            if (ac.getInitializer() != null) {
-                collectLeafValues(ac.getInitializer(), accumulator);
-            }
+            if (((ArrayCreation) expr).getInitializer() != null) collectLeafValues(((ArrayCreation) expr).getInitializer(), accumulator);
         }
 
-        // BASE CASE: If it wasn't a container, it's a value. Add it.
-        if (!isContainer) {
-            accumulator.add(expr);
-        }
-    }
-
-    public String addElementToList(
-            CompilationUnit cu,
-            String originalCode,
-            ASTNode listNode, // Can be ArrayInitializer or MethodInvocation
-            com.botmaker.ui.AddableExpression type,
-            int insertIndex) {
-
-        AST ast = cu.getAST();
-        ASTRewrite rewriter = ASTRewrite.create(ast);
-
-        // Create the new element
-        Expression newElement = createDefaultExpression(ast, type, cu, rewriter);
-        if (newElement == null) return originalCode;
-
-        if (listNode instanceof ArrayInitializer) {
-            ListRewrite listRewrite = rewriter.getListRewrite(listNode, ArrayInitializer.EXPRESSIONS_PROPERTY);
-            listRewrite.insertAt(newElement, insertIndex, null);
-        }
-        else if (listNode instanceof MethodInvocation) {
-            // Handle Arrays.asList(...) or List.of(...)
-            ListRewrite listRewrite = rewriter.getListRewrite(listNode, MethodInvocation.ARGUMENTS_PROPERTY);
-            listRewrite.insertAt(newElement, insertIndex, null);
-        }
-
-        return applyRewrite(rewriter, originalCode);
-    }
-
-    private Expression createDefaultInitializer(AST ast, String typeName) {
-        switch (typeName) {
-            case "int":
-            case "long":
-            case "short":
-            case "byte":
-                return ast.newNumberLiteral("0");
-            case "double":
-            case "float":
-                return ast.newNumberLiteral("0.0");
-            case "boolean":
-                return ast.newBooleanLiteral(false);
-            case "char":
-                CharacterLiteral literal = ast.newCharacterLiteral();
-                literal.setCharValue('a');
-                return literal;
-            case "String":
-                StringLiteral stringLiteral = ast.newStringLiteral();
-                stringLiteral.setLiteralValue("");
-                return stringLiteral;
-            default:
-                return ast.newNullLiteral();
-        }
-    }
-// [Inside AstRewriter class]
-
-    public String replaceAssignmentOperator(CompilationUnit cu, String originalCode, Assignment assignment, Assignment.Operator newOp) {
-        AST ast = cu.getAST();
-        ASTRewrite rewriter = ASTRewrite.create(ast);
-
-        // Create a new assignment with the same operands but new operator
-        Assignment newAssignment = ast.newAssignment();
-        newAssignment.setLeftHandSide((Expression)
-                ASTNode.copySubtree(ast, assignment.getLeftHandSide()));
-        newAssignment.setRightHandSide((Expression)
-                ASTNode.copySubtree(ast, assignment.getRightHandSide()));
-        newAssignment.setOperator(newOp);
-
-        rewriter.replace(assignment, newAssignment, null);
-
-        org.eclipse.jface.text.IDocument document = new org.eclipse.jface.text.Document(originalCode);
-        try {
-            org.eclipse.text.edits.TextEdit edits = rewriter.rewriteAST(document, null);
-            edits.apply(document);
-            return document.get();
-        } catch (Exception e) {
-            e.printStackTrace();
-            return originalCode;
-        }
-    }
-
-    // Also handle Prefix expressions (++ / --)
-    public String replacePrefixOperator(CompilationUnit cu, String originalCode, PrefixExpression prefix, PrefixExpression.Operator newOp) {
-        AST ast = cu.getAST();
-        ASTRewrite rewriter = ASTRewrite.create(ast);
-
-        PrefixExpression newPrefix = ast.newPrefixExpression();
-        newPrefix.setOperand((Expression)
-                ASTNode.copySubtree(ast, prefix.getOperand()));
-        newPrefix.setOperator(newOp);
-
-        rewriter.replace(prefix, newPrefix, null);
-
-        org.eclipse.jface.text.IDocument document = new org.eclipse.jface.text.Document(originalCode);
-        try {
-            org.eclipse.text.edits.TextEdit edits = rewriter.rewriteAST(document, null);
-            edits.apply(document);
-            return document.get();
-        } catch (Exception e) {
-            e.printStackTrace();
-            return originalCode;
-        }
-    }
-
-    // Also handle Postfix expressions (variable++ / variable--)
-    public String replacePostfixOperator(CompilationUnit cu, String originalCode, PostfixExpression postfix, PostfixExpression.Operator newOp) {
-        AST ast = cu.getAST();
-        ASTRewrite rewriter = ASTRewrite.create(ast);
-
-        PostfixExpression newPostfix = ast.newPostfixExpression();
-        newPostfix.setOperand((Expression)
-                ASTNode.copySubtree(ast, postfix.getOperand()));
-        newPostfix.setOperator(newOp);
-
-        rewriter.replace(postfix, newPostfix, null);
-
-        org.eclipse.jface.text.IDocument document = new org.eclipse.jface.text.Document(originalCode);
-        try {
-            org.eclipse.text.edits.TextEdit edits = rewriter.rewriteAST(document, null);
-            edits.apply(document);
-            return document.get();
-        } catch (Exception e) {
-            e.printStackTrace();
-            return originalCode;
-        }
-    }
-// ADD THIS METHOD TO AstRewriter.java
-
-    public String replaceVariableType(CompilationUnit cu, String originalCode,
-                                      VariableDeclarationStatement varDecl, String newTypeName) {
-        AST ast = cu.getAST();
-        ASTRewrite rewriter = ASTRewrite.create(ast);
-
-        if (newTypeName.contains("ArrayList")) {
-            ImportManager.addImport(cu, rewriter, "java.util.ArrayList");
-            ImportManager.addImport(cu, rewriter, "java.util.List");
-        }
-
-        String oldTypeName = varDecl.getType().toString();
-        String oldLeaf = TypeManager.getLeafType(oldTypeName);
-        String newLeaf = TypeManager.getLeafType(newTypeName);
-        boolean baseTypesMatch = oldLeaf.equals(newLeaf);
-
-        Type newType = TypeManager.createTypeNode(ast, newTypeName);
-        rewriter.replace(varDecl.getType(), newType, null);
-
-        if (!varDecl.fragments().isEmpty()) {
-            VariableDeclarationFragment fragment = (VariableDeclarationFragment) varDecl.fragments().get(0);
-            Expression currentInitializer = fragment.getInitializer();
-            Expression newInitializer = null;
-
-            // Collect ALL leaves
-            List<Expression> valuesToPreserve = new ArrayList<>();
-            if (baseTypesMatch && currentInitializer != null) {
-                collectLeafValues(currentInitializer, valuesToPreserve);
-            }
-
-            if (newTypeName.startsWith("ArrayList<")) {
-                // Pass the list of values
-                newInitializer = createRecursiveListInitializer(ast, newTypeName, cu, rewriter, valuesToPreserve);
-            } else if (newTypeName.endsWith("[]")) {
-                ArrayCreation creation = ast.newArrayCreation();
-                creation.setType((ArrayType) TypeManager.createTypeNode(ast, newTypeName));
-                ArrayInitializer ai = ast.newArrayInitializer();
-
-                // Handle Array Creation with preserved values
-                if (!valuesToPreserve.isEmpty()) {
-                    for(Expression val : valuesToPreserve) {
-                        ai.expressions().add(ASTNode.copySubtree(ast, val));
-                    }
-                }
-                creation.setInitializer(ai);
-                newInitializer = creation;
-            } else {
-                // Single Value Case: Take the first one if available
-                if (!valuesToPreserve.isEmpty()) {
-                    newInitializer = (Expression) ASTNode.copySubtree(ast, valuesToPreserve.get(0));
-                } else {
-                    newInitializer = createDefaultInitializer(ast, newTypeName);
-                }
-            }
-
-            if (newInitializer != null) {
-                rewriter.replace(currentInitializer, newInitializer, null);
-            }
-        }
-
-        return applyRewrite(rewriter, originalCode);
-    }
-
-
-
-    private String extractArrayListElementType(String arrayListType) {
-        if (arrayListType.contains("<") && arrayListType.contains(">")) {
-            int start = arrayListType.indexOf("<") + 1;
-            int end = arrayListType.lastIndexOf(">");
-            return arrayListType.substring(start, end);
-        }
-        return "Object";
+        if (!isContainer) accumulator.add(expr);
     }
 }
 
@@ -5571,9 +5020,13 @@ public class BlockFactory {
     private String currentSourceCode;
     private List<Comment> allComments;
     private boolean markNewIdentifiersAsUnedited = false;
+    private BlockParser blockParser;
 
     public MainBlock convert(String javaCode, Map<ASTNode, CodeBlock> nodeToBlockMap, BlockDragAndDropManager manager) {
         this.currentSourceCode = javaCode;
+        // Initialize parser helper with current context
+        this.blockParser = new BlockParser(this, manager, markNewIdentifiersAsUnedited);
+
         try {
             ASTParser parser = ASTParser.newParser(AST.getJLSLatest());
             parser.setSource(javaCode.toCharArray());
@@ -5585,9 +5038,7 @@ public class BlockFactory {
 
             this.allComments = new ArrayList<>();
             for (Object obj : ast.getCommentList()) {
-                if (obj instanceof Comment && !(obj instanceof Javadoc)) {
-                    allComments.add((Comment) obj);
-                }
+                if (obj instanceof Comment && !(obj instanceof Javadoc)) allComments.add((Comment) obj);
             }
 
             MainMethodVisitor visitor = new MainMethodVisitor();
@@ -5613,17 +5064,17 @@ public class BlockFactory {
         this.markNewIdentifiersAsUnedited = mark;
     }
 
-    private BodyBlock parseBodyBlock(Block astBlock, Map<ASTNode, CodeBlock> nodeToBlockMap, BlockDragAndDropManager manager) {
+    public BodyBlock parseBodyBlock(Block astBlock, Map<ASTNode, CodeBlock> nodeToBlockMap, BlockDragAndDropManager manager) {
         BodyBlock bodyBlock = new BodyBlock(BlockIdPrefix.generate(BlockIdPrefix.BODY, astBlock), astBlock, manager);
         nodeToBlockMap.put(astBlock, bodyBlock);
 
         List<CodeBlock> allChildren = new ArrayList<>();
 
         for (Object statementObj : astBlock.statements()) {
-            Statement statement = (Statement) statementObj;
-            parseStatement(statement, nodeToBlockMap, manager).ifPresent(allChildren::add);
+            blockParser.parseStatement((Statement) statementObj, nodeToBlockMap).ifPresent(allChildren::add);
         }
 
+        // Handle Comments
         int blockStart = astBlock.getStartPosition() + 1;
         int blockEnd = astBlock.getStartPosition() + astBlock.getLength() - 1;
 
@@ -5645,436 +5096,53 @@ public class BlockFactory {
         }
 
         allChildren.sort(Comparator.comparingInt(b -> b.getAstNode().getStartPosition()));
-
         for (CodeBlock cb : allChildren) {
-            if (cb instanceof StatementBlock) {
-                bodyBlock.addStatement((StatementBlock) cb);
-            }
+            if (cb instanceof StatementBlock) bodyBlock.addStatement((StatementBlock) cb);
         }
-
         return bodyBlock;
     }
 
-    private Optional<StatementBlock> parseStatement(Statement astStatement, Map<ASTNode, CodeBlock> nodeToBlockMap, BlockDragAndDropManager manager) {
-        if (astStatement instanceof Block) {
-            return Optional.of(parseBodyBlock((Block) astStatement, nodeToBlockMap, manager));
-        }
-        if (astStatement instanceof VariableDeclarationStatement) {
-            VariableDeclarationStatement varDecl = (VariableDeclarationStatement) astStatement;
-            if (isReadInputStatement(varDecl)) {
-                return Optional.of(parseReadInputStatement(varDecl, nodeToBlockMap));
-            }
-            return Optional.of(parseVariableDeclaration(varDecl, nodeToBlockMap));
-        }
-        if (astStatement instanceof IfStatement) {
-            return Optional.of(parseIfStatement((IfStatement) astStatement, nodeToBlockMap, manager));
-        }
-        if (astStatement instanceof WhileStatement) {
-            return Optional.of(parseWhileStatement((WhileStatement) astStatement, nodeToBlockMap, manager));
-        }
-        if (astStatement instanceof ReturnStatement) {
-            return Optional.of(parseReturnStatement((ReturnStatement) astStatement, nodeToBlockMap));
-        }
-        if (astStatement instanceof EnhancedForStatement) {
-            return Optional.of(parseForStatement((EnhancedForStatement) astStatement, nodeToBlockMap, manager));
-        }
-        if (astStatement instanceof DoStatement) {
-            return Optional.of(parseDoWhileStatement((DoStatement) astStatement, nodeToBlockMap, manager));
-        }
-        if (astStatement instanceof SwitchStatement) {
-            return Optional.of(parseSwitchStatement((SwitchStatement) astStatement, nodeToBlockMap, manager));
-        }
-        if (astStatement instanceof BreakStatement) {
-            return Optional.of(parseBreakStatement((BreakStatement) astStatement, nodeToBlockMap));
-        }
-        if (astStatement instanceof ContinueStatement) {
-            return Optional.of(parseContinueStatement((ContinueStatement) astStatement, nodeToBlockMap));
-        }
-        if (astStatement instanceof ExpressionStatement) {
-            Expression expression = ((ExpressionStatement) astStatement).getExpression();
-            if (isPrintStatement(expression)) {
-                return Optional.of(parsePrintStatement((ExpressionStatement) astStatement, nodeToBlockMap));
-            }
-            if (expression instanceof Assignment) {
-                return Optional.of(parseAssignmentStatement((ExpressionStatement) astStatement, nodeToBlockMap));
-            }
-            if (expression instanceof PostfixExpression) {
-                PostfixExpression postfix = (PostfixExpression) expression;
-                if (postfix.getOperator() == PostfixExpression.Operator.INCREMENT ||
-                        postfix.getOperator() == PostfixExpression.Operator.DECREMENT) {
-                    return Optional.of(parseAssignmentStatement((ExpressionStatement) astStatement, nodeToBlockMap));
-                }
-            }
-            if (expression instanceof PrefixExpression) {
-                PrefixExpression prefix = (PrefixExpression) expression;
-                if (prefix.getOperator() == PrefixExpression.Operator.INCREMENT ||
-                        prefix.getOperator() == PrefixExpression.Operator.DECREMENT) {
-                    return Optional.of(parseAssignmentStatement((ExpressionStatement) astStatement, nodeToBlockMap));
-                }
-            }
-        }
-        if (astStatement instanceof TryStatement) {
-            TryStatement tryStmt = (TryStatement) astStatement;
-            if (isWaitStatement(tryStmt)) {
-                return Optional.of(parseWaitStatement(tryStmt, nodeToBlockMap));
-            }
-        }
-        return Optional.empty();
+    public Optional<StatementBlock> parseStatement(Statement stmt, Map<ASTNode, CodeBlock> map, BlockDragAndDropManager manager) {
+        return blockParser.parseStatement(stmt, map);
     }
 
-    private boolean isWaitStatement(TryStatement tryStmt) {
-        if (tryStmt.getBody().statements().size() != 1) return false;
-        Statement firstStmt = (Statement) tryStmt.getBody().statements().getFirst();
-        if (!(firstStmt instanceof ExpressionStatement)) return false;
-        Expression expr = ((ExpressionStatement) firstStmt).getExpression();
-        if (!(expr instanceof MethodInvocation)) return false;
-        MethodInvocation mi = (MethodInvocation) expr;
-        if (!"sleep".equals(mi.getName().getIdentifier())) return false;
-        Expression scope = mi.getExpression();
-        return scope != null && "Thread".equals(scope.toString());
-    }
-
-    private WaitBlock parseWaitStatement(TryStatement astNode, Map<ASTNode, CodeBlock> nodeToBlockMap) {
-        WaitBlock waitBlock = new WaitBlock(BlockIdPrefix.generate(BlockIdPrefix.WAIT, astNode), astNode);
-        nodeToBlockMap.put(astNode, waitBlock);
-        Statement innerStmt = (Statement) astNode.getBody().statements().getFirst();
-        ExpressionStatement exprStmt = (ExpressionStatement) innerStmt;
-        MethodInvocation mi = (MethodInvocation) exprStmt.getExpression();
-        if (!mi.arguments().isEmpty()) {
-            Expression arg = (Expression) mi.arguments().getFirst();
-            parseExpression(arg, nodeToBlockMap).ifPresent(waitBlock::setDuration);
-        }
-        return waitBlock;
-    }
-
-    private ReturnBlock parseReturnStatement(ReturnStatement astNode, Map<ASTNode, CodeBlock> nodeToBlockMap) {
-        ReturnBlock returnBlock = new ReturnBlock(BlockIdPrefix.generate(BlockIdPrefix.RETURN, astNode), astNode);
-        nodeToBlockMap.put(astNode, returnBlock);
-        return returnBlock;
-    }
-
-    private DoWhileBlock parseDoWhileStatement(DoStatement astNode, Map<ASTNode, CodeBlock> nodeToBlockMap, BlockDragAndDropManager manager) {
-        DoWhileBlock doWhileBlock = new DoWhileBlock(BlockIdPrefix.generate(BlockIdPrefix.DO_WHILE, astNode), astNode, manager);
-        nodeToBlockMap.put(astNode, doWhileBlock);
-        if (astNode.getBody() instanceof Block) {
-            doWhileBlock.setBody(parseBodyBlock((Block) astNode.getBody(), nodeToBlockMap, manager));
-        }
-        if (astNode.getExpression() != null) {
-            parseExpression(astNode.getExpression(), nodeToBlockMap).ifPresent(doWhileBlock::setCondition);
-        }
-        return doWhileBlock;
-    }
-
-    private SwitchBlock parseSwitchStatement(SwitchStatement astNode, Map<ASTNode, CodeBlock> nodeToBlockMap, BlockDragAndDropManager manager) {
-        SwitchBlock switchBlock = new SwitchBlock(BlockIdPrefix.generate(BlockIdPrefix.SWITCH, astNode), astNode, manager);
-        nodeToBlockMap.put(astNode, switchBlock);
-        if (astNode.getExpression() != null) {
-            parseExpression(astNode.getExpression(), nodeToBlockMap).ifPresent(switchBlock::setExpression);
-        }
-        List<Statement> statements = astNode.statements();
-        BodyBlock currentCaseBody = null;
-        SwitchBlock.SwitchCaseBlock currentCase = null;
-
-        for (Statement stmt : statements) {
-            if (stmt instanceof SwitchCase) {
-                SwitchCase switchCase = (SwitchCase) stmt;
-                String caseId = BlockIdPrefix.generate(BlockIdPrefix.SWITCH + "_case_", switchCase);
-                currentCase = new SwitchBlock.SwitchCaseBlock(caseId, switchCase, manager);
-                nodeToBlockMap.put(switchCase, currentCase);
-                if (!switchCase.isDefault() && !switchCase.expressions().isEmpty()) {
-                    Expression caseExpr = (Expression) switchCase.expressions().getFirst();
-                    parseExpression(caseExpr, nodeToBlockMap).ifPresent(currentCase::setCaseExpression);
-                }
-                currentCaseBody = new BodyBlock(
-                        BlockIdPrefix.generate(BlockIdPrefix.BODY, switchCase),
-                        ast.getAST().newBlock(),
-                        manager
-                );
-                currentCase.setBody(currentCaseBody);
-                switchBlock.addCase(currentCase);
-            } else if (currentCaseBody != null) {
-                parseStatement(stmt, nodeToBlockMap, manager).ifPresent(currentCaseBody::addStatement);
-            }
-        }
-        return switchBlock;
+    public Optional<ExpressionBlock> parseExpression(Expression expr, Map<ASTNode, CodeBlock> map) {
+        return blockParser.parseExpression(expr, map);
     }
 
     private CommentBlock parseCommentBlock(Comment astNode, Map<ASTNode, CodeBlock> nodeToBlockMap) {
         String text = "Comment";
         if (currentSourceCode != null) {
             try {
-                int start = astNode.getStartPosition();
-                int length = astNode.getLength();
-                String raw = currentSourceCode.substring(start, start + length);
-                if (astNode.isLineComment()) {
-                    text = raw.substring(2).trim();
-                } else if (astNode.isBlockComment()) {
-                    if (raw.length() >= 4) {
-                        text = raw.substring(2, raw.length() - 2).trim();
-                    }
-                }
+                String raw = currentSourceCode.substring(astNode.getStartPosition(), astNode.getStartPosition() + astNode.getLength());
+                text = astNode.isLineComment() ? raw.substring(2).trim() : raw.substring(2, raw.length() - 2).trim();
             } catch (Exception ignored) {}
         }
-        CommentBlock commentBlock = new CommentBlock(
-                BlockIdPrefix.generate(BlockIdPrefix.COMMENT, astNode),
-                astNode,
-                text
-        );
+        CommentBlock commentBlock = new CommentBlock(BlockIdPrefix.generate(BlockIdPrefix.COMMENT, astNode), astNode, text);
         nodeToBlockMap.put(astNode, commentBlock);
         return commentBlock;
     }
 
-    private VariableDeclarationBlock parseVariableDeclaration(VariableDeclarationStatement astNode, Map<ASTNode, CodeBlock> nodeToBlockMap) {
-        VariableDeclarationBlock varBlock = new VariableDeclarationBlock(BlockIdPrefix.generate(BlockIdPrefix.VARIABLE, astNode), astNode);
-        nodeToBlockMap.put(astNode, varBlock);
-        VariableDeclarationFragment fragment = (VariableDeclarationFragment) astNode.fragments().getFirst();
-        if (fragment.getInitializer() != null) {
-            parseExpression(fragment.getInitializer(), nodeToBlockMap).ifPresent(varBlock::setInitializer);
-        }
-        return varBlock;
-    }
-
-    private IfBlock parseIfStatement(IfStatement astNode, Map<ASTNode, CodeBlock> nodeToBlockMap, BlockDragAndDropManager manager) {
-        IfBlock ifBlock = new IfBlock(BlockIdPrefix.generate(BlockIdPrefix.IF, astNode), astNode);
-        nodeToBlockMap.put(astNode, ifBlock);
-        parseExpression(astNode.getExpression(), nodeToBlockMap).ifPresent(ifBlock::setCondition);
-        if (astNode.getThenStatement() instanceof Block) {
-            ifBlock.setThenBody(parseBodyBlock((Block) astNode.getThenStatement(), nodeToBlockMap, manager));
-        }
-        Statement elseStmt = astNode.getElseStatement();
-        if (elseStmt != null) {
-            parseStatement(elseStmt, nodeToBlockMap, manager).ifPresent(ifBlock::setElseStatement);
-        }
-        return ifBlock;
-    }
-
-    private PrintBlock parsePrintStatement(ExpressionStatement astNode, Map<ASTNode, CodeBlock> nodeToBlockMap) {
-        PrintBlock printBlock = new PrintBlock(BlockIdPrefix.generate(BlockIdPrefix.PRINT, astNode), astNode);
-        nodeToBlockMap.put(astNode, printBlock);
-        MethodInvocation methodInvocation = (MethodInvocation) astNode.getExpression();
-        if (methodInvocation.arguments().isEmpty()) {
-            LiteralBlock<String> block = new LiteralBlock<>(BlockIdPrefix.generate(BlockIdPrefix.SYNTHETIC_STRING, astNode), methodInvocation, "");
-            printBlock.addArgument(block);
-        } else {
-            for (Object arg : methodInvocation.arguments()) {
-                parseExpression((Expression) arg, nodeToBlockMap).ifPresent(printBlock::addArgument);
-            }
-        }
-        return printBlock;
-    }
-
-    private boolean isReadInputStatement(VariableDeclarationStatement varDecl) {
-        if (varDecl.fragments().isEmpty()) return false;
-        VariableDeclarationFragment fragment = (VariableDeclarationFragment) varDecl.fragments().getFirst();
-        Expression initializer = fragment.getInitializer();
-        if (initializer instanceof MethodInvocation) {
-            MethodInvocation mi = (MethodInvocation) initializer;
-            Expression expr = mi.getExpression();
-            if (expr instanceof SimpleName) {
-                SimpleName name = (SimpleName) expr;
-                String methodName = mi.getName().getIdentifier();
-                return name.getIdentifier().equals("scanner") &&
-                        (methodName.equals("nextLine") || methodName.equals("nextInt") ||
-                                methodName.equals("nextDouble") || methodName.equals("nextBoolean"));
-            }
-        }
-        return false;
-    }
-
-    private WhileBlock parseWhileStatement(WhileStatement astNode, Map<ASTNode, CodeBlock> nodeToBlockMap, BlockDragAndDropManager manager) {
-        WhileBlock whileBlock = new WhileBlock(BlockIdPrefix.generate(BlockIdPrefix.WHILE, astNode), astNode, manager);
-        nodeToBlockMap.put(astNode, whileBlock);
-        parseExpression(astNode.getExpression(), nodeToBlockMap).ifPresent(whileBlock::setCondition);
-        if (astNode.getBody() instanceof Block) {
-            whileBlock.setBody(parseBodyBlock((Block) astNode.getBody(), nodeToBlockMap, manager));
-        }
-        return whileBlock;
-    }
-
-    private ForBlock parseForStatement(EnhancedForStatement astNode, Map<ASTNode, CodeBlock> nodeToBlockMap, BlockDragAndDropManager manager) {
-        ForBlock forBlock = new ForBlock(BlockIdPrefix.generate(BlockIdPrefix.FOR, astNode), astNode, manager);
-        nodeToBlockMap.put(astNode, forBlock);
-        SingleVariableDeclaration param = astNode.getParameter();
-        if (param != null) {
-            parseExpression(param.getName(), nodeToBlockMap).ifPresent(forBlock::setVariable);
-        }
-        if (astNode.getExpression() != null) {
-            parseExpression(astNode.getExpression(), nodeToBlockMap).ifPresent(forBlock::setCollection);
-        }
-        if (astNode.getBody() instanceof Block) {
-            forBlock.setBody(parseBodyBlock((Block) astNode.getBody(), nodeToBlockMap, manager));
-        }
-        return forBlock;
-    }
-
-    private BreakBlock parseBreakStatement(BreakStatement astNode, Map<ASTNode, CodeBlock> nodeToBlockMap) {
-        BreakBlock breakBlock = new BreakBlock(BlockIdPrefix.generate(BlockIdPrefix.BREAK, astNode), astNode);
-        nodeToBlockMap.put(astNode, breakBlock);
-        return breakBlock;
-    }
-
-    private ContinueBlock parseContinueStatement(ContinueStatement astNode, Map<ASTNode, CodeBlock> nodeToBlockMap) {
-        ContinueBlock continueBlock = new ContinueBlock(BlockIdPrefix.generate(BlockIdPrefix.CONTINUE, astNode), astNode);
-        nodeToBlockMap.put(astNode, continueBlock);
-        return continueBlock;
-    }
-
-    private AssignmentBlock parseAssignmentStatement(ExpressionStatement astNode, Map<ASTNode, CodeBlock> nodeToBlockMap) {
-        AssignmentBlock assignBlock = new AssignmentBlock(BlockIdPrefix.generate(BlockIdPrefix.ASSIGNMENT, astNode), astNode);
-        nodeToBlockMap.put(astNode, assignBlock);
-        Assignment assignment = (Assignment) astNode.getExpression();
-        parseExpression(assignment.getLeftHandSide(), nodeToBlockMap).ifPresent(assignBlock::setLeftHandSide);
-        parseExpression(assignment.getRightHandSide(), nodeToBlockMap).ifPresent(assignBlock::setRightHandSide);
-        return assignBlock;
-    }
-
-    private ReadInputBlock parseReadInputStatement(VariableDeclarationStatement astNode, Map<ASTNode, CodeBlock> nodeToBlockMap) {
-        VariableDeclarationFragment fragment = (VariableDeclarationFragment) astNode.fragments().getFirst();
-        MethodInvocation mi = (MethodInvocation) fragment.getInitializer();
-        String inputType = mi.getName().getIdentifier();
-        ReadInputBlock readBlock = new ReadInputBlock(
-                BlockIdPrefix.generate(BlockIdPrefix.READ_INPUT, astNode), astNode, inputType
-        );
-        nodeToBlockMap.put(astNode, readBlock);
-        parseExpression(fragment.getName(), nodeToBlockMap).ifPresent(readBlock::setVariableName);
-        return readBlock;
-    }
-
-    private BinaryExpressionBlock parseBinaryExpression(InfixExpression astNode, Map<ASTNode, CodeBlock> nodeToBlockMap) {
-        BinaryExpressionBlock binaryBlock = new BinaryExpressionBlock(BlockIdPrefix.generate(BlockIdPrefix.BINARY, astNode), astNode);
-        nodeToBlockMap.put(astNode, binaryBlock);
-        parseExpression(astNode.getLeftOperand(), nodeToBlockMap).ifPresent(binaryBlock::setLeftOperand);
-        parseExpression(astNode.getRightOperand(), nodeToBlockMap).ifPresent(binaryBlock::setRightOperand);
-        return binaryBlock;
-    }
-
-    private Optional<ExpressionBlock> parseExpression(Expression astExpression, Map<ASTNode, CodeBlock> nodeToBlockMap) {
-        if (astExpression instanceof StringLiteral) {
-            StringLiteral literalNode = (StringLiteral) astExpression;
-            LiteralBlock<String> block = new LiteralBlock<>(BlockIdPrefix.generate(BlockIdPrefix.STRING, literalNode), literalNode, literalNode.getLiteralValue());
-            nodeToBlockMap.put(astExpression, block);
-            return Optional.of(block);
-        }
-
-        if (astExpression instanceof ClassInstanceCreation) {
-            ClassInstanceCreation cic = (ClassInstanceCreation) astExpression;
-            Type type = cic.getType();
-
-            // Check if it is an ArrayList
-            if (type.toString().startsWith("ArrayList")) {
-                // If it has arguments, check if the first arg is Arrays.asList or List.of
-                if (!cic.arguments().isEmpty()) {
-                    Object firstArg = cic.arguments().get(0);
-                    if (firstArg instanceof MethodInvocation) {
-                        // It wraps a list factory -> Parse the inner factory as the list block
-                        return parseExpression((Expression) firstArg, nodeToBlockMap);
-                    }
-                }
-
-                // If it is empty new ArrayList<>(), we need to render an empty list block
-                // However, ListBlock expects an ArrayInitializer or MethodInvocation node.
-                // We will map this ClassInstanceCreation to a ListBlock manually,
-                // but realize it won't allow adding items easily until transformed.
-                // *Correction*: The AstRewriter update above ensures new blocks are created
-                // WITH Arrays.asList, so this case only happens for legacy/manual code.
-            }
-        }
-
-        if (astExpression instanceof MethodInvocation) {
-            MethodInvocation mi = (MethodInvocation) astExpression;
-            String methodName = mi.getName().getIdentifier();
-            String scope = mi.getExpression() != null ? mi.getExpression().toString() : "";
-
-            boolean isListFactory =
-                    (scope.equals("Arrays") && methodName.equals("asList")) ||
-                            (scope.equals("List") && methodName.equals("of"));
-
-            if (isListFactory) {
-                ListBlock listBlock = new ListBlock(BlockIdPrefix.generate(BlockIdPrefix.LIST, mi), mi);
-                nodeToBlockMap.put(astExpression, listBlock);
-                for (Object arg : mi.arguments()) {
-                    parseExpression((Expression) arg, nodeToBlockMap).ifPresent(listBlock::addElement);
-                }
-                return Optional.of(listBlock);
-            }
-        }
-        if (astExpression instanceof NumberLiteral) {
-            NumberLiteral literalNode = (NumberLiteral) astExpression;
-            String token = literalNode.getToken();
-            ExpressionBlock block;
-            if (token.toLowerCase().endsWith("f")) {
-                block = new LiteralBlock<>(BlockIdPrefix.generate(BlockIdPrefix.NUMBER_FLOAT, literalNode), literalNode, Float.parseFloat(token));
-            } else if (token.contains(".") || token.toLowerCase().endsWith("d")) {
-                block = new LiteralBlock<>(BlockIdPrefix.generate(BlockIdPrefix.NUMBER_DOUBLE, literalNode), literalNode, Double.parseDouble(token));
-            } else {
-                block = new LiteralBlock<>(BlockIdPrefix.generate(BlockIdPrefix.NUMBER_INT, literalNode), literalNode, Integer.parseInt(token));
-            }
-            nodeToBlockMap.put(astExpression, block);
-            return Optional.of(block);
-        }
-
-        // UPDATED: Use BooleanLiteralBlock for true/false instead of LiteralBlock
-        if (astExpression instanceof BooleanLiteral) {
-            BooleanLiteral literalNode = (BooleanLiteral) astExpression;
-            BooleanLiteralBlock block = new BooleanLiteralBlock(BlockIdPrefix.generate(BlockIdPrefix.BOOLEAN, literalNode), literalNode);
-            nodeToBlockMap.put(astExpression, block);
-            return Optional.of(block);
-        }
-
-        if (astExpression instanceof ArrayInitializer) {
-            ArrayInitializer arrayInit = (ArrayInitializer) astExpression;
-            ListBlock listBlock = new ListBlock(BlockIdPrefix.generate(BlockIdPrefix.LIST, arrayInit), arrayInit);
-            nodeToBlockMap.put(astExpression, listBlock);
-            for (Object expr : arrayInit.expressions()) {
-                parseExpression((Expression) expr, nodeToBlockMap).ifPresent(listBlock::addElement);
-            }
-            return Optional.of(listBlock);
-        }
-
-        if (astExpression instanceof SimpleName) {
-            if (astExpression.getParent() instanceof Type) {
-                return Optional.empty();
-            }
-            SimpleName simpleName = (SimpleName) astExpression;
-            IdentifierBlock block = new IdentifierBlock(
-                    BlockIdPrefix.generate(BlockIdPrefix.IDENTIFIER, astExpression),
-                    simpleName,
-                    markNewIdentifiersAsUnedited
-            );
-            nodeToBlockMap.put(astExpression, block);
-            return Optional.of(block);
-        }
-
-        if (astExpression instanceof InfixExpression) {
-            return Optional.of(parseBinaryExpression((InfixExpression) astExpression, nodeToBlockMap));
-        }
-
-        return Optional.empty();
-    }
-
-    private boolean isPrintStatement(Expression expression) {
-        if (!(expression instanceof MethodInvocation)) {
-            return false;
-        }
+    public boolean isPrintStatement(Expression expression) {
+        if (!(expression instanceof MethodInvocation)) return false;
         MethodInvocation method = (MethodInvocation) expression;
-        if (!method.getName().getIdentifier().equals("println")) {
-            return false;
-        }
-        if (method.arguments().isEmpty()) {
-            return method.toString().startsWith("System.out.println");
-        } else {
-            Expression expr = method.getExpression();
-            return expr != null && "System.out".equals(expr.toString());
-        }
+        if (!method.getName().getIdentifier().equals("println")) return false;
+        return method.getExpression() != null && "System.out".equals(method.getExpression().toString());
     }
 
-    public CompilationUnit getCompilationUnit() {
-        return ast;
+    public boolean isReadInputStatement(VariableDeclarationStatement varDecl) {
+        if (varDecl.fragments().isEmpty()) return false;
+        VariableDeclarationFragment fragment = (VariableDeclarationFragment) varDecl.fragments().get(0);
+        if (!(fragment.getInitializer() instanceof MethodInvocation)) return false;
+        MethodInvocation mi = (MethodInvocation) fragment.getInitializer();
+        return mi.getExpression() instanceof SimpleName &&
+                ((SimpleName) mi.getExpression()).getIdentifier().equals("scanner");
     }
+
+    public CompilationUnit getCompilationUnit() { return ast; }
 
     private static class MainMethodVisitor extends ASTVisitor {
         private MethodDeclaration mainMethodDeclaration;
-
         @Override
         public boolean visit(MethodDeclaration node) {
             if ("main".equals(node.getName().getIdentifier())) {
@@ -6083,14 +5151,8 @@ public class BlockFactory {
             }
             return true;
         }
-
-        public Optional<MethodDeclaration> getMainMethodDeclaration() {
-            return Optional.ofNullable(mainMethodDeclaration);
-        }
-
-        public Optional<Block> getMainMethodBody() {
-            return Optional.ofNullable(mainMethodDeclaration != null ? mainMethodDeclaration.getBody() : null);
-        }
+        public Optional<MethodDeclaration> getMainMethodDeclaration() { return Optional.ofNullable(mainMethodDeclaration); }
+        public Optional<Block> getMainMethodBody() { return Optional.ofNullable(mainMethodDeclaration != null ? mainMethodDeclaration.getBody() : null); }
     }
 }
 
@@ -6139,6 +5201,260 @@ public class BlockIdPrefix {
      */
     public static String generate(String prefix, Object node) {
         return prefix + node.hashCode();
+    }
+}
+
+=================================================================================
+FILE: ./src/main/java/com/botmaker/parser/BlockParser.java
+=================================================================================
+
+package com.botmaker.parser;
+
+import com.botmaker.blocks.*;
+import com.botmaker.core.BodyBlock;
+import com.botmaker.core.CodeBlock;
+import com.botmaker.core.ExpressionBlock;
+import com.botmaker.core.StatementBlock;
+import com.botmaker.ui.BlockDragAndDropManager;
+import com.botmaker.util.BlockIdPrefix;
+import org.eclipse.jdt.core.dom.*;
+
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+
+/**
+ * Handles converting specific AST nodes into UI Blocks.
+ */
+public class BlockParser {
+
+    private final BlockFactory factory;
+    private final BlockDragAndDropManager manager;
+    private final boolean markNewIdentifiersAsUnedited;
+
+    public BlockParser(BlockFactory factory, BlockDragAndDropManager manager, boolean markNewIdentifiersAsUnedited) {
+        this.factory = factory;
+        this.manager = manager;
+        this.markNewIdentifiersAsUnedited = markNewIdentifiersAsUnedited;
+    }
+
+    public Optional<StatementBlock> parseStatement(Statement stmt, Map<ASTNode, CodeBlock> map) {
+        if (stmt instanceof Block) return Optional.of(factory.parseBodyBlock((Block) stmt, map, manager));
+        if (stmt instanceof VariableDeclarationStatement) return parseVariableDecl((VariableDeclarationStatement) stmt, map);
+        if (stmt instanceof IfStatement) return parseIf((IfStatement) stmt, map);
+        if (stmt instanceof WhileStatement) return parseWhile((WhileStatement) stmt, map);
+        if (stmt instanceof EnhancedForStatement) return parseFor((EnhancedForStatement) stmt, map);
+        if (stmt instanceof DoStatement) return parseDoWhile((DoStatement) stmt, map);
+        if (stmt instanceof SwitchStatement) return parseSwitch((SwitchStatement) stmt, map);
+        if (stmt instanceof BreakStatement) return Optional.of(new BreakBlock(BlockIdPrefix.generate(BlockIdPrefix.BREAK, stmt), (BreakStatement) stmt));
+        if (stmt instanceof ContinueStatement) return Optional.of(new ContinueBlock(BlockIdPrefix.generate(BlockIdPrefix.CONTINUE, stmt), (ContinueStatement) stmt));
+        if (stmt instanceof ReturnStatement) return Optional.of(new ReturnBlock(BlockIdPrefix.generate(BlockIdPrefix.RETURN, stmt), (ReturnStatement) stmt));
+        if (stmt instanceof TryStatement) return parseTry((TryStatement) stmt, map);
+        if (stmt instanceof ExpressionStatement) return parseExprStmt((ExpressionStatement) stmt, map);
+        return Optional.empty();
+    }
+
+    private Optional<StatementBlock> parseExprStmt(ExpressionStatement stmt, Map<ASTNode, CodeBlock> map) {
+        Expression expr = stmt.getExpression();
+        if (factory.isPrintStatement(expr)) return parsePrint(stmt, map);
+        if (expr instanceof Assignment) return parseAssignment(stmt, map);
+        if (expr instanceof PostfixExpression || expr instanceof PrefixExpression) {
+            // Treated as assignments for increment/decrement
+            AssignmentBlock block = new AssignmentBlock(BlockIdPrefix.generate(BlockIdPrefix.ASSIGNMENT, stmt), stmt);
+            map.put(stmt, block);
+            if (expr instanceof PostfixExpression) factory.parseExpression(((PostfixExpression) expr).getOperand(), map).ifPresent(block::setLeftHandSide);
+            if (expr instanceof PrefixExpression) factory.parseExpression(((PrefixExpression) expr).getOperand(), map).ifPresent(block::setLeftHandSide);
+            return Optional.of(block);
+        }
+        return Optional.empty();
+    }
+
+    private Optional<StatementBlock> parseVariableDecl(VariableDeclarationStatement stmt, Map<ASTNode, CodeBlock> map) {
+        if (factory.isReadInputStatement(stmt)) {
+            VariableDeclarationFragment frag = (VariableDeclarationFragment) stmt.fragments().get(0);
+            MethodInvocation mi = (MethodInvocation) frag.getInitializer();
+            ReadInputBlock block = new ReadInputBlock(BlockIdPrefix.generate(BlockIdPrefix.READ_INPUT, stmt), stmt, mi.getName().getIdentifier());
+            map.put(stmt, block);
+            factory.parseExpression(frag.getName(), map).ifPresent(block::setVariableName);
+            return Optional.of(block);
+        } else {
+            VariableDeclarationBlock block = new VariableDeclarationBlock(BlockIdPrefix.generate(BlockIdPrefix.VARIABLE, stmt), stmt);
+            map.put(stmt, block);
+            VariableDeclarationFragment frag = (VariableDeclarationFragment) stmt.fragments().get(0);
+            if (frag.getInitializer() != null) {
+                factory.parseExpression(frag.getInitializer(), map).ifPresent(block::setInitializer);
+            }
+            return Optional.of(block);
+        }
+    }
+
+    private Optional<StatementBlock> parseIf(IfStatement stmt, Map<ASTNode, CodeBlock> map) {
+        IfBlock block = new IfBlock(BlockIdPrefix.generate(BlockIdPrefix.IF, stmt), stmt);
+        map.put(stmt, block);
+        factory.parseExpression(stmt.getExpression(), map).ifPresent(block::setCondition);
+        if (stmt.getThenStatement() instanceof Block) {
+            block.setThenBody(factory.parseBodyBlock((Block) stmt.getThenStatement(), map, manager));
+        }
+        if (stmt.getElseStatement() != null) {
+            factory.parseStatement(stmt.getElseStatement(), map, manager).ifPresent(block::setElseStatement);
+        }
+        return Optional.of(block);
+    }
+
+    private Optional<StatementBlock> parseWhile(WhileStatement stmt, Map<ASTNode, CodeBlock> map) {
+        WhileBlock block = new WhileBlock(BlockIdPrefix.generate(BlockIdPrefix.WHILE, stmt), stmt, manager);
+        map.put(stmt, block);
+        factory.parseExpression(stmt.getExpression(), map).ifPresent(block::setCondition);
+        if (stmt.getBody() instanceof Block) block.setBody(factory.parseBodyBlock((Block) stmt.getBody(), map, manager));
+        return Optional.of(block);
+    }
+
+    private Optional<StatementBlock> parseFor(EnhancedForStatement stmt, Map<ASTNode, CodeBlock> map) {
+        ForBlock block = new ForBlock(BlockIdPrefix.generate(BlockIdPrefix.FOR, stmt), stmt, manager);
+        map.put(stmt, block);
+        if (stmt.getParameter() != null) factory.parseExpression(stmt.getParameter().getName(), map).ifPresent(block::setVariable);
+        if (stmt.getExpression() != null) factory.parseExpression(stmt.getExpression(), map).ifPresent(block::setCollection);
+        if (stmt.getBody() instanceof Block) block.setBody(factory.parseBodyBlock((Block) stmt.getBody(), map, manager));
+        return Optional.of(block);
+    }
+
+    private Optional<StatementBlock> parseDoWhile(DoStatement stmt, Map<ASTNode, CodeBlock> map) {
+        DoWhileBlock block = new DoWhileBlock(BlockIdPrefix.generate(BlockIdPrefix.DO_WHILE, stmt), stmt, manager);
+        map.put(stmt, block);
+        factory.parseExpression(stmt.getExpression(), map).ifPresent(block::setCondition);
+        if (stmt.getBody() instanceof Block) block.setBody(factory.parseBodyBlock((Block) stmt.getBody(), map, manager));
+        return Optional.of(block);
+    }
+
+    private Optional<StatementBlock> parseSwitch(SwitchStatement stmt, Map<ASTNode, CodeBlock> map) {
+        SwitchBlock block = new SwitchBlock(BlockIdPrefix.generate(BlockIdPrefix.SWITCH, stmt), stmt, manager);
+        map.put(stmt, block);
+        if (stmt.getExpression() != null) factory.parseExpression(stmt.getExpression(), map).ifPresent(block::setExpression);
+
+        BodyBlock currentBody = null;
+        SwitchBlock.SwitchCaseBlock currentCase = null;
+
+        for (Object obj : stmt.statements()) {
+            Statement s = (Statement) obj;
+            if (s instanceof SwitchCase) {
+                SwitchCase sc = (SwitchCase) s;
+                currentCase = new SwitchBlock.SwitchCaseBlock(BlockIdPrefix.generate(BlockIdPrefix.SWITCH + "_case_", sc), sc, manager);
+                map.put(sc, currentCase);
+                if (!sc.isDefault() && !sc.expressions().isEmpty()) {
+                    factory.parseExpression((Expression) sc.expressions().get(0), map).ifPresent(currentCase::setCaseExpression);
+                }
+                currentBody = new BodyBlock(BlockIdPrefix.generate(BlockIdPrefix.BODY, sc), factory.getCompilationUnit().getAST().newBlock(), manager);
+                currentCase.setBody(currentBody);
+                block.addCase(currentCase);
+            } else if (currentBody != null) {
+                factory.parseStatement(s, map, manager).ifPresent(currentBody::addStatement);
+            }
+        }
+        return Optional.of(block);
+    }
+
+    private Optional<StatementBlock> parsePrint(ExpressionStatement stmt, Map<ASTNode, CodeBlock> map) {
+        PrintBlock block = new PrintBlock(BlockIdPrefix.generate(BlockIdPrefix.PRINT, stmt), stmt);
+        map.put(stmt, block);
+        MethodInvocation mi = (MethodInvocation) stmt.getExpression();
+        if (mi.arguments().isEmpty()) {
+            block.addArgument(new LiteralBlock<>(BlockIdPrefix.generate(BlockIdPrefix.SYNTHETIC_STRING, stmt), mi, ""));
+        } else {
+            for (Object arg : mi.arguments()) factory.parseExpression((Expression) arg, map).ifPresent(block::addArgument);
+        }
+        return Optional.of(block);
+    }
+
+    private Optional<StatementBlock> parseAssignment(ExpressionStatement stmt, Map<ASTNode, CodeBlock> map) {
+        AssignmentBlock block = new AssignmentBlock(BlockIdPrefix.generate(BlockIdPrefix.ASSIGNMENT, stmt), stmt);
+        map.put(stmt, block);
+        Assignment a = (Assignment) stmt.getExpression();
+        factory.parseExpression(a.getLeftHandSide(), map).ifPresent(block::setLeftHandSide);
+        factory.parseExpression(a.getRightHandSide(), map).ifPresent(block::setRightHandSide);
+        return Optional.of(block);
+    }
+
+    private Optional<StatementBlock> parseTry(TryStatement stmt, Map<ASTNode, CodeBlock> map) {
+        if (isWait(stmt)) {
+            WaitBlock block = new WaitBlock(BlockIdPrefix.generate(BlockIdPrefix.WAIT, stmt), stmt);
+            map.put(stmt, block);
+            Statement inner = (Statement) stmt.getBody().statements().get(0);
+            MethodInvocation mi = (MethodInvocation) ((ExpressionStatement) inner).getExpression();
+            if (!mi.arguments().isEmpty()) factory.parseExpression((Expression) mi.arguments().get(0), map).ifPresent(block::setDuration);
+            return Optional.of(block);
+        }
+        return Optional.empty();
+    }
+
+    private boolean isWait(TryStatement stmt) {
+        if (stmt.getBody().statements().size() != 1) return false;
+        Statement first = (Statement) stmt.getBody().statements().get(0);
+        if (!(first instanceof ExpressionStatement)) return false;
+        Expression e = ((ExpressionStatement) first).getExpression();
+        return e instanceof MethodInvocation &&
+                "sleep".equals(((MethodInvocation) e).getName().getIdentifier()) &&
+                "Thread".equals(((MethodInvocation) e).getExpression().toString());
+    }
+
+    public Optional<ExpressionBlock> parseExpression(Expression expr, Map<ASTNode, CodeBlock> map) {
+        if (expr instanceof StringLiteral) {
+            LiteralBlock<String> b = new LiteralBlock<>(BlockIdPrefix.generate(BlockIdPrefix.STRING, expr), expr, ((StringLiteral) expr).getLiteralValue());
+            map.put(expr, b);
+            return Optional.of(b);
+        }
+        if (expr instanceof NumberLiteral) {
+            String t = ((NumberLiteral) expr).getToken();
+            ExpressionBlock b;
+            if (t.toLowerCase().endsWith("f")) b = new LiteralBlock<>(BlockIdPrefix.generate(BlockIdPrefix.NUMBER_FLOAT, expr), expr, Float.parseFloat(t));
+            else if (t.contains(".") || t.toLowerCase().endsWith("d")) b = new LiteralBlock<>(BlockIdPrefix.generate(BlockIdPrefix.NUMBER_DOUBLE, expr), expr, Double.parseDouble(t));
+            else b = new LiteralBlock<>(BlockIdPrefix.generate(BlockIdPrefix.NUMBER_INT, expr), expr, Integer.parseInt(t));
+            map.put(expr, b);
+            return Optional.of(b);
+        }
+        if (expr instanceof BooleanLiteral) {
+            BooleanLiteralBlock b = new BooleanLiteralBlock(BlockIdPrefix.generate(BlockIdPrefix.BOOLEAN, expr), (BooleanLiteral) expr);
+            map.put(expr, b);
+            return Optional.of(b);
+        }
+        if (expr instanceof SimpleName) {
+            if (expr.getParent() instanceof Type) return Optional.empty();
+            IdentifierBlock b = new IdentifierBlock(BlockIdPrefix.generate(BlockIdPrefix.IDENTIFIER, expr), (SimpleName) expr, markNewIdentifiersAsUnedited);
+            map.put(expr, b);
+            return Optional.of(b);
+        }
+        if (expr instanceof InfixExpression) {
+            BinaryExpressionBlock b = new BinaryExpressionBlock(BlockIdPrefix.generate(BlockIdPrefix.BINARY, expr), (InfixExpression) expr);
+            map.put(expr, b);
+            factory.parseExpression(((InfixExpression) expr).getLeftOperand(), map).ifPresent(b::setLeftOperand);
+            factory.parseExpression(((InfixExpression) expr).getRightOperand(), map).ifPresent(b::setRightOperand);
+            return Optional.of(b);
+        }
+        if (isListStructure(expr)) {
+            ListBlock b = new ListBlock(BlockIdPrefix.generate(BlockIdPrefix.LIST, expr), expr);
+            map.put(expr, b);
+            List<Expression> items = getListItems(expr);
+            for (Expression item : items) factory.parseExpression(item, map).ifPresent(b::addElement);
+            return Optional.of(b);
+        }
+        return Optional.empty();
+    }
+
+    private boolean isListStructure(Expression expr) {
+        if (expr instanceof ArrayInitializer) return true;
+        if (expr instanceof MethodInvocation) {
+            MethodInvocation mi = (MethodInvocation) expr;
+            String scope = mi.getExpression() != null ? mi.getExpression().toString() : "";
+            return (scope.equals("Arrays") && mi.getName().getIdentifier().equals("asList")) ||
+                    (scope.equals("List") && mi.getName().getIdentifier().equals("of"));
+        }
+        return false;
+    }
+
+    @SuppressWarnings("unchecked")
+    private List<Expression> getListItems(Expression expr) {
+        if (expr instanceof ArrayInitializer) return ((ArrayInitializer) expr).expressions();
+        if (expr instanceof MethodInvocation) return ((MethodInvocation) expr).arguments();
+        return List.of();
     }
 }
 
@@ -6470,6 +5786,293 @@ public class ImportManager {
         // Insert into AST
         ListRewrite listRewrite = rewriter.getListRewrite(cu, CompilationUnit.IMPORTS_PROPERTY);
         listRewrite.insertLast(newImport, null);
+    }
+}
+
+=================================================================================
+FILE: ./src/main/java/com/botmaker/parser/NodeCreator.java
+=================================================================================
+
+package com.botmaker.parser;
+
+import com.botmaker.ui.AddableBlock;
+import com.botmaker.ui.AddableExpression;
+import com.botmaker.util.DefaultNames;
+import com.botmaker.util.TypeManager;
+import org.eclipse.jdt.core.dom.*;
+import org.eclipse.jdt.core.dom.rewrite.ASTRewrite;
+
+import java.util.List;
+
+import static com.botmaker.util.TypeManager.toWrapperType;
+
+/**
+ * Responsible solely for creating new AST Nodes (Statements and Expressions).
+ */
+public class NodeCreator {
+
+    public Expression createDefaultExpression(AST ast, AddableExpression type, CompilationUnit cu, ASTRewrite rewriter) {
+        switch (type) {
+            case TEXT:
+                StringLiteral newString = ast.newStringLiteral();
+                newString.setLiteralValue("text");
+                return newString;
+            case NUMBER:
+                return ast.newNumberLiteral("0");
+            case TRUE:
+                return ast.newBooleanLiteral(true);
+            case FALSE:
+                return ast.newBooleanLiteral(false);
+            case VARIABLE:
+                return ast.newSimpleName(DefaultNames.DEFAULT_VARIABLE);
+            case LIST:
+                ImportManager.addImport(cu, rewriter, "java.util.Arrays");
+                MethodInvocation asList = ast.newMethodInvocation();
+                asList.setExpression(ast.newSimpleName("Arrays"));
+                asList.setName(ast.newSimpleName("asList"));
+                return asList;
+            case ADD:
+            case SUBTRACT:
+            case MULTIPLY:
+            case DIVIDE:
+            case MODULO:
+                InfixExpression infixExpr = ast.newInfixExpression();
+                infixExpr.setLeftOperand(ast.newSimpleName(DefaultNames.DEFAULT_VARIABLE));
+                infixExpr.setRightOperand(ast.newNumberLiteral("0"));
+                switch (type) {
+                    case ADD: infixExpr.setOperator(InfixExpression.Operator.PLUS); break;
+                    case SUBTRACT: infixExpr.setOperator(InfixExpression.Operator.MINUS); break;
+                    case MULTIPLY: infixExpr.setOperator(InfixExpression.Operator.TIMES); break;
+                    case DIVIDE: infixExpr.setOperator(InfixExpression.Operator.DIVIDE); break;
+                    case MODULO: infixExpr.setOperator(InfixExpression.Operator.REMAINDER); break;
+                }
+                return infixExpr;
+            default:
+                return null;
+        }
+    }
+
+    public Statement createDefaultStatement(AST ast, AddableBlock type, CompilationUnit cu, ASTRewrite rewriter) {
+        switch (type) {
+            case PRINT:
+                MethodInvocation println = ast.newMethodInvocation();
+                println.setExpression(ast.newQualifiedName(ast.newSimpleName("System"), ast.newSimpleName("out")));
+                println.setName(ast.newSimpleName("println"));
+                StringLiteral emptyString = ast.newStringLiteral();
+                emptyString.setLiteralValue("");
+                println.arguments().add(emptyString);
+                return ast.newExpressionStatement(println);
+
+            case DECLARE_INT:
+                return createVariableDeclaration(ast, DefaultNames.DEFAULT_INT, "0", PrimitiveType.INT);
+            case DECLARE_DOUBLE:
+                return createVariableDeclaration(ast, DefaultNames.DEFAULT_DOUBLE, "0.0", PrimitiveType.DOUBLE);
+            case DECLARE_BOOLEAN:
+                return createVariableDeclaration(ast, DefaultNames.DEFAULT_BOOLEAN, false, PrimitiveType.BOOLEAN);
+            case DECLARE_STRING:
+                return createStringDeclaration(ast);
+
+            case DECLARE_ARRAY:
+                if (cu != null && rewriter != null) {
+                    ImportManager.addImport(cu, rewriter, "java.util.ArrayList");
+                    ImportManager.addImport(cu, rewriter, "java.util.Arrays");
+                }
+                VariableDeclarationFragment frag = ast.newVariableDeclarationFragment();
+                frag.setName(ast.newSimpleName("myList"));
+                frag.setInitializer(createRecursiveListInitializer(ast, "ArrayList<Integer>", cu, rewriter, null));
+                VariableDeclarationStatement listDecl = ast.newVariableDeclarationStatement(frag);
+                listDecl.setType(TypeManager.createTypeNode(ast, "ArrayList<Integer>"));
+                return listDecl;
+
+            case IF:
+                IfStatement ifStatement = ast.newIfStatement();
+                ifStatement.setExpression(ast.newBooleanLiteral(true));
+                ifStatement.setThenStatement(ast.newBlock());
+                return ifStatement;
+
+            case WHILE:
+                WhileStatement whileStatement = ast.newWhileStatement();
+                whileStatement.setExpression(ast.newBooleanLiteral(true));
+                whileStatement.setBody(ast.newBlock());
+                return whileStatement;
+
+            case FOR:
+                EnhancedForStatement enhancedFor = ast.newEnhancedForStatement();
+                SingleVariableDeclaration parameter = ast.newSingleVariableDeclaration();
+                parameter.setType(TypeManager.createTypeNode(ast, "String"));
+                parameter.setName(ast.newSimpleName("item"));
+                enhancedFor.setParameter(parameter);
+                enhancedFor.setExpression(ast.newSimpleName("array"));
+                enhancedFor.setBody(ast.newBlock());
+                return enhancedFor;
+
+            case DO_WHILE:
+                DoStatement doStatement = ast.newDoStatement();
+                doStatement.setExpression(ast.newBooleanLiteral(true));
+                doStatement.setBody(ast.newBlock());
+                return doStatement;
+
+            case BREAK: return ast.newBreakStatement();
+            case CONTINUE: return ast.newContinueStatement();
+            case RETURN: return ast.newReturnStatement();
+
+            case COMMENT: return ast.newEmptyStatement();
+
+            case ASSIGNMENT:
+                Assignment assignment = ast.newAssignment();
+                assignment.setLeftHandSide(ast.newSimpleName(DefaultNames.DEFAULT_VARIABLE));
+                assignment.setOperator(Assignment.Operator.ASSIGN);
+                assignment.setRightHandSide(ast.newNumberLiteral("0"));
+                return ast.newExpressionStatement(assignment);
+
+            case READ_LINE: return createScannerCall(ast, "input", "nextLine", "String");
+            case READ_INT: return createScannerCall(ast, "num", "nextInt", PrimitiveType.INT);
+            case READ_DOUBLE: return createScannerCall(ast, "num", "nextDouble", PrimitiveType.DOUBLE);
+
+            case SWITCH:
+                SwitchStatement switchStmt = ast.newSwitchStatement();
+                switchStmt.setExpression(ast.newSimpleName(DefaultNames.DEFAULT_VARIABLE));
+                SwitchCase defaultCase = ast.newSwitchCase();
+                switchStmt.statements().add(defaultCase);
+                switchStmt.statements().add(ast.newBreakStatement());
+                return switchStmt;
+
+            case CASE:
+                SwitchCase switchCase = ast.newSwitchCase();
+                try { switchCase.expressions().add(ast.newNumberLiteral("0")); } catch (Exception e) {}
+                return switchCase;
+
+            case WAIT:
+                return createWaitStatement(ast);
+
+            default:
+                return null;
+        }
+    }
+
+    // Helpers for creation logic
+    private Statement createVariableDeclaration(AST ast, String name, String val, PrimitiveType.Code type) {
+        VariableDeclarationFragment fragment = ast.newVariableDeclarationFragment();
+        fragment.setName(ast.newSimpleName(name));
+        fragment.setInitializer(ast.newNumberLiteral(val));
+        VariableDeclarationStatement varDecl = ast.newVariableDeclarationStatement(fragment);
+        varDecl.setType(ast.newPrimitiveType(type));
+        return varDecl;
+    }
+
+    private Statement createVariableDeclaration(AST ast, String name, boolean val, PrimitiveType.Code type) {
+        VariableDeclarationFragment fragment = ast.newVariableDeclarationFragment();
+        fragment.setName(ast.newSimpleName(name));
+        fragment.setInitializer(ast.newBooleanLiteral(val));
+        VariableDeclarationStatement varDecl = ast.newVariableDeclarationStatement(fragment);
+        varDecl.setType(ast.newPrimitiveType(type));
+        return varDecl;
+    }
+
+    private Statement createStringDeclaration(AST ast) {
+        VariableDeclarationFragment fragment = ast.newVariableDeclarationFragment();
+        fragment.setName(ast.newSimpleName(DefaultNames.DEFAULT_STRING));
+        fragment.setInitializer(ast.newStringLiteral());
+        VariableDeclarationStatement varDecl = ast.newVariableDeclarationStatement(fragment);
+        varDecl.setType(TypeManager.createTypeNode(ast, "String"));
+        return varDecl;
+    }
+
+    private Statement createScannerCall(AST ast, String varName, String methodName, Object typeObj) {
+        VariableDeclarationFragment fragment = ast.newVariableDeclarationFragment();
+        fragment.setName(ast.newSimpleName(varName));
+        MethodInvocation scannerCall = ast.newMethodInvocation();
+        scannerCall.setExpression(ast.newSimpleName("scanner"));
+        scannerCall.setName(ast.newSimpleName(methodName));
+        fragment.setInitializer(scannerCall);
+        VariableDeclarationStatement varDecl = ast.newVariableDeclarationStatement(fragment);
+        if(typeObj instanceof String) varDecl.setType(TypeManager.createTypeNode(ast, (String)typeObj));
+        else varDecl.setType(ast.newPrimitiveType((PrimitiveType.Code)typeObj));
+        return varDecl;
+    }
+
+    private Statement createWaitStatement(AST ast) {
+        TryStatement tryStmt = ast.newTryStatement();
+        Block tryBody = ast.newBlock();
+        MethodInvocation sleepCall = ast.newMethodInvocation();
+        sleepCall.setExpression(ast.newSimpleName("Thread"));
+        sleepCall.setName(ast.newSimpleName("sleep"));
+        sleepCall.arguments().add(ast.newNumberLiteral("1000"));
+        tryBody.statements().add(ast.newExpressionStatement(sleepCall));
+        tryStmt.setBody(tryBody);
+        CatchClause catchClause = ast.newCatchClause();
+        SingleVariableDeclaration exceptionDecl = ast.newSingleVariableDeclaration();
+        exceptionDecl.setType(ast.newSimpleType(ast.newSimpleName("InterruptedException")));
+        exceptionDecl.setName(ast.newSimpleName("e"));
+        catchClause.setException(exceptionDecl);
+        Block catchBody = ast.newBlock();
+        MethodInvocation printStackTrace = ast.newMethodInvocation();
+        printStackTrace.setExpression(ast.newSimpleName("e"));
+        printStackTrace.setName(ast.newSimpleName("printStackTrace"));
+        catchBody.statements().add(ast.newExpressionStatement(printStackTrace));
+        catchClause.setBody(catchBody);
+        tryStmt.catchClauses().add(catchClause);
+        return tryStmt;
+    }
+
+    public Expression createRecursiveListInitializer(AST ast, String typeName, CompilationUnit cu, ASTRewrite rewriter, List<Expression> leavesToPreserve) {
+        ImportManager.addImport(cu, rewriter, "java.util.ArrayList");
+        ImportManager.addImport(cu, rewriter, "java.util.Arrays");
+
+        ClassInstanceCreation creation = ast.newClassInstanceCreation();
+        String innerTypeStr = extractArrayListElementType(typeName);
+        String wrapperInnerType = toWrapperType(innerTypeStr);
+        ParameterizedType paramType = ast.newParameterizedType(ast.newSimpleType(ast.newName("ArrayList")));
+
+        if (!innerTypeStr.equals("Object")) {
+            paramType.typeArguments().add(TypeManager.createTypeNode(ast, wrapperInnerType));
+        }
+        creation.setType(paramType);
+
+        MethodInvocation asList = ast.newMethodInvocation();
+        asList.setExpression(ast.newSimpleName("Arrays"));
+        asList.setName(ast.newSimpleName("asList"));
+
+        if (innerTypeStr.startsWith("ArrayList<")) {
+            Expression innerList = createRecursiveListInitializer(ast, innerTypeStr, cu, rewriter, leavesToPreserve);
+            asList.arguments().add(innerList);
+        } else {
+            if (leavesToPreserve != null && !leavesToPreserve.isEmpty()) {
+                for (Expression leaf : leavesToPreserve) {
+                    asList.arguments().add((Expression) ASTNode.copySubtree(ast, leaf));
+                }
+            } else {
+                asList.arguments().add(createDefaultInitializer(ast, innerTypeStr));
+            }
+        }
+        creation.arguments().add(asList);
+        return creation;
+    }
+
+    public Expression createDefaultInitializer(AST ast, String typeName) {
+        switch (typeName) {
+            case "int": case "long": case "short": case "byte": return ast.newNumberLiteral("0");
+            case "double": case "float": return ast.newNumberLiteral("0.0");
+            case "boolean": return ast.newBooleanLiteral(false);
+            case "char":
+                CharacterLiteral literal = ast.newCharacterLiteral();
+                literal.setCharValue('a');
+                return literal;
+            case "String":
+                StringLiteral str = ast.newStringLiteral();
+                str.setLiteralValue("");
+                return str;
+            default: return ast.newNullLiteral();
+        }
+    }
+
+    private String extractArrayListElementType(String arrayListType) {
+        if (arrayListType.contains("<") && arrayListType.contains(">")) {
+            int start = arrayListType.indexOf("<") + 1;
+            int end = arrayListType.lastIndexOf(">");
+            return arrayListType.substring(start, end);
+        }
+        return "Object";
     }
 }
 
@@ -7282,411 +6885,6 @@ public class CodeExecutionService {
 }
 
 =================================================================================
-FILE: ./src/main/java/com/botmaker/runtime/DebuggerService.java
-=================================================================================
-
-package com.botmaker.runtime;
-
-import com.botmaker.config.Constants;
-import com.sun.jdi.*;
-import com.sun.jdi.connect.AttachingConnector;
-import com.sun.jdi.connect.Connector;
-import com.sun.jdi.connect.IllegalConnectorArgumentsException;
-import com.sun.jdi.event.*;
-import com.sun.jdi.request.BreakpointRequest;
-import com.sun.jdi.request.ClassPrepareRequest;
-import com.sun.jdi.request.EventRequestManager;
-import com.sun.jdi.request.StepRequest;
-
-import java.io.IOException;
-import java.util.List;
-import java.util.Map;
-import java.util.concurrent.CountDownLatch;
-import java.util.function.Consumer;
-
-public class DebuggerService {
-
-    // ANSI escape codes
-    public static final String ANSI_RESET = "\u001B[0m";
-    public static final String ANSI_BLUE = "\u001B[34m";
-    public static final String ANSI_GREEN = "\u001B[32m";
-    public static final String ANSI_YELLOW = "\u001B[33m";
-    public static final String ANSI_RED = "\u001B[31m";
-
-    private VirtualMachine vm;
-    private Consumer<LocatableEvent> onPause;
-    private Runnable onDisconnect;
-
-    // NEW: Keep track of the thread we are debugging
-    private ThreadReference currentThread;
-
-    public void setOnPause(Consumer<LocatableEvent> onPause) { this.onPause = onPause; }
-    public void setOnDisconnect(Runnable onDisconnect) { this.onDisconnect = onDisconnect; }
-
-    public void connectAndRun(String mainClassName, int port, List<Integer> breakpointLines) throws IOException, IllegalConnectorArgumentsException, InterruptedException {
-        VirtualMachineManager vmMgr = Bootstrap.virtualMachineManager();
-        AttachingConnector connector = vmMgr.attachingConnectors().stream()
-                .filter(c -> c.transport().name().equals("dt_socket"))
-                .findFirst()
-                .orElseThrow(() -> new RuntimeException("Socket attaching connector not found"));
-
-        Map<String, Connector.Argument> arguments = connector.defaultArguments();
-        arguments.get("port").setValue(String.valueOf(port));
-        arguments.get("hostname").setValue("localhost");
-
-        int maxRetries = Constants.DEBUGGER_MAX_CONNECT_RETRIES;
-        int retryDelayMs = Constants.DEBUGGER_RETRY_DELAY_MS;
-        for (int i = 0; i < maxRetries; i++) {
-            try {
-                System.out.println(ANSI_BLUE + "Attaching to process on port " + port + " (Attempt " + (i + 1) + ")..." + ANSI_RESET);
-                vm = connector.attach(arguments);
-                System.out.println(ANSI_BLUE + "Attached to VM: " + vm.name() + ANSI_RESET);
-                break;
-            } catch (IOException e) {
-                if (e instanceof java.net.ConnectException && i < maxRetries - 1) {
-                    System.out.println(ANSI_YELLOW + "Connection refused. Retrying in " + retryDelayMs + "ms..." + ANSI_RESET);
-                    Thread.sleep(retryDelayMs);
-                } else {
-                    throw e;
-                }
-            }
-        }
-
-        EventRequestManager erm = vm.eventRequestManager();
-
-        List<ReferenceType> classes = vm.classesByName(mainClassName);
-        if (!classes.isEmpty()) {
-            setBreakpoints(classes.getFirst(), breakpointLines);
-        } else {
-            ClassPrepareRequest classPrepareRequest = erm.createClassPrepareRequest();
-            classPrepareRequest.addClassFilter(mainClassName);
-            classPrepareRequest.enable();
-        }
-
-        CountDownLatch listenerReadyLatch = new CountDownLatch(1);
-        new Thread(() -> listenForEvents(listenerReadyLatch, mainClassName, breakpointLines)).start();
-        listenerReadyLatch.await();
-
-        vm.resume();
-    }
-
-    private void listenForEvents(CountDownLatch listenerReadyLatch, String mainClassName, List<Integer> breakpointLines) {
-        if (vm == null) return;
-        EventQueue eventQueue = vm.eventQueue();
-        while (true) {
-            try {
-                if (listenerReadyLatch != null) {
-                    listenerReadyLatch.countDown();
-                    listenerReadyLatch = null;
-                }
-
-                EventSet eventSet = eventQueue.remove();
-                boolean shouldResume = true;
-
-                try {
-                    for (Event event : eventSet) {
-                        if (event instanceof LocatableEvent) {
-                            // BreakpointEvent or StepEvent
-                            System.out.println(ANSI_GREEN + "---> Paused at: " + event + ANSI_RESET);
-
-                            // Capture the thread context
-                            if (event instanceof BreakpointEvent) {
-                                currentThread = ((BreakpointEvent) event).thread();
-                            } else if (event instanceof StepEvent) {
-                                currentThread = ((StepEvent) event).thread();
-                                // Clean up the step request once hit
-                                vm.eventRequestManager().deleteEventRequest(event.request());
-                            }
-
-                            if (onPause != null) {
-                                onPause.accept((LocatableEvent) event);
-                            }
-                            shouldResume = false; // Keep paused
-                        } else if (event instanceof ClassPrepareEvent) {
-                            System.out.println(ANSI_YELLOW + "Class Prepared: " + ((ClassPrepareEvent) event).referenceType().name() + ANSI_RESET);
-                            ClassPrepareEvent cpe = (ClassPrepareEvent) event;
-                            if (cpe.referenceType().name().equals(mainClassName)) {
-                                setBreakpoints(cpe.referenceType(), breakpointLines);
-                            }
-                        } else if (event instanceof VMDisconnectEvent) {
-                            System.out.println(ANSI_RED + "VM Disconnected." + ANSI_RESET);
-                            if (onDisconnect != null) onDisconnect.run();
-                            return;
-                        }
-                    }
-                } finally {
-                    if (shouldResume) {
-                        eventSet.resume();
-                    }
-                }
-            } catch (InterruptedException | VMDisconnectedException e) {
-                if (onDisconnect != null) onDisconnect.run();
-                return;
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
-    }
-
-    private void setBreakpoints(ReferenceType refType, List<Integer> lines) {
-        if (lines == null || lines.isEmpty()) return;
-        try {
-            EventRequestManager erm = vm.eventRequestManager();
-            // Clear existing breakpoints on this class first if re-setting
-            // (Not implementing clear logic here for simplicity, assuming fresh session)
-
-            for (int lineNumber : lines) {
-                List<Location> locations = refType.locationsOfLine(lineNumber);
-                if (!locations.isEmpty()) {
-                    Location loc = locations.get(0);
-                    BreakpointRequest bpReq = erm.createBreakpointRequest(loc);
-                    bpReq.enable();
-                }
-            }
-        } catch (AbsentInformationException e) {
-            System.err.println("No debug info available.");
-        }
-    }
-
-
-    public void disconnect() {
-        if (vm != null) {
-            try {
-                System.out.println(ANSI_BLUE + "Disconnecting debugger..." + ANSI_RESET);
-                vm.dispose(); // This triggers VMDisconnectEvent in the listener loop
-            } catch (VMDisconnectedException e) {
-                // Already disconnected, ignore
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
-    }
-
-    // NEW: Step Over Implementation
-    public void stepOver() {
-        if (vm == null || currentThread == null) return;
-        try {
-            EventRequestManager erm = vm.eventRequestManager();
-
-            // Clear any existing step requests on this thread
-            List<StepRequest> steps = erm.stepRequests();
-            for (StepRequest step : steps) {
-                if (step.thread().equals(currentThread)) {
-                    erm.deleteEventRequest(step);
-                }
-            }
-
-            // Create new StepOver request
-            StepRequest request = erm.createStepRequest(currentThread, StepRequest.STEP_LINE, StepRequest.STEP_OVER);
-            request.addCountFilter(1); // Step 1 line
-            request.enable();
-
-            vm.resume();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
-    public void resume() {
-        if (vm != null) {
-            System.out.println(ANSI_BLUE + "Resuming VM..." + ANSI_RESET);
-            vm.resume();
-        }
-    }
-}
-
-=================================================================================
-FILE: ./src/main/java/com/botmaker/runtime/DebuggingManager.java
-=================================================================================
-
-package com.botmaker.runtime;
-
-import com.botmaker.config.ApplicationConfig;
-import com.botmaker.core.CodeBlock;
-import com.botmaker.core.StatementBlock;
-import com.botmaker.events.CoreApplicationEvents;
-import com.botmaker.events.EventBus;
-import com.botmaker.parser.BlockFactory;
-import com.sun.jdi.connect.IllegalConnectorArgumentsException;
-import com.sun.jdi.event.LocatableEvent;
-import javafx.application.Platform;
-import org.eclipse.jdt.core.dom.ASTNode;
-import org.eclipse.jdt.core.dom.CompilationUnit;
-
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.ServerSocket;
-import java.util.*;
-
-public class DebuggingManager {
-
-    private final CodeExecutionService codeExecutionService;
-    private final EventBus eventBus;
-    private final BlockFactory factory;
-    private final ApplicationConfig config;
-
-    private Map<ASTNode, CodeBlock> nodeToBlockMap;
-    private DebuggerService debuggerService;
-    private Map<Integer, CodeBlock> lineToBlockMap;
-
-    // NEW: Store the running process so we can kill it
-    private volatile Process currentProcess;
-
-    public DebuggingManager(
-            CodeExecutionService codeExecutionService,
-            EventBus eventBus,
-            BlockFactory factory,
-            ApplicationConfig config) {
-        this.codeExecutionService = codeExecutionService;
-        this.eventBus = eventBus;
-        this.factory = factory;
-        this.config = config;
-    }
-
-    public void setNodeToBlockMap(Map<ASTNode, CodeBlock> nodeToBlockMap) {
-        this.nodeToBlockMap = nodeToBlockMap;
-    }
-
-    public void startDebugging(String code) {
-        new Thread(() -> {
-            try {
-                if (!codeExecutionService.compileAndWait(code, config.getSourceFilePath(), config.getCompiledOutputPath())) {
-                    eventBus.publish(new CoreApplicationEvents.StatusMessageEvent("Debug aborted due to compilation failure."));
-                    return;
-                }
-
-                CompilationUnit cu = factory.getCompilationUnit();
-                if (cu == null || nodeToBlockMap == null) {
-                    eventBus.publish(new CoreApplicationEvents.StatusMessageEvent("Error: Could not parse code to get breakpoints."));
-                    return;
-                }
-
-                this.lineToBlockMap = new HashMap<>();
-                List<Integer> activeBreakpoints = new ArrayList<>();
-
-                for (CodeBlock block : nodeToBlockMap.values()) {
-                    int line = block.getBreakpointLine(cu);
-                    if (line > 0) {
-                        if (!lineToBlockMap.containsKey(line) || block instanceof StatementBlock) {
-                            lineToBlockMap.put(line, block);
-                        }
-                        if (block.isBreakpoint()) {
-                            activeBreakpoints.add(line);
-                        }
-                    }
-                }
-
-                if (activeBreakpoints.isEmpty() && !lineToBlockMap.isEmpty()) {
-                    lineToBlockMap.keySet().stream()
-                            .min(Integer::compareTo)
-                            .ifPresent(firstLine -> {
-                                activeBreakpoints.add(firstLine);
-                                eventBus.publish(new CoreApplicationEvents.StatusMessageEvent("No breakpoints set. Pausing at start (Line " + firstLine + ")."));
-                            });
-                }
-
-                int freePort;
-                try (ServerSocket socket = new ServerSocket(0)) {
-                    freePort = socket.getLocalPort();
-                }
-
-                eventBus.publish(new CoreApplicationEvents.StatusMessageEvent("Starting debugger on port " + freePort + "..."));
-                eventBus.publish(new CoreApplicationEvents.DebugSessionStartedEvent());
-
-                Platform.runLater(() -> eventBus.publish(new CoreApplicationEvents.OutputClearedEvent()));
-
-                String classPath = config.getCompiledOutputPath().toString();
-                String className = config.getMainClassName();
-                String javaExecutable = config.getJavaExecutable();
-                String debugAgent = String.format("-agentlib:jdwp=transport=dt_socket,server=y,suspend=y,address=%d", freePort);
-
-                ProcessBuilder pb = new ProcessBuilder(javaExecutable, debugAgent, "-cp", classPath, className);
-
-                // NEW: Assign to field
-                this.currentProcess = pb.start();
-
-                redirectStream(currentProcess.getInputStream());
-                redirectStream(currentProcess.getErrorStream());
-
-                debuggerService = new DebuggerService();
-                debuggerService.setOnPause(this::handlePauseEvent);
-                debuggerService.setOnDisconnect(this::onDebugSessionFinished);
-
-                debuggerService.connectAndRun(className, freePort, activeBreakpoints);
-
-            } catch (IOException | IllegalConnectorArgumentsException | InterruptedException e) {
-                eventBus.publish(new CoreApplicationEvents.StatusMessageEvent("Debugger Error: " + e.getMessage()));
-                e.printStackTrace();
-            }
-        }).start();
-    }
-
-    public void continueExecution() {
-        if (debuggerService != null) {
-            eventBus.publish(new CoreApplicationEvents.DebugSessionResumedEvent());
-            debuggerService.resume();
-        }
-    }
-
-    public void stepOver() {
-        if (debuggerService != null) {
-            eventBus.publish(new CoreApplicationEvents.DebugSessionResumedEvent());
-            debuggerService.stepOver();
-        }
-    }
-
-    // NEW: Forcefully kill the process and disconnect
-    public void stopDebugging() {
-        // 1. Disconnect JDI nicely if possible (triggers events)
-        if (debuggerService != null) {
-            debuggerService.disconnect();
-        }
-
-        // 2. Kill the OS process to stop execution immediately
-        if (currentProcess != null && currentProcess.isAlive()) {
-            try {
-                currentProcess.destroyForcibly();
-                eventBus.publish(new CoreApplicationEvents.StatusMessageEvent("Debug process terminated."));
-            } catch (Exception e) {
-                e.printStackTrace();
-            } finally {
-                currentProcess = null;
-            }
-        }
-    }
-
-    private void handlePauseEvent(LocatableEvent event) {
-        int lineNumber = event.location().lineNumber();
-        CodeBlock block = lineToBlockMap.get(lineNumber);
-        CodeBlock target = (block != null) ? block.getHighlightTarget() : null;
-
-        eventBus.publish(new CoreApplicationEvents.DebugSessionPausedEvent(lineNumber, target));
-        eventBus.publish(new CoreApplicationEvents.BlockHighlightEvent(target));
-        eventBus.publish(new CoreApplicationEvents.StatusMessageEvent(
-                "Paused at line: " + lineNumber
-        ));
-    }
-
-    private void onDebugSessionFinished() {
-        eventBus.publish(new CoreApplicationEvents.DebugSessionFinishedEvent());
-        eventBus.publish(new CoreApplicationEvents.StatusMessageEvent("Debug session finished."));
-        eventBus.publish(new CoreApplicationEvents.BlockHighlightEvent(null));
-        this.currentProcess = null;
-    }
-
-    private void redirectStream(InputStream stream) {
-        new Thread(() -> {
-            try (Scanner s = new Scanner(stream)) {
-                while (s.hasNextLine()) {
-                    String line = s.nextLine();
-                    Platform.runLater(() -> eventBus.publish(new CoreApplicationEvents.OutputAppendedEvent(line + "\n")));
-                }
-            }
-        }).start();
-    }
-}
-
-=================================================================================
 FILE: ./src/main/java/com/botmaker/services/CodeEditorService.java
 =================================================================================
 
@@ -7874,58 +7072,363 @@ FILE: ./src/main/java/com/botmaker/services/DebuggingService.java
 package com.botmaker.services;
 
 import com.botmaker.config.ApplicationConfig;
+import com.botmaker.config.Constants;
+import com.botmaker.core.CodeBlock;
+import com.botmaker.core.StatementBlock;
 import com.botmaker.events.CoreApplicationEvents;
 import com.botmaker.events.EventBus;
 import com.botmaker.parser.BlockFactory;
 import com.botmaker.runtime.CodeExecutionService;
-import com.botmaker.runtime.DebuggingManager;
 import com.botmaker.state.ApplicationState;
+import com.sun.jdi.*;
+import com.sun.jdi.connect.AttachingConnector;
+import com.sun.jdi.connect.Connector;
+import com.sun.jdi.event.*;
+import com.sun.jdi.request.BreakpointRequest;
+import com.sun.jdi.request.ClassPrepareRequest;
+import com.sun.jdi.request.EventRequestManager;
+import com.sun.jdi.request.StepRequest;
+import javafx.application.Platform;
+import org.eclipse.jdt.core.dom.ASTNode;
+import org.eclipse.jdt.core.dom.CompilationUnit;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.ServerSocket;
+import java.util.*;
+import java.util.concurrent.CountDownLatch;
+
+/**
+ * Handles the entire debugging lifecycle:
+ * 1. Mapping AST nodes to line numbers.
+ * 2. Launching the JVM in debug mode.
+ * 3. Attaching via JDI (Java Debug Interface).
+ * 4. Managing Breakpoints, Stepping, and Resuming.
+ */
 public class DebuggingService {
+
+    // Console Coloring for internal logs
+    private static final String ANSI_RESET = "\u001B[0m";
+    private static final String ANSI_BLUE = "\u001B[34m";
+    private static final String ANSI_GREEN = "\u001B[32m";
+    private static final String ANSI_YELLOW = "\u001B[33m";
+    private static final String ANSI_RED = "\u001B[31m";
 
     private final ApplicationState state;
     private final EventBus eventBus;
-    private final DebuggingManager debuggingManager;
+    private final CodeExecutionService codeExecutionService;
+    private final BlockFactory factory;
+    private final ApplicationConfig config;
+
+    // Debug Session State
+    private volatile Process currentProcess;
+    private VirtualMachine vm;
+    private ThreadReference currentDebugThread;
+    private Map<Integer, CodeBlock> lineToBlockMap;
 
     public DebuggingService(
             ApplicationState state,
             EventBus eventBus,
             CodeExecutionService codeExecutionService,
-            BlockFactory blockFactory,
+            BlockFactory factory,
             ApplicationConfig config) {
-
         this.state = state;
         this.eventBus = eventBus;
-        this.debuggingManager = new DebuggingManager(codeExecutionService, eventBus, blockFactory, config);
+        this.codeExecutionService = codeExecutionService;
+        this.factory = factory;
+        this.config = config;
 
         setupEventHandlers();
     }
 
     private void setupEventHandlers() {
-        eventBus.subscribe(CoreApplicationEvents.DebugStartRequestedEvent.class, event -> startDebugging(), false);
-        eventBus.subscribe(CoreApplicationEvents.DebugStepOverRequestedEvent.class, event -> stepOver(), false);
-        eventBus.subscribe(CoreApplicationEvents.DebugContinueRequestedEvent.class, event -> continueExecution(), false);
-
-        // NEW: Subscribe to Stop request
-        eventBus.subscribe(CoreApplicationEvents.DebugStopRequestedEvent.class, event -> stopDebugging(), false);
+        eventBus.subscribe(CoreApplicationEvents.DebugStartRequestedEvent.class, e -> startDebugging(), false);
+        eventBus.subscribe(CoreApplicationEvents.DebugStepOverRequestedEvent.class, e -> stepOver(), false);
+        eventBus.subscribe(CoreApplicationEvents.DebugContinueRequestedEvent.class, e -> continueExecution(), false);
+        eventBus.subscribe(CoreApplicationEvents.DebugStopRequestedEvent.class, e -> stopDebugging(), false);
     }
 
-    // Add the delegate method
-    public void stopDebugging() {
-        debuggingManager.stopDebugging();
-    }
-
+    /**
+     * Kicks off the debugging session on a separate thread.
+     */
     public void startDebugging() {
-        debuggingManager.setNodeToBlockMap(state.getNodeToBlockMap());
-        debuggingManager.startDebugging(state.getCurrentCode());
+        new Thread(() -> {
+            try {
+                String code = state.getCurrentCode();
+
+                // 1. Compile
+                if (!codeExecutionService.compileAndWait(code, config.getSourceFilePath(), config.getCompiledOutputPath())) {
+                    eventBus.publish(new CoreApplicationEvents.StatusMessageEvent("Debug aborted due to compilation failure."));
+                    return;
+                }
+
+                // 2. Map Breakpoints (AST -> Line Numbers)
+                CompilationUnit cu = factory.getCompilationUnit();
+                if (cu == null || state.getNodeToBlockMap().isEmpty()) {
+                    eventBus.publish(new CoreApplicationEvents.StatusMessageEvent("Error: Could not parse code to get breakpoints."));
+                    return;
+                }
+
+                this.lineToBlockMap = new HashMap<>();
+                List<Integer> activeBreakpointLines = new ArrayList<>();
+
+                for (CodeBlock block : state.getNodeToBlockMap().values()) {
+                    int line = block.getBreakpointLine(cu);
+                    if (line > 0) {
+                        // Only map StatementBlocks (executable lines) to avoid mapping expressions mid-line awkwardly
+                        if (!lineToBlockMap.containsKey(line) || block instanceof StatementBlock) {
+                            lineToBlockMap.put(line, block);
+                        }
+                        if (block.isBreakpoint()) {
+                            activeBreakpointLines.add(line);
+                        }
+                    }
+                }
+
+                // If no breakpoints, add one at start so it doesn't just run to finish immediately
+                if (activeBreakpointLines.isEmpty() && !lineToBlockMap.isEmpty()) {
+                    lineToBlockMap.keySet().stream().min(Integer::compareTo).ifPresent(firstLine -> {
+                        activeBreakpointLines.add(firstLine);
+                        eventBus.publish(new CoreApplicationEvents.StatusMessageEvent("No breakpoints set. Pausing at start (Line " + firstLine + ")."));
+                    });
+                }
+
+                // 3. Find Free Port
+                int freePort;
+                try (ServerSocket socket = new ServerSocket(0)) {
+                    freePort = socket.getLocalPort();
+                }
+
+                // 4. Launch Target Process
+                eventBus.publish(new CoreApplicationEvents.StatusMessageEvent("Starting debugger on port " + freePort + "..."));
+                eventBus.publish(new CoreApplicationEvents.DebugSessionStartedEvent());
+                Platform.runLater(() -> eventBus.publish(new CoreApplicationEvents.OutputClearedEvent()));
+
+                String classPath = config.getCompiledOutputPath().toString();
+                String className = config.getMainClassName();
+                String javaExecutable = config.getJavaExecutable();
+                // Suspend=y waits for us to attach before running main()
+                String debugAgent = String.format("-agentlib:jdwp=transport=dt_socket,server=y,suspend=y,address=%d", freePort);
+
+                ProcessBuilder pb = new ProcessBuilder(javaExecutable, debugAgent, "-cp", classPath, className);
+                this.currentProcess = pb.start();
+
+                // Redirect output to UI
+                redirectStream(currentProcess.getInputStream());
+                redirectStream(currentProcess.getErrorStream());
+
+                // 5. Attach JDI
+                attachJdi(className, freePort, activeBreakpointLines);
+
+            } catch (Exception e) {
+                eventBus.publish(new CoreApplicationEvents.StatusMessageEvent("Debugger Error: " + e.getMessage()));
+                e.printStackTrace();
+                stopDebugging(); // Cleanup if fail
+            }
+        }).start();
     }
+
+    /**
+     * Connects the JDI VirtualMachine to the running process.
+     */
+    private void attachJdi(String mainClassName, int port, List<Integer> breakpointLines) throws Exception {
+        VirtualMachineManager vmMgr = Bootstrap.virtualMachineManager();
+        AttachingConnector connector = vmMgr.attachingConnectors().stream()
+                .filter(c -> c.transport().name().equals("dt_socket"))
+                .findFirst()
+                .orElseThrow(() -> new RuntimeException("Socket attaching connector not found"));
+
+        Map<String, Connector.Argument> arguments = connector.defaultArguments();
+        arguments.get("port").setValue(String.valueOf(port));
+        arguments.get("hostname").setValue("localhost");
+
+        // Retry logic for connection (Process might take a moment to open port)
+        int maxRetries = Constants.DEBUGGER_MAX_CONNECT_RETRIES;
+        for (int i = 0; i < maxRetries; i++) {
+            try {
+                vm = connector.attach(arguments);
+                System.out.println(ANSI_BLUE + "Attached to VM: " + vm.name() + ANSI_RESET);
+                break;
+            } catch (IOException e) {
+                if (i == maxRetries - 1) throw e;
+                Thread.sleep(Constants.DEBUGGER_RETRY_DELAY_MS);
+            }
+        }
+
+        EventRequestManager erm = vm.eventRequestManager();
+
+        // Handle Breakpoints (Class might not be loaded yet, so check both)
+        List<ReferenceType> classes = vm.classesByName(mainClassName);
+        if (!classes.isEmpty()) {
+            applyBreakpointsToClass(classes.get(0), breakpointLines);
+        } else {
+            // Class not loaded yet -> Listen for preparation
+            ClassPrepareRequest classPrepareRequest = erm.createClassPrepareRequest();
+            classPrepareRequest.addClassFilter(mainClassName);
+            classPrepareRequest.enable();
+        }
+
+        // Start Event Loop
+        CountDownLatch listenerReadyLatch = new CountDownLatch(1);
+        new Thread(() -> jdiEventLoop(listenerReadyLatch, mainClassName, breakpointLines)).start();
+
+        // Wait for listener to be ready before resuming VM (so we don't miss events)
+        listenerReadyLatch.await();
+        vm.resume();
+    }
+
+    /**
+     * The main loop that listens for events coming from the JVM (Breakpoints, Steps, etc).
+     */
+    private void jdiEventLoop(CountDownLatch listenerReadyLatch, String mainClassName, List<Integer> breakpointLines) {
+        EventQueue eventQueue = vm.eventQueue();
+
+        // Signal that we are listening
+        listenerReadyLatch.countDown();
+
+        while (true) {
+            try {
+                EventSet eventSet = eventQueue.remove();
+                boolean shouldResume = true;
+
+                for (Event event : eventSet) {
+                    if (event instanceof VMDisconnectEvent) {
+                        System.out.println(ANSI_RED + "VM Disconnected." + ANSI_RESET);
+                        handleDisconnect();
+                        return; // Exit loop
+                    }
+
+                    if (event instanceof ClassPrepareEvent) {
+                        // Class loaded, now we can set breakpoints
+                        ClassPrepareEvent cpe = (ClassPrepareEvent) event;
+                        if (cpe.referenceType().name().equals(mainClassName)) {
+                            applyBreakpointsToClass(cpe.referenceType(), breakpointLines);
+                        }
+                    }
+                    else if (event instanceof LocatableEvent) {
+                        // BreakpointEvent or StepEvent -> PAUSE UI
+                        handleLocatableEvent((LocatableEvent) event);
+                        shouldResume = false; // Don't resume VM, wait for user input
+                    }
+                }
+
+                if (shouldResume) {
+                    eventSet.resume();
+                }
+            } catch (InterruptedException | VMDisconnectedException e) {
+                handleDisconnect();
+                return;
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    private void applyBreakpointsToClass(ReferenceType refType, List<Integer> lines) {
+        if (lines == null || lines.isEmpty()) return;
+        try {
+            EventRequestManager erm = vm.eventRequestManager();
+            for (int lineNumber : lines) {
+                List<Location> locations = refType.locationsOfLine(lineNumber);
+                if (!locations.isEmpty()) {
+                    BreakpointRequest bpReq = erm.createBreakpointRequest(locations.get(0));
+                    bpReq.enable();
+                }
+            }
+        } catch (AbsentInformationException e) {
+            System.err.println("No debug info available (compiled without -g?).");
+        }
+    }
+
+    private void handleLocatableEvent(LocatableEvent event) {
+        this.currentDebugThread = event.thread();
+
+        // Remove step request if this was a step event
+        if (event instanceof StepEvent) {
+            vm.eventRequestManager().deleteEventRequest(event.request());
+        }
+
+        int lineNumber = event.location().lineNumber();
+        CodeBlock block = lineToBlockMap.get(lineNumber);
+        CodeBlock target = (block != null) ? block.getHighlightTarget() : null;
+
+        System.out.println(ANSI_GREEN + "---> Paused at line: " + lineNumber + ANSI_RESET);
+
+        eventBus.publish(new CoreApplicationEvents.DebugSessionPausedEvent(lineNumber, target));
+        eventBus.publish(new CoreApplicationEvents.BlockHighlightEvent(target));
+        eventBus.publish(new CoreApplicationEvents.StatusMessageEvent("Paused at line: " + lineNumber));
+    }
+
+    private void handleDisconnect() {
+        this.currentDebugThread = null;
+        this.vm = null;
+        this.currentProcess = null;
+
+        eventBus.publish(new CoreApplicationEvents.DebugSessionFinishedEvent());
+        eventBus.publish(new CoreApplicationEvents.StatusMessageEvent("Debug session finished."));
+        eventBus.publish(new CoreApplicationEvents.BlockHighlightEvent(null));
+    }
+
+    // --- Public Control Methods ---
 
     public void stepOver() {
-        debuggingManager.stepOver();
+        if (vm == null || currentDebugThread == null) return;
+        try {
+            eventBus.publish(new CoreApplicationEvents.DebugSessionResumedEvent());
+            EventRequestManager erm = vm.eventRequestManager();
+
+            // Clear previous step requests
+            erm.stepRequests().stream()
+                    .filter(r -> r.thread().equals(currentDebugThread))
+                    .forEach(erm::deleteEventRequest);
+
+            // Create new StepOver
+            StepRequest request = erm.createStepRequest(currentDebugThread, StepRequest.STEP_LINE, StepRequest.STEP_OVER);
+            request.addCountFilter(1);
+            request.enable();
+
+            vm.resume();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     public void continueExecution() {
-        debuggingManager.continueExecution();
+        if (vm != null) {
+            eventBus.publish(new CoreApplicationEvents.DebugSessionResumedEvent());
+            vm.resume();
+        }
+    }
+
+    public void stopDebugging() {
+        // 1. Disconnect JDI nicely
+        if (vm != null) {
+            try {
+                vm.dispose(); // Triggers VMDisconnectEvent loop exit
+            } catch (VMDisconnectedException ignored) {
+            } catch (Exception e) { e.printStackTrace(); }
+        }
+
+        // 2. Kill process forcefully
+        if (currentProcess != null && currentProcess.isAlive()) {
+            try {
+                currentProcess.destroyForcibly();
+                eventBus.publish(new CoreApplicationEvents.StatusMessageEvent("Debug process terminated."));
+            } catch (Exception e) { e.printStackTrace(); }
+        }
+
+        handleDisconnect(); // Ensure UI state is reset
+    }
+
+    private void redirectStream(InputStream stream) {
+        new Thread(() -> {
+            try (Scanner s = new Scanner(stream)) {
+                while (s.hasNextLine()) {
+                    String line = s.nextLine();
+                    Platform.runLater(() -> eventBus.publish(new CoreApplicationEvents.OutputAppendedEvent(line + "\n")));
+                }
+            }
+        }).start();
     }
 }
 
@@ -9334,6 +8837,66 @@ public record MoveBlockInfo(String blockId, BodyBlock targetBody, int insertionI
 }
 
 =================================================================================
+FILE: ./src/main/java/com/botmaker/ui/PaletteManager.java
+=================================================================================
+
+package com.botmaker.ui;
+
+import com.botmaker.ui.AddableBlock.BlockCategory;
+import javafx.geometry.Insets;
+import javafx.scene.control.Accordion;
+import javafx.scene.control.Label;
+import javafx.scene.control.TitledPane;
+import javafx.scene.layout.VBox;
+
+import java.util.Arrays;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
+
+public class PaletteManager {
+
+    private final BlockDragAndDropManager dragAndDropManager;
+
+    public PaletteManager(BlockDragAndDropManager dragAndDropManager) {
+        this.dragAndDropManager = dragAndDropManager;
+    }
+
+    public Accordion createCategorizedPalette() {
+        Accordion accordion = new Accordion();
+        Map<BlockCategory, List<AddableBlock>> grouped = Arrays.stream(AddableBlock.values())
+                .collect(Collectors.groupingBy(AddableBlock::getCategory));
+
+        BlockCategory[] order = {
+                BlockCategory.OUTPUT, BlockCategory.INPUT, BlockCategory.VARIABLES,
+                BlockCategory.FLOW, BlockCategory.LOOPS, BlockCategory.CONTROL, BlockCategory.UTILITY
+        };
+
+        for (BlockCategory category : order) {
+            List<AddableBlock> blocks = grouped.get(category);
+            if (blocks == null) continue;
+
+            VBox content = new VBox(8);
+            content.setPadding(new Insets(10));
+
+            for (AddableBlock blockType : blocks) {
+                Label blockLabel = new Label(blockType.getDisplayName());
+                blockLabel.setMaxWidth(Double.MAX_VALUE);
+                blockLabel.getStyleClass().addAll("palette-item", "palette-" + category.name().toLowerCase());
+                dragAndDropManager.makeDraggable(blockLabel, blockType);
+                content.getChildren().add(blockLabel);
+            }
+
+            TitledPane pane = new TitledPane(category.getLabel(), content);
+            pane.getStyleClass().add("palette-pane");
+            accordion.getPanes().add(pane);
+        }
+        if (!accordion.getPanes().isEmpty()) accordion.setExpandedPane(accordion.getPanes().get(0));
+        return accordion;
+    }
+}
+
+=================================================================================
 FILE: ./src/main/java/com/botmaker/ui/ProjectSelectionScreen.java
 =================================================================================
 
@@ -9572,254 +9135,50 @@ public class ProjectSelectionScreen {
 }
 
 =================================================================================
-FILE: ./src/main/java/com/botmaker/ui/UIManager.java
+FILE: ./src/main/java/com/botmaker/ui/ToolbarManager.java
 =================================================================================
 
 package com.botmaker.ui;
 
-import com.botmaker.core.CodeBlock;
 import com.botmaker.events.CoreApplicationEvents;
 import com.botmaker.events.EventBus;
-import com.botmaker.lsp.CompletionContext;
-import com.botmaker.services.CodeEditorService;
-import com.botmaker.ui.AddableBlock.BlockCategory;
-import com.botmaker.validation.DiagnosticsManager;
-import com.botmaker.validation.ErrorTranslator;
-import javafx.application.Platform;
 import javafx.geometry.Insets;
-import javafx.geometry.Orientation;
-import javafx.scene.Node;
-import javafx.scene.Scene;
-import javafx.scene.control.*;
-import javafx.scene.layout.*;
-import javafx.stage.Stage;
-import org.eclipse.lsp4j.Diagnostic;
-import org.eclipse.lsp4j.DiagnosticSeverity;
+import javafx.scene.control.Button;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.Priority;
+import javafx.scene.layout.Region;
 
-import java.util.*;
-import java.util.function.Consumer;
-import java.util.stream.Collectors;
+public class ToolbarManager {
 
-public class UIManager {
-
-    private final BlockDragAndDropManager dragAndDropManager;
     private final EventBus eventBus;
-    private final CodeEditorService codeEditorService;
-    private final DiagnosticsManager diagnosticsManager;
-    private final Stage primaryStage;
-
-    private VBox blocksContainer;
-    private Label statusLabel;
-    private TextArea outputArea;
-    private ListView<Diagnostic> errorListView;
-    private TabPane bottomTabPane;
-    private Tab terminalTab;
-    private ScrollPane scrollPane;
-    private MenuBarManager menuBarManager;
-    private Consumer<Void> onSelectProject;
-
-    // NEW: Event Log Manager
-    private EventLogManager eventLogManager;
 
     // Controls
-    private Button debugButton;
-    private Button runButton;
-    private Button unifiedStopButton;
-    private Button stepOverButton;
-    private Button continueButton;
-    private Button undoButton;
-    private Button redoButton;
+    private Button undoButton, redoButton;
+    private Button runButton, debugButton, unifiedStopButton;
+    private Button stepOverButton, continueButton;
 
-    // Application State Tracking
     private enum AppState { IDLE, RUNNING, DEBUGGING }
     private AppState currentAppState = AppState.IDLE;
 
-    public UIManager(BlockDragAndDropManager dragAndDropManager,
-                     EventBus eventBus,
-                     CodeEditorService codeEditorService,
-                     DiagnosticsManager diagnosticsManager,
-                     Stage primaryStage) {
-        this.dragAndDropManager = dragAndDropManager;
+    public ToolbarManager(EventBus eventBus) {
         this.eventBus = eventBus;
-        this.codeEditorService = codeEditorService;
-        this.diagnosticsManager = diagnosticsManager;
-        this.primaryStage = primaryStage;
-
-        // Initialize the EventLogManager immediately
-        this.eventLogManager = new EventLogManager(eventBus);
-
         setupEventHandlers();
     }
 
     private void setupEventHandlers() {
-        eventBus.subscribe(CoreApplicationEvents.UIBlocksUpdatedEvent.class, this::handleBlocksUpdate, true);
-        eventBus.subscribe(CoreApplicationEvents.OutputAppendedEvent.class, event -> {
-            // Protect the UI Component from holding too much text
-            if (outputArea.getText().length() > 10_000) {
-                // If too long, cut the top half
-                String current = outputArea.getText();
-                outputArea.setText("[...Old Output Trimmed...]\n" + current.substring(current.length() - 5000) + event.getText());
-                outputArea.positionCaret(outputArea.getLength());
-            } else {
-                outputArea.appendText(event.getText());
-            }
-        }, true);
-
-        eventBus.subscribe(CoreApplicationEvents.OutputClearedEvent.class, event -> outputArea.clear(), true);
-        eventBus.subscribe(CoreApplicationEvents.OutputSetEvent.class, event -> outputArea.setText(event.getText()), true);
-        eventBus.subscribe(CoreApplicationEvents.StatusMessageEvent.class, event -> statusLabel.setText(event.getMessage()), true);
-
-        eventBus.subscribe(CoreApplicationEvents.DiagnosticsUpdatedEvent.class, event -> {
-            diagnosticsManager.processDiagnostics(event.getDiagnostics());
-            updateErrors(diagnosticsManager.getDiagnostics());
-            statusLabel.setText(diagnosticsManager.getErrorSummary());
-        }, true);
-
-
-        // State Management Handlers
         eventBus.subscribe(CoreApplicationEvents.ProgramStartedEvent.class, e -> setAppState(AppState.RUNNING), true);
         eventBus.subscribe(CoreApplicationEvents.ProgramStoppedEvent.class, e -> setAppState(AppState.IDLE), true);
         eventBus.subscribe(CoreApplicationEvents.DebugSessionStartedEvent.class, e -> setAppState(AppState.DEBUGGING), true);
         eventBus.subscribe(CoreApplicationEvents.DebugSessionFinishedEvent.class, e -> setAppState(AppState.IDLE), true);
-
-        // Debugging specific controls
         eventBus.subscribe(CoreApplicationEvents.DebugSessionPausedEvent.class, e -> updateDebugControls(true), true);
         eventBus.subscribe(CoreApplicationEvents.DebugSessionResumedEvent.class, e -> updateDebugControls(false), true);
-
         eventBus.subscribe(CoreApplicationEvents.HistoryStateChangedEvent.class, event -> {
-            Platform.runLater(() -> {
-                if (undoButton != null) undoButton.setDisable(!event.canUndo());
-                if (redoButton != null) redoButton.setDisable(!event.canRedo());
-            });
+            if (undoButton != null) undoButton.setDisable(!event.canUndo());
+            if (redoButton != null) redoButton.setDisable(!event.canRedo());
         }, true);
     }
 
-    private void setAppState(AppState state) {
-        this.currentAppState = state;
-        updateToolbarState();
-    }
-
-    private void updateToolbarState() {
-        boolean isBusy = (currentAppState != AppState.IDLE);
-
-        runButton.setDisable(isBusy);
-        debugButton.setDisable(isBusy);
-        unifiedStopButton.setDisable(!isBusy);
-
-        if (currentAppState == AppState.DEBUGGING) {
-            unifiedStopButton.setText("Stop Debugging ⏹");
-            unifiedStopButton.setStyle("-fx-background-color: #E74C3C; -fx-text-fill: white;");
-            bottomTabPane.getSelectionModel().select(terminalTab);
-        } else if (currentAppState == AppState.RUNNING) {
-            unifiedStopButton.setText("Stop Run ⏹");
-            unifiedStopButton.setStyle("-fx-background-color: #E74C3C; -fx-text-fill: white;");
-            bottomTabPane.getSelectionModel().select(terminalTab);
-
-            stepOverButton.setDisable(true);
-            continueButton.setDisable(true);
-        } else {
-            unifiedStopButton.setText("Stop ⏹");
-            unifiedStopButton.setStyle("");
-            stepOverButton.setDisable(true);
-            continueButton.setDisable(true);
-        }
-    }
-
-    private void updateDebugControls(boolean isPaused) {
-        if (currentAppState == AppState.DEBUGGING) {
-            stepOverButton.setDisable(!isPaused);
-            continueButton.setDisable(!isPaused);
-        }
-    }
-
-    private void handleBlocksUpdate(CoreApplicationEvents.UIBlocksUpdatedEvent event) {
-        blocksContainer.getChildren().clear();
-        if (event.getRootBlock() != null) {
-            CompletionContext context = codeEditorService.createCompletionContext();
-            Node rootNode = event.getRootBlock().getUINode(context);
-
-            rootNode.addEventHandler(BlockEvent.BreakpointToggleEvent.TOGGLE_BREAKPOINT, e -> {
-                eventBus.publish(new CoreApplicationEvents.BreakpointToggledEvent(e.getBlock(), e.isEnabled()));
-            });
-
-            blocksContainer.getChildren().add(rootNode);
-        }
-    }
-
-    public Scene createScene() {
-        menuBarManager = new MenuBarManager(primaryStage);
-        menuBarManager.setEventBus(eventBus);
-        menuBarManager.setOnSelectProject(v -> { if (onSelectProject != null) onSelectProject.accept(null); });
-
-        blocksContainer = new VBox(10);
-        blocksContainer.getStyleClass().add("blocks-canvas");
-
-        scrollPane = new ScrollPane(blocksContainer);
-        scrollPane.setFitToWidth(true);
-        scrollPane.getStyleClass().add("code-scroll-pane");
-
-        Accordion paletteAccordion = createCategorizedPalette();
-        VBox paletteContainer = new VBox(paletteAccordion);
-        paletteContainer.setPrefWidth(220);
-        paletteContainer.getStyleClass().add("palette-sidebar");
-
-        statusLabel = new Label("Ready");
-        statusLabel.setId("status-label");
-
-        // Terminal Area
-        outputArea = new TextArea();
-        outputArea.setEditable(false);
-        outputArea.getStyleClass().add("console-area");
-
-        // Error List Area
-        errorListView = new ListView<>();
-        configureErrorList(errorListView);
-
-        // NEW: Event Log Area
-        ListView<String> eventView = eventLogManager.getView();
-
-        // Tabs
-        bottomTabPane = new TabPane();
-        terminalTab = new Tab("Terminal", outputArea);
-        terminalTab.setClosable(false);
-
-        Tab errorsTab = new Tab("Errors", errorListView);
-        errorsTab.setClosable(false);
-
-        // New Event Log Tab
-        Tab eventsTab = new Tab("Event Log", eventView);
-        eventsTab.setClosable(false);
-
-        bottomTabPane.getTabs().addAll(terminalTab, errorsTab, eventsTab);
-
-        HBox toolBar = createToolBar();
-
-        SplitPane verticalSplit = new SplitPane();
-        verticalSplit.setOrientation(Orientation.VERTICAL);
-        verticalSplit.getItems().addAll(scrollPane, bottomTabPane);
-        verticalSplit.setDividerPositions(0.75);
-        VBox.setVgrow(verticalSplit, Priority.ALWAYS);
-
-        BorderPane mainLayout = new BorderPane();
-        mainLayout.setTop(toolBar);
-        mainLayout.setLeft(paletteContainer);
-        mainLayout.setCenter(verticalSplit);
-        mainLayout.setBottom(statusLabel);
-
-        VBox root = new VBox(menuBarManager.getMenuBar(), mainLayout);
-        VBox.setVgrow(mainLayout, Priority.ALWAYS);
-        root.getStyleClass().add("light-theme");
-
-        // Cleanup executor on close
-        primaryStage.setOnHidden(e -> eventLogManager.shutdown());
-
-        Scene scene = new Scene(root, 1000, 700);
-        scene.getStylesheets().add(getClass().getResource("/com/botmaker/styles.css").toExternalForm());
-
-        return scene;
-    }
-
-    private HBox createToolBar() {
+    public HBox createToolBar() {
         undoButton = new Button("Undo");
         undoButton.setDisable(true);
         undoButton.setOnAction(e -> eventBus.publish(new CoreApplicationEvents.UndoRequestedEvent()));
@@ -9847,11 +9206,8 @@ public class UIManager {
         unifiedStopButton.getStyleClass().addAll("toolbar-btn", "btn-stop");
         unifiedStopButton.setDisable(true);
         unifiedStopButton.setOnAction(e -> {
-            if (currentAppState == AppState.RUNNING) {
-                eventBus.publish(new CoreApplicationEvents.StopRunRequestedEvent());
-            } else if (currentAppState == AppState.DEBUGGING) {
-                eventBus.publish(new CoreApplicationEvents.DebugStopRequestedEvent());
-            }
+            if (currentAppState == AppState.RUNNING) eventBus.publish(new CoreApplicationEvents.StopRunRequestedEvent());
+            else if (currentAppState == AppState.DEBUGGING) eventBus.publish(new CoreApplicationEvents.DebugStopRequestedEvent());
         });
 
         Region spacer2 = new Region();
@@ -9865,53 +9221,199 @@ public class UIManager {
         continueButton.setDisable(true);
         continueButton.setOnAction(e -> eventBus.publish(new CoreApplicationEvents.DebugContinueRequestedEvent()));
 
-        HBox toolbar = new HBox(10,
-                undoButton, redoButton,
-                spacer1,
-                compileButton, runButton, debugButton, unifiedStopButton,
-                spacer2,
-                stepOverButton, continueButton
-        );
+        HBox toolbar = new HBox(10, undoButton, redoButton, spacer1, compileButton, runButton, debugButton, unifiedStopButton, spacer2, stepOverButton, continueButton);
         toolbar.setPadding(new Insets(10));
         toolbar.getStyleClass().add("main-toolbar");
         return toolbar;
     }
 
-    private Accordion createCategorizedPalette() {
-        Accordion accordion = new Accordion();
-        Map<BlockCategory, List<AddableBlock>> grouped = Arrays.stream(AddableBlock.values())
-                .collect(Collectors.groupingBy(AddableBlock::getCategory));
+    private void setAppState(AppState state) {
+        this.currentAppState = state;
+        updateToolbarState();
+    }
 
-        BlockCategory[] order = {
-                BlockCategory.OUTPUT, BlockCategory.INPUT, BlockCategory.VARIABLES,
-                BlockCategory.FLOW, BlockCategory.LOOPS, BlockCategory.CONTROL, BlockCategory.UTILITY
-        };
+    private void updateToolbarState() {
+        boolean isBusy = (currentAppState != AppState.IDLE);
+        runButton.setDisable(isBusy);
+        debugButton.setDisable(isBusy);
+        unifiedStopButton.setDisable(!isBusy);
 
-        for (BlockCategory category : order) {
-            List<AddableBlock> blocks = grouped.get(category);
-            if (blocks == null) continue;
-
-            VBox content = new VBox(8);
-            content.setPadding(new Insets(10));
-
-            for (AddableBlock blockType : blocks) {
-                Label blockLabel = new Label(blockType.getDisplayName());
-                blockLabel.setMaxWidth(Double.MAX_VALUE);
-                blockLabel.getStyleClass().addAll("palette-item", "palette-" + category.name().toLowerCase());
-                dragAndDropManager.makeDraggable(blockLabel, blockType);
-                content.getChildren().add(blockLabel);
-            }
-
-            TitledPane pane = new TitledPane(category.getLabel(), content);
-            pane.getStyleClass().add("palette-pane");
-            accordion.getPanes().add(pane);
+        if (currentAppState == AppState.DEBUGGING) {
+            unifiedStopButton.setText("Stop Debugging ⏹");
+            unifiedStopButton.setStyle("-fx-background-color: #E74C3C; -fx-text-fill: white;");
+        } else if (currentAppState == AppState.RUNNING) {
+            unifiedStopButton.setText("Stop Run ⏹");
+            unifiedStopButton.setStyle("-fx-background-color: #E74C3C; -fx-text-fill: white;");
+            stepOverButton.setDisable(true);
+            continueButton.setDisable(true);
+        } else {
+            unifiedStopButton.setText("Stop ⏹");
+            unifiedStopButton.setStyle("");
+            stepOverButton.setDisable(true);
+            continueButton.setDisable(true);
         }
-        if (!accordion.getPanes().isEmpty()) accordion.setExpandedPane(accordion.getPanes().get(0));
-        return accordion;
+    }
+
+    private void updateDebugControls(boolean isPaused) {
+        if (currentAppState == AppState.DEBUGGING) {
+            stepOverButton.setDisable(!isPaused);
+            continueButton.setDisable(!isPaused);
+        }
+    }
+}
+
+=================================================================================
+FILE: ./src/main/java/com/botmaker/ui/UIManager.java
+=================================================================================
+
+package com.botmaker.ui;
+
+import com.botmaker.core.CodeBlock;
+import com.botmaker.events.CoreApplicationEvents;
+import com.botmaker.events.EventBus;
+import com.botmaker.lsp.CompletionContext;
+import com.botmaker.services.CodeEditorService;
+import com.botmaker.validation.DiagnosticsManager;
+import com.botmaker.validation.ErrorTranslator;
+import javafx.geometry.Orientation;
+import javafx.scene.Node;
+import javafx.scene.Scene;
+import javafx.scene.control.*;
+import javafx.scene.layout.*;
+import javafx.stage.Stage;
+import org.eclipse.lsp4j.Diagnostic;
+import org.eclipse.lsp4j.DiagnosticSeverity;
+
+import java.util.List;
+import java.util.function.Consumer;
+
+public class UIManager {
+
+    private final EventBus eventBus;
+    private final CodeEditorService codeEditorService;
+    private final DiagnosticsManager diagnosticsManager;
+    private final Stage primaryStage;
+
+    private final PaletteManager paletteManager;
+    private final ToolbarManager toolbarManager;
+    private final EventLogManager eventLogManager;
+    private final MenuBarManager menuBarManager;
+
+    private VBox blocksContainer;
+    private Label statusLabel;
+    private TextArea outputArea;
+    private ListView<Diagnostic> errorListView;
+    private TabPane bottomTabPane;
+    private Consumer<Void> onSelectProject;
+
+    public UIManager(BlockDragAndDropManager dragAndDropManager,
+                     EventBus eventBus,
+                     CodeEditorService codeEditorService,
+                     DiagnosticsManager diagnosticsManager,
+                     Stage primaryStage) {
+        this.eventBus = eventBus;
+        this.codeEditorService = codeEditorService;
+        this.diagnosticsManager = diagnosticsManager;
+        this.primaryStage = primaryStage;
+
+        // Delegate Managers
+        this.paletteManager = new PaletteManager(dragAndDropManager);
+        this.toolbarManager = new ToolbarManager(eventBus);
+        this.eventLogManager = new EventLogManager(eventBus);
+        this.menuBarManager = new MenuBarManager(primaryStage);
+        this.menuBarManager.setEventBus(eventBus);
+
+        setupEventHandlers();
+    }
+
+    private void setupEventHandlers() {
+        eventBus.subscribe(CoreApplicationEvents.UIBlocksUpdatedEvent.class, this::handleBlocksUpdate, true);
+        eventBus.subscribe(CoreApplicationEvents.OutputAppendedEvent.class, event -> {
+            if (outputArea.getText().length() > 10_000) {
+                String current = outputArea.getText();
+                outputArea.setText("[...Trimmed...]\n" + current.substring(current.length() - 5000) + event.getText());
+                outputArea.positionCaret(outputArea.getLength());
+            } else {
+                outputArea.appendText(event.getText());
+            }
+        }, true);
+        eventBus.subscribe(CoreApplicationEvents.OutputClearedEvent.class, event -> outputArea.clear(), true);
+        eventBus.subscribe(CoreApplicationEvents.OutputSetEvent.class, event -> outputArea.setText(event.getText()), true);
+        eventBus.subscribe(CoreApplicationEvents.StatusMessageEvent.class, event -> statusLabel.setText(event.getMessage()), true);
+        eventBus.subscribe(CoreApplicationEvents.DiagnosticsUpdatedEvent.class, event -> {
+            diagnosticsManager.processDiagnostics(event.getDiagnostics());
+            updateErrors(diagnosticsManager.getDiagnostics());
+            statusLabel.setText(diagnosticsManager.getErrorSummary());
+        }, true);
+        eventBus.subscribe(CoreApplicationEvents.ProgramStartedEvent.class, e -> selectBottomTab(0), true);
+        eventBus.subscribe(CoreApplicationEvents.DebugSessionStartedEvent.class, e -> selectBottomTab(0), true);
+    }
+
+    private void handleBlocksUpdate(CoreApplicationEvents.UIBlocksUpdatedEvent event) {
+        blocksContainer.getChildren().clear();
+        if (event.getRootBlock() != null) {
+            CompletionContext context = codeEditorService.createCompletionContext();
+            Node rootNode = event.getRootBlock().getUINode(context);
+            rootNode.addEventHandler(BlockEvent.BreakpointToggleEvent.TOGGLE_BREAKPOINT, e ->
+                    eventBus.publish(new CoreApplicationEvents.BreakpointToggledEvent(e.getBlock(), e.isEnabled())));
+            blocksContainer.getChildren().add(rootNode);
+        }
+    }
+
+    public Scene createScene() {
+        menuBarManager.setOnSelectProject(v -> { if (onSelectProject != null) onSelectProject.accept(null); });
+
+        blocksContainer = new VBox(10);
+        blocksContainer.getStyleClass().add("blocks-canvas");
+        ScrollPane scrollPane = new ScrollPane(blocksContainer);
+        scrollPane.setFitToWidth(true);
+        scrollPane.getStyleClass().add("code-scroll-pane");
+
+        VBox paletteContainer = new VBox(paletteManager.createCategorizedPalette());
+        paletteContainer.setPrefWidth(220);
+        paletteContainer.getStyleClass().add("palette-sidebar");
+
+        statusLabel = new Label("Ready");
+        statusLabel.setId("status-label");
+
+        outputArea = new TextArea();
+        outputArea.setEditable(false);
+        outputArea.getStyleClass().add("console-area");
+
+        errorListView = new ListView<>();
+        configureErrorList(errorListView);
+
+        bottomTabPane = new TabPane();
+        Tab terminalTab = new Tab("Terminal", outputArea); terminalTab.setClosable(false);
+        Tab errorsTab = new Tab("Errors", errorListView); errorsTab.setClosable(false);
+        Tab eventsTab = new Tab("Event Log", eventLogManager.getView()); eventsTab.setClosable(false);
+        bottomTabPane.getTabs().addAll(terminalTab, errorsTab, eventsTab);
+
+        SplitPane verticalSplit = new SplitPane();
+        verticalSplit.setOrientation(Orientation.VERTICAL);
+        verticalSplit.getItems().addAll(scrollPane, bottomTabPane);
+        verticalSplit.setDividerPositions(0.75);
+        VBox.setVgrow(verticalSplit, Priority.ALWAYS);
+
+        BorderPane mainLayout = new BorderPane();
+        mainLayout.setTop(toolbarManager.createToolBar());
+        mainLayout.setLeft(paletteContainer);
+        mainLayout.setCenter(verticalSplit);
+        mainLayout.setBottom(statusLabel);
+
+        VBox root = new VBox(menuBarManager.getMenuBar(), mainLayout);
+        VBox.setVgrow(mainLayout, Priority.ALWAYS);
+        root.getStyleClass().add("light-theme");
+
+        primaryStage.setOnHidden(e -> eventLogManager.shutdown());
+
+        Scene scene = new Scene(root, 1000, 700);
+        scene.getStylesheets().add(getClass().getResource("/com/botmaker/styles.css").toExternalForm());
+        return scene;
     }
 
     private void configureErrorList(ListView<Diagnostic> lv) {
-        lv.setPlaceholder(new Label("No errors to display."));
+        lv.setPlaceholder(new Label("No errors."));
         lv.setCellFactory(list -> new ListCell<>() {
             @Override
             protected void updateItem(Diagnostic diagnostic, boolean empty) {
@@ -9926,7 +9428,6 @@ public class UIManager {
                     setText(String.format("Line %d: %s", line, message));
                     if (diagnostic.getSeverity() == DiagnosticSeverity.Error) getStyleClass().add("error-cell");
                     else if (diagnostic.getSeverity() == DiagnosticSeverity.Warning) getStyleClass().add("warning-cell");
-
                     setOnMouseClicked(event -> {
                         if (event.getClickCount() >= 1) {
                             diagnosticsManager.findBlockForDiagnostic(diagnostic).ifPresent(block -> {
@@ -9943,7 +9444,13 @@ public class UIManager {
     private void updateErrors(List<Diagnostic> diagnostics) {
         if (diagnostics == null) errorListView.getItems().clear();
         else errorListView.getItems().setAll(diagnostics);
-        if (diagnostics != null && !diagnostics.isEmpty()) bottomTabPane.getSelectionModel().select(1);
+        if (diagnostics != null && !diagnostics.isEmpty()) selectBottomTab(1);
+    }
+
+    private void selectBottomTab(int index) {
+        if (bottomTabPane != null && index < bottomTabPane.getTabs().size()) {
+            bottomTabPane.getSelectionModel().select(index);
+        }
     }
 
     public void setOnSelectProject(Consumer<Void> callback) { this.onSelectProject = callback; }

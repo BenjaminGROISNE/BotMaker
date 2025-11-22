@@ -136,6 +136,14 @@ public class LanguageServerService {
         }
     }
 
+    public void openFile(Path path, String content) {
+        if (server == null) return;
+        String uri = path.toUri().toString();
+        server.getTextDocumentService().didOpen(new DidOpenTextDocumentParams(
+                new TextDocumentItem(uri, "java", 1, content)
+        ));
+    }
+
     public void shutdown() {
         if (launcher != null) {
             try {

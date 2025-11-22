@@ -37,13 +37,15 @@ public class AppDependencyConfigurator {
 
         // UI Manager (Requires Stage)
         container.registerLazySingleton(UIManager.class, () -> {
-            // We don't pass the callback here yet, Main handles the screen switching logic
             return new UIManager(
                     container.resolve(BlockDragAndDropManager.class),
                     container.resolve(EventBus.class),
                     container.resolve(CodeEditorService.class),
                     container.resolve(DiagnosticsManager.class),
-                    primaryStage
+                    primaryStage,
+                    // New Dependencies:
+                    container.resolve(ApplicationConfig.class),
+                    container.resolve(ApplicationState.class)
             );
         });
     }
@@ -66,7 +68,8 @@ public class AppDependencyConfigurator {
                     text -> eventBus.publish(new com.botmaker.events.CoreApplicationEvents.OutputSetEvent(text)),
                     msg -> eventBus.publish(new com.botmaker.events.CoreApplicationEvents.StatusMessageEvent(msg)),
                     container.resolve(DiagnosticsManager.class),
-                    container.resolve(ApplicationConfig.class)
+                    container.resolve(ApplicationConfig.class),
+                    container.resolve(ApplicationState.class) // <--- ADD THIS
             );
         });
 

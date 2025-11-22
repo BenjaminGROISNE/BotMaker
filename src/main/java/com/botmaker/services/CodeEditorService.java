@@ -2,6 +2,7 @@ package com.botmaker.services;
 
 import com.botmaker.blocks.MainBlock;
 import com.botmaker.config.ApplicationConfig;
+import com.botmaker.core.AbstractCodeBlock;
 import com.botmaker.core.CodeBlock;
 import com.botmaker.events.CoreApplicationEvents;
 import com.botmaker.events.EventBus;
@@ -9,11 +10,16 @@ import com.botmaker.lsp.CompletionContext;
 import com.botmaker.parser.AstRewriter;
 import com.botmaker.parser.BlockFactory;
 import com.botmaker.parser.CodeEditor;
+import com.botmaker.project.ProjectFile;
 import com.botmaker.state.ApplicationState;
 import com.botmaker.state.HistoryManager;
 import com.botmaker.ui.BlockDragAndDropManager;
 import com.botmaker.validation.DiagnosticsManager;
 import javafx.application.Platform;
+
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.util.stream.Stream;
 
 public class CodeEditorService {
 
@@ -127,10 +133,75 @@ public class CodeEditorService {
     }
 
     public void loadInitialCode() {
-        String currentCode = state.getCurrentCode();
-        historyManager.clear();
-        broadcastHistoryState();
-        Platform.runLater(() -> refreshUI(currentCode));
+        try {
+            Path mainFile = config.getSourceFilePath();
+            Path sourceDir = mainFile.getParent();
+
+            // Load all java files in the directory
+            try (Stream<Path> files = Files.list(sourceDir)) {
+                files.filter(p -> p.toString().endsWith(".java")).forEach(path -> {
+                    try {
+                        String content = Files.readString(path);
+                        ProjectFile pf = new ProjectFile(path, content);
+                        state.addFile(pf);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                });
+            }
+
+            // Set Active File to Main
+            switchToFile(mainFile);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void switchToFile(Path path) {
+        ProjectFile file = state.getAllFiles().stream()
+                .filter(f -> f.getPath().equals(path))
+                .findFirst().orElse(null);
+
+        if (file == null) return;
+
+        // 1. Refresh UI
+        state.setActiveFile(path);
+
+        // Clear history when switching (optional, or keep separate history per file)
+        // historyManager.clear();
+
+        refreshUI(file.getContent());
+    }
+
+
+    public void createFile(String className) {
+        try {
+            String packageName = config.getMainClassName().substring(0, config.getMainClassName().lastIndexOf('.'));
+            Path dir = config.getSourceFilePath().getParent();
+            Path newPath = dir.resolve(className + ".java");
+
+            String template = "package " + packageName + ";\n\n" +
+                    "public class " + className + " {\n" +
+                    "    // Add functions here\n" +
+                    "    public static void action() {\n" +
+                    "        System.out.println(\"Action from " + className + "\");\n" +
+                    "    }\n" +
+                    "}";
+
+            Files.writeString(newPath, template);
+
+            ProjectFile pf = new ProjectFile(newPath, template);
+            state.addFile(pf);
+
+            // Notify LSP
+            languageServerService.openFile(newPath, template);
+
+            switchToFile(newPath);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     private void refreshUI(String javaCode) {
@@ -141,7 +212,7 @@ public class CodeEditorService {
             diagnosticsManager.updateSource(state.getMutableNodeToBlockMap(), javaCode);
         }
 
-        MainBlock rootBlock = blockFactory.convert(
+        AbstractCodeBlock rootBlock = blockFactory.convert(
                 javaCode,
                 state.getMutableNodeToBlockMap(),
                 dragAndDropManager
@@ -157,7 +228,7 @@ public class CodeEditorService {
         state.setCompilationUnit(blockFactory.getCompilationUnit());
 
         eventBus.publish(new CoreApplicationEvents.UIBlocksUpdatedEvent(rootBlock));
-        eventBus.publish(new CoreApplicationEvents.StatusMessageEvent("UI Refreshed."));
+        eventBus.publish(new CoreApplicationEvents.StatusMessageEvent("Loaded: " + state.getActiveFile().getClassName()));
     }
 
     public CompletionContext createCompletionContext() {
