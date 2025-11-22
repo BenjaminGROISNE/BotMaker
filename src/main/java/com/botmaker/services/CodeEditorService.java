@@ -204,6 +204,8 @@ public class CodeEditorService {
         }
     }
 
+
+
     private void refreshUI(String javaCode) {
         state.setCurrentCode(javaCode);
         state.clearNodeToBlockMap();
@@ -238,7 +240,8 @@ public class CodeEditorService {
                 state.getDocUri(),
                 state.getCurrentCode(),
                 state.getDocVersion(),
-                dragAndDropManager
+                dragAndDropManager,
+                state // Pass the state instance
         );
     }
 

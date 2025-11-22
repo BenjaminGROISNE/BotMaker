@@ -4,28 +4,21 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="cba04025-c331-4634-a893-436bad03efc0" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/botmaker/blocks/LibraryBlock.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/botmaker/blocks/MethodDeclarationBlock.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/botmaker/project/ProjectFile.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/botmaker/ui/FileExplorerManager.java" afterDir="false" />
+    <list default="true" id="cba04025-c331-4634-a893-436bad03efc0" name="Changes" comment="Multiple files project, create method block, returnblock can return value">
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/botmaker/blocks/MethodInvocationBlock.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/java_files_concat.txt" beforeDir="false" afterPath="$PROJECT_DIR$/java_files_concat.txt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/projects/.botmaker-config.json" beforeDir="false" afterPath="$PROJECT_DIR$/projects/.botmaker-config.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/projects/Demo/src/main/java/com/demo/Demo.java" beforeDir="false" afterPath="$PROJECT_DIR$/projects/Demo/src/main/java/com/demo/Demo.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/botmaker/blocks/ReturnBlock.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/botmaker/blocks/ReturnBlock.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/botmaker/events/CoreApplicationEvents.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/botmaker/events/CoreApplicationEvents.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/botmaker/init/AppDependencyConfigurator.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/botmaker/init/AppDependencyConfigurator.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/botmaker/lsp/CompletionContext.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/botmaker/lsp/CompletionContext.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/botmaker/parser/AstRewriter.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/botmaker/parser/AstRewriter.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/botmaker/parser/BlockFactory.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/botmaker/parser/BlockFactory.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/botmaker/parser/BlockParser.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/botmaker/parser/BlockParser.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/botmaker/parser/CodeEditor.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/botmaker/parser/CodeEditor.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/botmaker/runtime/CodeExecutionService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/botmaker/runtime/CodeExecutionService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/botmaker/parser/NodeCreator.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/botmaker/parser/NodeCreator.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/botmaker/services/CodeEditorService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/botmaker/services/CodeEditorService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/botmaker/services/DebuggingService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/botmaker/services/DebuggingService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/botmaker/services/LanguageServerService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/botmaker/services/LanguageServerService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/botmaker/state/ApplicationState.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/botmaker/state/ApplicationState.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/botmaker/ui/UIManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/botmaker/ui/UIManager.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/botmaker/ui/AddableBlock.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/botmaker/ui/AddableBlock.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/botmaker/ui/AddableExpression.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/botmaker/ui/AddableExpression.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/botmaker/ui/PaletteManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/botmaker/ui/PaletteManager.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/com/botmaker/styles.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/com/botmaker/styles.css" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -204,14 +197,6 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1759617202271</updated>
-    </task>
-    <task id="LOCAL-00013" summary="&#10;   1 feat(ui): Implement drag-and-drop for adding new blocks&#10;   2 &#10;   3 Adds a drag-and-drop system for adding new statement blocks to the visual editor.&#10;   4 &#10;   5 This includes a draggable block palette and highlighting separator lines to indicate insertion points on `BodyBlock` drop targets. The hover-event logging has also been refactored to be more detailed and object-oriented.">
-      <option name="closed" value="true" />
-      <created>1760387960335</created>
-      <option name="number" value="00013" />
-      <option name="presentableId" value="LOCAL-00013" />
-      <option name="project" value="LOCAL" />
-      <updated>1760387960335</updated>
     </task>
     <task id="LOCAL-00014" summary="working drag block and hover effect">
       <option name="closed" value="true" />
@@ -597,7 +582,15 @@
       <option name="project" value="LOCAL" />
       <updated>1763835075291</updated>
     </task>
-    <option name="localTasksCounter" value="62" />
+    <task id="LOCAL-00062" summary="Multiple files project, create method block, returnblock can return value">
+      <option name="closed" value="true" />
+      <created>1763842135283</created>
+      <option name="number" value="00062" />
+      <option name="presentableId" value="LOCAL-00062" />
+      <option name="project" value="LOCAL" />
+      <updated>1763842135283</updated>
+    </task>
+    <option name="localTasksCounter" value="63" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -625,7 +618,6 @@
     <ignored-roots>
       <path value="$PROJECT_DIR$/.." />
     </ignored-roots>
-    <MESSAGE value="Project selection works" />
     <MESSAGE value="README.md" />
     <MESSAGE value="Project Creation and opens most recent project" />
     <MESSAGE value="Added MenuBar" />
@@ -650,7 +642,8 @@
     <MESSAGE value="Better working arrays" />
     <MESSAGE value="conserve leaves values" />
     <MESSAGE value="Refactor no syntax errors" />
-    <option name="LAST_COMMIT_MESSAGE" value="Refactor no syntax errors" />
+    <MESSAGE value="Multiple files project, create method block, returnblock can return value" />
+    <option name="LAST_COMMIT_MESSAGE" value="Multiple files project, create method block, returnblock can return value" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

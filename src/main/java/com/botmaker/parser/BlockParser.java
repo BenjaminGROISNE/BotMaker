@@ -67,6 +67,20 @@ public class BlockParser {
             if (expr instanceof PrefixExpression) factory.parseExpression(((PrefixExpression) expr).getOperand(), map).ifPresent(block::setLeftHandSide);
             return Optional.of(block);
         }
+
+        if (expr instanceof MethodInvocation) {
+            MethodInvocationBlock block = new MethodInvocationBlock(
+                    BlockIdPrefix.generate("call_", stmt), stmt);
+            map.put(stmt, block);
+
+            MethodInvocation mi = (MethodInvocation) expr;
+            // Parse arguments
+            for (Object arg : mi.arguments()) {
+                factory.parseExpression((Expression) arg, map).ifPresent(block::addArgument);
+            }
+            return Optional.of(block);
+        }
+
         return Optional.empty();
     }
 
@@ -202,6 +216,18 @@ public class BlockParser {
             LiteralBlock<String> b = new LiteralBlock<>(BlockIdPrefix.generate(BlockIdPrefix.STRING, expr), expr, ((StringLiteral) expr).getLiteralValue());
             map.put(expr, b);
             return Optional.of(b);
+        }
+        if (expr instanceof MethodInvocation) {
+            MethodInvocation mi = (MethodInvocation) expr;
+            MethodInvocationBlock block = new MethodInvocationBlock(
+                    BlockIdPrefix.generate("call_expr_", expr), expr);
+
+            map.put(expr, block);
+
+            for (Object arg : mi.arguments()) {
+                factory.parseExpression((Expression) arg, map).ifPresent(block::addArgument);
+            }
+            return Optional.of(block);
         }
         if (expr instanceof NumberLiteral) {
             String t = ((NumberLiteral) expr).getToken();

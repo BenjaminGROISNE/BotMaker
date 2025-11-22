@@ -10,13 +10,15 @@ public enum AddableExpression {
     NUMBER("Number", "number"),
     TRUE("True", "boolean"),
     FALSE("False", "boolean"),
-    VARIABLE("Variable", "any"), // Variables can be anything (IdentifierBlock handles specific filtering)
+    VARIABLE("Variable", "any"),
+
+    // NEW: Function Call
+    FUNCTION_CALL("Function Call", "any"), // Can return anything
 
     // Nested
-    // Changed from "any" to "list" to restrict array initializers to array contexts
     LIST("Sub-List", "list"),
 
-    // Math Operations (Return numbers)
+    // Math Operations
     ADD("Addition (+)", "+", "number"),
     SUBTRACT("Subtraction (-)", "-", "number"),
     MULTIPLY("Multiplication (*)", "*", "number"),
@@ -37,28 +39,16 @@ public enum AddableExpression {
         this.returnType = returnType;
     }
 
-    public String getDisplayName() {
-        return displayName;
-    }
+    public String getDisplayName() { return displayName; }
+    public String getOperator() { return operator; }
 
-    public String getOperator() {
-        return operator;
-    }
-
-    /**
-     * Returns a list of expressions suitable for a specific target type.
-     * @param targetType "boolean", "number", "String", "list", or "any"
-     */
     public static List<AddableExpression> getForType(String targetType) {
         if (targetType == null || targetType.equals("any")) {
             return Arrays.asList(values());
         }
-
         return Arrays.stream(values())
                 .filter(e -> {
-                    // Always allow "any" items (like Variable)
                     if (e.returnType.equals("any")) return true;
-                    // Exact match
                     return e.returnType.equals(targetType);
                 })
                 .collect(Collectors.toList());

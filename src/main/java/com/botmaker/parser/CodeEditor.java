@@ -9,6 +9,8 @@ import com.botmaker.ui.AddableBlock;
 import com.botmaker.ui.AddableExpression;
 import org.eclipse.jdt.core.dom.*;
 
+import java.util.List;
+
 public class CodeEditor {
 
     private final ApplicationState state;
@@ -35,6 +37,31 @@ public class CodeEditor {
     private void triggerUpdate(String newCode) {
         String previousCode = getCurrentCode();
         eventBus.publish(new CoreApplicationEvents.CodeUpdatedEvent(newCode, previousCode));
+    }
+
+    public void updateMethodInvocation(MethodInvocation mi, String newScope, String newMethodName, List<String> newParamTypes) {
+        blockFactory.setMarkNewIdentifiersAsUnedited(true);
+        String newCode = astRewriter.updateMethodInvocation(
+                getCompilationUnit(),
+                getCurrentCode(),
+                mi,
+                newScope,
+                newMethodName,
+                newParamTypes
+        );
+        triggerUpdate(newCode);
+    }
+
+    // Add this method
+    public void addArgumentToMethodInvocation(MethodInvocation mi, AddableExpression type) {
+        blockFactory.setMarkNewIdentifiersAsUnedited(true);
+        String newCode = astRewriter.addArgumentToMethodInvocation(
+                getCompilationUnit(),
+                getCurrentCode(),
+                mi,
+                type
+        );
+        triggerUpdate(newCode);
     }
 
     public void moveStatement(StatementBlock blockToMove, BodyBlock sourceBody,

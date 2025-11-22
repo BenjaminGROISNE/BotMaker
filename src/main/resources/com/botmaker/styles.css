@@ -766,3 +766,11 @@
 .scroll-bar:horizontal .track {
     -fx-background-color: #ECF0F1;
 }
+
+
+.method-call-block {
+    -fx-background-color: #34495E;
+    -fx-background-radius: 5;
+    -fx-padding: 5 10 5 10;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.2), 3, 0, 0, 1);
+}

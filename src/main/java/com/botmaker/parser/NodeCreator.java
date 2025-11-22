@@ -9,6 +9,7 @@ import org.eclipse.jdt.core.dom.rewrite.ASTRewrite;
 
 import java.util.List;
 
+import static com.botmaker.ui.AddableBlock.CALL_FUNCTION;
 import static com.botmaker.util.TypeManager.toWrapperType;
 
 /**
@@ -22,6 +23,12 @@ public class NodeCreator {
                 StringLiteral newString = ast.newStringLiteral();
                 newString.setLiteralValue("text");
                 return newString;
+            case FUNCTION_CALL:
+                MethodInvocation call = ast.newMethodInvocation();
+                // Changed from "MyLibrary" to "SelectFile" to indicate action needed
+                call.setExpression(ast.newSimpleName("SelectFile"));
+                call.setName(ast.newSimpleName("selectMethod"));
+                return call;
             case NUMBER:
                 return ast.newNumberLiteral("0");
             case TRUE:
@@ -36,6 +43,7 @@ public class NodeCreator {
                 asList.setExpression(ast.newSimpleName("Arrays"));
                 asList.setName(ast.newSimpleName("asList"));
                 return asList;
+
             case ADD:
             case SUBTRACT:
             case MULTIPLY:
@@ -76,7 +84,12 @@ public class NodeCreator {
                 return createVariableDeclaration(ast, DefaultNames.DEFAULT_BOOLEAN, false, PrimitiveType.BOOLEAN);
             case DECLARE_STRING:
                 return createStringDeclaration(ast);
-
+            case CALL_FUNCTION:
+                MethodInvocation call = ast.newMethodInvocation();
+                // Default to a placeholder call
+                call.setExpression(ast.newSimpleName("MyLibrary"));
+                call.setName(ast.newSimpleName("myFunction"));
+                return ast.newExpressionStatement(call);
             case DECLARE_ARRAY:
                 if (cu != null && rewriter != null) {
                     ImportManager.addImport(cu, rewriter, "java.util.ArrayList");

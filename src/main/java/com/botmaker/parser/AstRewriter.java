@@ -302,7 +302,73 @@ public class AstRewriter {
         }
     }
 
-    // Add this method to AstRewriter.java
+
+    /**
+     * Updates a method call's scope, name, and synchronizes its arguments to match the target definition.
+     */
+    public String updateMethodInvocation(CompilationUnit cu, String originalCode, MethodInvocation mi,
+                                         String newScope, String newMethodName, List<String> newParamTypes) {
+        AST ast = cu.getAST();
+        ASTRewrite rewriter = ASTRewrite.create(ast);
+
+        // 1. Update Scope (File/Class Name)
+        if (newScope == null || newScope.isEmpty() || newScope.equals("Local")) {
+            if (mi.getExpression() != null) {
+                rewriter.remove(mi.getExpression(), null);
+            }
+        } else {
+            SimpleName newScopeNode = ast.newSimpleName(newScope);
+            if (mi.getExpression() == null) {
+                rewriter.set(mi, MethodInvocation.EXPRESSION_PROPERTY, newScopeNode, null);
+            } else {
+                rewriter.replace(mi.getExpression(), newScopeNode, null);
+            }
+        }
+
+        // 2. Update Method Name
+        if (!mi.getName().getIdentifier().equals(newMethodName)) {
+            rewriter.replace(mi.getName(), ast.newSimpleName(newMethodName), null);
+        }
+
+        // 3. Sync Arguments (Adaptive Parameters)
+        ListRewrite argsRewrite = rewriter.getListRewrite(mi, MethodInvocation.ARGUMENTS_PROPERTY);
+        List<?> currentArgs = mi.arguments();
+
+        // Logic: Match count.
+        // If target has MORE params -> Add default values.
+        // If target has FEWER params -> Remove extra arguments.
+
+        int targetCount = newParamTypes.size();
+        int currentCount = currentArgs.size();
+
+        if (currentCount > targetCount) {
+            // Remove excess
+            for (int i = currentCount - 1; i >= targetCount; i--) {
+                argsRewrite.remove((ASTNode) currentArgs.get(i), null);
+            }
+        } else if (currentCount < targetCount) {
+            // Add missing defaults based on type
+            for (int i = currentCount; i < targetCount; i++) {
+                String typeName = newParamTypes.get(i);
+                Expression defaultExpr = nodeCreator.createDefaultInitializer(ast, typeName);
+                argsRewrite.insertLast(defaultExpr, null);
+            }
+        }
+
+        return applyRewrite(rewriter, originalCode);
+    }
+
+    public String addArgumentToMethodInvocation(CompilationUnit cu, String originalCode, MethodInvocation mi, AddableExpression type) {
+        AST ast = cu.getAST();
+        ASTRewrite rewriter = ASTRewrite.create(ast);
+        ListRewrite listRewrite = rewriter.getListRewrite(mi, MethodInvocation.ARGUMENTS_PROPERTY);
+
+        Expression newArg = nodeCreator.createDefaultExpression(ast, type, cu, rewriter);
+        if (newArg != null) {
+            listRewrite.insertLast(newArg, null);
+        }
+        return applyRewrite(rewriter, originalCode);
+    }
 
     public String renameMethodParameter(CompilationUnit cu, String originalCode, MethodDeclaration method, int index, String newName) {
         AST ast = cu.getAST();

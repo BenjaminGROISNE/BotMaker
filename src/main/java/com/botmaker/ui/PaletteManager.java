@@ -41,6 +41,10 @@ public class PaletteManager {
                 Label blockLabel = new Label(blockType.getDisplayName());
                 blockLabel.setMaxWidth(Double.MAX_VALUE);
                 blockLabel.getStyleClass().addAll("palette-item", "palette-" + category.name().toLowerCase());
+
+                // --- FIX: Force Black Text Color ---
+                blockLabel.setStyle("-fx-text-fill: black; -fx-font-weight: bold;");
+
                 dragAndDropManager.makeDraggable(blockLabel, blockType);
                 content.getChildren().add(blockLabel);
             }
