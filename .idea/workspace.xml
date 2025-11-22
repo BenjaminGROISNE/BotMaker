@@ -5,10 +5,17 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="cba04025-c331-4634-a893-436bad03efc0" name="Changes" comment="conserve leaves values">
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/botmaker/parser/BlockParser.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/botmaker/parser/NodeCreator.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/botmaker/ui/PaletteManager.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/botmaker/ui/ToolbarManager.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/java_files_concat.txt" beforeDir="false" afterPath="$PROJECT_DIR$/java_files_concat.txt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/projects/.botmaker-config.json" beforeDir="false" afterPath="$PROJECT_DIR$/projects/.botmaker-config.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/projects/Demo/src/main/java/com/demo/Demo.java" beforeDir="false" afterPath="$PROJECT_DIR$/projects/Demo/src/main/java/com/demo/Demo.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/botmaker/blocks/LiteralBlock.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/botmaker/blocks/LiteralBlock.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/botmaker/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/botmaker/Main.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/botmaker/parser/AstRewriter.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/botmaker/parser/AstRewriter.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/botmaker/parser/BlockFactory.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/botmaker/parser/BlockFactory.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/botmaker/ui/UIManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/botmaker/ui/UIManager.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -84,31 +91,31 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;ASKED_SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
-    &quot;Gradle.BotMaker [:com.astblocks.demo.Main.main()].executor&quot;: &quot;Run&quot;,
-    &quot;Gradle.BotMaker [:com.botmaker.Main.main()].executor&quot;: &quot;Run&quot;,
-    &quot;Gradle.BotMaker [:org.example.Main.main()].executor&quot;: &quot;Run&quot;,
-    &quot;Gradle.BotMaker [run].executor&quot;: &quot;Run&quot;,
-    &quot;Gradle.BotMaker.executor&quot;: &quot;Run&quot;,
-    &quot;Gradle.Build BotMaker.executor&quot;: &quot;Run&quot;,
-    &quot;Gradle.Download Sources.executor&quot;: &quot;Run&quot;,
-    &quot;ModuleVcsDetector.initialDetectionPerformed&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
-    &quot;SHELLCHECK.PATH&quot;: &quot;/home/groisnebenjamin/.local/share/JetBrains/IdeaIC2025.2/Shell Script/shellcheck&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;dev&quot;,
-    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
-    &quot;last_opened_file_path&quot;: &quot;/home/groisnebenjamin/IdeaProjects/BotMaker&quot;,
-    &quot;onboarding.tips.debug.path&quot;: &quot;/home/groisnebenjamin/IdeaProjects/BotMaker/src/main/java/org/example/Main.java&quot;,
-    &quot;project.structure.last.edited&quot;: &quot;Modules&quot;,
-    &quot;project.structure.proportion&quot;: &quot;0.15&quot;,
-    &quot;project.structure.side.proportion&quot;: &quot;0.2&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.pluginManager&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "ASKED_SHARE_PROJECT_CONFIGURATION_FILES": "true",
+    "Gradle.BotMaker [:com.astblocks.demo.Main.main()].executor": "Run",
+    "Gradle.BotMaker [:com.botmaker.Main.main()].executor": "Run",
+    "Gradle.BotMaker [:org.example.Main.main()].executor": "Run",
+    "Gradle.BotMaker [run].executor": "Run",
+    "Gradle.BotMaker.executor": "Run",
+    "Gradle.Build BotMaker.executor": "Run",
+    "Gradle.Download Sources.executor": "Run",
+    "ModuleVcsDetector.initialDetectionPerformed": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252": "true",
+    "RunOnceActivity.git.unshallow": "true",
+    "SHELLCHECK.PATH": "/home/groisnebenjamin/.local/share/JetBrains/IdeaIC2025.2/Shell Script/shellcheck",
+    "git-widget-placeholder": "refactor",
+    "kotlin-language-version-configured": "true",
+    "last_opened_file_path": "/home/groisnebenjamin/IdeaProjects/BotMaker",
+    "onboarding.tips.debug.path": "/home/groisnebenjamin/IdeaProjects/BotMaker/src/main/java/org/example/Main.java",
+    "project.structure.last.edited": "Modules",
+    "project.structure.proportion": "0.15",
+    "project.structure.side.proportion": "0.2",
+    "settings.editor.selected.configurable": "preferences.pluginManager"
   }
-}</component>
+}]]></component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$/tools" />

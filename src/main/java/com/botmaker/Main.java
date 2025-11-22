@@ -8,6 +8,7 @@ import com.botmaker.events.CoreApplicationEvents;
 import com.botmaker.events.EventBus;
 import com.botmaker.parser.AstRewriter;
 import com.botmaker.parser.BlockFactory;
+import com.botmaker.parser.NodeCreator;
 import com.botmaker.project.ProjectConfig;
 import com.botmaker.runtime.CodeExecutionService;
 import com.botmaker.services.*;
@@ -33,13 +34,9 @@ public class Main extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception {
         String lastProject = ProjectConfig.getLastOpened();
-
-        // NOTE: Auto-load disabled if we want to force the cache option availability
-        // But for convenience, we check if it exists.
-        // If you are stuck in a crash loop, delete .botmaker-config.json manually once.
         if (lastProject != null && projectExists(lastProject)) {
             System.out.println("Auto-loading last project: " + lastProject);
-            openProject(primaryStage, lastProject, false); // Default: don't clear cache on auto-load
+            openProject(primaryStage, lastProject, false);
         } else {
             showProjectSelection(primaryStage);
         }
@@ -50,7 +47,6 @@ public class Main extends Application {
                 primaryStage,
                 (projectName, clearCache) -> openProject(primaryStage, projectName, clearCache)
         );
-
         primaryStage.setScene(selectionScreen.createScene());
         primaryStage.setTitle("BotMaker - Select Project");
         primaryStage.show();
@@ -64,45 +60,32 @@ public class Main extends Application {
     private void openProject(Stage primaryStage, String projectName, boolean clearCache) {
         try {
             ProjectConfig.updateLastOpened(projectName);
-
             container = new DependencyContainer();
             ApplicationConfig config = ApplicationConfig.forProject(projectName);
-
             setupDependencies(config, primaryStage);
 
-            // --- INJECT CLEAR CACHE FLAG ---
             if (clearCache) {
                 LanguageServerService lss = container.resolve(LanguageServerService.class);
                 lss.setShouldClearCache(true);
             }
 
             initializeServices();
-
             UIManager uiManager = container.resolve(UIManager.class);
             primaryStage.setScene(uiManager.createScene());
             primaryStage.setTitle("BotMaker Blocks - " + projectName);
-
             CodeEditorService codeEditorService = container.resolve(CodeEditorService.class);
             codeEditorService.loadInitialCode();
-
             primaryStage.show();
 
             primaryStage.setOnCloseRequest(e -> {
                 e.consume();
                 new Thread(() -> {
                     try {
-                        if (languageServerService != null) {
-                            System.out.println("Shutting down Language Server...");
-                            languageServerService.shutdown();
-                            System.out.println("Language Server shut down successfully.");
-                        }
+                        if (languageServerService != null) languageServerService.shutdown();
                     } catch (Exception ex) {
                         System.err.println("Error during shutdown: " + ex.getMessage());
                     } finally {
-                        Platform.runLater(() -> {
-                            Platform.exit();
-                            System.exit(0);
-                        });
+                        Platform.runLater(() -> { Platform.exit(); System.exit(0); });
                     }
                 }).start();
             });
@@ -110,14 +93,9 @@ public class Main extends Application {
         } catch (Exception e) {
             e.printStackTrace();
             showErrorDialog("Error opening project: " + e.getMessage());
-            if (ProjectConfig.getLastOpened() != null) {
-                showProjectSelection(primaryStage);
-            }
+            if (ProjectConfig.getLastOpened() != null) showProjectSelection(primaryStage);
         }
     }
-
-    // ... rest of Main.java (setupDependencies, initializeServices, showErrorDialog) ...
-    // COPY EXISTING METHODS HERE
 
     private void showErrorDialog(String message) {
         Alert alert = new Alert(Alert.AlertType.ERROR);
@@ -133,24 +111,18 @@ public class Main extends Application {
         container.registerSingleton(EventBus.class, new EventBus(config.isEnableEventLogging()));
 
         container.registerSingleton(BlockFactory.class, new BlockFactory());
-        container.registerSingleton(AstRewriter.class, new AstRewriter());
-        container.registerSingleton(
-                com.botmaker.validation.DiagnosticsManager.class,
-                new com.botmaker.validation.DiagnosticsManager()
-        );
+        container.registerSingleton(NodeCreator.class, new NodeCreator());
+        container.registerLazySingleton(AstRewriter.class, () -> new AstRewriter(container.resolve(NodeCreator.class)));
 
-        container.registerSingleton(BlockDragAndDropManager.class,
-                new BlockDragAndDropManager(null)
-        );
+        container.registerSingleton(DiagnosticsManager.class, new DiagnosticsManager());
+        container.registerSingleton(BlockDragAndDropManager.class, new BlockDragAndDropManager(null));
 
-        // IMPORTANT: This must return the SAME instance if resolved multiple times
-        // using registerSingleton for the factory result logic in container
         container.registerLazySingleton(LanguageServerService.class, () ->
                 new LanguageServerService(
                         container.resolve(ApplicationConfig.class),
                         container.resolve(ApplicationState.class),
                         container.resolve(EventBus.class),
-                        container.resolve(com.botmaker.validation.DiagnosticsManager.class)
+                        container.resolve(DiagnosticsManager.class)
                 )
         );
 
@@ -175,7 +147,7 @@ public class Main extends Application {
                         container.resolve(AstRewriter.class),
                         container.resolve(BlockDragAndDropManager.class),
                         container.resolve(LanguageServerService.class),
-                        container.resolve(com.botmaker.validation.DiagnosticsManager.class)
+                        container.resolve(DiagnosticsManager.class)
                 )
         );
 
@@ -185,7 +157,7 @@ public class Main extends Application {
                         container.resolve(ApplicationState.class),
                         container.resolve(EventBus.class),
                         container.resolve(CodeExecutionService.class),
-                        container.resolve(com.botmaker.validation.DiagnosticsManager.class)
+                        container.resolve(DiagnosticsManager.class)
                 )
         );
 
@@ -204,7 +176,7 @@ public class Main extends Application {
                     container.resolve(BlockDragAndDropManager.class),
                     container.resolve(EventBus.class),
                     container.resolve(CodeEditorService.class),
-                    container.resolve(com.botmaker.validation.DiagnosticsManager.class),
+                    container.resolve(DiagnosticsManager.class),
                     primaryStage
             );
             uiManager.setOnSelectProject(v -> showProjectSelection(primaryStage));
@@ -215,39 +187,20 @@ public class Main extends Application {
     private void initializeServices() throws Exception {
         languageServerService = container.resolve(LanguageServerService.class);
         languageServerService.initialize();
-
         CodeEditorService codeEditorService = container.resolve(CodeEditorService.class);
         ApplicationState state = container.resolve(ApplicationState.class);
         BlockDragAndDropManager dragAndDropManager = container.resolve(BlockDragAndDropManager.class);
 
         dragAndDropManager.setCallback(dropInfo ->
-                codeEditorService.getCodeEditor().addStatement(
-                        dropInfo.targetBody(),
-                        dropInfo.type(),
-                        dropInfo.insertionIndex()
-                )
+                codeEditorService.getCodeEditor().addStatement(dropInfo.targetBody(), dropInfo.type(), dropInfo.insertionIndex())
         );
 
         dragAndDropManager.setMoveCallback(moveInfo -> {
-            System.out.println("Move callback triggered for blockId: " + moveInfo.blockId());
-            StatementBlock blockToMove = BlockLookupHelper.findBlockById(
-                    moveInfo.blockId(),
-                    state.getNodeToBlockMap()
-            );
-
+            StatementBlock blockToMove = BlockLookupHelper.findBlockById(moveInfo.blockId(), state.getNodeToBlockMap());
             if (blockToMove != null) {
-                BodyBlock sourceBody = BlockLookupHelper.findParentBody(
-                        blockToMove,
-                        state.getNodeToBlockMap()
-                );
-
+                BodyBlock sourceBody = BlockLookupHelper.findParentBody(blockToMove, state.getNodeToBlockMap());
                 if (sourceBody != null) {
-                    codeEditorService.getCodeEditor().moveStatement(
-                            blockToMove,
-                            sourceBody,
-                            moveInfo.targetBody(),
-                            moveInfo.insertionIndex()
-                    );
+                    codeEditorService.getCodeEditor().moveStatement(blockToMove, sourceBody, moveInfo.targetBody(), moveInfo.insertionIndex());
                 }
             }
         });
@@ -257,7 +210,5 @@ public class Main extends Application {
         container.resolve(UIManager.class);
     }
 
-    public static void main(String[] args) {
-        launch(args);
-    }
+    public static void main(String[] args) { launch(args); }
 }

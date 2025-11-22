@@ -1463,6 +1463,7 @@ package com.botmaker.blocks;
 import com.botmaker.core.AbstractExpressionBlock;
 import com.botmaker.core.ExpressionBlock;
 import com.botmaker.lsp.CompletionContext;
+import com.botmaker.util.TypeManager;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
@@ -1472,159 +1473,239 @@ import javafx.scene.control.Label;
 import javafx.scene.control.MenuItem;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
-import org.eclipse.jdt.core.dom.ArrayInitializer;
+import org.eclipse.jdt.core.dom.*;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
- * Visual block for array/list literals like {1, 2, 3}
- * Allows users to add, remove, and edit elements inline
+ * Visual block for lists.
+ * Supports:
+ * 1. Array Initializers: {1, 2, 3}
+ * 2. List Factories: Arrays.asList(1, 2, 3) or List.of(1, 2, 3)
  */
 public class ListBlock extends AbstractExpressionBlock {
 
     private final List<ExpressionBlock> elements = new ArrayList<>();
+    private final boolean isFixedArray; // True if it's a {}, False if it's Arrays.asList
 
-    public ListBlock(String id, ArrayInitializer astNode) {
+    public ListBlock(String id, ASTNode astNode) {
         super(id, astNode);
-        for (Object expr : astNode.expressions()) {
-            // The BlockFactory handles the recursive creation of children,
-            // we just hold the references.
-        }
-    }
-
-    public List<ExpressionBlock> getElements() {
-        return elements;
+        this.isFixedArray = (astNode instanceof ArrayInitializer);
     }
 
     public void addElement(ExpressionBlock element) {
         this.elements.add(element);
     }
 
-    public void clearElements() {
-        this.elements.clear();
+    public List<ExpressionBlock> getElements() {
+        return elements;
     }
 
     @Override
     protected Node createUINode(CompletionContext context) {
+        // ... (Container and Style setup remains same)
         VBox container = new VBox(5);
         container.setAlignment(Pos.TOP_LEFT);
         container.getStyleClass().add("list-block");
 
-        // Add padding and a slight background diff for nested lists
-        // (You should add .nested-list to your CSS, or we use inline style for now)
-        if (this.astNode.getParent() instanceof ArrayInitializer) {
-            container.setStyle("-fx-background-color: rgba(255,255,255,0.1); -fx-background-radius: 4; -fx-border-color: rgba(255,255,255,0.2); -fx-border-width: 1;");
-            container.setPadding(new Insets(4, 8, 4, 8));
+        boolean isNested = (this.astNode.getParent() instanceof ArrayInitializer) ||
+                (this.astNode.getParent() instanceof MethodInvocation);
+
+        if (isNested) {
+            container.setStyle("-fx-background-color: rgba(255,255,255,0.08); -fx-background-radius: 6; -fx-border-color: rgba(255,255,255,0.15); -fx-border-width: 1;");
+            container.setPadding(new Insets(4, 6, 4, 6));
         } else {
-            container.setPadding(new Insets(8, 12, 8, 12));
+            container.setPadding(new Insets(6, 10, 6, 10));
         }
 
-        // Header row: "List [...]" label + Add button
+        // --- Header Row ---
         HBox headerRow = new HBox(8);
         headerRow.setAlignment(Pos.CENTER_LEFT);
 
-        // Determine depth/context for label
-        String labelText = (this.astNode.getParent() instanceof ArrayInitializer) ? "Sub-List" : "List";
-        Label listLabel = new Label(labelText + " [" + elements.size() + "]");
+        // Calculate logic
+        String itemType = determineItemType();
+        // If itemType is "list", we are holding sub-lists.
+        // If itemType is "boolean"/"number", we are holding values.
+
+        String typeLabel = isFixedArray ? "Array" : "List";
+
+        // Debug label helpful for verification:
+        // Label listLabel = new Label(typeLabel + "<" + itemType + "> (" + elements.size() + ")");
+        Label listLabel = new Label(typeLabel + " (" + elements.size() + ")");
         listLabel.getStyleClass().add("list-label");
+
+        if (!isFixedArray) {
+            listLabel.setStyle("-fx-text-fill: #aaddff;");
+        }
 
         Button addButton = new Button("+");
         addButton.getStyleClass().add("expression-add-button");
-        // Compact the button slightly for nested views
-        addButton.setStyle("-fx-font-size: 10px; -fx-padding: 2px 6px;");
-        addButton.setOnAction(e -> showAddElementMenu(addButton, context, elements.size()));
+        addButton.setStyle("-fx-font-size: 10px; -fx-padding: 2px 8px;");
+
+        addButton.setOnAction(e -> showAddElementMenu(addButton, context, elements.size(), itemType));
 
         headerRow.getChildren().addAll(listLabel, addButton);
         container.getChildren().add(headerRow);
 
-        // Display each element with controls
+        // --- Elements ---
         if (elements.isEmpty()) {
-            Label emptyLabel = new Label("(empty)");
-            emptyLabel.setStyle("-fx-font-style: italic; -fx-text-fill: rgba(255,255,255,0.6); -fx-font-size: 10px;");
+            Label emptyLabel = new Label(" (empty) ");
+            emptyLabel.setStyle("-fx-font-style: italic; -fx-text-fill: rgba(255,255,255,0.4); -fx-font-size: 10px;");
             container.getChildren().add(emptyLabel);
         } else {
-            VBox elementsContainer = new VBox(2); // Tighter spacing
-            elementsContainer.setPadding(new Insets(2, 0, 0, 10)); // Indent content
+            VBox elementsContainer = new VBox(3);
+            elementsContainer.setPadding(new Insets(2, 0, 0, 12));
 
             for (int i = 0; i < elements.size(); i++) {
-                HBox elementRow = createElementRow(i, elements.get(i), context);
+                // Pass itemType down so row knows what it contains
+                HBox elementRow = createElementRow(i, elements.get(i), context, itemType);
                 elementsContainer.getChildren().add(elementRow);
             }
-
             container.getChildren().add(elementsContainer);
         }
 
         return container;
     }
 
-    private HBox createElementRow(int index, ExpressionBlock element, CompletionContext context) {
-        HBox row = new HBox(5);
+    /**
+     * Determines the UI type of items inside this list (e.g., "number", "text", "boolean", "list").
+     */
+    /**
+     * Logic to determine what kind of items this specific ListBlock should contain.
+     * It walks up the AST to find the Variable Declaration, calculates total nesting depth,
+     * calculates current depth, and decides if we need "list" or a leaf type.
+     */
+    private String determineItemType() {
+        ASTNode current = this.astNode;
+        ASTNode rootDefinition = null;
+        int currentDepth = 0;
+
+        // 1. Walk up to find the root definition and count current depth
+        while (current != null) {
+            // If we hit another Arrays.asList, we are one level deeper
+            if (current instanceof MethodInvocation) {
+                MethodInvocation mi = (MethodInvocation) current;
+                if ("asList".equals(mi.getName().getIdentifier())) {
+                    // If we aren't the starting node, increment depth
+                    if (current != this.astNode) {
+                        currentDepth++;
+                    }
+                }
+            }
+
+            // Found declaration: ArrayList<ArrayList<Boolean>> x = ...
+            if (current instanceof VariableDeclarationFragment) {
+                rootDefinition = current;
+                break;
+            }
+            // Found declaration in standard usage
+            if (current instanceof VariableDeclarationStatement) {
+                rootDefinition = current;
+                break;
+            }
+            // Found usage inside new ArrayList<>(...)
+            if (current instanceof ClassInstanceCreation) {
+                rootDefinition = current;
+                break;
+            }
+
+            current = current.getParent();
+        }
+
+        // 2. Analyze the root type
+        String rootTypeStr = "any";
+
+        if (rootDefinition instanceof VariableDeclarationStatement) {
+            rootTypeStr = ((VariableDeclarationStatement) rootDefinition).getType().toString();
+        } else if (rootDefinition instanceof VariableDeclarationFragment) {
+            ASTNode parent = rootDefinition.getParent();
+            if (parent instanceof VariableDeclarationStatement) {
+                rootTypeStr = ((VariableDeclarationStatement) parent).getType().toString();
+            }
+        } else if (rootDefinition instanceof ClassInstanceCreation) {
+            rootTypeStr = ((ClassInstanceCreation) rootDefinition).getType().toString();
+        }
+
+        // 3. Calculate Dimensions
+        // e.g. ArrayList<ArrayList<Boolean>> -> genericDepth = 2, leafType = "Boolean"
+        int genericDepth = TypeManager.getListNestingLevel(rootTypeStr);
+        String leafType = TypeManager.getLeafType(rootTypeStr); // e.g. "Boolean"
+
+
+        // 4. Determine UI Type based on depth comparison
+        // If genericDepth is 2 (List of List of Bool)
+        // currentDepth 0 (Root) -> needs "list" (to make depth 1)
+        // currentDepth 1 (Middle) -> needs leafType ("Boolean")
+
+        // Note: The depth calculation depends on how the AST creates the structure.
+        // Arrays.asList( Arrays.asList ( ... ) )
+        // Root list is depth 0.
+
+        int remainingLevels = genericDepth - 1 - currentDepth;
+
+        if (remainingLevels > 0) {
+            return "list";
+        } else {
+            return TypeManager.determineUiType(leafType);
+        }
+    }
+
+    private HBox createElementRow(int index, ExpressionBlock element, CompletionContext context, String itemType) {
+        HBox row = new HBox(6);
         row.setAlignment(Pos.CENTER_LEFT);
 
-        // Index label
         Label indexLabel = new Label(String.valueOf(index));
-        indexLabel.setStyle("-fx-font-family: monospace; -fx-text-fill: #888; -fx-min-width: 15px; -fx-font-size: 10px;");
+        indexLabel.setStyle("-fx-font-family: monospace; -fx-text-fill: #666; -fx-font-size: 9px; -fx-min-width: 10px;");
 
-        // Element display
         Node elementNode = element.getUINode(context);
-
-        // Logic to handle nested UI resizing
         if (element instanceof ListBlock) {
-            // Allow nested list to expand
             HBox.setHgrow(elementNode, javafx.scene.layout.Priority.ALWAYS);
         }
 
-        // Change button
         Button changeButton = new Button("↻");
         changeButton.getStyleClass().add("icon-button");
-        changeButton.setStyle("-fx-font-size: 9px; -fx-padding: 1px 4px; -fx-opacity: 0.6;");
-        changeButton.setOnAction(e -> showChangeElementMenu(changeButton, context, index));
+        changeButton.setStyle("-fx-font-size: 8px; -fx-padding: 1px 4px; -fx-opacity: 0.3;");
+        changeButton.setOnAction(e -> showChangeElementMenu(changeButton, context, index, itemType));
 
-        // Delete button
         Button deleteButton = new Button("✕");
         deleteButton.getStyleClass().add("icon-button");
-        deleteButton.setStyle("-fx-font-size: 9px; -fx-padding: 1px 4px; -fx-text-fill: #E74C3C; -fx-opacity: 0.6;");
+        deleteButton.setStyle("-fx-font-size: 8px; -fx-padding: 1px 4px; -fx-text-fill: #ff5555; -fx-opacity: 0.3;");
         deleteButton.setOnAction(e -> deleteElement(index, context));
 
-        // Hover effects for buttons
         row.setOnMouseEntered(e -> {
-            changeButton.setStyle("-fx-font-size: 9px; -fx-padding: 1px 4px; -fx-opacity: 1.0;");
-            deleteButton.setStyle("-fx-font-size: 9px; -fx-padding: 1px 4px; -fx-text-fill: #E74C3C; -fx-opacity: 1.0;");
+            changeButton.setStyle("-fx-font-size: 8px; -fx-padding: 1px 4px; -fx-opacity: 1.0;");
+            deleteButton.setStyle("-fx-font-size: 8px; -fx-padding: 1px 4px; -fx-text-fill: #ff5555; -fx-opacity: 1.0;");
         });
         row.setOnMouseExited(e -> {
-            changeButton.setStyle("-fx-font-size: 9px; -fx-padding: 1px 4px; -fx-opacity: 0.6;");
-            deleteButton.setStyle("-fx-font-size: 9px; -fx-padding: 1px 4px; -fx-text-fill: #E74C3C; -fx-opacity: 0.6;");
+            changeButton.setStyle("-fx-font-size: 8px; -fx-padding: 1px 4px; -fx-opacity: 0.3;");
+            deleteButton.setStyle("-fx-font-size: 8px; -fx-padding: 1px 4px; -fx-text-fill: #ff5555; -fx-opacity: 0.3;");
         });
 
         row.getChildren().addAll(indexLabel, elementNode, changeButton, deleteButton);
         return row;
     }
 
-    // ... (Rest of methods: showAddElementMenu, showChangeElementMenu, deleteElement, getDetails remain the same)
-    // Ensure AddableExpression.values() now includes LIST, so the menu automatically picks it up.
-
-    private void showAddElementMenu(Button button, CompletionContext context, int insertIndex) {
+    private void showAddElementMenu(Button button, CompletionContext context, int insertIndex, String targetType) {
         ContextMenu menu = new ContextMenu();
 
-        for (com.botmaker.ui.AddableExpression type : com.botmaker.ui.AddableExpression.values()) {
+        // Use getForType to filter the options
+        for (com.botmaker.ui.AddableExpression type : com.botmaker.ui.AddableExpression.getForType(targetType)) {
             MenuItem menuItem = new MenuItem(type.getDisplayName());
             menuItem.setOnAction(e -> {
-                context.codeEditor().addElementToArrayInitializer(
-                        (ArrayInitializer) this.astNode,
-                        type,
-                        insertIndex
-                );
+                context.codeEditor().addElementToList(this.astNode, type, insertIndex);
             });
             menu.getItems().add(menuItem);
         }
         menu.show(button, javafx.geometry.Side.BOTTOM, 0, 0);
     }
 
-    private void showChangeElementMenu(Button button, CompletionContext context, int elementIndex) {
+    private void showChangeElementMenu(Button button, CompletionContext context, int elementIndex, String targetType) {
         ContextMenu menu = new ContextMenu();
 
-        for (com.botmaker.ui.AddableExpression type : com.botmaker.ui.AddableExpression.values()) {
+        // Use getForType to filter the options
+        for (com.botmaker.ui.AddableExpression type : com.botmaker.ui.AddableExpression.getForType(targetType)) {
             MenuItem menuItem = new MenuItem(type.getDisplayName());
             menuItem.setOnAction(e -> {
                 if (elementIndex < elements.size()) {
@@ -1642,16 +1723,13 @@ public class ListBlock extends AbstractExpressionBlock {
 
     private void deleteElement(int index, CompletionContext context) {
         if (index >= 0 && index < elements.size()) {
-            context.codeEditor().deleteElementFromArrayInitializer(
-                    (ArrayInitializer) this.astNode,
-                    index
-            );
+            context.codeEditor().deleteElementFromList(this.astNode, index);
         }
     }
 
     @Override
     public String getDetails() {
-        return "List (" + elements.size() + ")";
+        return (isFixedArray ? "Array" : "List") + " (" + elements.size() + " items)";
     }
 }
 
@@ -1666,8 +1744,12 @@ import com.botmaker.lsp.CompletionContext;
 import javafx.scene.Cursor;
 import javafx.scene.Node;
 import javafx.scene.control.TextField;
+import javafx.scene.control.TextFormatter;
 import javafx.scene.layout.HBox;
 import org.eclipse.jdt.core.dom.Expression;
+
+import java.math.BigDecimal;
+import java.util.function.UnaryOperator;
 
 public class LiteralBlock<T> extends AbstractExpressionBlock {
     private final T value;
@@ -1681,11 +1763,6 @@ public class LiteralBlock<T> extends AbstractExpressionBlock {
         return value;
     }
 
-    public Class<?> getValueType() {
-        if (value == null) return null;
-        return value.getClass();
-    }
-
     @Override
     protected Node createUINode(CompletionContext context) {
         String initialText = (value instanceof String) ? (String) value : String.valueOf(value);
@@ -1696,21 +1773,40 @@ public class LiteralBlock<T> extends AbstractExpressionBlock {
         }
 
         textField.setCursor(Cursor.TEXT);
-        textField.getStyleClass().add("literal-text-field"); // Use specific style class
+        textField.getStyleClass().add("literal-text-field");
 
+        // --- INPUT VALIDATION FILTER ---
+        UnaryOperator<TextFormatter.Change> filter = createInputFilter();
+        if (filter != null) {
+            textField.setTextFormatter(new TextFormatter<>(filter));
+        }
+
+        // --- FOCUS LISTENER (Commit changes) ---
         textField.focusedProperty().addListener((obs, oldVal, newVal) -> {
-            if (!newVal) {
+            if (!newVal) { // Focus Lost
                 String newText = textField.getText();
                 String oldText = (value instanceof String) ? (String) value : String.valueOf(value);
 
-                if (!newText.equals(oldText)) {
-                    // Handle the special synthetic case for an empty println
+                // Handle empty numbers / intermediate states gracefully
+                if (isNumberType() && !isValidFinalNumber(newText)) {
+                    textField.setText(oldText); // Revert invalid state
+                    return;
+                }
+
+                // NEW: Normalize the number (Add 'f' for Float, 'L' for Long)
+                String textToSave = normalizeNumberSuffix(newText);
+
+                // Update UI to match saved text (e.g., show "3.5f" if user typed "3.5")
+                if (!textToSave.equals(newText)) {
+                    textField.setText(textToSave);
+                }
+
+                if (!textToSave.equals(oldText)) {
                     if (this.astNode instanceof org.eclipse.jdt.core.dom.MethodInvocation) {
                         org.eclipse.jdt.core.dom.MethodInvocation mi = (org.eclipse.jdt.core.dom.MethodInvocation) this.astNode;
-                        context.codeEditor().addStringArgumentToMethodInvocation(mi, newText);
+                        context.codeEditor().addStringArgumentToMethodInvocation(mi, textToSave);
                     } else {
-                        // This is the normal case for editing an existing literal
-                        context.codeEditor().replaceLiteralValue((Expression) this.astNode, newText);
+                        context.codeEditor().replaceLiteralValue((Expression) this.astNode, textToSave);
                     }
                 }
             }
@@ -1720,6 +1816,123 @@ public class LiteralBlock<T> extends AbstractExpressionBlock {
         container.setAlignment(javafx.geometry.Pos.CENTER_LEFT);
         container.getStyleClass().add("literal-block");
         return container;
+    }
+
+    /**
+     * Automatically appends required Java suffixes (f, L) if missing.
+     */
+    private String normalizeNumberSuffix(String text) {
+        if (value instanceof Float) {
+            if (!text.toLowerCase().endsWith("f")) {
+                return text + "f";
+            }
+        } else if (value instanceof Long) {
+            if (!text.toLowerCase().endsWith("l")) {
+                return text + "L"; // Use Uppercase L to avoid confusion with 1
+            }
+        }
+        return text;
+    }
+
+    /**
+     * Creates a filter based on the type of the value stored in this block.
+     */
+    private UnaryOperator<TextFormatter.Change> createInputFilter() {
+        return change -> {
+            String newText = change.getControlNewText();
+
+            if (newText.isEmpty()) return change;
+
+            // 1. INTEGER Types (Byte, Short, Integer, Long)
+            if (value instanceof Integer || value instanceof Short || value instanceof Byte || value instanceof Long) {
+                // Allow digits, minus, and L suffix for Longs
+                String regex = (value instanceof Long) ? "-?[0-9]*[lL]?" : "-?[0-9]*";
+
+                if (newText.matches(regex)) {
+                    if (isWithinRange(newText, value.getClass())) {
+                        return change;
+                    }
+                }
+                return null;
+            }
+
+            // 2. FLOATING POINT Types (Float, Double)
+            else if (value instanceof Double || value instanceof Float) {
+                // Allow digits, dot, minus, and f/d suffixes
+                if (newText.matches("-?[0-9]*\\.?[0-9]*[dDfF]?")) {
+                    if (isWithinRange(newText, value.getClass())) {
+                        return change;
+                    }
+                }
+                return null;
+            }
+
+            // 3. STRING
+            else if (value instanceof String) {
+                String input = change.getText();
+                if (input.contains("\"") || input.contains("\n") || input.contains("\r")) {
+                    return null;
+                }
+                return change;
+            }
+
+            return change;
+        };
+    }
+
+    /**
+     * Checks if the text value fits within the MIN/MAX bounds of the target type.
+     */
+    private boolean isWithinRange(String text, Class<?> type) {
+        // Allow intermediate states
+        if (text.equals("-") || text.equals(".") || text.equals("-.")) return true;
+
+        // Strip suffixes for parsing check
+        String cleanText = text.replaceAll("[dDfFlL]$", "");
+        if (cleanText.isEmpty()) return true;
+
+        try {
+            if (type == Byte.class) {
+                long val = Long.parseLong(cleanText);
+                return val >= Byte.MIN_VALUE && val <= Byte.MAX_VALUE;
+            }
+            if (type == Short.class) {
+                long val = Long.parseLong(cleanText);
+                return val >= Short.MIN_VALUE && val <= Short.MAX_VALUE;
+            }
+            if (type == Integer.class) {
+                long val = Long.parseLong(cleanText);
+                return val >= Integer.MIN_VALUE && val <= Integer.MAX_VALUE;
+            }
+            if (type == Long.class) {
+                Long.parseLong(cleanText);
+                return true;
+            }
+            if (type == Float.class) {
+                double val = Double.parseDouble(cleanText);
+                // Float.MAX_VALUE is huge, mostly we check for Infinity overflow
+                return !Double.isInfinite(val);
+            }
+            if (type == Double.class) {
+                BigDecimal val = new BigDecimal(cleanText);
+                // Check if it fits in a double
+                return !Double.isInfinite(val.doubleValue());
+            }
+        } catch (NumberFormatException e) {
+            return false;
+        }
+
+        return true;
+    }
+
+    private boolean isValidFinalNumber(String text) {
+        if (text.equals("-") || text.equals(".") || text.equals("-.")) return false;
+        if (text.endsWith(".")) return false;
+        return true;
+    }
+
+    private boolean isNumberType() {
+        return value instanceof Number;
     }
 }
 
@@ -2274,15 +2487,21 @@ public class VariableDeclarationBlock extends AbstractStatementBlock {
 
         // --- INITIALIZER ---
         if (initializer != null) {
-            if (initializer.getAstNode() instanceof org.eclipse.jdt.core.dom.ArrayInitializer) {
+            // FIX: Prioritize rendering the initializer if it exists, especially if it's a ListBlock
+            if (initializer instanceof ListBlock) {
+                // Render the interactive list UI directly
+                container.getChildren().add(initializer.getUINode(context));
+            }
+            else if (initializer.getAstNode() instanceof org.eclipse.jdt.core.dom.ArrayInitializer) {
+                // Fallback for primitive arrays {1,2,3} to use bracket styling if not caught by ListBlock
                 container.getChildren().add(createListDisplay(context));
-            } else if (isArrayList(variableType)) {
-                // Show ArrayList constructor
-                container.getChildren().add(createArrayListDisplay());
-            } else {
+            }
+            else {
+                // Standard expression
                 container.getChildren().add(initializer.getUINode(context));
             }
         } else {
+            // Only show placeholder if truly null (e.g. int x;)
             container.getChildren().add(createExpressionDropZone(context));
         }
 
@@ -2317,7 +2536,6 @@ public class VariableDeclarationBlock extends AbstractStatementBlock {
         boolean isArrayListType = isArrayList(variableType);
         boolean isArray = variableType.isArrayType();
 
-        // FIXED: Make baseType effectively final by extracting to final variable
         final String baseType = extractBaseType(currentStr, isArrayListType, isArray);
 
         // 1. Toggle between ArrayList and Single Value
@@ -2326,22 +2544,22 @@ public class VariableDeclarationBlock extends AbstractStatementBlock {
         toggleList.setOnAction(e -> {
             String newType;
             if (isArrayListType) {
-                // ArrayList<Type> -> Type
                 newType = baseType;
             } else {
-                // Type -> ArrayList<Type>
-                newType = "ArrayList<" + baseType + ">";
+                // FIX: Ensure wrapper type (e.g., Integer, Boolean) is used
+                newType = "ArrayList<" + TypeManager.toWrapperType(baseType) + ">";
             }
             context.codeEditor().replaceVariableType((VariableDeclarationStatement) this.astNode, newType);
         });
         menu.getItems().add(toggleList);
 
-        // Option for nested list if already ArrayList
+        // Option for nested list
         if (isArrayListType) {
             MenuItem makeNested = new MenuItem("Make ArrayList of ArrayLists");
             makeNested.setOnAction(e -> {
-                // FIXED: Use final baseType variable
-                String newType = "ArrayList<ArrayList<" + baseType + ">>";
+                // FIX: Ensure inner type is also wrapped properly
+                // Result: ArrayList<ArrayList<Boolean>>
+                String newType = "ArrayList<ArrayList<" + TypeManager.toWrapperType(baseType) + ">>";
                 context.codeEditor().replaceVariableType((VariableDeclarationStatement) this.astNode, newType);
             });
             menu.getItems().add(makeNested);
@@ -2353,12 +2571,12 @@ public class VariableDeclarationBlock extends AbstractStatementBlock {
         Menu changeBaseMenu = new Menu("Change Base Type");
         for (String type : TypeManager.getFundamentalTypeNames()) {
             MenuItem item = new MenuItem(type);
-            // FIXED: Capture type in final variable for lambda
             final String finalType = type;
             item.setOnAction(e -> {
                 String newType;
                 if (isArrayListType) {
-                    newType = "ArrayList<" + finalType + ">";
+                    // FIX: Ensure wrapper type is used when switching types in a list
+                    newType = "ArrayList<" + TypeManager.toWrapperType(finalType) + ">";
                 } else {
                     newType = finalType;
                 }
@@ -2371,33 +2589,17 @@ public class VariableDeclarationBlock extends AbstractStatementBlock {
         menu.show(anchor, javafx.geometry.Side.BOTTOM, 0, 0);
     }
 
-    /**
-     * FIXED: Extract base type logic to separate method to avoid lambda capture issues
-     */
     private String extractBaseType(String currentStr, boolean isArrayListType, boolean isArray) {
         if (isArrayListType) {
-            // Extract from "ArrayList<Type>"
             if (currentStr.contains("<") && currentStr.contains(">")) {
                 int start = currentStr.indexOf("<") + 1;
-                int end = currentStr.indexOf(">");
+                int end = currentStr.lastIndexOf(">"); // Fix: use lastIndexOf for nested
                 return currentStr.substring(start, end);
             }
         } else if (isArray) {
             return currentStr.replace("[]", "");
         }
         return currentStr;
-    }
-
-    private HBox createArrayListDisplay() {
-        HBox listBox = new HBox(3);
-        listBox.setAlignment(Pos.CENTER_LEFT);
-        listBox.getStyleClass().add("inline-list-display");
-
-        Label newLabel = new Label("new ArrayList<>()");
-        newLabel.setStyle("-fx-font-family: monospace; -fx-font-weight: bold;");
-        listBox.getChildren().add(newLabel);
-
-        return listBox;
     }
 
     private HBox createListDisplay(CompletionContext context) {
@@ -2410,16 +2612,8 @@ public class VariableDeclarationBlock extends AbstractStatementBlock {
         listBox.getChildren().add(openBracket);
 
         if (initializer instanceof ListBlock) {
-            ListBlock listBlock = (ListBlock) initializer;
-            if (listBlock.getElements().isEmpty()) {
-                Label emptyLabel = new Label("empty");
-                emptyLabel.setStyle("-fx-font-style: italic; -fx-text-fill: #999; -fx-font-size: 10px;");
-                listBox.getChildren().add(emptyLabel);
-            } else {
-                Label countLabel = new Label(listBlock.getElements().size() + " items");
-                countLabel.setStyle("-fx-font-style: italic;");
-                listBox.getChildren().add(countLabel);
-            }
+            // If it's a ListBlock but forced here (e.g. array), render it
+            listBox.getChildren().add(initializer.getUINode(context));
         } else {
             listBox.getChildren().add(initializer.getUINode(context));
         }
@@ -2433,11 +2627,9 @@ public class VariableDeclarationBlock extends AbstractStatementBlock {
 
     private String getDisplayTypeName(Type type) {
         String typeName = type.toString();
-
         if (isArrayList(type)) {
-            return typeName; // Show "ArrayList<String>" as-is
+            return typeName;
         }
-
         if (typeName.endsWith("[]")) {
             return typeName.replace("[]", " list");
         }
@@ -2449,7 +2641,6 @@ public class VariableDeclarationBlock extends AbstractStatementBlock {
         return typeName.startsWith("ArrayList<") || typeName.equals("ArrayList");
     }
 
-    // UPDATED: Accepts targetType and filters
     private void showExpressionMenu(Button button, CompletionContext context, String targetType) {
         ContextMenu menu = new ContextMenu();
         menu.setStyle("-fx-control-inner-background: white;");
@@ -4433,6 +4624,8 @@ import org.eclipse.jface.text.Document;
 import org.eclipse.jface.text.IDocument;
 import org.eclipse.text.edits.TextEdit;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import static com.botmaker.util.TypeManager.toWrapperType;
@@ -4494,17 +4687,13 @@ public class AstRewriter {
         ASTRewrite rewriter = ASTRewrite.create(ast);
 
         if (type == AddableBlock.COMMENT) {
-            // SPECIAL HANDLING FOR COMMENTS
-            // We use a String Placeholder. It is not a real statement, but JDT ListRewrite accepts it.
-            // ASTNode.EMPTY_STATEMENT is passed as a type hint for formatting.
             Statement commentPlaceholder = (Statement) rewriter.createStringPlaceholder("// Comment", ASTNode.EMPTY_STATEMENT);
-
             Block targetAstBlock = (Block) targetBody.getAstNode();
             ListRewrite listRewrite = rewriter.getListRewrite(targetAstBlock, Block.STATEMENTS_PROPERTY);
             listRewrite.insertAt(commentPlaceholder, index, null);
         } else {
-            // Standard Statement Handling
-            Statement newStatement = createDefaultStatement(ast, type);
+            // PASS CU AND REWRITER HERE
+            Statement newStatement = createDefaultStatement(ast, type, cu, rewriter);
             if (newStatement == null) return originalCode;
 
             Block targetAstBlock = (Block) targetBody.getAstNode();
@@ -4531,22 +4720,69 @@ public class AstRewriter {
         AST ast = cu.getAST();
         ASTRewrite rewriter = ASTRewrite.create(ast);
 
-        Expression newExpression = createDefaultExpression(ast, type);
+        Expression newExpression = createDefaultExpression(ast, type, cu, rewriter);
         if (newExpression == null) {
             return originalCode;
         }
 
         rewriter.replace(toReplace, newExpression, null);
+        return applyRewrite(rewriter, originalCode);
+    }
 
-        IDocument document = new Document(originalCode);
-        try {
-            TextEdit edits = rewriter.rewriteAST(document, null);
-            edits.apply(document);
-            return document.get();
-        } catch (Exception e) {
-            e.printStackTrace();
-            return originalCode;
+
+    private Expression createRecursiveListInitializer(AST ast, String typeName, CompilationUnit cu, ASTRewrite rewriter, List<Expression> leavesToPreserve) {
+        ImportManager.addImport(cu, rewriter, "java.util.ArrayList");
+        ImportManager.addImport(cu, rewriter, "java.util.Arrays");
+
+        // new ArrayList<...>()
+        ClassInstanceCreation creation = ast.newClassInstanceCreation();
+        String innerTypeStr = extractArrayListElementType(typeName);
+        String wrapperInnerType = toWrapperType(innerTypeStr);
+
+        ParameterizedType paramType = ast.newParameterizedType(ast.newSimpleType(ast.newName("ArrayList")));
+
+        if (!innerTypeStr.equals("Object")) {
+            paramType.typeArguments().add(TypeManager.createTypeNode(ast, wrapperInnerType));
         }
+        creation.setType(paramType);
+
+        // Arrays.asList(...)
+        MethodInvocation asList = ast.newMethodInvocation();
+        asList.setExpression(ast.newSimpleName("Arrays"));
+        asList.setName(ast.newSimpleName("asList"));
+
+        if (innerTypeStr.startsWith("ArrayList<")) {
+            // RECURSION (Deepening):
+            // If we are adding layers (e.g., List<Int> -> List<List<Int>>),
+            // we put ALL existing leaves into the *first* new inner list.
+            // Example: [1, 2] -> [[1, 2]]
+
+            // We pass 'leavesToPreserve' down to the next level.
+            // However, if we passed it directly, the recursive call would consume them.
+            // If we wanted to split them (e.g. [[1], [2]]), that logic would be very complex.
+            // Wrapping them all in one list is the safest default.
+
+            Expression innerList = createRecursiveListInitializer(ast, innerTypeStr, cu, rewriter, leavesToPreserve);
+            asList.arguments().add(innerList);
+
+            // Crucial: Set leavesToPreserve to null/empty for subsequent calls if we were looping,
+            // but here we create exactly one inner list, so it handles all data.
+        } else {
+            // BASE CASE (Bottom Layer):
+            // Dump all collected values here.
+            if (leavesToPreserve != null && !leavesToPreserve.isEmpty()) {
+                for (Expression leaf : leavesToPreserve) {
+                    asList.arguments().add((Expression) ASTNode.copySubtree(ast, leaf));
+                }
+            } else {
+                // Only add default 0 if we have absolutely no data
+                Expression defaultValue = createDefaultInitializer(ast, innerTypeStr);
+                asList.arguments().add(defaultValue);
+            }
+        }
+
+        creation.arguments().add(asList);
+        return creation;
     }
 
     public String updateComment(String originalCode, Comment commentNode, String newText) {
@@ -4666,7 +4902,37 @@ public class AstRewriter {
             return originalCode;
         }
     }
+    // UPDATED: Handles deletion for both types
+    public String deleteElementFromList(
+            CompilationUnit cu,
+            String originalCode,
+            ASTNode listNode,
+            int elementIndex) {
 
+        AST ast = cu.getAST();
+        ASTRewrite rewriter = ASTRewrite.create(ast);
+        List<Expression> expressions;
+        ChildListPropertyDescriptor property;
+
+        if (listNode instanceof ArrayInitializer) {
+            expressions = ((ArrayInitializer) listNode).expressions();
+            property = ArrayInitializer.EXPRESSIONS_PROPERTY;
+        } else if (listNode instanceof MethodInvocation) {
+            expressions = ((MethodInvocation) listNode).arguments();
+            property = MethodInvocation.ARGUMENTS_PROPERTY;
+        } else {
+            return originalCode;
+        }
+
+        if (elementIndex < 0 || elementIndex >= expressions.size()) {
+            return originalCode;
+        }
+
+        Expression toRemove = expressions.get(elementIndex);
+        rewriter.getListRewrite(listNode, property).remove(toRemove, null);
+
+        return applyRewrite(rewriter, originalCode);
+    }
     public String deleteElseFromIfStatement(CompilationUnit cu, String originalCode, IfStatement ifStatement) {
         ASTRewrite rewriter = ASTRewrite.create(cu.getAST());
         if (ifStatement.getElseStatement() != null) {
@@ -4731,7 +4997,7 @@ public class AstRewriter {
 
     // ADD THIS METHOD TO AstRewriter.java - replaces the existing createDefaultExpression
 
-    private Expression createDefaultExpression(AST ast, AddableExpression type) {
+    private Expression createDefaultExpression(AST ast, AddableExpression type, CompilationUnit cu, ASTRewrite rewriter) {
         switch (type) {
             case TEXT:
                 StringLiteral newString = ast.newStringLiteral();
@@ -4750,37 +5016,33 @@ public class AstRewriter {
             case VARIABLE:
                 return ast.newSimpleName(DefaultNames.DEFAULT_VARIABLE);
 
-            // NEW: Handle Sub-List creation
             case LIST:
-                return ast.newArrayInitializer();
+                // Create: Arrays.asList()
+                // This is the versatile list expression used for ArrayLists and Nested Lists
+                ImportManager.addImport(cu, rewriter, "java.util.Arrays");
+
+                MethodInvocation asList = ast.newMethodInvocation();
+                asList.setExpression(ast.newSimpleName("Arrays"));
+                asList.setName(ast.newSimpleName("asList"));
+
+                // Add default elements? No, start empty.
+                return asList;
 
             case ADD:
             case SUBTRACT:
             case MULTIPLY:
             case DIVIDE:
             case MODULO:
-                // Create a binary expression: variable <op> 0
                 InfixExpression infixExpr = ast.newInfixExpression();
                 infixExpr.setLeftOperand(ast.newSimpleName(DefaultNames.DEFAULT_VARIABLE));
                 infixExpr.setRightOperand(ast.newNumberLiteral("0"));
 
-                // Set the operator based on type
                 switch (type) {
-                    case ADD:
-                        infixExpr.setOperator(InfixExpression.Operator.PLUS);
-                        break;
-                    case SUBTRACT:
-                        infixExpr.setOperator(InfixExpression.Operator.MINUS);
-                        break;
-                    case MULTIPLY:
-                        infixExpr.setOperator(InfixExpression.Operator.TIMES);
-                        break;
-                    case DIVIDE:
-                        infixExpr.setOperator(InfixExpression.Operator.DIVIDE);
-                        break;
-                    case MODULO:
-                        infixExpr.setOperator(InfixExpression.Operator.REMAINDER);
-                        break;
+                    case ADD: infixExpr.setOperator(InfixExpression.Operator.PLUS); break;
+                    case SUBTRACT: infixExpr.setOperator(InfixExpression.Operator.MINUS); break;
+                    case MULTIPLY: infixExpr.setOperator(InfixExpression.Operator.TIMES); break;
+                    case DIVIDE: infixExpr.setOperator(InfixExpression.Operator.DIVIDE); break;
+                    case MODULO: infixExpr.setOperator(InfixExpression.Operator.REMAINDER); break;
                 }
                 return infixExpr;
 
@@ -4789,7 +5051,7 @@ public class AstRewriter {
         }
     }
 
-    private Statement createDefaultStatement(AST ast, AddableBlock type) {
+    private Statement createDefaultStatement(AST ast, AddableBlock type, CompilationUnit cu, ASTRewrite rewriter) {
         switch (type) {
             case PRINT:
                 // System.out.println("");
@@ -4839,26 +5101,23 @@ public class AstRewriter {
                 return varDecl;
             }
             case DECLARE_ARRAY: {
+                if (cu != null && rewriter != null) {
+                    ImportManager.addImport(cu, rewriter, "java.util.ArrayList");
+                    ImportManager.addImport(cu, rewriter, "java.util.Arrays");
+                }
+
                 VariableDeclarationFragment fragment = ast.newVariableDeclarationFragment();
                 fragment.setName(ast.newSimpleName("myList"));
 
-                // Use wrapper type for generics
-                String wrapperType = toWrapperType("int"); // or "Integer" directly
+                String defaultType = "ArrayList<Integer>";
 
-                ClassInstanceCreation arrayListCreation = ast.newClassInstanceCreation();
-                ParameterizedType paramType = ast.newParameterizedType(
-                        ast.newSimpleType(ast.newName("ArrayList"))
-                );
-                paramType.typeArguments().add(ast.newSimpleType(ast.newName(wrapperType)));
-                arrayListCreation.setType(paramType);
-                fragment.setInitializer(arrayListCreation);
+                // Pass empty list or null
+                Expression initializer = createRecursiveListInitializer(ast, defaultType, cu, rewriter, null);
+
+                fragment.setInitializer(initializer);
 
                 VariableDeclarationStatement varDecl = ast.newVariableDeclarationStatement(fragment);
-                ParameterizedType declType = ast.newParameterizedType(
-                        ast.newSimpleType(ast.newName("ArrayList"))
-                );
-                declType.typeArguments().add(ast.newSimpleType(ast.newName(wrapperType)));
-                varDecl.setType(declType);
+                varDecl.setType(TypeManager.createTypeNode(ast, defaultType));
 
                 return varDecl;
             }
@@ -5040,66 +5299,85 @@ public class AstRewriter {
         }
     }
 
-    public String addElementToArrayInitializer(
+    private void collectLeafValues(Expression expr, List<Expression> accumulator) {
+        if (expr == null) return;
+
+        boolean isContainer = false;
+
+        // Check: new ArrayList<>(...)
+        if (expr instanceof ClassInstanceCreation) {
+            ClassInstanceCreation cic = (ClassInstanceCreation) expr;
+            if (cic.getType().toString().startsWith("ArrayList")) {
+                isContainer = true;
+                if (!cic.arguments().isEmpty()) {
+                    // Dive into the argument (usually Arrays.asList)
+                    collectLeafValues((Expression) cic.arguments().get(0), accumulator);
+                }
+            }
+        }
+
+        // Check: Arrays.asList(...) or List.of(...)
+        else if (expr instanceof MethodInvocation) {
+            MethodInvocation mi = (MethodInvocation) expr;
+            String name = mi.getName().getIdentifier();
+            if (name.equals("asList") || name.equals("of")) {
+                isContainer = true;
+                for (Object arg : mi.arguments()) {
+                    collectLeafValues((Expression) arg, accumulator);
+                }
+            }
+        }
+
+        // Check: Array Initializer {1, 2}
+        else if (expr instanceof ArrayInitializer) {
+            isContainer = true;
+            ArrayInitializer ai = (ArrayInitializer) expr;
+            for (Object e : ai.expressions()) {
+                collectLeafValues((Expression) e, accumulator);
+            }
+        }
+
+        // Check: new int[] { ... }
+        else if (expr instanceof ArrayCreation) {
+            isContainer = true;
+            ArrayCreation ac = (ArrayCreation) expr;
+            if (ac.getInitializer() != null) {
+                collectLeafValues(ac.getInitializer(), accumulator);
+            }
+        }
+
+        // BASE CASE: If it wasn't a container, it's a value. Add it.
+        if (!isContainer) {
+            accumulator.add(expr);
+        }
+    }
+
+    public String addElementToList(
             CompilationUnit cu,
             String originalCode,
-            ArrayInitializer arrayInit,
+            ASTNode listNode, // Can be ArrayInitializer or MethodInvocation
             com.botmaker.ui.AddableExpression type,
             int insertIndex) {
 
         AST ast = cu.getAST();
         ASTRewrite rewriter = ASTRewrite.create(ast);
 
-        // Create the new expression based on type
-        Expression newElement = createDefaultExpression(ast, type);
-        if (newElement == null) {
-            return originalCode;
+        // Create the new element
+        Expression newElement = createDefaultExpression(ast, type, cu, rewriter);
+        if (newElement == null) return originalCode;
+
+        if (listNode instanceof ArrayInitializer) {
+            ListRewrite listRewrite = rewriter.getListRewrite(listNode, ArrayInitializer.EXPRESSIONS_PROPERTY);
+            listRewrite.insertAt(newElement, insertIndex, null);
         }
-
-        // Use ListRewrite to insert the element
-        ListRewrite listRewrite = rewriter.getListRewrite(
-                arrayInit,
-                ArrayInitializer.EXPRESSIONS_PROPERTY
-        );
-
-        listRewrite.insertAt(newElement, insertIndex, null);
+        else if (listNode instanceof MethodInvocation) {
+            // Handle Arrays.asList(...) or List.of(...)
+            ListRewrite listRewrite = rewriter.getListRewrite(listNode, MethodInvocation.ARGUMENTS_PROPERTY);
+            listRewrite.insertAt(newElement, insertIndex, null);
+        }
 
         return applyRewrite(rewriter, originalCode);
     }
-
-    /**
-     * Deletes an element from an ArrayInitializer at the specified index
-     */
-    public String deleteElementFromArrayInitializer(
-            CompilationUnit cu,
-            String originalCode,
-            ArrayInitializer arrayInit,
-            int elementIndex) {
-
-        AST ast = cu.getAST();
-        ASTRewrite rewriter = ASTRewrite.create(ast);
-
-        // Get the list of expressions
-        @SuppressWarnings("unchecked")
-        List<Expression> expressions = arrayInit.expressions();
-
-        if (elementIndex < 0 || elementIndex >= expressions.size()) {
-            return originalCode; // Invalid index
-        }
-
-        Expression toRemove = expressions.get(elementIndex);
-
-        // Use ListRewrite to remove the element
-        ListRewrite listRewrite = rewriter.getListRewrite(
-                arrayInit,
-                ArrayInitializer.EXPRESSIONS_PROPERTY
-        );
-
-        listRewrite.remove(toRemove, null);
-
-        return applyRewrite(rewriter, originalCode);
-    }
-
 
     private Expression createDefaultInitializer(AST ast, String typeName) {
         switch (typeName) {
@@ -5204,39 +5482,53 @@ public class AstRewriter {
         AST ast = cu.getAST();
         ASTRewrite rewriter = ASTRewrite.create(ast);
 
+        if (newTypeName.contains("ArrayList")) {
+            ImportManager.addImport(cu, rewriter, "java.util.ArrayList");
+            ImportManager.addImport(cu, rewriter, "java.util.List");
+        }
+
+        String oldTypeName = varDecl.getType().toString();
+        String oldLeaf = TypeManager.getLeafType(oldTypeName);
+        String newLeaf = TypeManager.getLeafType(newTypeName);
+        boolean baseTypesMatch = oldLeaf.equals(newLeaf);
+
         Type newType = TypeManager.createTypeNode(ast, newTypeName);
         rewriter.replace(varDecl.getType(), newType, null);
 
         if (!varDecl.fragments().isEmpty()) {
-            VariableDeclarationFragment fragment =
-                    (VariableDeclarationFragment) varDecl.fragments().get(0);
+            VariableDeclarationFragment fragment = (VariableDeclarationFragment) varDecl.fragments().get(0);
             Expression currentInitializer = fragment.getInitializer();
-
-            boolean isNewTypeArrayList = newTypeName.startsWith("ArrayList<");
             Expression newInitializer = null;
 
-            if (isNewTypeArrayList) {
-                ClassInstanceCreation creation = ast.newClassInstanceCreation();
-                String elementType = extractArrayListElementType(newTypeName);
+            // Collect ALL leaves
+            List<Expression> valuesToPreserve = new ArrayList<>();
+            if (baseTypesMatch && currentInitializer != null) {
+                collectLeafValues(currentInitializer, valuesToPreserve);
+            }
 
-                // FIXED: Use wrapper type if it's a primitive
-                String wrapperType = toWrapperType(elementType);
-
-                ParameterizedType paramType = ast.newParameterizedType(
-                        ast.newSimpleType(ast.newName("ArrayList"))
-                );
-                paramType.typeArguments().add(
-                        TypeManager.createTypeNode(ast, wrapperType)
-                );
-                creation.setType(paramType);
-                newInitializer = creation;
+            if (newTypeName.startsWith("ArrayList<")) {
+                // Pass the list of values
+                newInitializer = createRecursiveListInitializer(ast, newTypeName, cu, rewriter, valuesToPreserve);
             } else if (newTypeName.endsWith("[]")) {
                 ArrayCreation creation = ast.newArrayCreation();
                 creation.setType((ArrayType) TypeManager.createTypeNode(ast, newTypeName));
-                creation.setInitializer(ast.newArrayInitializer());
+                ArrayInitializer ai = ast.newArrayInitializer();
+
+                // Handle Array Creation with preserved values
+                if (!valuesToPreserve.isEmpty()) {
+                    for(Expression val : valuesToPreserve) {
+                        ai.expressions().add(ASTNode.copySubtree(ast, val));
+                    }
+                }
+                creation.setInitializer(ai);
                 newInitializer = creation;
             } else {
-                newInitializer = createDefaultInitializer(ast, newTypeName);
+                // Single Value Case: Take the first one if available
+                if (!valuesToPreserve.isEmpty()) {
+                    newInitializer = (Expression) ASTNode.copySubtree(ast, valuesToPreserve.get(0));
+                } else {
+                    newInitializer = createDefaultInitializer(ast, newTypeName);
+                }
             }
 
             if (newInitializer != null) {
@@ -5244,16 +5536,10 @@ public class AstRewriter {
             }
         }
 
-        IDocument document = new Document(originalCode);
-        try {
-            TextEdit edits = rewriter.rewriteAST(document, null);
-            edits.apply(document);
-            return document.get();
-        } catch (Exception e) {
-            e.printStackTrace();
-            return originalCode;
-        }
+        return applyRewrite(rewriter, originalCode);
     }
+
+
 
     private String extractArrayListElementType(String arrayListType) {
         if (arrayListType.contains("<") && arrayListType.contains(">")) {
@@ -5670,6 +5956,48 @@ public class BlockFactory {
             return Optional.of(block);
         }
 
+        if (astExpression instanceof ClassInstanceCreation) {
+            ClassInstanceCreation cic = (ClassInstanceCreation) astExpression;
+            Type type = cic.getType();
+
+            // Check if it is an ArrayList
+            if (type.toString().startsWith("ArrayList")) {
+                // If it has arguments, check if the first arg is Arrays.asList or List.of
+                if (!cic.arguments().isEmpty()) {
+                    Object firstArg = cic.arguments().get(0);
+                    if (firstArg instanceof MethodInvocation) {
+                        // It wraps a list factory -> Parse the inner factory as the list block
+                        return parseExpression((Expression) firstArg, nodeToBlockMap);
+                    }
+                }
+
+                // If it is empty new ArrayList<>(), we need to render an empty list block
+                // However, ListBlock expects an ArrayInitializer or MethodInvocation node.
+                // We will map this ClassInstanceCreation to a ListBlock manually,
+                // but realize it won't allow adding items easily until transformed.
+                // *Correction*: The AstRewriter update above ensures new blocks are created
+                // WITH Arrays.asList, so this case only happens for legacy/manual code.
+            }
+        }
+
+        if (astExpression instanceof MethodInvocation) {
+            MethodInvocation mi = (MethodInvocation) astExpression;
+            String methodName = mi.getName().getIdentifier();
+            String scope = mi.getExpression() != null ? mi.getExpression().toString() : "";
+
+            boolean isListFactory =
+                    (scope.equals("Arrays") && methodName.equals("asList")) ||
+                            (scope.equals("List") && methodName.equals("of"));
+
+            if (isListFactory) {
+                ListBlock listBlock = new ListBlock(BlockIdPrefix.generate(BlockIdPrefix.LIST, mi), mi);
+                nodeToBlockMap.put(astExpression, listBlock);
+                for (Object arg : mi.arguments()) {
+                    parseExpression((Expression) arg, nodeToBlockMap).ifPresent(listBlock::addElement);
+                }
+                return Optional.of(listBlock);
+            }
+        }
         if (astExpression instanceof NumberLiteral) {
             NumberLiteral literalNode = (NumberLiteral) astExpression;
             String token = literalNode.getToken();
@@ -5826,6 +6154,7 @@ import com.botmaker.core.StatementBlock;
 import com.botmaker.events.CoreApplicationEvents;
 import com.botmaker.events.EventBus;
 import com.botmaker.ui.AddableBlock;
+import com.botmaker.ui.AddableExpression;
 import org.eclipse.jdt.core.dom.*;
 
 public class CodeEditor {
@@ -5896,30 +6225,43 @@ public class CodeEditor {
         triggerUpdate(newCode);
     }
 
-    public void addElementToArrayInitializer(
-            org.eclipse.jdt.core.dom.ArrayInitializer arrayInit,
-            com.botmaker.ui.AddableExpression type,
+    /**
+     * Adds an element to either an ArrayInitializer or a MethodInvocation (List).
+     */
+    public void addElementToList(
+            ASTNode listNode,
+            AddableExpression type,
             int insertIndex) {
 
         blockFactory.setMarkNewIdentifiersAsUnedited(true);
-        String newCode = astRewriter.addElementToArrayInitializer(
+
+        // SPECIAL CASE:
+        // If the user managed to get a raw ClassInstanceCreation (empty ArrayList),
+        // AstRewriter needs to wrap it. However, ListBlock is usually bound to
+        // the MethodInvocation inside.
+
+        String newCode = astRewriter.addElementToList(
                 getCompilationUnit(),
                 getCurrentCode(),
-                arrayInit,
+                listNode,
                 type,
                 insertIndex
         );
         triggerUpdate(newCode);
     }
 
-    public void deleteElementFromArrayInitializer(
-            org.eclipse.jdt.core.dom.ArrayInitializer arrayInit,
+    /**
+     * Deletes an element from either an ArrayInitializer or a MethodInvocation (List).
+     */
+    public void deleteElementFromList(
+            ASTNode listNode,
             int elementIndex) {
 
-        String newCode = astRewriter.deleteElementFromArrayInitializer(
+        // Updated to use the generic 'deleteElementFromList' in Rewriter
+        String newCode = astRewriter.deleteElementFromList(
                 getCompilationUnit(),
                 getCurrentCode(),
-                arrayInit,
+                listNode,
                 elementIndex
         );
         triggerUpdate(newCode);
@@ -6072,6 +6414,63 @@ public class CodeEditor {
         return null;
     }
     // --- FIX END ---
+}
+
+=================================================================================
+FILE: ./src/main/java/com/botmaker/parser/ImportManager.java
+=================================================================================
+
+package com.botmaker.parser;
+
+import org.eclipse.jdt.core.dom.*;
+import org.eclipse.jdt.core.dom.rewrite.ASTRewrite;
+import org.eclipse.jdt.core.dom.rewrite.ListRewrite;
+
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
+public class ImportManager {
+
+    /**
+     * Ensures that the specific class is imported in the CompilationUnit.
+     * @param cu The compilation unit.
+     * @param rewriter The ASTRewrite instance.
+     * @param qualifiedClassName The full class name (e.g., "java.util.ArrayList").
+     */
+    public static void addImport(CompilationUnit cu, ASTRewrite rewriter, String qualifiedClassName) {
+        if (cu == null || qualifiedClassName == null) return;
+
+        // Check existing imports
+        List<ImportDeclaration> imports = cu.imports();
+        Set<String> existingImports = new HashSet<>();
+
+        for (ImportDeclaration imp : imports) {
+            if (imp.isOnDemand()) {
+                // e.g., java.util.*
+                String packageName = imp.getName().getFullyQualifiedName();
+                String targetPackage = qualifiedClassName.substring(0, qualifiedClassName.lastIndexOf('.'));
+                if (packageName.equals(targetPackage)) {
+                    return; // Covered by wildcard
+                }
+            } else {
+                existingImports.add(imp.getName().getFullyQualifiedName());
+            }
+        }
+
+        if (existingImports.contains(qualifiedClassName)) {
+            return; // Already imported
+        }
+
+        // Create new import
+        AST ast = cu.getAST();
+        ImportDeclaration newImport = ast.newImportDeclaration();
+        newImport.setName(ast.newName(qualifiedClassName));
+
+        // Insert into AST
+        ListRewrite listRewrite = rewriter.getListRewrite(cu, CompilationUnit.IMPORTS_PROPERTY);
+        listRewrite.insertLast(newImport, null);
+    }
 }
 
 =================================================================================
@@ -9913,6 +10312,38 @@ public class TypeManager {
             case "Byte": return "byte";
             default: return typeName; // Not a wrapper
         }
+    }
+
+    public static int getListNestingLevel(String typeName) {
+        if (typeName == null) return 0;
+        int level = 0;
+        String temp = typeName;
+        while (temp.startsWith("ArrayList<") || temp.startsWith("List<")) {
+            level++;
+            int start = temp.indexOf("<") + 1;
+            int end = temp.lastIndexOf(">");
+            if (start < end) {
+                temp = temp.substring(start, end);
+            } else {
+                break;
+            }
+        }
+        return level;
+    }
+
+    public static String getLeafType(String typeName) {
+        if (typeName == null) return "Object";
+        String temp = typeName;
+        while (temp.startsWith("ArrayList<") || temp.startsWith("List<")) {
+            int start = temp.indexOf("<") + 1;
+            int end = temp.lastIndexOf(">");
+            if (start < end) {
+                temp = temp.substring(start, end);
+            } else {
+                break;
+            }
+        }
+        return temp;
     }
 
     public static Type createTypeNode(AST ast, String typeName) {
