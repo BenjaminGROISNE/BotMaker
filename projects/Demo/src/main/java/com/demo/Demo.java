@@ -14,6 +14,7 @@ public class Demo {
 		boolean flag875 = false;
 		double decimal = 0;
 		text += flag875;
+		ArrayList<ArrayList<Integer>> myList5=new ArrayList<ArrayList<Integer>>(Arrays.asList(new ArrayList<Integer>(Arrays.asList(0,0))));
 		if (flag2) {
 			System.out.println("878");
 		}

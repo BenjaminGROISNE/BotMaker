@@ -13,6 +13,8 @@ import org.eclipse.jface.text.Document;
 import org.eclipse.jface.text.IDocument;
 import org.eclipse.text.edits.TextEdit;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import static com.botmaker.util.TypeManager.toWrapperType;
@@ -117,40 +119,55 @@ public class AstRewriter {
     }
 
 
-    private Expression createRecursiveListInitializer(AST ast, String typeName, CompilationUnit cu, ASTRewrite rewriter) {
-        // 1. Handle Imports
+    private Expression createRecursiveListInitializer(AST ast, String typeName, CompilationUnit cu, ASTRewrite rewriter, List<Expression> leavesToPreserve) {
         ImportManager.addImport(cu, rewriter, "java.util.ArrayList");
         ImportManager.addImport(cu, rewriter, "java.util.Arrays");
 
-        // 2. Create the outer "new ArrayList<>()"
+        // new ArrayList<...>()
         ClassInstanceCreation creation = ast.newClassInstanceCreation();
-
-        // Create generic type: ArrayList<...>
         String innerTypeStr = extractArrayListElementType(typeName);
-        String wrapperInnerType = toWrapperType(innerTypeStr); // Handle int->Integer if needed
+        String wrapperInnerType = toWrapperType(innerTypeStr);
 
         ParameterizedType paramType = ast.newParameterizedType(ast.newSimpleType(ast.newName("ArrayList")));
 
-        // Only add type arguments if we aren't at the raw Object level
         if (!innerTypeStr.equals("Object")) {
             paramType.typeArguments().add(TypeManager.createTypeNode(ast, wrapperInnerType));
         }
         creation.setType(paramType);
 
-        // 3. Create "Arrays.asList(...)"
+        // Arrays.asList(...)
         MethodInvocation asList = ast.newMethodInvocation();
         asList.setExpression(ast.newSimpleName("Arrays"));
         asList.setName(ast.newSimpleName("asList"));
 
-        // 4. Determine what goes INSIDE the list
         if (innerTypeStr.startsWith("ArrayList<")) {
-            // RECURSION: The inner element is ALSO an ArrayList
-            Expression innerList = createRecursiveListInitializer(ast, innerTypeStr, cu, rewriter);
+            // RECURSION (Deepening):
+            // If we are adding layers (e.g., List<Int> -> List<List<Int>>),
+            // we put ALL existing leaves into the *first* new inner list.
+            // Example: [1, 2] -> [[1, 2]]
+
+            // We pass 'leavesToPreserve' down to the next level.
+            // However, if we passed it directly, the recursive call would consume them.
+            // If we wanted to split them (e.g. [[1], [2]]), that logic would be very complex.
+            // Wrapping them all in one list is the safest default.
+
+            Expression innerList = createRecursiveListInitializer(ast, innerTypeStr, cu, rewriter, leavesToPreserve);
             asList.arguments().add(innerList);
+
+            // Crucial: Set leavesToPreserve to null/empty for subsequent calls if we were looping,
+            // but here we create exactly one inner list, so it handles all data.
         } else {
-            // BASE CASE: The inner element is a primitive/string value (e.g., 0.0 or true)
-            Expression defaultValue = createDefaultInitializer(ast, innerTypeStr);
-            asList.arguments().add(defaultValue);
+            // BASE CASE (Bottom Layer):
+            // Dump all collected values here.
+            if (leavesToPreserve != null && !leavesToPreserve.isEmpty()) {
+                for (Expression leaf : leavesToPreserve) {
+                    asList.arguments().add((Expression) ASTNode.copySubtree(ast, leaf));
+                }
+            } else {
+                // Only add default 0 if we have absolutely no data
+                Expression defaultValue = createDefaultInitializer(ast, innerTypeStr);
+                asList.arguments().add(defaultValue);
+            }
         }
 
         creation.arguments().add(asList);
@@ -481,11 +498,10 @@ public class AstRewriter {
                 VariableDeclarationFragment fragment = ast.newVariableDeclarationFragment();
                 fragment.setName(ast.newSimpleName("myList"));
 
-                // Default to ArrayList<Integer>
                 String defaultType = "ArrayList<Integer>";
 
-                // Use the helper to generate: new ArrayList<>(Arrays.asList(0))
-                Expression initializer = createRecursiveListInitializer(ast, defaultType, cu, rewriter);
+                // Pass empty list or null
+                Expression initializer = createRecursiveListInitializer(ast, defaultType, cu, rewriter, null);
 
                 fragment.setInitializer(initializer);
 
@@ -672,6 +688,59 @@ public class AstRewriter {
         }
     }
 
+    private void collectLeafValues(Expression expr, List<Expression> accumulator) {
+        if (expr == null) return;
+
+        boolean isContainer = false;
+
+        // Check: new ArrayList<>(...)
+        if (expr instanceof ClassInstanceCreation) {
+            ClassInstanceCreation cic = (ClassInstanceCreation) expr;
+            if (cic.getType().toString().startsWith("ArrayList")) {
+                isContainer = true;
+                if (!cic.arguments().isEmpty()) {
+                    // Dive into the argument (usually Arrays.asList)
+                    collectLeafValues((Expression) cic.arguments().get(0), accumulator);
+                }
+            }
+        }
+
+        // Check: Arrays.asList(...) or List.of(...)
+        else if (expr instanceof MethodInvocation) {
+            MethodInvocation mi = (MethodInvocation) expr;
+            String name = mi.getName().getIdentifier();
+            if (name.equals("asList") || name.equals("of")) {
+                isContainer = true;
+                for (Object arg : mi.arguments()) {
+                    collectLeafValues((Expression) arg, accumulator);
+                }
+            }
+        }
+
+        // Check: Array Initializer {1, 2}
+        else if (expr instanceof ArrayInitializer) {
+            isContainer = true;
+            ArrayInitializer ai = (ArrayInitializer) expr;
+            for (Object e : ai.expressions()) {
+                collectLeafValues((Expression) e, accumulator);
+            }
+        }
+
+        // Check: new int[] { ... }
+        else if (expr instanceof ArrayCreation) {
+            isContainer = true;
+            ArrayCreation ac = (ArrayCreation) expr;
+            if (ac.getInitializer() != null) {
+                collectLeafValues(ac.getInitializer(), accumulator);
+            }
+        }
+
+        // BASE CASE: If it wasn't a container, it's a value. Add it.
+        if (!isContainer) {
+            accumulator.add(expr);
+        }
+    }
+
     public String addElementToList(
             CompilationUnit cu,
             String originalCode,
@@ -802,33 +871,53 @@ public class AstRewriter {
         AST ast = cu.getAST();
         ASTRewrite rewriter = ASTRewrite.create(ast);
 
-        // 1. Update Type Definition
-        Type newType = TypeManager.createTypeNode(ast, newTypeName);
-        rewriter.replace(varDecl.getType(), newType, null);
-
-        // 2. Update Imports (Standard)
         if (newTypeName.contains("ArrayList")) {
             ImportManager.addImport(cu, rewriter, "java.util.ArrayList");
             ImportManager.addImport(cu, rewriter, "java.util.List");
         }
 
-        // 3. Update Initializer
+        String oldTypeName = varDecl.getType().toString();
+        String oldLeaf = TypeManager.getLeafType(oldTypeName);
+        String newLeaf = TypeManager.getLeafType(newTypeName);
+        boolean baseTypesMatch = oldLeaf.equals(newLeaf);
+
+        Type newType = TypeManager.createTypeNode(ast, newTypeName);
+        rewriter.replace(varDecl.getType(), newType, null);
+
         if (!varDecl.fragments().isEmpty()) {
             VariableDeclarationFragment fragment = (VariableDeclarationFragment) varDecl.fragments().get(0);
             Expression currentInitializer = fragment.getInitializer();
-
             Expression newInitializer = null;
 
+            // Collect ALL leaves
+            List<Expression> valuesToPreserve = new ArrayList<>();
+            if (baseTypesMatch && currentInitializer != null) {
+                collectLeafValues(currentInitializer, valuesToPreserve);
+            }
+
             if (newTypeName.startsWith("ArrayList<")) {
-                // USE THE NEW RECURSIVE HELPER
-                newInitializer = createRecursiveListInitializer(ast, newTypeName, cu, rewriter);
+                // Pass the list of values
+                newInitializer = createRecursiveListInitializer(ast, newTypeName, cu, rewriter, valuesToPreserve);
             } else if (newTypeName.endsWith("[]")) {
                 ArrayCreation creation = ast.newArrayCreation();
                 creation.setType((ArrayType) TypeManager.createTypeNode(ast, newTypeName));
-                creation.setInitializer(ast.newArrayInitializer());
+                ArrayInitializer ai = ast.newArrayInitializer();
+
+                // Handle Array Creation with preserved values
+                if (!valuesToPreserve.isEmpty()) {
+                    for(Expression val : valuesToPreserve) {
+                        ai.expressions().add(ASTNode.copySubtree(ast, val));
+                    }
+                }
+                creation.setInitializer(ai);
                 newInitializer = creation;
             } else {
-                newInitializer = createDefaultInitializer(ast, newTypeName);
+                // Single Value Case: Take the first one if available
+                if (!valuesToPreserve.isEmpty()) {
+                    newInitializer = (Expression) ASTNode.copySubtree(ast, valuesToPreserve.get(0));
+                } else {
+                    newInitializer = createDefaultInitializer(ast, newTypeName);
+                }
             }
 
             if (newInitializer != null) {
