@@ -15,9 +15,6 @@ public class Demo {
 		double decimal = 0;
 		text += flag875;
 		float myList5=5;
-		if (flag2) {
-			System.out.println("878");
-		}
 		while (flag) {
 			System.out.println(decimal);
 		}
