@@ -23,6 +23,7 @@ import java.util.stream.Stream;
 
 public class CodeEditorService {
 
+    // ... (Constructor and fields remain exactly the same) ...
     private final ApplicationConfig config;
     private final ApplicationState state;
     private final EventBus eventBus;
@@ -44,7 +45,6 @@ public class CodeEditorService {
             BlockDragAndDropManager dragAndDropManager,
             LanguageServerService languageServerService,
             DiagnosticsManager diagnosticsManager) {
-
         this.config = config;
         this.state = state;
         this.eventBus = eventBus;
@@ -55,39 +55,19 @@ public class CodeEditorService {
         this.diagnosticsManager = diagnosticsManager;
         this.historyManager = new HistoryManager();
         this.codeEditor = new CodeEditor(state, eventBus, astRewriter, blockFactory);
-
         setupEventHandlers();
     }
 
     private void setupEventHandlers() {
-        eventBus.subscribe(
-                CoreApplicationEvents.UIRefreshRequestedEvent.class,
-                event -> Platform.runLater(() -> refreshUI(event.getCode())),
-                false
-        );
-
-        // NEW: Listen for toggles to update state
-        eventBus.subscribe(
-                CoreApplicationEvents.BreakpointToggledEvent.class,
-                this::handleBreakpointToggle,
-                false
-        );
-
-        // 1. Record History on Code Updates
+        eventBus.subscribe(CoreApplicationEvents.UIRefreshRequestedEvent.class, event -> Platform.runLater(() -> refreshUI(event.getCode())), false);
+        eventBus.subscribe(CoreApplicationEvents.BreakpointToggledEvent.class, this::handleBreakpointToggle, false);
         eventBus.subscribe(CoreApplicationEvents.CodeUpdatedEvent.class, this::handleCodeUpdateForHistory, false);
-
-        // 2. Handle Requests
         eventBus.subscribe(CoreApplicationEvents.UndoRequestedEvent.class, e -> undo(), false);
         eventBus.subscribe(CoreApplicationEvents.RedoRequestedEvent.class, e -> redo(), false);
-
     }
 
-    // Called when block drag-drop or text edit happens
     private void handleCodeUpdateForHistory(CoreApplicationEvents.CodeUpdatedEvent event) {
-        // If this update is triggered BY the undo button, don't record it again!
         if (isRestoringHistory) return;
-
-        // Save the PREVIOUS code state before the update happened
         String previousCode = event.getPreviousCode();
         if (previousCode != null && !previousCode.isEmpty()) {
             historyManager.pushState(previousCode);
@@ -106,22 +86,17 @@ public class CodeEditorService {
     }
 
     private void applyHistoryState(String code) {
-        isRestoringHistory = true; // Lock recording
+        isRestoringHistory = true;
         try {
-            // This triggers the standard refresh flow (UI update, LSP sync, etc.)
-            // We fake a CodeUpdatedEvent so the LanguageServerService picks it up
             eventBus.publish(new CoreApplicationEvents.CodeUpdatedEvent(code, state.getCurrentCode()));
             broadcastHistoryState();
         } finally {
-            isRestoringHistory = false; // Unlock
+            isRestoringHistory = false;
         }
     }
 
     private void broadcastHistoryState() {
-        eventBus.publish(new CoreApplicationEvents.HistoryStateChangedEvent(
-                historyManager.canUndo(),
-                historyManager.canRedo()
-        ));
+        eventBus.publish(new CoreApplicationEvents.HistoryStateChangedEvent(historyManager.canUndo(), historyManager.canRedo()));
     }
 
     private void handleBreakpointToggle(CoreApplicationEvents.BreakpointToggledEvent event) {
@@ -132,25 +107,33 @@ public class CodeEditorService {
         }
     }
 
+    // --- FIX: LOAD AND OPEN ALL FILES ---
     public void loadInitialCode() {
         try {
             Path mainFile = config.getSourceFilePath();
             Path sourceDir = mainFile.getParent();
 
             // Load all java files in the directory
-            try (Stream<Path> files = Files.list(sourceDir)) {
-                files.filter(p -> p.toString().endsWith(".java")).forEach(path -> {
-                    try {
-                        String content = Files.readString(path);
-                        ProjectFile pf = new ProjectFile(path, content);
-                        state.addFile(pf);
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                });
+            if (Files.exists(sourceDir)) {
+                try (Stream<Path> files = Files.list(sourceDir)) {
+                    files.filter(p -> p.toString().endsWith(".java")).forEach(path -> {
+                        try {
+                            String content = Files.readString(path);
+                            ProjectFile pf = new ProjectFile(path, content);
+                            state.addFile(pf);
+
+                            // FIX: Explicitly open every file in the Language Server
+                            // This ensures the LSP knows about secondary files immediately.
+                            languageServerService.openFile(path, content);
+
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    });
+                }
             }
 
-            // Set Active File to Main
+            // Set Active File to Main and refresh UI
             switchToFile(mainFile);
 
         } catch (Exception e) {
@@ -165,15 +148,12 @@ public class CodeEditorService {
 
         if (file == null) return;
 
-        // 1. Refresh UI
         state.setActiveFile(path);
-
-        // Clear history when switching (optional, or keep separate history per file)
-        // historyManager.clear();
+        // Update doc version/uri in state for LSP sync context
+        state.setDocUri(file.getUri());
 
         refreshUI(file.getContent());
     }
-
 
     public void createFile(String className) {
         try {
@@ -190,21 +170,16 @@ public class CodeEditorService {
                     "}";
 
             Files.writeString(newPath, template);
-
             ProjectFile pf = new ProjectFile(newPath, template);
             state.addFile(pf);
 
-            // Notify LSP
             languageServerService.openFile(newPath, template);
-
             switchToFile(newPath);
 
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
-
-
 
     private void refreshUI(String javaCode) {
         state.setCurrentCode(javaCode);
@@ -220,7 +195,6 @@ public class CodeEditorService {
                 dragAndDropManager
         );
 
-        // NEW: Restore breakpoints on newly created blocks
         for (CodeBlock block : state.getNodeToBlockMap().values()) {
             if (state.hasBreakpoint(block.getId())) {
                 block.setBreakpoint(true);
@@ -228,9 +202,11 @@ public class CodeEditorService {
         }
 
         state.setCompilationUnit(blockFactory.getCompilationUnit());
-
         eventBus.publish(new CoreApplicationEvents.UIBlocksUpdatedEvent(rootBlock));
-        eventBus.publish(new CoreApplicationEvents.StatusMessageEvent("Loaded: " + state.getActiveFile().getClassName()));
+
+        if (state.getActiveFile() != null) {
+            eventBus.publish(new CoreApplicationEvents.StatusMessageEvent("Loaded: " + state.getActiveFile().getClassName()));
+        }
     }
 
     public CompletionContext createCompletionContext() {
@@ -241,7 +217,7 @@ public class CodeEditorService {
                 state.getCurrentCode(),
                 state.getDocVersion(),
                 dragAndDropManager,
-                state // Pass the state instance
+                state
         );
     }
 

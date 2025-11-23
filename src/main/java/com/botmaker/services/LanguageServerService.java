@@ -23,8 +23,6 @@ public class LanguageServerService {
 
     private LanguageServer server;
     private JdtLanguageServerLauncher launcher;
-
-    // New flag
     private boolean shouldClearCache = false;
 
     public LanguageServerService(
@@ -36,24 +34,16 @@ public class LanguageServerService {
         this.state = state;
         this.eventBus = eventBus;
         this.diagnosticsManager = diagnosticsManager;
-
         setupEventHandlers();
     }
 
-    public void setShouldClearCache(boolean shouldClear) {
-        this.shouldClearCache = shouldClear;
-    }
+    public void setShouldClearCache(boolean shouldClear) { this.shouldClearCache = shouldClear; }
 
     private void setupEventHandlers() {
-        eventBus.subscribe(
-                CoreApplicationEvents.CodeUpdatedEvent.class,
-                this::handleCodeUpdate,
-                false
-        );
+        eventBus.subscribe(CoreApplicationEvents.CodeUpdatedEvent.class, this::handleCodeUpdate, false);
     }
 
     public void initialize() throws Exception {
-        // NEW: Check if we need to clear cache
         if (shouldClearCache) {
             JdtLanguageServerLauncher.cleanupWorkspace(config.getWorkspaceDataPath());
         }
@@ -70,22 +60,19 @@ public class LanguageServerService {
                 }
         );
 
-        // ... rest of the file stays the same ...
         server = launcher.getServer();
 
+        // Ensure the Main file exists on disk, but do NOT open it here.
+        // CodeEditorService.loadInitialCode() will open it shortly after.
         Path docPath = config.getSourceFilePath().toAbsolutePath().normalize();
 
-        // Ensure the file exists
         if (!Files.exists(docPath)) {
             Files.createDirectories(docPath.getParent());
-
-            // Extract project name and package from main class name
             String mainClassName = config.getMainClassName();
             String[] parts = mainClassName.split("\\.");
             String packageName = parts.length > 1 ? String.join(".", java.util.Arrays.copyOf(parts, parts.length - 1)) : "com.demo";
             String className = parts[parts.length - 1];
 
-            // Create a default file with correct package and class name
             String defaultCode = String.format("""
             package %s;
             public class %s {
@@ -97,19 +84,12 @@ public class LanguageServerService {
             Files.writeString(docPath, defaultCode);
         }
 
+        // Setup initial state URIs
         String docUri = docPath.toUri().toString();
-        String currentCode = Files.readString(docPath);
-
         state.setDocUri(docUri);
-        state.setCurrentCode(currentCode);
         state.setDocVersion(1);
-
-        server.getTextDocumentService().didOpen(new DidOpenTextDocumentParams(
-                new TextDocumentItem(docUri, "java", (int) state.getDocVersion(), currentCode)
-        ));
     }
 
-    // ... shutdown/handlers stay same ...
     private void handleCodeUpdate(CoreApplicationEvents.CodeUpdatedEvent event) {
         try {
             // Write to file
@@ -121,24 +101,25 @@ public class LanguageServerService {
             state.setCurrentCode(event.getNewCode());
 
             // Notify LSP server
-            server.getTextDocumentService().didChange(new DidChangeTextDocumentParams(
-                    new VersionedTextDocumentIdentifier(state.getDocUri(), (int) state.getDocVersion()),
-                    List.of(new TextDocumentContentChangeEvent(event.getNewCode()))
-            ));
+            if (server != null) {
+                server.getTextDocumentService().didChange(new DidChangeTextDocumentParams(
+                        new VersionedTextDocumentIdentifier(state.getDocUri(), (int) state.getDocVersion()),
+                        List.of(new TextDocumentContentChangeEvent(event.getNewCode()))
+                ));
+            }
 
             eventBus.publish(new CoreApplicationEvents.UIRefreshRequestedEvent(event.getNewCode()));
 
         } catch (Exception e) {
             e.printStackTrace();
-            eventBus.publish(new CoreApplicationEvents.StatusMessageEvent(
-                    "Error saving file: " + e.getMessage()
-            ));
+            eventBus.publish(new CoreApplicationEvents.StatusMessageEvent("Error saving file: " + e.getMessage()));
         }
     }
 
     public void openFile(Path path, String content) {
         if (server == null) return;
         String uri = path.toUri().toString();
+        // Use version 1 for newly opened files
         server.getTextDocumentService().didOpen(new DidOpenTextDocumentParams(
                 new TextDocumentItem(uri, "java", 1, content)
         ));
@@ -153,8 +134,6 @@ public class LanguageServerService {
                     server.exit();
                 }
                 Thread.sleep(Constants.SHORT_SLEEP_MS);
-            } catch (java.util.concurrent.TimeoutException e) {
-                System.err.println("Server shutdown timed out, forcing stop...");
             } catch (Exception e) {
                 System.err.println("Error during server shutdown: " + e.getMessage());
             } finally {
@@ -163,7 +142,5 @@ public class LanguageServerService {
         }
     }
 
-    public LanguageServer getServer() {
-        return server;
-    }
+    public LanguageServer getServer() { return server; }
 }

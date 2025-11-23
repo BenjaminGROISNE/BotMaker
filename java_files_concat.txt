@@ -1,5 +1,147 @@
 =================================================================================
-FILE: ./src/main/java/com/botmaker/blocks/AssignmentBlock.java
+FILE: ers\bgroi\Documents\dev\IntellijProjects\BotMaker\src\main\java\com\botmaker\Main.java
+=================================================================================
+
+package com.botmaker;
+
+import com.botmaker.config.ApplicationConfig;
+import com.botmaker.di.DependencyContainer;
+import com.botmaker.init.AppDependencyConfigurator;
+import com.botmaker.init.AppServiceInitializer;
+import com.botmaker.project.ProjectConfig;
+import com.botmaker.services.CodeEditorService;
+import com.botmaker.services.LanguageServerService;
+import com.botmaker.ui.ProjectSelectionScreen;
+import com.botmaker.ui.UIManager;
+import javafx.application.Application;
+import javafx.application.Platform;
+import javafx.scene.control.Alert;
+import javafx.stage.Stage;
+
+import java.nio.file.Files;
+import java.nio.file.Paths;
+
+public class Main extends Application {
+
+    private DependencyContainer container;
+    private LanguageServerService languageServerService;
+
+    @Override
+    public void start(Stage primaryStage) {
+        String lastProject = ProjectConfig.getLastOpened();
+
+        // Check if last project exists and auto-load
+        if (lastProject != null && projectExists(lastProject)) {
+            System.out.println("Auto-loading last project: " + lastProject);
+            openProject(primaryStage, lastProject, false);
+        } else {
+            showProjectSelection(primaryStage);
+        }
+    }
+
+    private void showProjectSelection(Stage primaryStage) {
+        ProjectSelectionScreen selectionScreen = new ProjectSelectionScreen(
+                primaryStage,
+                (projectName, clearCache) -> openProject(primaryStage, projectName, clearCache)
+        );
+
+        primaryStage.setScene(selectionScreen.createScene());
+        primaryStage.setTitle("BotMaker - Select Project");
+        primaryStage.show();
+    }
+
+    private void openProject(Stage primaryStage, String projectName, boolean clearCache) {
+        try {
+            ProjectConfig.updateLastOpened(projectName);
+            ApplicationConfig config = ApplicationConfig.forProject(projectName);
+
+            // 1. Configure Container
+            container = new DependencyContainer();
+            AppDependencyConfigurator.configure(container, config, primaryStage);
+
+            // 2. Handle Cache Flag
+            if (clearCache) {
+                container.resolve(LanguageServerService.class).setShouldClearCache(true);
+            }
+
+            // 3. Initialize Services & Wiring
+            AppServiceInitializer.initialize(container);
+
+            // 4. Keep reference for shutdown
+            this.languageServerService = container.resolve(LanguageServerService.class);
+
+            // 5. Setup UI
+            UIManager uiManager = container.resolve(UIManager.class);
+            uiManager.setOnSelectProject(v -> shutdownAndShowSelector(primaryStage));
+
+            primaryStage.setScene(uiManager.createScene());
+            primaryStage.setTitle("BotMaker Blocks - " + projectName);
+
+            // 6. Load Code
+            container.resolve(CodeEditorService.class).loadInitialCode();
+
+            primaryStage.setOnCloseRequest(e -> {
+                e.consume();
+                performShutdown();
+            });
+
+            primaryStage.show();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            showErrorDialog("Error opening project: " + e.getMessage());
+            showProjectSelection(primaryStage);
+        }
+    }
+
+    private void shutdownAndShowSelector(Stage primaryStage) {
+        // Non-terminal shutdown (just stop LSP, keep JVM alive)
+        if (languageServerService != null) {
+            languageServerService.shutdown();
+            languageServerService = null;
+        }
+        showProjectSelection(primaryStage);
+    }
+
+    private void performShutdown() {
+        new Thread(() -> {
+            try {
+                if (languageServerService != null) {
+                    System.out.println("Shutting down Language Server...");
+                    languageServerService.shutdown();
+                }
+            } catch (Exception ex) {
+                System.err.println("Error during shutdown: " + ex.getMessage());
+            } finally {
+                Platform.runLater(() -> {
+                    Platform.exit();
+                    System.exit(0);
+                });
+            }
+        }).start();
+    }
+
+    private boolean projectExists(String projectName) {
+        return Files.exists(Paths.get("projects", projectName)) &&
+                Files.exists(Paths.get("projects", projectName, "build.gradle"));
+    }
+
+    private void showErrorDialog(String message) {
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setTitle("Error");
+        alert.setHeaderText("Failed to open project");
+        alert.setContentText(message);
+        alert.showAndWait();
+    }
+
+    public static void main(String[] args) {
+        launch(args);
+    }
+}
+
+
+=================================================================================
+FILE: ers\bgroi\Documents\dev\IntellijProjects\BotMaker\src\main\java\com\botmaker\blocks\AssignmentBlock.java
 =================================================================================
 
 package com.botmaker.blocks;
@@ -7,19 +149,14 @@ package com.botmaker.blocks;
 import com.botmaker.core.AbstractStatementBlock;
 import com.botmaker.core.ExpressionBlock;
 import com.botmaker.lsp.CompletionContext;
-import com.botmaker.ui.AddableExpression;
+import com.botmaker.ui.components.BlockUIComponents;
+import com.botmaker.ui.components.SelectorComponents;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
-import javafx.scene.control.ContextMenu;
-import javafx.scene.control.MenuItem;
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.Pane;
-import javafx.scene.layout.Priority;
 import org.eclipse.jdt.core.dom.*;
-
-
 
 public class AssignmentBlock extends AbstractStatementBlock {
 
@@ -37,40 +174,23 @@ public class AssignmentBlock extends AbstractStatementBlock {
 
     public AssignmentBlock(String id, ExpressionStatement astNode) {
         super(id, astNode);
+        initializeOperator(astNode);
+    }
 
+    private void initializeOperator(ExpressionStatement astNode) {
         if (astNode.getExpression() instanceof Assignment) {
-            Assignment assignment = (Assignment) astNode.getExpression();
-            this.operator = assignment.getOperator().toString();
+            this.operator = ((Assignment) astNode.getExpression()).getOperator().toString();
         } else if (astNode.getExpression() instanceof PostfixExpression) {
-            PostfixExpression postfix = (PostfixExpression) astNode.getExpression();
-            this.operator = postfix.getOperator().toString();
+            this.operator = ((PostfixExpression) astNode.getExpression()).getOperator().toString();
         } else if (astNode.getExpression() instanceof PrefixExpression) {
-            PrefixExpression prefix = (PrefixExpression) astNode.getExpression();
-            this.operator = prefix.getOperator().toString();
+            this.operator = ((PrefixExpression) astNode.getExpression()).getOperator().toString();
         } else {
             this.operator = "=";
         }
     }
 
-    public ExpressionBlock getLeftHandSide() {
-        return leftHandSide;
-    }
-
-    public void setLeftHandSide(ExpressionBlock leftHandSide) {
-        this.leftHandSide = leftHandSide;
-    }
-
-    public ExpressionBlock getRightHandSide() {
-        return rightHandSide;
-    }
-
-    public void setRightHandSide(ExpressionBlock rightHandSide) {
-        this.rightHandSide = rightHandSide;
-    }
-
-    public String getOperator() {
-        return operator;
-    }
+    public void setLeftHandSide(ExpressionBlock leftHandSide) { this.leftHandSide = leftHandSide; }
+    public void setRightHandSide(ExpressionBlock rightHandSide) { this.rightHandSide = rightHandSide; }
 
     @Override
     protected Node createUINode(CompletionContext context) {
@@ -83,30 +203,19 @@ public class AssignmentBlock extends AbstractStatementBlock {
             container.getChildren().add(leftHandSide.getUINode(context));
         }
 
-        // Operator selector
-        ComboBox<String> operatorSelector = new ComboBox<>();
-        operatorSelector.getItems().addAll(OPERATOR_NAMES);
-        operatorSelector.getStyleClass().add("operator-selector");
-        operatorSelector.setEditable(false);
-
-        String currentName = getOperatorDisplayName(operator);
-        operatorSelector.setValue(currentName);
-
-        operatorSelector.setOnAction(e -> {
-            String selectedName = operatorSelector.getValue();
-            String newOperator = getOperatorSymbol(selectedName);
-
-            // Only update if it actually changed
-            if (newOperator != null && !newOperator.equals(this.operator)) {
-                this.operator = newOperator;
-
-                if (this.astNode instanceof ExpressionStatement) {
-                    Expression expr = ((ExpressionStatement) this.astNode).getExpression();
-                    context.codeEditor().updateAssignmentOperator(expr, newOperator);
+        // Operator selector via Component Factory
+        ComboBox<String> operatorSelector = SelectorComponents.createOperatorSelector(
+                OPERATOR_NAMES,
+                OPERATOR_SYMBOLS,
+                operator,
+                newOperator -> {
+                    this.operator = newOperator;
+                    if (this.astNode instanceof ExpressionStatement) {
+                        Expression expr = ((ExpressionStatement) this.astNode).getExpression();
+                        context.codeEditor().updateAssignmentOperator(expr, newOperator);
+                    }
                 }
-            }
-        });
-
+        );
         container.getChildren().add(operatorSelector);
 
         // Right hand side (only for non-increment/decrement)
@@ -115,79 +224,43 @@ public class AssignmentBlock extends AbstractStatementBlock {
                 container.getChildren().add(rightHandSide.getUINode(context));
             }
 
-            // + Button for changing right side expression
-            Button addButton = new Button("+");
-            addButton.getStyleClass().add("expression-add-button");
-            addButton.setOnAction(e -> showExpressionMenu(addButton, context));
+            // FIX: Use e.getSource() to avoid uninitialized variable reference
+            Button addButton = createAddButton(e -> showExpressionMenu((Button) e.getSource(), context));
             container.getChildren().add(addButton);
         }
 
-        // Spacer and delete button
-        Pane spacer = new Pane();
-        HBox.setHgrow(spacer, Priority.ALWAYS);
-
-        Button deleteButton = new Button("X");
-        deleteButton.setOnAction(e -> {
-            context.codeEditor().deleteStatement((Statement) this.astNode);
-        });
-
-        container.getChildren().addAll(spacer, deleteButton);
+        // Spacer and Delete button
+        container.getChildren().addAll(
+                BlockUIComponents.createSpacer(),
+                createDeleteButton(context)
+        );
 
         return container;
     }
 
     private void showExpressionMenu(Button button, CompletionContext context) {
-        ContextMenu menu = new ContextMenu();
-        menu.setStyle("-fx-control-inner-background: white;");
-
-        // FIXED: Determine the target type from the left-hand side
         String targetType = "any";
         if (leftHandSide != null && leftHandSide.getAstNode() != null) {
-            Expression lhsExpr = (Expression) leftHandSide.getAstNode();
-            ITypeBinding binding = lhsExpr.resolveTypeBinding();
+            Expression lhsExpr = (org.eclipse.jdt.core.dom.Expression) leftHandSide.getAstNode();
+            org.eclipse.jdt.core.dom.ITypeBinding binding = lhsExpr.resolveTypeBinding();
             if (binding != null) {
                 targetType = com.botmaker.util.TypeManager.determineUiType(binding.getName());
             }
         }
 
-        // FIXED: Filter expressions based on target type
-        for (com.botmaker.ui.AddableExpression type : com.botmaker.ui.AddableExpression.getForType(targetType)) {
-            MenuItem menuItem = new MenuItem(type.getDisplayName());
-            menuItem.setStyle("-fx-text-fill: black;");
-
-            menuItem.setOnAction(e -> {
-                if (rightHandSide != null) {
-                    Expression toReplace = (Expression) rightHandSide.getAstNode();
-                    context.codeEditor().replaceExpression(toReplace, type);
-                }
-            });
-            menu.getItems().add(menuItem);
+        org.eclipse.jdt.core.dom.Expression toReplace = null;
+        if (rightHandSide != null) {
+            toReplace = (org.eclipse.jdt.core.dom.Expression) rightHandSide.getAstNode();
         }
 
-        menu.show(button, javafx.geometry.Side.BOTTOM, 0, 0);
-    }
-
-    private String getOperatorDisplayName(String symbol) {
-        for (int i = 0; i < OPERATOR_SYMBOLS.length; i++) {
-            if (OPERATOR_SYMBOLS[i].equals(symbol)) {
-                return OPERATOR_NAMES[i];
-            }
-        }
-        return "set to";
-    }
-
-    private String getOperatorSymbol(String displayName) {
-        for (int i = 0; i < OPERATOR_NAMES.length; i++) {
-            if (OPERATOR_NAMES[i].equals(displayName)) {
-                return OPERATOR_SYMBOLS[i];
-            }
-        }
-        return "=";
+        // Use helper from AbstractStatementBlock
+        showExpressionMenuAndReplace(button, context, targetType, toReplace);
     }
 }
 
+
 =================================================================================
-FILE: ./src/main/java/com/botmaker/blocks/BinaryExpressionBlock.java
+FILE: ers\bgroi\Documents\dev\IntellijProjects\BotMaker\src\main\java\com\botmaker\blocks\BinaryExpressionBlock.java
 =================================================================================
 
 package com.botmaker.blocks;
@@ -210,19 +283,8 @@ public class BinaryExpressionBlock extends AbstractExpressionBlock {
     private String operator;
     private final ITypeBinding returnType;
 
-    // Math operator display names (user-friendly)
-    private static final String[] MATH_OPERATOR_NAMES = {
-            "plus",         // +
-            "minus",        // -
-            "times",        // *
-            "divided by",   // /
-            "modulo"        // %
-    };
-
-    // Corresponding Java operators
-    private static final String[] MATH_OPERATOR_SYMBOLS = {
-            "+", "-", "*", "/", "%"
-    };
+    private static final String[] MATH_OPERATOR_NAMES = { "plus", "minus", "times", "divided by", "modulo" };
+    private static final String[] MATH_OPERATOR_SYMBOLS = { "+", "-", "*", "/", "%" };
 
     public BinaryExpressionBlock(String id, InfixExpression astNode) {
         super(id, astNode);
@@ -230,29 +292,8 @@ public class BinaryExpressionBlock extends AbstractExpressionBlock {
         this.returnType = astNode.resolveTypeBinding();
     }
 
-    public ExpressionBlock getLeftOperand() {
-        return leftOperand;
-    }
-
-    public void setLeftOperand(ExpressionBlock leftOperand) {
-        this.leftOperand = leftOperand;
-    }
-
-    public ExpressionBlock getRightOperand() {
-        return rightOperand;
-    }
-
-    public void setRightOperand(ExpressionBlock rightOperand) {
-        this.rightOperand = rightOperand;
-    }
-
-    public String getOperator() {
-        return operator;
-    }
-
-    public ITypeBinding getReturnType() {
-        return returnType;
-    }
+    public void setLeftOperand(ExpressionBlock leftOperand) { this.leftOperand = leftOperand; }
+    public void setRightOperand(ExpressionBlock rightOperand) { this.rightOperand = rightOperand; }
 
     @Override
     protected Node createUINode(CompletionContext context) {
@@ -268,34 +309,23 @@ public class BinaryExpressionBlock extends AbstractExpressionBlock {
             expressionBox.getChildren().add(leftOperand.getUINode(context));
         }
 
-        // Check if this is a math operator or comparison/logical operator
+        // Operator
         if (isMathOperator(operator)) {
-            // Operator selector for math operations
-            ComboBox<String> operatorSelector = new ComboBox<>();
-            operatorSelector.getItems().addAll(MATH_OPERATOR_NAMES);
-            operatorSelector.getStyleClass().add("math-operator-selector");
-
-            // Set current operator
-            String currentName = getOperatorDisplayName(operator);
-            operatorSelector.setValue(currentName);
-
-            // Handle operator change
-            operatorSelector.setOnAction(e -> {
-                String selectedName = operatorSelector.getValue();
-                String newOperator = getOperatorSymbol(selectedName);
-                if (newOperator != null && !newOperator.equals(operator)) {
-                    this.operator = newOperator;
-                    System.out.println("Math operator changed to: " + newOperator);
-                    // Note: Operator change will take effect on next code regeneration
-                }
-            });
-
-            expressionBox.getChildren().add(operatorSelector);
+            ComboBox<String> selector = createOperatorSelector(
+                    MATH_OPERATOR_NAMES,
+                    MATH_OPERATOR_SYMBOLS,
+                    operator,
+                    newOp -> {
+                        this.operator = newOp;
+                        // Note: Actual logic update typically happens via a broader block update mechanism
+                        // or requires specific callback handling if not managed by parent Statement
+                        System.out.println("Math operator changed to: " + newOp);
+                    }
+            );
+            selector.getStyleClass().add("math-operator-selector");
+            expressionBox.getChildren().add(selector);
         } else {
-            // For non-math operators (comparisons, logical), just show the symbol
-            Label operatorLabel = new Label(operator);
-            operatorLabel.getStyleClass().add("operator-label");
-            expressionBox.getChildren().add(operatorLabel);
+            expressionBox.getChildren().add(createOperatorLabel(operator));
         }
 
         // Right operand
@@ -305,11 +335,8 @@ public class BinaryExpressionBlock extends AbstractExpressionBlock {
 
         container.getChildren().add(expressionBox);
 
-        // Type indicator (optional, can be removed if too cluttered)
-        String typeName = "unknown";
-        if (returnType != null) {
-            typeName = returnType.getName();
-        }
+        // Type indicator
+        String typeName = (returnType != null) ? returnType.getName() : "unknown";
         Label typeLabel = new Label("→ " + typeName);
         typeLabel.setStyle("-fx-font-style: italic; -fx-text-fill: #999; -fx-font-size: 10px;");
         container.getChildren().add(typeLabel);
@@ -317,45 +344,17 @@ public class BinaryExpressionBlock extends AbstractExpressionBlock {
         return container;
     }
 
-    /**
-     * Check if operator is a math operator
-     */
     private boolean isMathOperator(String op) {
         for (String mathOp : MATH_OPERATOR_SYMBOLS) {
-            if (mathOp.equals(op)) {
-                return true;
-            }
+            if (mathOp.equals(op)) return true;
         }
         return false;
     }
-
-    /**
-     * Convert operator symbol to display name
-     */
-    private String getOperatorDisplayName(String symbol) {
-        for (int i = 0; i < MATH_OPERATOR_SYMBOLS.length; i++) {
-            if (MATH_OPERATOR_SYMBOLS[i].equals(symbol)) {
-                return MATH_OPERATOR_NAMES[i];
-            }
-        }
-        return symbol; // Return as-is if not found
-    }
-
-    /**
-     * Convert display name to operator symbol
-     */
-    private String getOperatorSymbol(String displayName) {
-        for (int i = 0; i < MATH_OPERATOR_NAMES.length; i++) {
-            if (MATH_OPERATOR_NAMES[i].equals(displayName)) {
-                return MATH_OPERATOR_SYMBOLS[i];
-            }
-        }
-        return "+"; // default
-    }
 }
 
+
 =================================================================================
-FILE: ./src/main/java/com/botmaker/blocks/BooleanLiteralBlock.java
+FILE: ers\bgroi\Documents\dev\IntellijProjects\BotMaker\src\main\java\com\botmaker\blocks\BooleanLiteralBlock.java
 =================================================================================
 
 package com.botmaker.blocks;
@@ -368,6 +367,7 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.layout.StackPane;
 import org.eclipse.jdt.core.dom.BooleanLiteral;
+import org.eclipse.jdt.core.dom.Expression;
 
 /**
  * Block for true/false values with improved UI (Toggle Switch style)
@@ -453,17 +453,16 @@ public class BooleanLiteralBlock extends AbstractExpressionBlock {
     }
 }
 
+
 =================================================================================
-FILE: ./src/main/java/com/botmaker/blocks/BreakBlock.java
+FILE: ers\bgroi\Documents\dev\IntellijProjects\BotMaker\src\main\java\com\botmaker\blocks\BreakBlock.java
 =================================================================================
 
 package com.botmaker.blocks;
 
 import com.botmaker.core.AbstractStatementBlock;
 import com.botmaker.lsp.CompletionContext;
-import javafx.geometry.Pos;
 import javafx.scene.Node;
-import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;
 import org.eclipse.jdt.core.dom.BreakStatement;
 
@@ -475,42 +474,28 @@ public class BreakBlock extends AbstractStatementBlock {
 
     @Override
     protected Node createUINode(CompletionContext context) {
-        HBox container = new HBox(5);
-        container.setAlignment(Pos.CENTER_LEFT);
+        HBox container = createStandardHeader(context, createKeywordLabel("break"));
         container.getStyleClass().add("break-block");
-
-        Label breakLabel = new Label("break");
-        breakLabel.getStyleClass().add("keyword-label");
-
-        // Add spacer and delete button
-        javafx.scene.layout.Pane spacer = new javafx.scene.layout.Pane();
-        HBox.setHgrow(spacer, javafx.scene.layout.Priority.ALWAYS);
-
-        javafx.scene.control.Button deleteButton = new javafx.scene.control.Button("X");
-        deleteButton.setOnAction(e -> {
-            context.codeEditor().deleteStatement((Statement) this.astNode);
-        });
-
-        container.getChildren().addAll(breakLabel, spacer, deleteButton);
         return container;
     }
 }
 
+
 =================================================================================
-FILE: ./src/main/java/com/botmaker/blocks/CommentBlock.java
+FILE: ers\bgroi\Documents\dev\IntellijProjects\BotMaker\src\main\java\com\botmaker\blocks\CommentBlock.java
 =================================================================================
 
 package com.botmaker.blocks;
 
 import com.botmaker.core.AbstractStatementBlock;
 import com.botmaker.lsp.CompletionContext;
+import com.botmaker.ui.components.BlockUIComponents;
+import com.botmaker.ui.components.TextFieldComponents;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
-import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.Pane;
-import javafx.scene.layout.Priority;
 import org.eclipse.jdt.core.dom.Comment;
 
 public class CommentBlock extends AbstractStatementBlock {
@@ -528,50 +513,33 @@ public class CommentBlock extends AbstractStatementBlock {
         container.setAlignment(Pos.CENTER_LEFT);
         container.getStyleClass().add("comment-block");
 
-        // Simple user-friendly label
-        javafx.scene.control.Label commentLabel = new javafx.scene.control.Label("Comment:");
+        // Label
+        Label commentLabel = new Label("Comment:");
         commentLabel.getStyleClass().add("comment-indicator");
 
-        // Text Field
-        TextField commentField = new TextField(commentText != null ? commentText : "");
-        commentField.setPromptText("Write your note here...");
-        commentField.getStyleClass().add("comment-text-field");
-        HBox.setHgrow(commentField, Priority.ALWAYS);
-
-        // Save on Focus Lost
-        commentField.focusedProperty().addListener((obs, oldVal, newVal) -> {
-            if (!newVal) {
-                if (!commentField.getText().equals(commentText)) {
-                    this.commentText = commentField.getText();
-                    rebuildCode(context);
+        // TextField using component factory
+        TextField commentField = TextFieldComponents.createCommentField(
+                commentText,
+                "Write your note here...",
+                newText -> {
+                    if (!newText.equals(commentText)) {
+                        this.commentText = newText;
+                        javafx.application.Platform.runLater(() -> {
+                            context.codeEditor().updateComment((Comment) this.astNode, this.commentText);
+                        });
+                        container.requestFocus();
+                    }
                 }
-            }
-        });
+        );
 
-        // Save on Enter
-        commentField.setOnAction(e -> {
-            this.commentText = commentField.getText();
-            rebuildCode(context);
-            container.requestFocus();
-        });
+        container.getChildren().addAll(
+                commentLabel,
+                commentField,
+                BlockUIComponents.createSpacer(),
+                createDeleteButton(context)
+        );
 
-        Pane spacer = new Pane();
-        HBox.setHgrow(spacer, Priority.ALWAYS);
-
-        // Delete Button
-        Button deleteButton = new Button("X");
-        deleteButton.setOnAction(e -> {
-            context.codeEditor().deleteComment((Comment) this.astNode);
-        });
-
-        container.getChildren().addAll(commentLabel, commentField, spacer, deleteButton);
         return container;
-    }
-
-    private void rebuildCode(CompletionContext context) {
-        javafx.application.Platform.runLater(() -> {
-            context.codeEditor().updateComment((Comment) this.astNode, this.commentText);
-        });
     }
 
     @Override
@@ -580,8 +548,9 @@ public class CommentBlock extends AbstractStatementBlock {
     }
 }
 
+
 =================================================================================
-FILE: ./src/main/java/com/botmaker/blocks/ComparisonExpressionBlock.java
+FILE: ers\bgroi\Documents\dev\IntellijProjects\BotMaker\src\main\java\com\botmaker\blocks\ComparisonExpressionBlock.java
 =================================================================================
 
 package com.botmaker.blocks;
@@ -714,17 +683,16 @@ public class ComparisonExpressionBlock extends AbstractExpressionBlock {
     }
 }
 
+
 =================================================================================
-FILE: ./src/main/java/com/botmaker/blocks/ContinueBlock.java
+FILE: ers\bgroi\Documents\dev\IntellijProjects\BotMaker\src\main\java\com\botmaker\blocks\ContinueBlock.java
 =================================================================================
 
 package com.botmaker.blocks;
 
 import com.botmaker.core.AbstractStatementBlock;
 import com.botmaker.lsp.CompletionContext;
-import javafx.geometry.Pos;
 import javafx.scene.Node;
-import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;
 import org.eclipse.jdt.core.dom.ContinueStatement;
 
@@ -736,29 +704,15 @@ public class ContinueBlock extends AbstractStatementBlock {
 
     @Override
     protected Node createUINode(CompletionContext context) {
-        HBox container = new HBox(5);
-        container.setAlignment(Pos.CENTER_LEFT);
+        HBox container = createStandardHeader(context, createKeywordLabel("continue"));
         container.getStyleClass().add("continue-block");
-
-        Label continueLabel = new Label("continue");
-        continueLabel.getStyleClass().add("keyword-label");
-
-        // Add spacer and delete button
-        javafx.scene.layout.Pane spacer = new javafx.scene.layout.Pane();
-        HBox.setHgrow(spacer, javafx.scene.layout.Priority.ALWAYS);
-
-        javafx.scene.control.Button deleteButton = new javafx.scene.control.Button("X");
-        deleteButton.setOnAction(e -> {
-            context.codeEditor().deleteStatement((org.eclipse.jdt.core.dom.Statement) this.astNode);
-        });
-
-        container.getChildren().addAll(continueLabel, spacer, deleteButton);
         return container;
     }
 }
 
+
 =================================================================================
-FILE: ./src/main/java/com/botmaker/blocks/DoWhileBlock.java
+FILE: ers\bgroi\Documents\dev\IntellijProjects\BotMaker\src\main\java\com\botmaker\blocks\DoWhileBlock.java
 =================================================================================
 
 package com.botmaker.blocks;
@@ -770,14 +724,8 @@ import com.botmaker.core.CodeBlock;
 import com.botmaker.core.ExpressionBlock;
 import com.botmaker.lsp.CompletionContext;
 import com.botmaker.ui.BlockDragAndDropManager;
-import javafx.geometry.Insets;
-import javafx.geometry.Pos;
 import javafx.scene.Node;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.Pane;
-import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 import org.eclipse.jdt.core.dom.DoStatement;
 
@@ -788,28 +736,13 @@ public class DoWhileBlock extends AbstractStatementBlock implements BlockWithChi
 
     private ExpressionBlock condition;
     private BodyBlock body;
-    private final BlockDragAndDropManager dragAndDropManager;
 
     public DoWhileBlock(String id, DoStatement astNode, BlockDragAndDropManager dragAndDropManager) {
         super(id, astNode);
-        this.dragAndDropManager = dragAndDropManager;
     }
 
-    public ExpressionBlock getCondition() {
-        return condition;
-    }
-
-    public void setCondition(ExpressionBlock condition) {
-        this.condition = condition;
-    }
-
-    public BodyBlock getBody() {
-        return body;
-    }
-
-    public void setBody(BodyBlock body) {
-        this.body = body;
-    }
+    public void setCondition(ExpressionBlock condition) { this.condition = condition; }
+    public void setBody(BodyBlock body) { this.body = body; }
 
     @Override
     public List<CodeBlock> getChildren() {
@@ -824,46 +757,20 @@ public class DoWhileBlock extends AbstractStatementBlock implements BlockWithChi
         VBox mainContainer = new VBox(5);
         mainContainer.getStyleClass().add("do-while-block");
 
-        // Do header with delete button
-        HBox doHeaderRow = new HBox(5);
-        doHeaderRow.setAlignment(Pos.CENTER_LEFT);
+        // 1. Header: "do" + Delete Button
+        mainContainer.getChildren().add(createStandardHeader(context, createKeywordLabel("do")));
 
-        Label doLabel = new Label("do");
-        doLabel.getStyleClass().add("keyword-label");
+        // 2. Body
+        VBox bodyNode = createIndentedBody(body, context, "do-while-body");
+        if (bodyNode != null) mainContainer.getChildren().add(bodyNode);
 
-        // Add spacer and delete button
-        Pane spacer = new Pane();
-        HBox.setHgrow(spacer, Priority.ALWAYS);
-
-        Button deleteButton = new Button("X");
-        deleteButton.setOnAction(e -> {
-            context.codeEditor().deleteStatement((org.eclipse.jdt.core.dom.Statement) this.astNode);
-        });
-
-        doHeaderRow.getChildren().addAll(doLabel, spacer, deleteButton);
-        mainContainer.getChildren().add(doHeaderRow);
-
-        // Body
-        if (body != null) {
-            VBox bodyContainer = new VBox();
-            bodyContainer.getStyleClass().add("do-while-body");
-            bodyContainer.setPadding(new Insets(5, 0, 0, 20));
-            bodyContainer.getChildren().add(body.getUINode(context));
-            mainContainer.getChildren().add(bodyContainer);
-        }
-
-        // While condition
-        HBox whileCondition = new HBox(5);
-        whileCondition.setAlignment(Pos.CENTER_LEFT);
+        // 3. Footer: "while [condition]"
+        // Note: Do-While footer doesn't typically have a delete button itself, as it's part of the block
+        HBox whileCondition = createSentence(
+                createKeywordLabel("while"),
+                condition != null ? condition.getUINode(context) : createExpressionDropZone(context)
+        );
         whileCondition.getStyleClass().add("do-while-condition");
-
-        Label whileLabel = new Label("while");
-        whileLabel.getStyleClass().add("keyword-label");
-
-        whileCondition.getChildren().add(whileLabel);
-        if (condition != null) {
-            whileCondition.getChildren().add(condition.getUINode(context));
-        }
 
         mainContainer.getChildren().add(whileCondition);
 
@@ -871,8 +778,9 @@ public class DoWhileBlock extends AbstractStatementBlock implements BlockWithChi
     }
 }
 
+
 =================================================================================
-FILE: ./src/main/java/com/botmaker/blocks/ForBlock.java
+FILE: ers\bgroi\Documents\dev\IntellijProjects\BotMaker\src\main\java\com\botmaker\blocks\ForBlock.java
 =================================================================================
 
 package com.botmaker.blocks;
@@ -884,58 +792,26 @@ import com.botmaker.core.CodeBlock;
 import com.botmaker.core.ExpressionBlock;
 import com.botmaker.lsp.CompletionContext;
 import com.botmaker.ui.BlockDragAndDropManager;
-import javafx.geometry.Insets;
-import javafx.geometry.Pos;
 import javafx.scene.Node;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.Pane;
-import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 import org.eclipse.jdt.core.dom.EnhancedForStatement;
 
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * ForEach loop block: for(Type variable : collection) { }
- */
 public class ForBlock extends AbstractStatementBlock implements BlockWithChildren {
 
     private ExpressionBlock variable;
     private ExpressionBlock collection;
     private BodyBlock body;
-    private final BlockDragAndDropManager dragAndDropManager;
 
     public ForBlock(String id, EnhancedForStatement astNode, BlockDragAndDropManager dragAndDropManager) {
         super(id, astNode);
-        this.dragAndDropManager = dragAndDropManager;
     }
 
-    public ExpressionBlock getVariable() {
-        return variable;
-    }
-
-    public void setVariable(ExpressionBlock variable) {
-        this.variable = variable;
-    }
-
-    public ExpressionBlock getCollection() {
-        return collection;
-    }
-
-    public void setCollection(ExpressionBlock collection) {
-        this.collection = collection;
-    }
-
-    public BodyBlock getBody() {
-        return body;
-    }
-
-    public void setBody(BodyBlock body) {
-        this.body = body;
-    }
+    public void setVariable(ExpressionBlock variable) { this.variable = variable; }
+    public void setCollection(ExpressionBlock collection) { this.collection = collection; }
+    public void setBody(BodyBlock body) { this.body = body; }
 
     @Override
     public List<CodeBlock> getChildren() {
@@ -948,61 +824,30 @@ public class ForBlock extends AbstractStatementBlock implements BlockWithChildre
 
     @Override
     protected Node createUINode(CompletionContext context) {
+        // Header: "for each [var] in [collection]"
+        Node headerContent = createSentence(
+                createKeywordLabel("for each"),
+                variable != null ? variable.getUINode(context) : createExpressionDropZone(context),
+                createKeywordLabel("in"),
+                collection != null ? collection.getUINode(context) : createExpressionDropZone(context)
+        );
+        headerContent.getStyleClass().add("for-header");
+
         VBox mainContainer = new VBox(5);
         mainContainer.getStyleClass().add("for-block");
-
-        // Header row with delete button
-        HBox headerRow = new HBox(5);
-        headerRow.setAlignment(Pos.CENTER_LEFT);
-
-        // For each parts
-        HBox header = new HBox(5);
-        header.setAlignment(Pos.CENTER_LEFT);
-        header.getStyleClass().add("for-header");
-
-        Label forLabel = new Label("for each");
-        forLabel.getStyleClass().add("keyword-label");
-
-        header.getChildren().add(forLabel);
-
-        if (variable != null) {
-            header.getChildren().add(variable.getUINode(context));
-        }
-
-        Label inLabel = new Label("in");
-        header.getChildren().add(inLabel);
-
-        if (collection != null) {
-            header.getChildren().add(collection.getUINode(context));
-        }
-
-        // Add spacer and delete button
-        Pane spacer = new Pane();
-        HBox.setHgrow(spacer, Priority.ALWAYS);
-
-        Button deleteButton = new Button("X");
-        deleteButton.setOnAction(e -> {
-            context.codeEditor().deleteStatement((org.eclipse.jdt.core.dom.Statement) this.astNode);
-        });
-
-        headerRow.getChildren().addAll(header, spacer, deleteButton);
-        mainContainer.getChildren().add(headerRow);
+        mainContainer.getChildren().add(createStandardHeader(context, headerContent));
 
         // Body
-        if (body != null) {
-            VBox bodyContainer = new VBox();
-            bodyContainer.getStyleClass().add("for-body");
-            bodyContainer.setPadding(new Insets(5, 0, 0, 20));
-            bodyContainer.getChildren().add(body.getUINode(context));
-            mainContainer.getChildren().add(bodyContainer);
-        }
+        VBox bodyNode = createIndentedBody(body, context, "for-body");
+        if (bodyNode != null) mainContainer.getChildren().add(bodyNode);
 
         return mainContainer;
     }
 }
 
+
 =================================================================================
-FILE: ./src/main/java/com/botmaker/blocks/IdentifierBlock.java
+FILE: ers\bgroi\Documents\dev\IntellijProjects\BotMaker\src\main\java\com\botmaker\blocks\IdentifierBlock.java
 =================================================================================
 
 package com.botmaker.blocks;
@@ -1274,23 +1119,22 @@ public class IdentifierBlock extends AbstractExpressionBlock {
     }
 }
 
+
 =================================================================================
-FILE: ./src/main/java/com/botmaker/blocks/IfBlock.java
+FILE: ers\bgroi\Documents\dev\IntellijProjects\BotMaker\src\main\java\com\botmaker\blocks\IfBlock.java
 =================================================================================
 
 package com.botmaker.blocks;
 
 import com.botmaker.core.AbstractStatementBlock;
 import com.botmaker.core.BodyBlock;
-import com.botmaker.core.CodeBlock;
 import com.botmaker.core.ExpressionBlock;
+import com.botmaker.core.StatementBlock;
 import com.botmaker.lsp.CompletionContext;
+import com.botmaker.ui.components.BlockUIComponents;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
-import javafx.scene.control.ContextMenu;
-import javafx.scene.control.Label;
-import javafx.scene.control.MenuItem;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import org.eclipse.jdt.core.dom.CompilationUnit;
@@ -1300,162 +1144,93 @@ public class IfBlock extends AbstractStatementBlock {
 
     private ExpressionBlock condition;
     private BodyBlock thenBody;
-    private com.botmaker.core.StatementBlock elseStatement;
+    private StatementBlock elseStatement;
 
     public IfBlock(String id, IfStatement astNode) {
         super(id, astNode);
     }
 
-    public ExpressionBlock getCondition() { return condition; }
     public void setCondition(ExpressionBlock condition) { this.condition = condition; }
-    public BodyBlock getThenBody() { return thenBody; }
     public void setThenBody(BodyBlock thenBody) { this.thenBody = thenBody; }
-    public com.botmaker.core.StatementBlock getElseStatement() { return elseStatement; }
-    public void setElseStatement(com.botmaker.core.StatementBlock elseStatement) { this.elseStatement = elseStatement; }
+    public void setElseStatement(StatementBlock elseStatement) { this.elseStatement = elseStatement; }
 
     @Override
     protected Node createUINode(CompletionContext context) {
         VBox container = new VBox(5);
         container.getStyleClass().add("if-block");
 
-        HBox header = new HBox(5);
-        header.setAlignment(Pos.CENTER_LEFT);
+        // 1. Header: "If [condition] [+]"
+        Button addButton = createAddButton(e ->
+                showExpressionMenuAndReplace((Button)e.getSource(), context, "boolean",
+                        condition != null ? (org.eclipse.jdt.core.dom.Expression) condition.getAstNode() : null)
+        );
 
-        Label ifLabel = new Label("If");
-        ifLabel.getStyleClass().add("keyword-label");
-        header.getChildren().add(ifLabel);
+        Node headerContent = createSentence(
+                createKeywordLabel("If"),
+                getOrDropZone(condition, context),
+                addButton
+        );
 
-        if (condition != null) {
-            header.getChildren().add(condition.getUINode(context));
-        } else {
-            header.getChildren().add(createExpressionDropZone(context));
-        }
+        container.getChildren().add(createStandardHeader(context, headerContent));
 
-        Button addButton = new Button("+");
-        addButton.getStyleClass().add("expression-add-button");
-
-        // UPDATED: Pass "boolean" as target type
-        addButton.setOnAction(e -> showExpressionMenu(addButton, context, "boolean"));
-
-        header.getChildren().add(addButton);
-
-        javafx.scene.layout.Pane spacer = new javafx.scene.layout.Pane();
-        HBox.setHgrow(spacer, javafx.scene.layout.Priority.ALWAYS);
-
-        javafx.scene.control.Button deleteButton = new javafx.scene.control.Button("X");
-        deleteButton.setOnAction(e -> context.codeEditor().deleteStatement((org.eclipse.jdt.core.dom.Statement) this.astNode));
-
-        header.getChildren().addAll(spacer, deleteButton);
-        container.getChildren().add(header);
-
+        // 2. Then Body
         if (thenBody != null) {
-            Node thenBodyNode = thenBody.getUINode(context);
-            thenBodyNode.getStyleClass().add("if-body");
-            HBox.setHgrow(thenBodyNode, javafx.scene.layout.Priority.ALWAYS);
-            container.getChildren().add(thenBodyNode);
+            VBox thenNode = createIndentedBody(thenBody, context, "if-body");
+            container.getChildren().add(thenNode);
         }
 
+        // 3. Else / Else If Logic
         if (elseStatement != null) {
-            if (elseStatement instanceof com.botmaker.core.BodyBlock) {
+            if (elseStatement instanceof BodyBlock) {
+                // Regular Else
                 VBox elseContainer = new VBox(5);
-                HBox elseHeader = new HBox(5);
-                elseHeader.setAlignment(Pos.CENTER_LEFT);
-                Label elseLabel = new Label("Else");
-                elseLabel.getStyleClass().add("keyword-label");
-                javafx.scene.control.Button addElseIfButton = new javafx.scene.control.Button("+ if");
-                addElseIfButton.setOnAction(e -> context.codeEditor().convertElseToElseIf((IfStatement) this.astNode));
-                javafx.scene.layout.Pane elseSpacer = new javafx.scene.layout.Pane();
-                HBox.setHgrow(elseSpacer, javafx.scene.layout.Priority.ALWAYS);
-                javafx.scene.control.Button deleteElseButton = new javafx.scene.control.Button("X");
-                deleteElseButton.setOnAction(e -> context.codeEditor().deleteElseFromIfStatement((IfStatement) this.astNode));
-                elseHeader.getChildren().addAll(elseLabel, addElseIfButton, elseSpacer, deleteElseButton);
 
-                Node elseBodyNode = elseStatement.getUINode(context);
-                elseBodyNode.getStyleClass().add("if-body");
-                HBox.setHgrow(elseBodyNode, javafx.scene.layout.Priority.ALWAYS);
+                HBox elseHeader = createSentence(
+                        createKeywordLabel("Else"),
+                        BlockUIComponents.createAddButton(e -> context.codeEditor().convertElseToElseIf((IfStatement) this.astNode)),
+                        BlockUIComponents.createSpacer(),
+                        BlockUIComponents.createDeleteButton(() -> context.codeEditor().deleteElseFromIfStatement((IfStatement) this.astNode))
+                );
+
+                VBox elseBodyNode = createIndentedBody((BodyBlock) elseStatement, context, "if-body");
                 elseContainer.getChildren().addAll(elseHeader, elseBodyNode);
                 container.getChildren().add(elseContainer);
             } else {
+                // Else If (Recursive IfBlock)
                 HBox elseIfContainer = new HBox(5);
                 elseIfContainer.setAlignment(Pos.CENTER_LEFT);
-                Label elseLabel = new Label("Else");
-                elseLabel.getStyleClass().add("keyword-label");
-                elseIfContainer.getChildren().add(elseLabel);
+                elseIfContainer.getChildren().add(createKeywordLabel("Else"));
+
                 Node elseNode = elseStatement.getUINode(context);
                 HBox.setHgrow(elseNode, javafx.scene.layout.Priority.ALWAYS);
                 elseIfContainer.getChildren().add(elseNode);
+
                 container.getChildren().add(elseIfContainer);
             }
         } else {
-            javafx.scene.control.Button addElseButton = new javafx.scene.control.Button("+");
-            addElseButton.setOnAction(e -> context.codeEditor().addElseToIfStatement((IfStatement) this.astNode));
+            // Add Else Button
+            Button addElseButton = createAddButton(e -> context.codeEditor().addElseToIfStatement((IfStatement) this.astNode));
             container.getChildren().add(addElseButton);
         }
 
         return container;
     }
 
-    // UPDATED: Accepts targetType
-    private void showExpressionMenu(Button button, CompletionContext context, String targetType) {
-        ContextMenu menu = new ContextMenu();
-        menu.setStyle("-fx-control-inner-background: white;");
-
-        for (com.botmaker.ui.AddableExpression type : com.botmaker.ui.AddableExpression.getForType(targetType)) {
-            MenuItem menuItem = new MenuItem(type.getDisplayName());
-            menuItem.setStyle("-fx-text-fill: black;");
-
-            menuItem.setOnAction(e -> {
-                if (condition != null) {
-                    org.eclipse.jdt.core.dom.Expression toReplace = (org.eclipse.jdt.core.dom.Expression) condition.getAstNode();
-                    context.codeEditor().replaceExpression(toReplace, type);
-                }
-            });
-            menu.getItems().add(menuItem);
-        }
-
-        menu.show(button, javafx.geometry.Side.BOTTOM, 0, 0);
-    }
-
-    @Override
-    public void highlight() {
-        if (condition != null) {
-            condition.highlight();
-        } else {
-            super.highlight();
-        }
-    }
-
-    @Override
-    public void unhighlight() {
-        if (condition != null) {
-            condition.unhighlight();
-        } else {
-            super.unhighlight();
-        }
-    }
-
     @Override
     public int getBreakpointLine(CompilationUnit cu) {
-        if (condition != null) {
-            return condition.getBreakpointLine(cu);
-        }
+        if (condition != null) return condition.getBreakpointLine(cu);
         return super.getBreakpointLine(cu);
     }
 
     @Override
-    public CodeBlock getHighlightTarget() {
+    public com.botmaker.core.CodeBlock getHighlightTarget() {
         return condition != null ? condition : this;
-    }
-
-    @Override
-    public String getDetails() {
-        String conditionDetails = (condition != null) ? condition.getDetails() : "no condition";
-        return "If Statement (condition: " + conditionDetails + ")";
     }
 }
 
+
 =================================================================================
-FILE: ./src/main/java/com/botmaker/blocks/LibraryBlock.java
+FILE: ers\bgroi\Documents\dev\IntellijProjects\BotMaker\src\main\java\com\botmaker\blocks\LibraryBlock.java
 =================================================================================
 
 package com.botmaker.blocks;
@@ -1515,8 +1290,9 @@ public class LibraryBlock extends AbstractCodeBlock implements BlockWithChildren
     }
 }
 
+
 =================================================================================
-FILE: ./src/main/java/com/botmaker/blocks/ListBlock.java
+FILE: ers\bgroi\Documents\dev\IntellijProjects\BotMaker\src\main\java\com\botmaker\blocks\ListBlock.java
 =================================================================================
 
 package com.botmaker.blocks;
@@ -1772,7 +1548,7 @@ public class ListBlock extends AbstractExpressionBlock {
                 if (elementIndex < elements.size()) {
                     ExpressionBlock oldElement = elements.get(elementIndex);
                     context.codeEditor().replaceExpression(
-                            (org.eclipse.jdt.core.dom.Expression) oldElement.getAstNode(),
+                            (Expression) oldElement.getAstNode(),
                             type
                     );
                 }
@@ -1794,8 +1570,9 @@ public class ListBlock extends AbstractExpressionBlock {
     }
 }
 
+
 =================================================================================
-FILE: ./src/main/java/com/botmaker/blocks/LiteralBlock.java
+FILE: ers\bgroi\Documents\dev\IntellijProjects\BotMaker\src\main\java\com\botmaker\blocks\LiteralBlock.java
 =================================================================================
 
 package com.botmaker.blocks;
@@ -1808,6 +1585,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.TextFormatter;
 import javafx.scene.layout.HBox;
 import org.eclipse.jdt.core.dom.Expression;
+import org.eclipse.jdt.core.dom.MethodInvocation;
 
 import java.math.BigDecimal;
 import java.util.function.UnaryOperator;
@@ -1863,8 +1641,8 @@ public class LiteralBlock<T> extends AbstractExpressionBlock {
                 }
 
                 if (!textToSave.equals(oldText)) {
-                    if (this.astNode instanceof org.eclipse.jdt.core.dom.MethodInvocation) {
-                        org.eclipse.jdt.core.dom.MethodInvocation mi = (org.eclipse.jdt.core.dom.MethodInvocation) this.astNode;
+                    if (this.astNode instanceof MethodInvocation) {
+                        MethodInvocation mi = (MethodInvocation) this.astNode;
                         context.codeEditor().addStringArgumentToMethodInvocation(mi, textToSave);
                     } else {
                         context.codeEditor().replaceLiteralValue((Expression) this.astNode, textToSave);
@@ -1997,8 +1775,9 @@ public class LiteralBlock<T> extends AbstractExpressionBlock {
     }
 }
 
+
 =================================================================================
-FILE: ./src/main/java/com/botmaker/blocks/MainBlock.java
+FILE: ers\bgroi\Documents\dev\IntellijProjects\BotMaker\src\main\java\com\botmaker\blocks\MainBlock.java
 =================================================================================
 
 package com.botmaker.blocks;
@@ -2059,7 +1838,7 @@ public class MainBlock extends AbstractCodeBlock implements BlockWithChildren {
 
 
 =================================================================================
-FILE: ./src/main/java/com/botmaker/blocks/MethodDeclarationBlock.java
+FILE: ers\bgroi\Documents\dev\IntellijProjects\BotMaker\src\main\java\com\botmaker\blocks\MethodDeclarationBlock.java
 =================================================================================
 
 package com.botmaker.blocks;
@@ -2274,8 +2053,9 @@ public class MethodDeclarationBlock extends AbstractStatementBlock implements Bl
     }
 }
 
+
 =================================================================================
-FILE: ./src/main/java/com/botmaker/blocks/MethodInvocationBlock.java
+FILE: ers\bgroi\Documents\dev\IntellijProjects\BotMaker\src\main\java\com\botmaker\blocks\MethodInvocationBlock.java
 =================================================================================
 
 package com.botmaker.blocks;
@@ -2630,8 +2410,9 @@ public class MethodInvocationBlock extends AbstractExpressionBlock implements St
     }
 }
 
+
 =================================================================================
-FILE: ./src/main/java/com/botmaker/blocks/PrintBlock.java
+FILE: ers\bgroi\Documents\dev\IntellijProjects\BotMaker\src\main\java\com\botmaker\blocks\PrintBlock.java
 =================================================================================
 
 package com.botmaker.blocks;
@@ -2639,13 +2420,11 @@ package com.botmaker.blocks;
 import com.botmaker.core.AbstractStatementBlock;
 import com.botmaker.core.ExpressionBlock;
 import com.botmaker.lsp.CompletionContext;
-import javafx.geometry.Pos;
 import javafx.scene.Node;
+import javafx.scene.control.Button;
 import javafx.scene.layout.HBox;
 import javafx.scene.text.Text;
 import org.eclipse.jdt.core.dom.ExpressionStatement;
-import org.eclipse.jdt.core.dom.MethodInvocation;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -2658,73 +2437,46 @@ public class PrintBlock extends AbstractStatementBlock {
         super(id, astNode);
     }
 
-    public List<ExpressionBlock> getArguments() {
-        return arguments;
-    }
-
-    public void addArgument(ExpressionBlock argument) {
-        this.arguments.add(argument);
-    }
+    public void addArgument(ExpressionBlock argument) { this.arguments.add(argument); }
 
     @Override
     protected Node createUINode(CompletionContext context) {
-        HBox container = new HBox(5);
-        container.setAlignment(Pos.CENTER_LEFT);
-        container.getStyleClass().add("print-block");
-
-        container.getChildren().add(new Text("Print:"));
+        HBox content = createSentence();
+        content.getChildren().add(new Text("Print:"));
 
         if (arguments.isEmpty()) {
-            container.getChildren().add(createExpressionDropZone(context));
+            content.getChildren().add(createExpressionDropZone(context));
         } else {
             for (ExpressionBlock arg : arguments) {
-                container.getChildren().add(arg.getUINode(context));
+                content.getChildren().add(arg.getUINode(context));
             }
         }
 
-        javafx.scene.control.Button addButton = new javafx.scene.control.Button("+");
-        javafx.scene.control.ContextMenu contextMenu = new javafx.scene.control.ContextMenu();
-
-        for (com.botmaker.ui.AddableExpression type : com.botmaker.ui.AddableExpression.values()) {
-            javafx.scene.control.MenuItem menuItem = new javafx.scene.control.MenuItem(type.getDisplayName());
-            menuItem.setOnAction(e -> {
-                if (!arguments.isEmpty()) {
-                    // We are assuming one argument for now
-                    org.eclipse.jdt.core.dom.Expression toReplace = (org.eclipse.jdt.core.dom.Expression) arguments.get(0).getAstNode();
-                    context.codeEditor().replaceExpression(toReplace, type);
-                }
-            });
-            contextMenu.getItems().add(menuItem);
-        }
-
-        addButton.setOnAction(e -> contextMenu.show(addButton, javafx.geometry.Side.BOTTOM, 0, 0));
-        container.getChildren().add(addButton);
-
-        javafx.scene.control.Button deleteButton = new javafx.scene.control.Button("X");
-        deleteButton.setOnAction(e -> {
-            context.codeEditor().deleteStatement((org.eclipse.jdt.core.dom.Statement) this.astNode);
+        // Add Button
+        Button addButton = createAddButton(e -> {
+            // Logic handles one argument for now in standard print blocks
+            org.eclipse.jdt.core.dom.Expression toReplace = !arguments.isEmpty() ?
+                    (org.eclipse.jdt.core.dom.Expression) arguments.get(0).getAstNode() : null;
+            showExpressionMenuAndReplace((Button)e.getSource(), context, "any", toReplace);
         });
 
-        javafx.scene.layout.Pane spacer = new javafx.scene.layout.Pane();
-        HBox.setHgrow(spacer, javafx.scene.layout.Priority.ALWAYS);
+        content.getChildren().add(addButton);
 
-        container.getChildren().addAll(spacer, deleteButton);
-
+        Node container = createStandardHeader(context, content);
+        container.getStyleClass().add("print-block");
         return container;
     }
 
     @Override
     public String getDetails() {
-        String argsString = arguments.stream()
-                .map(ExpressionBlock::getDetails)
-                .collect(Collectors.joining(", "));
+        String argsString = arguments.stream().map(ExpressionBlock::getDetails).collect(Collectors.joining(", "));
         return "Print Statement: " + argsString;
     }
 }
 
 
 =================================================================================
-FILE: ./src/main/java/com/botmaker/blocks/ReadInputBlock.java
+FILE: ers\bgroi\Documents\dev\IntellijProjects\BotMaker\src\main\java\com\botmaker\blocks\ReadInputBlock.java
 =================================================================================
 
 package com.botmaker.blocks;
@@ -2732,86 +2484,58 @@ package com.botmaker.blocks;
 import com.botmaker.core.AbstractStatementBlock;
 import com.botmaker.core.ExpressionBlock;
 import com.botmaker.lsp.CompletionContext;
-import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.control.Label;
-import javafx.scene.layout.HBox;
 import org.eclipse.jdt.core.dom.VariableDeclarationStatement;
+
+import static com.botmaker.ui.components.BlockUIComponents.createTypeLabel;
 
 public class ReadInputBlock extends AbstractStatementBlock {
 
     private ExpressionBlock variableName;
-    private String inputType; // "nextLine", "nextInt", "nextDouble", etc.
+    private String inputType;
 
     public ReadInputBlock(String id, VariableDeclarationStatement astNode, String inputType) {
         super(id, astNode);
         this.inputType = inputType;
     }
 
-    public ExpressionBlock getVariableName() {
-        return variableName;
-    }
-
-    public void setVariableName(ExpressionBlock variableName) {
-        this.variableName = variableName;
-    }
-
-    public String getInputType() {
-        return inputType;
-    }
+    public void setVariableName(ExpressionBlock variableName) { this.variableName = variableName; }
 
     @Override
     protected Node createUINode(CompletionContext context) {
-        HBox container = new HBox(5);
-        container.setAlignment(Pos.CENTER_LEFT);
-        container.getStyleClass().add("read-input-block");
+        Node varNode = variableName != null ? variableName.getUINode(context) : null;
 
-        // Display based on input type
-        Label typeLabel = new Label(getTypeDisplayName());
-        typeLabel.getStyleClass().add("type-label");
-
-        if (variableName != null) {
-            container.getChildren().add(variableName.getUINode(context));
-        }
-
-        Label equalsLabel = new Label("=");
         Label scannerLabel = new Label("scanner." + inputType + "()");
         scannerLabel.getStyleClass().add("method-call-label");
 
-        container.getChildren().addAll(typeLabel, equalsLabel, scannerLabel);
+        Node content = createSentence(
+                createTypeLabel(getTypeDisplayName()),
+                varNode,
+                createKeywordLabel("="),
+                scannerLabel
+        );
 
-        // Add spacer and delete button
-        javafx.scene.layout.Pane spacer = new javafx.scene.layout.Pane();
-        HBox.setHgrow(spacer, javafx.scene.layout.Priority.ALWAYS);
-
-        javafx.scene.control.Button deleteButton = new javafx.scene.control.Button("X");
-        deleteButton.setOnAction(e -> {
-            context.codeEditor().deleteStatement((org.eclipse.jdt.core.dom.Statement) this.astNode);
-        });
-
-        container.getChildren().addAll(spacer, deleteButton);
-
+        Node container = createStandardHeader(context, content);
+        container.getStyleClass().add("read-input-block");
         return container;
     }
 
+
     private String getTypeDisplayName() {
         switch (inputType) {
-            case "nextLine":
-                return "String";
-            case "nextInt":
-                return "int";
-            case "nextDouble":
-                return "double";
-            case "nextBoolean":
-                return "boolean";
-            default:
-                return "var";
+            case "nextLine": return "String";
+            case "nextInt": return "int";
+            case "nextDouble": return "double";
+            case "nextBoolean": return "boolean";
+            default: return "var";
         }
     }
 }
 
+
 =================================================================================
-FILE: ./src/main/java/com/botmaker/blocks/ReturnBlock.java
+FILE: ers\bgroi\Documents\dev\IntellijProjects\BotMaker\src\main\java\com\botmaker\blocks\ReturnBlock.java
 =================================================================================
 
 package com.botmaker.blocks;
@@ -2819,21 +2543,15 @@ package com.botmaker.blocks;
 import com.botmaker.core.AbstractStatementBlock;
 import com.botmaker.core.ExpressionBlock;
 import com.botmaker.lsp.CompletionContext;
-import com.botmaker.ui.AddableExpression;
-import com.botmaker.util.TypeManager;
-import javafx.geometry.Pos;
+import com.botmaker.ui.components.BlockUIComponents;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
-import javafx.scene.control.ContextMenu;
 import javafx.scene.control.Label;
-import javafx.scene.control.MenuItem;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.Pane;
-import javafx.scene.layout.Priority;
 import org.eclipse.jdt.core.dom.ASTNode;
 import org.eclipse.jdt.core.dom.MethodDeclaration;
 import org.eclipse.jdt.core.dom.ReturnStatement;
-import org.eclipse.jdt.core.dom.Statement;
+
+import static com.botmaker.ui.components.BlockUIComponents.createChangeButton;
 
 public class ReturnBlock extends AbstractStatementBlock {
 
@@ -2849,50 +2567,45 @@ public class ReturnBlock extends AbstractStatementBlock {
 
     @Override
     protected Node createUINode(CompletionContext context) {
-        HBox container = new HBox(5);
-        container.setAlignment(Pos.CENTER_LEFT);
-        container.getStyleClass().add("return-block");
-
-        Label returnLabel = new Label("return");
-        returnLabel.getStyleClass().add("keyword-label");
-        container.getChildren().add(returnLabel);
-
         // Determine parent method return type
         String methodReturnType = findParentMethodReturnType();
         boolean isVoid = "void".equals(methodReturnType);
 
+        Node content;
+
         if (expression != null) {
-            container.getChildren().add(expression.getUINode(context));
+            Button changeBtn = createChangeButton(e ->
+                    showExpressionMenuAndReplace((Button)e.getSource(), context, methodReturnType, (org.eclipse.jdt.core.dom.Expression)expression.getAstNode())
+            );
 
-            // Allow changing it
-            Button changeBtn = new Button("↻");
-            changeBtn.getStyleClass().add("icon-button");
-            changeBtn.setOnAction(e -> showExpressionMenu(changeBtn, context, methodReturnType));
-            container.getChildren().add(changeBtn);
-
+            content = createSentence(
+                    createKeywordLabel("return"),
+                    expression.getUINode(context),
+                    changeBtn
+            );
         } else if (!isVoid) {
-            // Only show "Add" button if not void
-            Button addButton = new Button("+");
-            addButton.getStyleClass().add("expression-add-button");
-            addButton.setOnAction(e -> showExpressionMenu(addButton, context, methodReturnType));
-            container.getChildren().add(addButton);
+            Button addButton = createAddButton(e ->
+                    BlockUIComponents.createExpressionTypeMenu(methodReturnType, type ->
+                            context.codeEditor().setReturnExpression((ReturnStatement) this.astNode, type)
+                    ).show((Button)e.getSource(), javafx.geometry.Side.BOTTOM, 0, 0)
+            );
+
+            content = createSentence(
+                    createKeywordLabel("return"),
+                    addButton
+            );
         } else {
-            // It's void and has no expression -> Just show implicit "void" label or nothing
             Label voidLabel = new Label("(void)");
             voidLabel.setStyle("-fx-text-fill: #aaa; -fx-font-size: 10px; -fx-font-style: italic;");
-            container.getChildren().add(voidLabel);
+
+            content = createSentence(
+                    createKeywordLabel("return"),
+                    voidLabel
+            );
         }
 
-        // Spacer and Delete Button
-        Pane spacer = new Pane();
-        HBox.setHgrow(spacer, Priority.ALWAYS);
-
-        Button deleteButton = new Button("X");
-        deleteButton.setOnAction(e -> {
-            context.codeEditor().deleteStatement((Statement) this.astNode);
-        });
-
-        container.getChildren().addAll(spacer, deleteButton);
+        Node container = createStandardHeader(context, content);
+        container.getStyleClass().add("return-block");
 
         return container;
     }
@@ -2909,31 +2622,13 @@ public class ReturnBlock extends AbstractStatementBlock {
             }
             current = current.getParent();
         }
-        return "void"; // Default safe fallback
-    }
-
-    private void showExpressionMenu(Button button, CompletionContext context, String targetType) {
-        ContextMenu menu = new ContextMenu();
-
-        // Convert Java type (e.g., int) to UI type (e.g., number)
-        String uiType = TypeManager.determineUiType(targetType);
-
-        for (AddableExpression type : AddableExpression.getForType(uiType)) {
-            MenuItem menuItem = new MenuItem(type.getDisplayName());
-            menuItem.setOnAction(e -> {
-                context.codeEditor().setReturnExpression(
-                        (ReturnStatement) this.astNode,
-                        type
-                );
-            });
-            menu.getItems().add(menuItem);
-        }
-        menu.show(button, javafx.geometry.Side.BOTTOM, 0, 0);
+        return "void";
     }
 }
 
+
 =================================================================================
-FILE: ./src/main/java/com/botmaker/blocks/SwitchBlock.java
+FILE: ers\bgroi\Documents\dev\IntellijProjects\BotMaker\src\main\java\com\botmaker\blocks\SwitchBlock.java
 =================================================================================
 
 package com.botmaker.blocks;
@@ -2946,13 +2641,7 @@ import com.botmaker.core.ExpressionBlock;
 import com.botmaker.lsp.CompletionContext;
 import com.botmaker.ui.BlockDragAndDropManager;
 import javafx.geometry.Insets;
-import javafx.geometry.Pos;
 import javafx.scene.Node;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.Pane;
-import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 import org.eclipse.jdt.core.dom.SwitchStatement;
 
@@ -2970,21 +2659,8 @@ public class SwitchBlock extends AbstractStatementBlock implements BlockWithChil
         this.dragAndDropManager = dragAndDropManager;
     }
 
-    public ExpressionBlock getExpression() {
-        return expression;
-    }
-
-    public void setExpression(ExpressionBlock expression) {
-        this.expression = expression;
-    }
-
-    public List<SwitchCaseBlock> getCases() {
-        return cases;
-    }
-
-    public void addCase(SwitchCaseBlock caseBlock) {
-        this.cases.add(caseBlock);
-    }
+    public void setExpression(ExpressionBlock expression) { this.expression = expression; }
+    public void addCase(SwitchCaseBlock caseBlock) { this.cases.add(caseBlock); }
 
     @Override
     public List<CodeBlock> getChildren() {
@@ -2996,39 +2672,16 @@ public class SwitchBlock extends AbstractStatementBlock implements BlockWithChil
 
     @Override
     protected Node createUINode(CompletionContext context) {
+        Node headerContent = createSentence(
+                createKeywordLabel("switch"),
+                getOrDropZone(expression, context)
+        );
+        headerContent.getStyleClass().add("switch-header");
+
         VBox mainContainer = new VBox(5);
         mainContainer.getStyleClass().add("switch-block");
+        mainContainer.getChildren().add(createStandardHeader(context, headerContent));
 
-        // Header row with delete button
-        HBox headerRow = new HBox(5);
-        headerRow.setAlignment(Pos.CENTER_LEFT);
-
-        // Switch expression part
-        HBox header = new HBox(5);
-        header.setAlignment(Pos.CENTER_LEFT);
-        header.getStyleClass().add("switch-header");
-
-        Label switchLabel = new Label("switch");
-        switchLabel.getStyleClass().add("keyword-label");
-
-        header.getChildren().add(switchLabel);
-        if (expression != null) {
-            header.getChildren().add(expression.getUINode(context));
-        }
-
-        // Add spacer and delete button
-        Pane spacer = new Pane();
-        HBox.setHgrow(spacer, Priority.ALWAYS);
-
-        Button deleteButton = new Button("X");
-        deleteButton.setOnAction(e -> {
-            context.codeEditor().deleteStatement((org.eclipse.jdt.core.dom.Statement) this.astNode);
-        });
-
-        headerRow.getChildren().addAll(header, spacer, deleteButton);
-        mainContainer.getChildren().add(headerRow);
-
-        // Cases
         VBox casesContainer = new VBox(5);
         casesContainer.getStyleClass().add("switch-cases");
         casesContainer.setPadding(new Insets(5, 0, 0, 20));
@@ -3038,15 +2691,12 @@ public class SwitchBlock extends AbstractStatementBlock implements BlockWithChil
         }
 
         mainContainer.getChildren().add(casesContainer);
-
         return mainContainer;
     }
 
-    /**
-     * Inner class representing a single case in the switch
-     */
+    // Inner Static Class for Cases
     public static class SwitchCaseBlock extends AbstractStatementBlock implements BlockWithChildren {
-        private ExpressionBlock caseExpression; // null for default case
+        private ExpressionBlock caseExpression;
         private BodyBlock body;
         private final BlockDragAndDropManager dragAndDropManager;
 
@@ -3055,17 +2705,9 @@ public class SwitchBlock extends AbstractStatementBlock implements BlockWithChil
             this.dragAndDropManager = dragAndDropManager;
         }
 
-        public void setCaseExpression(ExpressionBlock caseExpression) {
-            this.caseExpression = caseExpression;
-        }
-
-        public void setBody(BodyBlock body) {
-            this.body = body;
-        }
-
-        public boolean isDefault() {
-            return caseExpression == null;
-        }
+        public void setCaseExpression(ExpressionBlock caseExpression) { this.caseExpression = caseExpression; }
+        public void setBody(BodyBlock body) { this.body = body; }
+        public boolean isDefault() { return caseExpression == null; }
 
         @Override
         public List<CodeBlock> getChildren() {
@@ -3077,46 +2719,32 @@ public class SwitchBlock extends AbstractStatementBlock implements BlockWithChil
 
         @Override
         protected Node createUINode(CompletionContext context) {
+            Node caseHeader;
+            if (isDefault()) {
+                caseHeader = createSentence(createKeywordLabel("default:"));
+            } else {
+                caseHeader = createSentence(
+                        createKeywordLabel("case"),
+                        getOrDropZone(caseExpression, context),
+                        createKeywordLabel(":")
+                );
+            }
+
             VBox container = new VBox(5);
             container.getStyleClass().add("switch-case-block");
-
-            // Case label
-            HBox caseHeader = new HBox(5);
-            caseHeader.setAlignment(Pos.CENTER_LEFT);
-
-            if (isDefault()) {
-                Label defaultLabel = new Label("default:");
-                defaultLabel.getStyleClass().add("keyword-label");
-                caseHeader.getChildren().add(defaultLabel);
-            } else {
-                Label caseLabel = new Label("case");
-                caseLabel.getStyleClass().add("keyword-label");
-                caseHeader.getChildren().add(caseLabel);
-                if (caseExpression != null) {
-                    caseHeader.getChildren().add(caseExpression.getUINode(context));
-                }
-                Label colon = new Label(":");
-                caseHeader.getChildren().add(colon);
-            }
-
             container.getChildren().add(caseHeader);
 
-            // Case body
-            if (body != null) {
-                VBox bodyContainer = new VBox();
-                bodyContainer.getStyleClass().add("switch-case-body");
-                bodyContainer.setPadding(new Insets(5, 0, 0, 20));
-                bodyContainer.getChildren().add(body.getUINode(context));
-                container.getChildren().add(bodyContainer);
-            }
+            VBox bodyNode = createIndentedBody(body, context, "switch-case-body");
+            if (bodyNode != null) container.getChildren().add(bodyNode);
 
             return container;
         }
     }
 }
 
+
 =================================================================================
-FILE: ./src/main/java/com/botmaker/blocks/VariableDeclarationBlock.java
+FILE: ers\bgroi\Documents\dev\IntellijProjects\BotMaker\src\main\java\com\botmaker\blocks\VariableDeclarationBlock.java
 =================================================================================
 
 package com.botmaker.blocks;
@@ -3124,17 +2752,19 @@ package com.botmaker.blocks;
 import com.botmaker.core.AbstractStatementBlock;
 import com.botmaker.core.ExpressionBlock;
 import com.botmaker.lsp.CompletionContext;
-import com.botmaker.ui.AddableExpression;
+import com.botmaker.ui.components.BlockUIComponents;
+import com.botmaker.ui.components.TextFieldComponents;
 import com.botmaker.util.TypeManager;
 import javafx.geometry.Pos;
 import javafx.scene.Cursor;
 import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.Priority;
 import org.eclipse.jdt.core.dom.Type;
 import org.eclipse.jdt.core.dom.VariableDeclarationFragment;
 import org.eclipse.jdt.core.dom.VariableDeclarationStatement;
+
+import static com.botmaker.ui.components.BlockUIComponents.createTypeLabel;
 
 public class VariableDeclarationBlock extends AbstractStatementBlock {
 
@@ -3150,123 +2780,83 @@ public class VariableDeclarationBlock extends AbstractStatementBlock {
         this.initializer = null;
     }
 
-    public void setInitializer(ExpressionBlock initializer) {
-        this.initializer = initializer;
-    }
+    public void setInitializer(ExpressionBlock initializer) { this.initializer = initializer; }
 
     @Override
     protected Node createUINode(CompletionContext context) {
-        HBox container = new HBox(5);
-        container.setAlignment(Pos.CENTER_LEFT);
-        container.getStyleClass().add("variable-declaration-block");
-
-        // --- TYPE SELECTOR ---
-        Label typeLabel = new Label(getDisplayTypeName(variableType));
-        typeLabel.getStyleClass().add("type-label");
+        // 1. Type Label with Menu
+        Label typeLabel = createTypeLabel(getDisplayTypeName(variableType));
         typeLabel.setCursor(Cursor.HAND);
-
-        Tooltip tooltip = new Tooltip("Click to change type (ArrayList/Base)");
-        Tooltip.install(typeLabel, tooltip);
-
+        Tooltip.install(typeLabel, new Tooltip("Click to change type (ArrayList/Base)"));
         typeLabel.setOnMouseClicked(e -> showTypeMenu(typeLabel, context));
-        container.getChildren().add(typeLabel);
 
-        // --- NAME FIELD ---
-        TextField nameField = new TextField(variableName);
-        nameField.getStyleClass().add("variable-name-field");
-        nameField.setPrefWidth(100);
-        nameField.focusedProperty().addListener((obs, oldVal, newVal) -> {
-            if (!newVal) {
-                String newName = nameField.getText();
-                VariableDeclarationFragment fragment = (VariableDeclarationFragment) ((VariableDeclarationStatement) this.astNode).fragments().get(0);
-                String currentName = fragment.getName().getIdentifier();
-
-                if (!newName.equals(currentName) && !newName.isEmpty()) {
-                    context.codeEditor().replaceSimpleName(fragment.getName(), newName);
-                }
+        // 2. Name Field
+        TextField nameField = TextFieldComponents.createVariableNameField(variableName, newName -> {
+            VariableDeclarationFragment fragment = (VariableDeclarationFragment) ((VariableDeclarationStatement) this.astNode).fragments().get(0);
+            if (!newName.equals(variableName) && !newName.isEmpty()) {
+                context.codeEditor().replaceSimpleName(fragment.getName(), newName);
             }
         });
-        container.getChildren().add(nameField);
 
-        // --- EQUALS ---
-        Label equalsLabel = new Label("=");
-        equalsLabel.getStyleClass().add("keyword-label");
-        container.getChildren().add(equalsLabel);
-
-        // --- INITIALIZER ---
+        // 3. Initializer Logic
+        Node initNode;
         if (initializer != null) {
-            // FIX: Prioritize rendering the initializer if it exists, especially if it's a ListBlock
+            // FIX: Restored original priority logic
             if (initializer instanceof ListBlock) {
-                // Render the interactive list UI directly
-                container.getChildren().add(initializer.getUINode(context));
-            }
-            else if (initializer.getAstNode() instanceof org.eclipse.jdt.core.dom.ArrayInitializer) {
-                // Fallback for primitive arrays {1,2,3} to use bracket styling if not caught by ListBlock
-                container.getChildren().add(createListDisplay(context));
-            }
-            else {
+                // Render ListBlock directly (it handles its own layout)
+                initNode = initializer.getUINode(context);
+            } else if (initializer.getAstNode() instanceof org.eclipse.jdt.core.dom.ArrayInitializer) {
+                // Fallback for other array initializers (add bracket styling)
+                initNode = createListDisplay(context);
+            } else {
                 // Standard expression
-                container.getChildren().add(initializer.getUINode(context));
+                initNode = initializer.getUINode(context);
             }
         } else {
-            // Only show placeholder if truly null (e.g. int x;)
-            container.getChildren().add(createExpressionDropZone(context));
+            initNode = createExpressionDropZone(context);
         }
 
-        // --- ADD BUTTON ---
-        Button addButton = new Button("+");
-        addButton.getStyleClass().add("expression-add-button");
-
-        // DYNAMIC TYPE FILTERING
+        // 4. Add Button
         String uiTargetType = TypeManager.determineUiType(variableType.toString());
-        addButton.setOnAction(e -> showExpressionMenu(addButton, context, uiTargetType));
+        Button addButton = createAddButton(e ->
+                showExpressionMenuAndReplace((Button)e.getSource(), context, uiTargetType,
+                        initializer != null ? (org.eclipse.jdt.core.dom.Expression)initializer.getAstNode() : null)
+        );
 
-        container.getChildren().add(addButton);
+        Node content = createSentence(
+                typeLabel,
+                nameField,
+                createKeywordLabel("="),
+                initNode,
+                addButton
+        );
 
-        // --- SPACER & DELETE ---
-        javafx.scene.layout.Pane spacer = new javafx.scene.layout.Pane();
-        HBox.setHgrow(spacer, Priority.ALWAYS);
-
-        Button deleteButton = new Button("X");
-        deleteButton.setOnAction(e -> {
-            context.codeEditor().deleteStatement((org.eclipse.jdt.core.dom.Statement) this.astNode);
-        });
-
-        container.getChildren().addAll(spacer, deleteButton);
+        HBox container = createStandardHeader(context, content);
+        container.getStyleClass().add("variable-declaration-block");
 
         return container;
     }
 
     private void showTypeMenu(Node anchor, CompletionContext context) {
         ContextMenu menu = new ContextMenu();
-
         String currentStr = variableType.toString();
         boolean isArrayListType = isArrayList(variableType);
         boolean isArray = variableType.isArrayType();
-
         final String baseType = extractBaseType(currentStr, isArrayListType, isArray);
 
-        // 1. Toggle between ArrayList and Single Value
+        // Toggle ArrayList
         MenuItem toggleList = new MenuItem(isArrayListType ? "Convert to Single Value" : "Convert to ArrayList");
         toggleList.setStyle("-fx-font-weight: bold;");
         toggleList.setOnAction(e -> {
-            String newType;
-            if (isArrayListType) {
-                newType = baseType;
-            } else {
-                // FIX: Ensure wrapper type (e.g., Integer, Boolean) is used
-                newType = "ArrayList<" + TypeManager.toWrapperType(baseType) + ">";
-            }
+            String newType = isArrayListType ? baseType : "ArrayList<" + TypeManager.toWrapperType(baseType) + ">";
             context.codeEditor().replaceVariableType((VariableDeclarationStatement) this.astNode, newType);
         });
         menu.getItems().add(toggleList);
 
-        // Option for nested list
+        // Nested List Option
         if (isArrayListType) {
             MenuItem makeNested = new MenuItem("Make ArrayList of ArrayLists");
             makeNested.setOnAction(e -> {
-                // FIX: Ensure inner type is also wrapped properly
-                // Result: ArrayList<ArrayList<Boolean>>
                 String newType = "ArrayList<ArrayList<" + TypeManager.toWrapperType(baseType) + ">>";
                 context.codeEditor().replaceVariableType((VariableDeclarationStatement) this.astNode, newType);
             });
@@ -3275,35 +2865,23 @@ public class VariableDeclarationBlock extends AbstractStatementBlock {
 
         menu.getItems().add(new SeparatorMenuItem());
 
-        // 2. Change Base Type
+        // Change Base Type
         Menu changeBaseMenu = new Menu("Change Base Type");
         for (String type : TypeManager.getFundamentalTypeNames()) {
             MenuItem item = new MenuItem(type);
-            final String finalType = type;
             item.setOnAction(e -> {
-                String newType;
-                if (isArrayListType) {
-                    // FIX: Ensure wrapper type is used when switching types in a list
-                    newType = "ArrayList<" + TypeManager.toWrapperType(finalType) + ">";
-                } else {
-                    newType = finalType;
-                }
+                String newType = isArrayListType ? "ArrayList<" + TypeManager.toWrapperType(type) + ">" : type;
                 context.codeEditor().replaceVariableType((VariableDeclarationStatement) this.astNode, newType);
             });
             changeBaseMenu.getItems().add(item);
         }
         menu.getItems().add(changeBaseMenu);
-
         menu.show(anchor, javafx.geometry.Side.BOTTOM, 0, 0);
     }
 
     private String extractBaseType(String currentStr, boolean isArrayListType, boolean isArray) {
-        if (isArrayListType) {
-            if (currentStr.contains("<") && currentStr.contains(">")) {
-                int start = currentStr.indexOf("<") + 1;
-                int end = currentStr.lastIndexOf(">"); // Fix: use lastIndexOf for nested
-                return currentStr.substring(start, end);
-            }
+        if (isArrayListType && currentStr.contains("<")) {
+            return currentStr.substring(currentStr.indexOf("<") + 1, currentStr.lastIndexOf(">"));
         } else if (isArray) {
             return currentStr.replace("[]", "");
         }
@@ -3315,64 +2893,28 @@ public class VariableDeclarationBlock extends AbstractStatementBlock {
         listBox.setAlignment(Pos.CENTER_LEFT);
         listBox.getStyleClass().add("inline-list-display");
 
-        Label openBracket = new Label("[");
-        openBracket.setStyle("-fx-font-weight: bold; -fx-font-size: 14px;");
-        listBox.getChildren().add(openBracket);
+        Label open = new Label("["); open.setStyle("-fx-font-weight: bold; -fx-font-size: 14px;");
+        Label close = new Label("]"); close.setStyle("-fx-font-weight: bold; -fx-font-size: 14px;");
 
-        if (initializer instanceof ListBlock) {
-            // If it's a ListBlock but forced here (e.g. array), render it
-            listBox.getChildren().add(initializer.getUINode(context));
-        } else {
-            listBox.getChildren().add(initializer.getUINode(context));
-        }
-
-        Label closeBracket = new Label("]");
-        closeBracket.setStyle("-fx-font-weight: bold; -fx-font-size: 14px;");
-        listBox.getChildren().add(closeBracket);
-
+        listBox.getChildren().addAll(open, initializer.getUINode(context), close);
         return listBox;
     }
 
     private String getDisplayTypeName(Type type) {
         String typeName = type.toString();
-        if (isArrayList(type)) {
-            return typeName;
-        }
-        if (typeName.endsWith("[]")) {
-            return typeName.replace("[]", " list");
-        }
+        if (isArrayList(type)) return typeName;
+        if (typeName.endsWith("[]")) return typeName.replace("[]", " list");
         return typeName;
     }
 
     private boolean isArrayList(Type type) {
-        String typeName = type.toString();
-        return typeName.startsWith("ArrayList<") || typeName.equals("ArrayList");
-    }
-
-    private void showExpressionMenu(Button button, CompletionContext context, String targetType) {
-        ContextMenu menu = new ContextMenu();
-        menu.setStyle("-fx-control-inner-background: white;");
-
-        for (AddableExpression type : AddableExpression.getForType(targetType)) {
-            MenuItem menuItem = new MenuItem(type.getDisplayName());
-            menuItem.setStyle("-fx-text-fill: black;");
-
-            menuItem.setOnAction(e -> {
-                if (initializer != null) {
-                    context.codeEditor().replaceExpression(
-                            (org.eclipse.jdt.core.dom.Expression) initializer.getAstNode(),
-                            type
-                    );
-                }
-            });
-            menu.getItems().add(menuItem);
-        }
-        menu.show(button, javafx.geometry.Side.BOTTOM, 0, 0);
+        return type.toString().startsWith("ArrayList");
     }
 }
 
+
 =================================================================================
-FILE: ./src/main/java/com/botmaker/blocks/WaitBlock.java
+FILE: ers\bgroi\Documents\dev\IntellijProjects\BotMaker\src\main\java\com\botmaker\blocks\WaitBlock.java
 =================================================================================
 
 package com.botmaker.blocks;
@@ -3380,13 +2922,7 @@ package com.botmaker.blocks;
 import com.botmaker.core.AbstractStatementBlock;
 import com.botmaker.core.ExpressionBlock;
 import com.botmaker.lsp.CompletionContext;
-import javafx.geometry.Pos;
 import javafx.scene.Node;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.Pane;
-import javafx.scene.layout.Priority;
 import org.eclipse.jdt.core.dom.Statement;
 
 public class WaitBlock extends AbstractStatementBlock {
@@ -3397,45 +2933,20 @@ public class WaitBlock extends AbstractStatementBlock {
         super(id, astNode);
     }
 
-    public ExpressionBlock getDuration() {
-        return duration;
-    }
-
     public void setDuration(ExpressionBlock duration) {
         this.duration = duration;
     }
 
     @Override
     protected Node createUINode(CompletionContext context) {
-        HBox container = new HBox(5);
-        container.setAlignment(Pos.CENTER_LEFT);
+        Node content = createSentence(
+                createKeywordLabel("Wait"),
+                getOrDropZone(duration, context),
+                createKeywordLabel("ms")
+        );
+
+        Node container = createStandardHeader(context, content);
         container.getStyleClass().add("wait-block");
-
-        Label waitLabel = new Label("Wait");
-        waitLabel.getStyleClass().add("keyword-label");
-
-        container.getChildren().add(waitLabel);
-
-        if (duration != null) {
-            container.getChildren().add(duration.getUINode(context));
-        } else {
-            container.getChildren().add(createExpressionDropZone(context));
-        }
-
-        Label msLabel = new Label("ms");
-        msLabel.getStyleClass().add("keyword-label");
-        container.getChildren().add(msLabel);
-
-        // Spacer and Delete Button
-        Pane spacer = new Pane();
-        HBox.setHgrow(spacer, Priority.ALWAYS);
-
-        Button deleteButton = new Button("X");
-        deleteButton.setOnAction(e -> {
-            context.codeEditor().deleteStatement((Statement) this.astNode);
-        });
-
-        container.getChildren().addAll(spacer, deleteButton);
 
         return container;
     }
@@ -3446,8 +2957,9 @@ public class WaitBlock extends AbstractStatementBlock {
     }
 }
 
+
 =================================================================================
-FILE: ./src/main/java/com/botmaker/blocks/WhileBlock.java
+FILE: ers\bgroi\Documents\dev\IntellijProjects\BotMaker\src\main\java\com\botmaker\blocks\WhileBlock.java
 =================================================================================
 
 package com.botmaker.blocks;
@@ -3459,17 +2971,10 @@ import com.botmaker.core.CodeBlock;
 import com.botmaker.core.ExpressionBlock;
 import com.botmaker.lsp.CompletionContext;
 import com.botmaker.ui.BlockDragAndDropManager;
-import javafx.geometry.Insets;
-import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
-import javafx.scene.control.ContextMenu;
-import javafx.scene.control.Label;
-import javafx.scene.control.MenuItem;
-import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import org.eclipse.jdt.core.dom.WhileStatement;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -3477,16 +2982,12 @@ public class WhileBlock extends AbstractStatementBlock implements BlockWithChild
 
     private ExpressionBlock condition;
     private BodyBlock body;
-    private final BlockDragAndDropManager dragAndDropManager;
 
     public WhileBlock(String id, WhileStatement astNode, BlockDragAndDropManager dragAndDropManager) {
         super(id, astNode);
-        this.dragAndDropManager = dragAndDropManager;
     }
 
-    public ExpressionBlock getCondition() { return condition; }
     public void setCondition(ExpressionBlock condition) { this.condition = condition; }
-    public BodyBlock getBody() { return body; }
     public void setBody(BodyBlock body) { this.body = body; }
 
     @Override
@@ -3499,79 +3000,40 @@ public class WhileBlock extends AbstractStatementBlock implements BlockWithChild
 
     @Override
     protected Node createUINode(CompletionContext context) {
+        // 1. Create the Header Row: "while [condition] [+]"
+        Button addButton = createAddButton(e ->
+                showExpressionMenuAndReplace((Button)e.getSource(), context, "boolean",
+                        condition != null ? (org.eclipse.jdt.core.dom.Expression) condition.getAstNode() : null)
+        );
+
+        Node headerContent = createSentence(
+                createKeywordLabel("while"),
+                getOrDropZone(condition, context),
+                addButton
+        );
+        headerContent.getStyleClass().add("while-header");
+
+        // 2. Create the Indented Body
+        VBox bodyNode = createIndentedBody(body, context, "while-body");
+
+        // 3. Assemble: Header + Body
         VBox mainContainer = new VBox(5);
         mainContainer.getStyleClass().add("while-block");
 
-        HBox headerRow = new HBox(5);
-        headerRow.setAlignment(Pos.CENTER_LEFT);
+        // Use standard header wrapper for the top row (handles spacer & delete button)
+        mainContainer.getChildren().add(createStandardHeader(context, headerContent));
 
-        HBox header = new HBox(5);
-        header.setAlignment(Pos.CENTER_LEFT);
-        header.getStyleClass().add("while-header");
-
-        Label whileLabel = new Label("while");
-        whileLabel.getStyleClass().add("keyword-label");
-        header.getChildren().add(whileLabel);
-
-        if (condition != null) {
-            header.getChildren().add(condition.getUINode(context));
-        }
-
-        Button addButton = new Button("+");
-        addButton.getStyleClass().add("expression-add-button");
-
-        // UPDATED: Pass expected type
-        addButton.setOnAction(e -> showExpressionMenu(addButton, context, "boolean"));
-
-        header.getChildren().add(addButton);
-
-        javafx.scene.layout.Pane spacer = new javafx.scene.layout.Pane();
-        HBox.setHgrow(spacer, javafx.scene.layout.Priority.ALWAYS);
-
-        javafx.scene.control.Button deleteButton = new javafx.scene.control.Button("X");
-        deleteButton.setOnAction(e -> {
-            context.codeEditor().deleteStatement((org.eclipse.jdt.core.dom.Statement) this.astNode);
-        });
-
-        headerRow.getChildren().addAll(header, spacer, deleteButton);
-        mainContainer.getChildren().add(headerRow);
-
-        if (body != null) {
-            VBox bodyContainer = new VBox();
-            bodyContainer.getStyleClass().add("while-body");
-            bodyContainer.setPadding(new Insets(5, 0, 0, 20));
-            bodyContainer.getChildren().add(body.getUINode(context));
-            mainContainer.getChildren().add(bodyContainer);
+        if (bodyNode != null) {
+            mainContainer.getChildren().add(bodyNode);
         }
 
         return mainContainer;
     }
-
-    // UPDATED: Now accepts targetType and filters the enum
-    private void showExpressionMenu(Button button, CompletionContext context, String targetType) {
-        ContextMenu menu = new ContextMenu();
-        menu.setStyle("-fx-control-inner-background: white;");
-
-        // Use the filter method we created in Step 1
-        for (com.botmaker.ui.AddableExpression type : com.botmaker.ui.AddableExpression.getForType(targetType)) {
-            MenuItem menuItem = new MenuItem(type.getDisplayName());
-            menuItem.setStyle("-fx-text-fill: black;");
-
-            menuItem.setOnAction(e -> {
-                if (condition != null) {
-                    org.eclipse.jdt.core.dom.Expression toReplace = (org.eclipse.jdt.core.dom.Expression) condition.getAstNode();
-                    context.codeEditor().replaceExpression(toReplace, type);
-                }
-            });
-            menu.getItems().add(menuItem);
-        }
-
-        menu.show(button, javafx.geometry.Side.BOTTOM, 0, 0);
-    }
 }
 
+
 =================================================================================
-FILE: ./src/main/java/com/botmaker/config/ApplicationConfig.java
+FILE: ers\bgroi\Documents\dev\IntellijProjects\BotMaker\src\main\java\com\botmaker\config\ApplicationConfig.java
 =================================================================================
 
 package com.botmaker.config;
@@ -3800,8 +3262,9 @@ public class ApplicationConfig {
     }
 }
 
+
 =================================================================================
-FILE: ./src/main/java/com/botmaker/config/Constants.java
+FILE: ers\bgroi\Documents\dev\IntellijProjects\BotMaker\src\main\java\com\botmaker\config\Constants.java
 =================================================================================
 
 package com.botmaker.config;
@@ -3838,8 +3301,9 @@ public class Constants {
     private Constants() {} // Prevent instantiation
 }
 
+
 =================================================================================
-FILE: ./src/main/java/com/botmaker/core/AbstractCodeBlock.java
+FILE: ers\bgroi\Documents\dev\IntellijProjects\BotMaker\src\main\java\com\botmaker\core\AbstractCodeBlock.java
 =================================================================================
 
 package com.botmaker.core;
@@ -4051,38 +3515,134 @@ public abstract class AbstractCodeBlock implements CodeBlock {
     protected abstract Node createUINode(CompletionContext context);
 }
 
+
 =================================================================================
-FILE: ./src/main/java/com/botmaker/core/AbstractExpressionBlock.java
+FILE: ers\bgroi\Documents\dev\IntellijProjects\BotMaker\src\main\java\com\botmaker\core\AbstractExpressionBlock.java
 =================================================================================
 
 package com.botmaker.core;
 
+import com.botmaker.ui.components.BlockUIComponents;
+import com.botmaker.ui.components.SelectorComponents;
+import javafx.scene.control.ComboBox;
+import javafx.scene.control.Label;
 import org.eclipse.jdt.core.dom.ASTNode;
+
+import java.util.function.Consumer;
 
 public abstract class AbstractExpressionBlock extends AbstractCodeBlock implements ExpressionBlock {
     public AbstractExpressionBlock(String id, ASTNode astNode) {
         super(id, astNode);
     }
-}
 
+    // --- HELPER METHODS ---
 
-=================================================================================
-FILE: ./src/main/java/com/botmaker/core/AbstractStatementBlock.java
-=================================================================================
+    protected Label createKeywordLabel(String text) {
+        return BlockUIComponents.createKeywordLabel(text);
+    }
 
-package com.botmaker.core;
+    protected Label createOperatorLabel(String text) {
+        return BlockUIComponents.createOperatorLabel(text);
+    }
 
-import org.eclipse.jdt.core.dom.ASTNode;
-
-public abstract class AbstractStatementBlock extends AbstractCodeBlock implements StatementBlock {
-    public AbstractStatementBlock(String id, ASTNode astNode) {
-        super(id, astNode);
+    protected ComboBox<String> createOperatorSelector(String[] names, String[] symbols, String currentSymbol, Consumer<String> onSymbolChange) {
+        return SelectorComponents.createOperatorSelector(names, symbols, currentSymbol, onSymbolChange);
     }
 }
 
 
 =================================================================================
-FILE: ./src/main/java/com/botmaker/core/BlockWithChildren.java
+FILE: ers\bgroi\Documents\dev\IntellijProjects\BotMaker\src\main\java\com\botmaker\core\AbstractStatementBlock.java
+=================================================================================
+
+package com.botmaker.core;
+
+import com.botmaker.lsp.CompletionContext;
+import com.botmaker.ui.components.BlockUIComponents;
+import com.botmaker.ui.components.LayoutComponents;
+import com.botmaker.ui.components.PlaceholderComponents;
+import javafx.scene.Node;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.layout.HBox;
+import org.eclipse.jdt.core.dom.ASTNode;
+import org.eclipse.jdt.core.dom.Expression;
+import org.eclipse.jdt.core.dom.Statement;
+
+import java.util.function.Consumer;
+
+public abstract class AbstractStatementBlock extends AbstractCodeBlock implements StatementBlock {
+    public AbstractStatementBlock(String id, ASTNode astNode) {
+        super(id, astNode);
+    }
+
+    // --- HELPER METHODS ---
+
+    protected Button createDeleteButton(CompletionContext context) {
+        return BlockUIComponents.createDeleteButton(() ->
+                context.codeEditor().deleteStatement((Statement) this.astNode)
+        );
+    }
+
+    protected Label createKeywordLabel(String text) {
+        return BlockUIComponents.createKeywordLabel(text);
+    }
+
+    protected HBox createStandardHeader(CompletionContext context, Node... content) {
+        HBox container = BlockUIComponents.createHeaderRow(
+                () -> context.codeEditor().deleteStatement((Statement) this.astNode),
+                content
+        );
+        // Apply default styles that might be overridden by specific blocks
+        container.getStyleClass().add("statement-block-header");
+        return container;
+    }
+
+    protected Button createAddButton(javafx.event.EventHandler<javafx.event.ActionEvent> handler) {
+        return BlockUIComponents.createAddButton(handler);
+    }
+
+    /**
+     * Creates an indented body VBox for nested statements.
+     */
+    protected javafx.scene.layout.VBox createIndentedBody(com.botmaker.core.BodyBlock body, CompletionContext context, String styleClass) {
+        Node bodyNode = (body != null) ? body.getUINode(context) : null;
+        return LayoutComponents.createIndentedBody(bodyNode, styleClass);
+    }
+
+    /**
+     * Helper to render an expression or a drop zone if null.
+     */
+    protected Node getOrDropZone(com.botmaker.core.ExpressionBlock expr, CompletionContext context) {
+        return PlaceholderComponents.createExpressionOrDropZone(
+                expr,
+                context,
+                () -> createExpressionDropZone(context) // Defined in AbstractCodeBlock
+        );
+    }
+
+    /**
+     * Helper to create a sentence row (e.g. for loops).
+     */
+    protected javafx.scene.layout.HBox createSentence(Node... nodes) {
+        return LayoutComponents.createSentenceRow(nodes);
+    }
+
+    protected void showExpressionMenuAndReplace(Button button, CompletionContext context, String targetType, Expression toReplace) {
+        BlockUIComponents.createExpressionTypeMenu(targetType, type -> {
+            if (toReplace != null) {
+                context.codeEditor().replaceExpression(toReplace, type);
+            } else if (this instanceof com.botmaker.blocks.ReturnBlock) {
+                // Special case for ReturnBlock which might accept null
+                // Handled by specific implementations usually, but good for generic replacement
+            }
+        }).show(button, javafx.geometry.Side.BOTTOM, 0, 0);
+    }
+}
+
+
+=================================================================================
+FILE: ers\bgroi\Documents\dev\IntellijProjects\BotMaker\src\main\java\com\botmaker\core\BlockWithChildren.java
 =================================================================================
 
 package com.botmaker.core;
@@ -4095,7 +3655,7 @@ public interface BlockWithChildren {
 
 
 =================================================================================
-FILE: ./src/main/java/com/botmaker/core/BodyBlock.java
+FILE: ers\bgroi\Documents\dev\IntellijProjects\BotMaker\src\main\java\com\botmaker\core\BodyBlock.java
 =================================================================================
 
 package com.botmaker.core;
@@ -4107,6 +3667,7 @@ import javafx.scene.Cursor;
 import javafx.scene.Node;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
+import org.eclipse.jdt.core.dom.Block;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -4115,7 +3676,7 @@ public class BodyBlock extends AbstractStatementBlock implements BlockWithChildr
     private final List<StatementBlock> statements = new ArrayList<>();
     private final BlockDragAndDropManager dragAndDropManager;
 
-    public BodyBlock(String id, org.eclipse.jdt.core.dom.Block astNode, BlockDragAndDropManager dragAndDropManager) {
+    public BodyBlock(String id, Block astNode, BlockDragAndDropManager dragAndDropManager) {
         super(id, astNode);
         this.dragAndDropManager = dragAndDropManager;
     }
@@ -4203,8 +3764,9 @@ public class BodyBlock extends AbstractStatementBlock implements BlockWithChildr
     }
 }
 
+
 =================================================================================
-FILE: ./src/main/java/com/botmaker/core/CodeBlock.java
+FILE: ers\bgroi\Documents\dev\IntellijProjects\BotMaker\src\main\java\com\botmaker\core\CodeBlock.java
 =================================================================================
 
 package com.botmaker.core;
@@ -4237,8 +3799,9 @@ public interface CodeBlock {
     String getDetails();
 }
 
+
 =================================================================================
-FILE: ./src/main/java/com/botmaker/core/ExpressionBlock.java
+FILE: ers\bgroi\Documents\dev\IntellijProjects\BotMaker\src\main\java\com\botmaker\core\ExpressionBlock.java
 =================================================================================
 
 package com.botmaker.core;
@@ -4252,7 +3815,7 @@ public interface ExpressionBlock extends CodeBlock {
 
 
 =================================================================================
-FILE: ./src/main/java/com/botmaker/core/StatementBlock.java
+FILE: ers\bgroi\Documents\dev\IntellijProjects\BotMaker\src\main\java\com\botmaker\core\StatementBlock.java
 =================================================================================
 
 package com.botmaker.core;
@@ -4266,7 +3829,7 @@ public interface StatementBlock extends CodeBlock {
 
 
 =================================================================================
-FILE: ./src/main/java/com/botmaker/di/DependencyContainer.java
+FILE: ers\bgroi\Documents\dev\IntellijProjects\BotMaker\src\main\java\com\botmaker\di\DependencyContainer.java
 =================================================================================
 
 package com.botmaker.di;
@@ -4378,8 +3941,9 @@ public class DependencyContainer {
     }
 }
 
+
 =================================================================================
-FILE: ./src/main/java/com/botmaker/events/AbstractApplicationEvent.java
+FILE: ers\bgroi\Documents\dev\IntellijProjects\BotMaker\src\main\java\com\botmaker\events\AbstractApplicationEvent.java
 =================================================================================
 
 package com.botmaker.events;
@@ -4411,8 +3975,9 @@ public abstract class AbstractApplicationEvent implements ApplicationEvent {
     }
 }
 
+
 =================================================================================
-FILE: ./src/main/java/com/botmaker/events/ApplicationEvent.java
+FILE: ers\bgroi\Documents\dev\IntellijProjects\BotMaker\src\main\java\com\botmaker\events\ApplicationEvent.java
 =================================================================================
 
 package com.botmaker.events;
@@ -4435,8 +4000,9 @@ public interface ApplicationEvent {
     }
 }
 
+
 =================================================================================
-FILE: ./src/main/java/com/botmaker/events/CoreApplicationEvents.java
+FILE: ers\bgroi\Documents\dev\IntellijProjects\BotMaker\src\main\java\com\botmaker\events\CoreApplicationEvents.java
 =================================================================================
 
 package com.botmaker.events;
@@ -4628,8 +4194,9 @@ public class CoreApplicationEvents {
     }
 }
 
+
 =================================================================================
-FILE: ./src/main/java/com/botmaker/events/EventBus.java
+FILE: ers\bgroi\Documents\dev\IntellijProjects\BotMaker\src\main\java\com\botmaker\events\EventBus.java
 =================================================================================
 
 package com.botmaker.events;
@@ -4788,8 +4355,9 @@ public class EventBus {
     }
 }
 
+
 =================================================================================
-FILE: ./src/main/java/com/botmaker/init/AppDependencyConfigurator.java
+FILE: ers\bgroi\Documents\dev\IntellijProjects\BotMaker\src\main\java\com\botmaker\init\AppDependencyConfigurator.java
 =================================================================================
 
 package com.botmaker.init;
@@ -4902,8 +4470,9 @@ public class AppDependencyConfigurator {
     }
 }
 
+
 =================================================================================
-FILE: ./src/main/java/com/botmaker/init/AppServiceInitializer.java
+FILE: ers\bgroi\Documents\dev\IntellijProjects\BotMaker\src\main\java\com\botmaker\init\AppServiceInitializer.java
 =================================================================================
 
 package com.botmaker.init;
@@ -4976,8 +4545,9 @@ public class AppServiceInitializer {
     }
 }
 
+
 =================================================================================
-FILE: ./src/main/java/com/botmaker/lsp/CompletionContext.java
+FILE: ers\bgroi\Documents\dev\IntellijProjects\BotMaker\src\main\java\com\botmaker\lsp\CompletionContext.java
 =================================================================================
 
 package com.botmaker.lsp;
@@ -4998,8 +4568,9 @@ public record CompletionContext(
 ) {
 }
 
+
 =================================================================================
-FILE: ./src/main/java/com/botmaker/lsp/JdtLanguageServerLauncher.java
+FILE: ers\bgroi\Documents\dev\IntellijProjects\BotMaker\src\main\java\com\botmaker\lsp\JdtLanguageServerLauncher.java
 =================================================================================
 
 package com.botmaker.lsp;
@@ -5235,149 +4806,9 @@ public class JdtLanguageServerLauncher {
     }
 }
 
-=================================================================================
-FILE: ./src/main/java/com/botmaker/Main.java
-=================================================================================
-
-package com.botmaker;
-
-import com.botmaker.config.ApplicationConfig;
-import com.botmaker.di.DependencyContainer;
-import com.botmaker.init.AppDependencyConfigurator;
-import com.botmaker.init.AppServiceInitializer;
-import com.botmaker.project.ProjectConfig;
-import com.botmaker.services.CodeEditorService;
-import com.botmaker.services.LanguageServerService;
-import com.botmaker.ui.ProjectSelectionScreen;
-import com.botmaker.ui.UIManager;
-import javafx.application.Application;
-import javafx.application.Platform;
-import javafx.scene.control.Alert;
-import javafx.stage.Stage;
-
-import java.nio.file.Files;
-import java.nio.file.Paths;
-
-public class Main extends Application {
-
-    private DependencyContainer container;
-    private LanguageServerService languageServerService;
-
-    @Override
-    public void start(Stage primaryStage) {
-        String lastProject = ProjectConfig.getLastOpened();
-
-        // Check if last project exists and auto-load
-        if (lastProject != null && projectExists(lastProject)) {
-            System.out.println("Auto-loading last project: " + lastProject);
-            openProject(primaryStage, lastProject, false);
-        } else {
-            showProjectSelection(primaryStage);
-        }
-    }
-
-    private void showProjectSelection(Stage primaryStage) {
-        ProjectSelectionScreen selectionScreen = new ProjectSelectionScreen(
-                primaryStage,
-                (projectName, clearCache) -> openProject(primaryStage, projectName, clearCache)
-        );
-
-        primaryStage.setScene(selectionScreen.createScene());
-        primaryStage.setTitle("BotMaker - Select Project");
-        primaryStage.show();
-    }
-
-    private void openProject(Stage primaryStage, String projectName, boolean clearCache) {
-        try {
-            ProjectConfig.updateLastOpened(projectName);
-            ApplicationConfig config = ApplicationConfig.forProject(projectName);
-
-            // 1. Configure Container
-            container = new DependencyContainer();
-            AppDependencyConfigurator.configure(container, config, primaryStage);
-
-            // 2. Handle Cache Flag
-            if (clearCache) {
-                container.resolve(LanguageServerService.class).setShouldClearCache(true);
-            }
-
-            // 3. Initialize Services & Wiring
-            AppServiceInitializer.initialize(container);
-
-            // 4. Keep reference for shutdown
-            this.languageServerService = container.resolve(LanguageServerService.class);
-
-            // 5. Setup UI
-            UIManager uiManager = container.resolve(UIManager.class);
-            uiManager.setOnSelectProject(v -> shutdownAndShowSelector(primaryStage));
-
-            primaryStage.setScene(uiManager.createScene());
-            primaryStage.setTitle("BotMaker Blocks - " + projectName);
-
-            // 6. Load Code
-            container.resolve(CodeEditorService.class).loadInitialCode();
-
-            primaryStage.setOnCloseRequest(e -> {
-                e.consume();
-                performShutdown();
-            });
-
-            primaryStage.show();
-
-        } catch (Exception e) {
-            e.printStackTrace();
-            showErrorDialog("Error opening project: " + e.getMessage());
-            showProjectSelection(primaryStage);
-        }
-    }
-
-    private void shutdownAndShowSelector(Stage primaryStage) {
-        // Non-terminal shutdown (just stop LSP, keep JVM alive)
-        if (languageServerService != null) {
-            languageServerService.shutdown();
-            languageServerService = null;
-        }
-        showProjectSelection(primaryStage);
-    }
-
-    private void performShutdown() {
-        new Thread(() -> {
-            try {
-                if (languageServerService != null) {
-                    System.out.println("Shutting down Language Server...");
-                    languageServerService.shutdown();
-                }
-            } catch (Exception ex) {
-                System.err.println("Error during shutdown: " + ex.getMessage());
-            } finally {
-                Platform.runLater(() -> {
-                    Platform.exit();
-                    System.exit(0);
-                });
-            }
-        }).start();
-    }
-
-    private boolean projectExists(String projectName) {
-        return Files.exists(Paths.get("projects", projectName)) &&
-                Files.exists(Paths.get("projects", projectName, "build.gradle"));
-    }
-
-    private void showErrorDialog(String message) {
-        Alert alert = new Alert(Alert.AlertType.ERROR);
-        alert.setTitle("Error");
-        alert.setHeaderText("Failed to open project");
-        alert.setContentText(message);
-        alert.showAndWait();
-    }
-
-    public static void main(String[] args) {
-        launch(args);
-    }
-}
 
 =================================================================================
-FILE: ./src/main/java/com/botmaker/parser/AstRewriter.java
+FILE: ers\bgroi\Documents\dev\IntellijProjects\BotMaker\src\main\java\com\botmaker\parser\AstRewriter.java
 =================================================================================
 
 package com.botmaker.parser;
@@ -5583,6 +5014,13 @@ public class AstRewriter {
             rewriter.getListRewrite(listNode, ArrayInitializer.EXPRESSIONS_PROPERTY).insertAt(newElement, insertIndex, null);
         } else if (listNode instanceof MethodInvocation) {
             rewriter.getListRewrite(listNode, MethodInvocation.ARGUMENTS_PROPERTY).insertAt(newElement, insertIndex, null);
+        } else if (listNode instanceof ClassInstanceCreation) {
+            // FIX: Handle new ArrayList<>(Arrays.asList(...))
+            ClassInstanceCreation cic = (ClassInstanceCreation) listNode;
+            if (!cic.arguments().isEmpty() && cic.arguments().get(0) instanceof MethodInvocation) {
+                MethodInvocation mi = (MethodInvocation) cic.arguments().get(0);
+                rewriter.getListRewrite(mi, MethodInvocation.ARGUMENTS_PROPERTY).insertAt(newElement, insertIndex, null);
+            }
         }
         return applyRewrite(rewriter, originalCode);
     }
@@ -5593,7 +5031,21 @@ public class AstRewriter {
         List<?> expressions;
         ChildListPropertyDescriptor property;
 
-        if (listNode instanceof ArrayInitializer) {
+        // Determine list type and target the correct node/property
+        ASTNode targetNode = listNode;
+
+        if (listNode instanceof ClassInstanceCreation) {
+            // FIX: Handle new ArrayList<>(Arrays.asList(...))
+            ClassInstanceCreation cic = (ClassInstanceCreation) listNode;
+            if (!cic.arguments().isEmpty() && cic.arguments().get(0) instanceof MethodInvocation) {
+                MethodInvocation mi = (MethodInvocation) cic.arguments().get(0);
+                targetNode = mi; // We want to edit the inner method call
+                expressions = mi.arguments();
+                property = MethodInvocation.ARGUMENTS_PROPERTY;
+            } else {
+                return originalCode;
+            }
+        } else if (listNode instanceof ArrayInitializer) {
             expressions = ((ArrayInitializer) listNode).expressions();
             property = ArrayInitializer.EXPRESSIONS_PROPERTY;
         } else if (listNode instanceof MethodInvocation) {
@@ -5604,7 +5056,7 @@ public class AstRewriter {
         }
 
         if (elementIndex >= 0 && elementIndex < expressions.size()) {
-            rewriter.getListRewrite(listNode, property).remove((ASTNode) expressions.get(elementIndex), null);
+            rewriter.getListRewrite(targetNode, property).remove((ASTNode) expressions.get(elementIndex), null);
         }
         return applyRewrite(rewriter, originalCode);
     }
@@ -5684,10 +5136,6 @@ public class AstRewriter {
         }
     }
 
-
-    /**
-     * Updates a method call's scope, name, and synchronizes its arguments to match the target definition.
-     */
     public String updateMethodInvocation(CompilationUnit cu, String originalCode, MethodInvocation mi,
                                          String newScope, String newMethodName, List<String> newParamTypes) {
         AST ast = cu.getAST();
@@ -5715,10 +5163,6 @@ public class AstRewriter {
         // 3. Sync Arguments (Adaptive Parameters)
         ListRewrite argsRewrite = rewriter.getListRewrite(mi, MethodInvocation.ARGUMENTS_PROPERTY);
         List<?> currentArgs = mi.arguments();
-
-        // Logic: Match count.
-        // If target has MORE params -> Add default values.
-        // If target has FEWER params -> Remove extra arguments.
 
         int targetCount = newParamTypes.size();
         int currentCount = currentArgs.size();
@@ -5849,8 +5293,9 @@ public class AstRewriter {
     }
 }
 
+
 =================================================================================
-FILE: ./src/main/java/com/botmaker/parser/BlockFactory.java
+FILE: ers\bgroi\Documents\dev\IntellijProjects\BotMaker\src\main\java\com\botmaker\parser\BlockFactory.java
 =================================================================================
 
 package com.botmaker.parser;
@@ -6022,8 +5467,9 @@ public class BlockFactory {
     public CompilationUnit getCompilationUnit() { return ast; }
 }
 
+
 =================================================================================
-FILE: ./src/main/java/com/botmaker/parser/BlockIdPrefix.java
+FILE: ers\bgroi\Documents\dev\IntellijProjects\BotMaker\src\main\java\com\botmaker\parser\BlockIdPrefix.java
 =================================================================================
 
 package com.botmaker.util;
@@ -6070,8 +5516,9 @@ public class BlockIdPrefix {
     }
 }
 
+
 =================================================================================
-FILE: ./src/main/java/com/botmaker/parser/BlockParser.java
+FILE: ers\bgroi\Documents\dev\IntellijProjects\BotMaker\src\main\java\com\botmaker\parser\BlockParser.java
 =================================================================================
 
 package com.botmaker.parser;
@@ -6293,6 +5740,18 @@ public class BlockParser {
             map.put(expr, b);
             return Optional.of(b);
         }
+        // Note: Check isListStructure BEFORE MethodInvocation to catch special list methods if needed,
+        // though standard MethodInvocation block usually handles generic calls.
+        // But ClassInstanceCreation MUST be caught here or via isListStructure.
+
+        if (isListStructure(expr)) {
+            ListBlock b = new ListBlock(BlockIdPrefix.generate(BlockIdPrefix.LIST, expr), expr);
+            map.put(expr, b);
+            List<Expression> items = getListItems(expr);
+            for (Expression item : items) factory.parseExpression(item, map).ifPresent(b::addElement);
+            return Optional.of(b);
+        }
+
         if (expr instanceof MethodInvocation) {
             MethodInvocation mi = (MethodInvocation) expr;
             MethodInvocationBlock block = new MethodInvocationBlock(
@@ -6332,18 +5791,21 @@ public class BlockParser {
             factory.parseExpression(((InfixExpression) expr).getRightOperand(), map).ifPresent(b::setRightOperand);
             return Optional.of(b);
         }
-        if (isListStructure(expr)) {
-            ListBlock b = new ListBlock(BlockIdPrefix.generate(BlockIdPrefix.LIST, expr), expr);
-            map.put(expr, b);
-            List<Expression> items = getListItems(expr);
-            for (Expression item : items) factory.parseExpression(item, map).ifPresent(b::addElement);
-            return Optional.of(b);
-        }
         return Optional.empty();
     }
 
     private boolean isListStructure(Expression expr) {
         if (expr instanceof ArrayInitializer) return true;
+
+        // FIX: Handle new ArrayList<>(Arrays.asList(...))
+        if (expr instanceof ClassInstanceCreation) {
+            ClassInstanceCreation cic = (ClassInstanceCreation) expr;
+            String typeName = cic.getType().toString();
+            // Check for ArrayList AND that it has arguments (the inner list)
+            return (typeName.startsWith("ArrayList") || typeName.startsWith("java.util.ArrayList"))
+                    && !cic.arguments().isEmpty();
+        }
+
         if (expr instanceof MethodInvocation) {
             MethodInvocation mi = (MethodInvocation) expr;
             String scope = mi.getExpression() != null ? mi.getExpression().toString() : "";
@@ -6356,13 +5818,25 @@ public class BlockParser {
     @SuppressWarnings("unchecked")
     private List<Expression> getListItems(Expression expr) {
         if (expr instanceof ArrayInitializer) return ((ArrayInitializer) expr).expressions();
+
+        // FIX: Unwrap ClassInstanceCreation to find inner list items
+        if (expr instanceof ClassInstanceCreation) {
+            ClassInstanceCreation cic = (ClassInstanceCreation) expr;
+            if (!cic.arguments().isEmpty()) {
+                Expression arg = (Expression) cic.arguments().get(0);
+                // Recurse to handle the Arrays.asList inside
+                return getListItems(arg);
+            }
+        }
+
         if (expr instanceof MethodInvocation) return ((MethodInvocation) expr).arguments();
         return List.of();
     }
 }
 
+
 =================================================================================
-FILE: ./src/main/java/com/botmaker/parser/CodeEditor.java
+FILE: ers\bgroi\Documents\dev\IntellijProjects\BotMaker\src\main\java\com\botmaker\parser\CodeEditor.java
 =================================================================================
 
 package com.botmaker.parser;
@@ -6667,7 +6141,7 @@ public class CodeEditor {
 
     // --- FIX START: Manual Mapping instead of .values() ---
 
-    public void updateAssignmentOperator(org.eclipse.jdt.core.dom.ASTNode node, String newOperatorSymbol) {
+    public void updateAssignmentOperator(ASTNode node, String newOperatorSymbol) {
         String newCode = null;
 
         if (node instanceof Assignment) {
@@ -6675,8 +6149,8 @@ public class CodeEditor {
             if (op != null) {
                 newCode = astRewriter.replaceAssignmentOperator(getCompilationUnit(), getCurrentCode(), (Assignment) node, op);
             }
-        } else if (node instanceof org.eclipse.jdt.core.dom.PrefixExpression) {
-            org.eclipse.jdt.core.dom.PrefixExpression.Operator op = getPrefixOperator(newOperatorSymbol);
+        } else if (node instanceof PrefixExpression) {
+            PrefixExpression.Operator op = getPrefixOperator(newOperatorSymbol);
             if (op != null) {
                 newCode = astRewriter.replacePrefixOperator(getCompilationUnit(), getCurrentCode(), (org.eclipse.jdt.core.dom.PrefixExpression) node, op);
             }
@@ -6718,8 +6192,9 @@ public class CodeEditor {
     // --- FIX END ---
 }
 
+
 =================================================================================
-FILE: ./src/main/java/com/botmaker/parser/ImportManager.java
+FILE: ers\bgroi\Documents\dev\IntellijProjects\BotMaker\src\main\java\com\botmaker\parser\ImportManager.java
 =================================================================================
 
 package com.botmaker.parser;
@@ -6775,8 +6250,9 @@ public class ImportManager {
     }
 }
 
+
 =================================================================================
-FILE: ./src/main/java/com/botmaker/parser/NodeCreator.java
+FILE: ers\bgroi\Documents\dev\IntellijProjects\BotMaker\src\main\java\com\botmaker\parser\NodeCreator.java
 =================================================================================
 
 package com.botmaker.parser;
@@ -7065,8 +6541,9 @@ public class NodeCreator {
     }
 }
 
+
 =================================================================================
-FILE: ./src/main/java/com/botmaker/project/ProjectConfig.java
+FILE: ers\bgroi\Documents\dev\IntellijProjects\BotMaker\src\main\java\com\botmaker\project\ProjectConfig.java
 =================================================================================
 
 package com.botmaker.project;
@@ -7222,8 +6699,9 @@ public class ProjectConfig {
     }
 }
 
+
 =================================================================================
-FILE: ./src/main/java/com/botmaker/project/ProjectCreator.java
+FILE: ers\bgroi\Documents\dev\IntellijProjects\BotMaker\src\main\java\com\botmaker\project\ProjectCreator.java
 =================================================================================
 
 package com.botmaker.project;
@@ -7522,8 +7000,9 @@ public class ProjectCreator {
     }
 }
 
+
 =================================================================================
-FILE: ./src/main/java/com/botmaker/project/ProjectFile.java
+FILE: ers\bgroi\Documents\dev\IntellijProjects\BotMaker\src\main\java\com\botmaker\project\ProjectFile.java
 =================================================================================
 
 package com.botmaker.project;
@@ -7559,8 +7038,9 @@ public class ProjectFile {
     }
 }
 
+
 =================================================================================
-FILE: ./src/main/java/com/botmaker/project/ProjectInfo.java
+FILE: ers\bgroi\Documents\dev\IntellijProjects\BotMaker\src\main\java\com\botmaker\project\ProjectInfo.java
 =================================================================================
 
 package com.botmaker.project;
@@ -7600,8 +7080,9 @@ public class ProjectInfo {
     }
 }
 
+
 =================================================================================
-FILE: ./src/main/java/com/botmaker/project/ProjectManager.java
+FILE: ers\bgroi\Documents\dev\IntellijProjects\BotMaker\src\main\java\com\botmaker\project\ProjectManager.java
 =================================================================================
 
 package com.botmaker.project;
@@ -7688,8 +7169,9 @@ public class ProjectManager {
     }
 }
 
+
 =================================================================================
-FILE: ./src/main/java/com/botmaker/runtime/CodeExecutionService.java
+FILE: ers\bgroi\Documents\dev\IntellijProjects\BotMaker\src\main\java\com\botmaker\runtime\CodeExecutionService.java
 =================================================================================
 
 package com.botmaker.runtime;
@@ -7922,8 +7404,9 @@ public class CodeExecutionService {
     }
 }
 
+
 =================================================================================
-FILE: ./src/main/java/com/botmaker/services/CodeEditorService.java
+FILE: ers\bgroi\Documents\dev\IntellijProjects\BotMaker\src\main\java\com\botmaker\services\CodeEditorService.java
 =================================================================================
 
 package com.botmaker.services;
@@ -8177,8 +7660,9 @@ public class CodeEditorService {
     public BlockFactory getBlockFactory() { return blockFactory; }
 }
 
+
 =================================================================================
-FILE: ./src/main/java/com/botmaker/services/DebuggingService.java
+FILE: ers\bgroi\Documents\dev\IntellijProjects\BotMaker\src\main\java\com\botmaker\services\DebuggingService.java
 =================================================================================
 
 package com.botmaker.services;
@@ -8528,8 +8012,9 @@ public class DebuggingService {
     }
 }
 
+
 =================================================================================
-FILE: ./src/main/java/com/botmaker/services/ExecutionService.java
+FILE: ers\bgroi\Documents\dev\IntellijProjects\BotMaker\src\main\java\com\botmaker\services\ExecutionService.java
 =================================================================================
 
 package com.botmaker.services;
@@ -8631,8 +8116,9 @@ public class ExecutionService {
     }
 }
 
+
 =================================================================================
-FILE: ./src/main/java/com/botmaker/services/LanguageServerService.java
+FILE: ers\bgroi\Documents\dev\IntellijProjects\BotMaker\src\main\java\com\botmaker\services\LanguageServerService.java
 =================================================================================
 
 package com.botmaker.services;
@@ -8805,8 +8291,9 @@ public class LanguageServerService {
     }
 }
 
+
 =================================================================================
-FILE: ./src/main/java/com/botmaker/state/ApplicationState.java
+FILE: ers\bgroi\Documents\dev\IntellijProjects\BotMaker\src\main\java\com\botmaker\state\ApplicationState.java
 =================================================================================
 
 package com.botmaker.state;
@@ -9010,8 +8497,9 @@ public class ApplicationState {
     }
 }
 
+
 =================================================================================
-FILE: ./src/main/java/com/botmaker/state/HistoryManager.java
+FILE: ers\bgroi\Documents\dev\IntellijProjects\BotMaker\src\main\java\com\botmaker\state\HistoryManager.java
 =================================================================================
 
 package com.botmaker.state;
@@ -9074,8 +8562,9 @@ public class HistoryManager {
     }
 }
 
+
 =================================================================================
-FILE: ./src/main/java/com/botmaker/ui/AddableBlock.java
+FILE: ers\bgroi\Documents\dev\IntellijProjects\BotMaker\src\main\java\com\botmaker\ui\AddableBlock.java
 =================================================================================
 
 package com.botmaker.ui;
@@ -9150,8 +8639,9 @@ public enum AddableBlock {
     }
 }
 
+
 =================================================================================
-FILE: ./src/main/java/com/botmaker/ui/AddableExpression.java
+FILE: ers\bgroi\Documents\dev\IntellijProjects\BotMaker\src\main\java\com\botmaker\ui\AddableExpression.java
 =================================================================================
 
 package com.botmaker.ui;
@@ -9211,8 +8701,9 @@ public enum AddableExpression {
     }
 }
 
+
 =================================================================================
-FILE: ./src/main/java/com/botmaker/ui/BlockDragAndDropManager.java
+FILE: ers\bgroi\Documents\dev\IntellijProjects\BotMaker\src\main\java\com\botmaker\ui\BlockDragAndDropManager.java
 =================================================================================
 
 package com.botmaker.ui;
@@ -9503,8 +8994,9 @@ public class BlockDragAndDropManager {
     }
 }
 
+
 =================================================================================
-FILE: ./src/main/java/com/botmaker/ui/BlockEvent.java
+FILE: ers\bgroi\Documents\dev\IntellijProjects\BotMaker\src\main\java\com\botmaker\ui\BlockEvent.java
 =================================================================================
 
 package com.botmaker.ui;
@@ -9537,8 +9029,9 @@ public class BlockEvent extends Event {
     }
 }
 
+
 =================================================================================
-FILE: ./src/main/java/com/botmaker/ui/DropInfo.java
+FILE: ers\bgroi\Documents\dev\IntellijProjects\BotMaker\src\main\java\com\botmaker\ui\DropInfo.java
 =================================================================================
 
 package com.botmaker.ui;
@@ -9550,7 +9043,7 @@ public record DropInfo(AddableBlock type, BodyBlock targetBody, int insertionInd
 
 
 =================================================================================
-FILE: ./src/main/java/com/botmaker/ui/EventLogManager.java
+FILE: ers\bgroi\Documents\dev\IntellijProjects\BotMaker\src\main\java\com\botmaker\ui\EventLogManager.java
 =================================================================================
 
 package com.botmaker.ui;
@@ -9674,8 +9167,9 @@ public class EventLogManager {
     }
 }
 
+
 =================================================================================
-FILE: ./src/main/java/com/botmaker/ui/FileExplorerManager.java
+FILE: ers\bgroi\Documents\dev\IntellijProjects\BotMaker\src\main\java\com\botmaker\ui\FileExplorerManager.java
 =================================================================================
 
 package com.botmaker.ui;
@@ -9789,8 +9283,9 @@ public class FileExplorerManager {
     }
 }
 
+
 =================================================================================
-FILE: ./src/main/java/com/botmaker/ui/MenuBarManager.java
+FILE: ers\bgroi\Documents\dev\IntellijProjects\BotMaker\src\main\java\com\botmaker\ui\MenuBarManager.java
 =================================================================================
 
 package com.botmaker.ui;
@@ -10029,8 +9524,9 @@ public class MenuBarManager {
     }
 }
 
+
 =================================================================================
-FILE: ./src/main/java/com/botmaker/ui/MoveBlockInfo.java
+FILE: ers\bgroi\Documents\dev\IntellijProjects\BotMaker\src\main\java\com\botmaker\ui\MoveBlockInfo.java
 =================================================================================
 
 package com.botmaker.ui;
@@ -10046,8 +9542,9 @@ import com.botmaker.core.BodyBlock;
 public record MoveBlockInfo(String blockId, BodyBlock targetBody, int insertionIndex) {
 }
 
+
 =================================================================================
-FILE: ./src/main/java/com/botmaker/ui/PaletteManager.java
+FILE: ers\bgroi\Documents\dev\IntellijProjects\BotMaker\src\main\java\com\botmaker\ui\PaletteManager.java
 =================================================================================
 
 package com.botmaker.ui;
@@ -10110,8 +9607,9 @@ public class PaletteManager {
     }
 }
 
+
 =================================================================================
-FILE: ./src/main/java/com/botmaker/ui/ProjectSelectionScreen.java
+FILE: ers\bgroi\Documents\dev\IntellijProjects\BotMaker\src\main\java\com\botmaker\ui\ProjectSelectionScreen.java
 =================================================================================
 
 package com.botmaker.ui;
@@ -10348,8 +9846,9 @@ public class ProjectSelectionScreen {
     }
 }
 
+
 =================================================================================
-FILE: ./src/main/java/com/botmaker/ui/ToolbarManager.java
+FILE: ers\bgroi\Documents\dev\IntellijProjects\BotMaker\src\main\java\com\botmaker\ui\ToolbarManager.java
 =================================================================================
 
 package com.botmaker.ui;
@@ -10476,8 +9975,9 @@ public class ToolbarManager {
     }
 }
 
+
 =================================================================================
-FILE: ./src/main/java/com/botmaker/ui/UIManager.java
+FILE: ers\bgroi\Documents\dev\IntellijProjects\BotMaker\src\main\java\com\botmaker\ui\UIManager.java
 =================================================================================
 
 package com.botmaker.ui;
@@ -10695,8 +10195,323 @@ public class UIManager {
     public void setOnSelectProject(Consumer<Void> callback) { this.onSelectProject = callback; }
 }
 
+
 =================================================================================
-FILE: ./src/main/java/com/botmaker/util/BlockLookupHelper.java
+FILE: ers\bgroi\Documents\dev\IntellijProjects\BotMaker\src\main\java\com\botmaker\ui\components\BlockUIComponents.java
+=================================================================================
+
+package com.botmaker.ui.components;
+
+import com.botmaker.ui.AddableExpression;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
+import javafx.geometry.Pos;
+import javafx.scene.Node;
+import javafx.scene.control.*;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.Pane;
+import javafx.scene.layout.Priority;
+
+import java.util.function.Consumer;
+
+public class BlockUIComponents {
+
+    public static Button createDeleteButton(Runnable onDelete) {
+        Button btn = new Button("X");
+        btn.setOnAction(e -> onDelete.run());
+        // Optional: Add a specific style class if you want to target it specifically later
+        // btn.getStyleClass().add("delete-button");
+        return btn;
+    }
+
+    public static Button createAddButton(EventHandler<ActionEvent> handler) {
+        Button btn = new Button("+");
+        btn.getStyleClass().add("expression-add-button");
+        btn.setOnAction(handler);
+        return btn;
+    }
+
+    public static Button createChangeButton(EventHandler<ActionEvent> handler) {
+        Button btn = new Button("↻");
+        btn.getStyleClass().add("icon-button");
+        btn.setOnAction(handler);
+        return btn;
+    }
+
+    public static Label createKeywordLabel(String text) {
+        Label label = new Label(text);
+        label.getStyleClass().add("keyword-label");
+        return label;
+    }
+
+    public static Label createTypeLabel(String type) {
+        Label label = new Label(type);
+        label.getStyleClass().add("type-label");
+        return label;
+    }
+
+    public static Label createOperatorLabel(String operator) {
+        Label label = new Label(operator);
+        label.getStyleClass().add("operator-label");
+        return label;
+    }
+
+    public static Pane createSpacer() {
+        Pane spacer = new Pane();
+        HBox.setHgrow(spacer, Priority.ALWAYS);
+        return spacer;
+    }
+
+    /**
+     * Creates a standard header row: [Content Nodes] + [Spacer] + [Delete Button]
+     */
+    public static HBox createHeaderRow(Runnable onDelete, Node... content) {
+        HBox container = new HBox(5);
+        container.setAlignment(Pos.CENTER_LEFT);
+
+        if (content != null) {
+            container.getChildren().addAll(content);
+        }
+
+        container.getChildren().addAll(createSpacer(), createDeleteButton(onDelete));
+        return container;
+    }
+
+    public static ContextMenu createExpressionTypeMenu(String targetType, Consumer<AddableExpression> onSelect) {
+        ContextMenu menu = new ContextMenu();
+        menu.setStyle("-fx-control-inner-background: white;");
+
+        for (AddableExpression type : AddableExpression.getForType(targetType)) {
+            MenuItem menuItem = new MenuItem(type.getDisplayName());
+            menuItem.setStyle("-fx-text-fill: black;");
+            menuItem.setOnAction(e -> onSelect.accept(type));
+            menu.getItems().add(menuItem);
+        }
+        return menu;
+    }
+}
+
+
+=================================================================================
+FILE: ers\bgroi\Documents\dev\IntellijProjects\BotMaker\src\main\java\com\botmaker\ui\components\LayoutComponents.java
+=================================================================================
+
+package com.botmaker.ui.components;
+
+import javafx.geometry.Insets;
+import javafx.geometry.Pos;
+import javafx.scene.Node;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
+
+public class LayoutComponents {
+
+    private static final Insets STANDARD_INDENTATION = new Insets(5, 0, 0, 20);
+
+    /**
+     * Creates a VBox representing a nested body of code (e.g., inside an If or Loop).
+     * Applies standard indentation and specific style classes.
+     */
+    public static VBox createIndentedBody(Node content, String... styleClasses) {
+        VBox container = new VBox();
+        if (styleClasses != null) {
+            container.getStyleClass().addAll(styleClasses);
+        }
+        container.setPadding(STANDARD_INDENTATION);
+        if (content != null) {
+            container.getChildren().add(content);
+        }
+        return container;
+    }
+
+    /**
+     * Creates a horizontal row for building "sentences" (e.g., "for each [var] in [list]").
+     */
+    public static HBox createSentenceRow(Node... nodes) {
+        HBox row = new HBox(5);
+        row.setAlignment(Pos.CENTER_LEFT);
+        if (nodes != null) {
+            row.getChildren().addAll(nodes);
+        }
+        return row;
+    }
+}
+
+
+=================================================================================
+FILE: ers\bgroi\Documents\dev\IntellijProjects\BotMaker\src\main\java\com\botmaker\ui\components\PlaceholderComponents.java
+=================================================================================
+
+package com.botmaker.ui.components;
+
+import com.botmaker.core.ExpressionBlock;
+import com.botmaker.lsp.CompletionContext;
+import javafx.scene.Node;
+
+import java.util.function.Supplier;
+
+public class PlaceholderComponents {
+
+    /**
+     * Returns the UI node for an expression if it exists, otherwise creates a Drop Zone.
+     *
+     * @param expression The expression block (can be null)
+     * @param context The completion context needed to render the block
+     * @param dropZoneFactory A supplier to create the drop zone (usually provided by AbstractCodeBlock)
+     * @return The Node to display
+     */
+    public static Node createExpressionOrDropZone(
+            ExpressionBlock expression,
+            CompletionContext context,
+            Supplier<Node> dropZoneFactory) {
+
+        if (expression != null) {
+            return expression.getUINode(context);
+        } else {
+            return dropZoneFactory.get();
+        }
+    }
+}
+
+
+=================================================================================
+FILE: ers\bgroi\Documents\dev\IntellijProjects\BotMaker\src\main\java\com\botmaker\ui\components\SelectorComponents.java
+=================================================================================
+
+package com.botmaker.ui.components;
+
+import javafx.scene.control.ComboBox;
+
+import java.util.function.Consumer;
+
+public class SelectorComponents {
+
+    public static ComboBox<String> createOperatorSelector(String[] names, String[] symbols, String currentSymbol, Consumer<String> onSymbolChange) {
+        ComboBox<String> selector = new ComboBox<>();
+        selector.getItems().addAll(names);
+        selector.getStyleClass().add("operator-selector"); // or math-operator-selector based on context
+        selector.setEditable(false);
+
+        // Find display name for current symbol
+        String currentName = names[0];
+        for (int i = 0; i < symbols.length; i++) {
+            if (symbols[i].equals(currentSymbol)) {
+                currentName = names[i];
+                break;
+            }
+        }
+        selector.setValue(currentName);
+
+        selector.setOnAction(e -> {
+            String selectedName = selector.getValue();
+            String newSymbol = null;
+            for (int i = 0; i < names.length; i++) {
+                if (names[i].equals(selectedName)) {
+                    newSymbol = symbols[i];
+                    break;
+                }
+            }
+            if (newSymbol != null && !newSymbol.equals(currentSymbol)) {
+                onSymbolChange.accept(newSymbol);
+            }
+        });
+
+        return selector;
+    }
+
+    public static ComboBox<String> createSimpleSelector(String[] options, String current, Consumer<String> onChange) {
+        ComboBox<String> selector = new ComboBox<>();
+        selector.getItems().addAll(options);
+        selector.setValue(current);
+        selector.setOnAction(e -> {
+            if (!selector.getValue().equals(current)) {
+                onChange.accept(selector.getValue());
+            }
+        });
+        return selector;
+    }
+}
+
+
+=================================================================================
+FILE: ers\bgroi\Documents\dev\IntellijProjects\BotMaker\src\main\java\com\botmaker\ui\components\StyleComponents.java
+=================================================================================
+
+package com.botmaker.ui.components;
+
+import javafx.geometry.Pos;
+import javafx.scene.Node;
+import javafx.scene.layout.HBox;
+
+public class StyleComponents {
+
+    /**
+     * Creates a "Pill" shaped container (used for parameters and method calls).
+     */
+    public static HBox createPillContainer(String backgroundColor, Node... content) {
+        HBox container = new HBox(4);
+        container.setAlignment(Pos.CENTER_LEFT);
+        // We use inline styles here because these often have dynamic colors,
+        // but ideally this should map to CSS classes.
+        container.setStyle(
+                "-fx-background-color: " + backgroundColor + ";" +
+                        "-fx-background-radius: 12;" +
+                        "-fx-padding: 3 8 3 8;"
+        );
+        if (content != null) {
+            container.getChildren().addAll(content);
+        }
+        return container;
+    }
+}
+
+
+=================================================================================
+FILE: ers\bgroi\Documents\dev\IntellijProjects\BotMaker\src\main\java\com\botmaker\ui\components\TextFieldComponents.java
+=================================================================================
+
+package com.botmaker.ui.components;
+
+import javafx.scene.Cursor;
+import javafx.scene.control.TextField;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.Priority;
+
+import java.util.function.Consumer;
+
+public class TextFieldComponents {
+
+    public static TextField createCommentField(String initialText, String prompt, Consumer<String> onCommit) {
+        TextField field = new TextField(initialText != null ? initialText : "");
+        field.setPromptText(prompt);
+        field.getStyleClass().add("comment-text-field");
+        HBox.setHgrow(field, Priority.ALWAYS);
+
+        // Save on Focus Lost or Enter
+        field.focusedProperty().addListener((obs, oldVal, newVal) -> {
+            if (!newVal) onCommit.accept(field.getText());
+        });
+        field.setOnAction(e -> onCommit.accept(field.getText()));
+
+        return field;
+    }
+
+    public static TextField createVariableNameField(String initialText, Consumer<String> onCommit) {
+        TextField nameField = new TextField(initialText);
+        nameField.getStyleClass().add("variable-name-field");
+        nameField.setPrefWidth(100);
+
+        nameField.focusedProperty().addListener((obs, oldVal, newVal) -> {
+            if (!newVal) onCommit.accept(nameField.getText());
+        });
+
+        return nameField;
+    }
+}
+
+
+=================================================================================
+FILE: ers\bgroi\Documents\dev\IntellijProjects\BotMaker\src\main\java\com\botmaker\util\BlockLookupHelper.java
 =================================================================================
 
 package com.botmaker.util;
@@ -10790,8 +10605,9 @@ public class BlockLookupHelper {
     }
 }
 
+
 =================================================================================
-FILE: ./src/main/java/com/botmaker/util/DefaultNames.java
+FILE: ers\bgroi\Documents\dev\IntellijProjects\BotMaker\src\main\java\com\botmaker\util\DefaultNames.java
 =================================================================================
 
 package com.botmaker.util;
@@ -10833,8 +10649,9 @@ public class DefaultNames {
     private DefaultNames() {} // Prevent instantiation
 }
 
+
 =================================================================================
-FILE: ./src/main/java/com/botmaker/util/TypeManager.java
+FILE: ers\bgroi\Documents\dev\IntellijProjects\BotMaker\src\main\java\com\botmaker\util\TypeManager.java
 =================================================================================
 
 package com.botmaker.util;
@@ -11142,8 +10959,9 @@ public class TypeManager {
     }
 }
 
+
 =================================================================================
-FILE: ./src/main/java/com/botmaker/validation/DiagnosticsManager.java
+FILE: ers\bgroi\Documents\dev\IntellijProjects\BotMaker\src\main\java\com\botmaker\validation\DiagnosticsManager.java
 =================================================================================
 
 package com.botmaker.validation;
@@ -11438,8 +11256,9 @@ public class DiagnosticsManager {
     }
 }
 
+
 =================================================================================
-FILE: ./src/main/java/com/botmaker/validation/ErrorTranslator.java
+FILE: ers\bgroi\Documents\dev\IntellijProjects\BotMaker\src\main\java\com\botmaker\validation\ErrorTranslator.java
 =================================================================================
 
 package com.botmaker.validation;

@@ -12,8 +12,12 @@ public class Demo {
 		String decimal = "hiub";
 		if (true) {
 		}
+		switch (decimal) {
+		default:
+			break;
+		}
 		ArrayList<String> myList=new ArrayList<String>(Arrays.asList(decimal));
 		decimal = "text";
-		System.out.println(Test.action("grfhgedrg"));
+		System.out.println(Test.action("text"));
     }
 }
