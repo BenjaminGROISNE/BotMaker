@@ -15,13 +15,19 @@ public class Demo {
 		boolean flag = false;
 		if (true) {
 		}
-		System.out.println("");
-		switch (number + 5) {
+		System.out.println(number + 9);
+		switch (number * 5) {
 		case 0:
+			System.out.println("zero");
 			break;
 		case 5:
+			System.out.println("fdh");
+			break;
+		case 3:
+			System.out.println("efez");
 			break;
 		default:
+			System.out.println("default");
 			break;
 		}
 		ArrayList<String> myList=new ArrayList<String>(Arrays.asList(decimal));

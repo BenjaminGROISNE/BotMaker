@@ -8,6 +8,7 @@ import javafx.scene.Node;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 import org.eclipse.jdt.core.dom.Block;
+import org.eclipse.jdt.core.dom.Statement; // Changed from Block
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,7 +17,8 @@ public class BodyBlock extends AbstractStatementBlock implements BlockWithChildr
     private final List<StatementBlock> statements = new ArrayList<>();
     private final BlockDragAndDropManager dragAndDropManager;
 
-    public BodyBlock(String id, Block astNode, BlockDragAndDropManager dragAndDropManager) {
+    // FIX: Changed parameter from Block to Statement to allow SwitchCase
+    public BodyBlock(String id, Statement astNode, BlockDragAndDropManager dragAndDropManager) {
         super(id, astNode);
         this.dragAndDropManager = dragAndDropManager;
     }
@@ -60,38 +62,22 @@ public class BodyBlock extends AbstractStatementBlock implements BlockWithChildr
             container.setMinHeight(30);
             dragAndDropManager.addEmptyBodyDropHandlers(container, this);
         } else {
-            // Add a separator at the beginning
             container.getChildren().add(createSeparatorWithHandlers(this, 0));
 
             for (int i = 0; i < statements.size(); i++) {
                 StatementBlock statement = statements.get(i);
                 Node statementNode = statement.getUINode(context);
-
-                // Make the statement block draggable for repositioning
                 makeStatementDraggable(statementNode, statement);
-
                 container.getChildren().add(statementNode);
-                // Add a separator after each statement
                 container.getChildren().add(createSeparatorWithHandlers(this, i + 1));
             }
         }
         return container;
     }
 
-    /**
-     * Makes a statement block's UI node draggable so it can be repositioned.
-     */
     private void makeStatementDraggable(Node statementNode, StatementBlock statement) {
-        // Add visual cue that the block is draggable
-        statementNode.setOnMouseEntered(e -> {
-            statementNode.setCursor(Cursor.OPEN_HAND);
-        });
-
-        statementNode.setOnMouseExited(e -> {
-            statementNode.setCursor(Cursor.DEFAULT);
-        });
-
-        // Register with the drag and drop manager
+        statementNode.setOnMouseEntered(e -> statementNode.setCursor(Cursor.OPEN_HAND));
+        statementNode.setOnMouseExited(e -> statementNode.setCursor(Cursor.DEFAULT));
         dragAndDropManager.makeBlockMovable(statementNode, statement, this);
     }
 

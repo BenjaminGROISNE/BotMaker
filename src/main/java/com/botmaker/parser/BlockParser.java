@@ -13,9 +13,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
-/**
- * Handles converting specific AST nodes into UI Blocks.
- */
 public class BlockParser {
 
     private final BlockFactory factory;
@@ -48,7 +45,6 @@ public class BlockParser {
     private Optional<StatementBlock> parseReturn(ReturnStatement stmt, Map<ASTNode, CodeBlock> map) {
         ReturnBlock block = new ReturnBlock(BlockIdPrefix.generate(BlockIdPrefix.RETURN, stmt), stmt);
         map.put(stmt, block);
-
         if (stmt.getExpression() != null) {
             factory.parseExpression(stmt.getExpression(), map).ifPresent(block::setExpression);
         }
@@ -60,27 +56,21 @@ public class BlockParser {
         if (factory.isPrintStatement(expr)) return parsePrint(stmt, map);
         if (expr instanceof Assignment) return parseAssignment(stmt, map);
         if (expr instanceof PostfixExpression || expr instanceof PrefixExpression) {
-            // Treated as assignments for increment/decrement
             AssignmentBlock block = new AssignmentBlock(BlockIdPrefix.generate(BlockIdPrefix.ASSIGNMENT, stmt), stmt);
             map.put(stmt, block);
             if (expr instanceof PostfixExpression) factory.parseExpression(((PostfixExpression) expr).getOperand(), map).ifPresent(block::setLeftHandSide);
             if (expr instanceof PrefixExpression) factory.parseExpression(((PrefixExpression) expr).getOperand(), map).ifPresent(block::setLeftHandSide);
             return Optional.of(block);
         }
-
         if (expr instanceof MethodInvocation) {
-            MethodInvocationBlock block = new MethodInvocationBlock(
-                    BlockIdPrefix.generate("call_", stmt), stmt);
+            MethodInvocationBlock block = new MethodInvocationBlock(BlockIdPrefix.generate("call_", stmt), stmt);
             map.put(stmt, block);
-
             MethodInvocation mi = (MethodInvocation) expr;
-            // Parse arguments
             for (Object arg : mi.arguments()) {
                 factory.parseExpression((Expression) arg, map).ifPresent(block::addArgument);
             }
             return Optional.of(block);
         }
-
         return Optional.empty();
     }
 
@@ -158,7 +148,10 @@ public class BlockParser {
                 if (!sc.isDefault() && !sc.expressions().isEmpty()) {
                     factory.parseExpression((Expression) sc.expressions().get(0), map).ifPresent(currentCase::setCaseExpression);
                 }
-                currentBody = new BodyBlock(BlockIdPrefix.generate(BlockIdPrefix.BODY, sc), factory.getCompilationUnit().getAST().newBlock(), manager);
+
+                // FIX: Pass sc directly. Do not cast to Block.
+                currentBody = new BodyBlock(BlockIdPrefix.generate(BlockIdPrefix.BODY, sc), sc, manager);
+
                 currentCase.setBody(currentBody);
                 block.addCase(currentCase);
             } else if (currentBody != null) {
@@ -206,9 +199,7 @@ public class BlockParser {
         Statement first = (Statement) stmt.getBody().statements().get(0);
         if (!(first instanceof ExpressionStatement)) return false;
         Expression e = ((ExpressionStatement) first).getExpression();
-        return e instanceof MethodInvocation &&
-                "sleep".equals(((MethodInvocation) e).getName().getIdentifier()) &&
-                "Thread".equals(((MethodInvocation) e).getExpression().toString());
+        return e instanceof MethodInvocation && "sleep".equals(((MethodInvocation) e).getName().getIdentifier()) && "Thread".equals(((MethodInvocation) e).getExpression().toString());
     }
 
     public Optional<ExpressionBlock> parseExpression(Expression expr, Map<ASTNode, CodeBlock> map) {
@@ -217,10 +208,6 @@ public class BlockParser {
             map.put(expr, b);
             return Optional.of(b);
         }
-        // Note: Check isListStructure BEFORE MethodInvocation to catch special list methods if needed,
-        // though standard MethodInvocation block usually handles generic calls.
-        // But ClassInstanceCreation MUST be caught here or via isListStructure.
-
         if (isListStructure(expr)) {
             ListBlock b = new ListBlock(BlockIdPrefix.generate(BlockIdPrefix.LIST, expr), expr);
             map.put(expr, b);
@@ -228,14 +215,10 @@ public class BlockParser {
             for (Expression item : items) factory.parseExpression(item, map).ifPresent(b::addElement);
             return Optional.of(b);
         }
-
         if (expr instanceof MethodInvocation) {
             MethodInvocation mi = (MethodInvocation) expr;
-            MethodInvocationBlock block = new MethodInvocationBlock(
-                    BlockIdPrefix.generate("call_expr_", expr), expr);
-
+            MethodInvocationBlock block = new MethodInvocationBlock(BlockIdPrefix.generate("call_expr_", expr), expr);
             map.put(expr, block);
-
             for (Object arg : mi.arguments()) {
                 factory.parseExpression((Expression) arg, map).ifPresent(block::addArgument);
             }
@@ -273,21 +256,15 @@ public class BlockParser {
 
     private boolean isListStructure(Expression expr) {
         if (expr instanceof ArrayInitializer) return true;
-
-        // FIX: Handle new ArrayList<>(Arrays.asList(...))
         if (expr instanceof ClassInstanceCreation) {
             ClassInstanceCreation cic = (ClassInstanceCreation) expr;
             String typeName = cic.getType().toString();
-            // Check for ArrayList AND that it has arguments (the inner list)
-            return (typeName.startsWith("ArrayList") || typeName.startsWith("java.util.ArrayList"))
-                    && !cic.arguments().isEmpty();
+            return (typeName.startsWith("ArrayList") || typeName.startsWith("java.util.ArrayList")) && !cic.arguments().isEmpty();
         }
-
         if (expr instanceof MethodInvocation) {
             MethodInvocation mi = (MethodInvocation) expr;
             String scope = mi.getExpression() != null ? mi.getExpression().toString() : "";
-            return (scope.equals("Arrays") && mi.getName().getIdentifier().equals("asList")) ||
-                    (scope.equals("List") && mi.getName().getIdentifier().equals("of"));
+            return (scope.equals("Arrays") && mi.getName().getIdentifier().equals("asList")) || (scope.equals("List") && mi.getName().getIdentifier().equals("of"));
         }
         return false;
     }
@@ -295,17 +272,13 @@ public class BlockParser {
     @SuppressWarnings("unchecked")
     private List<Expression> getListItems(Expression expr) {
         if (expr instanceof ArrayInitializer) return ((ArrayInitializer) expr).expressions();
-
-        // FIX: Unwrap ClassInstanceCreation to find inner list items
         if (expr instanceof ClassInstanceCreation) {
             ClassInstanceCreation cic = (ClassInstanceCreation) expr;
             if (!cic.arguments().isEmpty()) {
                 Expression arg = (Expression) cic.arguments().get(0);
-                // Recurse to handle the Arrays.asList inside
                 return getListItems(arg);
             }
         }
-
         if (expr instanceof MethodInvocation) return ((MethodInvocation) expr).arguments();
         return List.of();
     }

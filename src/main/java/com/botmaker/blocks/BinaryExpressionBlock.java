@@ -3,13 +3,16 @@ package com.botmaker.blocks;
 import com.botmaker.core.AbstractExpressionBlock;
 import com.botmaker.core.ExpressionBlock;
 import com.botmaker.lsp.CompletionContext;
+import com.botmaker.ui.components.BlockUIComponents;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
+import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;
 import org.eclipse.jdt.core.dom.ITypeBinding;
 import org.eclipse.jdt.core.dom.InfixExpression;
+import org.eclipse.jdt.core.dom.Expression;
 
 public class BinaryExpressionBlock extends AbstractExpressionBlock {
 
@@ -39,12 +42,17 @@ public class BinaryExpressionBlock extends AbstractExpressionBlock {
         HBox expressionBox = new HBox(5);
         expressionBox.setAlignment(Pos.CENTER_LEFT);
 
-        // Left operand
+        // Left operand + Change Button
         if (leftOperand != null) {
             expressionBox.getChildren().add(leftOperand.getUINode(context));
+            Button changeLeft = BlockUIComponents.createChangeButton(e ->
+                    showExpressionMenuAndReplace((Button)e.getSource(), context, "number", (Expression) leftOperand.getAstNode())
+            );
+            changeLeft.setStyle("-fx-font-size: 8px; -fx-padding: 1px 3px;");
+            expressionBox.getChildren().add(changeLeft);
         }
 
-        // Operator
+        // Operator Selector
         if (isMathOperator(operator)) {
             ComboBox<String> selector = createOperatorSelector(
                     MATH_OPERATOR_NAMES,
@@ -52,9 +60,8 @@ public class BinaryExpressionBlock extends AbstractExpressionBlock {
                     operator,
                     newOp -> {
                         this.operator = newOp;
-                        // Note: Actual logic update typically happens via a broader block update mechanism
-                        // or requires specific callback handling if not managed by parent Statement
-                        System.out.println("Math operator changed to: " + newOp);
+                        // Call the code editor to update the AST
+                        context.codeEditor().updateBinaryOperator((InfixExpression) this.astNode, newOp);
                     }
             );
             selector.getStyleClass().add("math-operator-selector");
@@ -63,9 +70,14 @@ public class BinaryExpressionBlock extends AbstractExpressionBlock {
             expressionBox.getChildren().add(createOperatorLabel(operator));
         }
 
-        // Right operand
+        // Right operand + Change Button
         if (rightOperand != null) {
             expressionBox.getChildren().add(rightOperand.getUINode(context));
+            Button changeRight = BlockUIComponents.createChangeButton(e ->
+                    showExpressionMenuAndReplace((Button)e.getSource(), context, "number", (Expression) rightOperand.getAstNode())
+            );
+            changeRight.setStyle("-fx-font-size: 8px; -fx-padding: 1px 3px;");
+            expressionBox.getChildren().add(changeRight);
         }
 
         container.getChildren().add(expressionBox);
