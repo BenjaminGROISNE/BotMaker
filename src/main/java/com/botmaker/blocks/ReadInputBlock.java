@@ -3,81 +3,51 @@ package com.botmaker.blocks;
 import com.botmaker.core.AbstractStatementBlock;
 import com.botmaker.core.ExpressionBlock;
 import com.botmaker.lsp.CompletionContext;
-import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.control.Label;
-import javafx.scene.layout.HBox;
-import org.eclipse.jdt.core.dom.Statement;
 import org.eclipse.jdt.core.dom.VariableDeclarationStatement;
+
+import static com.botmaker.ui.components.BlockUIComponents.createTypeLabel;
 
 public class ReadInputBlock extends AbstractStatementBlock {
 
     private ExpressionBlock variableName;
-    private String inputType; // "nextLine", "nextInt", "nextDouble", etc.
+    private String inputType;
 
     public ReadInputBlock(String id, VariableDeclarationStatement astNode, String inputType) {
         super(id, astNode);
         this.inputType = inputType;
     }
 
-    public ExpressionBlock getVariableName() {
-        return variableName;
-    }
-
-    public void setVariableName(ExpressionBlock variableName) {
-        this.variableName = variableName;
-    }
-
-    public String getInputType() {
-        return inputType;
-    }
+    public void setVariableName(ExpressionBlock variableName) { this.variableName = variableName; }
 
     @Override
     protected Node createUINode(CompletionContext context) {
-        HBox container = new HBox(5);
-        container.setAlignment(Pos.CENTER_LEFT);
-        container.getStyleClass().add("read-input-block");
+        Node varNode = variableName != null ? variableName.getUINode(context) : null;
 
-        // Display based on input type
-        Label typeLabel = new Label(getTypeDisplayName());
-        typeLabel.getStyleClass().add("type-label");
-
-        if (variableName != null) {
-            container.getChildren().add(variableName.getUINode(context));
-        }
-
-        Label equalsLabel = new Label("=");
         Label scannerLabel = new Label("scanner." + inputType + "()");
         scannerLabel.getStyleClass().add("method-call-label");
 
-        container.getChildren().addAll(typeLabel, equalsLabel, scannerLabel);
+        Node content = createSentence(
+                createTypeLabel(getTypeDisplayName()),
+                varNode,
+                createKeywordLabel("="),
+                scannerLabel
+        );
 
-        // Add spacer and delete button
-        javafx.scene.layout.Pane spacer = new javafx.scene.layout.Pane();
-        HBox.setHgrow(spacer, javafx.scene.layout.Priority.ALWAYS);
-
-        javafx.scene.control.Button deleteButton = new javafx.scene.control.Button("X");
-        deleteButton.setOnAction(e -> {
-            context.codeEditor().deleteStatement((Statement) this.astNode);
-        });
-
-        container.getChildren().addAll(spacer, deleteButton);
-
+        Node container = createStandardHeader(context, content);
+        container.getStyleClass().add("read-input-block");
         return container;
     }
 
+
     private String getTypeDisplayName() {
         switch (inputType) {
-            case "nextLine":
-                return "String";
-            case "nextInt":
-                return "int";
-            case "nextDouble":
-                return "double";
-            case "nextBoolean":
-                return "boolean";
-            default:
-                return "var";
+            case "nextLine": return "String";
+            case "nextInt": return "int";
+            case "nextDouble": return "double";
+            case "nextBoolean": return "boolean";
+            default: return "var";
         }
     }
 }

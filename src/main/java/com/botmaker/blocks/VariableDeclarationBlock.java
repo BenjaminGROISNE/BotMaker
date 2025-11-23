@@ -3,15 +3,19 @@ package com.botmaker.blocks;
 import com.botmaker.core.AbstractStatementBlock;
 import com.botmaker.core.ExpressionBlock;
 import com.botmaker.lsp.CompletionContext;
-import com.botmaker.ui.AddableExpression;
+import com.botmaker.ui.components.BlockUIComponents;
+import com.botmaker.ui.components.TextFieldComponents;
 import com.botmaker.util.TypeManager;
 import javafx.geometry.Pos;
 import javafx.scene.Cursor;
 import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.Priority;
-import org.eclipse.jdt.core.dom.*;
+import org.eclipse.jdt.core.dom.Type;
+import org.eclipse.jdt.core.dom.VariableDeclarationFragment;
+import org.eclipse.jdt.core.dom.VariableDeclarationStatement;
+
+import static com.botmaker.ui.components.BlockUIComponents.createTypeLabel;
 
 public class VariableDeclarationBlock extends AbstractStatementBlock {
 
@@ -27,123 +31,83 @@ public class VariableDeclarationBlock extends AbstractStatementBlock {
         this.initializer = null;
     }
 
-    public void setInitializer(ExpressionBlock initializer) {
-        this.initializer = initializer;
-    }
+    public void setInitializer(ExpressionBlock initializer) { this.initializer = initializer; }
 
     @Override
     protected Node createUINode(CompletionContext context) {
-        HBox container = new HBox(5);
-        container.setAlignment(Pos.CENTER_LEFT);
-        container.getStyleClass().add("variable-declaration-block");
-
-        // --- TYPE SELECTOR ---
-        Label typeLabel = new Label(getDisplayTypeName(variableType));
-        typeLabel.getStyleClass().add("type-label");
+        // 1. Type Label with Menu
+        Label typeLabel = createTypeLabel(getDisplayTypeName(variableType));
         typeLabel.setCursor(Cursor.HAND);
-
-        Tooltip tooltip = new Tooltip("Click to change type (ArrayList/Base)");
-        Tooltip.install(typeLabel, tooltip);
-
+        Tooltip.install(typeLabel, new Tooltip("Click to change type (ArrayList/Base)"));
         typeLabel.setOnMouseClicked(e -> showTypeMenu(typeLabel, context));
-        container.getChildren().add(typeLabel);
 
-        // --- NAME FIELD ---
-        TextField nameField = new TextField(variableName);
-        nameField.getStyleClass().add("variable-name-field");
-        nameField.setPrefWidth(100);
-        nameField.focusedProperty().addListener((obs, oldVal, newVal) -> {
-            if (!newVal) {
-                String newName = nameField.getText();
-                VariableDeclarationFragment fragment = (VariableDeclarationFragment) ((VariableDeclarationStatement) this.astNode).fragments().get(0);
-                String currentName = fragment.getName().getIdentifier();
-
-                if (!newName.equals(currentName) && !newName.isEmpty()) {
-                    context.codeEditor().replaceSimpleName(fragment.getName(), newName);
-                }
+        // 2. Name Field
+        TextField nameField = TextFieldComponents.createVariableNameField(variableName, newName -> {
+            VariableDeclarationFragment fragment = (VariableDeclarationFragment) ((VariableDeclarationStatement) this.astNode).fragments().get(0);
+            if (!newName.equals(variableName) && !newName.isEmpty()) {
+                context.codeEditor().replaceSimpleName(fragment.getName(), newName);
             }
         });
-        container.getChildren().add(nameField);
 
-        // --- EQUALS ---
-        Label equalsLabel = new Label("=");
-        equalsLabel.getStyleClass().add("keyword-label");
-        container.getChildren().add(equalsLabel);
-
-        // --- INITIALIZER ---
+        // 3. Initializer Logic
+        Node initNode;
         if (initializer != null) {
-            // FIX: Prioritize rendering the initializer if it exists, especially if it's a ListBlock
+            // FIX: Restored original priority logic
             if (initializer instanceof ListBlock) {
-                // Render the interactive list UI directly
-                container.getChildren().add(initializer.getUINode(context));
-            }
-            else if (initializer.getAstNode() instanceof ArrayInitializer) {
-                // Fallback for primitive arrays {1,2,3} to use bracket styling if not caught by ListBlock
-                container.getChildren().add(createListDisplay(context));
-            }
-            else {
+                // Render ListBlock directly (it handles its own layout)
+                initNode = initializer.getUINode(context);
+            } else if (initializer.getAstNode() instanceof org.eclipse.jdt.core.dom.ArrayInitializer) {
+                // Fallback for other array initializers (add bracket styling)
+                initNode = createListDisplay(context);
+            } else {
                 // Standard expression
-                container.getChildren().add(initializer.getUINode(context));
+                initNode = initializer.getUINode(context);
             }
         } else {
-            // Only show placeholder if truly null (e.g. int x;)
-            container.getChildren().add(createExpressionDropZone(context));
+            initNode = createExpressionDropZone(context);
         }
 
-        // --- ADD BUTTON ---
-        Button addButton = new Button("+");
-        addButton.getStyleClass().add("expression-add-button");
-
-        // DYNAMIC TYPE FILTERING
+        // 4. Add Button
         String uiTargetType = TypeManager.determineUiType(variableType.toString());
-        addButton.setOnAction(e -> showExpressionMenu(addButton, context, uiTargetType));
+        Button addButton = createAddButton(e ->
+                showExpressionMenuAndReplace((Button)e.getSource(), context, uiTargetType,
+                        initializer != null ? (org.eclipse.jdt.core.dom.Expression)initializer.getAstNode() : null)
+        );
 
-        container.getChildren().add(addButton);
+        Node content = createSentence(
+                typeLabel,
+                nameField,
+                createKeywordLabel("="),
+                initNode,
+                addButton
+        );
 
-        // --- SPACER & DELETE ---
-        javafx.scene.layout.Pane spacer = new javafx.scene.layout.Pane();
-        HBox.setHgrow(spacer, Priority.ALWAYS);
-
-        Button deleteButton = new Button("X");
-        deleteButton.setOnAction(e -> {
-            context.codeEditor().deleteStatement((Statement) this.astNode);
-        });
-
-        container.getChildren().addAll(spacer, deleteButton);
+        HBox container = createStandardHeader(context, content);
+        container.getStyleClass().add("variable-declaration-block");
 
         return container;
     }
 
     private void showTypeMenu(Node anchor, CompletionContext context) {
         ContextMenu menu = new ContextMenu();
-
         String currentStr = variableType.toString();
         boolean isArrayListType = isArrayList(variableType);
         boolean isArray = variableType.isArrayType();
-
         final String baseType = extractBaseType(currentStr, isArrayListType, isArray);
 
-        // 1. Toggle between ArrayList and Single Value
+        // Toggle ArrayList
         MenuItem toggleList = new MenuItem(isArrayListType ? "Convert to Single Value" : "Convert to ArrayList");
         toggleList.setStyle("-fx-font-weight: bold;");
         toggleList.setOnAction(e -> {
-            String newType;
-            if (isArrayListType) {
-                newType = baseType;
-            } else {
-                // FIX: Ensure wrapper type (e.g., Integer, Boolean) is used
-                newType = "ArrayList<" + TypeManager.toWrapperType(baseType) + ">";
-            }
+            String newType = isArrayListType ? baseType : "ArrayList<" + TypeManager.toWrapperType(baseType) + ">";
             context.codeEditor().replaceVariableType((VariableDeclarationStatement) this.astNode, newType);
         });
         menu.getItems().add(toggleList);
 
-        // Option for nested list
+        // Nested List Option
         if (isArrayListType) {
             MenuItem makeNested = new MenuItem("Make ArrayList of ArrayLists");
             makeNested.setOnAction(e -> {
-                // FIX: Ensure inner type is also wrapped properly
-                // Result: ArrayList<ArrayList<Boolean>>
                 String newType = "ArrayList<ArrayList<" + TypeManager.toWrapperType(baseType) + ">>";
                 context.codeEditor().replaceVariableType((VariableDeclarationStatement) this.astNode, newType);
             });
@@ -152,35 +116,23 @@ public class VariableDeclarationBlock extends AbstractStatementBlock {
 
         menu.getItems().add(new SeparatorMenuItem());
 
-        // 2. Change Base Type
+        // Change Base Type
         Menu changeBaseMenu = new Menu("Change Base Type");
         for (String type : TypeManager.getFundamentalTypeNames()) {
             MenuItem item = new MenuItem(type);
-            final String finalType = type;
             item.setOnAction(e -> {
-                String newType;
-                if (isArrayListType) {
-                    // FIX: Ensure wrapper type is used when switching types in a list
-                    newType = "ArrayList<" + TypeManager.toWrapperType(finalType) + ">";
-                } else {
-                    newType = finalType;
-                }
+                String newType = isArrayListType ? "ArrayList<" + TypeManager.toWrapperType(type) + ">" : type;
                 context.codeEditor().replaceVariableType((VariableDeclarationStatement) this.astNode, newType);
             });
             changeBaseMenu.getItems().add(item);
         }
         menu.getItems().add(changeBaseMenu);
-
         menu.show(anchor, javafx.geometry.Side.BOTTOM, 0, 0);
     }
 
     private String extractBaseType(String currentStr, boolean isArrayListType, boolean isArray) {
-        if (isArrayListType) {
-            if (currentStr.contains("<") && currentStr.contains(">")) {
-                int start = currentStr.indexOf("<") + 1;
-                int end = currentStr.lastIndexOf(">"); // Fix: use lastIndexOf for nested
-                return currentStr.substring(start, end);
-            }
+        if (isArrayListType && currentStr.contains("<")) {
+            return currentStr.substring(currentStr.indexOf("<") + 1, currentStr.lastIndexOf(">"));
         } else if (isArray) {
             return currentStr.replace("[]", "");
         }
@@ -192,58 +144,21 @@ public class VariableDeclarationBlock extends AbstractStatementBlock {
         listBox.setAlignment(Pos.CENTER_LEFT);
         listBox.getStyleClass().add("inline-list-display");
 
-        Label openBracket = new Label("[");
-        openBracket.setStyle("-fx-font-weight: bold; -fx-font-size: 14px;");
-        listBox.getChildren().add(openBracket);
+        Label open = new Label("["); open.setStyle("-fx-font-weight: bold; -fx-font-size: 14px;");
+        Label close = new Label("]"); close.setStyle("-fx-font-weight: bold; -fx-font-size: 14px;");
 
-        if (initializer instanceof ListBlock) {
-            // If it's a ListBlock but forced here (e.g. array), render it
-            listBox.getChildren().add(initializer.getUINode(context));
-        } else {
-            listBox.getChildren().add(initializer.getUINode(context));
-        }
-
-        Label closeBracket = new Label("]");
-        closeBracket.setStyle("-fx-font-weight: bold; -fx-font-size: 14px;");
-        listBox.getChildren().add(closeBracket);
-
+        listBox.getChildren().addAll(open, initializer.getUINode(context), close);
         return listBox;
     }
 
     private String getDisplayTypeName(Type type) {
         String typeName = type.toString();
-        if (isArrayList(type)) {
-            return typeName;
-        }
-        if (typeName.endsWith("[]")) {
-            return typeName.replace("[]", " list");
-        }
+        if (isArrayList(type)) return typeName;
+        if (typeName.endsWith("[]")) return typeName.replace("[]", " list");
         return typeName;
     }
 
     private boolean isArrayList(Type type) {
-        String typeName = type.toString();
-        return typeName.startsWith("ArrayList<") || typeName.equals("ArrayList");
-    }
-
-    private void showExpressionMenu(Button button, CompletionContext context, String targetType) {
-        ContextMenu menu = new ContextMenu();
-        menu.setStyle("-fx-control-inner-background: white;");
-
-        for (AddableExpression type : AddableExpression.getForType(targetType)) {
-            MenuItem menuItem = new MenuItem(type.getDisplayName());
-            menuItem.setStyle("-fx-text-fill: black;");
-
-            menuItem.setOnAction(e -> {
-                if (initializer != null) {
-                    context.codeEditor().replaceExpression(
-                            (Expression) initializer.getAstNode(),
-                            type
-                    );
-                }
-            });
-            menu.getItems().add(menuItem);
-        }
-        menu.show(button, javafx.geometry.Side.BOTTOM, 0, 0);
+        return type.toString().startsWith("ArrayList");
     }
 }

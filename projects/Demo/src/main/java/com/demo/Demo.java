@@ -4,17 +4,16 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 public class Demo {
     public static void main(String[] args) {
 		System.out.println("");
-		ArrayList<Integer> myList=new ArrayList<Integer>(Arrays.asList(null));
-		double decimal = 0.0;
-		String text = "";
+		String decimal = "hiub";
 		if (true) {
 		}
-		case 0:
-		variable = 0;
+		ArrayList<String> myList=new ArrayList<String>(Arrays.asList(decimal));
+		decimal = "text";
 		System.out.println(Test.action("grfhgedrg"));
     }
 }

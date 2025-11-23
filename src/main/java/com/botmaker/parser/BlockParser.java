@@ -217,6 +217,18 @@ public class BlockParser {
             map.put(expr, b);
             return Optional.of(b);
         }
+        // Note: Check isListStructure BEFORE MethodInvocation to catch special list methods if needed,
+        // though standard MethodInvocation block usually handles generic calls.
+        // But ClassInstanceCreation MUST be caught here or via isListStructure.
+
+        if (isListStructure(expr)) {
+            ListBlock b = new ListBlock(BlockIdPrefix.generate(BlockIdPrefix.LIST, expr), expr);
+            map.put(expr, b);
+            List<Expression> items = getListItems(expr);
+            for (Expression item : items) factory.parseExpression(item, map).ifPresent(b::addElement);
+            return Optional.of(b);
+        }
+
         if (expr instanceof MethodInvocation) {
             MethodInvocation mi = (MethodInvocation) expr;
             MethodInvocationBlock block = new MethodInvocationBlock(
@@ -256,18 +268,21 @@ public class BlockParser {
             factory.parseExpression(((InfixExpression) expr).getRightOperand(), map).ifPresent(b::setRightOperand);
             return Optional.of(b);
         }
-        if (isListStructure(expr)) {
-            ListBlock b = new ListBlock(BlockIdPrefix.generate(BlockIdPrefix.LIST, expr), expr);
-            map.put(expr, b);
-            List<Expression> items = getListItems(expr);
-            for (Expression item : items) factory.parseExpression(item, map).ifPresent(b::addElement);
-            return Optional.of(b);
-        }
         return Optional.empty();
     }
 
     private boolean isListStructure(Expression expr) {
         if (expr instanceof ArrayInitializer) return true;
+
+        // FIX: Handle new ArrayList<>(Arrays.asList(...))
+        if (expr instanceof ClassInstanceCreation) {
+            ClassInstanceCreation cic = (ClassInstanceCreation) expr;
+            String typeName = cic.getType().toString();
+            // Check for ArrayList AND that it has arguments (the inner list)
+            return (typeName.startsWith("ArrayList") || typeName.startsWith("java.util.ArrayList"))
+                    && !cic.arguments().isEmpty();
+        }
+
         if (expr instanceof MethodInvocation) {
             MethodInvocation mi = (MethodInvocation) expr;
             String scope = mi.getExpression() != null ? mi.getExpression().toString() : "";
@@ -280,6 +295,17 @@ public class BlockParser {
     @SuppressWarnings("unchecked")
     private List<Expression> getListItems(Expression expr) {
         if (expr instanceof ArrayInitializer) return ((ArrayInitializer) expr).expressions();
+
+        // FIX: Unwrap ClassInstanceCreation to find inner list items
+        if (expr instanceof ClassInstanceCreation) {
+            ClassInstanceCreation cic = (ClassInstanceCreation) expr;
+            if (!cic.arguments().isEmpty()) {
+                Expression arg = (Expression) cic.arguments().get(0);
+                // Recurse to handle the Arrays.asList inside
+                return getListItems(arg);
+            }
+        }
+
         if (expr instanceof MethodInvocation) return ((MethodInvocation) expr).arguments();
         return List.of();
     }

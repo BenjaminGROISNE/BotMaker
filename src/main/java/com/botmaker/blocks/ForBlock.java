@@ -7,59 +7,26 @@ import com.botmaker.core.CodeBlock;
 import com.botmaker.core.ExpressionBlock;
 import com.botmaker.lsp.CompletionContext;
 import com.botmaker.ui.BlockDragAndDropManager;
-import javafx.geometry.Insets;
-import javafx.geometry.Pos;
 import javafx.scene.Node;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.Pane;
-import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 import org.eclipse.jdt.core.dom.EnhancedForStatement;
-import org.eclipse.jdt.core.dom.Statement;
 
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * ForEach loop block: for(Type variable : collection) { }
- */
 public class ForBlock extends AbstractStatementBlock implements BlockWithChildren {
 
     private ExpressionBlock variable;
     private ExpressionBlock collection;
     private BodyBlock body;
-    private final BlockDragAndDropManager dragAndDropManager;
 
     public ForBlock(String id, EnhancedForStatement astNode, BlockDragAndDropManager dragAndDropManager) {
         super(id, astNode);
-        this.dragAndDropManager = dragAndDropManager;
     }
 
-    public ExpressionBlock getVariable() {
-        return variable;
-    }
-
-    public void setVariable(ExpressionBlock variable) {
-        this.variable = variable;
-    }
-
-    public ExpressionBlock getCollection() {
-        return collection;
-    }
-
-    public void setCollection(ExpressionBlock collection) {
-        this.collection = collection;
-    }
-
-    public BodyBlock getBody() {
-        return body;
-    }
-
-    public void setBody(BodyBlock body) {
-        this.body = body;
-    }
+    public void setVariable(ExpressionBlock variable) { this.variable = variable; }
+    public void setCollection(ExpressionBlock collection) { this.collection = collection; }
+    public void setBody(BodyBlock body) { this.body = body; }
 
     @Override
     public List<CodeBlock> getChildren() {
@@ -72,54 +39,22 @@ public class ForBlock extends AbstractStatementBlock implements BlockWithChildre
 
     @Override
     protected Node createUINode(CompletionContext context) {
+        // Header: "for each [var] in [collection]"
+        Node headerContent = createSentence(
+                createKeywordLabel("for each"),
+                variable != null ? variable.getUINode(context) : createExpressionDropZone(context),
+                createKeywordLabel("in"),
+                collection != null ? collection.getUINode(context) : createExpressionDropZone(context)
+        );
+        headerContent.getStyleClass().add("for-header");
+
         VBox mainContainer = new VBox(5);
         mainContainer.getStyleClass().add("for-block");
-
-        // Header row with delete button
-        HBox headerRow = new HBox(5);
-        headerRow.setAlignment(Pos.CENTER_LEFT);
-
-        // For each parts
-        HBox header = new HBox(5);
-        header.setAlignment(Pos.CENTER_LEFT);
-        header.getStyleClass().add("for-header");
-
-        Label forLabel = new Label("for each");
-        forLabel.getStyleClass().add("keyword-label");
-
-        header.getChildren().add(forLabel);
-
-        if (variable != null) {
-            header.getChildren().add(variable.getUINode(context));
-        }
-
-        Label inLabel = new Label("in");
-        header.getChildren().add(inLabel);
-
-        if (collection != null) {
-            header.getChildren().add(collection.getUINode(context));
-        }
-
-        // Add spacer and delete button
-        Pane spacer = new Pane();
-        HBox.setHgrow(spacer, Priority.ALWAYS);
-
-        Button deleteButton = new Button("X");
-        deleteButton.setOnAction(e -> {
-            context.codeEditor().deleteStatement((Statement) this.astNode);
-        });
-
-        headerRow.getChildren().addAll(header, spacer, deleteButton);
-        mainContainer.getChildren().add(headerRow);
+        mainContainer.getChildren().add(createStandardHeader(context, headerContent));
 
         // Body
-        if (body != null) {
-            VBox bodyContainer = new VBox();
-            bodyContainer.getStyleClass().add("for-body");
-            bodyContainer.setPadding(new Insets(5, 0, 0, 20));
-            bodyContainer.getChildren().add(body.getUINode(context));
-            mainContainer.getChildren().add(bodyContainer);
-        }
+        VBox bodyNode = createIndentedBody(body, context, "for-body");
+        if (bodyNode != null) mainContainer.getChildren().add(bodyNode);
 
         return mainContainer;
     }

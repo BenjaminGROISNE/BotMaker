@@ -201,6 +201,13 @@ public class AstRewriter {
             rewriter.getListRewrite(listNode, ArrayInitializer.EXPRESSIONS_PROPERTY).insertAt(newElement, insertIndex, null);
         } else if (listNode instanceof MethodInvocation) {
             rewriter.getListRewrite(listNode, MethodInvocation.ARGUMENTS_PROPERTY).insertAt(newElement, insertIndex, null);
+        } else if (listNode instanceof ClassInstanceCreation) {
+            // FIX: Handle new ArrayList<>(Arrays.asList(...))
+            ClassInstanceCreation cic = (ClassInstanceCreation) listNode;
+            if (!cic.arguments().isEmpty() && cic.arguments().get(0) instanceof MethodInvocation) {
+                MethodInvocation mi = (MethodInvocation) cic.arguments().get(0);
+                rewriter.getListRewrite(mi, MethodInvocation.ARGUMENTS_PROPERTY).insertAt(newElement, insertIndex, null);
+            }
         }
         return applyRewrite(rewriter, originalCode);
     }
@@ -211,7 +218,21 @@ public class AstRewriter {
         List<?> expressions;
         ChildListPropertyDescriptor property;
 
-        if (listNode instanceof ArrayInitializer) {
+        // Determine list type and target the correct node/property
+        ASTNode targetNode = listNode;
+
+        if (listNode instanceof ClassInstanceCreation) {
+            // FIX: Handle new ArrayList<>(Arrays.asList(...))
+            ClassInstanceCreation cic = (ClassInstanceCreation) listNode;
+            if (!cic.arguments().isEmpty() && cic.arguments().get(0) instanceof MethodInvocation) {
+                MethodInvocation mi = (MethodInvocation) cic.arguments().get(0);
+                targetNode = mi; // We want to edit the inner method call
+                expressions = mi.arguments();
+                property = MethodInvocation.ARGUMENTS_PROPERTY;
+            } else {
+                return originalCode;
+            }
+        } else if (listNode instanceof ArrayInitializer) {
             expressions = ((ArrayInitializer) listNode).expressions();
             property = ArrayInitializer.EXPRESSIONS_PROPERTY;
         } else if (listNode instanceof MethodInvocation) {
@@ -222,7 +243,7 @@ public class AstRewriter {
         }
 
         if (elementIndex >= 0 && elementIndex < expressions.size()) {
-            rewriter.getListRewrite(listNode, property).remove((ASTNode) expressions.get(elementIndex), null);
+            rewriter.getListRewrite(targetNode, property).remove((ASTNode) expressions.get(elementIndex), null);
         }
         return applyRewrite(rewriter, originalCode);
     }
@@ -302,10 +323,6 @@ public class AstRewriter {
         }
     }
 
-
-    /**
-     * Updates a method call's scope, name, and synchronizes its arguments to match the target definition.
-     */
     public String updateMethodInvocation(CompilationUnit cu, String originalCode, MethodInvocation mi,
                                          String newScope, String newMethodName, List<String> newParamTypes) {
         AST ast = cu.getAST();
@@ -333,10 +350,6 @@ public class AstRewriter {
         // 3. Sync Arguments (Adaptive Parameters)
         ListRewrite argsRewrite = rewriter.getListRewrite(mi, MethodInvocation.ARGUMENTS_PROPERTY);
         List<?> currentArgs = mi.arguments();
-
-        // Logic: Match count.
-        // If target has MORE params -> Add default values.
-        // If target has FEWER params -> Remove extra arguments.
 
         int targetCount = newParamTypes.size();
         int currentCount = currentArgs.size();
