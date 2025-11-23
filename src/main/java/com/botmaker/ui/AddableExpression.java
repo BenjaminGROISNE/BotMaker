@@ -1,5 +1,6 @@
 package com.botmaker.ui;
 
+import com.botmaker.util.TypeManager;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -46,6 +47,26 @@ public enum AddableExpression {
         if (targetType == null || targetType.equals("any")) {
             return Arrays.asList(values());
         }
+
+        // NEW: Filter for Switch Compatibility
+        if (targetType.equals(TypeManager.UI_TYPE_SWITCH_COMPATIBLE)) {
+            return Arrays.stream(values())
+                    .filter(e -> {
+                        // Explicitly allow Variable, Text, Function Call
+                        if (e == VARIABLE || e == TEXT || e == FUNCTION_CALL) return true;
+
+                        // Allow Number (creates 0, which is an int, thus valid)
+                        if (e == NUMBER) return true;
+
+                        // Allow math (creates int expressions usually)
+                        if (e.returnType.equals("number")) return true;
+
+                        // Exclude Boolean literals and Lists
+                        return false;
+                    })
+                    .collect(Collectors.toList());
+        }
+
         return Arrays.stream(values())
                 .filter(e -> {
                     if (e.returnType.equals("any")) return true;

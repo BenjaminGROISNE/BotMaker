@@ -67,7 +67,6 @@ public class IdentifierBlock extends AbstractExpressionBlock {
             Position pos = getPositionFromOffset(context.sourceCode(), this.astNode.getStartPosition());
             CompletionParams params = new CompletionParams(new TextDocumentIdentifier(context.docUri()), pos);
 
-            // 1. Determine Expected Type with Parent Traversal
             String expectedType = determineExpectedType();
             System.out.println("[Debug] Suggestion Context -> Expected Type: " + expectedType);
 
@@ -84,31 +83,23 @@ public class IdentifierBlock extends AbstractExpressionBlock {
                     menu.setStyle("-fx-control-inner-background: white;");
 
                     List<CompletionItem> filteredItems = items.stream()
-                            // Only Variables and Fields
                             .filter(item -> item.getKind() == CompletionItemKind.Variable || item.getKind() == CompletionItemKind.Field)
-                            // Filter hidden (args, scanner)
                             .filter(item -> TypeManager.isUserVariable(item.getLabel()))
-                            // Filter by Type using TypeManager
                             .filter(item -> {
-                                // Extract type info: prefer detail, fallback to label parsing
                                 String typeInfo = item.getDetail();
                                 if (typeInfo == null || typeInfo.isBlank()) {
-                                    // Try to parse "name : type" from label
                                     if (item.getLabel().contains(" : ")) {
                                         String[] parts = item.getLabel().split(" : ");
-                                        if (parts.length > 1) {
-                                            typeInfo = parts[1].trim();
-                                        }
+                                        if (parts.length > 1) typeInfo = parts[1].trim();
                                     }
                                 }
-
-                                boolean match = TypeManager.isCompatible(typeInfo, expectedType);
-                                return match;
+                                // Checks validity using TypeManager (now handles SWITCH_COMPATIBLE)
+                                return TypeManager.isCompatible(typeInfo, expectedType);
                             })
                             .collect(Collectors.toList());
 
                     if (filteredItems.isEmpty()) {
-                        MenuItem noVars = new MenuItem("(No " + (expectedType.equals("any") ? "" : expectedType + " ") + "variables found)");
+                        MenuItem noVars = new MenuItem("(No compatible variables found)");
                         noVars.setDisable(true);
                         noVars.setStyle("-fx-text-fill: #999;");
                         menu.getItems().add(noVars);
@@ -151,13 +142,19 @@ public class IdentifierBlock extends AbstractExpressionBlock {
         ASTNode child = this.astNode;
         ASTNode parent = this.astNode.getParent();
 
-        // 1. Skip Parentheses ((x))
         while (parent instanceof ParenthesizedExpression) {
             child = parent;
             parent = parent.getParent();
         }
 
         if (parent == null) return TypeManager.UI_TYPE_ANY;
+
+        // NEW: Switch Statement Expression Context
+        if (parent instanceof SwitchStatement) {
+            if (((SwitchStatement) parent).getExpression() == child) {
+                return TypeManager.UI_TYPE_SWITCH_COMPATIBLE;
+            }
+        }
 
         // 2. Boolean Contexts
         if (parent instanceof IfStatement) {
@@ -170,56 +167,37 @@ public class IdentifierBlock extends AbstractExpressionBlock {
             if (((DoStatement) parent).getExpression() == child) return TypeManager.UI_TYPE_BOOLEAN;
         }
 
-        // 3. Unary Contexts (Prefix/Postfix)
+        // 3. Unary Contexts
         if (parent instanceof PrefixExpression) {
             PrefixExpression.Operator op = ((PrefixExpression) parent).getOperator();
-            if (op == PrefixExpression.Operator.NOT) {
-                return TypeManager.UI_TYPE_BOOLEAN;
-            }
-            if (op == PrefixExpression.Operator.INCREMENT || op == PrefixExpression.Operator.DECREMENT ||
-                    op == PrefixExpression.Operator.PLUS || op == PrefixExpression.Operator.MINUS) {
-                return TypeManager.UI_TYPE_NUMBER;
-            }
-        }
-        if (parent instanceof PostfixExpression) {
+            if (op == PrefixExpression.Operator.NOT) return TypeManager.UI_TYPE_BOOLEAN;
             return TypeManager.UI_TYPE_NUMBER;
         }
+        if (parent instanceof PostfixExpression) return TypeManager.UI_TYPE_NUMBER;
 
-        // 4. Binary Contexts (Infix Expressions)
+        // 4. Binary Contexts
         if (parent instanceof InfixExpression) {
             InfixExpression infix = (InfixExpression) parent;
             InfixExpression.Operator op = infix.getOperator();
-
-            if (op == InfixExpression.Operator.PLUS || op == InfixExpression.Operator.MINUS ||
-                    op == InfixExpression.Operator.TIMES || op == InfixExpression.Operator.DIVIDE ||
-                    op == InfixExpression.Operator.REMAINDER) {
-                return TypeManager.UI_TYPE_NUMBER;
-            }
-            if (op == InfixExpression.Operator.LESS || op == InfixExpression.Operator.GREATER ||
-                    op == InfixExpression.Operator.LESS_EQUALS || op == InfixExpression.Operator.GREATER_EQUALS) {
-                return TypeManager.UI_TYPE_NUMBER;
-            }
             if (op == InfixExpression.Operator.CONDITIONAL_AND || op == InfixExpression.Operator.CONDITIONAL_OR) {
                 return TypeManager.UI_TYPE_BOOLEAN;
             }
+            return TypeManager.UI_TYPE_NUMBER;
         }
 
-        // 5. Assignment (RHS must match LHS)
+        // 5. Assignment
         if (parent instanceof Assignment) {
             Assignment assignment = (Assignment) parent;
             if (assignment.getRightHandSide() == child) {
                 Expression lhs = assignment.getLeftHandSide();
                 ITypeBinding binding = lhs.resolveTypeBinding();
                 if (binding != null) {
-                    if (TypeManager.isCompatible(binding, TypeManager.UI_TYPE_BOOLEAN)) return TypeManager.UI_TYPE_BOOLEAN;
-                    if (TypeManager.isCompatible(binding, TypeManager.UI_TYPE_NUMBER)) return TypeManager.UI_TYPE_NUMBER;
-                    if (TypeManager.isCompatible(binding, TypeManager.UI_TYPE_STRING)) return TypeManager.UI_TYPE_STRING;
+                    return TypeManager.determineUiType(binding.getName());
                 }
             }
         }
 
-        // 6. Variable Declaration Initialization (Target must match Variable Type)
-        // e.g. int x = [variable]
+        // 6. Variable Declaration
         if (parent instanceof VariableDeclarationFragment) {
             VariableDeclarationFragment frag = (VariableDeclarationFragment) parent;
             if (frag.getInitializer() == child) {

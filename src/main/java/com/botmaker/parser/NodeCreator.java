@@ -11,11 +11,9 @@ import java.util.List;
 
 import static com.botmaker.util.TypeManager.toWrapperType;
 
-/**
- * Responsible solely for creating new AST Nodes (Statements and Expressions).
- */
 public class NodeCreator {
 
+    // ... [createDefaultExpression remains unchanged] ...
     public Expression createDefaultExpression(AST ast, AddableExpression type, CompilationUnit cu, ASTRewrite rewriter) {
         switch (type) {
             case TEXT:
@@ -140,15 +138,14 @@ public class NodeCreator {
             case SWITCH:
                 SwitchStatement switchStmt = ast.newSwitchStatement();
                 switchStmt.setExpression(ast.newSimpleName(DefaultNames.DEFAULT_VARIABLE));
+                // Add default case
                 SwitchCase defaultCase = ast.newSwitchCase();
+                // defaultCase.setExpression(null); // Implicitly default
                 switchStmt.statements().add(defaultCase);
                 switchStmt.statements().add(ast.newBreakStatement());
                 return switchStmt;
 
-            case CASE:
-                SwitchCase switchCase = ast.newSwitchCase();
-                try { switchCase.expressions().add(ast.newNumberLiteral("0")); } catch (Exception e) {}
-                return switchCase;
+            // REMOVED: case CASE:
 
             case WAIT:
                 return createWaitStatement(ast);
@@ -158,7 +155,7 @@ public class NodeCreator {
         }
     }
 
-    // Helpers for creation logic
+    // ... [Helpers remain the same] ...
     private Statement createVariableDeclaration(AST ast, String name, String val, PrimitiveType.Code type) {
         VariableDeclarationFragment fragment = ast.newVariableDeclarationFragment();
         fragment.setName(ast.newSimpleName(name));

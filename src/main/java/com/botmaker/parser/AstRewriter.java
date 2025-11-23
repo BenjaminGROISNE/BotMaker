@@ -14,10 +14,6 @@ import org.eclipse.text.edits.TextEdit;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Handles modifying existing Java code via AST Rewriting.
- * Delegates node creation to NodeCreator.
- */
 public class AstRewriter {
 
     private final NodeCreator nodeCreator;
@@ -121,6 +117,20 @@ public class AstRewriter {
         }
     }
 
+    // --- FIX: Added Missing Overload for AddableExpression ---
+    public String addArgumentToMethodInvocation(CompilationUnit cu, String originalCode, MethodInvocation mi, AddableExpression type) {
+        AST ast = cu.getAST();
+        ASTRewrite rewriter = ASTRewrite.create(ast);
+        ListRewrite listRewrite = rewriter.getListRewrite(mi, MethodInvocation.ARGUMENTS_PROPERTY);
+
+        Expression newArg = nodeCreator.createDefaultExpression(ast, type, cu, rewriter);
+        if (newArg != null) {
+            listRewrite.insertLast(newArg, null);
+        }
+        return applyRewrite(rewriter, originalCode);
+    }
+
+    // Existing Overload for raw Expressions (used by String arguments)
     public String addArgumentToMethodInvocation(CompilationUnit cu, String originalCode, MethodInvocation mi, Expression newArgument) {
         AST ast = cu.getAST();
         ASTRewrite rewriter = ASTRewrite.create(ast);
@@ -202,7 +212,6 @@ public class AstRewriter {
         } else if (listNode instanceof MethodInvocation) {
             rewriter.getListRewrite(listNode, MethodInvocation.ARGUMENTS_PROPERTY).insertAt(newElement, insertIndex, null);
         } else if (listNode instanceof ClassInstanceCreation) {
-            // FIX: Handle new ArrayList<>(Arrays.asList(...))
             ClassInstanceCreation cic = (ClassInstanceCreation) listNode;
             if (!cic.arguments().isEmpty() && cic.arguments().get(0) instanceof MethodInvocation) {
                 MethodInvocation mi = (MethodInvocation) cic.arguments().get(0);
@@ -217,16 +226,13 @@ public class AstRewriter {
         ASTRewrite rewriter = ASTRewrite.create(ast);
         List<?> expressions;
         ChildListPropertyDescriptor property;
-
-        // Determine list type and target the correct node/property
         ASTNode targetNode = listNode;
 
         if (listNode instanceof ClassInstanceCreation) {
-            // FIX: Handle new ArrayList<>(Arrays.asList(...))
             ClassInstanceCreation cic = (ClassInstanceCreation) listNode;
             if (!cic.arguments().isEmpty() && cic.arguments().get(0) instanceof MethodInvocation) {
                 MethodInvocation mi = (MethodInvocation) cic.arguments().get(0);
-                targetNode = mi; // We want to edit the inner method call
+                targetNode = mi;
                 expressions = mi.arguments();
                 property = MethodInvocation.ARGUMENTS_PROPERTY;
             } else {
@@ -278,7 +284,6 @@ public class AstRewriter {
         return applyRewrite(rewriter, originalCode);
     }
 
-    // Assignment Operators
     public String replaceAssignmentOperator(CompilationUnit cu, String originalCode, Assignment assignment, Assignment.Operator newOp) {
         AST ast = cu.getAST();
         ASTRewrite rewriter = ASTRewrite.create(ast);
@@ -310,25 +315,11 @@ public class AstRewriter {
         return applyRewrite(rewriter, originalCode);
     }
 
-    // Private helpers
-    private String applyRewrite(ASTRewrite rewriter, String originalCode) {
-        IDocument document = new Document(originalCode);
-        try {
-            TextEdit edits = rewriter.rewriteAST(document, null);
-            edits.apply(document);
-            return document.get();
-        } catch (Exception e) {
-            e.printStackTrace();
-            return originalCode;
-        }
-    }
-
     public String updateMethodInvocation(CompilationUnit cu, String originalCode, MethodInvocation mi,
                                          String newScope, String newMethodName, List<String> newParamTypes) {
         AST ast = cu.getAST();
         ASTRewrite rewriter = ASTRewrite.create(ast);
 
-        // 1. Update Scope (File/Class Name)
         if (newScope == null || newScope.isEmpty() || newScope.equals("Local")) {
             if (mi.getExpression() != null) {
                 rewriter.remove(mi.getExpression(), null);
@@ -342,12 +333,10 @@ public class AstRewriter {
             }
         }
 
-        // 2. Update Method Name
         if (!mi.getName().getIdentifier().equals(newMethodName)) {
             rewriter.replace(mi.getName(), ast.newSimpleName(newMethodName), null);
         }
 
-        // 3. Sync Arguments (Adaptive Parameters)
         ListRewrite argsRewrite = rewriter.getListRewrite(mi, MethodInvocation.ARGUMENTS_PROPERTY);
         List<?> currentArgs = mi.arguments();
 
@@ -355,12 +344,10 @@ public class AstRewriter {
         int currentCount = currentArgs.size();
 
         if (currentCount > targetCount) {
-            // Remove excess
             for (int i = currentCount - 1; i >= targetCount; i--) {
                 argsRewrite.remove((ASTNode) currentArgs.get(i), null);
             }
         } else if (currentCount < targetCount) {
-            // Add missing defaults based on type
             for (int i = currentCount; i < targetCount; i++) {
                 String typeName = newParamTypes.get(i);
                 Expression defaultExpr = nodeCreator.createDefaultInitializer(ast, typeName);
@@ -368,18 +355,6 @@ public class AstRewriter {
             }
         }
 
-        return applyRewrite(rewriter, originalCode);
-    }
-
-    public String addArgumentToMethodInvocation(CompilationUnit cu, String originalCode, MethodInvocation mi, AddableExpression type) {
-        AST ast = cu.getAST();
-        ASTRewrite rewriter = ASTRewrite.create(ast);
-        ListRewrite listRewrite = rewriter.getListRewrite(mi, MethodInvocation.ARGUMENTS_PROPERTY);
-
-        Expression newArg = nodeCreator.createDefaultExpression(ast, type, cu, rewriter);
-        if (newArg != null) {
-            listRewrite.insertLast(newArg, null);
-        }
         return applyRewrite(rewriter, originalCode);
     }
 
@@ -449,6 +424,89 @@ public class AstRewriter {
             rewriter.replace(returnStmt.getExpression(), newExpr, null);
         }
         return applyRewrite(rewriter, originalCode);
+    }
+
+    public String addCaseToSwitch(CompilationUnit cu, String originalCode, SwitchStatement switchStmt) {
+        AST ast = cu.getAST();
+        ASTRewrite rewriter = ASTRewrite.create(ast);
+        ListRewrite listRewrite = rewriter.getListRewrite(switchStmt, SwitchStatement.STATEMENTS_PROPERTY);
+
+        SwitchCase newCase = ast.newSwitchCase();
+        int count = 0;
+        for(Object o : switchStmt.statements()) { if(o instanceof SwitchCase) count++; }
+        try {
+            newCase.expressions().add(ast.newNumberLiteral(String.valueOf(count)));
+        } catch(Exception ignored) {}
+
+        listRewrite.insertLast(newCase, null);
+        listRewrite.insertLast(ast.newBreakStatement(), null);
+
+        return applyRewrite(rewriter, originalCode);
+    }
+
+    public String moveSwitchCase(CompilationUnit cu, String originalCode, SwitchCase caseNode, boolean moveUp) {
+        AST ast = cu.getAST();
+        ASTRewrite rewriter = ASTRewrite.create(ast);
+        SwitchStatement parent = (SwitchStatement) caseNode.getParent();
+        List<Statement> statements = parent.statements();
+
+        List<List<Statement>> chunks = new ArrayList<>();
+        List<Statement> currentChunk = null;
+
+        for (Statement stmt : statements) {
+            if (stmt instanceof SwitchCase) {
+                if (currentChunk != null) chunks.add(currentChunk);
+                currentChunk = new ArrayList<>();
+            }
+            if (currentChunk != null) currentChunk.add(stmt);
+        }
+        if (currentChunk != null) chunks.add(currentChunk);
+
+        int targetIndex = -1;
+        for (int i = 0; i < chunks.size(); i++) {
+            if (!chunks.get(i).isEmpty() && chunks.get(i).get(0) == caseNode) {
+                targetIndex = i;
+                break;
+            }
+        }
+
+        if (targetIndex == -1) return originalCode;
+
+        int neighborIndex = moveUp ? targetIndex - 1 : targetIndex + 1;
+        if (neighborIndex < 0 || neighborIndex >= chunks.size()) return originalCode;
+
+        List<Statement> targetChunk = chunks.get(targetIndex);
+        List<Statement> neighborChunk = chunks.get(neighborIndex);
+
+        ListRewrite listRewrite = rewriter.getListRewrite(parent, SwitchStatement.STATEMENTS_PROPERTY);
+
+        if (moveUp) {
+            ASTNode insertPoint = neighborChunk.get(0);
+            for (Statement stmt : targetChunk) {
+                ASTNode moveTarget = rewriter.createMoveTarget(stmt); // Correct use of ASTRewrite
+                listRewrite.insertBefore(moveTarget, insertPoint, null);
+            }
+        } else {
+            ASTNode insertPoint = targetChunk.get(0);
+            for (Statement stmt : neighborChunk) {
+                ASTNode moveTarget = rewriter.createMoveTarget(stmt); // Correct use of ASTRewrite
+                listRewrite.insertBefore(moveTarget, insertPoint, null);
+            }
+        }
+
+        return applyRewrite(rewriter, originalCode);
+    }
+
+    private String applyRewrite(ASTRewrite rewriter, String originalCode) {
+        IDocument document = new Document(originalCode);
+        try {
+            TextEdit edits = rewriter.rewriteAST(document, null);
+            edits.apply(document);
+            return document.get();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return originalCode;
+        }
     }
 
     private void collectLeafValues(Expression expr, List<Expression> accumulator) {

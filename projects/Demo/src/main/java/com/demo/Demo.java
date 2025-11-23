@@ -10,9 +10,17 @@ public class Demo {
     public static void main(String[] args) {
 		System.out.println("");
 		String decimal = "hiub";
+		double decimal2 = 0.0;
+		int number = 0;
+		boolean flag = false;
 		if (true) {
 		}
-		switch (decimal) {
+		System.out.println("");
+		switch (number + 5) {
+		case 0:
+			break;
+		case 5:
+			break;
 		default:
 			break;
 		}

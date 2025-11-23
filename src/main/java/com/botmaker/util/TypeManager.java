@@ -12,27 +12,26 @@ public class TypeManager {
     public static final String UI_TYPE_NUMBER = "number";
     public static final String UI_TYPE_BOOLEAN = "boolean";
     public static final String UI_TYPE_STRING = "String";
-    public static final String UI_TYPE_TEXT = "Text"; // Alias for String
+    public static final String UI_TYPE_TEXT = "Text";
     public static final String UI_TYPE_LIST = "list";
+    // NEW: Special type for Switch statements
+    public static final String UI_TYPE_SWITCH_COMPATIBLE = "switch_compatible";
 
     // --- Mapping Tables ---
 
-    // Fundamental types for dropdown menus
     private static final List<String> FUNDAMENTAL_TYPES = List.of(
             "int", "double", "boolean", "String", "long", "float", "char"
     );
 
-    // Hidden variables that shouldn't appear in autocomplete
     private static final Set<String> HIDDEN_VARIABLES = Set.of(
             "args", "this", "super", "scanner", "class"
     );
 
-    // Groupings for Type Checking
     private static final Set<String> NUMBER_TYPES = Set.of(
             "int", "double", "float", "long", "short", "byte",
             "java.lang.Integer", "java.lang.Double", "java.lang.Float",
             "java.lang.Long", "java.lang.Short", "java.lang.Byte",
-            "Integer", "Double", "Float", "Long", "Short", "Byte" // Simple names
+            "Integer", "Double", "Float", "Long", "Short", "Byte"
     );
 
     private static final Set<String> BOOLEAN_TYPES = Set.of(
@@ -43,11 +42,17 @@ public class TypeManager {
             "String", "java.lang.String", "char", "java.lang.Character", "Character"
     );
 
+    // Types explicitly FORBIDDEN in a switch statement (pre-pattern matching)
+    private static final Set<String> SWITCH_FORBIDDEN_TYPES = Set.of(
+            "long", "java.lang.Long", "Long",
+            "float", "java.lang.Float", "Float",
+            "double", "java.lang.Double", "Double",
+            "boolean", "java.lang.Boolean", "Boolean"
+    );
+
     public static List<String> getFundamentalTypeNames() {
         return FUNDAMENTAL_TYPES;
     }
-
-    // --- Validation Logic ---
 
     public static boolean isUserVariable(String variableName) {
         if (variableName == null || variableName.isEmpty()) return false;
@@ -57,20 +62,11 @@ public class TypeManager {
         return true;
     }
 
-    // --- UI Type Determination ---
-
-    /**
-     * Determines the UI Category (number, boolean, String, list) from a Java type name.
-     * Used to filter available expressions in blocks.
-     */
     public static String determineUiType(String typeName) {
         if (typeName == null || typeName.isBlank()) return UI_TYPE_ANY;
         String clean = typeName.trim();
 
-        // Check for ArrayList first
         if (isArrayList(clean)) return UI_TYPE_LIST;
-
-        // Then check for arrays
         if (clean.endsWith("[]")) return UI_TYPE_LIST;
 
         if (NUMBER_TYPES.contains(clean)) return UI_TYPE_NUMBER;
@@ -80,19 +76,26 @@ public class TypeManager {
         return UI_TYPE_ANY;
     }
 
-
     // --- Type Compatibility (ITypeBinding) ---
 
     public static boolean isCompatible(ITypeBinding binding, String targetUiType) {
         if (targetUiType == null || targetUiType.equals(UI_TYPE_ANY)) return true;
         if (binding == null) return true;
 
+        String qualifiedName = binding.getQualifiedName();
+        String simpleName = binding.getName();
+
+        // NEW: Handle Switch Compatibility
+        if (targetUiType.equals(UI_TYPE_SWITCH_COMPATIBLE)) {
+            if (binding.isArray()) return false;
+            // Blacklist check is safer for Enums (since we don't have a list of all enums)
+            return !SWITCH_FORBIDDEN_TYPES.contains(simpleName) &&
+                    !SWITCH_FORBIDDEN_TYPES.contains(qualifiedName);
+        }
+
         if (binding.isArray()) {
             return targetUiType.equals(UI_TYPE_LIST) || targetUiType.endsWith("[]");
         }
-
-        String qualifiedName = binding.getQualifiedName();
-        String simpleName = binding.getName();
 
         switch (targetUiType) {
             case UI_TYPE_NUMBER:
@@ -107,16 +110,6 @@ public class TypeManager {
         }
     }
 
-    /**
-     * Determines if a type string represents an ArrayList
-     */
-    public static boolean isArrayList(String typeName) {
-        if (typeName == null) return false;
-        return typeName.startsWith("ArrayList<") || typeName.equals("ArrayList");
-    }
-
-
-
     // --- Type Compatibility (String) ---
 
     public static boolean isCompatible(String typeName, String targetUiType) {
@@ -124,6 +117,12 @@ public class TypeManager {
         if (typeName == null || typeName.isBlank()) return true;
 
         String cleanType = typeName.trim();
+
+        // NEW: Handle Switch Compatibility
+        if (targetUiType.equals(UI_TYPE_SWITCH_COMPATIBLE)) {
+            if (cleanType.endsWith("[]") || cleanType.contains("ArrayList")) return false;
+            return !SWITCH_FORBIDDEN_TYPES.contains(cleanType);
+        }
 
         if (cleanType.endsWith("[]")) {
             return targetUiType.equals(UI_TYPE_LIST) || targetUiType.endsWith("[]");
@@ -142,8 +141,6 @@ public class TypeManager {
         }
     }
 
-    // --- Display Utilities ---
-
     public static String getFriendlyTypeName(ITypeBinding typeBinding) {
         if (typeBinding == null) return "unknown";
         if (typeBinding.isArray()) return "list";
@@ -154,18 +151,9 @@ public class TypeManager {
         return name;
     }
 
-    // --- AST Node Creation ---
-
-    /**
-     * Converts primitive type names to their wrapper classes.
-     * Required for ArrayList and other generics which don't support primitives.
-     *
-     * @param typeName The type name to convert (e.g., "int", "boolean")
-     * @return The wrapper class name (e.g., "Integer", "Boolean")
-     */
+    // ... [Rest of the file (toWrapperType, isPrimitive, etc.) remains unchanged] ...
     public static String toWrapperType(String typeName) {
         if (typeName == null) return typeName;
-
         switch (typeName) {
             case "int": return "Integer";
             case "double": return "Double";
@@ -175,39 +163,19 @@ public class TypeManager {
             case "float": return "Float";
             case "short": return "Short";
             case "byte": return "Byte";
-            default: return typeName; // Already a reference type
+            default: return typeName;
         }
     }
 
-    /**
-     * Checks if a type name is a primitive type.
-     *
-     * @param typeName The type name to check
-     * @return true if the type is a Java primitive
-     */
     public static boolean isPrimitive(String typeName) {
         if (typeName == null) return false;
-
-        return typeName.equals("int") ||
-                typeName.equals("double") ||
-                typeName.equals("boolean") ||
-                typeName.equals("char") ||
-                typeName.equals("long") ||
-                typeName.equals("float") ||
-                typeName.equals("short") ||
-                typeName.equals("byte");
+        return typeName.equals("int") || typeName.equals("double") || typeName.equals("boolean") ||
+                typeName.equals("char") || typeName.equals("long") || typeName.equals("float") ||
+                typeName.equals("short") || typeName.equals("byte");
     }
 
-    /**
-     * Converts wrapper class names back to primitives.
-     * Opposite of toWrapperType().
-     *
-     * @param typeName The wrapper class name (e.g., "Integer")
-     * @return The primitive type name (e.g., "int")
-     */
     public static String toPrimitiveType(String typeName) {
         if (typeName == null) return typeName;
-
         switch (typeName) {
             case "Integer": return "int";
             case "Double": return "double";
@@ -217,7 +185,7 @@ public class TypeManager {
             case "Float": return "float";
             case "Short": return "short";
             case "Byte": return "byte";
-            default: return typeName; // Not a wrapper
+            default: return typeName;
         }
     }
 
@@ -253,35 +221,27 @@ public class TypeManager {
         return temp;
     }
 
+    public static boolean isArrayList(String typeName) {
+        if (typeName == null) return false;
+        return typeName.startsWith("ArrayList<") || typeName.equals("ArrayList");
+    }
+
     public static Type createTypeNode(AST ast, String typeName) {
-        // Handle ArrayList<Type>
         if (typeName.startsWith("ArrayList<") && typeName.endsWith(">")) {
-            // Extract element type
             int start = typeName.indexOf("<") + 1;
             int end = typeName.lastIndexOf(">");
             String elementTypeName = typeName.substring(start, end);
-
-            // Create parameterized type: ArrayList<ElementType>
-            ParameterizedType paramType = ast.newParameterizedType(
-                    ast.newSimpleType(ast.newName("ArrayList"))
-            );
-
-            // Handle nested ArrayList recursively
+            ParameterizedType paramType = ast.newParameterizedType(ast.newSimpleType(ast.newName("ArrayList")));
             Type elementType = createTypeNode(ast, elementTypeName);
             paramType.typeArguments().add(elementType);
-
             return paramType;
         }
-
-        // Handle arrays
         int dimensions = 0;
         String baseName = typeName;
-
         while (baseName.endsWith("[]")) {
             dimensions++;
             baseName = baseName.substring(0, baseName.length() - 2);
         }
-
         Type baseType;
         switch (baseName) {
             case "int": baseType = ast.newPrimitiveType(PrimitiveType.INT); break;
@@ -294,7 +254,6 @@ public class TypeManager {
             case "byte": baseType = ast.newPrimitiveType(PrimitiveType.BYTE); break;
             default: baseType = ast.newSimpleType(ast.newName(baseName)); break;
         }
-
         if (dimensions > 0) {
             return ast.newArrayType(baseType, dimensions);
         } else {

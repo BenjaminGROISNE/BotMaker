@@ -13,8 +13,10 @@ public enum AddableBlock {
     FOR("For Each Loop", ForBlock.class, BlockCategory.LOOPS),
     DO_WHILE("Do While", DoWhileBlock.class, BlockCategory.LOOPS),
     SWITCH("Switch", SwitchBlock.class, BlockCategory.FLOW),
-    CASE("Case", SwitchBlock.SwitchCaseBlock.class, BlockCategory.FLOW),
+    // REMOVED: CASE("Case", SwitchBlock.SwitchCaseBlock.class, BlockCategory.FLOW),
+
     FUNCTION_CALL("Call Function", MethodInvocationBlock.class, BlockCategory.FLOW),
+
     // --- CONTROL COMMANDS ---
     BREAK("Break", BreakBlock.class, BlockCategory.CONTROL),
     CONTINUE("Continue", ContinueBlock.class, BlockCategory.CONTROL),
@@ -27,7 +29,7 @@ public enum AddableBlock {
     DECLARE_BOOLEAN("Bool Variable", VariableDeclarationBlock.class, BlockCategory.VARIABLES),
     DECLARE_STRING("String Variable", VariableDeclarationBlock.class, BlockCategory.VARIABLES),
 
-    // NEW: Generic Array Declaration
+    // Generic Array Declaration
     DECLARE_ARRAY("Create List", VariableDeclarationBlock.class, BlockCategory.VARIABLES),
 
     ASSIGNMENT("Set Variable", AssignmentBlock.class, BlockCategory.VARIABLES),
