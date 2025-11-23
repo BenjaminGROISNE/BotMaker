@@ -16,6 +16,8 @@ import javafx.scene.control.Label;
 import javafx.scene.control.MenuItem;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import org.eclipse.jdt.core.dom.Expression;
+import org.eclipse.jdt.core.dom.Statement;
 import org.eclipse.jdt.core.dom.WhileStatement;
 
 import java.util.ArrayList;
@@ -78,7 +80,7 @@ public class WhileBlock extends AbstractStatementBlock implements BlockWithChild
 
         javafx.scene.control.Button deleteButton = new javafx.scene.control.Button("X");
         deleteButton.setOnAction(e -> {
-            context.codeEditor().deleteStatement((org.eclipse.jdt.core.dom.Statement) this.astNode);
+            context.codeEditor().deleteStatement((Statement) this.astNode);
         });
 
         headerRow.getChildren().addAll(header, spacer, deleteButton);
@@ -107,7 +109,7 @@ public class WhileBlock extends AbstractStatementBlock implements BlockWithChild
 
             menuItem.setOnAction(e -> {
                 if (condition != null) {
-                    org.eclipse.jdt.core.dom.Expression toReplace = (org.eclipse.jdt.core.dom.Expression) condition.getAstNode();
+                    Expression toReplace = (Expression) condition.getAstNode();
                     context.codeEditor().replaceExpression(toReplace, type);
                 }
             });

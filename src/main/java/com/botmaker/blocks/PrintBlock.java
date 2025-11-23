@@ -7,8 +7,10 @@ import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.layout.HBox;
 import javafx.scene.text.Text;
+import org.eclipse.jdt.core.dom.Expression;
 import org.eclipse.jdt.core.dom.ExpressionStatement;
 import org.eclipse.jdt.core.dom.MethodInvocation;
+import org.eclipse.jdt.core.dom.Statement;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -54,7 +56,7 @@ public class PrintBlock extends AbstractStatementBlock {
             menuItem.setOnAction(e -> {
                 if (!arguments.isEmpty()) {
                     // We are assuming one argument for now
-                    org.eclipse.jdt.core.dom.Expression toReplace = (org.eclipse.jdt.core.dom.Expression) arguments.get(0).getAstNode();
+                    Expression toReplace = (Expression) arguments.get(0).getAstNode();
                     context.codeEditor().replaceExpression(toReplace, type);
                 }
             });
@@ -66,7 +68,7 @@ public class PrintBlock extends AbstractStatementBlock {
 
         javafx.scene.control.Button deleteButton = new javafx.scene.control.Button("X");
         deleteButton.setOnAction(e -> {
-            context.codeEditor().deleteStatement((org.eclipse.jdt.core.dom.Statement) this.astNode);
+            context.codeEditor().deleteStatement((Statement) this.astNode);
         });
 
         javafx.scene.layout.Pane spacer = new javafx.scene.layout.Pane();

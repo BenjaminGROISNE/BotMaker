@@ -8,6 +8,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.TextFormatter;
 import javafx.scene.layout.HBox;
 import org.eclipse.jdt.core.dom.Expression;
+import org.eclipse.jdt.core.dom.MethodInvocation;
 
 import java.math.BigDecimal;
 import java.util.function.UnaryOperator;
@@ -63,8 +64,8 @@ public class LiteralBlock<T> extends AbstractExpressionBlock {
                 }
 
                 if (!textToSave.equals(oldText)) {
-                    if (this.astNode instanceof org.eclipse.jdt.core.dom.MethodInvocation) {
-                        org.eclipse.jdt.core.dom.MethodInvocation mi = (org.eclipse.jdt.core.dom.MethodInvocation) this.astNode;
+                    if (this.astNode instanceof MethodInvocation) {
+                        MethodInvocation mi = (MethodInvocation) this.astNode;
                         context.codeEditor().addStringArgumentToMethodInvocation(mi, textToSave);
                     } else {
                         context.codeEditor().replaceLiteralValue((Expression) this.astNode, textToSave);

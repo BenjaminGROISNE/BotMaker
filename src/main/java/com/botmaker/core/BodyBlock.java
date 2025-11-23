@@ -7,6 +7,7 @@ import javafx.scene.Cursor;
 import javafx.scene.Node;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
+import org.eclipse.jdt.core.dom.Block;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -15,7 +16,7 @@ public class BodyBlock extends AbstractStatementBlock implements BlockWithChildr
     private final List<StatementBlock> statements = new ArrayList<>();
     private final BlockDragAndDropManager dragAndDropManager;
 
-    public BodyBlock(String id, org.eclipse.jdt.core.dom.Block astNode, BlockDragAndDropManager dragAndDropManager) {
+    public BodyBlock(String id, Block astNode, BlockDragAndDropManager dragAndDropManager) {
         super(id, astNode);
         this.dragAndDropManager = dragAndDropManager;
     }

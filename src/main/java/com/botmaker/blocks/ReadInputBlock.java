@@ -7,6 +7,7 @@ import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;
+import org.eclipse.jdt.core.dom.Statement;
 import org.eclipse.jdt.core.dom.VariableDeclarationStatement;
 
 public class ReadInputBlock extends AbstractStatementBlock {
@@ -57,7 +58,7 @@ public class ReadInputBlock extends AbstractStatementBlock {
 
         javafx.scene.control.Button deleteButton = new javafx.scene.control.Button("X");
         deleteButton.setOnAction(e -> {
-            context.codeEditor().deleteStatement((org.eclipse.jdt.core.dom.Statement) this.astNode);
+            context.codeEditor().deleteStatement((Statement) this.astNode);
         });
 
         container.getChildren().addAll(spacer, deleteButton);

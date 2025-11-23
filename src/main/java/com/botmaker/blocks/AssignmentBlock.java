@@ -3,19 +3,14 @@ package com.botmaker.blocks;
 import com.botmaker.core.AbstractStatementBlock;
 import com.botmaker.core.ExpressionBlock;
 import com.botmaker.lsp.CompletionContext;
-import com.botmaker.ui.AddableExpression;
+import com.botmaker.ui.components.BlockUIComponents;
+import com.botmaker.ui.components.SelectorComponents;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
-import javafx.scene.control.ContextMenu;
-import javafx.scene.control.MenuItem;
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.Pane;
-import javafx.scene.layout.Priority;
 import org.eclipse.jdt.core.dom.*;
-
-
 
 public class AssignmentBlock extends AbstractStatementBlock {
 
@@ -33,40 +28,23 @@ public class AssignmentBlock extends AbstractStatementBlock {
 
     public AssignmentBlock(String id, ExpressionStatement astNode) {
         super(id, astNode);
+        initializeOperator(astNode);
+    }
 
+    private void initializeOperator(ExpressionStatement astNode) {
         if (astNode.getExpression() instanceof Assignment) {
-            Assignment assignment = (Assignment) astNode.getExpression();
-            this.operator = assignment.getOperator().toString();
+            this.operator = ((Assignment) astNode.getExpression()).getOperator().toString();
         } else if (astNode.getExpression() instanceof PostfixExpression) {
-            PostfixExpression postfix = (PostfixExpression) astNode.getExpression();
-            this.operator = postfix.getOperator().toString();
+            this.operator = ((PostfixExpression) astNode.getExpression()).getOperator().toString();
         } else if (astNode.getExpression() instanceof PrefixExpression) {
-            PrefixExpression prefix = (PrefixExpression) astNode.getExpression();
-            this.operator = prefix.getOperator().toString();
+            this.operator = ((PrefixExpression) astNode.getExpression()).getOperator().toString();
         } else {
             this.operator = "=";
         }
     }
 
-    public ExpressionBlock getLeftHandSide() {
-        return leftHandSide;
-    }
-
-    public void setLeftHandSide(ExpressionBlock leftHandSide) {
-        this.leftHandSide = leftHandSide;
-    }
-
-    public ExpressionBlock getRightHandSide() {
-        return rightHandSide;
-    }
-
-    public void setRightHandSide(ExpressionBlock rightHandSide) {
-        this.rightHandSide = rightHandSide;
-    }
-
-    public String getOperator() {
-        return operator;
-    }
+    public void setLeftHandSide(ExpressionBlock leftHandSide) { this.leftHandSide = leftHandSide; }
+    public void setRightHandSide(ExpressionBlock rightHandSide) { this.rightHandSide = rightHandSide; }
 
     @Override
     protected Node createUINode(CompletionContext context) {
@@ -79,30 +57,19 @@ public class AssignmentBlock extends AbstractStatementBlock {
             container.getChildren().add(leftHandSide.getUINode(context));
         }
 
-        // Operator selector
-        ComboBox<String> operatorSelector = new ComboBox<>();
-        operatorSelector.getItems().addAll(OPERATOR_NAMES);
-        operatorSelector.getStyleClass().add("operator-selector");
-        operatorSelector.setEditable(false);
-
-        String currentName = getOperatorDisplayName(operator);
-        operatorSelector.setValue(currentName);
-
-        operatorSelector.setOnAction(e -> {
-            String selectedName = operatorSelector.getValue();
-            String newOperator = getOperatorSymbol(selectedName);
-
-            // Only update if it actually changed
-            if (newOperator != null && !newOperator.equals(this.operator)) {
-                this.operator = newOperator;
-
-                if (this.astNode instanceof ExpressionStatement) {
-                    org.eclipse.jdt.core.dom.Expression expr = ((ExpressionStatement) this.astNode).getExpression();
-                    context.codeEditor().updateAssignmentOperator(expr, newOperator);
+        // Operator selector via Component Factory
+        ComboBox<String> operatorSelector = SelectorComponents.createOperatorSelector(
+                OPERATOR_NAMES,
+                OPERATOR_SYMBOLS,
+                operator,
+                newOperator -> {
+                    this.operator = newOperator;
+                    if (this.astNode instanceof ExpressionStatement) {
+                        Expression expr = ((ExpressionStatement) this.astNode).getExpression();
+                        context.codeEditor().updateAssignmentOperator(expr, newOperator);
+                    }
                 }
-            }
-        });
-
+        );
         container.getChildren().add(operatorSelector);
 
         // Right hand side (only for non-increment/decrement)
@@ -111,73 +78,36 @@ public class AssignmentBlock extends AbstractStatementBlock {
                 container.getChildren().add(rightHandSide.getUINode(context));
             }
 
-            // + Button for changing right side expression
-            Button addButton = new Button("+");
-            addButton.getStyleClass().add("expression-add-button");
-            addButton.setOnAction(e -> showExpressionMenu(addButton, context));
+            // FIX: Use e.getSource() to avoid uninitialized variable reference
+            Button addButton = createAddButton(e -> showExpressionMenu((Button) e.getSource(), context));
             container.getChildren().add(addButton);
         }
 
-        // Spacer and delete button
-        Pane spacer = new Pane();
-        HBox.setHgrow(spacer, Priority.ALWAYS);
-
-        Button deleteButton = new Button("X");
-        deleteButton.setOnAction(e -> {
-            context.codeEditor().deleteStatement((org.eclipse.jdt.core.dom.Statement) this.astNode);
-        });
-
-        container.getChildren().addAll(spacer, deleteButton);
+        // Spacer and Delete button
+        container.getChildren().addAll(
+                BlockUIComponents.createSpacer(),
+                createDeleteButton(context)
+        );
 
         return container;
     }
 
     private void showExpressionMenu(Button button, CompletionContext context) {
-        ContextMenu menu = new ContextMenu();
-        menu.setStyle("-fx-control-inner-background: white;");
-
-        // FIXED: Determine the target type from the left-hand side
         String targetType = "any";
         if (leftHandSide != null && leftHandSide.getAstNode() != null) {
-            org.eclipse.jdt.core.dom.Expression lhsExpr = (org.eclipse.jdt.core.dom.Expression) leftHandSide.getAstNode();
+            Expression lhsExpr = (org.eclipse.jdt.core.dom.Expression) leftHandSide.getAstNode();
             org.eclipse.jdt.core.dom.ITypeBinding binding = lhsExpr.resolveTypeBinding();
             if (binding != null) {
                 targetType = com.botmaker.util.TypeManager.determineUiType(binding.getName());
             }
         }
 
-        // FIXED: Filter expressions based on target type
-        for (com.botmaker.ui.AddableExpression type : com.botmaker.ui.AddableExpression.getForType(targetType)) {
-            MenuItem menuItem = new MenuItem(type.getDisplayName());
-            menuItem.setStyle("-fx-text-fill: black;");
-
-            menuItem.setOnAction(e -> {
-                if (rightHandSide != null) {
-                    org.eclipse.jdt.core.dom.Expression toReplace = (org.eclipse.jdt.core.dom.Expression) rightHandSide.getAstNode();
-                    context.codeEditor().replaceExpression(toReplace, type);
-                }
-            });
-            menu.getItems().add(menuItem);
+        org.eclipse.jdt.core.dom.Expression toReplace = null;
+        if (rightHandSide != null) {
+            toReplace = (org.eclipse.jdt.core.dom.Expression) rightHandSide.getAstNode();
         }
 
-        menu.show(button, javafx.geometry.Side.BOTTOM, 0, 0);
-    }
-
-    private String getOperatorDisplayName(String symbol) {
-        for (int i = 0; i < OPERATOR_SYMBOLS.length; i++) {
-            if (OPERATOR_SYMBOLS[i].equals(symbol)) {
-                return OPERATOR_NAMES[i];
-            }
-        }
-        return "set to";
-    }
-
-    private String getOperatorSymbol(String displayName) {
-        for (int i = 0; i < OPERATOR_NAMES.length; i++) {
-            if (OPERATOR_NAMES[i].equals(displayName)) {
-                return OPERATOR_SYMBOLS[i];
-            }
-        }
-        return "=";
+        // Use helper from AbstractStatementBlock
+        showExpressionMenuAndReplace(button, context, targetType, toReplace);
     }
 }

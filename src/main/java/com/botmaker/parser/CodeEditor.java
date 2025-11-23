@@ -300,7 +300,7 @@ public class CodeEditor {
 
     // --- FIX START: Manual Mapping instead of .values() ---
 
-    public void updateAssignmentOperator(org.eclipse.jdt.core.dom.ASTNode node, String newOperatorSymbol) {
+    public void updateAssignmentOperator(ASTNode node, String newOperatorSymbol) {
         String newCode = null;
 
         if (node instanceof Assignment) {
@@ -308,8 +308,8 @@ public class CodeEditor {
             if (op != null) {
                 newCode = astRewriter.replaceAssignmentOperator(getCompilationUnit(), getCurrentCode(), (Assignment) node, op);
             }
-        } else if (node instanceof org.eclipse.jdt.core.dom.PrefixExpression) {
-            org.eclipse.jdt.core.dom.PrefixExpression.Operator op = getPrefixOperator(newOperatorSymbol);
+        } else if (node instanceof PrefixExpression) {
+            PrefixExpression.Operator op = getPrefixOperator(newOperatorSymbol);
             if (op != null) {
                 newCode = astRewriter.replacePrefixOperator(getCompilationUnit(), getCurrentCode(), (org.eclipse.jdt.core.dom.PrefixExpression) node, op);
             }

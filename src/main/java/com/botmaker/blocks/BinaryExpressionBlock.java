@@ -18,19 +18,8 @@ public class BinaryExpressionBlock extends AbstractExpressionBlock {
     private String operator;
     private final ITypeBinding returnType;
 
-    // Math operator display names (user-friendly)
-    private static final String[] MATH_OPERATOR_NAMES = {
-            "plus",         // +
-            "minus",        // -
-            "times",        // *
-            "divided by",   // /
-            "modulo"        // %
-    };
-
-    // Corresponding Java operators
-    private static final String[] MATH_OPERATOR_SYMBOLS = {
-            "+", "-", "*", "/", "%"
-    };
+    private static final String[] MATH_OPERATOR_NAMES = { "plus", "minus", "times", "divided by", "modulo" };
+    private static final String[] MATH_OPERATOR_SYMBOLS = { "+", "-", "*", "/", "%" };
 
     public BinaryExpressionBlock(String id, InfixExpression astNode) {
         super(id, astNode);
@@ -38,29 +27,8 @@ public class BinaryExpressionBlock extends AbstractExpressionBlock {
         this.returnType = astNode.resolveTypeBinding();
     }
 
-    public ExpressionBlock getLeftOperand() {
-        return leftOperand;
-    }
-
-    public void setLeftOperand(ExpressionBlock leftOperand) {
-        this.leftOperand = leftOperand;
-    }
-
-    public ExpressionBlock getRightOperand() {
-        return rightOperand;
-    }
-
-    public void setRightOperand(ExpressionBlock rightOperand) {
-        this.rightOperand = rightOperand;
-    }
-
-    public String getOperator() {
-        return operator;
-    }
-
-    public ITypeBinding getReturnType() {
-        return returnType;
-    }
+    public void setLeftOperand(ExpressionBlock leftOperand) { this.leftOperand = leftOperand; }
+    public void setRightOperand(ExpressionBlock rightOperand) { this.rightOperand = rightOperand; }
 
     @Override
     protected Node createUINode(CompletionContext context) {
@@ -76,34 +44,23 @@ public class BinaryExpressionBlock extends AbstractExpressionBlock {
             expressionBox.getChildren().add(leftOperand.getUINode(context));
         }
 
-        // Check if this is a math operator or comparison/logical operator
+        // Operator
         if (isMathOperator(operator)) {
-            // Operator selector for math operations
-            ComboBox<String> operatorSelector = new ComboBox<>();
-            operatorSelector.getItems().addAll(MATH_OPERATOR_NAMES);
-            operatorSelector.getStyleClass().add("math-operator-selector");
-
-            // Set current operator
-            String currentName = getOperatorDisplayName(operator);
-            operatorSelector.setValue(currentName);
-
-            // Handle operator change
-            operatorSelector.setOnAction(e -> {
-                String selectedName = operatorSelector.getValue();
-                String newOperator = getOperatorSymbol(selectedName);
-                if (newOperator != null && !newOperator.equals(operator)) {
-                    this.operator = newOperator;
-                    System.out.println("Math operator changed to: " + newOperator);
-                    // Note: Operator change will take effect on next code regeneration
-                }
-            });
-
-            expressionBox.getChildren().add(operatorSelector);
+            ComboBox<String> selector = createOperatorSelector(
+                    MATH_OPERATOR_NAMES,
+                    MATH_OPERATOR_SYMBOLS,
+                    operator,
+                    newOp -> {
+                        this.operator = newOp;
+                        // Note: Actual logic update typically happens via a broader block update mechanism
+                        // or requires specific callback handling if not managed by parent Statement
+                        System.out.println("Math operator changed to: " + newOp);
+                    }
+            );
+            selector.getStyleClass().add("math-operator-selector");
+            expressionBox.getChildren().add(selector);
         } else {
-            // For non-math operators (comparisons, logical), just show the symbol
-            Label operatorLabel = new Label(operator);
-            operatorLabel.getStyleClass().add("operator-label");
-            expressionBox.getChildren().add(operatorLabel);
+            expressionBox.getChildren().add(createOperatorLabel(operator));
         }
 
         // Right operand
@@ -113,11 +70,8 @@ public class BinaryExpressionBlock extends AbstractExpressionBlock {
 
         container.getChildren().add(expressionBox);
 
-        // Type indicator (optional, can be removed if too cluttered)
-        String typeName = "unknown";
-        if (returnType != null) {
-            typeName = returnType.getName();
-        }
+        // Type indicator
+        String typeName = (returnType != null) ? returnType.getName() : "unknown";
         Label typeLabel = new Label("→ " + typeName);
         typeLabel.setStyle("-fx-font-style: italic; -fx-text-fill: #999; -fx-font-size: 10px;");
         container.getChildren().add(typeLabel);
@@ -125,39 +79,10 @@ public class BinaryExpressionBlock extends AbstractExpressionBlock {
         return container;
     }
 
-    /**
-     * Check if operator is a math operator
-     */
     private boolean isMathOperator(String op) {
         for (String mathOp : MATH_OPERATOR_SYMBOLS) {
-            if (mathOp.equals(op)) {
-                return true;
-            }
+            if (mathOp.equals(op)) return true;
         }
         return false;
-    }
-
-    /**
-     * Convert operator symbol to display name
-     */
-    private String getOperatorDisplayName(String symbol) {
-        for (int i = 0; i < MATH_OPERATOR_SYMBOLS.length; i++) {
-            if (MATH_OPERATOR_SYMBOLS[i].equals(symbol)) {
-                return MATH_OPERATOR_NAMES[i];
-            }
-        }
-        return symbol; // Return as-is if not found
-    }
-
-    /**
-     * Convert display name to operator symbol
-     */
-    private String getOperatorSymbol(String displayName) {
-        for (int i = 0; i < MATH_OPERATOR_NAMES.length; i++) {
-            if (MATH_OPERATOR_NAMES[i].equals(displayName)) {
-                return MATH_OPERATOR_SYMBOLS[i];
-            }
-        }
-        return "+"; // default
     }
 }

@@ -11,9 +11,7 @@ import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
-import org.eclipse.jdt.core.dom.Type;
-import org.eclipse.jdt.core.dom.VariableDeclarationFragment;
-import org.eclipse.jdt.core.dom.VariableDeclarationStatement;
+import org.eclipse.jdt.core.dom.*;
 
 public class VariableDeclarationBlock extends AbstractStatementBlock {
 
@@ -79,7 +77,7 @@ public class VariableDeclarationBlock extends AbstractStatementBlock {
                 // Render the interactive list UI directly
                 container.getChildren().add(initializer.getUINode(context));
             }
-            else if (initializer.getAstNode() instanceof org.eclipse.jdt.core.dom.ArrayInitializer) {
+            else if (initializer.getAstNode() instanceof ArrayInitializer) {
                 // Fallback for primitive arrays {1,2,3} to use bracket styling if not caught by ListBlock
                 container.getChildren().add(createListDisplay(context));
             }
@@ -108,7 +106,7 @@ public class VariableDeclarationBlock extends AbstractStatementBlock {
 
         Button deleteButton = new Button("X");
         deleteButton.setOnAction(e -> {
-            context.codeEditor().deleteStatement((org.eclipse.jdt.core.dom.Statement) this.astNode);
+            context.codeEditor().deleteStatement((Statement) this.astNode);
         });
 
         container.getChildren().addAll(spacer, deleteButton);
@@ -239,7 +237,7 @@ public class VariableDeclarationBlock extends AbstractStatementBlock {
             menuItem.setOnAction(e -> {
                 if (initializer != null) {
                     context.codeEditor().replaceExpression(
-                            (org.eclipse.jdt.core.dom.Expression) initializer.getAstNode(),
+                            (Expression) initializer.getAstNode(),
                             type
                     );
                 }

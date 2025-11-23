@@ -16,6 +16,8 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
+import org.eclipse.jdt.core.dom.Statement;
+import org.eclipse.jdt.core.dom.SwitchCase;
 import org.eclipse.jdt.core.dom.SwitchStatement;
 
 import java.util.ArrayList;
@@ -84,7 +86,7 @@ public class SwitchBlock extends AbstractStatementBlock implements BlockWithChil
 
         Button deleteButton = new Button("X");
         deleteButton.setOnAction(e -> {
-            context.codeEditor().deleteStatement((org.eclipse.jdt.core.dom.Statement) this.astNode);
+            context.codeEditor().deleteStatement((Statement) this.astNode);
         });
 
         headerRow.getChildren().addAll(header, spacer, deleteButton);
@@ -112,7 +114,7 @@ public class SwitchBlock extends AbstractStatementBlock implements BlockWithChil
         private BodyBlock body;
         private final BlockDragAndDropManager dragAndDropManager;
 
-        public SwitchCaseBlock(String id, org.eclipse.jdt.core.dom.SwitchCase astNode, BlockDragAndDropManager dragAndDropManager) {
+        public SwitchCaseBlock(String id, SwitchCase astNode, BlockDragAndDropManager dragAndDropManager) {
             super(id, astNode);
             this.dragAndDropManager = dragAndDropManager;
         }

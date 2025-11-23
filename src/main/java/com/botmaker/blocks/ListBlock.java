@@ -251,7 +251,7 @@ public class ListBlock extends AbstractExpressionBlock {
                 if (elementIndex < elements.size()) {
                     ExpressionBlock oldElement = elements.get(elementIndex);
                     context.codeEditor().replaceExpression(
-                            (org.eclipse.jdt.core.dom.Expression) oldElement.getAstNode(),
+                            (Expression) oldElement.getAstNode(),
                             type
                     );
                 }

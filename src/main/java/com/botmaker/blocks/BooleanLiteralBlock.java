@@ -8,6 +8,7 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.layout.StackPane;
 import org.eclipse.jdt.core.dom.BooleanLiteral;
+import org.eclipse.jdt.core.dom.Expression;
 
 /**
  * Block for true/false values with improved UI (Toggle Switch style)
@@ -69,7 +70,7 @@ public class BooleanLiteralBlock extends AbstractExpressionBlock {
                 this.value = newValue;
                 // Update logic
                 context.codeEditor().replaceLiteralValue(
-                        (org.eclipse.jdt.core.dom.Expression) this.astNode,
+                        (Expression) this.astNode,
                         String.valueOf(newValue)
                 );
                 // Immediate UI feedback (before full rebuild)

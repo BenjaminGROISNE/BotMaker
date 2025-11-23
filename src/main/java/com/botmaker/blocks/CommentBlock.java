@@ -2,13 +2,13 @@ package com.botmaker.blocks;
 
 import com.botmaker.core.AbstractStatementBlock;
 import com.botmaker.lsp.CompletionContext;
+import com.botmaker.ui.components.BlockUIComponents;
+import com.botmaker.ui.components.TextFieldComponents;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
-import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.Pane;
-import javafx.scene.layout.Priority;
 import org.eclipse.jdt.core.dom.Comment;
 
 public class CommentBlock extends AbstractStatementBlock {
@@ -26,50 +26,33 @@ public class CommentBlock extends AbstractStatementBlock {
         container.setAlignment(Pos.CENTER_LEFT);
         container.getStyleClass().add("comment-block");
 
-        // Simple user-friendly label
-        javafx.scene.control.Label commentLabel = new javafx.scene.control.Label("Comment:");
+        // Label
+        Label commentLabel = new Label("Comment:");
         commentLabel.getStyleClass().add("comment-indicator");
 
-        // Text Field
-        TextField commentField = new TextField(commentText != null ? commentText : "");
-        commentField.setPromptText("Write your note here...");
-        commentField.getStyleClass().add("comment-text-field");
-        HBox.setHgrow(commentField, Priority.ALWAYS);
-
-        // Save on Focus Lost
-        commentField.focusedProperty().addListener((obs, oldVal, newVal) -> {
-            if (!newVal) {
-                if (!commentField.getText().equals(commentText)) {
-                    this.commentText = commentField.getText();
-                    rebuildCode(context);
+        // TextField using component factory
+        TextField commentField = TextFieldComponents.createCommentField(
+                commentText,
+                "Write your note here...",
+                newText -> {
+                    if (!newText.equals(commentText)) {
+                        this.commentText = newText;
+                        javafx.application.Platform.runLater(() -> {
+                            context.codeEditor().updateComment((Comment) this.astNode, this.commentText);
+                        });
+                        container.requestFocus();
+                    }
                 }
-            }
-        });
+        );
 
-        // Save on Enter
-        commentField.setOnAction(e -> {
-            this.commentText = commentField.getText();
-            rebuildCode(context);
-            container.requestFocus();
-        });
+        container.getChildren().addAll(
+                commentLabel,
+                commentField,
+                BlockUIComponents.createSpacer(),
+                createDeleteButton(context)
+        );
 
-        Pane spacer = new Pane();
-        HBox.setHgrow(spacer, Priority.ALWAYS);
-
-        // Delete Button
-        Button deleteButton = new Button("X");
-        deleteButton.setOnAction(e -> {
-            context.codeEditor().deleteComment((Comment) this.astNode);
-        });
-
-        container.getChildren().addAll(commentLabel, commentField, spacer, deleteButton);
         return container;
-    }
-
-    private void rebuildCode(CompletionContext context) {
-        javafx.application.Platform.runLater(() -> {
-            context.codeEditor().updateComment((Comment) this.astNode, this.commentText);
-        });
     }
 
     @Override

@@ -14,7 +14,9 @@ import javafx.scene.control.MenuItem;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import org.eclipse.jdt.core.dom.CompilationUnit;
+import org.eclipse.jdt.core.dom.Expression;
 import org.eclipse.jdt.core.dom.IfStatement;
+import org.eclipse.jdt.core.dom.Statement;
 
 public class IfBlock extends AbstractStatementBlock {
 
@@ -63,7 +65,7 @@ public class IfBlock extends AbstractStatementBlock {
         HBox.setHgrow(spacer, javafx.scene.layout.Priority.ALWAYS);
 
         javafx.scene.control.Button deleteButton = new javafx.scene.control.Button("X");
-        deleteButton.setOnAction(e -> context.codeEditor().deleteStatement((org.eclipse.jdt.core.dom.Statement) this.astNode));
+        deleteButton.setOnAction(e -> context.codeEditor().deleteStatement((Statement) this.astNode));
 
         header.getChildren().addAll(spacer, deleteButton);
         container.getChildren().add(header);
@@ -126,7 +128,7 @@ public class IfBlock extends AbstractStatementBlock {
 
             menuItem.setOnAction(e -> {
                 if (condition != null) {
-                    org.eclipse.jdt.core.dom.Expression toReplace = (org.eclipse.jdt.core.dom.Expression) condition.getAstNode();
+                    Expression toReplace = (Expression) condition.getAstNode();
                     context.codeEditor().replaceExpression(toReplace, type);
                 }
             });
