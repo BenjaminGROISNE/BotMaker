@@ -4,16 +4,33 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="cba04025-c331-4634-a893-436bad03efc0" name="Changes" comment="can add blocks to Case block">
+    <list default="true" id="cba04025-c331-4634-a893-436bad03efc0" name="Changes" comment="small fix">
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/botmaker/library/Main.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/botmaker/library/capture/CaptureTest.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/botmaker/library/capture/Clicker.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/botmaker/library/capture/GDI32.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/botmaker/library/capture/ImageDisplay.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/botmaker/library/capture/ScreenCapture.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/botmaker/library/capture/User32.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/botmaker/library/capture/WindowFinder.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/botmaker/library/capture/WindowInfo.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/botmaker/library/emulator/AdbHelper.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/botmaker/library/emulator/BlueStacksConfig.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/botmaker/library/emulator/BlueStacksEmulator.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/botmaker/library/emulator/BlueStacksInstance.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/botmaker/library/emulator/BlueStacksInstanceManager.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/botmaker/library/emulator/Emulator.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/botmaker/library/emulator/EmulatorTest.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/botmaker/library/inspector/RegistryInspector.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/botmaker/library/interaction/GameInteractor.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/botmaker/library/interaction/GameType.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/botmaker/library/opencv/MatType.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/botmaker/library/opencv/MatchResult.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/botmaker/library/opencv/OpencvManager.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/botmaker/library/opencv/OpencvTest.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/botmaker/library/opencv/Template.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/projects/.botmaker-config.json" beforeDir="false" afterPath="$PROJECT_DIR$/projects/.botmaker-config.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/projects/Demo/src/main/java/com/demo/Demo.java" beforeDir="false" afterPath="$PROJECT_DIR$/projects/Demo/src/main/java/com/demo/Demo.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/botmaker/blocks/BinaryExpressionBlock.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/botmaker/blocks/BinaryExpressionBlock.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/botmaker/core/AbstractExpressionBlock.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/botmaker/core/AbstractExpressionBlock.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/botmaker/core/BodyBlock.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/botmaker/core/BodyBlock.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/botmaker/parser/AstRewriter.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/botmaker/parser/AstRewriter.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/botmaker/parser/BlockParser.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/botmaker/parser/BlockParser.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/botmaker/parser/CodeEditor.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/botmaker/parser/CodeEditor.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/build.gradle" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -114,7 +131,7 @@
     "ignore.preview.features.used": "true",
     "ignore.virus.scanning.warn.message": "true",
     "kotlin-language-version-configured": "true",
-    "last_opened_file_path": "/home/groisnebenjamin/IdeaProjects/BotMaker",
+    "last_opened_file_path": "C:/Users/bgroi/Documents/dev/IntellijProjects/BotMaker/src/main/java/com/botmaker/library",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
@@ -133,6 +150,7 @@
 }]]></component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\bgroi\Documents\dev\IntellijProjects\BotMaker\src\main\java\com\botmaker\library" />
       <recent name="$PROJECT_DIR$/tools" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
@@ -217,23 +235,8 @@
       <updated>1759617202271</updated>
       <workItem from="1763918537398" duration="187000" />
       <workItem from="1763918732147" duration="607000" />
-      <workItem from="1763919354353" duration="6668000" />
-    </task>
-    <task id="LOCAL-00018" summary="added deletebutton">
-      <option name="closed" value="true" />
-      <created>1760787953350</created>
-      <option name="number" value="00018" />
-      <option name="presentableId" value="LOCAL-00018" />
-      <option name="project" value="LOCAL" />
-      <updated>1760787953350</updated>
-    </task>
-    <task id="LOCAL-00019" summary="Fixed stackOverflow error adjusted hover effect on blocks and block palette">
-      <option name="closed" value="true" />
-      <created>1760893175944</created>
-      <option name="number" value="00019" />
-      <option name="presentableId" value="LOCAL-00019" />
-      <option name="project" value="LOCAL" />
-      <updated>1760893175944</updated>
+      <workItem from="1763919354353" duration="6778000" />
+      <workItem from="1764009536365" duration="1621000" />
     </task>
     <task id="LOCAL-00020" summary="some ui changes">
       <option name="closed" value="true" />
@@ -611,7 +614,23 @@
       <option name="project" value="LOCAL" />
       <updated>1763924819042</updated>
     </task>
-    <option name="localTasksCounter" value="67" />
+    <task id="LOCAL-00067" summary="fix BinaryExpressionBlock operator not updating">
+      <option name="closed" value="true" />
+      <created>1763927455004</created>
+      <option name="number" value="00067" />
+      <option name="presentableId" value="LOCAL-00067" />
+      <option name="project" value="LOCAL" />
+      <updated>1763927455004</updated>
+    </task>
+    <task id="LOCAL-00068" summary="small fix">
+      <option name="closed" value="true" />
+      <created>1764013862014</created>
+      <option name="number" value="00068" />
+      <option name="presentableId" value="LOCAL-00068" />
+      <option name="project" value="LOCAL" />
+      <updated>1764013862014</updated>
+    </task>
+    <option name="localTasksCounter" value="69" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -645,8 +664,6 @@
     <ignored-roots>
       <path value="$PROJECT_DIR$/.." />
     </ignored-roots>
-    <MESSAGE value="fixed exit app added stop button that needs to stop finishing running" />
-    <MESSAGE value="Added block dragging" />
     <MESSAGE value="Added many new blocks. Still some issues to fix with them. Check for unreachable code error" />
     <MESSAGE value="Added clear jdt ls workspace cache" />
     <MESSAGE value="Uno and Redo button working" />
@@ -670,7 +687,9 @@
     <MESSAGE value="Windows compatibility" />
     <MESSAGE value="Switch fix" />
     <MESSAGE value="can add blocks to Case block" />
-    <option name="LAST_COMMIT_MESSAGE" value="can add blocks to Case block" />
+    <MESSAGE value="fix BinaryExpressionBlock operator not updating" />
+    <MESSAGE value="small fix" />
+    <option name="LAST_COMMIT_MESSAGE" value="small fix" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
