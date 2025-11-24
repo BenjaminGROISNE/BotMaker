@@ -12,6 +12,7 @@ public class ProjectCreator {
 
     private static final Path PROJECTS_ROOT = Paths.get("projects");
 
+    private final LibraryManager libraryManager = new LibraryManager();
     /**
      * Creates a new Gradle project with standard structure
      *
@@ -92,6 +93,12 @@ public class ProjectCreator {
 
         // Create main Java file
         createMainJavaFile(srcPath, projectName, packageName);
+
+        // 2. Install Native Library
+        libraryManager.installLibrary(projectPath);
+
+        // 3. Create main Java file
+        createMainJavaFile(srcPath, projectName, packageName);
     }
 
     /**
@@ -99,7 +106,7 @@ public class ProjectCreator {
      */
     private void createBuildGradle(Path projectPath, String projectName) throws IOException {
         String packageName = projectName.toLowerCase();
-        String content = String.format("""
+                String content = String.format("""
             plugins {
                 id 'java'
                 id 'application'
@@ -110,6 +117,23 @@ public class ProjectCreator {
             
             repositories {
                 mavenCentral()
+                google() // For Android ddmlib
+            }
+            
+            dependencies {
+                // JNA for Windows Interaction
+                implementation 'net.java.dev.jna:jna:5.13.0'
+                implementation 'net.java.dev.jna:jna-platform:5.13.0'
+            
+                // OpenCV
+                implementation 'org.bytedeco:opencv-platform:4.7.0-1.5.9'
+            
+                // JSON processing
+                implementation 'com.fasterxml.jackson.core:jackson-databind:2.15.2'
+            
+                // ADB Connection (ddmlib)
+                // Note: You may need to adjust version based on availability
+                implementation 'com.android.tools.ddms:ddmlib:30.0.0'
             }
             
             application {

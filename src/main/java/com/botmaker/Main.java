@@ -4,6 +4,7 @@ import com.botmaker.config.ApplicationConfig;
 import com.botmaker.di.DependencyContainer;
 import com.botmaker.init.AppDependencyConfigurator;
 import com.botmaker.init.AppServiceInitializer;
+import com.botmaker.project.LibraryManager;
 import com.botmaker.project.ProjectConfig;
 import com.botmaker.services.CodeEditorService;
 import com.botmaker.services.LanguageServerService;
@@ -15,6 +16,7 @@ import javafx.scene.control.Alert;
 import javafx.stage.Stage;
 
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.nio.file.Paths;
 
 public class Main extends Application {
@@ -48,6 +50,15 @@ public class Main extends Application {
 
     private void openProject(Stage primaryStage, String projectName, boolean clearCache) {
         try {
+            // 0. Verify Library Integrity
+            Path projectPath = Paths.get("projects", projectName);
+            LibraryManager libManager = new LibraryManager();
+            boolean repaired = libManager.verifyAndRepair(projectPath);
+
+            if (repaired) {
+                System.out.println("Project libraries were repaired/updated.");
+            }
+
             ProjectConfig.updateLastOpened(projectName);
             ApplicationConfig config = ApplicationConfig.forProject(projectName);
 

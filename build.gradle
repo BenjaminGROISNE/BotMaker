@@ -38,7 +38,7 @@ dependencies {
     // JavaCV (Computer Vision)
     // Using 'javacv-platform' includes native binaries for Windows, Linux, and Mac.
     // If the jar is too large, you can replace 'platform' with specific OS classifiers.
-    implementation 'org.bytedeco:javacv-platform:1.5.10'
+    implementation 'org.bytedeco:javacv-platform:1.5.12'
 
     // ddmlib (Android Debug Bridge interface)
     // Part of Android Tools, allows communication with Android devices
