@@ -26,8 +26,6 @@ public class CodeEditor {
         this.blockFactory = blockFactory;
     }
 
-    // ... [Existing getters and triggerUpdate] ...
-
     private String getCurrentCode() { return state.getCurrentCode(); }
     private CompilationUnit getCompilationUnit() { return state.getCompilationUnit().orElse(null); }
 
@@ -35,8 +33,6 @@ public class CodeEditor {
         String previousCode = getCurrentCode();
         eventBus.publish(new CoreApplicationEvents.CodeUpdatedEvent(newCode, previousCode));
     }
-
-    // ... [Existing methods: updateMethodInvocation, addArgumentToMethodInvocation, moveStatement, replaceLiteralValue, addStringArgumentToMethodInvocation, renameMethodParameter, setMethodReturnType, addParameterToMethod, deleteParameterFromMethod, setReturnExpression, addElementToList, deleteElementFromList, updateComment, deleteComment, replaceExpression, addStatement, deleteElseFromIfStatement, convertElseToElseIf, addElseToIfStatement, replaceSimpleName, deleteStatement, replaceVariableType, updateAssignmentOperator] ...
 
     public void updateMethodInvocation(MethodInvocation mi, String newScope, String newMethodName, List<String> newParamTypes) {
         blockFactory.setMarkNewIdentifiersAsUnedited(true);
@@ -47,6 +43,11 @@ public class CodeEditor {
     public void addArgumentToMethodInvocation(MethodInvocation mi, AddableExpression type) {
         blockFactory.setMarkNewIdentifiersAsUnedited(true);
         String newCode = astRewriter.addArgumentToMethodInvocation(getCompilationUnit(), getCurrentCode(), mi, type);
+        triggerUpdate(newCode);
+    }
+
+    public void addArgumentToMethodInvocation(MethodInvocation mi, Expression expr) {
+        String newCode = astRewriter.addArgumentToMethodInvocation(getCompilationUnit(), getCurrentCode(), mi, expr);
         triggerUpdate(newCode);
     }
 
@@ -182,8 +183,18 @@ public class CodeEditor {
         }
     }
 
-    // --- NEW: Switch Case Methods ---
+    // --- NEW: Binary Operator Updates ---
+    public void updateBinaryOperator(ASTNode node, String newOperatorSymbol) {
+        if (node instanceof InfixExpression) {
+            InfixExpression.Operator op = getInfixOperator(newOperatorSymbol);
+            if (op != null) {
+                String newCode = astRewriter.replaceInfixOperator(getCompilationUnit(), getCurrentCode(), (InfixExpression) node, op);
+                triggerUpdate(newCode);
+            }
+        }
+    }
 
+    // --- Switch Case Methods ---
     public void addCaseToSwitch(SwitchStatement switchStmt) {
         blockFactory.setMarkNewIdentifiersAsUnedited(true);
         String newCode = astRewriter.addCaseToSwitch(getCompilationUnit(), getCurrentCode(), switchStmt);
@@ -195,7 +206,24 @@ public class CodeEditor {
         triggerUpdate(newCode);
     }
 
-    // --- Private Helpers ---
+    // --- Helpers ---
+    private InfixExpression.Operator getInfixOperator(String symbol) {
+        if ("+".equals(symbol)) return InfixExpression.Operator.PLUS;
+        if ("-".equals(symbol)) return InfixExpression.Operator.MINUS;
+        if ("*".equals(symbol)) return InfixExpression.Operator.TIMES;
+        if ("/".equals(symbol)) return InfixExpression.Operator.DIVIDE;
+        if ("%".equals(symbol)) return InfixExpression.Operator.REMAINDER;
+        if ("==".equals(symbol)) return InfixExpression.Operator.EQUALS;
+        if ("!=".equals(symbol)) return InfixExpression.Operator.NOT_EQUALS;
+        if (">".equals(symbol)) return InfixExpression.Operator.GREATER;
+        if (">=".equals(symbol)) return InfixExpression.Operator.GREATER_EQUALS;
+        if ("<".equals(symbol)) return InfixExpression.Operator.LESS;
+        if ("<=".equals(symbol)) return InfixExpression.Operator.LESS_EQUALS;
+        if ("&&".equals(symbol)) return InfixExpression.Operator.CONDITIONAL_AND;
+        if ("||".equals(symbol)) return InfixExpression.Operator.CONDITIONAL_OR;
+        return null;
+    }
+
     private Assignment.Operator getAssignmentOperator(String symbol) {
         if ("=".equals(symbol)) return Assignment.Operator.ASSIGN;
         if ("+=".equals(symbol)) return Assignment.Operator.PLUS_ASSIGN;
