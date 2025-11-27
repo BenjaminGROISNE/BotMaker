@@ -1,0 +1,776 @@
+/* =================================================================
+   BOTMAKER BLOCKS - COMPREHENSIVE STYLES
+   User-friendly visual programming interface
+   ================================================================= */
+
+/* Root Variables */
+.root {
+    -fx-font-family: "Inter", "Segoe UI", sans-serif;
+    -fx-font-size: 13px;
+}
+
+/* =================================================================
+   STATEMENT BLOCKS - Color-coded by category
+   ================================================================= */
+
+/* OUTPUT BLOCKS - Blue theme */
+.print-block {
+    -fx-background-color: #4A90E2;
+    -fx-border-color: #357ABD;
+    -fx-padding: 8px 12px;
+    -fx-background-radius: 6px;
+    -fx-border-radius: 6px;
+    -fx-border-width: 2px;
+}
+
+.print-block:hover {
+    -fx-background-color: #5BA3F5;
+    -fx-border-width: 3px;
+}
+
+/* INPUT BLOCKS - Green theme */
+.read-input-block {
+    -fx-background-color: #50C878;
+    -fx-border-color: #3DA965;
+    -fx-padding: 8px 12px;
+    -fx-background-radius: 6px;
+    -fx-border-radius: 6px;
+    -fx-border-width: 2px;
+}
+
+.read-input-block:hover {
+    -fx-background-color: #65D98B;
+    -fx-border-width: 3px;
+}
+
+/* VARIABLE BLOCKS - Purple theme */
+.variable-declaration-block {
+    -fx-background-color: #9B59B6;
+    -fx-border-color: #7D3C98;
+    -fx-padding: 8px 12px;
+    -fx-background-radius: 6px;
+    -fx-border-radius: 6px;
+    -fx-border-width: 2px;
+}
+
+.variable-declaration-block:hover {
+    -fx-background-color: #AE6FC9;
+    -fx-border-width: 3px;
+}
+
+.assignment-block {
+    -fx-background-color: #BB8FCE;
+    -fx-border-color: #9970AD;
+    -fx-padding: 8px 12px;
+    -fx-background-radius: 6px;
+    -fx-border-radius: 6px;
+    -fx-border-width: 2px;
+}
+
+.assignment-block:hover {
+    -fx-background-color: #CDA5DD;
+    -fx-border-width: 3px;
+}
+
+/* FLOW CONTROL BLOCKS - Orange theme */
+.if-block {
+    -fx-background-color: #F39C12;
+    -fx-border-color: #D68910;
+    -fx-padding: 8px 12px;
+    -fx-background-radius: 6px;
+    -fx-border-radius: 6px;
+    -fx-border-width: 2px;
+}
+
+.if-block:hover {
+    -fx-background-color: #FAB036;
+    -fx-border-width: 3px;
+}
+
+.switch-block {
+    -fx-background-color: #E67E22;
+    -fx-border-color: #CA6F1E;
+    -fx-padding: 8px 12px;
+    -fx-background-radius: 6px;
+    -fx-border-radius: 6px;
+    -fx-border-width: 2px;
+}
+
+.switch-block:hover {
+    -fx-background-color: #F39547;
+    -fx-border-width: 3px;
+}
+
+.switch-case-block {
+    -fx-background-color: #F0B27A;
+    -fx-border-color: #DC9759;
+    -fx-padding: 6px 10px;
+    -fx-background-radius: 5px;
+    -fx-border-radius: 5px;
+    -fx-border-width: 2px;
+}
+
+/* LOOP BLOCKS - Yellow theme */
+.while-block {
+    -fx-background-color: #F1C40F;
+    -fx-border-color: #D4AC0D;
+    -fx-padding: 8px 12px;
+    -fx-background-radius: 6px;
+    -fx-border-radius: 6px;
+    -fx-border-width: 2px;
+}
+
+.while-block:hover {
+    -fx-background-color: #F4D03F;
+    -fx-border-width: 3px;
+}
+
+.for-block {
+    -fx-background-color: #F4D03F;
+    -fx-border-color: #D7B826;
+    -fx-padding: 8px 12px;
+    -fx-background-radius: 6px;
+    -fx-border-radius: 6px;
+    -fx-border-width: 2px;
+}
+
+.for-block:hover {
+    -fx-background-color: #F7DC6F;
+    -fx-border-width: 3px;
+}
+
+.do-while-block {
+    -fx-background-color: #F9E79F;
+    -fx-border-color: #E1D081;
+    -fx-padding: 8px 12px;
+    -fx-background-radius: 6px;
+    -fx-border-radius: 6px;
+    -fx-border-width: 2px;
+}
+
+.do-while-block:hover {
+    -fx-background-color: #FBF1C4;
+    -fx-border-width: 3px;
+}
+
+/* CONTROL FLOW BLOCKS - Red/Pink theme */
+.break-block {
+    -fx-background-color: #E74C3C;
+    -fx-border-color: #C0392B;
+    -fx-padding: 8px 12px;
+    -fx-background-radius: 6px;
+    -fx-border-radius: 6px;
+    -fx-border-width: 2px;
+}
+
+.break-block:hover {
+    -fx-background-color: #EC7063;
+    -fx-border-width: 3px;
+}
+
+.continue-block {
+    -fx-background-color: #EC7063;
+    -fx-border-color: #CB4335;
+    -fx-padding: 8px 12px;
+    -fx-background-radius: 6px;
+    -fx-border-radius: 6px;
+    -fx-border-width: 2px;
+}
+
+.continue-block:hover {
+    -fx-background-color: #F1948A;
+    -fx-border-width: 3px;
+}
+
+.return-block {
+    -fx-background-color: #C0392B;
+    -fx-border-color: #A93226;
+    -fx-padding: 8px 12px;
+    -fx-background-radius: 6px;
+    -fx-border-radius: 6px;
+    -fx-border-width: 2px;
+}
+
+.return-block:hover {
+    -fx-background-color: #CD6155;
+    -fx-border-width: 3px;
+}
+
+.wait-block {
+    -fx-background-color: #F8BBD0;
+    -fx-border-color: #EC407A;
+    -fx-padding: 8px 12px;
+    -fx-background-radius: 6px;
+    -fx-border-radius: 6px;
+    -fx-border-width: 2px;
+}
+
+.wait-block:hover {
+    -fx-background-color: #FCE4EC;
+    -fx-border-width: 3px;
+}
+
+/* UTILITY BLOCKS - Gray theme */
+.comment-block {
+    -fx-background-color: #BDC3C7;
+    -fx-border-color: #95A5A6;
+    -fx-padding: 8px 12px;
+    -fx-background-radius: 6px;
+    -fx-border-radius: 6px;
+    -fx-border-width: 2px;
+}
+
+.comment-block:hover {
+    -fx-background-color: #D5DBDB;
+    -fx-border-width: 3px;
+}
+
+.comment-indicator {
+    -fx-font-weight: bold;
+    -fx-text-fill: #34495E;
+}
+
+/* =================================================================
+   EXPRESSION BLOCKS - Smaller, nested elements
+   ================================================================= */
+
+/* Value Blocks */
+.literal-block {
+    -fx-background-color: #FF6B9D;
+    -fx-border-color: #E91E63;
+    -fx-padding: 5px 10px;
+    -fx-background-radius: 15px;
+    -fx-border-radius: 15px;
+    -fx-border-width: 2px;
+}
+
+.literal-block:hover {
+    -fx-background-color: #FF8FB5;
+    -fx-border-width: 3px;
+}
+
+.identifier-block {
+    -fx-background-color: #26A69A;
+    -fx-border-color: #00897B;
+    -fx-padding: 5px 10px;
+    -fx-background-radius: 15px;
+    -fx-border-radius: 15px;
+    -fx-border-width: 2px;
+}
+
+.identifier-block:hover {
+    -fx-background-color: #4DB6AC;
+    -fx-border-width: 3px;
+}
+
+/* Unedited identifier - needs attention */
+.unedited-identifier {
+    -fx-background-color: #FFB74D !important;
+    -fx-border-color: #F57C00 !important;
+    -fx-border-width: 3px !important;
+    -fx-effect: dropshadow(gaussian, rgba(255, 183, 77, 0.6), 10, 0, 0, 0);
+}
+
+/* Math/Logic Blocks */
+.binary-expression-block {
+    -fx-background-color: #AB47BC;
+    -fx-border-color: #8E24AA;
+    -fx-padding: 5px 10px;
+    -fx-background-radius: 15px;
+    -fx-border-radius: 15px;
+    -fx-border-width: 2px;
+}
+
+.binary-expression-block:hover {
+    -fx-background-color: #BA68C8;
+    -fx-border-width: 3px;
+}
+
+.comparison-expression-block {
+    -fx-background-color: #7E57C2;
+    -fx-border-color: #5E35B1;
+    -fx-padding: 5px 10px;
+    -fx-background-radius: 15px;
+    -fx-border-radius: 15px;
+    -fx-border-width: 2px;
+}
+
+.comparison-expression-block:hover {
+    -fx-background-color: #9575CD;
+    -fx-border-width: 3px;
+}
+
+/* =================================================================
+   BODY BLOCKS - Containers for statements
+   ================================================================= */
+
+.body-block {
+    -fx-background-color: rgba(255, 255, 255, 0.3);
+    -fx-padding: 10px;
+    -fx-background-radius: 5px;
+}
+
+.main-block {
+    -fx-background-color: #34495E;
+    -fx-border-color: #2C3E50;
+    -fx-border-width: 3px;
+    -fx-border-radius: 8px;
+    -fx-background-radius: 8px;
+    -fx-padding: 15px;
+}
+
+.main-block-header {
+    -fx-font-size: 16px;
+    -fx-font-weight: bold;
+    -fx-text-fill: white;
+}
+
+.if-body {
+    -fx-background-color: rgba(243, 156, 18, 0.2);
+}
+
+.while-body, .for-body, .do-while-body {
+    -fx-background-color: rgba(241, 196, 15, 0.2);
+}
+
+.switch-case-body {
+    -fx-background-color: rgba(230, 126, 34, 0.2);
+}
+
+/* Empty body placeholder */
+.empty-body-placeholder {
+    -fx-text-fill: #95A5A6;
+    -fx-font-style: italic;
+    -fx-font-size: 12px;
+}
+
+.empty-body-drop-hover {
+    -fx-background-color: rgba(0, 123, 255, 0.15) !important;
+    -fx-border-color: #007bff !important;
+    -fx-border-width: 2px !important;
+    -fx-border-style: dashed !important;
+}
+
+/* =================================================================
+   TEXT ELEMENTS - Labels, fields, dropdowns
+   ================================================================= */
+
+/* All text in blocks should be bold and readable */
+.if-block .label,
+.while-block .label,
+.for-block .label,
+.do-while-block .label,
+.switch-block .label,
+.print-block .text,
+.variable-declaration-block .text,
+.assignment-block .label,
+.read-input-block .label {
+    -fx-font-weight: bold;
+    -fx-font-size: 13px;
+    -fx-text-fill: white;
+}
+
+/* Keyword labels (if, while, for, etc.) */
+.keyword-label {
+    -fx-font-weight: bold;
+    -fx-font-size: 14px;
+    -fx-text-fill: white;
+}
+
+/* Type labels */
+.type-label {
+    -fx-background-color: #5DADE2;
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-padding: 3px 8px;
+    -fx-border-radius: 4px;
+    -fx-background-radius: 4px;
+    -fx-border-color: #3498DB;
+    -fx-border-width: 2px;
+}
+
+.type-label:hover {
+    -fx-background-color: #85C1E9;
+    -fx-border-color: #5DADE2;
+    -fx-effect: dropshadow(gaussian, rgba(52, 152, 219, 0.3), 5, 0, 0, 0);
+}
+
+/* Boolean selector dropdown */
+.boolean-selector {
+    -fx-background-color: white;
+    -fx-text-fill: #2C3E50;
+    -fx-font-weight: bold;
+    -fx-padding: 3px 8px;
+    -fx-border-radius: 4px;
+    -fx-background-radius: 4px;
+    -fx-border-color: #7F8C8D;
+    -fx-border-width: 2px;
+}
+
+.boolean-literal-block {
+    -fx-background-color: #9C27B0;
+    -fx-border-color: #7B1FA2;
+    -fx-padding: 5px 10px;
+    -fx-background-radius: 15px;
+    -fx-border-radius: 15px;
+    -fx-border-width: 2px;
+}
+
+.boolean-literal-block:hover {
+    -fx-background-color: #BA68C8;
+    -fx-border-width: 3px;
+}
+
+/* Expression + button - small, unobtrusive */
+.expression-add-button {
+    -fx-background-color: rgba(255, 255, 255, 0.9);
+    -fx-text-fill: #2C3E50;
+    -fx-font-weight: bold;
+    -fx-font-size: 12px;
+    -fx-padding: 2px 6px;
+    -fx-border-radius: 3px;
+    -fx-background-radius: 3px;
+    -fx-border-color: #95A5A6;
+    -fx-border-width: 1px;
+    -fx-cursor: hand;
+}
+
+.expression-add-button:hover {
+    -fx-background-color: white;
+    -fx-border-color: #3498DB;
+    -fx-border-width: 2px;
+}
+
+/* List/Array blocks */
+.list-block {
+    -fx-background-color: #00ACC1;
+    -fx-border-color: #00838F;
+    -fx-padding: 8px 12px;
+    -fx-background-radius: 6px;
+    -fx-border-radius: 6px;
+    -fx-border-width: 2px;
+}
+
+.list-block:hover {
+    -fx-background-color: #26C6DA;
+    -fx-border-width: 3px;
+}
+
+.list-label {
+    -fx-font-weight: bold;
+    -fx-text-fill: white;
+    -fx-font-size: 13px;
+}
+
+/* Operator selectors (dropdowns) */
+.operator-selector,
+.math-operator-selector,
+.comparison-operator-selector {
+    -fx-background-color: white;
+    -fx-text-fill: #2C3E50;
+    -fx-font-weight: bold;
+    -fx-padding: 3px 8px;
+    -fx-border-radius: 4px;
+    -fx-background-radius: 4px;
+    -fx-border-color: #7F8C8D;
+    -fx-border-width: 2px;
+}
+
+/* Text fields in blocks - CRITICAL: Must have dark text on light background */
+.literal-text-field,
+.comment-text-field {
+    -fx-background-color: white !important;
+    -fx-text-fill: #2C3E50 !important;
+    -fx-font-weight: bold;
+    -fx-padding: 4px 8px;
+    -fx-border-radius: 4px;
+    -fx-background-radius: 4px;
+    -fx-border-color: #BDC3C7;
+    -fx-border-width: 2px;
+    -fx-control-inner-background: white !important;
+}
+
+.literal-text-field:focused,
+.comment-text-field:focused {
+    -fx-border-color: #3498DB;
+    -fx-border-width: 3px;
+}
+
+/* Make sure text in identifier blocks is visible */
+.identifier-block .text {
+    -fx-fill: white !important;
+    -fx-font-weight: bold;
+}
+
+/* =================================================================
+   DRAG AND DROP FEEDBACK
+   ================================================================= */
+
+.body-block-separator {
+    -fx-min-height: 10px;
+    -fx-background-color: transparent;
+}
+
+.body-block-separator:hover {
+    -fx-background-color: rgba(0, 123, 255, 0.3);
+}
+
+/* =================================================================
+   ERROR AND DEBUG STATES
+   ================================================================= */
+
+.error-block {
+    -fx-border-color: #E74C3C !important;
+    -fx-border-width: 3px !important;
+    -fx-border-style: dashed !important;
+    -fx-effect: dropshadow(gaussian, rgba(231, 76, 60, 0.5), 10, 0, 0, 0);
+}
+
+.highlighted {
+    -fx-border-color: #2ECC71 !important;
+    -fx-border-width: 4px !important;
+    -fx-border-style: solid !important;
+    -fx-effect: dropshadow(gaussian, rgba(46, 204, 113, 0.7), 15, 0, 0, 0);
+}
+
+/* =================================================================
+   PALETTE (LEFT SIDEBAR)
+   ================================================================= */
+
+.palette-sidebar {
+    -fx-background-color: #ECF0F1;
+    -fx-padding: 10px;
+    -fx-border-color: #BDC3C7;
+    -fx-border-width: 0 2px 0 0;
+}
+
+.palette-pane {
+    -fx-background-color: #ECF0F1;
+}
+
+.palette-pane .titled-pane > .title {
+    -fx-background-color: #34495E;
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-padding: 8px;
+}
+
+.palette-pane .titled-pane > .content {
+    -fx-background-color: #F8F9FA;
+    -fx-padding: 5px;
+}
+
+.palette-item {
+    -fx-padding: 8px 12px;
+    -fx-background-radius: 5px;
+    -fx-border-radius: 5px;
+    -fx-border-width: 2px;
+    -fx-font-weight: bold;
+    -fx-text-fill: white;
+    -fx-cursor: hand;
+}
+
+.palette-item:hover {
+    -fx-border-width: 3px;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.3), 8, 0, 0, 2);
+}
+/* Palette items by category - FIXED: Logic category now has dark text */
+.palette-output {
+    -fx-background-color: #4A90E2;
+    -fx-border-color: #357ABD;
+    -fx-text-fill: white;
+}
+.palette-input {
+    -fx-background-color: #50C878;
+    -fx-border-color: #3DA965;
+    -fx-text-fill: white;
+}
+.palette-variables {
+    -fx-background-color: #9B59B6;
+    -fx-border-color: #7D3C98;
+    -fx-text-fill: white;
+}
+.palette-logic {
+    -fx-background-color: #F39C12;
+    -fx-border-color: #D68910;
+    -fx-text-fill: #2C3E50; /* FIXED: Dark text on orange background */
+    -fx-font-weight: bold;
+}
+.palette-loops {
+    -fx-background-color: #F1C40F;
+    -fx-border-color: #D4AC0D;
+    -fx-text-fill: #2C3E50; /* Dark text on yellow */
+    -fx-font-weight: bold;
+}
+.palette-control {
+    -fx-background-color: #E74C3C;
+    -fx-border-color: #C0392B;
+    -fx-text-fill: white;
+}
+.palette-utility {
+    -fx-background-color: #95A5A6;
+    -fx-border-color: #7F8C8D;
+    -fx-text-fill: white;
+}
+
+/* =================================================================
+   UI CHROME - Toolbars, buttons, status
+   ================================================================= */
+
+.main-toolbar {
+    -fx-background-color: #34495E;
+    -fx-padding: 10px;
+    -fx-spacing: 10px;
+}
+
+.toolbar-btn {
+    -fx-background-color: #ECF0F1;
+    -fx-text-fill: #2C3E50;
+    -fx-font-weight: bold;
+    -fx-padding: 8px 16px;
+    -fx-background-radius: 5px;
+    -fx-border-radius: 5px;
+    -fx-border-width: 0;
+}
+
+.toolbar-btn:hover {
+    -fx-background-color: #BDC3C7;
+}
+
+.btn-run {
+    -fx-background-color: #2ECC71;
+    -fx-text-fill: white;
+}
+
+.btn-run:hover {
+    -fx-background-color: #27AE60;
+}
+
+.btn-debug {
+    -fx-background-color: #E67E22;
+    -fx-text-fill: white;
+}
+
+.btn-debug:hover {
+    -fx-background-color: #D68910;
+}
+
+.btn-stop {
+    -fx-background-color: #E74C3C;
+    -fx-text-fill: white;
+}
+
+.btn-stop:hover {
+    -fx-background-color: #C0392B;
+}
+
+#status-label {
+    -fx-background-color: #34495E;
+    -fx-text-fill: white;
+    -fx-padding: 8px 15px;
+    -fx-font-weight: bold;
+}
+
+/* =================================================================
+   CONSOLE / OUTPUT AREA
+   ================================================================= */
+
+.console-area {
+    -fx-font-family: "Consolas", "Monaco", monospace;
+    -fx-font-size: 12px;
+    -fx-background-color: #2C3E50;
+    -fx-text-fill: #ECF0F1;
+    -fx-padding: 10px;
+}
+
+.console-area .content {
+    -fx-background-color: #2C3E50;
+}
+
+/* Error list */
+.error-cell {
+    -fx-text-fill: #E74C3C;
+    -fx-font-weight: bold;
+    -fx-padding: 5px;
+}
+
+.warning-cell {
+    -fx-text-fill: #F39C12;
+    -fx-font-weight: bold;
+    -fx-padding: 5px;
+}
+
+.error-cell:selected,
+.warning-cell:selected {
+    -fx-background-color: #3498DB;
+    -fx-text-fill: white;
+}
+
+/* =================================================================
+   DARK THEME OVERRIDES
+   ================================================================= */
+
+.dark-theme {
+    -fx-background-color: #1E1E1E;
+}
+
+.dark-theme .palette-sidebar {
+    -fx-background-color: #252526;
+    -fx-border-color: #3E3E42;
+}
+
+.dark-theme .body-block {
+    -fx-background-color: rgba(0, 0, 0, 0.2);
+}
+
+.dark-theme .main-block {
+    -fx-background-color: #2D2D30;
+    -fx-border-color: #3E3E42;
+}
+
+.dark-theme .literal-block .text-field,
+.dark-theme .comment-text-field {
+    -fx-background-color: #3E3E42;
+    -fx-text-fill: #D4D4D4;
+    -fx-border-color: #555555;
+}
+
+.dark-theme .console-area {
+    -fx-background-color: #1E1E1E;
+    -fx-text-fill: #D4D4D4;
+}
+
+/* =================================================================
+   SCROLLBAR STYLING
+   ================================================================= */
+
+.scroll-pane {
+    -fx-background-color: transparent;
+}
+
+.scroll-pane .viewport {
+    -fx-background-color: transparent;
+}
+
+.scroll-bar:vertical .thumb {
+    -fx-background-color: #95A5A6;
+    -fx-background-radius: 5px;
+}
+
+.scroll-bar:horizontal .thumb {
+    -fx-background-color: #95A5A6;
+    -fx-background-radius: 5px;
+}
+
+.scroll-bar:vertical .track,
+.scroll-bar:horizontal .track {
+    -fx-background-color: #ECF0F1;
+}
+
+
+.method-call-block {
+    -fx-background-color: #34495E;
+    -fx-background-radius: 5;
+    -fx-padding: 5 10 5 10;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.2), 3, 0, 0, 1);
+}

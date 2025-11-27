@@ -1,20 +1,58 @@
 plugins {
     id 'java'
+    id 'application'
+    id 'org.openjfx.javafxplugin' version '0.1.0'
+    id 'eclipse'
 }
 
-group = 'org.example'
-version = '1.0-SNAPSHOT'
-
 repositories {
+    // ddmlib is hosted here
+    google()
+
     mavenCentral()
+    maven {
+        url 'https://download.eclipse.org/eclipse/updates/4.30/'
+    }
 }
 
 dependencies {
-    testImplementation platform('org.junit:junit-bom:5.10.0')
-    testImplementation 'org.junit.jupiter:junit-jupiter'
-    testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+    // JavaFX
+    implementation 'org.openjfx:javafx-controls:21'
+    implementation 'org.openjfx:javafx-fxml:21'
+
+    // Eclipse JDT Core (for AST parsing)
+    implementation 'org.eclipse.jdt:org.eclipse.jdt.core:3.37.0'
+
+    // LSP4J for client communication
+    implementation 'org.eclipse.lsp4j:org.eclipse.lsp4j:0.21.0'
+    implementation 'org.eclipse.lsp4j:org.eclipse.lsp4j.jsonrpc:0.21.0'
+
+    // Eclipse runtime base libs
+    implementation 'org.eclipse.platform:org.eclipse.core.runtime:3.31.0'
+    implementation 'org.eclipse.platform:org.eclipse.equinox.common:3.17.0'
+    implementation 'org.eclipse.platform:org.eclipse.core.resources:3.21.0'
+
+
+    // --- NEW DEPENDENCIES ---
+
+    // JavaCV (Computer Vision)
+    // Using 'javacv-platform' includes native binaries for Windows, Linux, and Mac.
+    // If the jar is too large, you can replace 'platform' with specific OS classifiers.
+    implementation 'org.bytedeco:javacv-platform:1.5.12'
+
+    // ddmlib (Android Debug Bridge interface)
+    // Part of Android Tools, allows communication with Android devices
+    implementation 'com.android.tools.ddms:ddmlib:31.2.0'
+
+
+    implementation 'com.fasterxml.jackson.core:jackson-databind:2.17.0'
 }
 
-test {
-    useJUnitPlatform()
+javafx {
+    version = "21"
+    modules = ['javafx.controls', 'javafx.fxml']
+}
+
+application {
+    mainClass = 'com.botmaker.Main'
 }
