@@ -80,6 +80,8 @@ public class MethodDeclarationBlock extends AbstractStatementBlock implements Bl
         Label returnsLabel = new Label("returns");
         returnsLabel.setStyle("-fx-text-fill: rgba(255,255,255,0.7); -fx-font-style: italic; -fx-font-size: 11px;");
 
+
+
         ComboBox<String> typeSelector = new ComboBox<>();
         typeSelector.getItems().add("void");
         typeSelector.getItems().addAll(TypeManager.getFundamentalTypeNames());
@@ -105,7 +107,16 @@ public class MethodDeclarationBlock extends AbstractStatementBlock implements Bl
             }
         });
 
-        topRow.getChildren().addAll(funcLabel, nameLabel, spacer, returnsLabel, typeSelector);
+        Button deleteBtn = new Button("×");
+        deleteBtn.setStyle("-fx-background-color: transparent; -fx-text-fill: #E74C3C; -fx-font-size: 16px; -fx-padding: 0; -fx-cursor: hand;");
+        deleteBtn.setOnAction(e -> {
+            context.codeEditor().deleteMethod((MethodDeclaration) this.astNode);
+        });
+        deleteBtn.setOnMouseEntered(e -> deleteBtn.setStyle("-fx-background-color: #E74C3C; -fx-text-fill: white; -fx-font-size: 16px; -fx-padding: 2 6 2 6; -fx-cursor: hand; -fx-background-radius: 4;"));
+        deleteBtn.setOnMouseExited(e -> deleteBtn.setStyle("-fx-background-color: transparent; -fx-text-fill: #E74C3C; -fx-font-size: 16px; -fx-padding: 0; -fx-cursor: hand;"));
+
+
+        topRow.getChildren().addAll(funcLabel, nameLabel, spacer, returnsLabel, typeSelector, deleteBtn);
 
         // Row 2: Parameters
         HBox paramRow = new HBox(6);

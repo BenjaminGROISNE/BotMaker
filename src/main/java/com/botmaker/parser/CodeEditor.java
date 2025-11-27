@@ -61,6 +61,30 @@ public class CodeEditor {
         triggerUpdate(newCode);
     }
 
+    // In CodeEditor.java
+
+    public void addMethodToClass(TypeDeclaration typeDecl, String methodName, String returnType, int index) {
+        blockFactory.setMarkNewIdentifiersAsUnedited(true);
+        String newCode = astRewriter.addMethodToClass(
+                getCompilationUnit(),
+                getCurrentCode(),
+                typeDecl,
+                methodName,
+                returnType,
+                index
+        );
+        triggerUpdate(newCode);
+    }
+
+    public void deleteMethod(MethodDeclaration method) {
+        String newCode = astRewriter.deleteMethodFromClass(
+                getCompilationUnit(),
+                getCurrentCode(),
+                method
+        );
+        triggerUpdate(newCode);
+    }
+
     public void addStringArgumentToMethodInvocation(MethodInvocation mi, String text) {
         CompilationUnit cu = getCompilationUnit();
         if (cu == null) return;

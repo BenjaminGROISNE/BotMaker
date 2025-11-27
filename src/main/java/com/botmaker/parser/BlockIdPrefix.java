@@ -31,7 +31,9 @@ public class BlockIdPrefix {
     public static final String COMMENT = "comment_";
     public static final String WAIT = "wait_";
     public static final String LIST = "list_";
-
+    // In BlockIdPrefix.java
+    public static final String CLASS = "class_";
+    public static final String METHOD = "method_";
     private BlockIdPrefix() {} // Prevent instantiation
 
     /**

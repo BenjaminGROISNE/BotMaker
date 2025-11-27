@@ -36,6 +36,8 @@ public class AstRewriter {
         return applyRewrite(rewriter, originalCode);
     }
 
+
+
     public String addStatement(CompilationUnit cu, String originalCode, BodyBlock targetBody, AddableBlock type, int index) {
         AST ast = cu.getAST();
         ASTRewrite rewriter = ASTRewrite.create(ast);
@@ -87,7 +89,45 @@ public class AstRewriter {
         return applyRewrite(rewriter, originalCode);
     }
 
-    // ... [Existing methods: updateComment, deleteComment, etc.] ...
+    // In AstRewriter.java
+
+    public String addMethodToClass(CompilationUnit cu, String originalCode, TypeDeclaration typeDecl,
+                                   String methodName, String returnType, int index) {
+        AST ast = cu.getAST();
+        ASTRewrite rewriter = ASTRewrite.create(ast);
+
+        // Create new method
+        MethodDeclaration newMethod = ast.newMethodDeclaration();
+        newMethod.setName(ast.newSimpleName(methodName));
+
+        // Set modifiers: public static
+        newMethod.modifiers().add(ast.newModifier(Modifier.ModifierKeyword.PUBLIC_KEYWORD));
+        newMethod.modifiers().add(ast.newModifier(Modifier.ModifierKeyword.STATIC_KEYWORD));
+
+        // Set return type
+        if ("void".equals(returnType)) {
+            newMethod.setReturnType2(ast.newPrimitiveType(PrimitiveType.VOID));
+        } else {
+            newMethod.setReturnType2(TypeManager.createTypeNode(ast, returnType));
+        }
+
+        // Create empty body
+        Block body = ast.newBlock();
+        newMethod.setBody(body);
+
+        // Insert into class
+        ListRewrite listRewrite = rewriter.getListRewrite(typeDecl, TypeDeclaration.BODY_DECLARATIONS_PROPERTY);
+        listRewrite.insertAt(newMethod, index, null);
+
+        return applyRewrite(rewriter, originalCode);
+    }
+
+    public String deleteMethodFromClass(CompilationUnit cu, String originalCode, MethodDeclaration method) {
+        ASTRewrite rewriter = ASTRewrite.create(cu.getAST());
+        rewriter.remove(method, null);
+        return applyRewrite(rewriter, originalCode);
+    }
+
     public String updateComment(String originalCode, Comment commentNode, String newText) {
         try {
             IDocument document = new Document(originalCode);

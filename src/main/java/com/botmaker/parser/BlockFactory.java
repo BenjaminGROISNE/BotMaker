@@ -16,7 +16,7 @@ public class BlockFactory {
     private boolean markNewIdentifiersAsUnedited = false;
     private BlockParser blockParser;
 
-    // CHANGED: Return type is AbstractCodeBlock (parent of MainBlock and LibraryBlock)
+
     public AbstractCodeBlock convert(String javaCode, Map<ASTNode, CodeBlock> nodeToBlockMap, BlockDragAndDropManager manager) {
         this.currentSourceCode = javaCode;
         this.blockParser = new BlockParser(this, manager, markNewIdentifiersAsUnedited);
@@ -26,7 +26,7 @@ public class BlockFactory {
             parser.setSource(javaCode.toCharArray());
             parser.setKind(ASTParser.K_COMPILATION_UNIT);
             parser.setResolveBindings(true);
-            parser.setUnitName("Unit.java"); // Name doesn't matter for parsing structure
+            parser.setUnitName("Unit.java");
             parser.setEnvironment(null, null, null, true);
             this.ast = (CompilationUnit) parser.createAST(null);
 
@@ -39,39 +39,56 @@ public class BlockFactory {
 
             TypeDeclaration typeDecl = (TypeDeclaration) ast.types().get(0);
 
-            // Check for Main Method
-            MethodDeclaration mainMethod = findMainMethod(typeDecl);
+            // Create ClassBlock for the top-level class
+            ClassBlock classBlock = new ClassBlock(
+                    BlockIdPrefix.generate(BlockIdPrefix.CLASS, typeDecl),
+                    typeDecl,
+                    manager
+            );
+            nodeToBlockMap.put(typeDecl, classBlock);
 
-            if (mainMethod != null) {
-                // It's a Main File
-                MainBlock mainBlock = new MainBlock(BlockIdPrefix.generate(BlockIdPrefix.MAIN, mainMethod), mainMethod);
-                nodeToBlockMap.put(mainMethod, mainBlock);
-                if (mainMethod.getBody() != null) {
-                    BodyBlock bodyBlock = parseBodyBlock(mainMethod.getBody(), nodeToBlockMap, manager);
-                    mainBlock.setMainBody(bodyBlock);
+            // Parse all methods
+            for (MethodDeclaration method : typeDecl.getMethods()) {
+                MethodDeclarationBlock methodBlock;
+
+                // Check if this is the main method
+                if (isMainMethod(method)) {
+                    methodBlock = new MainBlock(
+                            BlockIdPrefix.generate(BlockIdPrefix.METHOD, method),
+                            method,
+                            manager
+                    );
+                } else {
+                    methodBlock = new MethodDeclarationBlock(
+                            BlockIdPrefix.generate(BlockIdPrefix.METHOD, method),
+                            method,
+                            manager
+                    );
                 }
-                return mainBlock;
-            } else {
-                // It's a Library File (Standard Class)
-                LibraryBlock libBlock = new LibraryBlock(BlockIdPrefix.generate("lib_", typeDecl), typeDecl);
-                nodeToBlockMap.put(typeDecl, libBlock);
 
-                for (MethodDeclaration method : typeDecl.getMethods()) {
-                    MethodDeclarationBlock methodBlock = new MethodDeclarationBlock(
-                            BlockIdPrefix.generate("func_", method), method, manager);
-                    nodeToBlockMap.put(method, methodBlock);
+                nodeToBlockMap.put(method, methodBlock);
 
-                    if (method.getBody() != null) {
-                        methodBlock.setBody(parseBodyBlock(method.getBody(), nodeToBlockMap, manager));
-                    }
-                    libBlock.addMethod(methodBlock);
+                // Parse method body
+                if (method.getBody() != null) {
+                    methodBlock.setBody(parseBodyBlock(method.getBody(), nodeToBlockMap, manager));
                 }
-                return libBlock;
+
+                classBlock.addMethod(methodBlock);
             }
+
+            return classBlock;
 
         } finally {
             setMarkNewIdentifiersAsUnedited(false);
         }
+    }
+
+    private boolean isMainMethod(MethodDeclaration method) {
+        if (!"main".equals(method.getName().getIdentifier())) return false;
+        if (!Modifier.isStatic(method.getModifiers())) return false;
+        if (!Modifier.isPublic(method.getModifiers())) return false;
+        if (method.parameters().size() != 1) return false;
+        return true;
     }
 
     private MethodDeclaration findMainMethod(TypeDeclaration type) {

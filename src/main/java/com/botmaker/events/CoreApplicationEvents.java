@@ -3,6 +3,9 @@ package com.botmaker.events;
 import com.botmaker.core.AbstractCodeBlock;
 import com.botmaker.core.CodeBlock;
 import org.eclipse.lsp4j.Diagnostic;
+
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
@@ -41,6 +44,19 @@ public class CoreApplicationEvents {
         public CodeBlock getBlock() { return block; }
     }
 
+
+
+    public static class UIBlocksUpdatedEvent extends AbstractApplicationEvent {
+        private final AbstractCodeBlock rootBlock;
+
+        public UIBlocksUpdatedEvent(AbstractCodeBlock rootBlock) {
+            super("CodeEditorService");
+            this.rootBlock = rootBlock;
+        }
+
+        public AbstractCodeBlock getRootBlock() { return rootBlock; }
+    }
+
     public static class CompilationRequestedEvent extends AbstractApplicationEvent {}
     public static class ExecutionRequestedEvent extends AbstractApplicationEvent {}
     public static class DebugStartRequestedEvent extends AbstractApplicationEvent {}
@@ -67,17 +83,7 @@ public class CoreApplicationEvents {
     }
 
     // Inside CoreApplicationEvents class
-    public static class UIBlocksUpdatedEvent extends AbstractApplicationEvent {
-        // CHANGED: From MainBlock to com.botmaker.core.AbstractCodeBlock
-        private final AbstractCodeBlock rootBlock;
 
-        public UIBlocksUpdatedEvent(AbstractCodeBlock rootBlock) {
-            super("CodeEditorService");
-            this.rootBlock = rootBlock;
-        }
-
-        public AbstractCodeBlock getRootBlock() { return rootBlock; }
-    }
 
     public static class OutputAppendedEvent extends AbstractApplicationEvent {
         private final String text;

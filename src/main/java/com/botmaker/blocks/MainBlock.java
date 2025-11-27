@@ -1,55 +1,43 @@
 package com.botmaker.blocks;
 
-import com.botmaker.core.AbstractCodeBlock;
-import com.botmaker.core.BlockWithChildren;
-import com.botmaker.core.BodyBlock;
-import com.botmaker.core.CodeBlock;
 import com.botmaker.lsp.CompletionContext;
-
-import javafx.geometry.Insets;
+import com.botmaker.ui.BlockDragAndDropManager;
 import javafx.scene.Node;
 import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
-import org.eclipse.jdt.core.dom.ASTNode;
+import org.eclipse.jdt.core.dom.MethodDeclaration;
 
-import java.util.ArrayList;
-import java.util.List;
+/**
+ * MainBlock is just a MethodDeclarationBlock that detects if it's the "main" method
+ * and adjusts its UI styling accordingly.
+ */
+public class MainBlock extends MethodDeclarationBlock {
 
-public class MainBlock extends AbstractCodeBlock implements BlockWithChildren {
+    private final boolean isMainMethod;
 
-    private BodyBlock mainBody;
-
-    public MainBlock(String id, ASTNode astNode) {
-        super(id, astNode);
-    }
-
-    public void setMainBody(BodyBlock mainBody) {
-        this.mainBody = mainBody;
-    }
-
-    @Override
-    public List<CodeBlock> getChildren() {
-        List<CodeBlock> children = new ArrayList<>();
-        if (mainBody != null) {
-            children.add(mainBody);
-        }
-        return children;
+    public MainBlock(String id, MethodDeclaration astNode, BlockDragAndDropManager manager) {
+        super(id, astNode, manager);
+        this.isMainMethod = "main".equals(astNode.getName().getIdentifier()) &&
+                org.eclipse.jdt.core.dom.Modifier.isStatic(astNode.getModifiers());
     }
 
     @Override
     protected Node createUINode(CompletionContext context) {
-        VBox container = new VBox(5);
-        container.getStyleClass().add("main-block");
-        container.setPadding(new Insets(10));
+        Node standardUI = super.createUINode(context);
 
-        Label header = new Label("Main");
-        header.getStyleClass().add("main-block-header");
-        container.getChildren().add(header);
+        if (isMainMethod) {
+            // Apply special styling for main method
+            VBox wrapper = new VBox(standardUI);
+            wrapper.getStyleClass().add("main-method-highlight");
+            wrapper.setStyle("-fx-background-color: #e8f4f8; -fx-border-color: #3498db; -fx-border-width: 2; -fx-border-radius: 8; -fx-padding: 5;");
 
-        if (mainBody != null) {
-            container.getChildren().add(mainBody.getUINode(context));
+            Label mainBadge = new Label("⭐ Program Entry Point");
+            mainBadge.setStyle("-fx-font-size: 10px; -fx-text-fill: #3498db; -fx-font-weight: bold;");
+            wrapper.getChildren().add(0, mainBadge);
+
+            return wrapper;
         }
 
-        return container;
+        return standardUI;
     }
 }
