@@ -774,3 +774,311 @@
     -fx-padding: 5 10 5 10;
     -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.2), 3, 0, 0, 1);
 }
+
+
+
+/* =================================================================
+   CLASS BLOCK - Container for methods
+   ================================================================= */
+
+.class-block {
+    -fx-background-color: linear-gradient(to bottom, #ecf0f1 0%, #bdc3c7 100%);
+    -fx-border-color: #34495e;
+    -fx-border-width: 3px;
+    -fx-border-radius: 10px;
+    -fx-background-radius: 10px;
+    -fx-padding: 15px;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.3), 10, 0, 0, 3);
+}
+
+.class-block .label {
+    -fx-font-size: 20px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #2c3e50;
+    -fx-padding: 0 0 15 0;
+    -fx-border-width: 0 0 2 0;
+    -fx-border-color: #34495e;
+}
+
+/* Method separator in class - for drag and drop */
+.method-separator {
+    -fx-min-height: 20px;
+    -fx-max-height: 20px;
+    -fx-background-color: rgba(52, 73, 94, 0.1);
+    -fx-border-color: rgba(52, 73, 94, 0.3);
+    -fx-border-width: 1px 0 1px 0;
+    -fx-border-style: dashed;
+}
+
+.method-separator:hover {
+    -fx-background-color: rgba(155, 89, 182, 0.2);
+    -fx-border-color: #9b59b6;
+    -fx-border-width: 2px 0 2px 0;
+    -fx-border-style: solid;
+}
+
+/* =================================================================
+   METHOD DECLARATION BLOCK - Function blocks
+   ================================================================= */
+
+.method-block {
+    -fx-background-color: transparent;
+    -fx-padding: 0;
+}
+
+.method-header {
+    -fx-background-color: #8E44AD;
+    -fx-background-radius: 8px 8px 0 0;
+    -fx-padding: 8px 10px;
+}
+
+.method-body-wrapper {
+    -fx-border-color: #8E44AD;
+    -fx-border-width: 0 0 0 6px;
+    -fx-background-color: rgba(142, 68, 173, 0.08);
+    -fx-background-radius: 0 0 8px 8px;
+}
+
+/* Main method special highlight */
+.main-method-highlight {
+    -fx-background-color: #e8f4f8;
+    -fx-border-color: #3498db;
+    -fx-border-width: 3px;
+    -fx-border-radius: 8px;
+    -fx-padding: 8px;
+    -fx-effect: dropshadow(gaussian, rgba(52, 152, 219, 0.4), 10, 0, 0, 2);
+}
+
+.main-method-highlight .label {
+    -fx-font-size: 11px;
+    -fx-text-fill: #3498db;
+    -fx-font-weight: bold;
+    -fx-padding: 5px 0;
+}
+
+/* Function category in palette */
+.palette-functions {
+    -fx-background-color: #8E44AD;
+    -fx-border-color: #7D3C98;
+    -fx-text-fill: white;
+}
+
+/* =================================================================
+   VARIABLE NAME FIELD - For editable names in declarations
+   ================================================================= */
+
+.variable-name-field {
+    -fx-background-color: white !important;
+    -fx-text-fill: #2C3E50 !important;
+    -fx-font-weight: bold;
+    -fx-padding: 4px 8px;
+    -fx-border-radius: 4px;
+    -fx-background-radius: 4px;
+    -fx-border-color: #BDC3C7;
+    -fx-border-width: 2px;
+    -fx-control-inner-background: white !important;
+    -fx-pref-width: 100px;
+}
+
+.variable-name-field:focused {
+    -fx-border-color: #3498DB;
+    -fx-border-width: 3px;
+    -fx-background-color: white !important;
+}
+
+/* =================================================================
+   INLINE LIST DISPLAY - For arrays shown inline
+   ================================================================= */
+
+.inline-list-display {
+    -fx-background-color: rgba(0, 172, 193, 0.2);
+    -fx-border-color: #00ACC1;
+    -fx-border-width: 2px;
+    -fx-border-radius: 8px;
+    -fx-background-radius: 8px;
+    -fx-padding: 4px 8px;
+}
+
+.inline-list-display .label {
+    -fx-font-weight: bold;
+    -fx-text-fill: #00838F;
+    -fx-font-size: 14px;
+}
+
+/* =================================================================
+   ICON BUTTONS - Small action buttons (change, delete, etc.)
+   ================================================================= */
+
+.icon-button {
+    -fx-background-color: transparent;
+    -fx-text-fill: #7F8C8D;
+    -fx-font-size: 10px;
+    -fx-padding: 2px 4px;
+    -fx-cursor: hand;
+    -fx-border-width: 0;
+}
+
+.icon-button:hover {
+    -fx-background-color: rgba(127, 140, 141, 0.2);
+    -fx-text-fill: #2C3E50;
+    -fx-background-radius: 3px;
+}
+
+/* Delete button specific styling */
+.delete-icon-button {
+    -fx-text-fill: #E74C3C;
+}
+
+.delete-icon-button:hover {
+    -fx-background-color: rgba(231, 76, 60, 0.2);
+    -fx-text-fill: #C0392B;
+}
+
+/* =================================================================
+   SIDEBAR TABS - For Files and Blocks tabs
+   ================================================================= */
+
+.sidebar-tabs {
+    -fx-background-color: #ECF0F1;
+    -fx-border-color: #BDC3C7;
+    -fx-border-width: 0 2px 0 0;
+}
+
+.sidebar-tabs .tab-pane .tab-header-area .tab-header-background {
+    -fx-background-color: #34495E;
+}
+
+.sidebar-tabs .tab-pane .tab {
+    -fx-background-color: #34495E;
+    -fx-text-fill: #ECF0F1;
+    -fx-font-weight: bold;
+    -fx-padding: 8px 16px;
+}
+
+.sidebar-tabs .tab-pane .tab:selected {
+    -fx-background-color: #ECF0F1;
+    -fx-text-fill: #2C3E50;
+}
+
+.sidebar-tabs .tab-pane .tab:hover {
+    -fx-background-color: #5D6D7E;
+}
+
+/* =================================================================
+   FILE EXPLORER
+   ================================================================= */
+
+.file-explorer {
+    -fx-background-color: #F8F9FA;
+    -fx-padding: 10px;
+}
+
+.file-explorer .sidebar-header {
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #2C3E50;
+    -fx-padding: 0 0 10 0;
+}
+
+.file-explorer .tree-view {
+    -fx-background-color: white;
+    -fx-border-color: #BDC3C7;
+    -fx-border-width: 1px;
+    -fx-border-radius: 4px;
+}
+
+.file-explorer .tree-cell {
+    -fx-text-fill: black;
+    -fx-padding: 4px 8px;
+}
+
+.file-explorer .tree-cell:selected {
+    -fx-background-color: #3498DB;
+    -fx-text-fill: white;
+}
+
+/* =================================================================
+   EVENT LOG
+   ================================================================= */
+
+.event-log-list {
+    -fx-font-family: 'Consolas', 'Monospaced';
+    -fx-font-size: 11px;
+    -fx-background-color: #1E1E1E;
+    -fx-text-fill: #D4D4D4;
+}
+
+.event-log-list .list-cell {
+    -fx-background-color: #1E1E1E;
+    -fx-text-fill: #D4D4D4;
+    -fx-padding: 3px 8px;
+}
+
+.event-log-list .list-cell:selected {
+    -fx-background-color: #264F78;
+    -fx-text-fill: white;
+}
+
+/* =================================================================
+   CODE SCROLL PANE - Main canvas area
+   ================================================================= */
+
+.code-scroll-pane {
+    -fx-background-color: #F5F5F5;
+    -fx-padding: 20px;
+}
+
+.code-scroll-pane .viewport {
+    -fx-background-color: #F5F5F5;
+}
+
+/* =================================================================
+   BLOCKS CANVAS - Where blocks are displayed
+   ================================================================= */
+
+.blocks-canvas {
+    -fx-background-color: #F5F5F5;
+    -fx-padding: 20px;
+    -fx-spacing: 15px;
+}
+
+/* =================================================================
+   ADJUSTMENTS FOR LIGHT THEME
+   ================================================================= */
+
+.light-theme {
+    -fx-background-color: #FFFFFF;
+}
+
+.light-theme .blocks-canvas {
+    -fx-background-color: #F5F5F5;
+}
+
+.light-theme .code-scroll-pane {
+    -fx-background-color: #F5F5F5;
+}
+
+/* =================================================================
+   CONTEXT MENU STYLING
+   ================================================================= */
+
+.context-menu {
+    -fx-background-color: white;
+    -fx-border-color: #BDC3C7;
+    -fx-border-width: 1px;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.2), 8, 0, 0, 2);
+}
+
+.context-menu .menu-item {
+    -fx-padding: 8px 16px;
+    -fx-text-fill: black;
+}
+
+.context-menu .menu-item:focused {
+    -fx-background-color: #3498DB;
+    -fx-text-fill: white;
+}
+
+.context-menu .menu-item:disabled {
+    -fx-text-fill: #BDC3C7;
+}

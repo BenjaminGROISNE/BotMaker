@@ -13,7 +13,7 @@ import static com.botmaker.util.TypeManager.toWrapperType;
 
 public class NodeCreator {
 
-    // ... [createDefaultExpression remains unchanged] ...
+
     public Expression createDefaultExpression(AST ast, AddableExpression type, CompilationUnit cu, ASTRewrite rewriter) {
         switch (type) {
             case TEXT:
@@ -117,6 +117,11 @@ public class NodeCreator {
                 doStatement.setExpression(ast.newBooleanLiteral(true));
                 doStatement.setBody(ast.newBlock());
                 return doStatement;
+
+            case FUNCTION_CALL:
+                MethodInvocation methodCall = ast.newMethodInvocation();
+                methodCall.setName(ast.newSimpleName("selectMethod"));
+                return ast.newExpressionStatement(methodCall);
 
             case BREAK: return ast.newBreakStatement();
             case CONTINUE: return ast.newContinueStatement();

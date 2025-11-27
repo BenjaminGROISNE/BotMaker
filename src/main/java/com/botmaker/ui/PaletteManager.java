@@ -25,9 +25,18 @@ public class PaletteManager {
         Map<BlockCategory, List<AddableBlock>> grouped = Arrays.stream(AddableBlock.values())
                 .collect(Collectors.groupingBy(AddableBlock::getCategory));
 
+// In PaletteManager.java - createCategorizedPalette() method
+// Update the order array to include FUNCTIONS:
+
         BlockCategory[] order = {
-                BlockCategory.OUTPUT, BlockCategory.INPUT, BlockCategory.VARIABLES,
-                BlockCategory.FLOW, BlockCategory.LOOPS, BlockCategory.CONTROL, BlockCategory.UTILITY
+                BlockCategory.OUTPUT,
+                BlockCategory.INPUT,
+                BlockCategory.VARIABLES,
+                BlockCategory.FLOW,
+                BlockCategory.LOOPS,
+                BlockCategory.CONTROL,
+                BlockCategory.FUNCTIONS,  // ADD THIS
+                BlockCategory.UTILITY
         };
 
         for (BlockCategory category : order) {
@@ -42,8 +51,8 @@ public class PaletteManager {
                 blockLabel.setMaxWidth(Double.MAX_VALUE);
                 blockLabel.getStyleClass().addAll("palette-item", "palette-" + category.name().toLowerCase());
 
-                // --- FIX: Force Black Text Color ---
-                blockLabel.setStyle("-fx-text-fill: black; -fx-font-weight: bold;");
+                // FORCE visible text color
+                blockLabel.setStyle("-fx-text-fill: white; -fx-font-weight: bold;");
 
                 dragAndDropManager.makeDraggable(blockLabel, blockType);
                 content.getChildren().add(blockLabel);

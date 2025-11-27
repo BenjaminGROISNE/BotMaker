@@ -17,6 +17,7 @@ import javafx.scene.layout.Priority;
 import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
 import org.eclipse.jdt.core.dom.MethodDeclaration;
+import org.eclipse.jdt.core.dom.Modifier;
 import org.eclipse.jdt.core.dom.SingleVariableDeclaration;
 
 import java.util.Collections;
@@ -207,16 +208,23 @@ public class MethodDeclarationBlock extends AbstractStatementBlock implements Bl
 
         nameField.setOnAction(e -> box.requestFocus()); // Commit on Enter
 
-        Button deleteBtn = new Button("×");
-        deleteBtn.setStyle("-fx-background-color: transparent; -fx-text-fill: #999; -fx-font-size: 12px; -fx-padding: 0; -fx-cursor: hand;");
-        deleteBtn.setOnAction(e -> {
-            context.codeEditor().deleteParameterFromMethod((MethodDeclaration) this.astNode, index);
-        });
-        // Hover effect for delete
-        deleteBtn.setOnMouseEntered(e -> deleteBtn.setStyle("-fx-background-color: transparent; -fx-text-fill: #E74C3C; -fx-font-size: 12px; -fx-padding: 0; -fx-cursor: hand;"));
-        deleteBtn.setOnMouseExited(e -> deleteBtn.setStyle("-fx-background-color: transparent; -fx-text-fill: #999; -fx-font-size: 12px; -fx-padding: 0; -fx-cursor: hand;"));
+        MethodDeclaration md = (MethodDeclaration) this.astNode;
+        boolean isMainMethod = "main".equals(md.getName().getIdentifier()) &&
+                Modifier.isStatic(md.getModifiers()) &&
+                Modifier.isPublic(md.getModifiers());
 
-        box.getChildren().addAll(typeLabel, nameField, deleteBtn);
+        if (!isMainMethod) {
+            Button deleteBtn = new Button("×");
+            deleteBtn.setStyle("-fx-background-color: transparent; -fx-text-fill: #E74C3C; -fx-font-size: 16px; -fx-padding: 0; -fx-cursor: hand;");
+            deleteBtn.setOnAction(e -> {
+                context.codeEditor().deleteMethod((MethodDeclaration) this.astNode);
+            });
+            deleteBtn.setOnMouseEntered(e -> deleteBtn.setStyle("-fx-background-color: #E74C3C; -fx-text-fill: white; -fx-font-size: 16px; -fx-padding: 2 6 2 6; -fx-cursor: hand; -fx-background-radius: 4;"));
+            deleteBtn.setOnMouseExited(e -> deleteBtn.setStyle("-fx-background-color: transparent; -fx-text-fill: #E74C3C; -fx-font-size: 16px; -fx-padding: 0; -fx-cursor: hand;"));
+
+            box.getChildren().add(deleteBtn);
+        }
+        box.getChildren().addAll(typeLabel, nameField);
         return box;
     }
 }

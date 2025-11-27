@@ -4,18 +4,16 @@ import com.botmaker.blocks.*;
 import com.botmaker.core.StatementBlock;
 
 public enum AddableBlock {
-    // --- OUTPUT ---
     PRINT("Print", PrintBlock.class, BlockCategory.OUTPUT),
 
     // --- FLOW CONTROL ---
     IF("If Statement", IfBlock.class, BlockCategory.FLOW),
+    SWITCH("Switch", SwitchBlock.class, BlockCategory.FLOW),
+
+    // --- LOOPS ---
     WHILE("While Loop", WhileBlock.class, BlockCategory.LOOPS),
     FOR("For Each Loop", ForBlock.class, BlockCategory.LOOPS),
     DO_WHILE("Do While", DoWhileBlock.class, BlockCategory.LOOPS),
-    SWITCH("Switch", SwitchBlock.class, BlockCategory.FLOW),
-    // REMOVED: CASE("Case", SwitchBlock.SwitchCaseBlock.class, BlockCategory.FLOW),
-
-    FUNCTION_CALL("Call Function", MethodInvocationBlock.class, BlockCategory.FLOW),
 
     // --- CONTROL COMMANDS ---
     BREAK("Break", BreakBlock.class, BlockCategory.CONTROL),
@@ -28,16 +26,17 @@ public enum AddableBlock {
     DECLARE_DOUBLE("Double Variable", VariableDeclarationBlock.class, BlockCategory.VARIABLES),
     DECLARE_BOOLEAN("Bool Variable", VariableDeclarationBlock.class, BlockCategory.VARIABLES),
     DECLARE_STRING("String Variable", VariableDeclarationBlock.class, BlockCategory.VARIABLES),
-
-    // Generic Array Declaration
     DECLARE_ARRAY("Create List", VariableDeclarationBlock.class, BlockCategory.VARIABLES),
-
     ASSIGNMENT("Set Variable", AssignmentBlock.class, BlockCategory.VARIABLES),
 
     // --- INPUT ---
     READ_LINE("Read Text", ReadInputBlock.class, BlockCategory.INPUT),
     READ_INT("Read Int", ReadInputBlock.class, BlockCategory.INPUT),
     READ_DOUBLE("Read Double", ReadInputBlock.class, BlockCategory.INPUT),
+
+    // --- FUNCTIONS ---
+    FUNCTION_CALL("Call Function", MethodInvocationBlock.class, BlockCategory.FUNCTIONS), // MOVED HERE
+    METHOD_DECLARATION("Declare Function", MethodDeclarationBlock.class, BlockCategory.FUNCTIONS),
 
     // --- UTILITY ---
     COMMENT("Comment", CommentBlock.class, BlockCategory.UTILITY);
@@ -64,6 +63,7 @@ public enum AddableBlock {
         FLOW("Logic"),
         LOOPS("Loops"),
         CONTROL("Control"),
+        FUNCTIONS("Functions"),
         UTILITY("Utility");
 
         private final String label;

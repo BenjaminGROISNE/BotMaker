@@ -1,5 +1,6 @@
 package com.botmaker.ui;
 
+import com.botmaker.blocks.ClassBlock;
 import com.botmaker.core.BodyBlock;
 import com.botmaker.core.StatementBlock;
 import javafx.scene.Node;
@@ -186,6 +187,77 @@ public class BlockDragAndDropManager {
                     success = true;
                 } else {
                     System.err.println("WARNING: onBlockMove callback not set yet!");
+                }
+            }
+
+            event.setDropCompleted(success);
+            event.consume();
+        });
+    }
+
+    // In BlockDragAndDropManager.java - add new method
+
+    public void addMethodDeclarationDropHandlers(
+            Region separator,
+            ClassBlock targetClass,
+            int insertionIndex) {
+
+        String defaultColor = "rgba(52, 73, 94, 0.1)";
+        String hoverColor = "#9b59b6"; // Purple for methods
+
+        separator.setOnDragEntered(event -> {
+            Dragboard db = event.getDragboard();
+            if (db.hasContent(ADDABLE_BLOCK_FORMAT)) {
+                String blockTypeName = (String) db.getContent(ADDABLE_BLOCK_FORMAT);
+                AddableBlock type = AddableBlock.valueOf(blockTypeName);
+
+                // Only accept METHOD_DECLARATION
+                if (type == AddableBlock.METHOD_DECLARATION) {
+                    separator.setStyle(
+                            "-fx-background-color: " + hoverColor + ";" +
+                                    "-fx-border-color: " + hoverColor + ";" +
+                                    "-fx-border-width: 2 0 2 0;"
+                    );
+                }
+            }
+            event.consume();
+        });
+
+        separator.setOnDragExited(event -> {
+            separator.setStyle(
+                    "-fx-background-color: " + defaultColor + ";" +
+                            "-fx-border-color: rgba(52, 73, 94, 0.3);" +
+                            "-fx-border-width: 1 0 1 0;" +
+                            "-fx-border-style: dashed;"
+            );
+            event.consume();
+        });
+
+        separator.setOnDragOver(event -> {
+            Dragboard db = event.getDragboard();
+            if (db.hasContent(ADDABLE_BLOCK_FORMAT)) {
+                String blockTypeName = (String) db.getContent(ADDABLE_BLOCK_FORMAT);
+                AddableBlock type = AddableBlock.valueOf(blockTypeName);
+
+                if (type == AddableBlock.METHOD_DECLARATION) {
+                    event.acceptTransferModes(TransferMode.COPY);
+                }
+            }
+            event.consume();
+        });
+
+        separator.setOnDragDropped(event -> {
+            Dragboard db = event.getDragboard();
+            boolean success = false;
+
+            if (db.hasContent(ADDABLE_BLOCK_FORMAT)) {
+                String blockTypeName = (String) db.getContent(ADDABLE_BLOCK_FORMAT);
+                AddableBlock type = AddableBlock.valueOf(blockTypeName);
+
+                if (type == AddableBlock.METHOD_DECLARATION && onDrop != null) {
+                    // Create special DropInfo for method declarations
+                    onDrop.accept(new DropInfo(type, null, insertionIndex, targetClass));
+                    success = true;
                 }
             }
 

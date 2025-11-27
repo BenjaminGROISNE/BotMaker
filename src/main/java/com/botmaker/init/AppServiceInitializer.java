@@ -1,10 +1,12 @@
 package com.botmaker.init;
 
+import com.botmaker.blocks.ClassBlock;
 import com.botmaker.core.BodyBlock;
 import com.botmaker.core.StatementBlock;
 import com.botmaker.di.DependencyContainer;
 import com.botmaker.services.*;
 import com.botmaker.state.ApplicationState;
+import com.botmaker.ui.AddableBlock;
 import com.botmaker.ui.BlockDragAndDropManager;
 import com.botmaker.ui.UIManager;
 import com.botmaker.util.BlockLookupHelper;
@@ -34,13 +36,25 @@ public class AppServiceInitializer {
                                                   CodeEditorService editorService,
                                                   ApplicationState state) {
         // Handle adding new blocks
-        manager.setCallback(dropInfo ->
+        manager.setCallback(dropInfo -> {
+            // ADDED: Check if this is a method declaration drop
+            if (dropInfo.type() == AddableBlock.METHOD_DECLARATION && dropInfo.targetClass() != null) {
+                // Add method to class
+                editorService.getCodeEditor().addMethodToClass(
+                        (org.eclipse.jdt.core.dom.TypeDeclaration) dropInfo.targetClass().getAstNode(),
+                        "newMethod",
+                        "void",
+                        dropInfo.insertionIndex()
+                );
+            } else if (dropInfo.targetBody() != null) {
+                // Regular statement drop
                 editorService.getCodeEditor().addStatement(
                         dropInfo.targetBody(),
                         dropInfo.type(),
                         dropInfo.insertionIndex()
-                )
-        );
+                );
+            }
+        });
 
         // Handle moving existing blocks
         manager.setMoveCallback(moveInfo -> {
