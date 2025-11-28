@@ -3,10 +3,10 @@ package com.botmaker.ui;
 import com.botmaker.events.CoreApplicationEvents;
 import com.botmaker.events.EventBus;
 import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.control.Button;
+import javafx.scene.control.Tooltip;
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.Priority;
-import javafx.scene.layout.Region;
 
 public class ToolbarManager {
 
@@ -38,31 +38,43 @@ public class ToolbarManager {
         }, true);
     }
 
-    public HBox createToolBar() {
-        undoButton = new Button("Undo");
+    /**
+     * Creates the Left-side group: Undo, Redo, Compile
+     */
+    public HBox createEditGroup() {
+        undoButton = new Button("↶");
+        undoButton.setTooltip(new Tooltip("Undo (Ctrl+Z)"));
         undoButton.setDisable(true);
         undoButton.setOnAction(e -> eventBus.publish(new CoreApplicationEvents.UndoRequestedEvent()));
 
-        redoButton = new Button("Redo");
+        redoButton = new Button("↷");
+        redoButton.setTooltip(new Tooltip("Redo (Ctrl+Y)"));
         redoButton.setDisable(true);
         redoButton.setOnAction(e -> eventBus.publish(new CoreApplicationEvents.RedoRequestedEvent()));
 
-        Region spacer1 = new Region();
-        HBox.setHgrow(spacer1, Priority.ALWAYS);
-
-        Button compileButton = new Button("Compile");
+        Button compileButton = new Button("⚙ Compile");
         compileButton.getStyleClass().add("toolbar-btn");
         compileButton.setOnAction(e -> eventBus.publish(new CoreApplicationEvents.CompilationRequestedEvent()));
 
-        runButton = new Button("Run ▶");
+        HBox group = new HBox(5, undoButton, redoButton, compileButton);
+        group.setAlignment(Pos.CENTER_LEFT);
+        group.setPadding(new Insets(0, 10, 0, 0));
+        return group;
+    }
+
+    /**
+     * Creates the Right-side group: Run, Debug, Stop, Step, Continue
+     */
+    public HBox createExecutionGroup() {
+        runButton = new Button("▶ Run");
         runButton.getStyleClass().addAll("toolbar-btn", "btn-run");
         runButton.setOnAction(e -> eventBus.publish(new CoreApplicationEvents.ExecutionRequestedEvent()));
 
-        debugButton = new Button("Debug 🐞");
+        debugButton = new Button("🐞 Debug");
         debugButton.getStyleClass().addAll("toolbar-btn", "btn-debug");
         debugButton.setOnAction(e -> eventBus.publish(new CoreApplicationEvents.DebugStartRequestedEvent()));
 
-        unifiedStopButton = new Button("Stop ⏹");
+        unifiedStopButton = new Button("⏹ Stop");
         unifiedStopButton.getStyleClass().addAll("toolbar-btn", "btn-stop");
         unifiedStopButton.setDisable(true);
         unifiedStopButton.setOnAction(e -> {
@@ -70,21 +82,17 @@ public class ToolbarManager {
             else if (currentAppState == AppState.DEBUGGING) eventBus.publish(new CoreApplicationEvents.DebugStopRequestedEvent());
         });
 
-        Region spacer2 = new Region();
-        HBox.setHgrow(spacer2, Priority.ALWAYS);
-
-        stepOverButton = new Button("Step ⤵");
+        stepOverButton = new Button("⤵ Step");
         stepOverButton.setDisable(true);
         stepOverButton.setOnAction(e -> eventBus.publish(new CoreApplicationEvents.DebugStepOverRequestedEvent()));
 
-        continueButton = new Button("Continue ⏩");
+        continueButton = new Button("⏩ Cont");
         continueButton.setDisable(true);
         continueButton.setOnAction(e -> eventBus.publish(new CoreApplicationEvents.DebugContinueRequestedEvent()));
 
-        HBox toolbar = new HBox(10, undoButton, redoButton, spacer1, compileButton, runButton, debugButton, unifiedStopButton, spacer2, stepOverButton, continueButton);
-        toolbar.setPadding(new Insets(10));
-        toolbar.getStyleClass().add("main-toolbar");
-        return toolbar;
+        HBox group = new HBox(5, runButton, debugButton, unifiedStopButton, stepOverButton, continueButton);
+        group.setAlignment(Pos.CENTER_RIGHT);
+        return group;
     }
 
     private void setAppState(AppState state) {
@@ -99,15 +107,12 @@ public class ToolbarManager {
         unifiedStopButton.setDisable(!isBusy);
 
         if (currentAppState == AppState.DEBUGGING) {
-            unifiedStopButton.setText("Stop Debugging ⏹");
             unifiedStopButton.setStyle("-fx-background-color: #E74C3C; -fx-text-fill: white;");
         } else if (currentAppState == AppState.RUNNING) {
-            unifiedStopButton.setText("Stop Run ⏹");
             unifiedStopButton.setStyle("-fx-background-color: #E74C3C; -fx-text-fill: white;");
             stepOverButton.setDisable(true);
             continueButton.setDisable(true);
         } else {
-            unifiedStopButton.setText("Stop ⏹");
             unifiedStopButton.setStyle("");
             stepOverButton.setDisable(true);
             continueButton.setDisable(true);

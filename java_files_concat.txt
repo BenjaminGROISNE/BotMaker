@@ -8,6 +8,7 @@ import com.botmaker.config.ApplicationConfig;
 import com.botmaker.di.DependencyContainer;
 import com.botmaker.init.AppDependencyConfigurator;
 import com.botmaker.init.AppServiceInitializer;
+import com.botmaker.project.LibraryManager;
 import com.botmaker.project.ProjectConfig;
 import com.botmaker.services.CodeEditorService;
 import com.botmaker.services.LanguageServerService;
@@ -19,6 +20,7 @@ import javafx.scene.control.Alert;
 import javafx.stage.Stage;
 
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.nio.file.Paths;
 
 public class Main extends Application {
@@ -52,6 +54,15 @@ public class Main extends Application {
 
     private void openProject(Stage primaryStage, String projectName, boolean clearCache) {
         try {
+            // 0. Verify Library Integrity
+            Path projectPath = Paths.get("projects", projectName);
+            LibraryManager libManager = new LibraryManager();
+            boolean repaired = libManager.verifyAndRepair(projectPath);
+
+            if (repaired) {
+                System.out.println("Project libraries were repaired/updated.");
+            }
+
             ProjectConfig.updateLastOpened(projectName);
             ApplicationConfig config = ApplicationConfig.forProject(projectName);
 
@@ -489,6 +500,163 @@ public class BreakBlock extends AbstractStatementBlock {
         HBox container = createStandardHeader(context, createKeywordLabel("break"));
         container.getStyleClass().add("break-block");
         return container;
+    }
+}
+
+
+=================================================================================
+FILE: ers\bgroi\Documents\dev\IntellijProjects\BotMaker\src\main\java\com\botmaker\blocks\ClassBlock.java
+=================================================================================
+
+package com.botmaker.blocks;
+
+import com.botmaker.core.AbstractCodeBlock;
+import com.botmaker.core.BlockWithChildren;
+import com.botmaker.core.CodeBlock;
+import com.botmaker.lsp.CompletionContext;
+import com.botmaker.ui.BlockDragAndDropManager;
+import javafx.geometry.Insets;
+import javafx.scene.Node;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.layout.Region;
+import javafx.scene.layout.VBox;
+import org.eclipse.jdt.core.dom.TypeDeclaration;
+
+import java.util.ArrayList;
+import java.util.List;
+
+public class ClassBlock extends AbstractCodeBlock implements BlockWithChildren {
+
+    private final String className;
+    private final List<MethodDeclarationBlock> methods = new ArrayList<>();
+    private final BlockDragAndDropManager dragAndDropManager;
+
+    public ClassBlock(String id, TypeDeclaration astNode, BlockDragAndDropManager manager) {
+        super(id, astNode);
+        this.className = astNode.getName().getIdentifier();
+        this.dragAndDropManager = manager;
+    }
+
+    public void addMethod(MethodDeclarationBlock method) {
+        methods.add(method);
+    }
+
+    public List<MethodDeclarationBlock> getMethods() {
+        return new ArrayList<>(methods);
+    }
+
+    @Override
+    public List<CodeBlock> getChildren() {
+        return new ArrayList<>(methods);
+    }
+
+    @Override
+    protected Node createUINode(CompletionContext context) {
+        VBox container = new VBox(10);
+        container.getStyleClass().add("class-block");
+        container.setPadding(new Insets(15));
+
+        // Better styling with visible borders
+        container.setStyle(
+                "-fx-background-color: linear-gradient(to bottom, #ecf0f1 0%, #bdc3c7 100%);" +
+                        "-fx-border-color: #34495e;" +
+                        "-fx-border-width: 3px;" +
+                        "-fx-border-radius: 10px;" +
+                        "-fx-background-radius: 10px;"
+        );
+
+        // Header with better contrast
+        Label header = new Label("Class: " + className);
+        header.setStyle(
+                "-fx-font-size: 20px;" +
+                        "-fx-font-weight: bold;" +
+                        "-fx-text-fill: #2c3e50;" +
+                        "-fx-padding: 0 0 15 0;" +
+                        "-fx-border-width: 0 0 2 0;" +
+                        "-fx-border-color: #34495e;"
+        );
+        container.getChildren().add(header);
+
+        // Top separator with drag-and-drop
+        Region topSeparator = createMethodSeparator(context, 0);
+        container.getChildren().add(topSeparator);
+
+        // Methods with separators between them
+        for (int i = 0; i < methods.size(); i++) {
+            MethodDeclarationBlock method = methods.get(i);
+            container.getChildren().add(method.getUINode(context));
+
+            // Separator after each method
+            final int insertIndex = i + 1;
+            Region separator = createMethodSeparator(context, insertIndex);
+            container.getChildren().add(separator);
+        }
+
+        return container;
+    }
+
+    private Region createMethodSeparator(CompletionContext context, int insertIndex) {
+        Region separator = new Region();
+        separator.setMinHeight(30); // Increased for better visibility
+        separator.setMaxHeight(30);
+        separator.getStyleClass().add("method-separator");
+
+        // Visible styling
+        separator.setStyle(
+                "-fx-background-color: rgba(52, 73, 94, 0.15);" +
+                        "-fx-border-color: rgba(52, 73, 94, 0.4);" +
+                        "-fx-border-width: 2px 0 2px 0;" +
+                        "-fx-border-style: dashed;" +
+                        "-fx-cursor: hand;"
+        );
+
+        // Add drag-and-drop handlers
+        context.dragAndDropManager().addMethodDeclarationDropHandlers(
+                separator,
+                this,
+                insertIndex
+        );
+
+        // Visual feedback on hover
+        separator.setOnMouseEntered(e -> {
+            separator.setStyle(
+                    "-fx-background-color: rgba(142, 68, 173, 0.3);" +
+                            "-fx-border-color: #8E44AD;" +
+                            "-fx-border-width: 3px 0 3px 0;" +
+                            "-fx-border-style: solid;" +
+                            "-fx-cursor: hand;"
+            );
+        });
+
+        separator.setOnMouseExited(e -> {
+            separator.setStyle(
+                    "-fx-background-color: rgba(52, 73, 94, 0.15);" +
+                            "-fx-border-color: rgba(52, 73, 94, 0.4);" +
+                            "-fx-border-width: 2px 0 2px 0;" +
+                            "-fx-border-style: dashed;" +
+                            "-fx-cursor: hand;"
+            );
+        });
+
+        // FIXED: Add click handler for quick method addition
+        separator.setOnMouseClicked(e -> {
+            if (e.getClickCount() == 2) { // Double-click to add method
+                addNewMethod(context, insertIndex);
+            }
+        });
+
+        return separator;
+    }
+
+    private void addNewMethod(CompletionContext context, int index) {
+        System.out.println("DEBUG: Adding method at index " + index); // DEBUG
+        context.codeEditor().addMethodToClass(
+                (TypeDeclaration) this.astNode,
+                "newMethod",
+                "void",
+                index
+        );
     }
 }
 
@@ -1772,57 +1940,45 @@ FILE: ers\bgroi\Documents\dev\IntellijProjects\BotMaker\src\main\java\com\botmak
 
 package com.botmaker.blocks;
 
-import com.botmaker.core.AbstractCodeBlock;
-import com.botmaker.core.BlockWithChildren;
-import com.botmaker.core.BodyBlock;
-import com.botmaker.core.CodeBlock;
 import com.botmaker.lsp.CompletionContext;
-
-import javafx.geometry.Insets;
+import com.botmaker.ui.BlockDragAndDropManager;
 import javafx.scene.Node;
 import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
-import org.eclipse.jdt.core.dom.ASTNode;
+import org.eclipse.jdt.core.dom.MethodDeclaration;
 
-import java.util.ArrayList;
-import java.util.List;
+/**
+ * MainBlock is just a MethodDeclarationBlock that detects if it's the "main" method
+ * and adjusts its UI styling accordingly.
+ */
+public class MainBlock extends MethodDeclarationBlock {
 
-public class MainBlock extends AbstractCodeBlock implements BlockWithChildren {
+    private final boolean isMainMethod;
 
-    private BodyBlock mainBody;
-
-    public MainBlock(String id, ASTNode astNode) {
-        super(id, astNode);
-    }
-
-    public void setMainBody(BodyBlock mainBody) {
-        this.mainBody = mainBody;
-    }
-
-    @Override
-    public List<CodeBlock> getChildren() {
-        List<CodeBlock> children = new ArrayList<>();
-        if (mainBody != null) {
-            children.add(mainBody);
-        }
-        return children;
+    public MainBlock(String id, MethodDeclaration astNode, BlockDragAndDropManager manager) {
+        super(id, astNode, manager);
+        this.isMainMethod = "main".equals(astNode.getName().getIdentifier()) &&
+                org.eclipse.jdt.core.dom.Modifier.isStatic(astNode.getModifiers());
     }
 
     @Override
     protected Node createUINode(CompletionContext context) {
-        VBox container = new VBox(5);
-        container.getStyleClass().add("main-block");
-        container.setPadding(new Insets(10));
+        Node standardUI = super.createUINode(context);
 
-        Label header = new Label("Main");
-        header.getStyleClass().add("main-block-header");
-        container.getChildren().add(header);
+        if (isMainMethod) {
+            // Apply special styling for main method
+            VBox wrapper = new VBox(standardUI);
+            wrapper.getStyleClass().add("main-method-highlight");
+            wrapper.setStyle("-fx-background-color: #e8f4f8; -fx-border-color: #3498db; -fx-border-width: 2; -fx-border-radius: 8; -fx-padding: 5;");
 
-        if (mainBody != null) {
-            container.getChildren().add(mainBody.getUINode(context));
+            Label mainBadge = new Label("⭐ Program Entry Point");
+            mainBadge.setStyle("-fx-font-size: 10px; -fx-text-fill: #3498db; -fx-font-weight: bold;");
+            wrapper.getChildren().add(0, mainBadge);
+
+            return wrapper;
         }
 
-        return container;
+        return standardUI;
     }
 }
 
@@ -1850,6 +2006,7 @@ import javafx.scene.layout.Priority;
 import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
 import org.eclipse.jdt.core.dom.MethodDeclaration;
+import org.eclipse.jdt.core.dom.Modifier;
 import org.eclipse.jdt.core.dom.SingleVariableDeclaration;
 
 import java.util.Collections;
@@ -1913,6 +2070,8 @@ public class MethodDeclarationBlock extends AbstractStatementBlock implements Bl
         Label returnsLabel = new Label("returns");
         returnsLabel.setStyle("-fx-text-fill: rgba(255,255,255,0.7); -fx-font-style: italic; -fx-font-size: 11px;");
 
+
+
         ComboBox<String> typeSelector = new ComboBox<>();
         typeSelector.getItems().add("void");
         typeSelector.getItems().addAll(TypeManager.getFundamentalTypeNames());
@@ -1938,7 +2097,16 @@ public class MethodDeclarationBlock extends AbstractStatementBlock implements Bl
             }
         });
 
-        topRow.getChildren().addAll(funcLabel, nameLabel, spacer, returnsLabel, typeSelector);
+        Button deleteBtn = new Button("×");
+        deleteBtn.setStyle("-fx-background-color: transparent; -fx-text-fill: #E74C3C; -fx-font-size: 16px; -fx-padding: 0; -fx-cursor: hand;");
+        deleteBtn.setOnAction(e -> {
+            context.codeEditor().deleteMethod((MethodDeclaration) this.astNode);
+        });
+        deleteBtn.setOnMouseEntered(e -> deleteBtn.setStyle("-fx-background-color: #E74C3C; -fx-text-fill: white; -fx-font-size: 16px; -fx-padding: 2 6 2 6; -fx-cursor: hand; -fx-background-radius: 4;"));
+        deleteBtn.setOnMouseExited(e -> deleteBtn.setStyle("-fx-background-color: transparent; -fx-text-fill: #E74C3C; -fx-font-size: 16px; -fx-padding: 0; -fx-cursor: hand;"));
+
+
+        topRow.getChildren().addAll(funcLabel, nameLabel, spacer, returnsLabel, typeSelector, deleteBtn);
 
         // Row 2: Parameters
         HBox paramRow = new HBox(6);
@@ -2029,16 +2197,23 @@ public class MethodDeclarationBlock extends AbstractStatementBlock implements Bl
 
         nameField.setOnAction(e -> box.requestFocus()); // Commit on Enter
 
-        Button deleteBtn = new Button("×");
-        deleteBtn.setStyle("-fx-background-color: transparent; -fx-text-fill: #999; -fx-font-size: 12px; -fx-padding: 0; -fx-cursor: hand;");
-        deleteBtn.setOnAction(e -> {
-            context.codeEditor().deleteParameterFromMethod((MethodDeclaration) this.astNode, index);
-        });
-        // Hover effect for delete
-        deleteBtn.setOnMouseEntered(e -> deleteBtn.setStyle("-fx-background-color: transparent; -fx-text-fill: #E74C3C; -fx-font-size: 12px; -fx-padding: 0; -fx-cursor: hand;"));
-        deleteBtn.setOnMouseExited(e -> deleteBtn.setStyle("-fx-background-color: transparent; -fx-text-fill: #999; -fx-font-size: 12px; -fx-padding: 0; -fx-cursor: hand;"));
+        MethodDeclaration md = (MethodDeclaration) this.astNode;
+        boolean isMainMethod = "main".equals(md.getName().getIdentifier()) &&
+                Modifier.isStatic(md.getModifiers()) &&
+                Modifier.isPublic(md.getModifiers());
 
-        box.getChildren().addAll(typeLabel, nameField, deleteBtn);
+        if (!isMainMethod) {
+            Button deleteBtn = new Button("×");
+            deleteBtn.setStyle("-fx-background-color: transparent; -fx-text-fill: #E74C3C; -fx-font-size: 16px; -fx-padding: 0; -fx-cursor: hand;");
+            deleteBtn.setOnAction(e -> {
+                context.codeEditor().deleteMethod((MethodDeclaration) this.astNode);
+            });
+            deleteBtn.setOnMouseEntered(e -> deleteBtn.setStyle("-fx-background-color: #E74C3C; -fx-text-fill: white; -fx-font-size: 16px; -fx-padding: 2 6 2 6; -fx-cursor: hand; -fx-background-radius: 4;"));
+            deleteBtn.setOnMouseExited(e -> deleteBtn.setStyle("-fx-background-color: transparent; -fx-text-fill: #E74C3C; -fx-font-size: 16px; -fx-padding: 0; -fx-cursor: hand;"));
+
+            box.getChildren().add(deleteBtn);
+        }
+        box.getChildren().addAll(typeLabel, nameField);
         return box;
     }
 }
@@ -3959,6 +4134,9 @@ package com.botmaker.events;
 import com.botmaker.core.AbstractCodeBlock;
 import com.botmaker.core.CodeBlock;
 import org.eclipse.lsp4j.Diagnostic;
+
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
@@ -3997,6 +4175,19 @@ public class CoreApplicationEvents {
         public CodeBlock getBlock() { return block; }
     }
 
+
+
+    public static class UIBlocksUpdatedEvent extends AbstractApplicationEvent {
+        private final AbstractCodeBlock rootBlock;
+
+        public UIBlocksUpdatedEvent(AbstractCodeBlock rootBlock) {
+            super("CodeEditorService");
+            this.rootBlock = rootBlock;
+        }
+
+        public AbstractCodeBlock getRootBlock() { return rootBlock; }
+    }
+
     public static class CompilationRequestedEvent extends AbstractApplicationEvent {}
     public static class ExecutionRequestedEvent extends AbstractApplicationEvent {}
     public static class DebugStartRequestedEvent extends AbstractApplicationEvent {}
@@ -4023,17 +4214,7 @@ public class CoreApplicationEvents {
     }
 
     // Inside CoreApplicationEvents class
-    public static class UIBlocksUpdatedEvent extends AbstractApplicationEvent {
-        // CHANGED: From MainBlock to com.botmaker.core.AbstractCodeBlock
-        private final AbstractCodeBlock rootBlock;
 
-        public UIBlocksUpdatedEvent(AbstractCodeBlock rootBlock) {
-            super("CodeEditorService");
-            this.rootBlock = rootBlock;
-        }
-
-        public AbstractCodeBlock getRootBlock() { return rootBlock; }
-    }
 
     public static class OutputAppendedEvent extends AbstractApplicationEvent {
         private final String text;
@@ -4426,11 +4607,13 @@ FILE: ers\bgroi\Documents\dev\IntellijProjects\BotMaker\src\main\java\com\botmak
 
 package com.botmaker.init;
 
+import com.botmaker.blocks.ClassBlock;
 import com.botmaker.core.BodyBlock;
 import com.botmaker.core.StatementBlock;
 import com.botmaker.di.DependencyContainer;
 import com.botmaker.services.*;
 import com.botmaker.state.ApplicationState;
+import com.botmaker.ui.AddableBlock;
 import com.botmaker.ui.BlockDragAndDropManager;
 import com.botmaker.ui.UIManager;
 import com.botmaker.util.BlockLookupHelper;
@@ -4460,13 +4643,25 @@ public class AppServiceInitializer {
                                                   CodeEditorService editorService,
                                                   ApplicationState state) {
         // Handle adding new blocks
-        manager.setCallback(dropInfo ->
+        manager.setCallback(dropInfo -> {
+            // ADDED: Check if this is a method declaration drop
+            if (dropInfo.type() == AddableBlock.METHOD_DECLARATION && dropInfo.targetClass() != null) {
+                // Add method to class
+                editorService.getCodeEditor().addMethodToClass(
+                        (org.eclipse.jdt.core.dom.TypeDeclaration) dropInfo.targetClass().getAstNode(),
+                        "newMethod",
+                        "void",
+                        dropInfo.insertionIndex()
+                );
+            } else if (dropInfo.targetBody() != null) {
+                // Regular statement drop
                 editorService.getCodeEditor().addStatement(
                         dropInfo.targetBody(),
                         dropInfo.type(),
                         dropInfo.insertionIndex()
-                )
-        );
+                );
+            }
+        });
 
         // Handle moving existing blocks
         manager.setMoveCallback(moveInfo -> {
@@ -6912,6 +7107,8 @@ public class AstRewriter {
         return applyRewrite(rewriter, originalCode);
     }
 
+
+
     public String addStatement(CompilationUnit cu, String originalCode, BodyBlock targetBody, AddableBlock type, int index) {
         AST ast = cu.getAST();
         ASTRewrite rewriter = ASTRewrite.create(ast);
@@ -6963,7 +7160,45 @@ public class AstRewriter {
         return applyRewrite(rewriter, originalCode);
     }
 
-    // ... [Existing methods: updateComment, deleteComment, etc.] ...
+    // In AstRewriter.java
+
+    public String addMethodToClass(CompilationUnit cu, String originalCode, TypeDeclaration typeDecl,
+                                   String methodName, String returnType, int index) {
+        AST ast = cu.getAST();
+        ASTRewrite rewriter = ASTRewrite.create(ast);
+
+        // Create new method
+        MethodDeclaration newMethod = ast.newMethodDeclaration();
+        newMethod.setName(ast.newSimpleName(methodName));
+
+        // Set modifiers: public static
+        newMethod.modifiers().add(ast.newModifier(Modifier.ModifierKeyword.PUBLIC_KEYWORD));
+        newMethod.modifiers().add(ast.newModifier(Modifier.ModifierKeyword.STATIC_KEYWORD));
+
+        // Set return type
+        if ("void".equals(returnType)) {
+            newMethod.setReturnType2(ast.newPrimitiveType(PrimitiveType.VOID));
+        } else {
+            newMethod.setReturnType2(TypeManager.createTypeNode(ast, returnType));
+        }
+
+        // Create empty body
+        Block body = ast.newBlock();
+        newMethod.setBody(body);
+
+        // Insert into class
+        ListRewrite listRewrite = rewriter.getListRewrite(typeDecl, TypeDeclaration.BODY_DECLARATIONS_PROPERTY);
+        listRewrite.insertAt(newMethod, index, null);
+
+        return applyRewrite(rewriter, originalCode);
+    }
+
+    public String deleteMethodFromClass(CompilationUnit cu, String originalCode, MethodDeclaration method) {
+        ASTRewrite rewriter = ASTRewrite.create(cu.getAST());
+        rewriter.remove(method, null);
+        return applyRewrite(rewriter, originalCode);
+    }
+
     public String updateComment(String originalCode, Comment commentNode, String newText) {
         try {
             IDocument document = new Document(originalCode);
@@ -7369,7 +7604,7 @@ public class BlockFactory {
     private boolean markNewIdentifiersAsUnedited = false;
     private BlockParser blockParser;
 
-    // CHANGED: Return type is AbstractCodeBlock (parent of MainBlock and LibraryBlock)
+
     public AbstractCodeBlock convert(String javaCode, Map<ASTNode, CodeBlock> nodeToBlockMap, BlockDragAndDropManager manager) {
         this.currentSourceCode = javaCode;
         this.blockParser = new BlockParser(this, manager, markNewIdentifiersAsUnedited);
@@ -7379,7 +7614,7 @@ public class BlockFactory {
             parser.setSource(javaCode.toCharArray());
             parser.setKind(ASTParser.K_COMPILATION_UNIT);
             parser.setResolveBindings(true);
-            parser.setUnitName("Unit.java"); // Name doesn't matter for parsing structure
+            parser.setUnitName("Unit.java");
             parser.setEnvironment(null, null, null, true);
             this.ast = (CompilationUnit) parser.createAST(null);
 
@@ -7392,39 +7627,56 @@ public class BlockFactory {
 
             TypeDeclaration typeDecl = (TypeDeclaration) ast.types().get(0);
 
-            // Check for Main Method
-            MethodDeclaration mainMethod = findMainMethod(typeDecl);
+            // Create ClassBlock for the top-level class
+            ClassBlock classBlock = new ClassBlock(
+                    BlockIdPrefix.generate(BlockIdPrefix.CLASS, typeDecl),
+                    typeDecl,
+                    manager
+            );
+            nodeToBlockMap.put(typeDecl, classBlock);
 
-            if (mainMethod != null) {
-                // It's a Main File
-                MainBlock mainBlock = new MainBlock(BlockIdPrefix.generate(BlockIdPrefix.MAIN, mainMethod), mainMethod);
-                nodeToBlockMap.put(mainMethod, mainBlock);
-                if (mainMethod.getBody() != null) {
-                    BodyBlock bodyBlock = parseBodyBlock(mainMethod.getBody(), nodeToBlockMap, manager);
-                    mainBlock.setMainBody(bodyBlock);
+            // Parse all methods
+            for (MethodDeclaration method : typeDecl.getMethods()) {
+                MethodDeclarationBlock methodBlock;
+
+                // Check if this is the main method
+                if (isMainMethod(method)) {
+                    methodBlock = new MainBlock(
+                            BlockIdPrefix.generate(BlockIdPrefix.METHOD, method),
+                            method,
+                            manager
+                    );
+                } else {
+                    methodBlock = new MethodDeclarationBlock(
+                            BlockIdPrefix.generate(BlockIdPrefix.METHOD, method),
+                            method,
+                            manager
+                    );
                 }
-                return mainBlock;
-            } else {
-                // It's a Library File (Standard Class)
-                LibraryBlock libBlock = new LibraryBlock(BlockIdPrefix.generate("lib_", typeDecl), typeDecl);
-                nodeToBlockMap.put(typeDecl, libBlock);
 
-                for (MethodDeclaration method : typeDecl.getMethods()) {
-                    MethodDeclarationBlock methodBlock = new MethodDeclarationBlock(
-                            BlockIdPrefix.generate("func_", method), method, manager);
-                    nodeToBlockMap.put(method, methodBlock);
+                nodeToBlockMap.put(method, methodBlock);
 
-                    if (method.getBody() != null) {
-                        methodBlock.setBody(parseBodyBlock(method.getBody(), nodeToBlockMap, manager));
-                    }
-                    libBlock.addMethod(methodBlock);
+                // Parse method body
+                if (method.getBody() != null) {
+                    methodBlock.setBody(parseBodyBlock(method.getBody(), nodeToBlockMap, manager));
                 }
-                return libBlock;
+
+                classBlock.addMethod(methodBlock);
             }
+
+            return classBlock;
 
         } finally {
             setMarkNewIdentifiersAsUnedited(false);
         }
+    }
+
+    private boolean isMainMethod(MethodDeclaration method) {
+        if (!"main".equals(method.getName().getIdentifier())) return false;
+        if (!Modifier.isStatic(method.getModifiers())) return false;
+        if (!Modifier.isPublic(method.getModifiers())) return false;
+        if (method.parameters().size() != 1) return false;
+        return true;
     }
 
     private MethodDeclaration findMainMethod(TypeDeclaration type) {
@@ -7558,7 +7810,9 @@ public class BlockIdPrefix {
     public static final String COMMENT = "comment_";
     public static final String WAIT = "wait_";
     public static final String LIST = "list_";
-
+    // In BlockIdPrefix.java
+    public static final String CLASS = "class_";
+    public static final String METHOD = "method_";
     private BlockIdPrefix() {} // Prevent instantiation
 
     /**
@@ -7928,6 +8182,30 @@ public class CodeEditor {
         triggerUpdate(newCode);
     }
 
+    // In CodeEditor.java
+
+    public void addMethodToClass(TypeDeclaration typeDecl, String methodName, String returnType, int index) {
+        blockFactory.setMarkNewIdentifiersAsUnedited(true);
+        String newCode = astRewriter.addMethodToClass(
+                getCompilationUnit(),
+                getCurrentCode(),
+                typeDecl,
+                methodName,
+                returnType,
+                index
+        );
+        triggerUpdate(newCode);
+    }
+
+    public void deleteMethod(MethodDeclaration method) {
+        String newCode = astRewriter.deleteMethodFromClass(
+                getCompilationUnit(),
+                getCurrentCode(),
+                method
+        );
+        triggerUpdate(newCode);
+    }
+
     public void addStringArgumentToMethodInvocation(MethodInvocation mi, String text) {
         CompilationUnit cu = getCompilationUnit();
         if (cu == null) return;
@@ -8192,7 +8470,7 @@ import static com.botmaker.util.TypeManager.toWrapperType;
 
 public class NodeCreator {
 
-    // ... [createDefaultExpression remains unchanged] ...
+
     public Expression createDefaultExpression(AST ast, AddableExpression type, CompilationUnit cu, ASTRewrite rewriter) {
         switch (type) {
             case TEXT:
@@ -8296,6 +8574,11 @@ public class NodeCreator {
                 doStatement.setExpression(ast.newBooleanLiteral(true));
                 doStatement.setBody(ast.newBlock());
                 return doStatement;
+
+            case FUNCTION_CALL:
+                MethodInvocation methodCall = ast.newMethodInvocation();
+                methodCall.setName(ast.newSimpleName("selectMethod"));
+                return ast.newExpressionStatement(methodCall);
 
             case BREAK: return ast.newBreakStatement();
             case CONTINUE: return ast.newContinueStatement();
@@ -8457,6 +8740,156 @@ public class NodeCreator {
             return arrayListType.substring(start, end);
         }
         return "Object";
+    }
+}
+
+
+=================================================================================
+FILE: ers\bgroi\Documents\dev\IntellijProjects\BotMaker\src\main\java\com\botmaker\project\LibraryManager.java
+=================================================================================
+
+package com.botmaker.project;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.URL;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.HashMap;
+import java.util.Map;
+
+public class LibraryManager {
+
+    // Map of Relative Path -> Source Code Content
+    private static final Map<String, String> LIBRARY_FILES = new HashMap<>();
+
+    // Load the library definition
+    static {
+        // 1. CAPTURE
+        loadSource("capture/Clicker.java");
+        loadSource("capture/GDI32.java");
+        loadSource("capture/ImageDisplay.java");
+        loadSource("capture/ScreenCapture.java");
+        loadSource("capture/User32.java");
+        loadSource("capture/WindowFinder.java");
+        loadSource("capture/WindowInfo.java");
+
+        // 2. EMULATOR
+        loadSource("emulator/AdbHelper.java");
+        loadSource("emulator/BlueStacksConfig.java");
+        loadSource("emulator/BlueStacksEmulator.java");
+        loadSource("emulator/BlueStacksInstance.java");
+        loadSource("emulator/BlueStacksInstanceManager.java");
+        loadSource("emulator/Emulator.java");
+
+        // 3. INSPECTOR
+        loadSource("inspector/RegistryInspector.java");
+
+        // 4. INTERACTION
+        loadSource("interaction/GameInteractor.java");
+        loadSource("interaction/GameType.java");
+
+        // 5. OPENCV
+        loadSource("opencv/MatchResult.java");
+        loadSource("opencv/MatType.java");
+        loadSource("opencv/OpencvManager.java");
+        loadSource("opencv/Template.java");
+
+        // 6. LIBRARY ROOT
+        loadSource("Main.java"); // The library Main class if needed
+    }
+
+    /**
+     * Loads source code into memory.
+     * Priority 1: Read from current IntelliJ Project (Dev Mode)
+     * Priority 2: Read from JAR Resources (Production Mode)
+     */
+    private static void loadSource(String relativePath) {
+        String content = null;
+        try {
+            // DEV MODE: Try reading directly from your source folder
+            // This assumes BotMaker is running from within the project root
+            Path devPath = Paths.get("src/main/java/com/botmaker/library", relativePath);
+            if (Files.exists(devPath)) {
+                content = Files.readString(devPath);
+            } else {
+                // PROD MODE: Read from classpath resources
+                // You must ensure your build process copies these java files to src/main/resources/library_src/
+                String resourcePath = "/library_src/" + relativePath;
+                InputStream stream = LibraryManager.class.getResourceAsStream(resourcePath);
+                if (stream != null) {
+                    content = new String(stream.readAllBytes(), StandardCharsets.UTF_8);
+                }
+            }
+
+            if (content != null) {
+                // Correct the package declaration if necessary, though usually it stays com.botmaker.library...
+                LIBRARY_FILES.put(relativePath, content);
+            } else {
+                System.err.println("LibraryManager: Could not find source for " + relativePath);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * Installs the library source code into the user's project.
+     */
+    public void installLibrary(Path projectPath) {
+        try {
+            Path libRoot = projectPath.resolve("src/main/java/com/botmaker/library");
+
+            for (Map.Entry<String, String> entry : LIBRARY_FILES.entrySet()) {
+                Path targetFile = libRoot.resolve(entry.getKey());
+                Files.createDirectories(targetFile.getParent());
+
+                // Only write if different to preserve file modification times if possible
+                if (!Files.exists(targetFile) || !Files.readString(targetFile).equals(entry.getValue())) {
+                    Files.writeString(targetFile, entry.getValue());
+                }
+            }
+        } catch (IOException e) {
+            System.err.println("Failed to install library: " + e.getMessage());
+        }
+    }
+
+    /**
+     * Checks if user modified library files and repairs them.
+     * Returns true if repairs were made.
+     */
+    public boolean verifyAndRepair(Path projectPath) {
+        Path libRoot = projectPath.resolve("src/main/java/com/botmaker/library");
+        boolean repaired = false;
+
+        try {
+            for (Map.Entry<String, String> entry : LIBRARY_FILES.entrySet()) {
+                Path targetFile = libRoot.resolve(entry.getKey());
+                String expected = entry.getValue();
+
+                if (!Files.exists(targetFile)) {
+                    System.out.println("Restoring missing library file: " + entry.getKey());
+                    Files.createDirectories(targetFile.getParent());
+                    Files.writeString(targetFile, expected);
+                    repaired = true;
+                } else {
+                    // Simple string comparison.
+                    // In production, you might ignore whitespace or use a hash.
+                    String current = Files.readString(targetFile);
+                    // Normalize line endings
+                    if (!current.replace("\r\n", "\n").trim().equals(expected.replace("\r\n", "\n").trim())) {
+                        System.out.println("Repairing modified library file: " + entry.getKey());
+                        Files.writeString(targetFile, expected);
+                        repaired = true;
+                    }
+                }
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return repaired;
     }
 }
 
@@ -8637,6 +9070,7 @@ public class ProjectCreator {
 
     private static final Path PROJECTS_ROOT = Paths.get("projects");
 
+    private final LibraryManager libraryManager = new LibraryManager();
     /**
      * Creates a new Gradle project with standard structure
      *
@@ -8717,6 +9151,12 @@ public class ProjectCreator {
 
         // Create main Java file
         createMainJavaFile(srcPath, projectName, packageName);
+
+        // 2. Install Native Library
+        libraryManager.installLibrary(projectPath);
+
+        // 3. Create main Java file
+        createMainJavaFile(srcPath, projectName, packageName);
     }
 
     /**
@@ -8724,7 +9164,7 @@ public class ProjectCreator {
      */
     private void createBuildGradle(Path projectPath, String projectName) throws IOException {
         String packageName = projectName.toLowerCase();
-        String content = String.format("""
+                String content = String.format("""
             plugins {
                 id 'java'
                 id 'application'
@@ -8735,6 +9175,23 @@ public class ProjectCreator {
             
             repositories {
                 mavenCentral()
+                google() // For Android ddmlib
+            }
+            
+            dependencies {
+                // JNA for Windows Interaction
+                implementation 'net.java.dev.jna:jna:5.13.0'
+                implementation 'net.java.dev.jna:jna-platform:5.13.0'
+            
+                // OpenCV
+                implementation 'org.bytedeco:opencv-platform:4.7.0-1.5.9'
+            
+                // JSON processing
+                implementation 'com.fasterxml.jackson.core:jackson-databind:2.15.2'
+            
+                // ADB Connection (ddmlib)
+                // Note: You may need to adjust version based on availability
+                implementation 'com.android.tools.ddms:ddmlib:30.0.0'
             }
             
             application {
@@ -10445,18 +10902,16 @@ import com.botmaker.blocks.*;
 import com.botmaker.core.StatementBlock;
 
 public enum AddableBlock {
-    // --- OUTPUT ---
     PRINT("Print", PrintBlock.class, BlockCategory.OUTPUT),
 
     // --- FLOW CONTROL ---
     IF("If Statement", IfBlock.class, BlockCategory.FLOW),
+    SWITCH("Switch", SwitchBlock.class, BlockCategory.FLOW),
+
+    // --- LOOPS ---
     WHILE("While Loop", WhileBlock.class, BlockCategory.LOOPS),
     FOR("For Each Loop", ForBlock.class, BlockCategory.LOOPS),
     DO_WHILE("Do While", DoWhileBlock.class, BlockCategory.LOOPS),
-    SWITCH("Switch", SwitchBlock.class, BlockCategory.FLOW),
-    // REMOVED: CASE("Case", SwitchBlock.SwitchCaseBlock.class, BlockCategory.FLOW),
-
-    FUNCTION_CALL("Call Function", MethodInvocationBlock.class, BlockCategory.FLOW),
 
     // --- CONTROL COMMANDS ---
     BREAK("Break", BreakBlock.class, BlockCategory.CONTROL),
@@ -10469,16 +10924,17 @@ public enum AddableBlock {
     DECLARE_DOUBLE("Double Variable", VariableDeclarationBlock.class, BlockCategory.VARIABLES),
     DECLARE_BOOLEAN("Bool Variable", VariableDeclarationBlock.class, BlockCategory.VARIABLES),
     DECLARE_STRING("String Variable", VariableDeclarationBlock.class, BlockCategory.VARIABLES),
-
-    // Generic Array Declaration
     DECLARE_ARRAY("Create List", VariableDeclarationBlock.class, BlockCategory.VARIABLES),
-
     ASSIGNMENT("Set Variable", AssignmentBlock.class, BlockCategory.VARIABLES),
 
     // --- INPUT ---
     READ_LINE("Read Text", ReadInputBlock.class, BlockCategory.INPUT),
     READ_INT("Read Int", ReadInputBlock.class, BlockCategory.INPUT),
     READ_DOUBLE("Read Double", ReadInputBlock.class, BlockCategory.INPUT),
+
+    // --- FUNCTIONS ---
+    FUNCTION_CALL("Call Function", MethodInvocationBlock.class, BlockCategory.FUNCTIONS), // MOVED HERE
+    METHOD_DECLARATION("Declare Function", MethodDeclarationBlock.class, BlockCategory.FUNCTIONS),
 
     // --- UTILITY ---
     COMMENT("Comment", CommentBlock.class, BlockCategory.UTILITY);
@@ -10505,6 +10961,7 @@ public enum AddableBlock {
         FLOW("Logic"),
         LOOPS("Loops"),
         CONTROL("Control"),
+        FUNCTIONS("Functions"),
         UTILITY("Utility");
 
         private final String label;
@@ -10603,6 +11060,7 @@ FILE: ers\bgroi\Documents\dev\IntellijProjects\BotMaker\src\main\java\com\botmak
 
 package com.botmaker.ui;
 
+import com.botmaker.blocks.ClassBlock;
 import com.botmaker.core.BodyBlock;
 import com.botmaker.core.StatementBlock;
 import javafx.scene.Node;
@@ -10611,6 +11069,9 @@ import javafx.scene.input.DataFormat;
 import javafx.scene.input.Dragboard;
 import javafx.scene.input.TransferMode;
 import javafx.scene.layout.Region;
+import org.eclipse.jdt.core.dom.AnonymousClassDeclaration;
+import org.eclipse.jdt.core.dom.TypeDeclaration;
+import org.eclipse.jdt.core.dom.TypeDeclarationStatement;
 
 import java.util.function.Consumer;
 
@@ -10794,6 +11255,77 @@ public class BlockDragAndDropManager {
         });
     }
 
+    // In BlockDragAndDropManager.java - add new method
+
+    public void addMethodDeclarationDropHandlers(
+            Region separator,
+            ClassBlock targetClass,
+            int insertionIndex) {
+
+        String defaultColor = "rgba(52, 73, 94, 0.1)";
+        String hoverColor = "#9b59b6"; // Purple for methods
+
+        separator.setOnDragEntered(event -> {
+            Dragboard db = event.getDragboard();
+            if (db.hasContent(ADDABLE_BLOCK_FORMAT)) {
+                String blockTypeName = (String) db.getContent(ADDABLE_BLOCK_FORMAT);
+                AddableBlock type = AddableBlock.valueOf(blockTypeName);
+
+                // Only accept METHOD_DECLARATION
+                if (type == AddableBlock.METHOD_DECLARATION) {
+                    separator.setStyle(
+                            "-fx-background-color: " + hoverColor + ";" +
+                                    "-fx-border-color: " + hoverColor + ";" +
+                                    "-fx-border-width: 2 0 2 0;"
+                    );
+                }
+            }
+            event.consume();
+        });
+
+        separator.setOnDragExited(event -> {
+            separator.setStyle(
+                    "-fx-background-color: " + defaultColor + ";" +
+                            "-fx-border-color: rgba(52, 73, 94, 0.3);" +
+                            "-fx-border-width: 1 0 1 0;" +
+                            "-fx-border-style: dashed;"
+            );
+            event.consume();
+        });
+
+        separator.setOnDragOver(event -> {
+            Dragboard db = event.getDragboard();
+            if (db.hasContent(ADDABLE_BLOCK_FORMAT)) {
+                String blockTypeName = (String) db.getContent(ADDABLE_BLOCK_FORMAT);
+                AddableBlock type = AddableBlock.valueOf(blockTypeName);
+
+                if (type == AddableBlock.METHOD_DECLARATION) {
+                    event.acceptTransferModes(TransferMode.COPY);
+                }
+            }
+            event.consume();
+        });
+
+        separator.setOnDragDropped(event -> {
+            Dragboard db = event.getDragboard();
+            boolean success = false;
+
+            if (db.hasContent(ADDABLE_BLOCK_FORMAT)) {
+                String blockTypeName = (String) db.getContent(ADDABLE_BLOCK_FORMAT);
+                AddableBlock type = AddableBlock.valueOf(blockTypeName);
+
+                if (type == AddableBlock.METHOD_DECLARATION && onDrop != null) {
+                    // Create special DropInfo for method declarations
+                    onDrop.accept(new DropInfo(type, null, insertionIndex, targetClass));
+                    success = true;
+                }
+            }
+
+            event.setDropCompleted(success);
+            event.consume();
+        });
+    }
+
     public void addEmptyBodyDropHandlers(Region target, BodyBlock targetBody) {
         target.setOnDragEntered(event -> {
             if (event.getDragboard().hasContent(ADDABLE_BLOCK_FORMAT) ||
@@ -10929,11 +11461,22 @@ public class BlockEvent extends Event {
 FILE: ers\bgroi\Documents\dev\IntellijProjects\BotMaker\src\main\java\com\botmaker\ui\DropInfo.java
 =================================================================================
 
+// In DropInfo.java - update the record
 package com.botmaker.ui;
 
+import com.botmaker.blocks.ClassBlock;
 import com.botmaker.core.BodyBlock;
 
-public record DropInfo(AddableBlock type, BodyBlock targetBody, int insertionIndex) {
+public record DropInfo(
+        AddableBlock type,
+        BodyBlock targetBody,
+        int insertionIndex,
+        ClassBlock targetClass // NEW: for method declarations
+) {
+    // Convenience constructor for statement drops (existing behavior)
+    public DropInfo(AddableBlock type, BodyBlock targetBody, int insertionIndex) {
+        this(type, targetBody, insertionIndex, null);
+    }
 }
 
 
@@ -11075,6 +11618,7 @@ import com.botmaker.state.ApplicationState;
 import javafx.scene.control.*;
 import javafx.scene.layout.VBox;
 
+import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Optional;
@@ -11113,20 +11657,42 @@ public class FileExplorerManager {
     }
 
     private void configureTree() {
+        // We hide the root "java" folder to make it look cleaner
         fileTree.setShowRoot(false);
+
         fileTree.setCellFactory(tv -> new TreeCell<>() {
             @Override
             protected void updateItem(Path item, boolean empty) {
                 super.updateItem(item, empty);
                 if (empty || item == null) {
                     setText(null);
+                    setGraphic(null);
+                    setStyle("");
                 } else {
-                    setText(item.getFileName().toString());
-                    // Highlight active file
-                    if (state.getActiveFile() != null && item.equals(state.getActiveFile().getPath())) {
-                        setStyle("-fx-font-weight: bold; -fx-text-fill: #007bff;");
-                    } else {
-                        setStyle("");
+                    String fileName = item.getFileName().toString();
+
+                    // Visual Logic
+                    boolean isDirectory = Files.isDirectory(item);
+                    String pathStr = item.toString().replace("\\", "/");
+                    boolean isLibrary = pathStr.contains("com/botmaker/library");
+
+                    if (isDirectory) {
+                        setText(fileName);
+                        setStyle("-fx-font-weight: bold; -fx-text-fill: #333;");
+                    }
+                    else if (isLibrary) {
+                        setText(fileName + " [Lib]");
+                        // Locked/Library style
+                        setStyle("-fx-text-fill: #888; -fx-font-style: italic;");
+                    }
+                    else {
+                        setText(fileName);
+                        // Highlight active file
+                        if (state.getActiveFile() != null && item.equals(state.getActiveFile().getPath())) {
+                            setStyle("-fx-font-weight: bold; -fx-text-fill: #007bff;");
+                        } else {
+                            setStyle("-fx-text-fill: black;");
+                        }
                     }
                 }
             }
@@ -11134,31 +11700,70 @@ public class FileExplorerManager {
 
         fileTree.getSelectionModel().selectedItemProperty().addListener((obs, oldVal, newVal) -> {
             if (newVal != null && newVal.getValue() != null) {
-                // Switch file
                 Path selectedPath = newVal.getValue();
-                // Avoid reloading if already active
-                if (state.getActiveFile() == null || !state.getActiveFile().getPath().equals(selectedPath)) {
-                    codeEditorService.switchToFile(selectedPath);
-                    fileTree.refresh(); // Update bold styling
+
+                // Only open if it's a file, not a directory
+                if (Files.isRegularFile(selectedPath)) {
+                    // Optional: Check if it's a library file to prevent editing
+                    // For now, we just open everything
+                    if (state.getActiveFile() == null || !state.getActiveFile().getPath().equals(selectedPath)) {
+                        codeEditorService.switchToFile(selectedPath);
+                        fileTree.refresh();
+                    }
                 }
             }
         });
     }
 
     public void refreshTree() {
-        // Find src directory
-        Path sourceDir = config.getSourceFilePath().getParent();
+        // 1. Find the root 'src/main/java' directory
+        // Start from Main file: .../src/main/java/com/myproject/Main.java
+        Path current = config.getSourceFilePath().getParent();
 
-        TreeItem<Path> root = new TreeItem<>(sourceDir);
-
-        try (Stream<Path> files = Files.list(sourceDir)) {
-            files.filter(p -> p.toString().endsWith(".java"))
-                    .forEach(path -> root.getChildren().add(new TreeItem<>(path)));
-        } catch (Exception e) {
-            e.printStackTrace();
+        // Traverse up until we hit "java" (or run out of parents)
+        while (current != null && !current.getFileName().toString().equals("java")) {
+            current = current.getParent();
         }
 
+        // Fallback if structure is weird
+        if (current == null) {
+            current = config.getSourceFilePath().getParent();
+        }
+
+        TreeItem<Path> root = new TreeItem<>(current);
+        root.setExpanded(true);
+
+        // 2. Recursively build the tree
+        buildFileTree(root, current);
+
         fileTree.setRoot(root);
+    }
+
+    private void buildFileTree(TreeItem<Path> parentItem, Path parentPath) {
+        try (Stream<Path> files = Files.list(parentPath)) {
+            files.sorted((p1, p2) -> {
+                // Sort directories first, then files
+                boolean d1 = Files.isDirectory(p1);
+                boolean d2 = Files.isDirectory(p2);
+                if (d1 && !d2) return -1;
+                if (!d1 && d2) return 1;
+                return p1.getFileName().toString().compareTo(p2.getFileName().toString());
+            }).forEach(path -> {
+                TreeItem<Path> item = new TreeItem<>(path);
+                parentItem.getChildren().add(item);
+
+                if (Files.isDirectory(path)) {
+                    // Auto-expand 'com' and 'botmaker' folders for convenience
+                    String name = path.getFileName().toString();
+                    if (name.equals("com") || name.equals("botmaker") || name.equals("library")) {
+                        item.setExpanded(true);
+                    }
+                    buildFileTree(item, path);
+                }
+            });
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     private void showCreateFileDialog() {
@@ -11469,9 +12074,18 @@ public class PaletteManager {
         Map<BlockCategory, List<AddableBlock>> grouped = Arrays.stream(AddableBlock.values())
                 .collect(Collectors.groupingBy(AddableBlock::getCategory));
 
+// In PaletteManager.java - createCategorizedPalette() method
+// Update the order array to include FUNCTIONS:
+
         BlockCategory[] order = {
-                BlockCategory.OUTPUT, BlockCategory.INPUT, BlockCategory.VARIABLES,
-                BlockCategory.FLOW, BlockCategory.LOOPS, BlockCategory.CONTROL, BlockCategory.UTILITY
+                BlockCategory.OUTPUT,
+                BlockCategory.INPUT,
+                BlockCategory.VARIABLES,
+                BlockCategory.FLOW,
+                BlockCategory.LOOPS,
+                BlockCategory.CONTROL,
+                BlockCategory.FUNCTIONS,  // ADD THIS
+                BlockCategory.UTILITY
         };
 
         for (BlockCategory category : order) {
@@ -11486,8 +12100,8 @@ public class PaletteManager {
                 blockLabel.setMaxWidth(Double.MAX_VALUE);
                 blockLabel.getStyleClass().addAll("palette-item", "palette-" + category.name().toLowerCase());
 
-                // --- FIX: Force Black Text Color ---
-                blockLabel.setStyle("-fx-text-fill: black; -fx-font-weight: bold;");
+                // FORCE visible text color
+                blockLabel.setStyle("-fx-text-fill: white; -fx-font-weight: bold;");
 
                 dragAndDropManager.makeDraggable(blockLabel, blockType);
                 content.getChildren().add(blockLabel);

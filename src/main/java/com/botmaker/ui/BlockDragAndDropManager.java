@@ -9,9 +9,6 @@ import javafx.scene.input.DataFormat;
 import javafx.scene.input.Dragboard;
 import javafx.scene.input.TransferMode;
 import javafx.scene.layout.Region;
-import org.eclipse.jdt.core.dom.AnonymousClassDeclaration;
-import org.eclipse.jdt.core.dom.TypeDeclaration;
-import org.eclipse.jdt.core.dom.TypeDeclarationStatement;
 
 import java.util.function.Consumer;
 
@@ -37,9 +34,8 @@ public class BlockDragAndDropManager {
     }
 
     /**
-     * Makes a UI node draggable, associating it with a specific type of AddableBlock.
-     * @param node The node to make draggable (e.g., a Label in the palette).
-     * @param blockType The type of block this node represents.
+     * Makes a UI node draggable (Palette Items).
+     * Added visual feedback (Opacity).
      */
     public void makeDraggable(Node node, AddableBlock blockType) {
         node.setOnDragDetected(event -> {
@@ -47,20 +43,26 @@ public class BlockDragAndDropManager {
             ClipboardContent content = new ClipboardContent();
             content.put(ADDABLE_BLOCK_FORMAT, blockType.name());
             db.setContent(content);
+
+            // Visual feedback: reduce opacity to show it's being dragged
+            node.setOpacity(0.5);
+
             System.out.println("Drag detected for: " + blockType.name());
+            event.consume();
+        });
+
+        // Reset opacity when drag finishes (success or cancel)
+        node.setOnDragDone(event -> {
+            node.setOpacity(1.0);
             event.consume();
         });
     }
 
     /**
      * Makes an existing block's UI node draggable for repositioning.
-     * @param node The UI node of the block to make draggable.
-     * @param block The StatementBlock instance being dragged.
-     * @param sourceBody The BodyBlock containing this block.
      */
     public void makeBlockMovable(Node node, StatementBlock block, BodyBlock sourceBody) {
         node.setOnDragDetected(event -> {
-            // Only start drag if not clicking on interactive elements
             if (event.getTarget() instanceof javafx.scene.control.Control) {
                 return;
             }
@@ -70,22 +72,15 @@ public class BlockDragAndDropManager {
             content.put(EXISTING_BLOCK_FORMAT, block.getId());
             db.setContent(content);
 
-            // Visual feedback - make the block semi-transparent while dragging
             node.setOpacity(0.5);
 
             System.out.println("Dragging existing block: " + block.getDetails());
             event.consume();
         });
 
-        // Reset opacity and release focus when drag is done
         node.setOnDragDone(event -> {
             node.setOpacity(1.0);
-            // DON'T consume - let the event propagate to restore normal mouse behavior
-            // event.consume();
-
-            // Multiple approaches to ensure drag is fully released
             javafx.application.Platform.runLater(() -> {
-                // 1. Find and focus ScrollPane
                 javafx.scene.Node current = node;
                 javafx.scene.control.ScrollPane scrollPane = null;
                 while (current != null) {
@@ -97,23 +92,13 @@ public class BlockDragAndDropManager {
                 }
 
                 if (scrollPane != null) {
-                    // Make sure ScrollPane can receive focus
                     scrollPane.setFocusTraversable(true);
                     scrollPane.requestFocus();
-
-                    // Also try to release any event filters
-                    final javafx.scene.control.ScrollPane sp = scrollPane;
-                    javafx.application.Platform.runLater(() -> {
-                        sp.requestFocus();
-                    });
                 }
             });
         });
     }
 
-    /**
-     * Creates a thin, transparent region to act as a separator and drop target.
-     */
     public Region createSeparator() {
         Region separator = new Region();
         separator.setMinHeight(8);
@@ -121,31 +106,17 @@ public class BlockDragAndDropManager {
         return separator;
     }
 
-    /**
-     * Adds all necessary drag-and-drop event handlers to a separator region.
-     * Handles both adding new blocks and moving existing blocks.
-     * @param separator The region to add handlers to.
-     * @param targetBody The body where blocks will be inserted.
-     * @param insertionIndex The index in the list where a drop should occur.
-     * @param adjacentBlock The block next to the separator, for context (can be null).
-     */
     public void addSeparatorDragHandlers(Region separator, BodyBlock targetBody, int insertionIndex, StatementBlock adjacentBlock) {
         String defaultColor = "transparent";
-        String hoverColor = "#007bff"; // A distinct blue
-        String moveHoverColor = "#28a745"; // Green for moving blocks
+        String hoverColor = "#007bff";
+        String moveHoverColor = "#28a745";
 
         separator.setOnDragEntered(event -> {
             Dragboard db = event.getDragboard();
             if (db.hasContent(ADDABLE_BLOCK_FORMAT)) {
                 separator.setStyle("-fx-background-color: " + hoverColor + ";");
-                String logMessage = "Hovering insertion point at index: " + insertionIndex;
-                if (adjacentBlock != null) {
-                    logMessage += " (next to: " + adjacentBlock.getDetails() + ")";
-                }
-                System.out.println(logMessage);
             } else if (db.hasContent(EXISTING_BLOCK_FORMAT)) {
                 separator.setStyle("-fx-background-color: " + moveHoverColor + ";");
-                System.out.println("Hovering to move block at index: " + insertionIndex);
             }
             event.consume();
         });
@@ -168,25 +139,17 @@ public class BlockDragAndDropManager {
             boolean success = false;
 
             if (db.hasContent(ADDABLE_BLOCK_FORMAT)) {
-                // Adding a new block
                 String blockTypeName = (String) db.getContent(ADDABLE_BLOCK_FORMAT);
                 AddableBlock type = AddableBlock.valueOf(blockTypeName);
-
                 if (onDrop != null) {
                     onDrop.accept(new DropInfo(type, targetBody, insertionIndex));
                     success = true;
-                } else {
-                    System.err.println("WARNING: onDrop callback not set yet!");
                 }
             } else if (db.hasContent(EXISTING_BLOCK_FORMAT)) {
-                // Moving an existing block
                 String blockId = (String) db.getContent(EXISTING_BLOCK_FORMAT);
-
                 if (onBlockMove != null) {
                     onBlockMove.accept(new MoveBlockInfo(blockId, targetBody, insertionIndex));
                     success = true;
-                } else {
-                    System.err.println("WARNING: onBlockMove callback not set yet!");
                 }
             }
 
@@ -195,41 +158,24 @@ public class BlockDragAndDropManager {
         });
     }
 
-    // In BlockDragAndDropManager.java - add new method
-
-    public void addMethodDeclarationDropHandlers(
-            Region separator,
-            ClassBlock targetClass,
-            int insertionIndex) {
-
+    public void addMethodDeclarationDropHandlers(Region separator, ClassBlock targetClass, int insertionIndex) {
         String defaultColor = "rgba(52, 73, 94, 0.1)";
-        String hoverColor = "#9b59b6"; // Purple for methods
+        String hoverColor = "#9b59b6";
 
         separator.setOnDragEntered(event -> {
             Dragboard db = event.getDragboard();
             if (db.hasContent(ADDABLE_BLOCK_FORMAT)) {
                 String blockTypeName = (String) db.getContent(ADDABLE_BLOCK_FORMAT);
                 AddableBlock type = AddableBlock.valueOf(blockTypeName);
-
-                // Only accept METHOD_DECLARATION
                 if (type == AddableBlock.METHOD_DECLARATION) {
-                    separator.setStyle(
-                            "-fx-background-color: " + hoverColor + ";" +
-                                    "-fx-border-color: " + hoverColor + ";" +
-                                    "-fx-border-width: 2 0 2 0;"
-                    );
+                    separator.setStyle("-fx-background-color: " + hoverColor + "; -fx-border-color: " + hoverColor + "; -fx-border-width: 2 0 2 0;");
                 }
             }
             event.consume();
         });
 
         separator.setOnDragExited(event -> {
-            separator.setStyle(
-                    "-fx-background-color: " + defaultColor + ";" +
-                            "-fx-border-color: rgba(52, 73, 94, 0.3);" +
-                            "-fx-border-width: 1 0 1 0;" +
-                            "-fx-border-style: dashed;"
-            );
+            separator.setStyle("-fx-background-color: " + defaultColor + "; -fx-border-color: rgba(52, 73, 94, 0.3); -fx-border-width: 1 0 1 0; -fx-border-style: dashed;");
             event.consume();
         });
 
@@ -238,7 +184,6 @@ public class BlockDragAndDropManager {
             if (db.hasContent(ADDABLE_BLOCK_FORMAT)) {
                 String blockTypeName = (String) db.getContent(ADDABLE_BLOCK_FORMAT);
                 AddableBlock type = AddableBlock.valueOf(blockTypeName);
-
                 if (type == AddableBlock.METHOD_DECLARATION) {
                     event.acceptTransferModes(TransferMode.COPY);
                 }
@@ -249,18 +194,14 @@ public class BlockDragAndDropManager {
         separator.setOnDragDropped(event -> {
             Dragboard db = event.getDragboard();
             boolean success = false;
-
             if (db.hasContent(ADDABLE_BLOCK_FORMAT)) {
                 String blockTypeName = (String) db.getContent(ADDABLE_BLOCK_FORMAT);
                 AddableBlock type = AddableBlock.valueOf(blockTypeName);
-
                 if (type == AddableBlock.METHOD_DECLARATION && onDrop != null) {
-                    // Create special DropInfo for method declarations
                     onDrop.accept(new DropInfo(type, null, insertionIndex, targetClass));
                     success = true;
                 }
             }
-
             event.setDropCompleted(success);
             event.consume();
         });
@@ -268,10 +209,8 @@ public class BlockDragAndDropManager {
 
     public void addEmptyBodyDropHandlers(Region target, BodyBlock targetBody) {
         target.setOnDragEntered(event -> {
-            if (event.getDragboard().hasContent(ADDABLE_BLOCK_FORMAT) ||
-                    event.getDragboard().hasContent(EXISTING_BLOCK_FORMAT)) {
+            if (event.getDragboard().hasContent(ADDABLE_BLOCK_FORMAT) || event.getDragboard().hasContent(EXISTING_BLOCK_FORMAT)) {
                 target.getStyleClass().add("empty-body-drop-hover");
-                System.out.println("Added hover class to: " + target.getClass().getSimpleName());
             }
             event.consume();
         });
@@ -282,8 +221,7 @@ public class BlockDragAndDropManager {
         });
 
         target.setOnDragOver(event -> {
-            Dragboard db = event.getDragboard();
-            if (db.hasContent(ADDABLE_BLOCK_FORMAT) || db.hasContent(EXISTING_BLOCK_FORMAT)) {
+            if (event.getDragboard().hasContent(ADDABLE_BLOCK_FORMAT) || event.getDragboard().hasContent(EXISTING_BLOCK_FORMAT)) {
                 event.acceptTransferModes(TransferMode.COPY_OR_MOVE);
             }
             event.consume();
@@ -292,30 +230,20 @@ public class BlockDragAndDropManager {
         target.setOnDragDropped(event -> {
             Dragboard db = event.getDragboard();
             boolean success = false;
-
             if (db.hasContent(ADDABLE_BLOCK_FORMAT)) {
-                // Adding a new block
                 String blockTypeName = (String) db.getContent(ADDABLE_BLOCK_FORMAT);
                 AddableBlock type = AddableBlock.valueOf(blockTypeName);
-
                 if (onDrop != null) {
-                    onDrop.accept(new DropInfo(type, targetBody, 0)); // Always index 0 for empty body
+                    onDrop.accept(new DropInfo(type, targetBody, 0));
                     success = true;
-                } else {
-                    System.err.println("WARNING: onDrop callback not set yet!");
                 }
             } else if (db.hasContent(EXISTING_BLOCK_FORMAT)) {
-                // Moving an existing block
                 String blockId = (String) db.getContent(EXISTING_BLOCK_FORMAT);
-
                 if (onBlockMove != null) {
                     onBlockMove.accept(new MoveBlockInfo(blockId, targetBody, 0));
                     success = true;
-                } else {
-                    System.err.println("WARNING: onBlockMove callback not set yet!");
                 }
             }
-
             event.setDropCompleted(success);
             event.consume();
         });
@@ -323,14 +251,13 @@ public class BlockDragAndDropManager {
 
     public void addExpressionDropHandlers(Region target) {
         String defaultStyle = "-fx-background-color: #f0f0f0; -fx-border-color: #c0c0c0; -fx-border-style: dashed; -fx-min-width: 50; -fx-min-height: 25;";
-        String hoverStyle = defaultStyle + "-fx-border-color: #007bff;"; // Highlight with blue
+        String hoverStyle = defaultStyle + "-fx-border-color: #007bff;";
 
         target.setStyle(defaultStyle);
 
         target.setOnDragEntered(event -> {
             if (event.getDragboard().hasContent(ADDABLE_BLOCK_FORMAT)) {
                 target.setStyle(hoverStyle);
-                System.out.println("Hovering expression slot.");
             }
             event.consume();
         });
@@ -351,9 +278,9 @@ public class BlockDragAndDropManager {
             Dragboard db = event.getDragboard();
             boolean success = false;
             if (db.hasContent(ADDABLE_BLOCK_FORMAT)) {
-                String blockTypeName = (String) db.getContent(ADDABLE_BLOCK_FORMAT);
-                System.out.println("Cannot drop a Statement block ('" + blockTypeName + "') into an Expression slot.");
                 success = true;
+                // Handled by expression replacement logic usually, but here we just accept it
+                // to indicate valid drop target visually
             }
             event.setDropCompleted(success);
             event.consume();

@@ -1,11 +1,13 @@
 package com.botmaker.ui;
 
 import com.botmaker.ui.AddableBlock.BlockCategory;
-import javafx.geometry.Insets;
-import javafx.scene.control.Accordion;
+import javafx.geometry.Pos;
+import javafx.scene.control.CustomMenuItem;
 import javafx.scene.control.Label;
-import javafx.scene.control.TitledPane;
-import javafx.scene.layout.VBox;
+import javafx.scene.control.MenuButton;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.Priority;
+import javafx.scene.layout.Region;
 
 import java.util.Arrays;
 import java.util.List;
@@ -20,13 +22,15 @@ public class PaletteManager {
         this.dragAndDropManager = dragAndDropManager;
     }
 
-    public Accordion createCategorizedPalette() {
-        Accordion accordion = new Accordion();
+    public HBox createHorizontalPalette() {
+        HBox container = new HBox(8);
+        container.setAlignment(Pos.CENTER);
+        // Remove padding here so buttons can touch edges if needed
+        container.setStyle("-fx-padding: 0;");
+        container.getStyleClass().add("palette-bar");
+
         Map<BlockCategory, List<AddableBlock>> grouped = Arrays.stream(AddableBlock.values())
                 .collect(Collectors.groupingBy(AddableBlock::getCategory));
-
-// In PaletteManager.java - createCategorizedPalette() method
-// Update the order array to include FUNCTIONS:
 
         BlockCategory[] order = {
                 BlockCategory.OUTPUT,
@@ -35,7 +39,7 @@ public class PaletteManager {
                 BlockCategory.FLOW,
                 BlockCategory.LOOPS,
                 BlockCategory.CONTROL,
-                BlockCategory.FUNCTIONS,  // ADD THIS
+                BlockCategory.FUNCTIONS,
                 BlockCategory.UTILITY
         };
 
@@ -43,26 +47,75 @@ public class PaletteManager {
             List<AddableBlock> blocks = grouped.get(category);
             if (blocks == null) continue;
 
-            VBox content = new VBox(8);
-            content.setPadding(new Insets(10));
+            String categoryColor = getCategoryColor(category);
+
+            MenuButton categoryMenu = new MenuButton();
+            categoryMenu.getStyleClass().addAll("palette-category-btn", "palette-" + category.name().toLowerCase());
+
+            // Make button stretch to fill toolbar height
+            categoryMenu.setMaxHeight(Double.MAX_VALUE);
+            // Allow button to shrink horizontally if needed
+            categoryMenu.setMinWidth(Region.USE_PREF_SIZE);
+
+            // Allow HBox to distribute extra space or shrink components
+            HBox.setHgrow(categoryMenu, Priority.SOMETIMES);
+
+            Label btnLabel = new Label(category.getLabel());
+            btnLabel.setStyle(
+                    "-fx-text-fill: white; " +
+                            "-fx-font-family: 'Segoe UI', sans-serif; " +
+                            "-fx-font-weight: bold; " +
+                            "-fx-font-size: 13px;"
+            );
+            categoryMenu.setGraphic(btnLabel);
+
+            categoryMenu.setStyle(
+                    "-fx-background-color: " + categoryColor + "; " +
+                            "-fx-background-radius: 4; " + // Slightly smaller radius for "bar" look
+                            "-fx-border-color: rgba(0,0,0,0.1); " +
+                            "-fx-border-radius: 4; " +
+                            "-fx-cursor: hand;"
+                    // Removed fixed padding here to allow layout to control height
+            );
 
             for (AddableBlock blockType : blocks) {
                 Label blockLabel = new Label(blockType.getDisplayName());
+                blockLabel.setPrefWidth(180);
                 blockLabel.setMaxWidth(Double.MAX_VALUE);
-                blockLabel.getStyleClass().addAll("palette-item", "palette-" + category.name().toLowerCase());
 
-                // FORCE visible text color
-                blockLabel.setStyle("-fx-text-fill: white; -fx-font-weight: bold;");
+                blockLabel.setStyle(
+                        "-fx-background-color: " + categoryColor + "; " +
+                                "-fx-text-fill: white; " +
+                                "-fx-font-weight: bold; " +
+                                "-fx-font-size: 12px; " +
+                                "-fx-padding: 8 12 8 12; " +
+                                "-fx-background-radius: 2;"
+                );
 
                 dragAndDropManager.makeDraggable(blockLabel, blockType);
-                content.getChildren().add(blockLabel);
+
+                CustomMenuItem item = new CustomMenuItem(blockLabel);
+                item.setHideOnClick(false);
+                categoryMenu.getItems().add(item);
             }
 
-            TitledPane pane = new TitledPane(category.getLabel(), content);
-            pane.getStyleClass().add("palette-pane");
-            accordion.getPanes().add(pane);
+            container.getChildren().add(categoryMenu);
         }
-        if (!accordion.getPanes().isEmpty()) accordion.setExpandedPane(accordion.getPanes().get(0));
-        return accordion;
+
+        return container;
+    }
+
+    private String getCategoryColor(BlockCategory category) {
+        return switch (category) {
+            case OUTPUT -> "#3498DB";
+            case INPUT -> "#9B59B6";
+            case VARIABLES -> "#F39C12";
+            case FLOW -> "#E67E22";
+            case LOOPS -> "#2ECC71";
+            case CONTROL -> "#E74C3C";
+            case FUNCTIONS -> "#8E44AD";
+            case UTILITY -> "#7F8C8D";
+            default -> "#34495E";
+        };
     }
 }

@@ -1,7 +1,6 @@
 package com.botmaker.ui;
 
 import com.botmaker.config.ApplicationConfig;
-import com.botmaker.core.CodeBlock;
 import com.botmaker.events.CoreApplicationEvents;
 import com.botmaker.events.EventBus;
 import com.botmaker.lsp.CompletionContext;
@@ -9,7 +8,9 @@ import com.botmaker.services.CodeEditorService;
 import com.botmaker.state.ApplicationState;
 import com.botmaker.validation.DiagnosticsManager;
 import com.botmaker.validation.ErrorTranslator;
+import javafx.geometry.Insets;
 import javafx.geometry.Orientation;
+import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
@@ -28,12 +29,11 @@ public class UIManager {
     private final DiagnosticsManager diagnosticsManager;
     private final Stage primaryStage;
 
-    // UI Managers
     private final PaletteManager paletteManager;
     private final ToolbarManager toolbarManager;
     private final EventLogManager eventLogManager;
     private final MenuBarManager menuBarManager;
-    private final FileExplorerManager fileExplorerManager; // New Manager
+    private final FileExplorerManager fileExplorerManager;
 
     private VBox blocksContainer;
     private Label statusLabel;
@@ -47,21 +47,18 @@ public class UIManager {
                      CodeEditorService codeEditorService,
                      DiagnosticsManager diagnosticsManager,
                      Stage primaryStage,
-                     ApplicationConfig config,   // Added
-                     ApplicationState state) {   // Added
+                     ApplicationConfig config,
+                     ApplicationState state) {
         this.eventBus = eventBus;
         this.codeEditorService = codeEditorService;
         this.diagnosticsManager = diagnosticsManager;
         this.primaryStage = primaryStage;
 
-        // Delegate Managers
         this.paletteManager = new PaletteManager(dragAndDropManager);
         this.toolbarManager = new ToolbarManager(eventBus);
         this.eventLogManager = new EventLogManager(eventBus);
         this.menuBarManager = new MenuBarManager(primaryStage);
         this.menuBarManager.setEventBus(eventBus);
-
-        // Initialize File Explorer
         this.fileExplorerManager = new FileExplorerManager(config, codeEditorService, state);
 
         setupEventHandlers();
@@ -104,40 +101,76 @@ public class UIManager {
     public Scene createScene() {
         menuBarManager.setOnSelectProject(v -> { if (onSelectProject != null) onSelectProject.accept(null); });
 
-        // 1. Center Code Area
+        // --- 1. Top Bar Construction ---
+
+        // Left
+        HBox editControls = toolbarManager.createEditGroup();
+        Separator leftSep = new Separator(Orientation.VERTICAL);
+        leftSep.setPadding(new Insets(0, 5, 0, 5));
+        HBox leftContainer = new HBox(editControls, leftSep);
+        leftContainer.setAlignment(Pos.CENTER_LEFT);
+
+        // Center: Palette
+        HBox paletteControls = paletteManager.createHorizontalPalette();
+
+        ScrollPane paletteScroll = new ScrollPane(paletteControls);
+        paletteScroll.setVbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
+        paletteScroll.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER); // Hide Horizontal Bar too, let it shrink
+
+        // Ensure content fills the scroll pane area
+        paletteScroll.setFitToWidth(true);
+        paletteScroll.setFitToHeight(true);
+
+        paletteScroll.setStyle("-fx-background-color: transparent; -fx-padding: 0;");
+        paletteScroll.getStyleClass().add("edge-to-edge");
+
+        // Right
+        HBox executionControls = toolbarManager.createExecutionGroup();
+        Separator rightSep = new Separator(Orientation.VERTICAL);
+        rightSep.setPadding(new Insets(0, 5, 0, 5));
+        HBox rightContainer = new HBox(rightSep, executionControls);
+        rightContainer.setAlignment(Pos.CENTER_RIGHT);
+
+        BorderPane topBar = new BorderPane();
+        topBar.setPadding(new Insets(6)); // Comfortable padding around the whole bar
+        topBar.setLeft(leftContainer);
+        topBar.setCenter(paletteScroll);
+        topBar.setRight(rightContainer);
+        topBar.getStyleClass().add("main-toolbar");
+
+        // FIXED HEIGHT CONSTRAINTS
+        // This stops the "Expand as much as I want" issue.
+        // 45px content + 12px padding = ~57px total height
+        topBar.setMinHeight(50);
+        topBar.setPrefHeight(50);
+        topBar.setMaxHeight(50);
+
+        topBar.setStyle("-fx-border-color: #dcdcdc; -fx-border-width: 0 0 1 0; -fx-background-color: #f4f4f4;");
+
+        // --- 2. Left Panel: File Explorer ---
+        VBox fileExplorer = fileExplorerManager.createView();
+        fileExplorer.setMinWidth(150);
+        fileExplorer.setMaxWidth(400);
+
+        // --- 3. Center: Code Canvas ---
         blocksContainer = new VBox(10);
         blocksContainer.getStyleClass().add("blocks-canvas");
-        ScrollPane scrollPane = new ScrollPane(blocksContainer);
-        scrollPane.setFitToWidth(true);
-        scrollPane.getStyleClass().add("code-scroll-pane");
+        blocksContainer.setPadding(new Insets(20));
 
-        // 2. Left Sidebar (Files + Palette)
-        VBox paletteContent = new VBox(paletteManager.createCategorizedPalette());
-        paletteContent.getStyleClass().add("palette-sidebar");
+        ScrollPane canvasScroll = new ScrollPane(blocksContainer);
+        canvasScroll.setFitToWidth(true);
+        canvasScroll.setFitToHeight(true);
+        canvasScroll.getStyleClass().add("code-scroll-pane");
 
-        VBox fileExplorerContent = fileExplorerManager.createView();
-
-        TabPane sidebarTabs = new TabPane();
-        sidebarTabs.setTabClosingPolicy(TabPane.TabClosingPolicy.UNAVAILABLE);
-
-        Tab filesTab = new Tab("Files", fileExplorerContent);
-        Tab blocksTab = new Tab("Blocks", paletteContent);
-
-        sidebarTabs.getTabs().addAll(filesTab, blocksTab);
-        sidebarTabs.setPrefWidth(260); // Slightly wider to accommodate file names
-        sidebarTabs.getStyleClass().add("sidebar-tabs");
-
-        // 3. Status Bar
-        statusLabel = new Label("Ready");
-        statusLabel.setId("status-label");
-
-        // 4. Bottom Panel (Output, Errors, Logs)
+        // --- 4. Bottom Panel: Terminal/Errors ---
         outputArea = new TextArea();
         outputArea.setEditable(false);
         outputArea.getStyleClass().add("console-area");
+        addContextMenu(outputArea);
 
         errorListView = new ListView<>();
         configureErrorList(errorListView);
+        addContextMenu(errorListView);
 
         bottomTabPane = new TabPane();
         Tab terminalTab = new Tab("Terminal", outputArea); terminalTab.setClosable(false);
@@ -145,21 +178,24 @@ public class UIManager {
         Tab eventsTab = new Tab("Event Log", eventLogManager.getView()); eventsTab.setClosable(false);
         bottomTabPane.getTabs().addAll(terminalTab, errorsTab, eventsTab);
 
-        // 5. Layout Assembly
+        // --- 5. Layout Assembly ---
+
         SplitPane verticalSplit = new SplitPane();
         verticalSplit.setOrientation(Orientation.VERTICAL);
-        verticalSplit.getItems().addAll(scrollPane, bottomTabPane);
-        verticalSplit.setDividerPositions(0.75);
-        VBox.setVgrow(verticalSplit, Priority.ALWAYS);
+        verticalSplit.getItems().addAll(canvasScroll, bottomTabPane);
+        verticalSplit.setDividerPositions(0.82);
 
-        BorderPane mainLayout = new BorderPane();
-        mainLayout.setTop(toolbarManager.createToolBar());
-        mainLayout.setLeft(sidebarTabs); // Changed from paletteContainer to sidebarTabs
-        mainLayout.setCenter(verticalSplit);
-        mainLayout.setBottom(statusLabel);
+        SplitPane mainSplit = new SplitPane();
+        mainSplit.setOrientation(Orientation.HORIZONTAL);
+        mainSplit.getItems().addAll(fileExplorer, verticalSplit);
+        mainSplit.setDividerPositions(0.25);
 
-        VBox root = new VBox(menuBarManager.getMenuBar(), mainLayout);
-        VBox.setVgrow(mainLayout, Priority.ALWAYS);
+        statusLabel = new Label("Ready");
+        statusLabel.setId("status-label");
+        statusLabel.setPadding(new Insets(2, 5, 2, 5));
+
+        VBox root = new VBox(menuBarManager.getMenuBar(), topBar, mainSplit, statusLabel);
+        VBox.setVgrow(mainSplit, Priority.ALWAYS);
         root.getStyleClass().add("light-theme");
 
         primaryStage.setOnHidden(e -> eventLogManager.shutdown());
@@ -196,6 +232,32 @@ public class UIManager {
                 }
             }
         });
+    }
+
+    private void addContextMenu(Control control) {
+        ContextMenu cm = new ContextMenu();
+        if (control instanceof TextArea) {
+            TextArea ta = (TextArea) control;
+            MenuItem copy = new MenuItem("Copy");
+            copy.setOnAction(e -> ta.copy());
+            MenuItem clear = new MenuItem("Clear");
+            clear.setOnAction(e -> ta.clear());
+            cm.getItems().addAll(copy, new SeparatorMenuItem(), clear);
+            ta.setContextMenu(cm);
+        } else if (control instanceof ListView) {
+            ListView<?> lv = (ListView<?>) control;
+            MenuItem copy = new MenuItem("Copy Selection");
+            copy.setOnAction(e -> {
+                Object selected = lv.getSelectionModel().getSelectedItem();
+                if (selected != null) {
+                    javafx.scene.input.ClipboardContent content = new javafx.scene.input.ClipboardContent();
+                    content.putString(selected.toString());
+                    javafx.scene.input.Clipboard.getSystemClipboard().setContent(content);
+                }
+            });
+            cm.getItems().add(copy);
+            lv.setContextMenu(cm);
+        }
     }
 
     private void updateErrors(List<Diagnostic> diagnostics) {
