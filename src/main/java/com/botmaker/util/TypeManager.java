@@ -14,7 +14,8 @@ public class TypeManager {
     public static final String UI_TYPE_STRING = "String";
     public static final String UI_TYPE_TEXT = "Text";
     public static final String UI_TYPE_LIST = "list";
-    // NEW: Special type for Switch statements
+    public static final String UI_TYPE_ENUM = "enum"; // NEW
+    // Special type for Switch statements
     public static final String UI_TYPE_SWITCH_COMPATIBLE = "switch_compatible";
 
     // --- Mapping Tables ---
@@ -62,6 +63,25 @@ public class TypeManager {
         return true;
     }
 
+    // NEW: Check if a type name looks like an enum (starts with uppercase, not in known types)
+    public static boolean isLikelyEnumType(String typeName) {
+        if (typeName == null || typeName.isEmpty()) return false;
+        String clean = typeName.trim();
+
+        // Extract base type if it's wrapped in ArrayList
+        if (clean.startsWith("ArrayList<") && clean.endsWith(">")) {
+            clean = clean.substring(10, clean.length() - 1);
+        }
+
+        // Enums typically start with uppercase and aren't in our known primitive/standard types
+        if (!Character.isUpperCase(clean.charAt(0))) return false;
+        if (FUNDAMENTAL_TYPES.contains(clean)) return false;
+        if (STRING_TYPES.contains(clean)) return false;
+        if (clean.equals("Integer") || clean.equals("Double") || clean.equals("Boolean")) return false;
+
+        return true;
+    }
+
     public static String determineUiType(String typeName) {
         if (typeName == null || typeName.isBlank()) return UI_TYPE_ANY;
         String clean = typeName.trim();
@@ -72,6 +92,9 @@ public class TypeManager {
         if (NUMBER_TYPES.contains(clean)) return UI_TYPE_NUMBER;
         if (BOOLEAN_TYPES.contains(clean)) return UI_TYPE_BOOLEAN;
         if (STRING_TYPES.contains(clean)) return UI_TYPE_STRING;
+
+        // NEW: Check if it looks like an enum
+        if (isLikelyEnumType(clean)) return UI_TYPE_ENUM;
 
         return UI_TYPE_ANY;
     }
@@ -85,16 +108,23 @@ public class TypeManager {
         String qualifiedName = binding.getQualifiedName();
         String simpleName = binding.getName();
 
-        // NEW: Handle Switch Compatibility
+        // NEW: Handle Switch Compatibility - enums ARE allowed in switches
         if (targetUiType.equals(UI_TYPE_SWITCH_COMPATIBLE)) {
             if (binding.isArray()) return false;
-            // Blacklist check is safer for Enums (since we don't have a list of all enums)
+            // Enums are compatible with switches
+            if (binding.isEnum()) return true;
+            // Blacklist check for forbidden types
             return !SWITCH_FORBIDDEN_TYPES.contains(simpleName) &&
                     !SWITCH_FORBIDDEN_TYPES.contains(qualifiedName);
         }
 
         if (binding.isArray()) {
             return targetUiType.equals(UI_TYPE_LIST) || targetUiType.endsWith("[]");
+        }
+
+        // NEW: Enum type matching
+        if (targetUiType.equals(UI_TYPE_ENUM)) {
+            return binding.isEnum() || isLikelyEnumType(simpleName);
         }
 
         switch (targetUiType) {
@@ -118,14 +148,21 @@ public class TypeManager {
 
         String cleanType = typeName.trim();
 
-        // NEW: Handle Switch Compatibility
+        // NEW: Handle Switch Compatibility - enums ARE allowed
         if (targetUiType.equals(UI_TYPE_SWITCH_COMPATIBLE)) {
             if (cleanType.endsWith("[]") || cleanType.contains("ArrayList")) return false;
+            // Enums are switch-compatible
+            if (isLikelyEnumType(cleanType)) return true;
             return !SWITCH_FORBIDDEN_TYPES.contains(cleanType);
         }
 
         if (cleanType.endsWith("[]")) {
             return targetUiType.equals(UI_TYPE_LIST) || targetUiType.endsWith("[]");
+        }
+
+        // NEW: Enum type matching
+        if (targetUiType.equals(UI_TYPE_ENUM)) {
+            return isLikelyEnumType(cleanType);
         }
 
         switch (targetUiType) {
@@ -144,6 +181,7 @@ public class TypeManager {
     public static String getFriendlyTypeName(ITypeBinding typeBinding) {
         if (typeBinding == null) return "unknown";
         if (typeBinding.isArray()) return "list";
+        if (typeBinding.isEnum()) return "enum"; // NEW
         String name = typeBinding.getName();
         if (NUMBER_TYPES.contains(name)) return "number";
         if (STRING_TYPES.contains(name)) return "text";
@@ -151,7 +189,6 @@ public class TypeManager {
         return name;
     }
 
-    // ... [Rest of the file (toWrapperType, isPrimitive, etc.) remains unchanged] ...
     public static String toWrapperType(String typeName) {
         if (typeName == null) return typeName;
         switch (typeName) {
@@ -252,7 +289,7 @@ public class TypeManager {
             case "float": baseType = ast.newPrimitiveType(PrimitiveType.FLOAT); break;
             case "short": baseType = ast.newPrimitiveType(PrimitiveType.SHORT); break;
             case "byte": baseType = ast.newPrimitiveType(PrimitiveType.BYTE); break;
-            default: baseType = ast.newSimpleType(ast.newName(baseName)); break;
+            default: baseType = ast.newSimpleType(ast.newName(baseName)); break; // Includes enums and custom types
         }
         if (dimensions > 0) {
             return ast.newArrayType(baseType, dimensions);

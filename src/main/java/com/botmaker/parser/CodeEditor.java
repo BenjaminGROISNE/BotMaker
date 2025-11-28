@@ -8,6 +8,7 @@ import com.botmaker.events.EventBus;
 import com.botmaker.ui.AddableBlock;
 import com.botmaker.ui.AddableExpression;
 import org.eclipse.jdt.core.dom.*;
+import org.eclipse.jdt.core.dom.rewrite.ASTRewrite;
 
 import java.util.List;
 
@@ -170,12 +171,17 @@ public class CodeEditor {
         String newCode = astRewriter.deleteComment(getCurrentCode(), commentNode);
         triggerUpdate(newCode);
     }
-
-    public void replaceExpression(Expression toReplace, com.botmaker.ui.AddableExpression type) {
+    public void setVariableInitializer(VariableDeclarationStatement varDecl, AddableExpression type) {
+        blockFactory.setMarkNewIdentifiersAsUnedited(true);
+        String newCode = astRewriter.setVariableInitializer(getCompilationUnit(), getCurrentCode(), varDecl, type);
+        triggerUpdate(newCode);
+    }
+    public void replaceExpression(Expression toReplace, AddableExpression type) {
         blockFactory.setMarkNewIdentifiersAsUnedited(true);
         String newCode = astRewriter.replaceExpression(getCompilationUnit(), getCurrentCode(), toReplace, type);
         triggerUpdate(newCode);
     }
+
 
     public void addStatement(BodyBlock targetBody, AddableBlock type, int index) {
         blockFactory.setMarkNewIdentifiersAsUnedited(true);

@@ -243,6 +243,18 @@ public class BlockParser {
             for (Expression item : items) factory.parseExpression(item, map).ifPresent(b::addElement);
             return Optional.of(b);
         }
+        if (expr instanceof QualifiedName) {
+            QualifiedName qn = (QualifiedName) expr;
+            // Check if this is an enum constant reference
+            if (isEnumConstantReference(qn)) {
+                EnumConstantBlock b = new EnumConstantBlock(
+                        BlockIdPrefix.generate(BlockIdPrefix.ENUM_CONSTANT, expr),
+                        qn
+                );
+                map.put(expr, b);
+                return Optional.of(b);
+            }
+        }
         if (expr instanceof MethodInvocation) {
             MethodInvocation mi = (MethodInvocation) expr;
             MethodInvocationBlock block = new MethodInvocationBlock(BlockIdPrefix.generate("call_expr_", expr), expr);
@@ -281,7 +293,16 @@ public class BlockParser {
         }
         return Optional.empty();
     }
-
+    private boolean isEnumConstantReference(QualifiedName qn) {
+        // Check if the qualifier is a simple name (enum type) and name is uppercase (constant)
+        Name qualifier = qn.getQualifier();
+        if (qualifier instanceof SimpleName) {
+            String constantName = qn.getName().getIdentifier();
+            // Enum constants are typically uppercase
+            return constantName.equals(constantName.toUpperCase());
+        }
+        return false;
+    }
     private boolean isListStructure(Expression expr) {
         if (expr instanceof ArrayInitializer) return true;
         if (expr instanceof ClassInstanceCreation) {

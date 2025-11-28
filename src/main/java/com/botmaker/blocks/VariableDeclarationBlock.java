@@ -3,6 +3,7 @@ package com.botmaker.blocks;
 import com.botmaker.core.AbstractStatementBlock;
 import com.botmaker.core.ExpressionBlock;
 import com.botmaker.lsp.CompletionContext;
+import com.botmaker.ui.AddableExpression;
 import com.botmaker.ui.components.BlockUIComponents;
 import com.botmaker.ui.components.TextFieldComponents;
 import com.botmaker.util.TypeManager;
@@ -11,9 +12,10 @@ import javafx.scene.Cursor;
 import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.layout.HBox;
-import org.eclipse.jdt.core.dom.Type;
-import org.eclipse.jdt.core.dom.VariableDeclarationFragment;
-import org.eclipse.jdt.core.dom.VariableDeclarationStatement;
+import org.eclipse.jdt.core.dom.*;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import static com.botmaker.ui.components.BlockUIComponents.createTypeLabel;
 
@@ -38,7 +40,7 @@ public class VariableDeclarationBlock extends AbstractStatementBlock {
         // 1. Type Label with Menu
         Label typeLabel = createTypeLabel(getDisplayTypeName(variableType));
         typeLabel.setCursor(Cursor.HAND);
-        Tooltip.install(typeLabel, new Tooltip("Click to change type (ArrayList/Base)"));
+        Tooltip.install(typeLabel, new Tooltip("Click to change type"));
         typeLabel.setOnMouseClicked(e -> showTypeMenu(typeLabel, context));
 
         // 2. Name Field
@@ -52,15 +54,11 @@ public class VariableDeclarationBlock extends AbstractStatementBlock {
         // 3. Initializer Logic
         Node initNode;
         if (initializer != null) {
-            // FIX: Restored original priority logic
             if (initializer instanceof ListBlock) {
-                // Render ListBlock directly (it handles its own layout)
                 initNode = initializer.getUINode(context);
             } else if (initializer.getAstNode() instanceof org.eclipse.jdt.core.dom.ArrayInitializer) {
-                // Fallback for other array initializers (add bracket styling)
                 initNode = createListDisplay(context);
             } else {
-                // Standard expression
                 initNode = initializer.getUINode(context);
             }
         } else {
@@ -68,11 +66,45 @@ public class VariableDeclarationBlock extends AbstractStatementBlock {
         }
 
         // 4. Add Button
-        String uiTargetType = TypeManager.determineUiType(variableType.toString());
-        Button addButton = createAddButton(e ->
-                showExpressionMenuAndReplace((Button)e.getSource(), context, uiTargetType,
-                        initializer != null ? (org.eclipse.jdt.core.dom.Expression)initializer.getAstNode() : null)
-        );
+        String typeString = variableType.toString();
+        String uiTargetType = TypeManager.determineUiType(typeString);
+
+        // DEBUG OUTPUT
+        System.out.println("=== VARIABLE DECLARATION DEBUG ===");
+        System.out.println("Variable name: " + variableName);
+        System.out.println("Variable type string: " + typeString);
+        System.out.println("Determined UI type: " + uiTargetType);
+        System.out.println("Is likely enum: " + TypeManager.isLikelyEnumType(typeString));
+
+
+        Button addButton = createAddButton(e -> {
+            // Get the current initializer expression (or null)
+            Expression currentInitializer = null;
+            if (initializer != null) {
+                currentInitializer = (Expression) initializer.getAstNode();
+            } else {
+                // When there's no initializer, we need to get a reference to where it should go
+                VariableDeclarationFragment fragment = (VariableDeclarationFragment)
+                        ((VariableDeclarationStatement) this.astNode).fragments().get(0);
+                currentInitializer = fragment.getInitializer(); // This will also be null
+            }
+
+            // Create the menu
+            Expression finalCurrentInitializer = currentInitializer;
+            ContextMenu menu = BlockUIComponents.createExpressionTypeMenu(uiTargetType, type -> {
+                if (finalCurrentInitializer != null) {
+                    // Replace existing initializer
+                    context.codeEditor().replaceExpression(finalCurrentInitializer, type);
+                } else {
+                    // Set new initializer
+                    context.codeEditor().setVariableInitializer(
+                            (VariableDeclarationStatement) this.astNode,
+                            type
+                    );
+                }
+            });
+            menu.show((Button)e.getSource(), javafx.geometry.Side.BOTTOM, 0, 0);
+        });
 
         Node content = createSentence(
                 typeLabel,
@@ -93,6 +125,8 @@ public class VariableDeclarationBlock extends AbstractStatementBlock {
         String currentStr = variableType.toString();
         boolean isArrayListType = isArrayList(variableType);
         boolean isArray = variableType.isArrayType();
+        boolean isEnumType = isEnum(context);
+
         final String baseType = extractBaseType(currentStr, isArrayListType, isArray);
 
         // Toggle ArrayList
@@ -116,8 +150,8 @@ public class VariableDeclarationBlock extends AbstractStatementBlock {
 
         menu.getItems().add(new SeparatorMenuItem());
 
-        // Change Base Type
-        Menu changeBaseMenu = new Menu("Change Base Type");
+        // Change Base Type - Fundamental Types
+        Menu changeBaseMenu = new Menu("Change to Primitive Type");
         for (String type : TypeManager.getFundamentalTypeNames()) {
             MenuItem item = new MenuItem(type);
             item.setOnAction(e -> {
@@ -127,6 +161,22 @@ public class VariableDeclarationBlock extends AbstractStatementBlock {
             changeBaseMenu.getItems().add(item);
         }
         menu.getItems().add(changeBaseMenu);
+
+        // NEW: Change to Enum Type
+        List<String> availableEnums = getAvailableEnums(context);
+        if (!availableEnums.isEmpty()) {
+            Menu changeEnumMenu = new Menu("Change to Enum Type");
+            for (String enumName : availableEnums) {
+                MenuItem item = new MenuItem(enumName);
+                item.setOnAction(e -> {
+                    String newType = isArrayListType ? "ArrayList<" + enumName + ">" : enumName;
+                    context.codeEditor().replaceVariableType((VariableDeclarationStatement) this.astNode, newType);
+                });
+                changeEnumMenu.getItems().add(item);
+            }
+            menu.getItems().add(changeEnumMenu);
+        }
+
         menu.show(anchor, javafx.geometry.Side.BOTTOM, 0, 0);
     }
 
@@ -160,5 +210,67 @@ public class VariableDeclarationBlock extends AbstractStatementBlock {
 
     private boolean isArrayList(Type type) {
         return type.toString().startsWith("ArrayList");
+    }
+
+    // NEW: Check if current type is an enum
+    private boolean isEnum(CompletionContext context) {
+        String typeName = variableType.toString();
+        // Remove ArrayList wrapper if present
+        if (typeName.startsWith("ArrayList<") && typeName.endsWith(">")) {
+            typeName = typeName.substring(10, typeName.length() - 1);
+        }
+        return getAvailableEnums(context).contains(typeName);
+    }
+
+    // NEW: Get all available enum types from the compilation unit
+    private List<String> getAvailableEnums(CompletionContext context) {
+        List<String> enumNames = new ArrayList<>();
+
+        CompilationUnit cu = context.applicationState().getCompilationUnit().orElse(null);
+        if (cu == null) return enumNames;
+
+        // Get the main type declaration
+        if (!cu.types().isEmpty() && cu.types().getFirst() instanceof TypeDeclaration) {
+            TypeDeclaration typeDecl = (TypeDeclaration) cu.types().getFirst();
+
+            // Look through all body declarations for enums
+            for (Object obj : typeDecl.bodyDeclarations()) {
+                if (obj instanceof EnumDeclaration) {
+                    EnumDeclaration enumDecl = (EnumDeclaration) obj;
+                    enumNames.add(enumDecl.getName().getIdentifier());
+                }
+                // Also check for enums inside methods (local enums in the AST, even if invalid)
+                else if (obj instanceof MethodDeclaration) {
+                    MethodDeclaration method = (MethodDeclaration) obj;
+                    if (method.getBody() != null) {
+                        findLocalEnums(method.getBody(), enumNames);
+                    }
+                }
+            }
+        }
+        // Check if the root is itself an enum file
+        else if (!cu.types().isEmpty() && cu.types().get(0) instanceof EnumDeclaration) {
+            EnumDeclaration enumDecl = (EnumDeclaration) cu.types().get(0);
+            enumNames.add(enumDecl.getName().getIdentifier());
+        }
+
+        return enumNames;
+    }
+
+    // NEW: Recursively find local enum declarations in method bodies
+    private void findLocalEnums(ASTNode node, List<String> enumNames) {
+        if (node instanceof TypeDeclarationStatement) {
+            TypeDeclarationStatement tds = (TypeDeclarationStatement) node;
+            if (tds.getDeclaration() instanceof EnumDeclaration) {
+                EnumDeclaration enumDecl = (EnumDeclaration) tds.getDeclaration();
+                enumNames.add(enumDecl.getName().getIdentifier());
+            }
+        }
+        // Recursively search children
+        if (node instanceof Block) {
+            for (Object stmt : ((Block) node).statements()) {
+                findLocalEnums((ASTNode) stmt, enumNames);
+            }
+        }
     }
 }

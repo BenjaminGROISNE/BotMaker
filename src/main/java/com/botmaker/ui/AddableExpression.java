@@ -13,8 +13,11 @@ public enum AddableExpression {
     FALSE("False", "boolean"),
     VARIABLE("Variable", "any"),
 
-    // NEW: Function Call
-    FUNCTION_CALL("Function Call", "any"), // Can return anything
+    // Function Call
+    FUNCTION_CALL("Function Call", "any"),
+
+    // NEW: Enum Constant
+    ENUM_CONSTANT("Enum Value", "enum"),
 
     // Nested
     LIST("Sub-List", "list"),
@@ -42,18 +45,19 @@ public enum AddableExpression {
 
     public String getDisplayName() { return displayName; }
     public String getOperator() { return operator; }
+    public String getReturnType() { return returnType; }
 
     public static List<AddableExpression> getForType(String targetType) {
         if (targetType == null || targetType.equals("any")) {
             return Arrays.asList(values());
         }
 
-        // NEW: Filter for Switch Compatibility
+        // Filter for Switch Compatibility
         if (targetType.equals(TypeManager.UI_TYPE_SWITCH_COMPATIBLE)) {
             return Arrays.stream(values())
                     .filter(e -> {
-                        // Explicitly allow Variable, Text, Function Call
-                        if (e == VARIABLE || e == TEXT || e == FUNCTION_CALL) return true;
+                        // Explicitly allow Variable, Text, Function Call, Enum
+                        if (e == VARIABLE || e == TEXT || e == FUNCTION_CALL || e == ENUM_CONSTANT) return true;
 
                         // Allow Number (creates 0, which is an int, thus valid)
                         if (e == NUMBER) return true;
@@ -67,9 +71,17 @@ public enum AddableExpression {
                     .collect(Collectors.toList());
         }
 
+        // NEW: Handle enum type filtering
+        if (targetType.equals("enum")) {
+            return Arrays.stream(values())
+                    .filter(e -> e == ENUM_CONSTANT || e == VARIABLE || e == FUNCTION_CALL)
+                    .collect(Collectors.toList());
+        }
+
         return Arrays.stream(values())
                 .filter(e -> {
                     if (e.returnType.equals("any")) return true;
+                    if (e.returnType.equals("enum") && targetType.equals("enum")) return true;
                     return e.returnType.equals(targetType);
                 })
                 .collect(Collectors.toList());

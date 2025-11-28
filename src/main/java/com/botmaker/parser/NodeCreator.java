@@ -38,7 +38,14 @@ public class NodeCreator {
                 asList.setExpression(ast.newSimpleName("Arrays"));
                 asList.setName(ast.newSimpleName("asList"));
                 return asList;
-
+            case ENUM_CONSTANT:
+                // Create a default qualified name like MyEnum.OPTION_A
+                // Will be replaced by user selection
+                QualifiedName qn = ast.newQualifiedName(
+                        ast.newSimpleName("MyEnum"),
+                        ast.newSimpleName("OPTION_A")
+                );
+                return qn;
             case ADD:
             case SUBTRACT:
             case MULTIPLY:

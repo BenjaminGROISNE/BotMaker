@@ -89,7 +89,27 @@ public class AstRewriter {
         return applyRewrite(rewriter, originalCode);
     }
 
-    // In AstRewriter.java
+    public String setVariableInitializer(CompilationUnit cu, String originalCode,
+                                         VariableDeclarationStatement varDecl, AddableExpression type) {
+        AST ast = cu.getAST();
+        ASTRewrite rewriter = ASTRewrite.create(ast);
+
+        // Get the fragment
+        VariableDeclarationFragment fragment = (VariableDeclarationFragment) varDecl.fragments().get(0);
+
+        // Create the new expression
+        Expression newExpr = nodeCreator.createDefaultExpression(ast, type, cu, rewriter);
+        if (newExpr == null) return originalCode;
+
+        // Set or replace the initializer
+        if (fragment.getInitializer() == null) {
+            rewriter.set(fragment, VariableDeclarationFragment.INITIALIZER_PROPERTY, newExpr, null);
+        } else {
+            rewriter.replace(fragment.getInitializer(), newExpr, null);
+        }
+
+        return applyRewrite(rewriter, originalCode);
+    }
 
     public String addMethodToClass(CompilationUnit cu, String originalCode, TypeDeclaration typeDecl,
                                    String methodName, String returnType, int index) {

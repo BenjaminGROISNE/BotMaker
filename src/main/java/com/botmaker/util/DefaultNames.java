@@ -11,12 +11,20 @@ public class DefaultNames {
     public static final String DEFAULT_BOOLEAN = "flag";
     public static final String DEFAULT_STRING = "text";
     public static final String DEFAULT_VARIABLE = "variable";
+    public static final String DEFAULT_ENUM = "value"; // NEW
 
     // Method to get default name by type
     public static String forType(String typeName) {
         if (typeName == null) return DEFAULT_VARIABLE;
 
-        switch (typeName.toLowerCase()) {
+        String cleanType = typeName.trim();
+
+        // Handle ArrayList wrapper
+        if (cleanType.startsWith("ArrayList<") && cleanType.endsWith(">")) {
+            cleanType = cleanType.substring(10, cleanType.length() - 1);
+        }
+
+        switch (cleanType.toLowerCase()) {
             case "int":
             case "long":
             case "short":
@@ -30,8 +38,23 @@ public class DefaultNames {
             case "string":
                 return DEFAULT_STRING;
             default:
+                // NEW: If it looks like an enum (starts with uppercase), use enum default
+                if (TypeManager.isLikelyEnumType(cleanType)) {
+                    return DEFAULT_ENUM;
+                }
                 return DEFAULT_VARIABLE;
         }
+    }
+
+    // NEW: Get default name for enum type with the enum name as context
+    public static String forEnumType(String enumTypeName) {
+        if (enumTypeName == null || enumTypeName.isEmpty()) {
+            return DEFAULT_ENUM;
+        }
+        // Convert enum name to camelCase variable name
+        // e.g., "Color" -> "color", "DayOfWeek" -> "dayOfWeek"
+        String camelCase = Character.toLowerCase(enumTypeName.charAt(0)) + enumTypeName.substring(1);
+        return camelCase;
     }
 
     private DefaultNames() {} // Prevent instantiation
