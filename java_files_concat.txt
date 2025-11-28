@@ -517,7 +517,6 @@ import com.botmaker.lsp.CompletionContext;
 import com.botmaker.ui.BlockDragAndDropManager;
 import javafx.geometry.Insets;
 import javafx.scene.Node;
-import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
@@ -529,7 +528,8 @@ import java.util.List;
 public class ClassBlock extends AbstractCodeBlock implements BlockWithChildren {
 
     private final String className;
-    private final List<MethodDeclarationBlock> methods = new ArrayList<>();
+    // FIX: Must accept generic CodeBlock to support Enums
+    private final List<CodeBlock> bodyDeclarations = new ArrayList<>();
     private final BlockDragAndDropManager dragAndDropManager;
 
     public ClassBlock(String id, TypeDeclaration astNode, BlockDragAndDropManager manager) {
@@ -538,17 +538,13 @@ public class ClassBlock extends AbstractCodeBlock implements BlockWithChildren {
         this.dragAndDropManager = manager;
     }
 
-    public void addMethod(MethodDeclarationBlock method) {
-        methods.add(method);
-    }
-
-    public List<MethodDeclarationBlock> getMethods() {
-        return new ArrayList<>(methods);
+    public void addBodyDeclaration(CodeBlock block) {
+        bodyDeclarations.add(block);
     }
 
     @Override
     public List<CodeBlock> getChildren() {
-        return new ArrayList<>(methods);
+        return new ArrayList<>(bodyDeclarations);
     }
 
     @Override
@@ -557,7 +553,6 @@ public class ClassBlock extends AbstractCodeBlock implements BlockWithChildren {
         container.getStyleClass().add("class-block");
         container.setPadding(new Insets(15));
 
-        // Better styling with visible borders
         container.setStyle(
                 "-fx-background-color: linear-gradient(to bottom, #ecf0f1 0%, #bdc3c7 100%);" +
                         "-fx-border-color: #34495e;" +
@@ -566,43 +561,29 @@ public class ClassBlock extends AbstractCodeBlock implements BlockWithChildren {
                         "-fx-background-radius: 10px;"
         );
 
-        // Header with better contrast
         Label header = new Label("Class: " + className);
-        header.setStyle(
-                "-fx-font-size: 20px;" +
-                        "-fx-font-weight: bold;" +
-                        "-fx-text-fill: #2c3e50;" +
-                        "-fx-padding: 0 0 15 0;" +
-                        "-fx-border-width: 0 0 2 0;" +
-                        "-fx-border-color: #34495e;"
-        );
+        header.setStyle("-fx-font-size: 20px; -fx-font-weight: bold; -fx-text-fill: #2c3e50; -fx-padding: 0 0 15 0;");
         container.getChildren().add(header);
 
-        // Top separator with drag-and-drop
-        Region topSeparator = createMethodSeparator(context, 0);
-        container.getChildren().add(topSeparator);
+        // Top separator
+        container.getChildren().add(createClassMemberSeparator(context, 0));
 
-        // Methods with separators between them
-        for (int i = 0; i < methods.size(); i++) {
-            MethodDeclarationBlock method = methods.get(i);
-            container.getChildren().add(method.getUINode(context));
-
-            // Separator after each method
-            final int insertIndex = i + 1;
-            Region separator = createMethodSeparator(context, insertIndex);
-            container.getChildren().add(separator);
+        // FIX: Ensure this loop adds the UI Node of every child (Method OR Enum)
+        for (int i = 0; i < bodyDeclarations.size(); i++) {
+            CodeBlock block = bodyDeclarations.get(i);
+            container.getChildren().add(block.getUINode(context));
+            container.getChildren().add(createClassMemberSeparator(context, i + 1));
         }
 
         return container;
     }
 
-    private Region createMethodSeparator(CompletionContext context, int insertIndex) {
+    private Region createClassMemberSeparator(CompletionContext context, int insertIndex) {
         Region separator = new Region();
-        separator.setMinHeight(30); // Increased for better visibility
+        separator.setMinHeight(30);
         separator.setMaxHeight(30);
         separator.getStyleClass().add("method-separator");
 
-        // Visible styling
         separator.setStyle(
                 "-fx-background-color: rgba(52, 73, 94, 0.15);" +
                         "-fx-border-color: rgba(52, 73, 94, 0.4);" +
@@ -611,52 +592,16 @@ public class ClassBlock extends AbstractCodeBlock implements BlockWithChildren {
                         "-fx-cursor: hand;"
         );
 
-        // Add drag-and-drop handlers
-        context.dragAndDropManager().addMethodDeclarationDropHandlers(
+        context.dragAndDropManager().addClassMemberDropHandlers(
                 separator,
                 this,
                 insertIndex
         );
 
-        // Visual feedback on hover
-        separator.setOnMouseEntered(e -> {
-            separator.setStyle(
-                    "-fx-background-color: rgba(142, 68, 173, 0.3);" +
-                            "-fx-border-color: #8E44AD;" +
-                            "-fx-border-width: 3px 0 3px 0;" +
-                            "-fx-border-style: solid;" +
-                            "-fx-cursor: hand;"
-            );
-        });
-
-        separator.setOnMouseExited(e -> {
-            separator.setStyle(
-                    "-fx-background-color: rgba(52, 73, 94, 0.15);" +
-                            "-fx-border-color: rgba(52, 73, 94, 0.4);" +
-                            "-fx-border-width: 2px 0 2px 0;" +
-                            "-fx-border-style: dashed;" +
-                            "-fx-cursor: hand;"
-            );
-        });
-
-        // FIXED: Add click handler for quick method addition
-        separator.setOnMouseClicked(e -> {
-            if (e.getClickCount() == 2) { // Double-click to add method
-                addNewMethod(context, insertIndex);
-            }
-        });
+        separator.setOnMouseEntered(e -> separator.setStyle("-fx-background-color: rgba(142, 68, 173, 0.3); -fx-border-color: #8E44AD; -fx-border-width: 3px 0 3px 0; -fx-border-style: solid;"));
+        separator.setOnMouseExited(e -> separator.setStyle("-fx-background-color: rgba(52, 73, 94, 0.15); -fx-border-color: rgba(52, 73, 94, 0.4); -fx-border-width: 2px 0 2px 0; -fx-border-style: dashed;"));
 
         return separator;
-    }
-
-    private void addNewMethod(CompletionContext context, int index) {
-        System.out.println("DEBUG: Adding method at index " + index); // DEBUG
-        context.codeEditor().addMethodToClass(
-                (TypeDeclaration) this.astNode,
-                "newMethod",
-                "void",
-                index
-        );
     }
 }
 
@@ -886,6 +831,151 @@ public class ContinueBlock extends AbstractStatementBlock {
     protected Node createUINode(CompletionContext context) {
         HBox container = createStandardHeader(context, createKeywordLabel("continue"));
         container.getStyleClass().add("continue-block");
+        return container;
+    }
+}
+
+
+=================================================================================
+FILE: rs\bgroi\Documents\dev\IntellijProjects\BotMaker\src\main\java\com\botmaker\blocks\DeclareEnumBlock.java
+=================================================================================
+
+package com.botmaker.blocks;
+
+import com.botmaker.core.AbstractStatementBlock;
+import com.botmaker.lsp.CompletionContext;
+import com.botmaker.ui.components.BlockUIComponents;
+import com.botmaker.ui.components.TextFieldComponents;
+import javafx.geometry.Pos;
+import javafx.scene.Node;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
+import org.eclipse.jdt.core.dom.*;
+
+import java.util.ArrayList;
+import java.util.List;
+
+public class DeclareEnumBlock extends AbstractStatementBlock {
+
+    private final String enumName;
+    private final List<String> constants;
+    private final EnumDeclaration enumDeclaration;
+    private final boolean isStatement;
+
+    // Constructor 1: Inside a Method (Wrapped in TypeDeclarationStatement)
+    public DeclareEnumBlock(String id, TypeDeclarationStatement astNode) {
+        super(id, astNode);
+        if (astNode.getDeclaration() instanceof EnumDeclaration) {
+            this.enumDeclaration = (EnumDeclaration) astNode.getDeclaration();
+            this.isStatement = true;
+        } else {
+            throw new IllegalArgumentException("Statement is not an EnumDeclaration");
+        }
+        this.enumName = enumDeclaration.getName().getIdentifier();
+        this.constants = extractConstants(enumDeclaration);
+    }
+
+    // Constructor 2: Inside a Class (Raw EnumDeclaration)
+    public DeclareEnumBlock(String id, EnumDeclaration astNode) {
+        super(id, astNode);
+        this.enumDeclaration = astNode;
+        this.isStatement = false;
+        this.enumName = astNode.getName().getIdentifier();
+        this.constants = extractConstants(astNode);
+    }
+
+    private List<String> extractConstants(EnumDeclaration decl) {
+        List<String> list = new ArrayList<>();
+        if (decl.enumConstants() != null) {
+            for (Object obj : decl.enumConstants()) {
+                if (obj instanceof EnumConstantDeclaration) {
+                    list.add(((EnumConstantDeclaration) obj).getName().getIdentifier());
+                }
+            }
+        }
+        return list;
+    }
+
+    @Override
+    protected Node createUINode(CompletionContext context) {
+        VBox container = new VBox(5);
+        container.getStyleClass().add("enum-block");
+        // Explicit styling to ensure visibility
+        container.setStyle("-fx-background-color: #e67e22; -fx-background-radius: 8; -fx-padding: 8; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.2), 5, 0, 0, 2);");
+
+        // --- Header ---
+        HBox headerContent = new HBox(8);
+        headerContent.setAlignment(Pos.CENTER_LEFT);
+
+        Label label = BlockUIComponents.createKeywordLabel("Enum");
+        label.setStyle("-fx-text-fill: white; -fx-font-weight: bold;");
+
+        TextField nameField = TextFieldComponents.createVariableNameField(enumName, newName -> {
+            if (!newName.equals(enumName) && !newName.isEmpty()) {
+                context.codeEditor().renameEnum(enumDeclaration, newName);
+            }
+        });
+
+        Button addConstantBtn = new Button("+ Add Value");
+        addConstantBtn.getStyleClass().add("expression-add-button");
+        addConstantBtn.setOnAction(e -> context.codeEditor().addEnumConstant(enumDeclaration, "NEW_VALUE"));
+
+        headerContent.getChildren().addAll(label, nameField, addConstantBtn);
+
+        // Delete Logic: Differentiate between Statement (Method) and Declaration (Class)
+        Runnable deleteAction = () -> {
+            if (isStatement) {
+                // Inside method: cast astNode to Statement
+                context.codeEditor().deleteStatement((Statement) this.astNode);
+            } else {
+                // Inside class: remove the declaration
+                context.codeEditor().deleteEnumFromClass(enumDeclaration);
+            }
+        };
+
+        // Create the full header row (Content + Spacer + Delete Button)
+        HBox headerRow = BlockUIComponents.createHeaderRow(deleteAction, headerContent);
+        container.getChildren().add(headerRow);
+
+        // --- Constants List ---
+        if (!constants.isEmpty()) {
+            VBox constantsBox = new VBox(4);
+            constantsBox.setStyle("-fx-padding: 5 0 5 20;");
+
+            for (int i = 0; i < constants.size(); i++) {
+                String constant = constants.get(i);
+                final int index = i;
+
+                HBox row = new HBox(5);
+                row.setAlignment(Pos.CENTER_LEFT);
+
+                TextField constField = new TextField(constant);
+                constField.getStyleClass().add("variable-name-field");
+                constField.setPrefWidth(120);
+                constField.setStyle("-fx-background-color: rgba(255,255,255,0.9); -fx-text-fill: #333; -fx-background-radius: 4;");
+
+                constField.focusedProperty().addListener((obs, oldVal, newVal) -> {
+                    if (!newVal) {
+                        String val = constField.getText();
+                        if (!val.equals(constant) && !val.isEmpty()) {
+                            context.codeEditor().renameEnumConstant(enumDeclaration, index, val);
+                        }
+                    }
+                });
+
+                Button deleteBtn = new Button("×");
+                deleteBtn.setStyle("-fx-background-color: transparent; -fx-text-fill: white; -fx-font-weight: bold; -fx-cursor: hand; -fx-font-size: 14px;");
+                deleteBtn.setOnAction(e -> context.codeEditor().deleteEnumConstant(enumDeclaration, index));
+
+                row.getChildren().addAll(constField, deleteBtn);
+                constantsBox.getChildren().add(row);
+            }
+            container.getChildren().add(constantsBox);
+        }
+
         return container;
     }
 }
@@ -4617,6 +4707,7 @@ import com.botmaker.ui.AddableBlock;
 import com.botmaker.ui.BlockDragAndDropManager;
 import com.botmaker.ui.UIManager;
 import com.botmaker.util.BlockLookupHelper;
+import org.eclipse.jdt.core.dom.TypeDeclaration;
 
 public class AppServiceInitializer {
 
@@ -4643,22 +4734,27 @@ public class AppServiceInitializer {
                                                   CodeEditorService editorService,
                                                   ApplicationState state) {
         // Handle adding new blocks
+// ... inside setupDragAndDropCallbacks ...
         manager.setCallback(dropInfo -> {
-            // ADDED: Check if this is a method declaration drop
-            if (dropInfo.type() == AddableBlock.METHOD_DECLARATION && dropInfo.targetClass() != null) {
-                // Add method to class
-                editorService.getCodeEditor().addMethodToClass(
-                        (org.eclipse.jdt.core.dom.TypeDeclaration) dropInfo.targetClass().getAstNode(),
-                        "newMethod",
-                        "void",
-                        dropInfo.insertionIndex()
-                );
-            } else if (dropInfo.targetBody() != null) {
-                // Regular statement drop
+            // Check if dropping into a CLASS
+            if (dropInfo.targetClass() != null) {
+                if (dropInfo.type() == AddableBlock.METHOD_DECLARATION) {
+                    editorService.getCodeEditor().addMethodToClass(
+                            (TypeDeclaration) dropInfo.targetClass().getAstNode(),
+                            "newMethod", "void", dropInfo.insertionIndex()
+                    );
+                }
+                else if (dropInfo.type() == AddableBlock.DECLARE_ENUM) {
+                    editorService.getCodeEditor().addEnumToClass(
+                            (TypeDeclaration) dropInfo.targetClass().getAstNode(),
+                            "NewEnum", dropInfo.insertionIndex()
+                    );
+                }
+            }
+            // Check if dropping into a BODY (Method)
+            else if (dropInfo.targetBody() != null) {
                 editorService.getCodeEditor().addStatement(
-                        dropInfo.targetBody(),
-                        dropInfo.type(),
-                        dropInfo.insertionIndex()
+                        dropInfo.targetBody(), dropInfo.type(), dropInfo.insertionIndex()
                 );
             }
         });
@@ -7464,6 +7560,73 @@ public class AstRewriter {
         return applyRewrite(rewriter, originalCode);
     }
 
+    public String addEnumToClass(CompilationUnit cu, String originalCode, TypeDeclaration typeDecl, String enumName, int index) {
+        AST ast = cu.getAST();
+        ASTRewrite rewriter = ASTRewrite.create(ast);
+
+        EnumDeclaration newEnum = ast.newEnumDeclaration();
+        newEnum.setName(ast.newSimpleName(enumName));
+        newEnum.modifiers().add(ast.newModifier(Modifier.ModifierKeyword.PUBLIC_KEYWORD));
+
+        // Add default values
+        EnumConstantDeclaration const1 = ast.newEnumConstantDeclaration();
+        const1.setName(ast.newSimpleName("OPTION_A"));
+        newEnum.enumConstants().add(const1);
+
+        ListRewrite listRewrite = rewriter.getListRewrite(typeDecl, TypeDeclaration.BODY_DECLARATIONS_PROPERTY);
+        listRewrite.insertAt(newEnum, index, null);
+
+        return applyRewrite(rewriter, originalCode);
+    }
+
+    public String deleteEnumFromClass(CompilationUnit cu, String originalCode, EnumDeclaration enumDecl) {
+        ASTRewrite rewriter = ASTRewrite.create(cu.getAST());
+        rewriter.remove(enumDecl, null);
+        return applyRewrite(rewriter, originalCode);
+    }
+
+    public String renameEnum(CompilationUnit cu, String originalCode, EnumDeclaration enumNode, String newName) {
+        AST ast = cu.getAST();
+        ASTRewrite rewriter = ASTRewrite.create(ast);
+        rewriter.replace(enumNode.getName(), ast.newSimpleName(newName), null);
+        return applyRewrite(rewriter, originalCode);
+    }
+
+    public String addEnumConstant(CompilationUnit cu, String originalCode, EnumDeclaration enumNode, String constantName) {
+        AST ast = cu.getAST();
+        ASTRewrite rewriter = ASTRewrite.create(ast);
+        ListRewrite listRewrite = rewriter.getListRewrite(enumNode, EnumDeclaration.ENUM_CONSTANTS_PROPERTY);
+
+        EnumConstantDeclaration newConst = ast.newEnumConstantDeclaration();
+        newConst.setName(ast.newSimpleName(constantName));
+
+        listRewrite.insertLast(newConst, null);
+        return applyRewrite(rewriter, originalCode);
+    }
+
+    public String deleteEnumConstant(CompilationUnit cu, String originalCode, EnumDeclaration enumNode, int index) {
+        ASTRewrite rewriter = ASTRewrite.create(cu.getAST());
+        ListRewrite listRewrite = rewriter.getListRewrite(enumNode, EnumDeclaration.ENUM_CONSTANTS_PROPERTY);
+        List<?> constants = enumNode.enumConstants();
+
+        if (index >= 0 && index < constants.size()) {
+            listRewrite.remove((ASTNode) constants.get(index), null);
+        }
+        return applyRewrite(rewriter, originalCode);
+    }
+
+    public String renameEnumConstant(CompilationUnit cu, String originalCode, EnumDeclaration enumNode, int index, String newName) {
+        AST ast = cu.getAST();
+        ASTRewrite rewriter = ASTRewrite.create(ast);
+        List<?> constants = enumNode.enumConstants();
+
+        if (index >= 0 && index < constants.size()) {
+            EnumConstantDeclaration constDecl = (EnumConstantDeclaration) constants.get(index);
+            rewriter.replace(constDecl.getName(), ast.newSimpleName(newName), null);
+        }
+        return applyRewrite(rewriter, originalCode);
+    }
+
     public String addCaseToSwitch(CompilationUnit cu, String originalCode, SwitchStatement switchStmt) {
         AST ast = cu.getAST();
         ASTRewrite rewriter = ASTRewrite.create(ast);
@@ -7604,7 +7767,6 @@ public class BlockFactory {
     private boolean markNewIdentifiersAsUnedited = false;
     private BlockParser blockParser;
 
-
     public AbstractCodeBlock convert(String javaCode, Map<ASTNode, CodeBlock> nodeToBlockMap, BlockDragAndDropManager manager) {
         this.currentSourceCode = javaCode;
         this.blockParser = new BlockParser(this, manager, markNewIdentifiersAsUnedited);
@@ -7625,52 +7787,76 @@ public class BlockFactory {
 
             if (ast.types().isEmpty()) return null;
 
-            TypeDeclaration typeDecl = (TypeDeclaration) ast.types().get(0);
+            AbstractTypeDeclaration rootNode = (AbstractTypeDeclaration) ast.types().get(0);
 
-            // Create ClassBlock for the top-level class
-            ClassBlock classBlock = new ClassBlock(
-                    BlockIdPrefix.generate(BlockIdPrefix.CLASS, typeDecl),
-                    typeDecl,
-                    manager
-            );
-            nodeToBlockMap.put(typeDecl, classBlock);
+            // --- CASE A: Standard Class File ---
+            if (rootNode instanceof TypeDeclaration) {
+                TypeDeclaration typeDecl = (TypeDeclaration) rootNode;
 
-            // Parse all methods
-            for (MethodDeclaration method : typeDecl.getMethods()) {
-                MethodDeclarationBlock methodBlock;
+                ClassBlock classBlock = new ClassBlock(
+                        BlockIdPrefix.generate(BlockIdPrefix.CLASS, typeDecl),
+                        typeDecl,
+                        manager
+                );
+                nodeToBlockMap.put(typeDecl, classBlock);
 
-                // Check if this is the main method
-                if (isMainMethod(method)) {
-                    methodBlock = new MainBlock(
-                            BlockIdPrefix.generate(BlockIdPrefix.METHOD, method),
-                            method,
-                            manager
-                    );
-                } else {
-                    methodBlock = new MethodDeclarationBlock(
-                            BlockIdPrefix.generate(BlockIdPrefix.METHOD, method),
-                            method,
-                            manager
-                    );
+                // Iterate over ALL body declarations (Methods AND Inner Enums)
+                for (Object obj : typeDecl.bodyDeclarations()) {
+
+                    // 1. Handle Methods
+                    if (obj instanceof MethodDeclaration) {
+                        MethodDeclaration method = (MethodDeclaration) obj;
+                        MethodDeclarationBlock methodBlock;
+
+                        if (isMainMethod(method)) {
+                            methodBlock = new MainBlock(
+                                    BlockIdPrefix.generate(BlockIdPrefix.METHOD, method),
+                                    method,
+                                    manager
+                            );
+                        } else {
+                            methodBlock = new MethodDeclarationBlock(
+                                    BlockIdPrefix.generate(BlockIdPrefix.METHOD, method),
+                                    method,
+                                    manager
+                            );
+                        }
+
+                        nodeToBlockMap.put(method, methodBlock);
+
+                        if (method.getBody() != null) {
+                            methodBlock.setBody(parseBodyBlock(method.getBody(), nodeToBlockMap, manager));
+                        }
+
+                        classBlock.addBodyDeclaration(methodBlock);
+                    }
+
+                    // 2. Handle Inner Enums (FIX: Ensure this logic exists here)
+                    else if (obj instanceof EnumDeclaration) {
+                        EnumDeclaration enumDecl = (EnumDeclaration) obj;
+                        DeclareEnumBlock enumBlock = new DeclareEnumBlock(
+                                BlockIdPrefix.generate(BlockIdPrefix.ENUM, enumDecl),
+                                enumDecl // Uses the Constructor for Class Members
+                        );
+                        nodeToBlockMap.put(enumDecl, enumBlock);
+                        classBlock.addBodyDeclaration(enumBlock);
+                    }
                 }
 
-                nodeToBlockMap.put(method, methodBlock);
-
-                // Parse method body
-                if (method.getBody() != null) {
-                    methodBlock.setBody(parseBodyBlock(method.getBody(), nodeToBlockMap, manager));
-                }
-
-                classBlock.addMethod(methodBlock);
+                return classBlock;
             }
+            return null;
 
-            return classBlock;
-
+        } catch (Exception e) {
+            System.err.println("Critical error in BlockFactory.convert: " + e.getMessage());
+            e.printStackTrace();
+            return null;
         } finally {
             setMarkNewIdentifiersAsUnedited(false);
         }
     }
 
+    // ... (rest of the file remains exactly the same as provided: isMainMethod, parseBodyBlock, etc.)
     private boolean isMainMethod(MethodDeclaration method) {
         if (!"main".equals(method.getName().getIdentifier())) return false;
         if (!Modifier.isStatic(method.getModifiers())) return false;
@@ -7679,22 +7865,9 @@ public class BlockFactory {
         return true;
     }
 
-    private MethodDeclaration findMainMethod(TypeDeclaration type) {
-        for (MethodDeclaration method : type.getMethods()) {
-            if ("main".equals(method.getName().getIdentifier()) &&
-                    Modifier.isStatic(method.getModifiers()) &&
-                    method.parameters().size() == 1) { // Simplified check
-                return method;
-            }
-        }
-        return null;
-    }
-
-    // ... (Existing parseBodyBlock, parseStatement, etc. remain exactly the same) ...
     public void setMarkNewIdentifiersAsUnedited(boolean mark) { this.markNewIdentifiersAsUnedited = mark; }
+
     public BodyBlock parseBodyBlock(Block astBlock, Map<ASTNode, CodeBlock> nodeToBlockMap, BlockDragAndDropManager manager) {
-        // [Existing implementation...]
-        // COPY YOUR PREVIOUS IMPLEMENTATION HERE
         BodyBlock bodyBlock = new BodyBlock(BlockIdPrefix.generate(BlockIdPrefix.BODY, astBlock), astBlock, manager);
         nodeToBlockMap.put(astBlock, bodyBlock);
 
@@ -7702,7 +7875,8 @@ public class BlockFactory {
         for (Object statementObj : astBlock.statements()) {
             blockParser.parseStatement((Statement) statementObj, nodeToBlockMap).ifPresent(allChildren::add);
         }
-        // [Comment handling logic...]
+
+        // Comment merging logic
         int blockStart = astBlock.getStartPosition() + 1;
         int blockEnd = astBlock.getStartPosition() + astBlock.getLength() - 1;
 
@@ -7730,8 +7904,6 @@ public class BlockFactory {
         return bodyBlock;
     }
 
-    // ... Copy parseStatement, parseExpression, parseCommentBlock, isPrintStatement, isReadInputStatement, getCompilationUnit
-    // NO CHANGES NEEDED TO THEM
     public Optional<StatementBlock> parseStatement(Statement stmt, Map<ASTNode, CodeBlock> map, BlockDragAndDropManager manager) {
         return blockParser.parseStatement(stmt, map);
     }
@@ -7813,6 +7985,8 @@ public class BlockIdPrefix {
     // In BlockIdPrefix.java
     public static final String CLASS = "class_";
     public static final String METHOD = "method_";
+    public static final String ENUM = "enum_";
+
     private BlockIdPrefix() {} // Prevent instantiation
 
     /**
@@ -7856,19 +8030,28 @@ public class BlockParser {
     }
 
     public Optional<StatementBlock> parseStatement(Statement stmt, Map<ASTNode, CodeBlock> map) {
-        if (stmt instanceof Block) return Optional.of(factory.parseBodyBlock((Block) stmt, map, manager));
-        if (stmt instanceof VariableDeclarationStatement) return parseVariableDecl((VariableDeclarationStatement) stmt, map);
-        if (stmt instanceof IfStatement) return parseIf((IfStatement) stmt, map);
-        if (stmt instanceof WhileStatement) return parseWhile((WhileStatement) stmt, map);
-        if (stmt instanceof EnhancedForStatement) return parseFor((EnhancedForStatement) stmt, map);
-        if (stmt instanceof DoStatement) return parseDoWhile((DoStatement) stmt, map);
-        if (stmt instanceof SwitchStatement) return parseSwitch((SwitchStatement) stmt, map);
-        if (stmt instanceof BreakStatement) return Optional.of(new BreakBlock(BlockIdPrefix.generate(BlockIdPrefix.BREAK, stmt), (BreakStatement) stmt));
-        if (stmt instanceof ContinueStatement) return Optional.of(new ContinueBlock(BlockIdPrefix.generate(BlockIdPrefix.CONTINUE, stmt), (ContinueStatement) stmt));
-        if (stmt instanceof ReturnStatement) return parseReturn((ReturnStatement) stmt, map);
-        if (stmt instanceof TryStatement) return parseTry((TryStatement) stmt, map);
-        if (stmt instanceof ExpressionStatement) return parseExprStmt((ExpressionStatement) stmt, map);
+        try {
+            if (stmt instanceof Block) return Optional.of(factory.parseBodyBlock((Block) stmt, map, manager));
 
+            // --- NEW: Handle Local Enums ---
+            if (stmt instanceof TypeDeclarationStatement) return parseTypeDeclaration((TypeDeclarationStatement) stmt, map);
+
+            if (stmt instanceof VariableDeclarationStatement) return parseVariableDecl((VariableDeclarationStatement) stmt, map);
+            if (stmt instanceof IfStatement) return parseIf((IfStatement) stmt, map);
+            if (stmt instanceof WhileStatement) return parseWhile((WhileStatement) stmt, map);
+            if (stmt instanceof EnhancedForStatement) return parseFor((EnhancedForStatement) stmt, map);
+            if (stmt instanceof DoStatement) return parseDoWhile((DoStatement) stmt, map);
+            if (stmt instanceof SwitchStatement) return parseSwitch((SwitchStatement) stmt, map);
+            if (stmt instanceof BreakStatement) return Optional.of(new BreakBlock(BlockIdPrefix.generate(BlockIdPrefix.BREAK, stmt), (BreakStatement) stmt));
+            if (stmt instanceof ContinueStatement) return Optional.of(new ContinueBlock(BlockIdPrefix.generate(BlockIdPrefix.CONTINUE, stmt), (ContinueStatement) stmt));
+            if (stmt instanceof ReturnStatement) return parseReturn((ReturnStatement) stmt, map);
+            if (stmt instanceof TryStatement) return parseTry((TryStatement) stmt, map);
+            if (stmt instanceof ExpressionStatement) return parseExprStmt((ExpressionStatement) stmt, map);
+
+        } catch (Exception e) {
+            System.err.println("Error parsing statement: " + stmt);
+            e.printStackTrace();
+        }
         return Optional.empty();
     }
 
@@ -7879,6 +8062,17 @@ public class BlockParser {
             factory.parseExpression(stmt.getExpression(), map).ifPresent(block::setExpression);
         }
         return Optional.of(block);
+    }
+
+
+    private Optional<StatementBlock> parseTypeDeclaration(TypeDeclarationStatement stmt, Map<ASTNode, CodeBlock> map) {
+        // Check if the declaration inside the statement is an Enum
+        if (stmt.getDeclaration() instanceof EnumDeclaration) {
+            DeclareEnumBlock block = new DeclareEnumBlock(BlockIdPrefix.generate(BlockIdPrefix.ENUM, stmt), stmt);
+            map.put(stmt, block);
+            return Optional.of(block);
+        }
+        return Optional.empty();
     }
 
     private Optional<StatementBlock> parseExprStmt(ExpressionStatement stmt, Map<ASTNode, CodeBlock> map) {
@@ -8016,9 +8210,9 @@ public class BlockParser {
         if (isWait(stmt)) {
             WaitBlock block = new WaitBlock(BlockIdPrefix.generate(BlockIdPrefix.WAIT, stmt), stmt);
             map.put(stmt, block);
-            Statement inner = (Statement) stmt.getBody().statements().get(0);
+            Statement inner = (Statement) stmt.getBody().statements().getFirst();
             MethodInvocation mi = (MethodInvocation) ((ExpressionStatement) inner).getExpression();
-            if (!mi.arguments().isEmpty()) factory.parseExpression((Expression) mi.arguments().get(0), map).ifPresent(block::setDuration);
+            if (!mi.arguments().isEmpty()) factory.parseExpression((Expression) mi.arguments().getFirst(), map).ifPresent(block::setDuration);
             return Optional.of(block);
         }
         return Optional.empty();
@@ -8182,7 +8376,25 @@ public class CodeEditor {
         triggerUpdate(newCode);
     }
 
-    // In CodeEditor.java
+    public void renameEnum(EnumDeclaration enumNode, String newName) {
+        String newCode = astRewriter.renameEnum(getCompilationUnit(), getCurrentCode(), enumNode, newName);
+        triggerUpdate(newCode);
+    }
+
+    public void addEnumConstant(EnumDeclaration enumNode, String constantName) {
+        String newCode = astRewriter.addEnumConstant(getCompilationUnit(), getCurrentCode(), enumNode, constantName);
+        triggerUpdate(newCode);
+    }
+
+    public void deleteEnumConstant(EnumDeclaration enumNode, int index) {
+        String newCode = astRewriter.deleteEnumConstant(getCompilationUnit(), getCurrentCode(), enumNode, index);
+        triggerUpdate(newCode);
+    }
+
+    public void renameEnumConstant(EnumDeclaration enumNode, int index, String newName) {
+        String newCode = astRewriter.renameEnumConstant(getCompilationUnit(), getCurrentCode(), enumNode, index, newName);
+        triggerUpdate(newCode);
+    }
 
     public void addMethodToClass(TypeDeclaration typeDecl, String methodName, String returnType, int index) {
         blockFactory.setMarkNewIdentifiersAsUnedited(true);
@@ -8245,6 +8457,17 @@ public class CodeEditor {
     public void addElementToList(ASTNode listNode, AddableExpression type, int insertIndex) {
         blockFactory.setMarkNewIdentifiersAsUnedited(true);
         String newCode = astRewriter.addElementToList(getCompilationUnit(), getCurrentCode(), listNode, type, insertIndex);
+        triggerUpdate(newCode);
+    }
+
+    public void addEnumToClass(TypeDeclaration typeDecl, String enumName, int index) {
+        blockFactory.setMarkNewIdentifiersAsUnedited(true);
+        String newCode = astRewriter.addEnumToClass(getCompilationUnit(), getCurrentCode(), typeDecl, enumName, index);
+        triggerUpdate(newCode);
+    }
+
+    public void deleteEnumFromClass(EnumDeclaration enumDecl) {
+        String newCode = astRewriter.deleteEnumFromClass(getCompilationUnit(), getCurrentCode(), enumDecl);
         triggerUpdate(newCode);
     }
 
@@ -8585,7 +8808,20 @@ public class NodeCreator {
             case RETURN: return ast.newReturnStatement();
 
             case COMMENT: return ast.newEmptyStatement();
+            case DECLARE_ENUM:
+                TypeDeclarationStatement typeDeclStmt = ast.newTypeDeclarationStatement(ast.newEnumDeclaration());
+                EnumDeclaration enumDecl = (EnumDeclaration) typeDeclStmt.getDeclaration();
+                enumDecl.setName(ast.newSimpleName("MyEnum"));
 
+                EnumConstantDeclaration const1 = ast.newEnumConstantDeclaration();
+                const1.setName(ast.newSimpleName("OPTION_A"));
+                enumDecl.enumConstants().add(const1);
+
+                EnumConstantDeclaration const2 = ast.newEnumConstantDeclaration();
+                const2.setName(ast.newSimpleName("OPTION_B"));
+                enumDecl.enumConstants().add(const2);
+
+                return typeDeclStmt;
             case ASSIGNMENT:
                 Assignment assignment = ast.newAssignment();
                 assignment.setLeftHandSide(ast.newSimpleName(DefaultNames.DEFAULT_VARIABLE));
@@ -10935,7 +11171,7 @@ public enum AddableBlock {
     // --- FUNCTIONS ---
     FUNCTION_CALL("Call Function", MethodInvocationBlock.class, BlockCategory.FUNCTIONS), // MOVED HERE
     METHOD_DECLARATION("Declare Function", MethodDeclarationBlock.class, BlockCategory.FUNCTIONS),
-
+    DECLARE_ENUM("Define Enum", DeclareEnumBlock.class, BlockCategory.VARIABLES),
     // --- UTILITY ---
     COMMENT("Comment", CommentBlock.class, BlockCategory.UTILITY);
 
@@ -11218,33 +11454,16 @@ public class BlockDragAndDropManager {
         });
     }
 
-    public void addMethodDeclarationDropHandlers(Region separator, ClassBlock targetClass, int insertionIndex) {
-        String defaultColor = "rgba(52, 73, 94, 0.1)";
-        String hoverColor = "#9b59b6";
-
-        separator.setOnDragEntered(event -> {
-            Dragboard db = event.getDragboard();
-            if (db.hasContent(ADDABLE_BLOCK_FORMAT)) {
-                String blockTypeName = (String) db.getContent(ADDABLE_BLOCK_FORMAT);
-                AddableBlock type = AddableBlock.valueOf(blockTypeName);
-                if (type == AddableBlock.METHOD_DECLARATION) {
-                    separator.setStyle("-fx-background-color: " + hoverColor + "; -fx-border-color: " + hoverColor + "; -fx-border-width: 2 0 2 0;");
-                }
-            }
-            event.consume();
-        });
-
-        separator.setOnDragExited(event -> {
-            separator.setStyle("-fx-background-color: " + defaultColor + "; -fx-border-color: rgba(52, 73, 94, 0.3); -fx-border-width: 1 0 1 0; -fx-border-style: dashed;");
-            event.consume();
-        });
+    public void addClassMemberDropHandlers(Region separator, ClassBlock targetClass, int insertionIndex) {
 
         separator.setOnDragOver(event -> {
             Dragboard db = event.getDragboard();
             if (db.hasContent(ADDABLE_BLOCK_FORMAT)) {
                 String blockTypeName = (String) db.getContent(ADDABLE_BLOCK_FORMAT);
                 AddableBlock type = AddableBlock.valueOf(blockTypeName);
-                if (type == AddableBlock.METHOD_DECLARATION) {
+
+                // Allow Methods OR Enums
+                if (type == AddableBlock.METHOD_DECLARATION || type == AddableBlock.DECLARE_ENUM) {
                     event.acceptTransferModes(TransferMode.COPY);
                 }
             }
@@ -11257,7 +11476,9 @@ public class BlockDragAndDropManager {
             if (db.hasContent(ADDABLE_BLOCK_FORMAT)) {
                 String blockTypeName = (String) db.getContent(ADDABLE_BLOCK_FORMAT);
                 AddableBlock type = AddableBlock.valueOf(blockTypeName);
-                if (type == AddableBlock.METHOD_DECLARATION && onDrop != null) {
+
+                if ((type == AddableBlock.METHOD_DECLARATION || type == AddableBlock.DECLARE_ENUM) && onDrop != null) {
+                    // We reuse DropInfo but check type in CodeEditorService
                     onDrop.accept(new DropInfo(type, null, insertionIndex, targetClass));
                     success = true;
                 }

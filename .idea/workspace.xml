@@ -4,23 +4,14 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="cba04025-c331-4634-a893-436bad03efc0" name="Changes" comment="Started refactor to handle classes. Removed focus onto single method">
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/botmaker/blocks/DeclareEnumBlock.java" afterDir="false" />
+    <list default="true" id="cba04025-c331-4634-a893-436bad03efc0" name="Changes" comment="Can create EnumDeclaration into code but doesn't appear">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/java_files_concat.txt" beforeDir="false" afterPath="$PROJECT_DIR$/java_files_concat.txt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/projects/.botmaker-config.json" beforeDir="false" afterPath="$PROJECT_DIR$/projects/.botmaker-config.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/botmaker/blocks/ClassBlock.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/botmaker/blocks/ClassBlock.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/botmaker/init/AppServiceInitializer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/botmaker/init/AppServiceInitializer.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/botmaker/parser/AstRewriter.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/botmaker/parser/AstRewriter.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/botmaker/parser/BlockFactory.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/botmaker/parser/BlockFactory.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/botmaker/parser/BlockIdPrefix.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/botmaker/parser/BlockIdPrefix.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/botmaker/parser/BlockParser.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/botmaker/parser/BlockParser.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/botmaker/parser/CodeEditor.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/botmaker/parser/CodeEditor.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/botmaker/parser/NodeCreator.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/botmaker/parser/NodeCreator.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/botmaker/ui/AddableBlock.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/botmaker/ui/AddableBlock.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/botmaker/ui/BlockDragAndDropManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/botmaker/ui/BlockDragAndDropManager.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/botmaker/ui/UIManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/botmaker/ui/UIManager.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/com/botmaker/styles.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/botmaker/services/CodeEditorService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/botmaker/services/CodeEditorService.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -229,14 +220,6 @@
       <workItem from="1763918732147" duration="607000" />
       <workItem from="1763919354353" duration="6778000" />
       <workItem from="1764009536365" duration="3458000" />
-    </task>
-    <task id="LOCAL-00022" summary="can edit declare variable name">
-      <option name="closed" value="true" />
-      <created>1760894984994</created>
-      <option name="number" value="00022" />
-      <option name="presentableId" value="LOCAL-00022" />
-      <option name="project" value="LOCAL" />
-      <updated>1760894984994</updated>
     </task>
     <task id="LOCAL-00023" summary="First shot at validating blocks (can identify the block but to proceed further">
       <option name="closed" value="true" />
@@ -622,7 +605,15 @@
       <option name="project" value="LOCAL" />
       <updated>1764271599994</updated>
     </task>
-    <option name="localTasksCounter" value="71" />
+    <task id="LOCAL-00071" summary="Can create EnumDeclaration into code but doesn't appear">
+      <option name="closed" value="true" />
+      <created>1764350835066</created>
+      <option name="number" value="00071" />
+      <option name="presentableId" value="LOCAL-00071" />
+      <option name="project" value="LOCAL" />
+      <updated>1764350835066</updated>
+    </task>
+    <option name="localTasksCounter" value="72" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -656,7 +647,6 @@
     <ignored-roots>
       <path value="$PROJECT_DIR$/.." />
     </ignored-roots>
-    <MESSAGE value="Uno and Redo button working" />
     <MESSAGE value="Comment block fix" />
     <MESSAGE value="TypeValidator, styles revamp, comment removed // and /*" />
     <MESSAGE value="upgrades errors" />
@@ -681,7 +671,8 @@
     <MESSAGE value="small fix" />
     <MESSAGE value="Added previous project interactions" />
     <MESSAGE value="Started refactor to handle classes. Removed focus onto single method" />
-    <option name="LAST_COMMIT_MESSAGE" value="Started refactor to handle classes. Removed focus onto single method" />
+    <MESSAGE value="Can create EnumDeclaration into code but doesn't appear" />
+    <option name="LAST_COMMIT_MESSAGE" value="Can create EnumDeclaration into code but doesn't appear" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -708,12 +699,7 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/com/botmaker/parser/BlockParser.java</url>
-          <line>64</line>
-          <option name="timeStamp" value="11" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/main/java/com/botmaker/parser/BlockParser.java</url>
-          <line>47</line>
+          <line>30</line>
           <option name="timeStamp" value="12" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
@@ -723,23 +709,63 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/com/botmaker/parser/BlockParser.java</url>
-          <line>65</line>
+          <line>45</line>
           <option name="timeStamp" value="18" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/main/java/com/botmaker/parser/BlockParser.java</url>
-          <line>67</line>
-          <option name="timeStamp" value="19" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/com/botmaker/parser/BlockFactory.java</url>
-          <line>107</line>
+          <line>129</line>
           <option name="timeStamp" value="20" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/com/botmaker/parser/BlockFactory.java</url>
-          <line>92</line>
-          <option name="timeStamp" value="21" />
+          <line>99</line>
+          <option name="timeStamp" value="24" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/com/botmaker/parser/BlockFactory.java</url>
+          <line>117</line>
+          <option name="timeStamp" value="25" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/com/botmaker/parser/BlockFactory.java</url>
+          <line>169</line>
+          <option name="timeStamp" value="28" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/com/botmaker/parser/BlockFactory.java</url>
+          <line>90</line>
+          <option name="timeStamp" value="29" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/com/botmaker/parser/BlockFactory.java</url>
+          <line>91</line>
+          <option name="timeStamp" value="30" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/com/botmaker/parser/BlockParser.java</url>
+          <line>66</line>
+          <option name="timeStamp" value="31" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/com/botmaker/parser/BlockParser.java</url>
+          <line>65</line>
+          <option name="timeStamp" value="32" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/com/botmaker/services/CodeEditorService.java</url>
+          <line>208</line>
+          <option name="timeStamp" value="33" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/com/botmaker/parser/BlockFactory.java</url>
+          <line>51</line>
+          <option name="timeStamp" value="34" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/com/botmaker/parser/BlockFactory.java</url>
+          <line>94</line>
+          <option name="timeStamp" value="35" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>

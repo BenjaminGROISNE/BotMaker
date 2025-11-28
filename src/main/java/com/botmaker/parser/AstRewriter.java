@@ -422,6 +422,7 @@ public class AstRewriter {
         AST ast = cu.getAST();
         ASTRewrite rewriter = ASTRewrite.create(ast);
         rewriter.replace(enumNode.getName(), ast.newSimpleName(newName), null);
+
         return applyRewrite(rewriter, originalCode);
     }
 

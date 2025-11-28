@@ -59,11 +59,28 @@ public class CodeEditorService {
     }
 
     private void setupEventHandlers() {
-        eventBus.subscribe(CoreApplicationEvents.UIRefreshRequestedEvent.class, event -> Platform.runLater(() -> refreshUI(event.getCode())), false);
-        eventBus.subscribe(CoreApplicationEvents.BreakpointToggledEvent.class, this::handleBreakpointToggle, false);
-        eventBus.subscribe(CoreApplicationEvents.CodeUpdatedEvent.class, this::handleCodeUpdateForHistory, false);
-        eventBus.subscribe(CoreApplicationEvents.UndoRequestedEvent.class, e -> undo(), false);
-        eventBus.subscribe(CoreApplicationEvents.RedoRequestedEvent.class, e -> redo(), false);
+        eventBus.subscribe(CoreApplicationEvents.UIRefreshRequestedEvent.class, event ->
+                Platform.runLater(() -> refreshUI(event.getCode())), false);
+
+        eventBus.subscribe(CoreApplicationEvents.BreakpointToggledEvent.class,
+                this::handleBreakpointToggle, false);
+
+        // Handle code updates: refresh UI + history
+        eventBus.subscribe(CoreApplicationEvents.CodeUpdatedEvent.class, event -> {
+            // First, handle history (but skip if we're restoring)
+            handleCodeUpdateForHistory(event);
+
+            // Then refresh UI with the new code (always, unless restoring)
+            if (!isRestoringHistory) {
+                Platform.runLater(() -> refreshUI(event.getNewCode()));
+            }
+        }, false);
+
+        eventBus.subscribe(CoreApplicationEvents.UndoRequestedEvent.class,
+                e -> undo(), false);
+
+        eventBus.subscribe(CoreApplicationEvents.RedoRequestedEvent.class,
+                e -> redo(), false);
     }
 
     private void handleCodeUpdateForHistory(CoreApplicationEvents.CodeUpdatedEvent event) {

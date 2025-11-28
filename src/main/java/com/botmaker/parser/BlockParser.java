@@ -64,8 +64,16 @@ public class BlockParser {
     private Optional<StatementBlock> parseTypeDeclaration(TypeDeclarationStatement stmt, Map<ASTNode, CodeBlock> map) {
         // Check if the declaration inside the statement is an Enum
         if (stmt.getDeclaration() instanceof EnumDeclaration) {
-            DeclareEnumBlock block = new DeclareEnumBlock(BlockIdPrefix.generate(BlockIdPrefix.ENUM, stmt), stmt);
-            map.put(stmt, block);
+            EnumDeclaration enumDecl = (EnumDeclaration) stmt.getDeclaration();
+
+            DeclareEnumBlock block = new DeclareEnumBlock(
+                    BlockIdPrefix.generate(BlockIdPrefix.ENUM, stmt),
+                    stmt
+            );
+
+            map.put(stmt, block);          // Map the statement
+            map.put(enumDecl, block);      // ← ADD THIS: Also map the inner EnumDeclaration
+
             return Optional.of(block);
         }
         return Optional.empty();

@@ -4,6 +4,7 @@ import com.botmaker.blocks.*;
 import com.botmaker.core.*;
 import com.botmaker.ui.BlockDragAndDropManager;
 import com.botmaker.util.BlockIdPrefix;
+import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jdt.core.dom.*;
 
 import java.util.*;
@@ -24,12 +25,19 @@ public class BlockFactory {
 
         try {
             // 1. Setup AST Parser
-            ASTParser parser = ASTParser.newParser(AST.getJLSLatest());
+            ASTParser parser = ASTParser.newParser(AST.JLS17);
             parser.setSource(javaCode.toCharArray());
             parser.setKind(ASTParser.K_COMPILATION_UNIT);
             parser.setResolveBindings(true);
             parser.setUnitName("Unit.java");
             parser.setEnvironment(null, null, null, true);
+
+            Map<String, String> options = JavaCore.getOptions();
+            options.put(JavaCore.COMPILER_COMPLIANCE, JavaCore.latestSupportedJavaVersion()); // or VERSION_11, VERSION_1_8, etc.
+            options.put(JavaCore.COMPILER_CODEGEN_TARGET_PLATFORM, JavaCore.latestSupportedJavaVersion());
+            options.put(JavaCore.COMPILER_SOURCE, JavaCore.latestSupportedJavaVersion());
+            parser.setCompilerOptions(options);
+
             this.ast = (CompilationUnit) parser.createAST(null);
 
             // 2. Extract Comments
@@ -44,6 +52,7 @@ public class BlockFactory {
             AbstractTypeDeclaration rootNode = (AbstractTypeDeclaration) ast.types().get(0);
 
             // --- CASE A: Standard Class File ---
+            // --- CASE A: Standard Class File ---
             if (rootNode instanceof TypeDeclaration) {
                 TypeDeclaration typeDecl = (TypeDeclaration) rootNode;
 
@@ -55,7 +64,6 @@ public class BlockFactory {
                 nodeToBlockMap.put(typeDecl, classBlock);
 
                 // Iterate over ALL body declarations (Methods AND Inner Enums)
-                // We use bodyDeclarations() instead of getMethods() to capture everything
                 for (Object obj : typeDecl.bodyDeclarations()) {
 
                     // 1. Handle Methods
@@ -84,17 +92,19 @@ public class BlockFactory {
                             methodBlock.setBody(parseBodyBlock(method.getBody(), nodeToBlockMap, manager));
                         }
 
-                        // Add to ClassBlock (ensure ClassBlock has addBodyDeclaration method)
                         classBlock.addBodyDeclaration(methodBlock);
                     }
 
                     // 2. Handle Inner Enums (e.g. inside a class)
                     else if (obj instanceof EnumDeclaration) {
                         EnumDeclaration enumDecl = (EnumDeclaration) obj;
+
+                        // FIX: Use the constructor that takes EnumDeclaration directly (not TypeDeclarationStatement)
                         DeclareEnumBlock enumBlock = new DeclareEnumBlock(
                                 BlockIdPrefix.generate(BlockIdPrefix.ENUM, enumDecl),
-                                enumDecl // Uses the Constructor for Class Members
+                                enumDecl  // ← This is the correct constructor for class-level enums
                         );
+
                         nodeToBlockMap.put(enumDecl, enumBlock);
                         classBlock.addBodyDeclaration(enumBlock);
                     }
