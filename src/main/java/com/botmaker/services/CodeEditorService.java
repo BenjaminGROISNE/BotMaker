@@ -23,7 +23,6 @@ import java.util.stream.Stream;
 
 public class CodeEditorService {
 
-    // ... (Constructor and fields remain exactly the same) ...
     private final ApplicationConfig config;
     private final ApplicationState state;
     private final EventBus eventBus;
@@ -65,12 +64,8 @@ public class CodeEditorService {
         eventBus.subscribe(CoreApplicationEvents.BreakpointToggledEvent.class,
                 this::handleBreakpointToggle, false);
 
-        // Handle code updates: refresh UI + history
         eventBus.subscribe(CoreApplicationEvents.CodeUpdatedEvent.class, event -> {
-            // First, handle history (but skip if we're restoring)
             handleCodeUpdateForHistory(event);
-
-            // Then refresh UI with the new code (always, unless restoring)
             if (!isRestoringHistory) {
                 Platform.runLater(() -> refreshUI(event.getNewCode()));
             }
@@ -124,35 +119,61 @@ public class CodeEditorService {
         }
     }
 
-    // --- FIX: LOAD AND OPEN ALL FILES ---
+    // --- FIX: LOAD ALL FILES INCLUDING LIBRARY FILES ---
     public void loadInitialCode() {
         try {
             Path mainFile = config.getSourceFilePath();
-            Path sourceDir = mainFile.getParent();
 
-            // Load all java files in the directory
-            if (Files.exists(sourceDir)) {
-                try (Stream<Path> files = Files.list(sourceDir)) {
-                    files.filter(p -> p.toString().endsWith(".java")).forEach(path -> {
-                        try {
-                            String content = Files.readString(path);
-                            ProjectFile pf = new ProjectFile(path, content);
-                            state.addFile(pf);
-
-                            // FIX: Explicitly open every file in the Language Server
-                            // This ensures the LSP knows about secondary files immediately.
-                            languageServerService.openFile(path, content);
-
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                        }
-                    });
-                }
+            // Get the source root (src/main/java)
+            Path sourceRoot = mainFile.getParent();
+            while (sourceRoot != null && !sourceRoot.getFileName().toString().equals("java")) {
+                sourceRoot = sourceRoot.getParent();
             }
+
+            if (sourceRoot == null) {
+                sourceRoot = mainFile.getParent();
+            }
+
+            // Load ALL java files recursively, including library files
+            loadFilesRecursively(sourceRoot);
 
             // Set Active File to Main and refresh UI
             switchToFile(mainFile);
 
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * Recursively loads all .java files in the directory tree
+     */
+    private void loadFilesRecursively(Path directory) {
+        if (!Files.exists(directory) || !Files.isDirectory(directory)) {
+            return;
+        }
+
+        try (Stream<Path> paths = Files.walk(directory)) {
+            paths.filter(p -> p.toString().endsWith(".java"))
+                    .forEach(path -> {
+                        try {
+                            // Check if already loaded
+                            boolean alreadyLoaded = state.getAllFiles().stream()
+                                    .anyMatch(f -> f.getPath().equals(path));
+
+                            if (!alreadyLoaded) {
+                                String content = Files.readString(path);
+                                ProjectFile pf = new ProjectFile(path, content);
+                                state.addFile(pf);
+
+                                // Open file in Language Server
+                                languageServerService.openFile(path, content);
+                            }
+                        } catch (Exception e) {
+                            System.err.println("Error loading file: " + path);
+                            e.printStackTrace();
+                        }
+                    });
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -163,10 +184,12 @@ public class CodeEditorService {
                 .filter(f -> f.getPath().equals(path))
                 .findFirst().orElse(null);
 
-        if (file == null) return;
+        if (file == null) {
+            System.err.println("File not found in state: " + path);
+            return;
+        }
 
         state.setActiveFile(path);
-        // Update doc version/uri in state for LSP sync context
         state.setDocUri(file.getUri());
 
         refreshUI(file.getContent());
@@ -222,7 +245,13 @@ public class CodeEditorService {
         eventBus.publish(new CoreApplicationEvents.UIBlocksUpdatedEvent(rootBlock));
 
         if (state.getActiveFile() != null) {
-            eventBus.publish(new CoreApplicationEvents.StatusMessageEvent("Loaded: " + state.getActiveFile().getClassName()));
+            String fileName = state.getActiveFile().getPath().getFileName().toString();
+            // Add [Lib] indicator for library files
+            if (state.getActiveFile().getPath().toString().contains("com/botmaker/library") ||
+                    state.getActiveFile().getPath().toString().contains("com\\botmaker\\library")) {
+                fileName += " [Library - Read Only]";
+            }
+            eventBus.publish(new CoreApplicationEvents.StatusMessageEvent("Loaded: " + fileName));
         }
     }
 

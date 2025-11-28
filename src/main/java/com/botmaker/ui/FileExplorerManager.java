@@ -92,8 +92,7 @@ public class FileExplorerManager {
 
                 // Only open if it's a file, not a directory
                 if (Files.isRegularFile(selectedPath)) {
-                    // Optional: Check if it's a library file to prevent editing
-                    // For now, we just open everything
+                    // Allow opening all files, including library files (for visualization)
                     if (state.getActiveFile() == null || !state.getActiveFile().getPath().equals(selectedPath)) {
                         codeEditorService.switchToFile(selectedPath);
                         fileTree.refresh();
