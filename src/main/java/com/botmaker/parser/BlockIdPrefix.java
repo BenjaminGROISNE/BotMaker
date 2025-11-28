@@ -34,6 +34,8 @@ public class BlockIdPrefix {
     // In BlockIdPrefix.java
     public static final String CLASS = "class_";
     public static final String METHOD = "method_";
+    public static final String ENUM = "enum_";
+
     private BlockIdPrefix() {} // Prevent instantiation
 
     /**

@@ -19,9 +19,11 @@ public class BlockFactory {
 
     public AbstractCodeBlock convert(String javaCode, Map<ASTNode, CodeBlock> nodeToBlockMap, BlockDragAndDropManager manager) {
         this.currentSourceCode = javaCode;
+        // Initialize parser used for method bodies
         this.blockParser = new BlockParser(this, manager, markNewIdentifiersAsUnedited);
 
         try {
+            // 1. Setup AST Parser
             ASTParser parser = ASTParser.newParser(AST.getJLSLatest());
             parser.setSource(javaCode.toCharArray());
             parser.setKind(ASTParser.K_COMPILATION_UNIT);
@@ -30,6 +32,7 @@ public class BlockFactory {
             parser.setEnvironment(null, null, null, true);
             this.ast = (CompilationUnit) parser.createAST(null);
 
+            // 2. Extract Comments
             this.allComments = new ArrayList<>();
             for (Object obj : ast.getCommentList()) {
                 if (obj instanceof Comment && !(obj instanceof Javadoc)) allComments.add((Comment) obj);
@@ -37,47 +40,89 @@ public class BlockFactory {
 
             if (ast.types().isEmpty()) return null;
 
-            TypeDeclaration typeDecl = (TypeDeclaration) ast.types().get(0);
+            // Get the root declaration (can be TypeDeclaration OR EnumDeclaration)
+            AbstractTypeDeclaration rootNode = (AbstractTypeDeclaration) ast.types().get(0);
 
-            // Create ClassBlock for the top-level class
-            ClassBlock classBlock = new ClassBlock(
-                    BlockIdPrefix.generate(BlockIdPrefix.CLASS, typeDecl),
-                    typeDecl,
-                    manager
-            );
-            nodeToBlockMap.put(typeDecl, classBlock);
+            // --- CASE A: Standard Class File ---
+            if (rootNode instanceof TypeDeclaration) {
+                TypeDeclaration typeDecl = (TypeDeclaration) rootNode;
 
-            // Parse all methods
-            for (MethodDeclaration method : typeDecl.getMethods()) {
-                MethodDeclarationBlock methodBlock;
+                ClassBlock classBlock = new ClassBlock(
+                        BlockIdPrefix.generate(BlockIdPrefix.CLASS, typeDecl),
+                        typeDecl,
+                        manager
+                );
+                nodeToBlockMap.put(typeDecl, classBlock);
 
-                // Check if this is the main method
-                if (isMainMethod(method)) {
-                    methodBlock = new MainBlock(
-                            BlockIdPrefix.generate(BlockIdPrefix.METHOD, method),
-                            method,
-                            manager
-                    );
-                } else {
-                    methodBlock = new MethodDeclarationBlock(
-                            BlockIdPrefix.generate(BlockIdPrefix.METHOD, method),
-                            method,
-                            manager
-                    );
+                // Iterate over ALL body declarations (Methods AND Inner Enums)
+                // We use bodyDeclarations() instead of getMethods() to capture everything
+                for (Object obj : typeDecl.bodyDeclarations()) {
+
+                    // 1. Handle Methods
+                    if (obj instanceof MethodDeclaration) {
+                        MethodDeclaration method = (MethodDeclaration) obj;
+                        MethodDeclarationBlock methodBlock;
+
+                        if (isMainMethod(method)) {
+                            methodBlock = new MainBlock(
+                                    BlockIdPrefix.generate(BlockIdPrefix.METHOD, method),
+                                    method,
+                                    manager
+                            );
+                        } else {
+                            methodBlock = new MethodDeclarationBlock(
+                                    BlockIdPrefix.generate(BlockIdPrefix.METHOD, method),
+                                    method,
+                                    manager
+                            );
+                        }
+
+                        nodeToBlockMap.put(method, methodBlock);
+
+                        // Recursively parse the method body using BlockParser
+                        if (method.getBody() != null) {
+                            methodBlock.setBody(parseBodyBlock(method.getBody(), nodeToBlockMap, manager));
+                        }
+
+                        // Add to ClassBlock (ensure ClassBlock has addBodyDeclaration method)
+                        classBlock.addBodyDeclaration(methodBlock);
+                    }
+
+                    // 2. Handle Inner Enums (e.g. inside a class)
+                    else if (obj instanceof EnumDeclaration) {
+                        EnumDeclaration enumDecl = (EnumDeclaration) obj;
+                        DeclareEnumBlock enumBlock = new DeclareEnumBlock(
+                                BlockIdPrefix.generate(BlockIdPrefix.ENUM, enumDecl),
+                                enumDecl // Uses the Constructor for Class Members
+                        );
+                        nodeToBlockMap.put(enumDecl, enumBlock);
+                        classBlock.addBodyDeclaration(enumBlock);
+                    }
                 }
 
-                nodeToBlockMap.put(method, methodBlock);
-
-                // Parse method body
-                if (method.getBody() != null) {
-                    methodBlock.setBody(parseBodyBlock(method.getBody(), nodeToBlockMap, manager));
-                }
-
-                classBlock.addMethod(methodBlock);
+                return classBlock;
             }
 
-            return classBlock;
+            // --- CASE B: Standalone Enum File ---
+            else if (rootNode instanceof EnumDeclaration) {
+                EnumDeclaration enumDecl = (EnumDeclaration) rootNode;
 
+                // Create the EnumBlock as the root element
+                DeclareEnumBlock rootEnumBlock = new DeclareEnumBlock(
+                        BlockIdPrefix.generate(BlockIdPrefix.ENUM, enumDecl),
+                        enumDecl
+                );
+                nodeToBlockMap.put(enumDecl, rootEnumBlock);
+
+                return rootEnumBlock;
+            }
+
+            return null;
+
+        } catch (Exception e) {
+            System.err.println("Critical error in BlockFactory.convert: " + e.getMessage());
+            e.printStackTrace();
+            return null;
         } finally {
             setMarkNewIdentifiersAsUnedited(false);
         }

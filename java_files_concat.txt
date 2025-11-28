@@ -1,5 +1,5 @@
 =================================================================================
-FILE: ers\bgroi\Documents\dev\IntellijProjects\BotMaker\src\main\java\com\botmaker\Main.java
+FILE: rs\bgroi\Documents\dev\IntellijProjects\BotMaker\src\main\java\com\botmaker\Main.java
 =================================================================================
 
 package com.botmaker;
@@ -152,7 +152,7 @@ public class Main extends Application {
 
 
 =================================================================================
-FILE: ers\bgroi\Documents\dev\IntellijProjects\BotMaker\src\main\java\com\botmaker\blocks\AssignmentBlock.java
+FILE: rs\bgroi\Documents\dev\IntellijProjects\BotMaker\src\main\java\com\botmaker\blocks\AssignmentBlock.java
 =================================================================================
 
 package com.botmaker.blocks;
@@ -271,7 +271,7 @@ public class AssignmentBlock extends AbstractStatementBlock {
 
 
 =================================================================================
-FILE: ers\bgroi\Documents\dev\IntellijProjects\BotMaker\src\main\java\com\botmaker\blocks\BinaryExpressionBlock.java
+FILE: rs\bgroi\Documents\dev\IntellijProjects\BotMaker\src\main\java\com\botmaker\blocks\BinaryExpressionBlock.java
 =================================================================================
 
 package com.botmaker.blocks;
@@ -377,7 +377,7 @@ public class BinaryExpressionBlock extends AbstractExpressionBlock {
 
 
 =================================================================================
-FILE: ers\bgroi\Documents\dev\IntellijProjects\BotMaker\src\main\java\com\botmaker\blocks\BooleanLiteralBlock.java
+FILE: rs\bgroi\Documents\dev\IntellijProjects\BotMaker\src\main\java\com\botmaker\blocks\BooleanLiteralBlock.java
 =================================================================================
 
 package com.botmaker.blocks;
@@ -478,7 +478,7 @@ public class BooleanLiteralBlock extends AbstractExpressionBlock {
 
 
 =================================================================================
-FILE: ers\bgroi\Documents\dev\IntellijProjects\BotMaker\src\main\java\com\botmaker\blocks\BreakBlock.java
+FILE: rs\bgroi\Documents\dev\IntellijProjects\BotMaker\src\main\java\com\botmaker\blocks\BreakBlock.java
 =================================================================================
 
 package com.botmaker.blocks;
@@ -505,7 +505,7 @@ public class BreakBlock extends AbstractStatementBlock {
 
 
 =================================================================================
-FILE: ers\bgroi\Documents\dev\IntellijProjects\BotMaker\src\main\java\com\botmaker\blocks\ClassBlock.java
+FILE: rs\bgroi\Documents\dev\IntellijProjects\BotMaker\src\main\java\com\botmaker\blocks\ClassBlock.java
 =================================================================================
 
 package com.botmaker.blocks;
@@ -662,7 +662,7 @@ public class ClassBlock extends AbstractCodeBlock implements BlockWithChildren {
 
 
 =================================================================================
-FILE: ers\bgroi\Documents\dev\IntellijProjects\BotMaker\src\main\java\com\botmaker\blocks\CommentBlock.java
+FILE: rs\bgroi\Documents\dev\IntellijProjects\BotMaker\src\main\java\com\botmaker\blocks\CommentBlock.java
 =================================================================================
 
 package com.botmaker.blocks;
@@ -730,7 +730,7 @@ public class CommentBlock extends AbstractStatementBlock {
 
 
 =================================================================================
-FILE: ers\bgroi\Documents\dev\IntellijProjects\BotMaker\src\main\java\com\botmaker\blocks\ComparisonExpressionBlock.java
+FILE: rs\bgroi\Documents\dev\IntellijProjects\BotMaker\src\main\java\com\botmaker\blocks\ComparisonExpressionBlock.java
 =================================================================================
 
 package com.botmaker.blocks;
@@ -865,7 +865,7 @@ public class ComparisonExpressionBlock extends AbstractExpressionBlock {
 
 
 =================================================================================
-FILE: ers\bgroi\Documents\dev\IntellijProjects\BotMaker\src\main\java\com\botmaker\blocks\ContinueBlock.java
+FILE: rs\bgroi\Documents\dev\IntellijProjects\BotMaker\src\main\java\com\botmaker\blocks\ContinueBlock.java
 =================================================================================
 
 package com.botmaker.blocks;
@@ -892,7 +892,7 @@ public class ContinueBlock extends AbstractStatementBlock {
 
 
 =================================================================================
-FILE: ers\bgroi\Documents\dev\IntellijProjects\BotMaker\src\main\java\com\botmaker\blocks\DoWhileBlock.java
+FILE: rs\bgroi\Documents\dev\IntellijProjects\BotMaker\src\main\java\com\botmaker\blocks\DoWhileBlock.java
 =================================================================================
 
 package com.botmaker.blocks;
@@ -960,7 +960,7 @@ public class DoWhileBlock extends AbstractStatementBlock implements BlockWithChi
 
 
 =================================================================================
-FILE: ers\bgroi\Documents\dev\IntellijProjects\BotMaker\src\main\java\com\botmaker\blocks\ForBlock.java
+FILE: rs\bgroi\Documents\dev\IntellijProjects\BotMaker\src\main\java\com\botmaker\blocks\ForBlock.java
 =================================================================================
 
 package com.botmaker.blocks;
@@ -1027,7 +1027,7 @@ public class ForBlock extends AbstractStatementBlock implements BlockWithChildre
 
 
 =================================================================================
-FILE: ers\bgroi\Documents\dev\IntellijProjects\BotMaker\src\main\java\com\botmaker\blocks\IdentifierBlock.java
+FILE: rs\bgroi\Documents\dev\IntellijProjects\BotMaker\src\main\java\com\botmaker\blocks\IdentifierBlock.java
 =================================================================================
 
 package com.botmaker.blocks;
@@ -1279,7 +1279,7 @@ public class IdentifierBlock extends AbstractExpressionBlock {
 
 
 =================================================================================
-FILE: ers\bgroi\Documents\dev\IntellijProjects\BotMaker\src\main\java\com\botmaker\blocks\IfBlock.java
+FILE: rs\bgroi\Documents\dev\IntellijProjects\BotMaker\src\main\java\com\botmaker\blocks\IfBlock.java
 =================================================================================
 
 package com.botmaker.blocks;
@@ -1388,7 +1388,7 @@ public class IfBlock extends AbstractStatementBlock {
 
 
 =================================================================================
-FILE: ers\bgroi\Documents\dev\IntellijProjects\BotMaker\src\main\java\com\botmaker\blocks\LibraryBlock.java
+FILE: rs\bgroi\Documents\dev\IntellijProjects\BotMaker\src\main\java\com\botmaker\blocks\LibraryBlock.java
 =================================================================================
 
 package com.botmaker.blocks;
@@ -1450,7 +1450,7 @@ public class LibraryBlock extends AbstractCodeBlock implements BlockWithChildren
 
 
 =================================================================================
-FILE: ers\bgroi\Documents\dev\IntellijProjects\BotMaker\src\main\java\com\botmaker\blocks\ListBlock.java
+FILE: rs\bgroi\Documents\dev\IntellijProjects\BotMaker\src\main\java\com\botmaker\blocks\ListBlock.java
 =================================================================================
 
 package com.botmaker.blocks;
@@ -1730,7 +1730,7 @@ public class ListBlock extends AbstractExpressionBlock {
 
 
 =================================================================================
-FILE: ers\bgroi\Documents\dev\IntellijProjects\BotMaker\src\main\java\com\botmaker\blocks\LiteralBlock.java
+FILE: rs\bgroi\Documents\dev\IntellijProjects\BotMaker\src\main\java\com\botmaker\blocks\LiteralBlock.java
 =================================================================================
 
 package com.botmaker.blocks;
@@ -1935,7 +1935,7 @@ public class LiteralBlock<T> extends AbstractExpressionBlock {
 
 
 =================================================================================
-FILE: ers\bgroi\Documents\dev\IntellijProjects\BotMaker\src\main\java\com\botmaker\blocks\MainBlock.java
+FILE: rs\bgroi\Documents\dev\IntellijProjects\BotMaker\src\main\java\com\botmaker\blocks\MainBlock.java
 =================================================================================
 
 package com.botmaker.blocks;
@@ -1984,7 +1984,7 @@ public class MainBlock extends MethodDeclarationBlock {
 
 
 =================================================================================
-FILE: ers\bgroi\Documents\dev\IntellijProjects\BotMaker\src\main\java\com\botmaker\blocks\MethodDeclarationBlock.java
+FILE: rs\bgroi\Documents\dev\IntellijProjects\BotMaker\src\main\java\com\botmaker\blocks\MethodDeclarationBlock.java
 =================================================================================
 
 package com.botmaker.blocks;
@@ -2220,7 +2220,7 @@ public class MethodDeclarationBlock extends AbstractStatementBlock implements Bl
 
 
 =================================================================================
-FILE: ers\bgroi\Documents\dev\IntellijProjects\BotMaker\src\main\java\com\botmaker\blocks\MethodInvocationBlock.java
+FILE: rs\bgroi\Documents\dev\IntellijProjects\BotMaker\src\main\java\com\botmaker\blocks\MethodInvocationBlock.java
 =================================================================================
 
 package com.botmaker.blocks;
@@ -2577,7 +2577,7 @@ public class MethodInvocationBlock extends AbstractExpressionBlock implements St
 
 
 =================================================================================
-FILE: ers\bgroi\Documents\dev\IntellijProjects\BotMaker\src\main\java\com\botmaker\blocks\PrintBlock.java
+FILE: rs\bgroi\Documents\dev\IntellijProjects\BotMaker\src\main\java\com\botmaker\blocks\PrintBlock.java
 =================================================================================
 
 package com.botmaker.blocks;
@@ -2641,7 +2641,7 @@ public class PrintBlock extends AbstractStatementBlock {
 
 
 =================================================================================
-FILE: ers\bgroi\Documents\dev\IntellijProjects\BotMaker\src\main\java\com\botmaker\blocks\ReadInputBlock.java
+FILE: rs\bgroi\Documents\dev\IntellijProjects\BotMaker\src\main\java\com\botmaker\blocks\ReadInputBlock.java
 =================================================================================
 
 package com.botmaker.blocks;
@@ -2700,7 +2700,7 @@ public class ReadInputBlock extends AbstractStatementBlock {
 
 
 =================================================================================
-FILE: ers\bgroi\Documents\dev\IntellijProjects\BotMaker\src\main\java\com\botmaker\blocks\ReturnBlock.java
+FILE: rs\bgroi\Documents\dev\IntellijProjects\BotMaker\src\main\java\com\botmaker\blocks\ReturnBlock.java
 =================================================================================
 
 package com.botmaker.blocks;
@@ -2793,7 +2793,7 @@ public class ReturnBlock extends AbstractStatementBlock {
 
 
 =================================================================================
-FILE: ers\bgroi\Documents\dev\IntellijProjects\BotMaker\src\main\java\com\botmaker\blocks\SwitchBlock.java
+FILE: rs\bgroi\Documents\dev\IntellijProjects\BotMaker\src\main\java\com\botmaker\blocks\SwitchBlock.java
 =================================================================================
 
 package com.botmaker.blocks;
@@ -2980,7 +2980,7 @@ public class SwitchBlock extends AbstractStatementBlock implements BlockWithChil
 
 
 =================================================================================
-FILE: ers\bgroi\Documents\dev\IntellijProjects\BotMaker\src\main\java\com\botmaker\blocks\VariableDeclarationBlock.java
+FILE: rs\bgroi\Documents\dev\IntellijProjects\BotMaker\src\main\java\com\botmaker\blocks\VariableDeclarationBlock.java
 =================================================================================
 
 package com.botmaker.blocks;
@@ -3150,7 +3150,7 @@ public class VariableDeclarationBlock extends AbstractStatementBlock {
 
 
 =================================================================================
-FILE: ers\bgroi\Documents\dev\IntellijProjects\BotMaker\src\main\java\com\botmaker\blocks\WaitBlock.java
+FILE: rs\bgroi\Documents\dev\IntellijProjects\BotMaker\src\main\java\com\botmaker\blocks\WaitBlock.java
 =================================================================================
 
 package com.botmaker.blocks;
@@ -3195,7 +3195,7 @@ public class WaitBlock extends AbstractStatementBlock {
 
 
 =================================================================================
-FILE: ers\bgroi\Documents\dev\IntellijProjects\BotMaker\src\main\java\com\botmaker\blocks\WhileBlock.java
+FILE: rs\bgroi\Documents\dev\IntellijProjects\BotMaker\src\main\java\com\botmaker\blocks\WhileBlock.java
 =================================================================================
 
 package com.botmaker.blocks;
@@ -3269,7 +3269,7 @@ public class WhileBlock extends AbstractStatementBlock implements BlockWithChild
 
 
 =================================================================================
-FILE: ers\bgroi\Documents\dev\IntellijProjects\BotMaker\src\main\java\com\botmaker\config\ApplicationConfig.java
+FILE: rs\bgroi\Documents\dev\IntellijProjects\BotMaker\src\main\java\com\botmaker\config\ApplicationConfig.java
 =================================================================================
 
 package com.botmaker.config;
@@ -3388,7 +3388,7 @@ public class ApplicationConfig {
 
 
 =================================================================================
-FILE: ers\bgroi\Documents\dev\IntellijProjects\BotMaker\src\main\java\com\botmaker\config\Constants.java
+FILE: rs\bgroi\Documents\dev\IntellijProjects\BotMaker\src\main\java\com\botmaker\config\Constants.java
 =================================================================================
 
 package com.botmaker.config;
@@ -3427,7 +3427,7 @@ public class Constants {
 
 
 =================================================================================
-FILE: ers\bgroi\Documents\dev\IntellijProjects\BotMaker\src\main\java\com\botmaker\core\AbstractCodeBlock.java
+FILE: rs\bgroi\Documents\dev\IntellijProjects\BotMaker\src\main\java\com\botmaker\core\AbstractCodeBlock.java
 =================================================================================
 
 package com.botmaker.core;
@@ -3641,7 +3641,7 @@ public abstract class AbstractCodeBlock implements CodeBlock {
 
 
 =================================================================================
-FILE: ers\bgroi\Documents\dev\IntellijProjects\BotMaker\src\main\java\com\botmaker\core\AbstractExpressionBlock.java
+FILE: rs\bgroi\Documents\dev\IntellijProjects\BotMaker\src\main\java\com\botmaker\core\AbstractExpressionBlock.java
 =================================================================================
 
 package com.botmaker.core;
@@ -3690,7 +3690,7 @@ public abstract class AbstractExpressionBlock extends AbstractCodeBlock implemen
 
 
 =================================================================================
-FILE: ers\bgroi\Documents\dev\IntellijProjects\BotMaker\src\main\java\com\botmaker\core\AbstractStatementBlock.java
+FILE: rs\bgroi\Documents\dev\IntellijProjects\BotMaker\src\main\java\com\botmaker\core\AbstractStatementBlock.java
 =================================================================================
 
 package com.botmaker.core;
@@ -3780,7 +3780,7 @@ public abstract class AbstractStatementBlock extends AbstractCodeBlock implement
 
 
 =================================================================================
-FILE: ers\bgroi\Documents\dev\IntellijProjects\BotMaker\src\main\java\com\botmaker\core\BlockWithChildren.java
+FILE: rs\bgroi\Documents\dev\IntellijProjects\BotMaker\src\main\java\com\botmaker\core\BlockWithChildren.java
 =================================================================================
 
 package com.botmaker.core;
@@ -3793,7 +3793,7 @@ public interface BlockWithChildren {
 
 
 =================================================================================
-FILE: ers\bgroi\Documents\dev\IntellijProjects\BotMaker\src\main\java\com\botmaker\core\BodyBlock.java
+FILE: rs\bgroi\Documents\dev\IntellijProjects\BotMaker\src\main\java\com\botmaker\core\BodyBlock.java
 =================================================================================
 
 package com.botmaker.core;
@@ -3890,7 +3890,7 @@ public class BodyBlock extends AbstractStatementBlock implements BlockWithChildr
 
 
 =================================================================================
-FILE: ers\bgroi\Documents\dev\IntellijProjects\BotMaker\src\main\java\com\botmaker\core\CodeBlock.java
+FILE: rs\bgroi\Documents\dev\IntellijProjects\BotMaker\src\main\java\com\botmaker\core\CodeBlock.java
 =================================================================================
 
 package com.botmaker.core;
@@ -3925,7 +3925,7 @@ public interface CodeBlock {
 
 
 =================================================================================
-FILE: ers\bgroi\Documents\dev\IntellijProjects\BotMaker\src\main\java\com\botmaker\core\ExpressionBlock.java
+FILE: rs\bgroi\Documents\dev\IntellijProjects\BotMaker\src\main\java\com\botmaker\core\ExpressionBlock.java
 =================================================================================
 
 package com.botmaker.core;
@@ -3939,7 +3939,7 @@ public interface ExpressionBlock extends CodeBlock {
 
 
 =================================================================================
-FILE: ers\bgroi\Documents\dev\IntellijProjects\BotMaker\src\main\java\com\botmaker\core\StatementBlock.java
+FILE: rs\bgroi\Documents\dev\IntellijProjects\BotMaker\src\main\java\com\botmaker\core\StatementBlock.java
 =================================================================================
 
 package com.botmaker.core;
@@ -3953,7 +3953,7 @@ public interface StatementBlock extends CodeBlock {
 
 
 =================================================================================
-FILE: ers\bgroi\Documents\dev\IntellijProjects\BotMaker\src\main\java\com\botmaker\di\DependencyContainer.java
+FILE: rs\bgroi\Documents\dev\IntellijProjects\BotMaker\src\main\java\com\botmaker\di\DependencyContainer.java
 =================================================================================
 
 package com.botmaker.di;
@@ -4067,7 +4067,7 @@ public class DependencyContainer {
 
 
 =================================================================================
-FILE: ers\bgroi\Documents\dev\IntellijProjects\BotMaker\src\main\java\com\botmaker\events\AbstractApplicationEvent.java
+FILE: rs\bgroi\Documents\dev\IntellijProjects\BotMaker\src\main\java\com\botmaker\events\AbstractApplicationEvent.java
 =================================================================================
 
 package com.botmaker.events;
@@ -4101,7 +4101,7 @@ public abstract class AbstractApplicationEvent implements ApplicationEvent {
 
 
 =================================================================================
-FILE: ers\bgroi\Documents\dev\IntellijProjects\BotMaker\src\main\java\com\botmaker\events\ApplicationEvent.java
+FILE: rs\bgroi\Documents\dev\IntellijProjects\BotMaker\src\main\java\com\botmaker\events\ApplicationEvent.java
 =================================================================================
 
 package com.botmaker.events;
@@ -4126,7 +4126,7 @@ public interface ApplicationEvent {
 
 
 =================================================================================
-FILE: ers\bgroi\Documents\dev\IntellijProjects\BotMaker\src\main\java\com\botmaker\events\CoreApplicationEvents.java
+FILE: rs\bgroi\Documents\dev\IntellijProjects\BotMaker\src\main\java\com\botmaker\events\CoreApplicationEvents.java
 =================================================================================
 
 package com.botmaker.events;
@@ -4326,7 +4326,7 @@ public class CoreApplicationEvents {
 
 
 =================================================================================
-FILE: ers\bgroi\Documents\dev\IntellijProjects\BotMaker\src\main\java\com\botmaker\events\EventBus.java
+FILE: rs\bgroi\Documents\dev\IntellijProjects\BotMaker\src\main\java\com\botmaker\events\EventBus.java
 =================================================================================
 
 package com.botmaker.events;
@@ -4487,7 +4487,7 @@ public class EventBus {
 
 
 =================================================================================
-FILE: ers\bgroi\Documents\dev\IntellijProjects\BotMaker\src\main\java\com\botmaker\init\AppDependencyConfigurator.java
+FILE: rs\bgroi\Documents\dev\IntellijProjects\BotMaker\src\main\java\com\botmaker\init\AppDependencyConfigurator.java
 =================================================================================
 
 package com.botmaker.init;
@@ -4602,7 +4602,7 @@ public class AppDependencyConfigurator {
 
 
 =================================================================================
-FILE: ers\bgroi\Documents\dev\IntellijProjects\BotMaker\src\main\java\com\botmaker\init\AppServiceInitializer.java
+FILE: rs\bgroi\Documents\dev\IntellijProjects\BotMaker\src\main\java\com\botmaker\init\AppServiceInitializer.java
 =================================================================================
 
 package com.botmaker.init;
@@ -4691,7 +4691,7 @@ public class AppServiceInitializer {
 
 
 =================================================================================
-FILE: ers\bgroi\Documents\dev\IntellijProjects\BotMaker\src\main\java\com\botmaker\library\Main.java
+FILE: rs\bgroi\Documents\dev\IntellijProjects\BotMaker\src\main\java\com\botmaker\library\Main.java
 =================================================================================
 
 package com.botmaker.library;
@@ -4717,7 +4717,7 @@ public class Main {
 
 
 =================================================================================
-FILE: ers\bgroi\Documents\dev\IntellijProjects\BotMaker\src\main\java\com\botmaker\library\capture\CaptureTest.java
+FILE: rs\bgroi\Documents\dev\IntellijProjects\BotMaker\src\main\java\com\botmaker\library\capture\CaptureTest.java
 =================================================================================
 
 package com.botmaker.library.capture;
@@ -4941,7 +4941,7 @@ public class CaptureTest {
 
 
 =================================================================================
-FILE: ers\bgroi\Documents\dev\IntellijProjects\BotMaker\src\main\java\com\botmaker\library\capture\Clicker.java
+FILE: rs\bgroi\Documents\dev\IntellijProjects\BotMaker\src\main\java\com\botmaker\library\capture\Clicker.java
 =================================================================================
 
 package com.botmaker.library.capture;
@@ -5016,7 +5016,7 @@ public final class Clicker {
 
 
 =================================================================================
-FILE: ers\bgroi\Documents\dev\IntellijProjects\BotMaker\src\main\java\com\botmaker\library\capture\GDI32.java
+FILE: rs\bgroi\Documents\dev\IntellijProjects\BotMaker\src\main\java\com\botmaker\library\capture\GDI32.java
 =================================================================================
 
 package com.botmaker.library.capture;
@@ -5047,7 +5047,7 @@ public interface GDI32 extends StdCallLibrary {
 
 
 =================================================================================
-FILE: ers\bgroi\Documents\dev\IntellijProjects\BotMaker\src\main\java\com\botmaker\library\capture\ImageDisplay.java
+FILE: rs\bgroi\Documents\dev\IntellijProjects\BotMaker\src\main\java\com\botmaker\library\capture\ImageDisplay.java
 =================================================================================
 
 package com.botmaker.library.capture;
@@ -5081,7 +5081,7 @@ public class ImageDisplay {
 
 
 =================================================================================
-FILE: ers\bgroi\Documents\dev\IntellijProjects\BotMaker\src\main\java\com\botmaker\library\capture\ScreenCapture.java
+FILE: rs\bgroi\Documents\dev\IntellijProjects\BotMaker\src\main\java\com\botmaker\library\capture\ScreenCapture.java
 =================================================================================
 
 package com.botmaker.library.capture;
@@ -5239,7 +5239,7 @@ public class ScreenCapture {
 
 
 =================================================================================
-FILE: ers\bgroi\Documents\dev\IntellijProjects\BotMaker\src\main\java\com\botmaker\library\capture\User32.java
+FILE: rs\bgroi\Documents\dev\IntellijProjects\BotMaker\src\main\java\com\botmaker\library\capture\User32.java
 =================================================================================
 
 package com.botmaker.library.capture;
@@ -5325,7 +5325,7 @@ public interface User32 extends StdCallLibrary {
 
 
 =================================================================================
-FILE: ers\bgroi\Documents\dev\IntellijProjects\BotMaker\src\main\java\com\botmaker\library\capture\WindowFinder.java
+FILE: rs\bgroi\Documents\dev\IntellijProjects\BotMaker\src\main\java\com\botmaker\library\capture\WindowFinder.java
 =================================================================================
 
 package com.botmaker.library.capture;
@@ -5373,7 +5373,7 @@ public class WindowFinder {
 
 
 =================================================================================
-FILE: ers\bgroi\Documents\dev\IntellijProjects\BotMaker\src\main\java\com\botmaker\library\capture\WindowInfo.java
+FILE: rs\bgroi\Documents\dev\IntellijProjects\BotMaker\src\main\java\com\botmaker\library\capture\WindowInfo.java
 =================================================================================
 
 package com.botmaker.library.capture;
@@ -5408,7 +5408,7 @@ public class WindowInfo {
 
 
 =================================================================================
-FILE: ers\bgroi\Documents\dev\IntellijProjects\BotMaker\src\main\java\com\botmaker\library\emulator\AdbHelper.java
+FILE: rs\bgroi\Documents\dev\IntellijProjects\BotMaker\src\main\java\com\botmaker\library\emulator\AdbHelper.java
 =================================================================================
 
 package com.botmaker.library.emulator;
@@ -5510,7 +5510,7 @@ public class AdbHelper {
 
 
 =================================================================================
-FILE: ers\bgroi\Documents\dev\IntellijProjects\BotMaker\src\main\java\com\botmaker\library\emulator\BlueStacksConfig.java
+FILE: rs\bgroi\Documents\dev\IntellijProjects\BotMaker\src\main\java\com\botmaker\library\emulator\BlueStacksConfig.java
 =================================================================================
 
 package com.botmaker.library.emulator;
@@ -5550,7 +5550,7 @@ public class BlueStacksConfig {
 
 
 =================================================================================
-FILE: ers\bgroi\Documents\dev\IntellijProjects\BotMaker\src\main\java\com\botmaker\library\emulator\BlueStacksEmulator.java
+FILE: rs\bgroi\Documents\dev\IntellijProjects\BotMaker\src\main\java\com\botmaker\library\emulator\BlueStacksEmulator.java
 =================================================================================
 
 package com.botmaker.library.emulator;
@@ -5636,7 +5636,7 @@ public class BlueStacksEmulator extends Emulator {
 
 
 =================================================================================
-FILE: ers\bgroi\Documents\dev\IntellijProjects\BotMaker\src\main\java\com\botmaker\library\emulator\BlueStacksInstance.java
+FILE: rs\bgroi\Documents\dev\IntellijProjects\BotMaker\src\main\java\com\botmaker\library\emulator\BlueStacksInstance.java
 =================================================================================
 
 package com.botmaker.library.emulator;
@@ -5719,7 +5719,7 @@ public class BlueStacksInstance {
 
 
 =================================================================================
-FILE: ers\bgroi\Documents\dev\IntellijProjects\BotMaker\src\main\java\com\botmaker\library\emulator\BlueStacksInstanceManager.java
+FILE: rs\bgroi\Documents\dev\IntellijProjects\BotMaker\src\main\java\com\botmaker\library\emulator\BlueStacksInstanceManager.java
 =================================================================================
 
 package com.botmaker.library.emulator;
@@ -5754,7 +5754,7 @@ public class BlueStacksInstanceManager {
 
 
 =================================================================================
-FILE: ers\bgroi\Documents\dev\IntellijProjects\BotMaker\src\main\java\com\botmaker\library\emulator\Emulator.java
+FILE: rs\bgroi\Documents\dev\IntellijProjects\BotMaker\src\main\java\com\botmaker\library\emulator\Emulator.java
 =================================================================================
 
 package com.botmaker.library.emulator;
@@ -5809,7 +5809,7 @@ public abstract class Emulator {
 
 
 =================================================================================
-FILE: ers\bgroi\Documents\dev\IntellijProjects\BotMaker\src\main\java\com\botmaker\library\emulator\EmulatorTest.java
+FILE: rs\bgroi\Documents\dev\IntellijProjects\BotMaker\src\main\java\com\botmaker\library\emulator\EmulatorTest.java
 =================================================================================
 
 package com.botmaker.library.emulator;
@@ -5904,7 +5904,7 @@ public class EmulatorTest {
 
 
 =================================================================================
-FILE: ers\bgroi\Documents\dev\IntellijProjects\BotMaker\src\main\java\com\botmaker\library\inspector\RegistryInspector.java
+FILE: rs\bgroi\Documents\dev\IntellijProjects\BotMaker\src\main\java\com\botmaker\library\inspector\RegistryInspector.java
 =================================================================================
 
 package com.botmaker.library.inspector;
@@ -5984,7 +5984,7 @@ public class RegistryInspector {
 
 
 =================================================================================
-FILE: ers\bgroi\Documents\dev\IntellijProjects\BotMaker\src\main\java\com\botmaker\library\interaction\GameInteractor.java
+FILE: rs\bgroi\Documents\dev\IntellijProjects\BotMaker\src\main\java\com\botmaker\library\interaction\GameInteractor.java
 =================================================================================
 
 package com.botmaker.library.interaction;
@@ -6073,7 +6073,7 @@ public class GameInteractor{
 
 
 =================================================================================
-FILE: ers\bgroi\Documents\dev\IntellijProjects\BotMaker\src\main\java\com\botmaker\library\interaction\GameType.java
+FILE: rs\bgroi\Documents\dev\IntellijProjects\BotMaker\src\main\java\com\botmaker\library\interaction\GameType.java
 =================================================================================
 
 package com.botmaker.library.interaction;
@@ -6086,7 +6086,7 @@ public enum GameType {
 
 
 =================================================================================
-FILE: ers\bgroi\Documents\dev\IntellijProjects\BotMaker\src\main\java\com\botmaker\library\opencv\MatchResult.java
+FILE: rs\bgroi\Documents\dev\IntellijProjects\BotMaker\src\main\java\com\botmaker\library\opencv\MatchResult.java
 =================================================================================
 
 package com.botmaker.library.opencv;
@@ -6162,7 +6162,7 @@ public class MatchResult {
 
 
 =================================================================================
-FILE: ers\bgroi\Documents\dev\IntellijProjects\BotMaker\src\main\java\com\botmaker\library\opencv\MatType.java
+FILE: rs\bgroi\Documents\dev\IntellijProjects\BotMaker\src\main\java\com\botmaker\library\opencv\MatType.java
 =================================================================================
 
 package com.botmaker.library.opencv;
@@ -6171,7 +6171,7 @@ public enum MatType {COLOR, GRAY}
 
 
 =================================================================================
-FILE: ers\bgroi\Documents\dev\IntellijProjects\BotMaker\src\main\java\com\botmaker\library\opencv\OpencvManager.java
+FILE: rs\bgroi\Documents\dev\IntellijProjects\BotMaker\src\main\java\com\botmaker\library\opencv\OpencvManager.java
 =================================================================================
 
 package com.botmaker.library.opencv;
@@ -6626,7 +6626,7 @@ public class OpencvManager {
 
 
 =================================================================================
-FILE: ers\bgroi\Documents\dev\IntellijProjects\BotMaker\src\main\java\com\botmaker\library\opencv\OpencvTest.java
+FILE: rs\bgroi\Documents\dev\IntellijProjects\BotMaker\src\main\java\com\botmaker\library\opencv\OpencvTest.java
 =================================================================================
 
 package com.botmaker.library.opencv;
@@ -6801,7 +6801,7 @@ public class OpencvTest {
 
 
 =================================================================================
-FILE: ers\bgroi\Documents\dev\IntellijProjects\BotMaker\src\main\java\com\botmaker\library\opencv\Template.java
+FILE: rs\bgroi\Documents\dev\IntellijProjects\BotMaker\src\main\java\com\botmaker\library\opencv\Template.java
 =================================================================================
 
 package com.botmaker.library.opencv;
@@ -6863,7 +6863,7 @@ public class Template {
 
 
 =================================================================================
-FILE: ers\bgroi\Documents\dev\IntellijProjects\BotMaker\src\main\java\com\botmaker\lsp\CompletionContext.java
+FILE: rs\bgroi\Documents\dev\IntellijProjects\BotMaker\src\main\java\com\botmaker\lsp\CompletionContext.java
 =================================================================================
 
 package com.botmaker.lsp;
@@ -6886,7 +6886,7 @@ public record CompletionContext(
 
 
 =================================================================================
-FILE: ers\bgroi\Documents\dev\IntellijProjects\BotMaker\src\main\java\com\botmaker\lsp\JdtLanguageServerLauncher.java
+FILE: rs\bgroi\Documents\dev\IntellijProjects\BotMaker\src\main\java\com\botmaker\lsp\JdtLanguageServerLauncher.java
 =================================================================================
 
 package com.botmaker.lsp;
@@ -7066,7 +7066,7 @@ public class JdtLanguageServerLauncher {
 
 
 =================================================================================
-FILE: ers\bgroi\Documents\dev\IntellijProjects\BotMaker\src\main\java\com\botmaker\parser\AstRewriter.java
+FILE: rs\bgroi\Documents\dev\IntellijProjects\BotMaker\src\main\java\com\botmaker\parser\AstRewriter.java
 =================================================================================
 
 package com.botmaker.parser;
@@ -7583,7 +7583,7 @@ public class AstRewriter {
 
 
 =================================================================================
-FILE: ers\bgroi\Documents\dev\IntellijProjects\BotMaker\src\main\java\com\botmaker\parser\BlockFactory.java
+FILE: rs\bgroi\Documents\dev\IntellijProjects\BotMaker\src\main\java\com\botmaker\parser\BlockFactory.java
 =================================================================================
 
 package com.botmaker.parser;
@@ -7774,7 +7774,7 @@ public class BlockFactory {
 
 
 =================================================================================
-FILE: ers\bgroi\Documents\dev\IntellijProjects\BotMaker\src\main\java\com\botmaker\parser\BlockIdPrefix.java
+FILE: rs\bgroi\Documents\dev\IntellijProjects\BotMaker\src\main\java\com\botmaker\parser\BlockIdPrefix.java
 =================================================================================
 
 package com.botmaker.util;
@@ -7825,7 +7825,7 @@ public class BlockIdPrefix {
 
 
 =================================================================================
-FILE: ers\bgroi\Documents\dev\IntellijProjects\BotMaker\src\main\java\com\botmaker\parser\BlockParser.java
+FILE: rs\bgroi\Documents\dev\IntellijProjects\BotMaker\src\main\java\com\botmaker\parser\BlockParser.java
 =================================================================================
 
 package com.botmaker.parser;
@@ -8116,7 +8116,7 @@ public class BlockParser {
 
 
 =================================================================================
-FILE: ers\bgroi\Documents\dev\IntellijProjects\BotMaker\src\main\java\com\botmaker\parser\CodeEditor.java
+FILE: rs\bgroi\Documents\dev\IntellijProjects\BotMaker\src\main\java\com\botmaker\parser\CodeEditor.java
 =================================================================================
 
 package com.botmaker.parser;
@@ -8394,7 +8394,7 @@ public class CodeEditor {
 
 
 =================================================================================
-FILE: ers\bgroi\Documents\dev\IntellijProjects\BotMaker\src\main\java\com\botmaker\parser\ImportManager.java
+FILE: rs\bgroi\Documents\dev\IntellijProjects\BotMaker\src\main\java\com\botmaker\parser\ImportManager.java
 =================================================================================
 
 package com.botmaker.parser;
@@ -8452,7 +8452,7 @@ public class ImportManager {
 
 
 =================================================================================
-FILE: ers\bgroi\Documents\dev\IntellijProjects\BotMaker\src\main\java\com\botmaker\parser\NodeCreator.java
+FILE: rs\bgroi\Documents\dev\IntellijProjects\BotMaker\src\main\java\com\botmaker\parser\NodeCreator.java
 =================================================================================
 
 package com.botmaker.parser;
@@ -8745,7 +8745,7 @@ public class NodeCreator {
 
 
 =================================================================================
-FILE: ers\bgroi\Documents\dev\IntellijProjects\BotMaker\src\main\java\com\botmaker\project\LibraryManager.java
+FILE: rs\bgroi\Documents\dev\IntellijProjects\BotMaker\src\main\java\com\botmaker\project\LibraryManager.java
 =================================================================================
 
 package com.botmaker.project;
@@ -8895,7 +8895,7 @@ public class LibraryManager {
 
 
 =================================================================================
-FILE: ers\bgroi\Documents\dev\IntellijProjects\BotMaker\src\main\java\com\botmaker\project\ProjectConfig.java
+FILE: rs\bgroi\Documents\dev\IntellijProjects\BotMaker\src\main\java\com\botmaker\project\ProjectConfig.java
 =================================================================================
 
 package com.botmaker.project;
@@ -9053,7 +9053,7 @@ public class ProjectConfig {
 
 
 =================================================================================
-FILE: ers\bgroi\Documents\dev\IntellijProjects\BotMaker\src\main\java\com\botmaker\project\ProjectCreator.java
+FILE: rs\bgroi\Documents\dev\IntellijProjects\BotMaker\src\main\java\com\botmaker\project\ProjectCreator.java
 =================================================================================
 
 package com.botmaker.project;
@@ -9378,7 +9378,7 @@ public class ProjectCreator {
 
 
 =================================================================================
-FILE: ers\bgroi\Documents\dev\IntellijProjects\BotMaker\src\main\java\com\botmaker\project\ProjectFile.java
+FILE: rs\bgroi\Documents\dev\IntellijProjects\BotMaker\src\main\java\com\botmaker\project\ProjectFile.java
 =================================================================================
 
 package com.botmaker.project;
@@ -9416,7 +9416,7 @@ public class ProjectFile {
 
 
 =================================================================================
-FILE: ers\bgroi\Documents\dev\IntellijProjects\BotMaker\src\main\java\com\botmaker\project\ProjectInfo.java
+FILE: rs\bgroi\Documents\dev\IntellijProjects\BotMaker\src\main\java\com\botmaker\project\ProjectInfo.java
 =================================================================================
 
 package com.botmaker.project;
@@ -9458,7 +9458,7 @@ public class ProjectInfo {
 
 
 =================================================================================
-FILE: ers\bgroi\Documents\dev\IntellijProjects\BotMaker\src\main\java\com\botmaker\project\ProjectManager.java
+FILE: rs\bgroi\Documents\dev\IntellijProjects\BotMaker\src\main\java\com\botmaker\project\ProjectManager.java
 =================================================================================
 
 package com.botmaker.project;
@@ -9547,7 +9547,7 @@ public class ProjectManager {
 
 
 =================================================================================
-FILE: ers\bgroi\Documents\dev\IntellijProjects\BotMaker\src\main\java\com\botmaker\runtime\CodeExecutionService.java
+FILE: rs\bgroi\Documents\dev\IntellijProjects\BotMaker\src\main\java\com\botmaker\runtime\CodeExecutionService.java
 =================================================================================
 
 package com.botmaker.runtime;
@@ -9782,7 +9782,7 @@ public class CodeExecutionService {
 
 
 =================================================================================
-FILE: ers\bgroi\Documents\dev\IntellijProjects\BotMaker\src\main\java\com\botmaker\services\CodeEditorService.java
+FILE: rs\bgroi\Documents\dev\IntellijProjects\BotMaker\src\main\java\com\botmaker\services\CodeEditorService.java
 =================================================================================
 
 package com.botmaker.services;
@@ -10014,7 +10014,7 @@ public class CodeEditorService {
 
 
 =================================================================================
-FILE: ers\bgroi\Documents\dev\IntellijProjects\BotMaker\src\main\java\com\botmaker\services\DebuggingService.java
+FILE: rs\bgroi\Documents\dev\IntellijProjects\BotMaker\src\main\java\com\botmaker\services\DebuggingService.java
 =================================================================================
 
 package com.botmaker.services;
@@ -10366,7 +10366,7 @@ public class DebuggingService {
 
 
 =================================================================================
-FILE: ers\bgroi\Documents\dev\IntellijProjects\BotMaker\src\main\java\com\botmaker\services\ExecutionService.java
+FILE: rs\bgroi\Documents\dev\IntellijProjects\BotMaker\src\main\java\com\botmaker\services\ExecutionService.java
 =================================================================================
 
 package com.botmaker.services;
@@ -10470,7 +10470,7 @@ public class ExecutionService {
 
 
 =================================================================================
-FILE: ers\bgroi\Documents\dev\IntellijProjects\BotMaker\src\main\java\com\botmaker\services\LanguageServerService.java
+FILE: rs\bgroi\Documents\dev\IntellijProjects\BotMaker\src\main\java\com\botmaker\services\LanguageServerService.java
 =================================================================================
 
 package com.botmaker.services;
@@ -10622,7 +10622,7 @@ public class LanguageServerService {
 
 
 =================================================================================
-FILE: ers\bgroi\Documents\dev\IntellijProjects\BotMaker\src\main\java\com\botmaker\state\ApplicationState.java
+FILE: rs\bgroi\Documents\dev\IntellijProjects\BotMaker\src\main\java\com\botmaker\state\ApplicationState.java
 =================================================================================
 
 package com.botmaker.state;
@@ -10828,7 +10828,7 @@ public class ApplicationState {
 
 
 =================================================================================
-FILE: ers\bgroi\Documents\dev\IntellijProjects\BotMaker\src\main\java\com\botmaker\state\HistoryManager.java
+FILE: rs\bgroi\Documents\dev\IntellijProjects\BotMaker\src\main\java\com\botmaker\state\HistoryManager.java
 =================================================================================
 
 package com.botmaker.state;
@@ -10893,7 +10893,7 @@ public class HistoryManager {
 
 
 =================================================================================
-FILE: ers\bgroi\Documents\dev\IntellijProjects\BotMaker\src\main\java\com\botmaker\ui\AddableBlock.java
+FILE: rs\bgroi\Documents\dev\IntellijProjects\BotMaker\src\main\java\com\botmaker\ui\AddableBlock.java
 =================================================================================
 
 package com.botmaker.ui;
@@ -10972,7 +10972,7 @@ public enum AddableBlock {
 
 
 =================================================================================
-FILE: ers\bgroi\Documents\dev\IntellijProjects\BotMaker\src\main\java\com\botmaker\ui\AddableExpression.java
+FILE: rs\bgroi\Documents\dev\IntellijProjects\BotMaker\src\main\java\com\botmaker\ui\AddableExpression.java
 =================================================================================
 
 package com.botmaker.ui;
@@ -11055,7 +11055,7 @@ public enum AddableExpression {
 
 
 =================================================================================
-FILE: ers\bgroi\Documents\dev\IntellijProjects\BotMaker\src\main\java\com\botmaker\ui\BlockDragAndDropManager.java
+FILE: rs\bgroi\Documents\dev\IntellijProjects\BotMaker\src\main\java\com\botmaker\ui\BlockDragAndDropManager.java
 =================================================================================
 
 package com.botmaker.ui;
@@ -11069,9 +11069,6 @@ import javafx.scene.input.DataFormat;
 import javafx.scene.input.Dragboard;
 import javafx.scene.input.TransferMode;
 import javafx.scene.layout.Region;
-import org.eclipse.jdt.core.dom.AnonymousClassDeclaration;
-import org.eclipse.jdt.core.dom.TypeDeclaration;
-import org.eclipse.jdt.core.dom.TypeDeclarationStatement;
 
 import java.util.function.Consumer;
 
@@ -11097,9 +11094,8 @@ public class BlockDragAndDropManager {
     }
 
     /**
-     * Makes a UI node draggable, associating it with a specific type of AddableBlock.
-     * @param node The node to make draggable (e.g., a Label in the palette).
-     * @param blockType The type of block this node represents.
+     * Makes a UI node draggable (Palette Items).
+     * Added visual feedback (Opacity).
      */
     public void makeDraggable(Node node, AddableBlock blockType) {
         node.setOnDragDetected(event -> {
@@ -11107,20 +11103,26 @@ public class BlockDragAndDropManager {
             ClipboardContent content = new ClipboardContent();
             content.put(ADDABLE_BLOCK_FORMAT, blockType.name());
             db.setContent(content);
+
+            // Visual feedback: reduce opacity to show it's being dragged
+            node.setOpacity(0.5);
+
             System.out.println("Drag detected for: " + blockType.name());
+            event.consume();
+        });
+
+        // Reset opacity when drag finishes (success or cancel)
+        node.setOnDragDone(event -> {
+            node.setOpacity(1.0);
             event.consume();
         });
     }
 
     /**
      * Makes an existing block's UI node draggable for repositioning.
-     * @param node The UI node of the block to make draggable.
-     * @param block The StatementBlock instance being dragged.
-     * @param sourceBody The BodyBlock containing this block.
      */
     public void makeBlockMovable(Node node, StatementBlock block, BodyBlock sourceBody) {
         node.setOnDragDetected(event -> {
-            // Only start drag if not clicking on interactive elements
             if (event.getTarget() instanceof javafx.scene.control.Control) {
                 return;
             }
@@ -11130,22 +11132,15 @@ public class BlockDragAndDropManager {
             content.put(EXISTING_BLOCK_FORMAT, block.getId());
             db.setContent(content);
 
-            // Visual feedback - make the block semi-transparent while dragging
             node.setOpacity(0.5);
 
             System.out.println("Dragging existing block: " + block.getDetails());
             event.consume();
         });
 
-        // Reset opacity and release focus when drag is done
         node.setOnDragDone(event -> {
             node.setOpacity(1.0);
-            // DON'T consume - let the event propagate to restore normal mouse behavior
-            // event.consume();
-
-            // Multiple approaches to ensure drag is fully released
             javafx.application.Platform.runLater(() -> {
-                // 1. Find and focus ScrollPane
                 javafx.scene.Node current = node;
                 javafx.scene.control.ScrollPane scrollPane = null;
                 while (current != null) {
@@ -11157,23 +11152,13 @@ public class BlockDragAndDropManager {
                 }
 
                 if (scrollPane != null) {
-                    // Make sure ScrollPane can receive focus
                     scrollPane.setFocusTraversable(true);
                     scrollPane.requestFocus();
-
-                    // Also try to release any event filters
-                    final javafx.scene.control.ScrollPane sp = scrollPane;
-                    javafx.application.Platform.runLater(() -> {
-                        sp.requestFocus();
-                    });
                 }
             });
         });
     }
 
-    /**
-     * Creates a thin, transparent region to act as a separator and drop target.
-     */
     public Region createSeparator() {
         Region separator = new Region();
         separator.setMinHeight(8);
@@ -11181,31 +11166,17 @@ public class BlockDragAndDropManager {
         return separator;
     }
 
-    /**
-     * Adds all necessary drag-and-drop event handlers to a separator region.
-     * Handles both adding new blocks and moving existing blocks.
-     * @param separator The region to add handlers to.
-     * @param targetBody The body where blocks will be inserted.
-     * @param insertionIndex The index in the list where a drop should occur.
-     * @param adjacentBlock The block next to the separator, for context (can be null).
-     */
     public void addSeparatorDragHandlers(Region separator, BodyBlock targetBody, int insertionIndex, StatementBlock adjacentBlock) {
         String defaultColor = "transparent";
-        String hoverColor = "#007bff"; // A distinct blue
-        String moveHoverColor = "#28a745"; // Green for moving blocks
+        String hoverColor = "#007bff";
+        String moveHoverColor = "#28a745";
 
         separator.setOnDragEntered(event -> {
             Dragboard db = event.getDragboard();
             if (db.hasContent(ADDABLE_BLOCK_FORMAT)) {
                 separator.setStyle("-fx-background-color: " + hoverColor + ";");
-                String logMessage = "Hovering insertion point at index: " + insertionIndex;
-                if (adjacentBlock != null) {
-                    logMessage += " (next to: " + adjacentBlock.getDetails() + ")";
-                }
-                System.out.println(logMessage);
             } else if (db.hasContent(EXISTING_BLOCK_FORMAT)) {
                 separator.setStyle("-fx-background-color: " + moveHoverColor + ";");
-                System.out.println("Hovering to move block at index: " + insertionIndex);
             }
             event.consume();
         });
@@ -11228,25 +11199,17 @@ public class BlockDragAndDropManager {
             boolean success = false;
 
             if (db.hasContent(ADDABLE_BLOCK_FORMAT)) {
-                // Adding a new block
                 String blockTypeName = (String) db.getContent(ADDABLE_BLOCK_FORMAT);
                 AddableBlock type = AddableBlock.valueOf(blockTypeName);
-
                 if (onDrop != null) {
                     onDrop.accept(new DropInfo(type, targetBody, insertionIndex));
                     success = true;
-                } else {
-                    System.err.println("WARNING: onDrop callback not set yet!");
                 }
             } else if (db.hasContent(EXISTING_BLOCK_FORMAT)) {
-                // Moving an existing block
                 String blockId = (String) db.getContent(EXISTING_BLOCK_FORMAT);
-
                 if (onBlockMove != null) {
                     onBlockMove.accept(new MoveBlockInfo(blockId, targetBody, insertionIndex));
                     success = true;
-                } else {
-                    System.err.println("WARNING: onBlockMove callback not set yet!");
                 }
             }
 
@@ -11255,41 +11218,24 @@ public class BlockDragAndDropManager {
         });
     }
 
-    // In BlockDragAndDropManager.java - add new method
-
-    public void addMethodDeclarationDropHandlers(
-            Region separator,
-            ClassBlock targetClass,
-            int insertionIndex) {
-
+    public void addMethodDeclarationDropHandlers(Region separator, ClassBlock targetClass, int insertionIndex) {
         String defaultColor = "rgba(52, 73, 94, 0.1)";
-        String hoverColor = "#9b59b6"; // Purple for methods
+        String hoverColor = "#9b59b6";
 
         separator.setOnDragEntered(event -> {
             Dragboard db = event.getDragboard();
             if (db.hasContent(ADDABLE_BLOCK_FORMAT)) {
                 String blockTypeName = (String) db.getContent(ADDABLE_BLOCK_FORMAT);
                 AddableBlock type = AddableBlock.valueOf(blockTypeName);
-
-                // Only accept METHOD_DECLARATION
                 if (type == AddableBlock.METHOD_DECLARATION) {
-                    separator.setStyle(
-                            "-fx-background-color: " + hoverColor + ";" +
-                                    "-fx-border-color: " + hoverColor + ";" +
-                                    "-fx-border-width: 2 0 2 0;"
-                    );
+                    separator.setStyle("-fx-background-color: " + hoverColor + "; -fx-border-color: " + hoverColor + "; -fx-border-width: 2 0 2 0;");
                 }
             }
             event.consume();
         });
 
         separator.setOnDragExited(event -> {
-            separator.setStyle(
-                    "-fx-background-color: " + defaultColor + ";" +
-                            "-fx-border-color: rgba(52, 73, 94, 0.3);" +
-                            "-fx-border-width: 1 0 1 0;" +
-                            "-fx-border-style: dashed;"
-            );
+            separator.setStyle("-fx-background-color: " + defaultColor + "; -fx-border-color: rgba(52, 73, 94, 0.3); -fx-border-width: 1 0 1 0; -fx-border-style: dashed;");
             event.consume();
         });
 
@@ -11298,7 +11244,6 @@ public class BlockDragAndDropManager {
             if (db.hasContent(ADDABLE_BLOCK_FORMAT)) {
                 String blockTypeName = (String) db.getContent(ADDABLE_BLOCK_FORMAT);
                 AddableBlock type = AddableBlock.valueOf(blockTypeName);
-
                 if (type == AddableBlock.METHOD_DECLARATION) {
                     event.acceptTransferModes(TransferMode.COPY);
                 }
@@ -11309,18 +11254,14 @@ public class BlockDragAndDropManager {
         separator.setOnDragDropped(event -> {
             Dragboard db = event.getDragboard();
             boolean success = false;
-
             if (db.hasContent(ADDABLE_BLOCK_FORMAT)) {
                 String blockTypeName = (String) db.getContent(ADDABLE_BLOCK_FORMAT);
                 AddableBlock type = AddableBlock.valueOf(blockTypeName);
-
                 if (type == AddableBlock.METHOD_DECLARATION && onDrop != null) {
-                    // Create special DropInfo for method declarations
                     onDrop.accept(new DropInfo(type, null, insertionIndex, targetClass));
                     success = true;
                 }
             }
-
             event.setDropCompleted(success);
             event.consume();
         });
@@ -11328,10 +11269,8 @@ public class BlockDragAndDropManager {
 
     public void addEmptyBodyDropHandlers(Region target, BodyBlock targetBody) {
         target.setOnDragEntered(event -> {
-            if (event.getDragboard().hasContent(ADDABLE_BLOCK_FORMAT) ||
-                    event.getDragboard().hasContent(EXISTING_BLOCK_FORMAT)) {
+            if (event.getDragboard().hasContent(ADDABLE_BLOCK_FORMAT) || event.getDragboard().hasContent(EXISTING_BLOCK_FORMAT)) {
                 target.getStyleClass().add("empty-body-drop-hover");
-                System.out.println("Added hover class to: " + target.getClass().getSimpleName());
             }
             event.consume();
         });
@@ -11342,8 +11281,7 @@ public class BlockDragAndDropManager {
         });
 
         target.setOnDragOver(event -> {
-            Dragboard db = event.getDragboard();
-            if (db.hasContent(ADDABLE_BLOCK_FORMAT) || db.hasContent(EXISTING_BLOCK_FORMAT)) {
+            if (event.getDragboard().hasContent(ADDABLE_BLOCK_FORMAT) || event.getDragboard().hasContent(EXISTING_BLOCK_FORMAT)) {
                 event.acceptTransferModes(TransferMode.COPY_OR_MOVE);
             }
             event.consume();
@@ -11352,30 +11290,20 @@ public class BlockDragAndDropManager {
         target.setOnDragDropped(event -> {
             Dragboard db = event.getDragboard();
             boolean success = false;
-
             if (db.hasContent(ADDABLE_BLOCK_FORMAT)) {
-                // Adding a new block
                 String blockTypeName = (String) db.getContent(ADDABLE_BLOCK_FORMAT);
                 AddableBlock type = AddableBlock.valueOf(blockTypeName);
-
                 if (onDrop != null) {
-                    onDrop.accept(new DropInfo(type, targetBody, 0)); // Always index 0 for empty body
+                    onDrop.accept(new DropInfo(type, targetBody, 0));
                     success = true;
-                } else {
-                    System.err.println("WARNING: onDrop callback not set yet!");
                 }
             } else if (db.hasContent(EXISTING_BLOCK_FORMAT)) {
-                // Moving an existing block
                 String blockId = (String) db.getContent(EXISTING_BLOCK_FORMAT);
-
                 if (onBlockMove != null) {
                     onBlockMove.accept(new MoveBlockInfo(blockId, targetBody, 0));
                     success = true;
-                } else {
-                    System.err.println("WARNING: onBlockMove callback not set yet!");
                 }
             }
-
             event.setDropCompleted(success);
             event.consume();
         });
@@ -11383,14 +11311,13 @@ public class BlockDragAndDropManager {
 
     public void addExpressionDropHandlers(Region target) {
         String defaultStyle = "-fx-background-color: #f0f0f0; -fx-border-color: #c0c0c0; -fx-border-style: dashed; -fx-min-width: 50; -fx-min-height: 25;";
-        String hoverStyle = defaultStyle + "-fx-border-color: #007bff;"; // Highlight with blue
+        String hoverStyle = defaultStyle + "-fx-border-color: #007bff;";
 
         target.setStyle(defaultStyle);
 
         target.setOnDragEntered(event -> {
             if (event.getDragboard().hasContent(ADDABLE_BLOCK_FORMAT)) {
                 target.setStyle(hoverStyle);
-                System.out.println("Hovering expression slot.");
             }
             event.consume();
         });
@@ -11411,9 +11338,9 @@ public class BlockDragAndDropManager {
             Dragboard db = event.getDragboard();
             boolean success = false;
             if (db.hasContent(ADDABLE_BLOCK_FORMAT)) {
-                String blockTypeName = (String) db.getContent(ADDABLE_BLOCK_FORMAT);
-                System.out.println("Cannot drop a Statement block ('" + blockTypeName + "') into an Expression slot.");
                 success = true;
+                // Handled by expression replacement logic usually, but here we just accept it
+                // to indicate valid drop target visually
             }
             event.setDropCompleted(success);
             event.consume();
@@ -11423,7 +11350,7 @@ public class BlockDragAndDropManager {
 
 
 =================================================================================
-FILE: ers\bgroi\Documents\dev\IntellijProjects\BotMaker\src\main\java\com\botmaker\ui\BlockEvent.java
+FILE: rs\bgroi\Documents\dev\IntellijProjects\BotMaker\src\main\java\com\botmaker\ui\BlockEvent.java
 =================================================================================
 
 package com.botmaker.ui;
@@ -11458,7 +11385,7 @@ public class BlockEvent extends Event {
 
 
 =================================================================================
-FILE: ers\bgroi\Documents\dev\IntellijProjects\BotMaker\src\main\java\com\botmaker\ui\DropInfo.java
+FILE: rs\bgroi\Documents\dev\IntellijProjects\BotMaker\src\main\java\com\botmaker\ui\DropInfo.java
 =================================================================================
 
 // In DropInfo.java - update the record
@@ -11481,7 +11408,7 @@ public record DropInfo(
 
 
 =================================================================================
-FILE: ers\bgroi\Documents\dev\IntellijProjects\BotMaker\src\main\java\com\botmaker\ui\EventLogManager.java
+FILE: rs\bgroi\Documents\dev\IntellijProjects\BotMaker\src\main\java\com\botmaker\ui\EventLogManager.java
 =================================================================================
 
 package com.botmaker.ui;
@@ -11607,7 +11534,7 @@ public class EventLogManager {
 
 
 =================================================================================
-FILE: ers\bgroi\Documents\dev\IntellijProjects\BotMaker\src\main\java\com\botmaker\ui\FileExplorerManager.java
+FILE: rs\bgroi\Documents\dev\IntellijProjects\BotMaker\src\main\java\com\botmaker\ui\FileExplorerManager.java
 =================================================================================
 
 package com.botmaker.ui;
@@ -11785,7 +11712,7 @@ public class FileExplorerManager {
 
 
 =================================================================================
-FILE: ers\bgroi\Documents\dev\IntellijProjects\BotMaker\src\main\java\com\botmaker\ui\MenuBarManager.java
+FILE: rs\bgroi\Documents\dev\IntellijProjects\BotMaker\src\main\java\com\botmaker\ui\MenuBarManager.java
 =================================================================================
 
 package com.botmaker.ui;
@@ -12026,7 +11953,7 @@ public class MenuBarManager {
 
 
 =================================================================================
-FILE: ers\bgroi\Documents\dev\IntellijProjects\BotMaker\src\main\java\com\botmaker\ui\MoveBlockInfo.java
+FILE: rs\bgroi\Documents\dev\IntellijProjects\BotMaker\src\main\java\com\botmaker\ui\MoveBlockInfo.java
 =================================================================================
 
 package com.botmaker.ui;
@@ -12044,17 +11971,19 @@ public record MoveBlockInfo(String blockId, BodyBlock targetBody, int insertionI
 
 
 =================================================================================
-FILE: ers\bgroi\Documents\dev\IntellijProjects\BotMaker\src\main\java\com\botmaker\ui\PaletteManager.java
+FILE: rs\bgroi\Documents\dev\IntellijProjects\BotMaker\src\main\java\com\botmaker\ui\PaletteManager.java
 =================================================================================
 
 package com.botmaker.ui;
 
 import com.botmaker.ui.AddableBlock.BlockCategory;
-import javafx.geometry.Insets;
-import javafx.scene.control.Accordion;
+import javafx.geometry.Pos;
+import javafx.scene.control.CustomMenuItem;
 import javafx.scene.control.Label;
-import javafx.scene.control.TitledPane;
-import javafx.scene.layout.VBox;
+import javafx.scene.control.MenuButton;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.Priority;
+import javafx.scene.layout.Region;
 
 import java.util.Arrays;
 import java.util.List;
@@ -12069,13 +11998,15 @@ public class PaletteManager {
         this.dragAndDropManager = dragAndDropManager;
     }
 
-    public Accordion createCategorizedPalette() {
-        Accordion accordion = new Accordion();
+    public HBox createHorizontalPalette() {
+        HBox container = new HBox(8);
+        container.setAlignment(Pos.CENTER);
+        // Remove padding here so buttons can touch edges if needed
+        container.setStyle("-fx-padding: 0;");
+        container.getStyleClass().add("palette-bar");
+
         Map<BlockCategory, List<AddableBlock>> grouped = Arrays.stream(AddableBlock.values())
                 .collect(Collectors.groupingBy(AddableBlock::getCategory));
-
-// In PaletteManager.java - createCategorizedPalette() method
-// Update the order array to include FUNCTIONS:
 
         BlockCategory[] order = {
                 BlockCategory.OUTPUT,
@@ -12084,7 +12015,7 @@ public class PaletteManager {
                 BlockCategory.FLOW,
                 BlockCategory.LOOPS,
                 BlockCategory.CONTROL,
-                BlockCategory.FUNCTIONS,  // ADD THIS
+                BlockCategory.FUNCTIONS,
                 BlockCategory.UTILITY
         };
 
@@ -12092,33 +12023,82 @@ public class PaletteManager {
             List<AddableBlock> blocks = grouped.get(category);
             if (blocks == null) continue;
 
-            VBox content = new VBox(8);
-            content.setPadding(new Insets(10));
+            String categoryColor = getCategoryColor(category);
+
+            MenuButton categoryMenu = new MenuButton();
+            categoryMenu.getStyleClass().addAll("palette-category-btn", "palette-" + category.name().toLowerCase());
+
+            // Make button stretch to fill toolbar height
+            categoryMenu.setMaxHeight(Double.MAX_VALUE);
+            // Allow button to shrink horizontally if needed
+            categoryMenu.setMinWidth(Region.USE_PREF_SIZE);
+
+            // Allow HBox to distribute extra space or shrink components
+            HBox.setHgrow(categoryMenu, Priority.SOMETIMES);
+
+            Label btnLabel = new Label(category.getLabel());
+            btnLabel.setStyle(
+                    "-fx-text-fill: white; " +
+                            "-fx-font-family: 'Segoe UI', sans-serif; " +
+                            "-fx-font-weight: bold; " +
+                            "-fx-font-size: 13px;"
+            );
+            categoryMenu.setGraphic(btnLabel);
+
+            categoryMenu.setStyle(
+                    "-fx-background-color: " + categoryColor + "; " +
+                            "-fx-background-radius: 4; " + // Slightly smaller radius for "bar" look
+                            "-fx-border-color: rgba(0,0,0,0.1); " +
+                            "-fx-border-radius: 4; " +
+                            "-fx-cursor: hand;"
+                    // Removed fixed padding here to allow layout to control height
+            );
 
             for (AddableBlock blockType : blocks) {
                 Label blockLabel = new Label(blockType.getDisplayName());
+                blockLabel.setPrefWidth(180);
                 blockLabel.setMaxWidth(Double.MAX_VALUE);
-                blockLabel.getStyleClass().addAll("palette-item", "palette-" + category.name().toLowerCase());
 
-                // FORCE visible text color
-                blockLabel.setStyle("-fx-text-fill: white; -fx-font-weight: bold;");
+                blockLabel.setStyle(
+                        "-fx-background-color: " + categoryColor + "; " +
+                                "-fx-text-fill: white; " +
+                                "-fx-font-weight: bold; " +
+                                "-fx-font-size: 12px; " +
+                                "-fx-padding: 8 12 8 12; " +
+                                "-fx-background-radius: 2;"
+                );
 
                 dragAndDropManager.makeDraggable(blockLabel, blockType);
-                content.getChildren().add(blockLabel);
+
+                CustomMenuItem item = new CustomMenuItem(blockLabel);
+                item.setHideOnClick(false);
+                categoryMenu.getItems().add(item);
             }
 
-            TitledPane pane = new TitledPane(category.getLabel(), content);
-            pane.getStyleClass().add("palette-pane");
-            accordion.getPanes().add(pane);
+            container.getChildren().add(categoryMenu);
         }
-        if (!accordion.getPanes().isEmpty()) accordion.setExpandedPane(accordion.getPanes().get(0));
-        return accordion;
+
+        return container;
+    }
+
+    private String getCategoryColor(BlockCategory category) {
+        return switch (category) {
+            case OUTPUT -> "#3498DB";
+            case INPUT -> "#9B59B6";
+            case VARIABLES -> "#F39C12";
+            case FLOW -> "#E67E22";
+            case LOOPS -> "#2ECC71";
+            case CONTROL -> "#E74C3C";
+            case FUNCTIONS -> "#8E44AD";
+            case UTILITY -> "#7F8C8D";
+            default -> "#34495E";
+        };
     }
 }
 
 
 =================================================================================
-FILE: ers\bgroi\Documents\dev\IntellijProjects\BotMaker\src\main\java\com\botmaker\ui\ProjectSelectionScreen.java
+FILE: rs\bgroi\Documents\dev\IntellijProjects\BotMaker\src\main\java\com\botmaker\ui\ProjectSelectionScreen.java
 =================================================================================
 
 package com.botmaker.ui;
@@ -12357,7 +12337,7 @@ public class ProjectSelectionScreen {
 
 
 =================================================================================
-FILE: ers\bgroi\Documents\dev\IntellijProjects\BotMaker\src\main\java\com\botmaker\ui\ToolbarManager.java
+FILE: rs\bgroi\Documents\dev\IntellijProjects\BotMaker\src\main\java\com\botmaker\ui\ToolbarManager.java
 =================================================================================
 
 package com.botmaker.ui;
@@ -12365,10 +12345,10 @@ package com.botmaker.ui;
 import com.botmaker.events.CoreApplicationEvents;
 import com.botmaker.events.EventBus;
 import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.control.Button;
+import javafx.scene.control.Tooltip;
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.Priority;
-import javafx.scene.layout.Region;
 
 public class ToolbarManager {
 
@@ -12400,31 +12380,43 @@ public class ToolbarManager {
         }, true);
     }
 
-    public HBox createToolBar() {
-        undoButton = new Button("Undo");
+    /**
+     * Creates the Left-side group: Undo, Redo, Compile
+     */
+    public HBox createEditGroup() {
+        undoButton = new Button("↶");
+        undoButton.setTooltip(new Tooltip("Undo (Ctrl+Z)"));
         undoButton.setDisable(true);
         undoButton.setOnAction(e -> eventBus.publish(new CoreApplicationEvents.UndoRequestedEvent()));
 
-        redoButton = new Button("Redo");
+        redoButton = new Button("↷");
+        redoButton.setTooltip(new Tooltip("Redo (Ctrl+Y)"));
         redoButton.setDisable(true);
         redoButton.setOnAction(e -> eventBus.publish(new CoreApplicationEvents.RedoRequestedEvent()));
 
-        Region spacer1 = new Region();
-        HBox.setHgrow(spacer1, Priority.ALWAYS);
-
-        Button compileButton = new Button("Compile");
+        Button compileButton = new Button("⚙ Compile");
         compileButton.getStyleClass().add("toolbar-btn");
         compileButton.setOnAction(e -> eventBus.publish(new CoreApplicationEvents.CompilationRequestedEvent()));
 
-        runButton = new Button("Run ▶");
+        HBox group = new HBox(5, undoButton, redoButton, compileButton);
+        group.setAlignment(Pos.CENTER_LEFT);
+        group.setPadding(new Insets(0, 10, 0, 0));
+        return group;
+    }
+
+    /**
+     * Creates the Right-side group: Run, Debug, Stop, Step, Continue
+     */
+    public HBox createExecutionGroup() {
+        runButton = new Button("▶ Run");
         runButton.getStyleClass().addAll("toolbar-btn", "btn-run");
         runButton.setOnAction(e -> eventBus.publish(new CoreApplicationEvents.ExecutionRequestedEvent()));
 
-        debugButton = new Button("Debug 🐞");
+        debugButton = new Button("🐞 Debug");
         debugButton.getStyleClass().addAll("toolbar-btn", "btn-debug");
         debugButton.setOnAction(e -> eventBus.publish(new CoreApplicationEvents.DebugStartRequestedEvent()));
 
-        unifiedStopButton = new Button("Stop ⏹");
+        unifiedStopButton = new Button("⏹ Stop");
         unifiedStopButton.getStyleClass().addAll("toolbar-btn", "btn-stop");
         unifiedStopButton.setDisable(true);
         unifiedStopButton.setOnAction(e -> {
@@ -12432,21 +12424,17 @@ public class ToolbarManager {
             else if (currentAppState == AppState.DEBUGGING) eventBus.publish(new CoreApplicationEvents.DebugStopRequestedEvent());
         });
 
-        Region spacer2 = new Region();
-        HBox.setHgrow(spacer2, Priority.ALWAYS);
-
-        stepOverButton = new Button("Step ⤵");
+        stepOverButton = new Button("⤵ Step");
         stepOverButton.setDisable(true);
         stepOverButton.setOnAction(e -> eventBus.publish(new CoreApplicationEvents.DebugStepOverRequestedEvent()));
 
-        continueButton = new Button("Continue ⏩");
+        continueButton = new Button("⏩ Cont");
         continueButton.setDisable(true);
         continueButton.setOnAction(e -> eventBus.publish(new CoreApplicationEvents.DebugContinueRequestedEvent()));
 
-        HBox toolbar = new HBox(10, undoButton, redoButton, spacer1, compileButton, runButton, debugButton, unifiedStopButton, spacer2, stepOverButton, continueButton);
-        toolbar.setPadding(new Insets(10));
-        toolbar.getStyleClass().add("main-toolbar");
-        return toolbar;
+        HBox group = new HBox(5, runButton, debugButton, unifiedStopButton, stepOverButton, continueButton);
+        group.setAlignment(Pos.CENTER_RIGHT);
+        return group;
     }
 
     private void setAppState(AppState state) {
@@ -12461,15 +12449,12 @@ public class ToolbarManager {
         unifiedStopButton.setDisable(!isBusy);
 
         if (currentAppState == AppState.DEBUGGING) {
-            unifiedStopButton.setText("Stop Debugging ⏹");
             unifiedStopButton.setStyle("-fx-background-color: #E74C3C; -fx-text-fill: white;");
         } else if (currentAppState == AppState.RUNNING) {
-            unifiedStopButton.setText("Stop Run ⏹");
             unifiedStopButton.setStyle("-fx-background-color: #E74C3C; -fx-text-fill: white;");
             stepOverButton.setDisable(true);
             continueButton.setDisable(true);
         } else {
-            unifiedStopButton.setText("Stop ⏹");
             unifiedStopButton.setStyle("");
             stepOverButton.setDisable(true);
             continueButton.setDisable(true);
@@ -12486,13 +12471,12 @@ public class ToolbarManager {
 
 
 =================================================================================
-FILE: ers\bgroi\Documents\dev\IntellijProjects\BotMaker\src\main\java\com\botmaker\ui\UIManager.java
+FILE: rs\bgroi\Documents\dev\IntellijProjects\BotMaker\src\main\java\com\botmaker\ui\UIManager.java
 =================================================================================
 
 package com.botmaker.ui;
 
 import com.botmaker.config.ApplicationConfig;
-import com.botmaker.core.CodeBlock;
 import com.botmaker.events.CoreApplicationEvents;
 import com.botmaker.events.EventBus;
 import com.botmaker.lsp.CompletionContext;
@@ -12500,7 +12484,9 @@ import com.botmaker.services.CodeEditorService;
 import com.botmaker.state.ApplicationState;
 import com.botmaker.validation.DiagnosticsManager;
 import com.botmaker.validation.ErrorTranslator;
+import javafx.geometry.Insets;
 import javafx.geometry.Orientation;
+import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
@@ -12519,12 +12505,11 @@ public class UIManager {
     private final DiagnosticsManager diagnosticsManager;
     private final Stage primaryStage;
 
-    // UI Managers
     private final PaletteManager paletteManager;
     private final ToolbarManager toolbarManager;
     private final EventLogManager eventLogManager;
     private final MenuBarManager menuBarManager;
-    private final FileExplorerManager fileExplorerManager; // New Manager
+    private final FileExplorerManager fileExplorerManager;
 
     private VBox blocksContainer;
     private Label statusLabel;
@@ -12538,21 +12523,18 @@ public class UIManager {
                      CodeEditorService codeEditorService,
                      DiagnosticsManager diagnosticsManager,
                      Stage primaryStage,
-                     ApplicationConfig config,   // Added
-                     ApplicationState state) {   // Added
+                     ApplicationConfig config,
+                     ApplicationState state) {
         this.eventBus = eventBus;
         this.codeEditorService = codeEditorService;
         this.diagnosticsManager = diagnosticsManager;
         this.primaryStage = primaryStage;
 
-        // Delegate Managers
         this.paletteManager = new PaletteManager(dragAndDropManager);
         this.toolbarManager = new ToolbarManager(eventBus);
         this.eventLogManager = new EventLogManager(eventBus);
         this.menuBarManager = new MenuBarManager(primaryStage);
         this.menuBarManager.setEventBus(eventBus);
-
-        // Initialize File Explorer
         this.fileExplorerManager = new FileExplorerManager(config, codeEditorService, state);
 
         setupEventHandlers();
@@ -12595,40 +12577,76 @@ public class UIManager {
     public Scene createScene() {
         menuBarManager.setOnSelectProject(v -> { if (onSelectProject != null) onSelectProject.accept(null); });
 
-        // 1. Center Code Area
+        // --- 1. Top Bar Construction ---
+
+        // Left
+        HBox editControls = toolbarManager.createEditGroup();
+        Separator leftSep = new Separator(Orientation.VERTICAL);
+        leftSep.setPadding(new Insets(0, 5, 0, 5));
+        HBox leftContainer = new HBox(editControls, leftSep);
+        leftContainer.setAlignment(Pos.CENTER_LEFT);
+
+        // Center: Palette
+        HBox paletteControls = paletteManager.createHorizontalPalette();
+
+        ScrollPane paletteScroll = new ScrollPane(paletteControls);
+        paletteScroll.setVbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
+        paletteScroll.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER); // Hide Horizontal Bar too, let it shrink
+
+        // Ensure content fills the scroll pane area
+        paletteScroll.setFitToWidth(true);
+        paletteScroll.setFitToHeight(true);
+
+        paletteScroll.setStyle("-fx-background-color: transparent; -fx-padding: 0;");
+        paletteScroll.getStyleClass().add("edge-to-edge");
+
+        // Right
+        HBox executionControls = toolbarManager.createExecutionGroup();
+        Separator rightSep = new Separator(Orientation.VERTICAL);
+        rightSep.setPadding(new Insets(0, 5, 0, 5));
+        HBox rightContainer = new HBox(rightSep, executionControls);
+        rightContainer.setAlignment(Pos.CENTER_RIGHT);
+
+        BorderPane topBar = new BorderPane();
+        topBar.setPadding(new Insets(6)); // Comfortable padding around the whole bar
+        topBar.setLeft(leftContainer);
+        topBar.setCenter(paletteScroll);
+        topBar.setRight(rightContainer);
+        topBar.getStyleClass().add("main-toolbar");
+
+        // FIXED HEIGHT CONSTRAINTS
+        // This stops the "Expand as much as I want" issue.
+        // 45px content + 12px padding = ~57px total height
+        topBar.setMinHeight(50);
+        topBar.setPrefHeight(50);
+        topBar.setMaxHeight(50);
+
+        topBar.setStyle("-fx-border-color: #dcdcdc; -fx-border-width: 0 0 1 0; -fx-background-color: #f4f4f4;");
+
+        // --- 2. Left Panel: File Explorer ---
+        VBox fileExplorer = fileExplorerManager.createView();
+        fileExplorer.setMinWidth(150);
+        fileExplorer.setMaxWidth(400);
+
+        // --- 3. Center: Code Canvas ---
         blocksContainer = new VBox(10);
         blocksContainer.getStyleClass().add("blocks-canvas");
-        ScrollPane scrollPane = new ScrollPane(blocksContainer);
-        scrollPane.setFitToWidth(true);
-        scrollPane.getStyleClass().add("code-scroll-pane");
+        blocksContainer.setPadding(new Insets(20));
 
-        // 2. Left Sidebar (Files + Palette)
-        VBox paletteContent = new VBox(paletteManager.createCategorizedPalette());
-        paletteContent.getStyleClass().add("palette-sidebar");
+        ScrollPane canvasScroll = new ScrollPane(blocksContainer);
+        canvasScroll.setFitToWidth(true);
+        canvasScroll.setFitToHeight(true);
+        canvasScroll.getStyleClass().add("code-scroll-pane");
 
-        VBox fileExplorerContent = fileExplorerManager.createView();
-
-        TabPane sidebarTabs = new TabPane();
-        sidebarTabs.setTabClosingPolicy(TabPane.TabClosingPolicy.UNAVAILABLE);
-
-        Tab filesTab = new Tab("Files", fileExplorerContent);
-        Tab blocksTab = new Tab("Blocks", paletteContent);
-
-        sidebarTabs.getTabs().addAll(filesTab, blocksTab);
-        sidebarTabs.setPrefWidth(260); // Slightly wider to accommodate file names
-        sidebarTabs.getStyleClass().add("sidebar-tabs");
-
-        // 3. Status Bar
-        statusLabel = new Label("Ready");
-        statusLabel.setId("status-label");
-
-        // 4. Bottom Panel (Output, Errors, Logs)
+        // --- 4. Bottom Panel: Terminal/Errors ---
         outputArea = new TextArea();
         outputArea.setEditable(false);
         outputArea.getStyleClass().add("console-area");
+        addContextMenu(outputArea);
 
         errorListView = new ListView<>();
         configureErrorList(errorListView);
+        addContextMenu(errorListView);
 
         bottomTabPane = new TabPane();
         Tab terminalTab = new Tab("Terminal", outputArea); terminalTab.setClosable(false);
@@ -12636,27 +12654,29 @@ public class UIManager {
         Tab eventsTab = new Tab("Event Log", eventLogManager.getView()); eventsTab.setClosable(false);
         bottomTabPane.getTabs().addAll(terminalTab, errorsTab, eventsTab);
 
-        // 5. Layout Assembly
+        // --- 5. Layout Assembly ---
+
         SplitPane verticalSplit = new SplitPane();
         verticalSplit.setOrientation(Orientation.VERTICAL);
-        verticalSplit.getItems().addAll(scrollPane, bottomTabPane);
-        verticalSplit.setDividerPositions(0.75);
-        VBox.setVgrow(verticalSplit, Priority.ALWAYS);
+        verticalSplit.getItems().addAll(canvasScroll, bottomTabPane);
+        verticalSplit.setDividerPositions(0.82);
 
-        BorderPane mainLayout = new BorderPane();
-        mainLayout.setTop(toolbarManager.createToolBar());
-        mainLayout.setLeft(sidebarTabs); // Changed from paletteContainer to sidebarTabs
-        mainLayout.setCenter(verticalSplit);
-        mainLayout.setBottom(statusLabel);
+        SplitPane mainSplit = new SplitPane();
+        mainSplit.setOrientation(Orientation.HORIZONTAL);
+        mainSplit.getItems().addAll(fileExplorer, verticalSplit);
+        mainSplit.setDividerPositions(0.25);
 
-        VBox root = new VBox(menuBarManager.getMenuBar(), mainLayout);
-        VBox.setVgrow(mainLayout, Priority.ALWAYS);
+        statusLabel = new Label("Ready");
+        statusLabel.setId("status-label");
+        statusLabel.setPadding(new Insets(2, 5, 2, 5));
+
+        VBox root = new VBox(menuBarManager.getMenuBar(), topBar, mainSplit, statusLabel);
+        VBox.setVgrow(mainSplit, Priority.ALWAYS);
         root.getStyleClass().add("light-theme");
 
         primaryStage.setOnHidden(e -> eventLogManager.shutdown());
 
         Scene scene = new Scene(root, 1000, 700);
-        scene.getStylesheets().add(getClass().getResource("/com/botmaker/styles.css").toExternalForm());
         return scene;
     }
 
@@ -12689,6 +12709,32 @@ public class UIManager {
         });
     }
 
+    private void addContextMenu(Control control) {
+        ContextMenu cm = new ContextMenu();
+        if (control instanceof TextArea) {
+            TextArea ta = (TextArea) control;
+            MenuItem copy = new MenuItem("Copy");
+            copy.setOnAction(e -> ta.copy());
+            MenuItem clear = new MenuItem("Clear");
+            clear.setOnAction(e -> ta.clear());
+            cm.getItems().addAll(copy, new SeparatorMenuItem(), clear);
+            ta.setContextMenu(cm);
+        } else if (control instanceof ListView) {
+            ListView<?> lv = (ListView<?>) control;
+            MenuItem copy = new MenuItem("Copy Selection");
+            copy.setOnAction(e -> {
+                Object selected = lv.getSelectionModel().getSelectedItem();
+                if (selected != null) {
+                    javafx.scene.input.ClipboardContent content = new javafx.scene.input.ClipboardContent();
+                    content.putString(selected.toString());
+                    javafx.scene.input.Clipboard.getSystemClipboard().setContent(content);
+                }
+            });
+            cm.getItems().add(copy);
+            lv.setContextMenu(cm);
+        }
+    }
+
     private void updateErrors(List<Diagnostic> diagnostics) {
         if (diagnostics == null) errorListView.getItems().clear();
         else errorListView.getItems().setAll(diagnostics);
@@ -12706,7 +12752,7 @@ public class UIManager {
 
 
 =================================================================================
-FILE: ers\bgroi\Documents\dev\IntellijProjects\BotMaker\src\main\java\com\botmaker\ui\components\BlockUIComponents.java
+FILE: rs\bgroi\Documents\dev\IntellijProjects\BotMaker\src\main\java\com\botmaker\ui\components\BlockUIComponents.java
 =================================================================================
 
 package com.botmaker.ui.components;
@@ -12802,7 +12848,7 @@ public class BlockUIComponents {
 
 
 =================================================================================
-FILE: ers\bgroi\Documents\dev\IntellijProjects\BotMaker\src\main\java\com\botmaker\ui\components\LayoutComponents.java
+FILE: rs\bgroi\Documents\dev\IntellijProjects\BotMaker\src\main\java\com\botmaker\ui\components\LayoutComponents.java
 =================================================================================
 
 package com.botmaker.ui.components;
@@ -12848,7 +12894,7 @@ public class LayoutComponents {
 
 
 =================================================================================
-FILE: ers\bgroi\Documents\dev\IntellijProjects\BotMaker\src\main\java\com\botmaker\ui\components\PlaceholderComponents.java
+FILE: rs\bgroi\Documents\dev\IntellijProjects\BotMaker\src\main\java\com\botmaker\ui\components\PlaceholderComponents.java
 =================================================================================
 
 package com.botmaker.ui.components;
@@ -12884,7 +12930,7 @@ public class PlaceholderComponents {
 
 
 =================================================================================
-FILE: ers\bgroi\Documents\dev\IntellijProjects\BotMaker\src\main\java\com\botmaker\ui\components\SelectorComponents.java
+FILE: rs\bgroi\Documents\dev\IntellijProjects\BotMaker\src\main\java\com\botmaker\ui\components\SelectorComponents.java
 =================================================================================
 
 package com.botmaker.ui.components;
@@ -12943,7 +12989,7 @@ public class SelectorComponents {
 
 
 =================================================================================
-FILE: ers\bgroi\Documents\dev\IntellijProjects\BotMaker\src\main\java\com\botmaker\ui\components\StyleComponents.java
+FILE: rs\bgroi\Documents\dev\IntellijProjects\BotMaker\src\main\java\com\botmaker\ui\components\StyleComponents.java
 =================================================================================
 
 package com.botmaker.ui.components;
@@ -12976,7 +13022,7 @@ public class StyleComponents {
 
 
 =================================================================================
-FILE: ers\bgroi\Documents\dev\IntellijProjects\BotMaker\src\main\java\com\botmaker\ui\components\TextFieldComponents.java
+FILE: rs\bgroi\Documents\dev\IntellijProjects\BotMaker\src\main\java\com\botmaker\ui\components\TextFieldComponents.java
 =================================================================================
 
 package com.botmaker.ui.components;
@@ -13020,7 +13066,7 @@ public class TextFieldComponents {
 
 
 =================================================================================
-FILE: ers\bgroi\Documents\dev\IntellijProjects\BotMaker\src\main\java\com\botmaker\util\BlockLookupHelper.java
+FILE: rs\bgroi\Documents\dev\IntellijProjects\BotMaker\src\main\java\com\botmaker\util\BlockLookupHelper.java
 =================================================================================
 
 package com.botmaker.util;
@@ -13116,7 +13162,7 @@ public class BlockLookupHelper {
 
 
 =================================================================================
-FILE: ers\bgroi\Documents\dev\IntellijProjects\BotMaker\src\main\java\com\botmaker\util\DefaultNames.java
+FILE: rs\bgroi\Documents\dev\IntellijProjects\BotMaker\src\main\java\com\botmaker\util\DefaultNames.java
 =================================================================================
 
 package com.botmaker.util;
@@ -13160,7 +13206,7 @@ public class DefaultNames {
 
 
 =================================================================================
-FILE: ers\bgroi\Documents\dev\IntellijProjects\BotMaker\src\main\java\com\botmaker\util\TypeManager.java
+FILE: rs\bgroi\Documents\dev\IntellijProjects\BotMaker\src\main\java\com\botmaker\util\TypeManager.java
 =================================================================================
 
 package com.botmaker.util;
@@ -13429,7 +13475,7 @@ public class TypeManager {
 
 
 =================================================================================
-FILE: ers\bgroi\Documents\dev\IntellijProjects\BotMaker\src\main\java\com\botmaker\validation\DiagnosticsManager.java
+FILE: rs\bgroi\Documents\dev\IntellijProjects\BotMaker\src\main\java\com\botmaker\validation\DiagnosticsManager.java
 =================================================================================
 
 package com.botmaker.validation;
@@ -13726,7 +13772,7 @@ public class DiagnosticsManager {
 
 
 =================================================================================
-FILE: ers\bgroi\Documents\dev\IntellijProjects\BotMaker\src\main\java\com\botmaker\validation\ErrorTranslator.java
+FILE: rs\bgroi\Documents\dev\IntellijProjects\BotMaker\src\main\java\com\botmaker\validation\ErrorTranslator.java
 =================================================================================
 
 package com.botmaker.validation;

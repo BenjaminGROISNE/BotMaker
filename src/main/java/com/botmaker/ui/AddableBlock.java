@@ -37,7 +37,7 @@ public enum AddableBlock {
     // --- FUNCTIONS ---
     FUNCTION_CALL("Call Function", MethodInvocationBlock.class, BlockCategory.FUNCTIONS), // MOVED HERE
     METHOD_DECLARATION("Declare Function", MethodDeclarationBlock.class, BlockCategory.FUNCTIONS),
-
+    DECLARE_ENUM("Define Enum", DeclareEnumBlock.class, BlockCategory.VARIABLES),
     // --- UTILITY ---
     COMMENT("Comment", CommentBlock.class, BlockCategory.UTILITY);
 

@@ -61,7 +61,25 @@ public class CodeEditor {
         triggerUpdate(newCode);
     }
 
-    // In CodeEditor.java
+    public void renameEnum(EnumDeclaration enumNode, String newName) {
+        String newCode = astRewriter.renameEnum(getCompilationUnit(), getCurrentCode(), enumNode, newName);
+        triggerUpdate(newCode);
+    }
+
+    public void addEnumConstant(EnumDeclaration enumNode, String constantName) {
+        String newCode = astRewriter.addEnumConstant(getCompilationUnit(), getCurrentCode(), enumNode, constantName);
+        triggerUpdate(newCode);
+    }
+
+    public void deleteEnumConstant(EnumDeclaration enumNode, int index) {
+        String newCode = astRewriter.deleteEnumConstant(getCompilationUnit(), getCurrentCode(), enumNode, index);
+        triggerUpdate(newCode);
+    }
+
+    public void renameEnumConstant(EnumDeclaration enumNode, int index, String newName) {
+        String newCode = astRewriter.renameEnumConstant(getCompilationUnit(), getCurrentCode(), enumNode, index, newName);
+        triggerUpdate(newCode);
+    }
 
     public void addMethodToClass(TypeDeclaration typeDecl, String methodName, String returnType, int index) {
         blockFactory.setMarkNewIdentifiersAsUnedited(true);
@@ -124,6 +142,17 @@ public class CodeEditor {
     public void addElementToList(ASTNode listNode, AddableExpression type, int insertIndex) {
         blockFactory.setMarkNewIdentifiersAsUnedited(true);
         String newCode = astRewriter.addElementToList(getCompilationUnit(), getCurrentCode(), listNode, type, insertIndex);
+        triggerUpdate(newCode);
+    }
+
+    public void addEnumToClass(TypeDeclaration typeDecl, String enumName, int index) {
+        blockFactory.setMarkNewIdentifiersAsUnedited(true);
+        String newCode = astRewriter.addEnumToClass(getCompilationUnit(), getCurrentCode(), typeDecl, enumName, index);
+        triggerUpdate(newCode);
+    }
+
+    public void deleteEnumFromClass(EnumDeclaration enumDecl) {
+        String newCode = astRewriter.deleteEnumFromClass(getCompilationUnit(), getCurrentCode(), enumDecl);
         triggerUpdate(newCode);
     }
 

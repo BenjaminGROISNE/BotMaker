@@ -201,7 +201,6 @@ public class UIManager {
         primaryStage.setOnHidden(e -> eventLogManager.shutdown());
 
         Scene scene = new Scene(root, 1000, 700);
-        scene.getStylesheets().add(getClass().getResource("/com/botmaker/styles.css").toExternalForm());
         return scene;
     }
 

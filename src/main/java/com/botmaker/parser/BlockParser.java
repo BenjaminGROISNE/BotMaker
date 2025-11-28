@@ -26,19 +26,28 @@ public class BlockParser {
     }
 
     public Optional<StatementBlock> parseStatement(Statement stmt, Map<ASTNode, CodeBlock> map) {
-        if (stmt instanceof Block) return Optional.of(factory.parseBodyBlock((Block) stmt, map, manager));
-        if (stmt instanceof VariableDeclarationStatement) return parseVariableDecl((VariableDeclarationStatement) stmt, map);
-        if (stmt instanceof IfStatement) return parseIf((IfStatement) stmt, map);
-        if (stmt instanceof WhileStatement) return parseWhile((WhileStatement) stmt, map);
-        if (stmt instanceof EnhancedForStatement) return parseFor((EnhancedForStatement) stmt, map);
-        if (stmt instanceof DoStatement) return parseDoWhile((DoStatement) stmt, map);
-        if (stmt instanceof SwitchStatement) return parseSwitch((SwitchStatement) stmt, map);
-        if (stmt instanceof BreakStatement) return Optional.of(new BreakBlock(BlockIdPrefix.generate(BlockIdPrefix.BREAK, stmt), (BreakStatement) stmt));
-        if (stmt instanceof ContinueStatement) return Optional.of(new ContinueBlock(BlockIdPrefix.generate(BlockIdPrefix.CONTINUE, stmt), (ContinueStatement) stmt));
-        if (stmt instanceof ReturnStatement) return parseReturn((ReturnStatement) stmt, map);
-        if (stmt instanceof TryStatement) return parseTry((TryStatement) stmt, map);
-        if (stmt instanceof ExpressionStatement) return parseExprStmt((ExpressionStatement) stmt, map);
+        try {
+            if (stmt instanceof Block) return Optional.of(factory.parseBodyBlock((Block) stmt, map, manager));
 
+            // --- NEW: Handle Local Enums ---
+            if (stmt instanceof TypeDeclarationStatement) return parseTypeDeclaration((TypeDeclarationStatement) stmt, map);
+
+            if (stmt instanceof VariableDeclarationStatement) return parseVariableDecl((VariableDeclarationStatement) stmt, map);
+            if (stmt instanceof IfStatement) return parseIf((IfStatement) stmt, map);
+            if (stmt instanceof WhileStatement) return parseWhile((WhileStatement) stmt, map);
+            if (stmt instanceof EnhancedForStatement) return parseFor((EnhancedForStatement) stmt, map);
+            if (stmt instanceof DoStatement) return parseDoWhile((DoStatement) stmt, map);
+            if (stmt instanceof SwitchStatement) return parseSwitch((SwitchStatement) stmt, map);
+            if (stmt instanceof BreakStatement) return Optional.of(new BreakBlock(BlockIdPrefix.generate(BlockIdPrefix.BREAK, stmt), (BreakStatement) stmt));
+            if (stmt instanceof ContinueStatement) return Optional.of(new ContinueBlock(BlockIdPrefix.generate(BlockIdPrefix.CONTINUE, stmt), (ContinueStatement) stmt));
+            if (stmt instanceof ReturnStatement) return parseReturn((ReturnStatement) stmt, map);
+            if (stmt instanceof TryStatement) return parseTry((TryStatement) stmt, map);
+            if (stmt instanceof ExpressionStatement) return parseExprStmt((ExpressionStatement) stmt, map);
+
+        } catch (Exception e) {
+            System.err.println("Error parsing statement: " + stmt);
+            e.printStackTrace();
+        }
         return Optional.empty();
     }
 
@@ -49,6 +58,17 @@ public class BlockParser {
             factory.parseExpression(stmt.getExpression(), map).ifPresent(block::setExpression);
         }
         return Optional.of(block);
+    }
+
+
+    private Optional<StatementBlock> parseTypeDeclaration(TypeDeclarationStatement stmt, Map<ASTNode, CodeBlock> map) {
+        // Check if the declaration inside the statement is an Enum
+        if (stmt.getDeclaration() instanceof EnumDeclaration) {
+            DeclareEnumBlock block = new DeclareEnumBlock(BlockIdPrefix.generate(BlockIdPrefix.ENUM, stmt), stmt);
+            map.put(stmt, block);
+            return Optional.of(block);
+        }
+        return Optional.empty();
     }
 
     private Optional<StatementBlock> parseExprStmt(ExpressionStatement stmt, Map<ASTNode, CodeBlock> map) {
@@ -186,9 +206,9 @@ public class BlockParser {
         if (isWait(stmt)) {
             WaitBlock block = new WaitBlock(BlockIdPrefix.generate(BlockIdPrefix.WAIT, stmt), stmt);
             map.put(stmt, block);
-            Statement inner = (Statement) stmt.getBody().statements().get(0);
+            Statement inner = (Statement) stmt.getBody().statements().getFirst();
             MethodInvocation mi = (MethodInvocation) ((ExpressionStatement) inner).getExpression();
-            if (!mi.arguments().isEmpty()) factory.parseExpression((Expression) mi.arguments().get(0), map).ifPresent(block::setDuration);
+            if (!mi.arguments().isEmpty()) factory.parseExpression((Expression) mi.arguments().getFirst(), map).ifPresent(block::setDuration);
             return Optional.of(block);
         }
         return Optional.empty();

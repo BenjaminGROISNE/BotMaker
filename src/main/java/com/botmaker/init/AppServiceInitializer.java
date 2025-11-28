@@ -10,6 +10,7 @@ import com.botmaker.ui.AddableBlock;
 import com.botmaker.ui.BlockDragAndDropManager;
 import com.botmaker.ui.UIManager;
 import com.botmaker.util.BlockLookupHelper;
+import org.eclipse.jdt.core.dom.TypeDeclaration;
 
 public class AppServiceInitializer {
 
@@ -36,22 +37,27 @@ public class AppServiceInitializer {
                                                   CodeEditorService editorService,
                                                   ApplicationState state) {
         // Handle adding new blocks
+// ... inside setupDragAndDropCallbacks ...
         manager.setCallback(dropInfo -> {
-            // ADDED: Check if this is a method declaration drop
-            if (dropInfo.type() == AddableBlock.METHOD_DECLARATION && dropInfo.targetClass() != null) {
-                // Add method to class
-                editorService.getCodeEditor().addMethodToClass(
-                        (org.eclipse.jdt.core.dom.TypeDeclaration) dropInfo.targetClass().getAstNode(),
-                        "newMethod",
-                        "void",
-                        dropInfo.insertionIndex()
-                );
-            } else if (dropInfo.targetBody() != null) {
-                // Regular statement drop
+            // Check if dropping into a CLASS
+            if (dropInfo.targetClass() != null) {
+                if (dropInfo.type() == AddableBlock.METHOD_DECLARATION) {
+                    editorService.getCodeEditor().addMethodToClass(
+                            (TypeDeclaration) dropInfo.targetClass().getAstNode(),
+                            "newMethod", "void", dropInfo.insertionIndex()
+                    );
+                }
+                else if (dropInfo.type() == AddableBlock.DECLARE_ENUM) {
+                    editorService.getCodeEditor().addEnumToClass(
+                            (TypeDeclaration) dropInfo.targetClass().getAstNode(),
+                            "NewEnum", dropInfo.insertionIndex()
+                    );
+                }
+            }
+            // Check if dropping into a BODY (Method)
+            else if (dropInfo.targetBody() != null) {
                 editorService.getCodeEditor().addStatement(
-                        dropInfo.targetBody(),
-                        dropInfo.type(),
-                        dropInfo.insertionIndex()
+                        dropInfo.targetBody(), dropInfo.type(), dropInfo.insertionIndex()
                 );
             }
         });

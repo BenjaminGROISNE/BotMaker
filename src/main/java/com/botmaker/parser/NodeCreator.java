@@ -128,7 +128,20 @@ public class NodeCreator {
             case RETURN: return ast.newReturnStatement();
 
             case COMMENT: return ast.newEmptyStatement();
+            case DECLARE_ENUM:
+                TypeDeclarationStatement typeDeclStmt = ast.newTypeDeclarationStatement(ast.newEnumDeclaration());
+                EnumDeclaration enumDecl = (EnumDeclaration) typeDeclStmt.getDeclaration();
+                enumDecl.setName(ast.newSimpleName("MyEnum"));
 
+                EnumConstantDeclaration const1 = ast.newEnumConstantDeclaration();
+                const1.setName(ast.newSimpleName("OPTION_A"));
+                enumDecl.enumConstants().add(const1);
+
+                EnumConstantDeclaration const2 = ast.newEnumConstantDeclaration();
+                const2.setName(ast.newSimpleName("OPTION_B"));
+                enumDecl.enumConstants().add(const2);
+
+                return typeDeclStmt;
             case ASSIGNMENT:
                 Assignment assignment = ast.newAssignment();
                 assignment.setLeftHandSide(ast.newSimpleName(DefaultNames.DEFAULT_VARIABLE));

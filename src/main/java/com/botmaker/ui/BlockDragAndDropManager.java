@@ -158,33 +158,16 @@ public class BlockDragAndDropManager {
         });
     }
 
-    public void addMethodDeclarationDropHandlers(Region separator, ClassBlock targetClass, int insertionIndex) {
-        String defaultColor = "rgba(52, 73, 94, 0.1)";
-        String hoverColor = "#9b59b6";
-
-        separator.setOnDragEntered(event -> {
-            Dragboard db = event.getDragboard();
-            if (db.hasContent(ADDABLE_BLOCK_FORMAT)) {
-                String blockTypeName = (String) db.getContent(ADDABLE_BLOCK_FORMAT);
-                AddableBlock type = AddableBlock.valueOf(blockTypeName);
-                if (type == AddableBlock.METHOD_DECLARATION) {
-                    separator.setStyle("-fx-background-color: " + hoverColor + "; -fx-border-color: " + hoverColor + "; -fx-border-width: 2 0 2 0;");
-                }
-            }
-            event.consume();
-        });
-
-        separator.setOnDragExited(event -> {
-            separator.setStyle("-fx-background-color: " + defaultColor + "; -fx-border-color: rgba(52, 73, 94, 0.3); -fx-border-width: 1 0 1 0; -fx-border-style: dashed;");
-            event.consume();
-        });
+    public void addClassMemberDropHandlers(Region separator, ClassBlock targetClass, int insertionIndex) {
 
         separator.setOnDragOver(event -> {
             Dragboard db = event.getDragboard();
             if (db.hasContent(ADDABLE_BLOCK_FORMAT)) {
                 String blockTypeName = (String) db.getContent(ADDABLE_BLOCK_FORMAT);
                 AddableBlock type = AddableBlock.valueOf(blockTypeName);
-                if (type == AddableBlock.METHOD_DECLARATION) {
+
+                // Allow Methods OR Enums
+                if (type == AddableBlock.METHOD_DECLARATION || type == AddableBlock.DECLARE_ENUM) {
                     event.acceptTransferModes(TransferMode.COPY);
                 }
             }
@@ -197,7 +180,9 @@ public class BlockDragAndDropManager {
             if (db.hasContent(ADDABLE_BLOCK_FORMAT)) {
                 String blockTypeName = (String) db.getContent(ADDABLE_BLOCK_FORMAT);
                 AddableBlock type = AddableBlock.valueOf(blockTypeName);
-                if (type == AddableBlock.METHOD_DECLARATION && onDrop != null) {
+
+                if ((type == AddableBlock.METHOD_DECLARATION || type == AddableBlock.DECLARE_ENUM) && onDrop != null) {
+                    // We reuse DropInfo but check type in CodeEditorService
                     onDrop.accept(new DropInfo(type, null, insertionIndex, targetClass));
                     success = true;
                 }
