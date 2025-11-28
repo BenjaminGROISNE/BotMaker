@@ -63,7 +63,43 @@ public class TypeManager {
         return true;
     }
 
-    // NEW: Check if a type name looks like an enum (starts with uppercase, not in known types)
+    // NEW: Check if a type is actually an enum by searching the compilation unit
+    public static boolean isEnumType(String typeName, CompilationUnit cu) {
+        if (typeName == null || typeName.isEmpty() || cu == null) return false;
+
+        String clean = typeName.trim();
+
+        // Extract base type if it's wrapped in ArrayList
+        if (clean.startsWith("ArrayList<") && clean.endsWith(">")) {
+            clean = clean.substring(10, clean.length() - 1);
+        }
+
+        // Search for enum declaration
+        for (Object obj : cu.types()) {
+            if (obj instanceof EnumDeclaration) {
+                EnumDeclaration enumDecl = (EnumDeclaration) obj;
+                if (enumDecl.getName().getIdentifier().equals(clean)) {
+                    return true;
+                }
+            }
+            // Check class body declarations
+            else if (obj instanceof TypeDeclaration) {
+                TypeDeclaration typeDecl = (TypeDeclaration) obj;
+                for (Object bodyObj : typeDecl.bodyDeclarations()) {
+                    if (bodyObj instanceof EnumDeclaration) {
+                        EnumDeclaration enumDecl = (EnumDeclaration) bodyObj;
+                        if (enumDecl.getName().getIdentifier().equals(clean)) {
+                            return true;
+                        }
+                    }
+                }
+            }
+        }
+
+        return false;
+    }
+
+    // Keep the old method but mark it as a heuristic
     public static boolean isLikelyEnumType(String typeName) {
         if (typeName == null || typeName.isEmpty()) return false;
         String clean = typeName.trim();
@@ -73,13 +109,34 @@ public class TypeManager {
             clean = clean.substring(10, clean.length() - 1);
         }
 
-        // Enums typically start with uppercase and aren't in our known primitive/standard types
+        // Heuristic: Enums typically start with uppercase and aren't in our known primitive/standard types
         if (!Character.isUpperCase(clean.charAt(0))) return false;
         if (FUNDAMENTAL_TYPES.contains(clean)) return false;
         if (STRING_TYPES.contains(clean)) return false;
         if (clean.equals("Integer") || clean.equals("Double") || clean.equals("Boolean")) return false;
 
         return true;
+    }
+
+    // Add an overload that takes CompilationUnit for accurate enum detection
+    public static String determineUiType(String typeName, CompilationUnit cu) {
+        if (typeName == null || typeName.isBlank()) return UI_TYPE_ANY;
+        String clean = typeName.trim();
+
+        if (isArrayList(clean)) return UI_TYPE_LIST;
+        if (clean.endsWith("[]")) return UI_TYPE_LIST;
+
+        if (NUMBER_TYPES.contains(clean)) return UI_TYPE_NUMBER;
+        if (BOOLEAN_TYPES.contains(clean)) return UI_TYPE_BOOLEAN;
+        if (STRING_TYPES.contains(clean)) return UI_TYPE_STRING;
+
+        // Check if it's actually an enum
+        if (isEnumType(clean, cu)) return UI_TYPE_ENUM;
+
+        // Fallback to heuristic
+        if (isLikelyEnumType(clean)) return UI_TYPE_ENUM;
+
+        return UI_TYPE_ANY;
     }
 
     public static String determineUiType(String typeName) {

@@ -66,8 +66,10 @@ public class VariableDeclarationBlock extends AbstractStatementBlock {
         }
 
         // 4. Add Button
+// 4. Add Button
         String typeString = variableType.toString();
-        String uiTargetType = TypeManager.determineUiType(typeString);
+        String uiTargetType = TypeManager.determineUiType(typeString,
+                context.applicationState().getCompilationUnit().orElse(null));
 
         // DEBUG OUTPUT
         System.out.println("=== VARIABLE DECLARATION DEBUG ===");

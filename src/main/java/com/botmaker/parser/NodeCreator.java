@@ -15,6 +15,10 @@ public class NodeCreator {
 
 
     public Expression createDefaultExpression(AST ast, AddableExpression type, CompilationUnit cu, ASTRewrite rewriter) {
+        return createDefaultExpression(ast, type, cu, rewriter, null);
+    }
+
+    public Expression createDefaultExpression(AST ast, AddableExpression type, CompilationUnit cu, ASTRewrite rewriter, String contextTypeName) {
         switch (type) {
             case TEXT:
                 StringLiteral newString = ast.newStringLiteral();
@@ -38,12 +42,20 @@ public class NodeCreator {
                 asList.setExpression(ast.newSimpleName("Arrays"));
                 asList.setName(ast.newSimpleName("asList"));
                 return asList;
+
             case ENUM_CONSTANT:
-                // Create a default qualified name like MyEnum.OPTION_A
-                // Will be replaced by user selection
+                // NEW: Use the actual enum type name from context
+                String enumTypeName = contextTypeName != null ? contextTypeName : "MyEnum";
+
+                // Find the first constant of this enum
+                String firstConstant = findFirstEnumConstant(cu, enumTypeName);
+                if (firstConstant == null) {
+                    firstConstant = "VALUE";
+                }
+
                 QualifiedName qn = ast.newQualifiedName(
-                        ast.newSimpleName("MyEnum"),
-                        ast.newSimpleName("OPTION_A")
+                        ast.newSimpleName(enumTypeName),
+                        ast.newSimpleName(firstConstant)
                 );
                 return qn;
             case ADD:
@@ -67,6 +79,38 @@ public class NodeCreator {
         }
     }
 
+    private String findFirstEnumConstant(CompilationUnit cu, String enumName) {
+        if (cu == null) return null;
+
+        // Search for the enum declaration
+        for (Object obj : cu.types()) {
+            if (obj instanceof EnumDeclaration) {
+                EnumDeclaration enumDecl = (EnumDeclaration) obj;
+                if (enumDecl.getName().getIdentifier().equals(enumName)) {
+                    if (!enumDecl.enumConstants().isEmpty()) {
+                        EnumConstantDeclaration first = (EnumConstantDeclaration) enumDecl.enumConstants().get(0);
+                        return first.getName().getIdentifier();
+                    }
+                }
+            }
+            // Check class body declarations
+            else if (obj instanceof TypeDeclaration) {
+                TypeDeclaration typeDecl = (TypeDeclaration) obj;
+                for (Object bodyObj : typeDecl.bodyDeclarations()) {
+                    if (bodyObj instanceof EnumDeclaration) {
+                        EnumDeclaration enumDecl = (EnumDeclaration) bodyObj;
+                        if (enumDecl.getName().getIdentifier().equals(enumName)) {
+                            if (!enumDecl.enumConstants().isEmpty()) {
+                                EnumConstantDeclaration first = (EnumConstantDeclaration) enumDecl.enumConstants().get(0);
+                                return first.getName().getIdentifier();
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        return null;
+    }
     public Statement createDefaultStatement(AST ast, AddableBlock type, CompilationUnit cu, ASTRewrite rewriter) {
         switch (type) {
             case PRINT:

@@ -56,10 +56,46 @@ public class AstRewriter {
     public String replaceExpression(CompilationUnit cu, String originalCode, Expression toReplace, AddableExpression type) {
         AST ast = cu.getAST();
         ASTRewrite rewriter = ASTRewrite.create(ast);
-        Expression newExpression = nodeCreator.createDefaultExpression(ast, type, cu, rewriter);
+
+        // NEW: Try to infer context type from parent
+        String contextType = inferContextType(toReplace);
+
+        Expression newExpression = nodeCreator.createDefaultExpression(ast, type, cu, rewriter, contextType);
         if (newExpression == null) return originalCode;
         rewriter.replace(toReplace, newExpression, null);
         return applyRewrite(rewriter, originalCode);
+    }
+
+    private String inferContextType(Expression expr) {
+        ASTNode parent = expr.getParent();
+
+        // Variable declaration
+        if (parent instanceof VariableDeclarationFragment) {
+            VariableDeclarationFragment frag = (VariableDeclarationFragment) parent;
+            if (frag.getParent() instanceof VariableDeclarationStatement) {
+                VariableDeclarationStatement varDecl = (VariableDeclarationStatement) frag.getParent();
+                String typeName = varDecl.getType().toString();
+                if (typeName.startsWith("ArrayList<") && typeName.endsWith(">")) {
+                    return typeName.substring(10, typeName.length() - 1);
+                }
+                return typeName;
+            }
+        }
+
+        // Assignment
+        if (parent instanceof Assignment) {
+            Assignment assign = (Assignment) parent;
+            Expression lhs = assign.getLeftHandSide();
+            if (lhs instanceof SimpleName) {
+                // Try to resolve type from bindings
+                ITypeBinding binding = lhs.resolveTypeBinding();
+                if (binding != null) {
+                    return binding.getName();
+                }
+            }
+        }
+
+        return null;
     }
 
     public String replaceLiteral(CompilationUnit cu, String originalCode, Expression toReplace, String newLiteralValue) {
@@ -97,8 +133,15 @@ public class AstRewriter {
         // Get the fragment
         VariableDeclarationFragment fragment = (VariableDeclarationFragment) varDecl.fragments().get(0);
 
-        // Create the new expression
-        Expression newExpr = nodeCreator.createDefaultExpression(ast, type, cu, rewriter);
+        // NEW: Get the variable's type name for enum context
+        String typeName = varDecl.getType().toString();
+        // Strip ArrayList wrapper if present
+        if (typeName.startsWith("ArrayList<") && typeName.endsWith(">")) {
+            typeName = typeName.substring(10, typeName.length() - 1);
+        }
+
+        // Create the new expression with type context
+        Expression newExpr = nodeCreator.createDefaultExpression(ast, type, cu, rewriter, typeName);
         if (newExpr == null) return originalCode;
 
         // Set or replace the initializer
@@ -204,6 +247,7 @@ public class AstRewriter {
         }
         Type newType = TypeManager.createTypeNode(ast, newTypeName);
         rewriter.replace(varDecl.getType(), newType, null);
+
         if (!varDecl.fragments().isEmpty()) {
             VariableDeclarationFragment fragment = (VariableDeclarationFragment) varDecl.fragments().get(0);
             Expression currentInitializer = fragment.getInitializer();
@@ -211,9 +255,34 @@ public class AstRewriter {
             List<Expression> valuesToPreserve = new ArrayList<>();
             String oldLeaf = TypeManager.getLeafType(varDecl.getType().toString());
             String newLeaf = TypeManager.getLeafType(newTypeName);
-            if (oldLeaf.equals(newLeaf) && currentInitializer != null) collectLeafValues(currentInitializer, valuesToPreserve);
 
-            if (newTypeName.startsWith("ArrayList<")) {
+            if (oldLeaf.equals(newLeaf) && currentInitializer != null) {
+                collectLeafValues(currentInitializer, valuesToPreserve);
+            }
+
+            // CHANGED: Use actual enum check instead of heuristic
+            boolean isNewTypeEnum = TypeManager.isEnumType(newLeaf, cu);
+
+            if (isNewTypeEnum) {
+                // Create enum constant initializer
+                String firstConstant = findFirstEnumConstant(cu, newLeaf);
+                if (firstConstant != null) {
+                    if (newTypeName.startsWith("ArrayList<")) {
+                        // ArrayList<EnumType> - create empty list initially
+                        newInitializer = nodeCreator.createRecursiveListInitializer(ast, newTypeName, cu, rewriter, null);
+                    } else {
+                        // Single enum value - use first constant
+                        QualifiedName qn = ast.newQualifiedName(
+                                ast.newSimpleName(newLeaf),
+                                ast.newSimpleName(firstConstant)
+                        );
+                        newInitializer = qn;
+                    }
+                } else {
+                    // Fallback if no constants found
+                    newInitializer = ast.newNullLiteral();
+                }
+            } else if (newTypeName.startsWith("ArrayList<")) {
                 newInitializer = nodeCreator.createRecursiveListInitializer(ast, newTypeName, cu, rewriter, valuesToPreserve);
             } else if (newTypeName.endsWith("[]")) {
                 ArrayCreation creation = ast.newArrayCreation();
@@ -225,11 +294,49 @@ public class AstRewriter {
                 creation.setInitializer(ai);
                 newInitializer = creation;
             } else {
-                newInitializer = !valuesToPreserve.isEmpty() ? (Expression) ASTNode.copySubtree(ast, valuesToPreserve.get(0)) : nodeCreator.createDefaultInitializer(ast, newTypeName);
+                newInitializer = !valuesToPreserve.isEmpty() ?
+                        (Expression) ASTNode.copySubtree(ast, valuesToPreserve.get(0)) :
+                        nodeCreator.createDefaultInitializer(ast, newTypeName);
             }
-            if (newInitializer != null) rewriter.replace(currentInitializer, newInitializer, null);
+
+            if (newInitializer != null) {
+                rewriter.replace(currentInitializer, newInitializer, null);
+            }
         }
         return applyRewrite(rewriter, originalCode);
+    }
+
+    private String findFirstEnumConstant(CompilationUnit cu, String enumName) {
+        if (cu == null || enumName == null) return null;
+
+        // Search for the enum declaration
+        for (Object obj : cu.types()) {
+            if (obj instanceof EnumDeclaration) {
+                EnumDeclaration enumDecl = (EnumDeclaration) obj;
+                if (enumDecl.getName().getIdentifier().equals(enumName)) {
+                    if (!enumDecl.enumConstants().isEmpty()) {
+                        EnumConstantDeclaration first = (EnumConstantDeclaration) enumDecl.enumConstants().get(0);
+                        return first.getName().getIdentifier();
+                    }
+                }
+            }
+            // Check class body declarations
+            else if (obj instanceof TypeDeclaration) {
+                TypeDeclaration typeDecl = (TypeDeclaration) obj;
+                for (Object bodyObj : typeDecl.bodyDeclarations()) {
+                    if (bodyObj instanceof EnumDeclaration) {
+                        EnumDeclaration enumDecl = (EnumDeclaration) bodyObj;
+                        if (enumDecl.getName().getIdentifier().equals(enumName)) {
+                            if (!enumDecl.enumConstants().isEmpty()) {
+                                EnumConstantDeclaration first = (EnumConstantDeclaration) enumDecl.enumConstants().get(0);
+                                return first.getName().getIdentifier();
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        return null;
     }
 
     public String addElementToList(CompilationUnit cu, String originalCode, ASTNode listNode, AddableExpression type, int insertIndex) {
