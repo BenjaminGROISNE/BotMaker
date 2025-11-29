@@ -8,14 +8,11 @@ import com.sun.jna.win32.StdCallLibrary;
 
 public interface User32 extends StdCallLibrary {
 
-    /* 🔸  KEY FIX: use DEFAULT_OPTIONS so "PostMessage" → "PostMessageW" */
+
     User32 INSTANCE = Native.load(
             "user32",
             User32.class,
             W32APIOptions.DEFAULT_OPTIONS);
-
-    /* ---------  window enumeration  --------- */
-
     interface WNDENUMPROC extends StdCallCallback {
         boolean callback(Pointer hWnd, Pointer arg);
     }

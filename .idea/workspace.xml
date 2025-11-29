@@ -4,16 +4,12 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="cba04025-c331-4634-a893-436bad03efc0" name="Changes" comment="ENUM CONST with a few bugs">
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/botmaker/blocks/DeclareClassVariableBlock.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/botmaker/blocks/FieldAccessBlock.java" afterDir="false" />
+    <list default="true" id="cba04025-c331-4634-a893-436bad03efc0" name="Changes" comment="Field declaration and FieldAccessBlockAccessBlock">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/botmaker/blocks/ClassBlock.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/botmaker/blocks/ClassBlock.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/botmaker/blocks/EnumConstantBlock.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/botmaker/blocks/EnumConstantBlock.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/botmaker/parser/AstRewriter.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/botmaker/parser/AstRewriter.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/botmaker/parser/BlockFactory.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/botmaker/parser/BlockFactory.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/botmaker/parser/BlockIdPrefix.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/botmaker/parser/BlockIdPrefix.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/botmaker/parser/BlockParser.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/botmaker/parser/BlockParser.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/projects/.botmaker-config.json" beforeDir="false" afterPath="$PROJECT_DIR$/projects/.botmaker-config.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/botmaker/blocks/DeclareClassVariableBlock.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/botmaker/blocks/DeclareClassVariableBlock.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/botmaker/library/capture/GDI32.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/botmaker/library/capture/GDI32.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/botmaker/library/capture/User32.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/botmaker/library/capture/User32.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/botmaker/parser/CodeEditor.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/botmaker/parser/CodeEditor.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -224,15 +220,7 @@
       <workItem from="1763918732147" duration="607000" />
       <workItem from="1763919354353" duration="6778000" />
       <workItem from="1764009536365" duration="3458000" />
-      <workItem from="1764411573342" duration="2131000" />
-    </task>
-    <task id="LOCAL-00024" summary="Fixed ifblock partially">
-      <option name="closed" value="true" />
-      <created>1760900919927</created>
-      <option name="number" value="00024" />
-      <option name="presentableId" value="LOCAL-00024" />
-      <option name="project" value="LOCAL" />
-      <updated>1760900919927</updated>
+      <workItem from="1764411573342" duration="3364000" />
     </task>
     <task id="LOCAL-00025" summary="changed else block">
       <option name="closed" value="true" />
@@ -618,7 +606,15 @@
       <option name="project" value="LOCAL" />
       <updated>1764359217333</updated>
     </task>
-    <option name="localTasksCounter" value="73" />
+    <task id="LOCAL-00073" summary="Field declaration and FieldAccessBlockAccessBlock">
+      <option name="closed" value="true" />
+      <created>1764414071004</created>
+      <option name="number" value="00073" />
+      <option name="presentableId" value="LOCAL-00073" />
+      <option name="project" value="LOCAL" />
+      <updated>1764414071005</updated>
+    </task>
+    <option name="localTasksCounter" value="74" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -652,7 +648,6 @@
     <ignored-roots>
       <path value="$PROJECT_DIR$/.." />
     </ignored-roots>
-    <MESSAGE value="TypeValidator, styles revamp, comment removed // and /*" />
     <MESSAGE value="upgrades errors" />
     <MESSAGE value="Started List" />
     <MESSAGE value="fix stop button, reworked list variable, assignment operator not working yet" />
@@ -677,7 +672,8 @@
     <MESSAGE value="Started refactor to handle classes. Removed focus onto single method" />
     <MESSAGE value="Can create EnumDeclaration into code but doesn't appear" />
     <MESSAGE value="ENUM CONST with a few bugs" />
-    <option name="LAST_COMMIT_MESSAGE" value="ENUM CONST with a few bugs" />
+    <MESSAGE value="Field declaration and FieldAccessBlockAccessBlock" />
+    <option name="LAST_COMMIT_MESSAGE" value="Field declaration and FieldAccessBlockAccessBlock" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -704,7 +700,7 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/com/botmaker/parser/BlockFactory.java</url>
-          <line>128</line>
+          <line>145</line>
           <option name="timeStamp" value="20" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
@@ -714,12 +710,12 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/com/botmaker/parser/BlockFactory.java</url>
-          <line>116</line>
+          <line>133</line>
           <option name="timeStamp" value="25" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/com/botmaker/parser/BlockFactory.java</url>
-          <line>168</line>
+          <line>185</line>
           <option name="timeStamp" value="28" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">

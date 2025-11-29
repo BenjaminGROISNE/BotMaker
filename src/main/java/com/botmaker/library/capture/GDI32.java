@@ -12,8 +12,6 @@ import com.sun.jna.win32.StdCallLibrary;
 public interface GDI32 extends StdCallLibrary {
     GDI32 INSTANCE = Native.load("gdi32", GDI32.class);
 
-    int SRCCOPY = 0x00CC0020;
-
     boolean BitBlt(HDC hdcDest, int nXDest, int nYDest, int nWidth, int nHeight, HDC hdcSrc, int nXSrc, int nYSrc, int dwRop);
     HDC CreateCompatibleDC(HDC hdc);
     HBITMAP CreateCompatibleBitmap(HDC hdc, int nWidth, int nHeight);

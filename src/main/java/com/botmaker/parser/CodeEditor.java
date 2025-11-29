@@ -186,6 +186,43 @@ public class CodeEditor {
         triggerUpdate(newCode);
     }
 
+    public void setFieldInitializerToDefault(FieldDeclaration fieldDecl, String uiTargetType) {
+        blockFactory.setMarkNewIdentifiersAsUnedited(true);
+
+        // Determine which AddableExpression to create based on type
+        AddableExpression defaultType;
+
+        switch (uiTargetType) {
+            case "number":
+                defaultType = AddableExpression.NUMBER;
+                break;
+            case "boolean":
+                defaultType = AddableExpression.FALSE;
+                break;
+            case "String":
+                defaultType = AddableExpression.TEXT;
+                break;
+            case "list":
+                defaultType = AddableExpression.LIST;
+                break;
+            case "enum":
+                defaultType = AddableExpression.ENUM_CONSTANT;
+                break;
+            default:
+                // For unknown types, use a variable reference
+                defaultType = AddableExpression.VARIABLE;
+                break;
+        }
+
+        String newCode = astRewriter.setFieldInitializer(
+                getCompilationUnit(),
+                getCurrentCode(),
+                fieldDecl,
+                defaultType
+        );
+        triggerUpdate(newCode);
+    }
+
     public void replaceExpression(Expression toReplace, AddableExpression type) {
         blockFactory.setMarkNewIdentifiersAsUnedited(true);
         String newCode = astRewriter.replaceExpression(getCompilationUnit(), getCurrentCode(), toReplace, type);
