@@ -515,12 +515,13 @@ import com.botmaker.core.BlockWithChildren;
 import com.botmaker.core.CodeBlock;
 import com.botmaker.lsp.CompletionContext;
 import com.botmaker.ui.BlockDragAndDropManager;
+import com.botmaker.parser.BlockIdPrefix;
 import javafx.geometry.Insets;
 import javafx.scene.Node;
 import javafx.scene.control.Label;
 import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
-import org.eclipse.jdt.core.dom.TypeDeclaration;
+import org.eclipse.jdt.core.dom.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -528,7 +529,7 @@ import java.util.List;
 public class ClassBlock extends AbstractCodeBlock implements BlockWithChildren {
 
     private final String className;
-    // FIX: Must accept generic CodeBlock to support Enums
+    // Changed from List<MethodDeclarationBlock> to generic CodeBlock to hold Enums too
     private final List<CodeBlock> bodyDeclarations = new ArrayList<>();
     private final BlockDragAndDropManager dragAndDropManager;
 
@@ -568,7 +569,6 @@ public class ClassBlock extends AbstractCodeBlock implements BlockWithChildren {
         // Top separator
         container.getChildren().add(createClassMemberSeparator(context, 0));
 
-        // FIX: Ensure this loop adds the UI Node of every child (Method OR Enum)
         for (int i = 0; i < bodyDeclarations.size(); i++) {
             CodeBlock block = bodyDeclarations.get(i);
             container.getChildren().add(block.getUINode(context));
@@ -582,7 +582,7 @@ public class ClassBlock extends AbstractCodeBlock implements BlockWithChildren {
         Region separator = new Region();
         separator.setMinHeight(30);
         separator.setMaxHeight(30);
-        separator.getStyleClass().add("method-separator");
+        separator.getStyleClass().add("method-separator"); // Reuse style
 
         separator.setStyle(
                 "-fx-background-color: rgba(52, 73, 94, 0.15);" +
@@ -592,6 +592,7 @@ public class ClassBlock extends AbstractCodeBlock implements BlockWithChildren {
                         "-fx-cursor: hand;"
         );
 
+        // This handler handles dropping Methods OR Enums into the class
         context.dragAndDropManager().addClassMemberDropHandlers(
                 separator,
                 this,
@@ -837,6 +838,296 @@ public class ContinueBlock extends AbstractStatementBlock {
 
 
 =================================================================================
+FILE: rs\bgroi\Documents\dev\IntellijProjects\BotMaker\src\main\java\com\botmaker\blocks\DeclareClassVariableBlock.java
+=================================================================================
+
+package com.botmaker.blocks;
+
+import com.botmaker.core.AbstractStatementBlock;
+import com.botmaker.core.ExpressionBlock;
+import com.botmaker.lsp.CompletionContext;
+import com.botmaker.ui.AddableExpression;
+import com.botmaker.ui.components.BlockUIComponents;
+import com.botmaker.ui.components.TextFieldComponents;
+import com.botmaker.util.TypeManager;
+import javafx.geometry.Pos;
+import javafx.scene.Cursor;
+import javafx.scene.Node;
+import javafx.scene.control.*;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
+import org.eclipse.jdt.core.dom.*;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import static com.botmaker.ui.components.BlockUIComponents.createTypeLabel;
+
+/**
+ * Represents a class-level field declaration (instance or static variable).
+ * Example: private int score = 0;
+ */
+public class DeclareClassVariableBlock extends AbstractStatementBlock {
+
+    private final String variableName;
+    private final Type variableType;
+    private final boolean isStatic;
+    private final boolean isPrivate;
+    private ExpressionBlock initializer;
+
+    public DeclareClassVariableBlock(String id, FieldDeclaration astNode) {
+        super(id, astNode);
+        VariableDeclarationFragment fragment = (VariableDeclarationFragment) astNode.fragments().get(0);
+        this.variableName = fragment.getName().getIdentifier();
+        this.variableType = astNode.getType();
+        this.isStatic = Modifier.isStatic(astNode.getModifiers());
+        this.isPrivate = Modifier.isPrivate(astNode.getModifiers());
+        this.initializer = null;
+    }
+
+    public void setInitializer(ExpressionBlock initializer) {
+        this.initializer = initializer;
+    }
+
+    @Override
+    protected Node createUINode(CompletionContext context) {
+        VBox container = new VBox(5);
+        container.getStyleClass().add("field-declaration-block");
+        container.setStyle(
+                "-fx-background-color: linear-gradient(to right, #F39C12 0%, #E67E22 100%);" +
+                        "-fx-background-radius: 6;" +
+                        "-fx-padding: 10;" +
+                        "-fx-border-color: rgba(0,0,0,0.1);" +
+                        "-fx-border-width: 1;" +
+                        "-fx-border-radius: 6;"
+        );
+
+        // Row 1: Modifiers Label
+        Label modifiersLabel = new Label((isPrivate ? "Private" : "Public") + (isStatic ? " Static" : "") + " Field");
+        modifiersLabel.setStyle("-fx-text-fill: white; -fx-font-weight: bold; -fx-font-size: 10px; -fx-text-transform: uppercase;");
+
+        // Row 2: Type, Name, and Initializer
+        HBox mainRow = new HBox(8);
+        mainRow.setAlignment(Pos.CENTER_LEFT);
+
+        // Type Label with Menu
+        Label typeLabel = createTypeLabel(getDisplayTypeName(variableType));
+        typeLabel.setCursor(Cursor.HAND);
+        Tooltip.install(typeLabel, new Tooltip("Click to change type"));
+        typeLabel.setOnMouseClicked(e -> showTypeMenu(typeLabel, context));
+
+        // Name Field
+        TextField nameField = TextFieldComponents.createVariableNameField(variableName, newName -> {
+            FieldDeclaration fieldDecl = (FieldDeclaration) this.astNode;
+            VariableDeclarationFragment fragment = (VariableDeclarationFragment) fieldDecl.fragments().get(0);
+            if (!newName.equals(variableName) && !newName.isEmpty()) {
+                context.codeEditor().replaceSimpleName(fragment.getName(), newName);
+            }
+        });
+
+        String typeString = variableType.toString();
+        String uiTargetType = TypeManager.determineUiType(typeString,
+                context.applicationState().getCompilationUnit().orElse(null));
+
+        // If no initializer, show "Set Value" button
+        if (initializer == null) {
+            Button setValueBtn = new Button("Set Value");
+            setValueBtn.getStyleClass().add("set-value-button");
+            setValueBtn.setStyle(
+                    "-fx-background-color: rgba(255,255,255,0.3);" +
+                            "-fx-text-fill: white;" +
+                            "-fx-font-weight: bold;" +
+                            "-fx-font-size: 11px;" +
+                            "-fx-padding: 4 12 4 12;" +
+                            "-fx-background-radius: 4;" +
+                            "-fx-cursor: hand;"
+            );
+            setValueBtn.setOnMouseEntered(e -> setValueBtn.setStyle(
+                    "-fx-background-color: rgba(255,255,255,0.5);" +
+                            "-fx-text-fill: white;" +
+                            "-fx-font-weight: bold;" +
+                            "-fx-font-size: 11px;" +
+                            "-fx-padding: 4 12 4 12;" +
+                            "-fx-background-radius: 4;" +
+                            "-fx-cursor: hand;"
+            ));
+            setValueBtn.setOnMouseExited(e -> setValueBtn.setStyle(
+                    "-fx-background-color: rgba(255,255,255,0.3);" +
+                            "-fx-text-fill: white;" +
+                            "-fx-font-weight: bold;" +
+                            "-fx-font-size: 11px;" +
+                            "-fx-padding: 4 12 4 12;" +
+                            "-fx-background-radius: 4;" +
+                            "-fx-cursor: hand;"
+            ));
+
+            setValueBtn.setOnAction(e -> {
+                // Create a default expression for this type
+                context.codeEditor().setFieldInitializerToDefault(
+                        (FieldDeclaration) this.astNode,
+                        uiTargetType
+                );
+            });
+
+            mainRow.getChildren().addAll(typeLabel, nameField, setValueBtn);
+        }
+        // If initializer exists, show = value + button
+        else {
+            Label equalsLabel = createKeywordLabel("=");
+
+            // Initializer Display
+            Node initNode;
+            if (initializer instanceof ListBlock) {
+                initNode = initializer.getUINode(context);
+            } else if (initializer.getAstNode() instanceof org.eclipse.jdt.core.dom.ArrayInitializer) {
+                initNode = createListDisplay(context);
+            } else {
+                initNode = initializer.getUINode(context);
+            }
+
+            // Add Button (for changing expression type)
+            Button addButton = createAddButton(e -> {
+                Expression currentInitializer = (Expression) initializer.getAstNode();
+
+                ContextMenu menu = BlockUIComponents.createExpressionTypeMenu(uiTargetType, type -> {
+                    context.codeEditor().replaceExpression(currentInitializer, type);
+                });
+                menu.show((Button)e.getSource(), javafx.geometry.Side.BOTTOM, 0, 0);
+            });
+
+            mainRow.getChildren().addAll(typeLabel, nameField, equalsLabel, initNode, addButton);
+        }
+
+        // Delete Button
+        Button deleteBtn = createDeleteButton(context);
+        deleteBtn.setStyle("-fx-background-color: transparent; -fx-text-fill: white; -fx-font-size: 14px; -fx-padding: 0; -fx-cursor: hand;");
+
+        // Assemble
+        HBox headerRow = new HBox(10);
+        headerRow.setAlignment(Pos.CENTER_LEFT);
+        headerRow.getChildren().addAll(modifiersLabel, BlockUIComponents.createSpacer(), deleteBtn);
+
+        container.getChildren().addAll(headerRow, mainRow);
+
+        return container;
+    }
+
+    private void showTypeMenu(Node anchor, CompletionContext context) {
+        ContextMenu menu = new ContextMenu();
+        String currentStr = variableType.toString();
+        boolean isArrayListType = isArrayList(variableType);
+        boolean isArray = variableType.isArrayType();
+
+        final String baseType = extractBaseType(currentStr, isArrayListType, isArray);
+
+        // Toggle ArrayList
+        MenuItem toggleList = new MenuItem(isArrayListType ? "Convert to Single Value" : "Convert to ArrayList");
+        toggleList.setStyle("-fx-font-weight: bold;");
+        toggleList.setOnAction(e -> {
+            String newType = isArrayListType ? baseType : "ArrayList<" + TypeManager.toWrapperType(baseType) + ">";
+            context.codeEditor().replaceFieldType((FieldDeclaration) this.astNode, newType);
+        });
+        menu.getItems().add(toggleList);
+
+        // Nested List Option
+        if (isArrayListType) {
+            MenuItem makeNested = new MenuItem("Make ArrayList of ArrayLists");
+            makeNested.setOnAction(e -> {
+                String newType = "ArrayList<ArrayList<" + TypeManager.toWrapperType(baseType) + ">>";
+                context.codeEditor().replaceFieldType((FieldDeclaration) this.astNode, newType);
+            });
+            menu.getItems().add(makeNested);
+        }
+
+        menu.getItems().add(new SeparatorMenuItem());
+
+        // Change Base Type - Fundamental Types
+        Menu changeBaseMenu = new Menu("Change to Primitive Type");
+        for (String type : TypeManager.getFundamentalTypeNames()) {
+            MenuItem item = new MenuItem(type);
+            item.setOnAction(e -> {
+                String newType = isArrayListType ? "ArrayList<" + TypeManager.toWrapperType(type) + ">" : type;
+                context.codeEditor().replaceFieldType((FieldDeclaration) this.astNode, newType);
+            });
+            changeBaseMenu.getItems().add(item);
+        }
+        menu.getItems().add(changeBaseMenu);
+
+        // Change to Enum Type
+        List<String> availableEnums = getAvailableEnums(context);
+        if (!availableEnums.isEmpty()) {
+            Menu changeEnumMenu = new Menu("Change to Enum Type");
+            for (String enumName : availableEnums) {
+                MenuItem item = new MenuItem(enumName);
+                item.setOnAction(e -> {
+                    String newType = isArrayListType ? "ArrayList<" + enumName + ">" : enumName;
+                    context.codeEditor().replaceFieldType((FieldDeclaration) this.astNode, newType);
+                });
+                changeEnumMenu.getItems().add(item);
+            }
+            menu.getItems().add(changeEnumMenu);
+        }
+
+        menu.show(anchor, javafx.geometry.Side.BOTTOM, 0, 0);
+    }
+
+    private String extractBaseType(String currentStr, boolean isArrayListType, boolean isArray) {
+        if (isArrayListType && currentStr.contains("<")) {
+            return currentStr.substring(currentStr.indexOf("<") + 1, currentStr.lastIndexOf(">"));
+        } else if (isArray) {
+            return currentStr.replace("[]", "");
+        }
+        return currentStr;
+    }
+
+    private HBox createListDisplay(CompletionContext context) {
+        HBox listBox = new HBox(3);
+        listBox.setAlignment(Pos.CENTER_LEFT);
+        listBox.getStyleClass().add("inline-list-display");
+
+        Label open = new Label("[");
+        open.setStyle("-fx-font-weight: bold; -fx-font-size: 14px; -fx-text-fill: white;");
+        Label close = new Label("]");
+        close.setStyle("-fx-font-weight: bold; -fx-font-size: 14px; -fx-text-fill: white;");
+
+        listBox.getChildren().addAll(open, initializer.getUINode(context), close);
+        return listBox;
+    }
+
+    private String getDisplayTypeName(Type type) {
+        String typeName = type.toString();
+        if (isArrayList(type)) return typeName;
+        if (typeName.endsWith("[]")) return typeName.replace("[]", " list");
+        return typeName;
+    }
+
+    private boolean isArrayList(Type type) {
+        return type.toString().startsWith("ArrayList");
+    }
+
+    private List<String> getAvailableEnums(CompletionContext context) {
+        List<String> enumNames = new ArrayList<>();
+
+        CompilationUnit cu = context.applicationState().getCompilationUnit().orElse(null);
+        if (cu == null) return enumNames;
+
+        if (!cu.types().isEmpty() && cu.types().getFirst() instanceof TypeDeclaration) {
+            TypeDeclaration typeDecl = (TypeDeclaration) cu.types().getFirst();
+
+            for (Object obj : typeDecl.bodyDeclarations()) {
+                if (obj instanceof EnumDeclaration) {
+                    EnumDeclaration enumDecl = (EnumDeclaration) obj;
+                    enumNames.add(enumDecl.getName().getIdentifier());
+                }
+            }
+        }
+
+        return enumNames;
+    }
+}
+
+
+=================================================================================
 FILE: rs\bgroi\Documents\dev\IntellijProjects\BotMaker\src\main\java\com\botmaker\blocks\DeclareEnumBlock.java
 =================================================================================
 
@@ -863,7 +1154,7 @@ public class DeclareEnumBlock extends AbstractStatementBlock {
     private final String enumName;
     private final List<String> constants;
     private final EnumDeclaration enumDeclaration;
-    private final boolean isStatement;
+    private final boolean isStatement; // True if inside a method, False if inside a class
 
     // Constructor 1: Inside a Method (Wrapped in TypeDeclarationStatement)
     public DeclareEnumBlock(String id, TypeDeclarationStatement astNode) {
@@ -880,7 +1171,7 @@ public class DeclareEnumBlock extends AbstractStatementBlock {
 
     // Constructor 2: Inside a Class (Raw EnumDeclaration)
     public DeclareEnumBlock(String id, EnumDeclaration astNode) {
-        super(id, astNode);
+        super(id, astNode); // We pass it as ASTNode, AbstractStatementBlock handles generic ASTNode
         this.enumDeclaration = astNode;
         this.isStatement = false;
         this.enumName = astNode.getName().getIdentifier();
@@ -889,11 +1180,9 @@ public class DeclareEnumBlock extends AbstractStatementBlock {
 
     private List<String> extractConstants(EnumDeclaration decl) {
         List<String> list = new ArrayList<>();
-        if (decl.enumConstants() != null) {
-            for (Object obj : decl.enumConstants()) {
-                if (obj instanceof EnumConstantDeclaration) {
-                    list.add(((EnumConstantDeclaration) obj).getName().getIdentifier());
-                }
+        for (Object obj : decl.enumConstants()) {
+            if (obj instanceof EnumConstantDeclaration) {
+                list.add(((EnumConstantDeclaration) obj).getName().getIdentifier());
             }
         }
         return list;
@@ -903,12 +1192,11 @@ public class DeclareEnumBlock extends AbstractStatementBlock {
     protected Node createUINode(CompletionContext context) {
         VBox container = new VBox(5);
         container.getStyleClass().add("enum-block");
-        // Explicit styling to ensure visibility
-        container.setStyle("-fx-background-color: #e67e22; -fx-background-radius: 8; -fx-padding: 8; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.2), 5, 0, 0, 2);");
+        container.setStyle("-fx-background-color: #d35400; -fx-background-radius: 5; -fx-padding: 5;");
 
         // --- Header ---
-        HBox headerContent = new HBox(8);
-        headerContent.setAlignment(Pos.CENTER_LEFT);
+        HBox header = new HBox(5);
+        header.setAlignment(Pos.CENTER_LEFT);
 
         Label label = BlockUIComponents.createKeywordLabel("Enum");
         label.setStyle("-fx-text-fill: white; -fx-font-weight: bold;");
@@ -921,28 +1209,28 @@ public class DeclareEnumBlock extends AbstractStatementBlock {
 
         Button addConstantBtn = new Button("+ Add Value");
         addConstantBtn.getStyleClass().add("expression-add-button");
+        addConstantBtn.setStyle("-fx-font-size: 10px;");
         addConstantBtn.setOnAction(e -> context.codeEditor().addEnumConstant(enumDeclaration, "NEW_VALUE"));
 
-        headerContent.getChildren().addAll(label, nameField, addConstantBtn);
+        header.getChildren().addAll(label, nameField, addConstantBtn);
 
         // Delete Logic: Differentiate between Statement (Method) and Declaration (Class)
         Runnable deleteAction = () -> {
             if (isStatement) {
-                // Inside method: cast astNode to Statement
+                // Inside method
                 context.codeEditor().deleteStatement((Statement) this.astNode);
             } else {
-                // Inside class: remove the declaration
+                // Inside class
                 context.codeEditor().deleteEnumFromClass(enumDeclaration);
             }
         };
 
-        // Create the full header row (Content + Spacer + Delete Button)
-        HBox headerRow = BlockUIComponents.createHeaderRow(deleteAction, headerContent);
-        container.getChildren().add(headerRow);
+        HBox headerWrapper = BlockUIComponents.createHeaderRow(deleteAction, header);
+        container.getChildren().add(headerWrapper);
 
         // --- Constants List ---
         if (!constants.isEmpty()) {
-            VBox constantsBox = new VBox(4);
+            VBox constantsBox = new VBox(2);
             constantsBox.setStyle("-fx-padding: 5 0 5 20;");
 
             for (int i = 0; i < constants.size(); i++) {
@@ -955,7 +1243,7 @@ public class DeclareEnumBlock extends AbstractStatementBlock {
                 TextField constField = new TextField(constant);
                 constField.getStyleClass().add("variable-name-field");
                 constField.setPrefWidth(120);
-                constField.setStyle("-fx-background-color: rgba(255,255,255,0.9); -fx-text-fill: #333; -fx-background-radius: 4;");
+                constField.setStyle("-fx-background-color: rgba(255,255,255,0.9);");
 
                 constField.focusedProperty().addListener((obs, oldVal, newVal) -> {
                     if (!newVal) {
@@ -967,7 +1255,7 @@ public class DeclareEnumBlock extends AbstractStatementBlock {
                 });
 
                 Button deleteBtn = new Button("×");
-                deleteBtn.setStyle("-fx-background-color: transparent; -fx-text-fill: white; -fx-font-weight: bold; -fx-cursor: hand; -fx-font-size: 14px;");
+                deleteBtn.setStyle("-fx-background-color: transparent; -fx-text-fill: white; -fx-font-weight: bold; -fx-cursor: hand;");
                 deleteBtn.setOnAction(e -> context.codeEditor().deleteEnumConstant(enumDeclaration, index));
 
                 row.getChildren().addAll(constField, deleteBtn);
@@ -1045,6 +1333,415 @@ public class DoWhileBlock extends AbstractStatementBlock implements BlockWithChi
         mainContainer.getChildren().add(whileCondition);
 
         return mainContainer;
+    }
+}
+
+
+=================================================================================
+FILE: rs\bgroi\Documents\dev\IntellijProjects\BotMaker\src\main\java\com\botmaker\blocks\EnumConstantBlock.java
+=================================================================================
+
+package com.botmaker.blocks;
+
+import com.botmaker.core.AbstractExpressionBlock;
+import com.botmaker.lsp.CompletionContext;
+import com.botmaker.parser.BlockIdPrefix;
+import javafx.geometry.Pos;
+import javafx.scene.Node;
+import javafx.scene.control.ComboBox;
+import javafx.scene.control.Label;
+import javafx.scene.layout.HBox;
+import org.eclipse.jdt.core.dom.*;
+
+import java.util.ArrayList;
+import java.util.List;
+
+/**
+ * Represents an enum constant reference expression (e.g., MyEnum.OPTION_A)
+ */
+public class EnumConstantBlock extends AbstractExpressionBlock {
+
+    private final String enumTypeName;
+    private final String constantName;
+
+    public EnumConstantBlock(String id, QualifiedName astNode) {
+        super(id, astNode);
+        this.enumTypeName = astNode.getQualifier().toString();
+        this.constantName = astNode.getName().getIdentifier();
+    }
+
+    public EnumConstantBlock(String id, SimpleName astNode, String enumTypeName) {
+        super(id, astNode);
+        this.enumTypeName = enumTypeName;
+        this.constantName = astNode.getIdentifier();
+    }
+
+    @Override
+    protected Node createUINode(CompletionContext context) {
+        HBox container = new HBox(5);
+        container.setAlignment(Pos.CENTER_LEFT);
+        container.getStyleClass().add("enum-constant-block");
+        container.setStyle(
+                "-fx-background-color: #d35400;" +
+                        "-fx-background-radius: 5;" +
+                        "-fx-padding: 4 8 4 8;"
+        );
+
+        // Enum type label
+        Label typeLabel = new Label(enumTypeName);
+        typeLabel.setStyle(
+                "-fx-text-fill: white;" +
+                        "-fx-font-weight: bold;" +
+                        "-fx-font-size: 11px;"
+        );
+
+        // Dot separator
+        Label dot = new Label(".");
+        dot.setStyle("-fx-text-fill: rgba(255,255,255,0.7); -fx-font-weight: bold;");
+
+        // Constant selector
+        ComboBox<String> constantSelector = new ComboBox<>();
+        constantSelector.getStyleClass().add("enum-constant-selector");
+        constantSelector.setStyle(
+                "-fx-background-color: rgba(255,255,255,0.2);" +
+                        "-fx-text-fill: white;" +
+                        "-fx-font-size: 11px;" +
+                        "-fx-background-radius: 4;" +
+                        "-fx-padding: 2 6 2 6;"
+        );
+
+        // Populate with available constants
+        List<String> constants = getEnumConstants(enumTypeName, context);
+        constantSelector.getItems().addAll(constants);
+        constantSelector.setValue(constantName);
+
+        // Handle selection change
+        constantSelector.setOnAction(e -> {
+            String newConstant = constantSelector.getValue();
+            if (newConstant != null && !newConstant.equals(constantName)) {
+                updateConstant(newConstant, context);
+            }
+        });
+
+        container.getChildren().addAll(typeLabel, dot, constantSelector);
+        return container;
+    }
+
+    private List<String> getEnumConstants(String enumName, CompletionContext context) {
+        List<String> constants = new ArrayList<>();
+
+        CompilationUnit cu = context.applicationState().getCompilationUnit().orElse(null);
+        if (cu == null) return constants;
+
+        // Search for the enum declaration
+        EnumDeclaration enumDecl = findEnumDeclaration(cu, enumName);
+        if (enumDecl != null) {
+            for (Object obj : enumDecl.enumConstants()) {
+                if (obj instanceof EnumConstantDeclaration) {
+                    EnumConstantDeclaration ecd = (EnumConstantDeclaration) obj;
+                    constants.add(ecd.getName().getIdentifier());
+                }
+            }
+        }
+
+        return constants;
+    }
+
+    private EnumDeclaration findEnumDeclaration(CompilationUnit cu, String enumName) {
+        // Check top-level types
+        for (Object obj : cu.types()) {
+            if (obj instanceof EnumDeclaration) {
+                EnumDeclaration enumDecl = (EnumDeclaration) obj;
+                if (enumDecl.getName().getIdentifier().equals(enumName)) {
+                    return enumDecl;
+                }
+            }
+            // Check class body declarations
+            else if (obj instanceof TypeDeclaration) {
+                TypeDeclaration typeDecl = (TypeDeclaration) obj;
+                for (Object bodyObj : typeDecl.bodyDeclarations()) {
+                    if (bodyObj instanceof EnumDeclaration) {
+                        EnumDeclaration enumDecl = (EnumDeclaration) bodyObj;
+                        if (enumDecl.getName().getIdentifier().equals(enumName)) {
+                            return enumDecl;
+                        }
+                    }
+                }
+            }
+        }
+        return null;
+    }
+
+    private void updateConstant(String newConstant, CompletionContext context) {
+        // Replace with new qualified name: EnumType.NEW_CONSTANT
+        Expression oldExpr = (Expression) this.astNode;
+
+        // Use the replaceSimpleName if it's a SimpleName, otherwise need special handling
+        if (oldExpr instanceof QualifiedName) {
+            QualifiedName qn = (QualifiedName) oldExpr;
+            context.codeEditor().replaceSimpleName(qn.getName(), newConstant);
+        } else if (oldExpr instanceof SimpleName) {
+            context.codeEditor().replaceSimpleName((SimpleName) oldExpr, newConstant);
+        }
+    }
+}
+
+
+=================================================================================
+FILE: rs\bgroi\Documents\dev\IntellijProjects\BotMaker\src\main\java\com\botmaker\blocks\FieldAccessBlock.java
+=================================================================================
+
+package com.botmaker.blocks;
+
+import com.botmaker.core.AbstractExpressionBlock;
+import com.botmaker.lsp.CompletionContext;
+import javafx.application.Platform;
+import javafx.geometry.Pos;
+import javafx.scene.Cursor;
+import javafx.scene.Node;
+import javafx.scene.control.ContextMenu;
+import javafx.scene.control.MenuItem;
+import javafx.scene.control.Tooltip;
+import javafx.scene.layout.HBox;
+import javafx.scene.text.Text;
+import org.eclipse.jdt.core.dom.*;
+import org.eclipse.lsp4j.*;
+
+import java.util.List;
+import java.util.stream.Collectors;
+
+/**
+ * Represents field access expressions like "this.score" or "obj.field"
+ */
+public class FieldAccessBlock extends AbstractExpressionBlock {
+
+    private final String qualifier;  // "this", "super", or object name
+    private final String fieldName;
+    private boolean isUnedited = false;
+    private static final String UNEDITED_STYLE_CLASS = "unedited-identifier";
+
+    public FieldAccessBlock(String id, FieldAccess astNode) {
+        this(id, astNode, false);
+    }
+
+    public FieldAccessBlock(String id, FieldAccess astNode, boolean markAsUnedited) {
+        super(id, astNode);
+        Expression expr = astNode.getExpression();
+        this.qualifier = expr != null ? expr.toString() : "";
+        this.fieldName = astNode.getName().getIdentifier();
+        this.isUnedited = markAsUnedited;
+    }
+
+    // Constructor for QualifiedName (used for this.field)
+    public FieldAccessBlock(String id, QualifiedName astNode, boolean markAsUnedited) {
+        super(id, astNode);
+        this.qualifier = astNode.getQualifier().toString();
+        this.fieldName = astNode.getName().getIdentifier();
+        this.isUnedited = markAsUnedited;
+    }
+
+    public String getQualifier() { return qualifier; }
+    public String getFieldName() { return fieldName; }
+    public boolean isUnedited() { return isUnedited; }
+
+    public void markAsEdited() {
+        this.isUnedited = false;
+        if (uiNode != null) {
+            uiNode.getStyleClass().remove(UNEDITED_STYLE_CLASS);
+        }
+    }
+
+    @Override
+    protected Node createUINode(CompletionContext context) {
+        HBox container = new HBox(3);
+        container.setAlignment(Pos.CENTER_LEFT);
+        container.getStyleClass().add("field-access-block");
+
+        // Qualifier text (e.g., "this")
+        Text qualifierText = new Text(qualifier + ".");
+        qualifierText.setStyle("-fx-fill: #8E44AD; -fx-font-weight: bold;");
+
+        // Field name text
+        Text fieldText = new Text(fieldName);
+        fieldText.setStyle("-fx-fill: #2C3E50;");
+
+        container.getChildren().addAll(qualifierText, fieldText);
+
+        if (isUnedited) {
+            container.getStyleClass().add(UNEDITED_STYLE_CLASS);
+        }
+
+        container.setCursor(Cursor.HAND);
+        String tooltipText = isUnedited ?
+                "⚠️ Default field name - Click to choose" :
+                "Click to change field";
+        Tooltip.install(container, new Tooltip(tooltipText));
+
+        container.setOnMouseClicked(e -> {
+            if (e.getClickCount() == 1) {
+                requestSuggestions(container, context);
+            }
+        });
+
+        return container;
+    }
+
+    private void requestSuggestions(Node uiNode, CompletionContext context) {
+        try {
+            Position pos = getPositionFromOffset(context.sourceCode(), this.astNode.getStartPosition());
+            CompletionParams params = new CompletionParams(
+                    new TextDocumentIdentifier(context.docUri()),
+                    pos
+            );
+
+            String expectedType = determineExpectedType();
+
+            context.server().getTextDocumentService().completion(params).thenAccept(result -> {
+                if (result == null || (result.isLeft() && result.getLeft().isEmpty()) ||
+                        (result.isRight() && result.getRight().getItems().isEmpty())) {
+                    return;
+                }
+
+                List<CompletionItem> items = result.isLeft() ?
+                        result.getLeft() :
+                        result.getRight().getItems();
+
+                Platform.runLater(() -> {
+                    ContextMenu menu = new ContextMenu();
+                    menu.setStyle("-fx-control-inner-background: white;");
+
+                    List<CompletionItem> filteredItems = items.stream()
+                            .filter(item -> item.getKind() == CompletionItemKind.Field ||
+                                    item.getKind() == CompletionItemKind.Variable)
+                            .filter(item -> {
+                                String typeInfo = item.getDetail();
+                                if (typeInfo == null || typeInfo.isBlank()) {
+                                    if (item.getLabel().contains(" : ")) {
+                                        String[] parts = item.getLabel().split(" : ");
+                                        if (parts.length > 1) typeInfo = parts[1].trim();
+                                    }
+                                }
+                                return com.botmaker.util.TypeManager.isCompatible(typeInfo, expectedType);
+                            })
+                            .collect(Collectors.toList());
+
+                    if (filteredItems.isEmpty()) {
+                        MenuItem noFields = new MenuItem("(No compatible fields found)");
+                        noFields.setDisable(true);
+                        noFields.setStyle("-fx-text-fill: #999;");
+                        menu.getItems().add(noFields);
+                    } else {
+                        for (CompletionItem item : filteredItems) {
+                            String label = item.getLabel();
+                            String detail = item.getDetail();
+                            if (detail == null && label.contains(" : ")) {
+                                detail = label.split(" : ")[1].trim();
+                            }
+
+                            String display = label;
+                            if (!label.contains(":") && detail != null && !detail.isEmpty()) {
+                                display += " (" + getSimpleTypeName(detail) + ")";
+                            }
+
+                            MenuItem mi = new MenuItem(display);
+                            mi.setStyle("-fx-text-fill: black;");
+                            mi.setOnAction(event -> {
+                                applySuggestion(item, context);
+                                markAsEdited();
+                            });
+                            menu.getItems().add(mi);
+                        }
+                    }
+                    menu.show(uiNode, javafx.geometry.Side.BOTTOM, 0, 0);
+                });
+            });
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    private String determineExpectedType() {
+        // Similar logic to IdentifierBlock
+        if (this.astNode == null) return com.botmaker.util.TypeManager.UI_TYPE_ANY;
+
+        ASTNode child = this.astNode;
+        ASTNode parent = this.astNode.getParent();
+
+        while (parent instanceof ParenthesizedExpression) {
+            child = parent;
+            parent = parent.getParent();
+        }
+
+        if (parent == null) return com.botmaker.util.TypeManager.UI_TYPE_ANY;
+
+        // Assignment context
+        if (parent instanceof Assignment) {
+            Assignment assignment = (Assignment) parent;
+            if (assignment.getRightHandSide() == child) {
+                Expression lhs = assignment.getLeftHandSide();
+                ITypeBinding binding = lhs.resolveTypeBinding();
+                if (binding != null) {
+                    return com.botmaker.util.TypeManager.determineUiType(binding.getName());
+                }
+            }
+        }
+
+        // Variable declaration
+        if (parent instanceof VariableDeclarationFragment) {
+            VariableDeclarationFragment frag = (VariableDeclarationFragment) parent;
+            if (frag.getInitializer() == child) {
+                ASTNode grandParent = frag.getParent();
+                if (grandParent instanceof VariableDeclarationStatement) {
+                    Type type = ((VariableDeclarationStatement) grandParent).getType();
+                    return com.botmaker.util.TypeManager.determineUiType(type.toString());
+                } else if (grandParent instanceof FieldDeclaration) {
+                    Type type = ((FieldDeclaration) grandParent).getType();
+                    return com.botmaker.util.TypeManager.determineUiType(type.toString());
+                }
+            }
+        }
+
+        return com.botmaker.util.TypeManager.UI_TYPE_ANY;
+    }
+
+    private String getSimpleTypeName(String detail) {
+        if (detail == null) return "";
+        if (com.botmaker.util.TypeManager.isCompatible(detail, com.botmaker.util.TypeManager.UI_TYPE_NUMBER)) return "number";
+        if (com.botmaker.util.TypeManager.isCompatible(detail, com.botmaker.util.TypeManager.UI_TYPE_BOOLEAN)) return "bool";
+        return detail;
+    }
+
+    private void applySuggestion(CompletionItem item, CompletionContext context) {
+        try {
+            String insertText = item.getInsertText() != null ? item.getInsertText() : item.getLabel();
+            if (insertText.contains(" : ")) {
+                insertText = insertText.split(" : ")[0];
+            }
+
+            // Replace just the field name, keeping the qualifier
+            if (astNode instanceof FieldAccess) {
+                FieldAccess fa = (FieldAccess) astNode;
+                context.codeEditor().replaceSimpleName(fa.getName(), insertText);
+            } else if (astNode instanceof QualifiedName) {
+                QualifiedName qn = (QualifiedName) astNode;
+                context.codeEditor().replaceSimpleName(qn.getName(), insertText);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    private Position getPositionFromOffset(String code, int offset) {
+        int line = 0;
+        int lastNewline = -1;
+        for (int i = 0; i < offset; i++) {
+            if (code.charAt(i) == '\n') {
+                line++;
+                lastNewline = i;
+            }
+        }
+        int character = offset - lastNewline - 1;
+        return new Position(line, character);
     }
 }
 
@@ -3078,6 +3775,7 @@ package com.botmaker.blocks;
 import com.botmaker.core.AbstractStatementBlock;
 import com.botmaker.core.ExpressionBlock;
 import com.botmaker.lsp.CompletionContext;
+import com.botmaker.ui.AddableExpression;
 import com.botmaker.ui.components.BlockUIComponents;
 import com.botmaker.ui.components.TextFieldComponents;
 import com.botmaker.util.TypeManager;
@@ -3086,9 +3784,10 @@ import javafx.scene.Cursor;
 import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.layout.HBox;
-import org.eclipse.jdt.core.dom.Type;
-import org.eclipse.jdt.core.dom.VariableDeclarationFragment;
-import org.eclipse.jdt.core.dom.VariableDeclarationStatement;
+import org.eclipse.jdt.core.dom.*;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import static com.botmaker.ui.components.BlockUIComponents.createTypeLabel;
 
@@ -3113,7 +3812,7 @@ public class VariableDeclarationBlock extends AbstractStatementBlock {
         // 1. Type Label with Menu
         Label typeLabel = createTypeLabel(getDisplayTypeName(variableType));
         typeLabel.setCursor(Cursor.HAND);
-        Tooltip.install(typeLabel, new Tooltip("Click to change type (ArrayList/Base)"));
+        Tooltip.install(typeLabel, new Tooltip("Click to change type"));
         typeLabel.setOnMouseClicked(e -> showTypeMenu(typeLabel, context));
 
         // 2. Name Field
@@ -3127,15 +3826,11 @@ public class VariableDeclarationBlock extends AbstractStatementBlock {
         // 3. Initializer Logic
         Node initNode;
         if (initializer != null) {
-            // FIX: Restored original priority logic
             if (initializer instanceof ListBlock) {
-                // Render ListBlock directly (it handles its own layout)
                 initNode = initializer.getUINode(context);
             } else if (initializer.getAstNode() instanceof org.eclipse.jdt.core.dom.ArrayInitializer) {
-                // Fallback for other array initializers (add bracket styling)
                 initNode = createListDisplay(context);
             } else {
-                // Standard expression
                 initNode = initializer.getUINode(context);
             }
         } else {
@@ -3143,11 +3838,47 @@ public class VariableDeclarationBlock extends AbstractStatementBlock {
         }
 
         // 4. Add Button
-        String uiTargetType = TypeManager.determineUiType(variableType.toString());
-        Button addButton = createAddButton(e ->
-                showExpressionMenuAndReplace((Button)e.getSource(), context, uiTargetType,
-                        initializer != null ? (org.eclipse.jdt.core.dom.Expression)initializer.getAstNode() : null)
-        );
+// 4. Add Button
+        String typeString = variableType.toString();
+        String uiTargetType = TypeManager.determineUiType(typeString,
+                context.applicationState().getCompilationUnit().orElse(null));
+
+        // DEBUG OUTPUT
+        System.out.println("=== VARIABLE DECLARATION DEBUG ===");
+        System.out.println("Variable name: " + variableName);
+        System.out.println("Variable type string: " + typeString);
+        System.out.println("Determined UI type: " + uiTargetType);
+        System.out.println("Is likely enum: " + TypeManager.isLikelyEnumType(typeString));
+
+
+        Button addButton = createAddButton(e -> {
+            // Get the current initializer expression (or null)
+            Expression currentInitializer = null;
+            if (initializer != null) {
+                currentInitializer = (Expression) initializer.getAstNode();
+            } else {
+                // When there's no initializer, we need to get a reference to where it should go
+                VariableDeclarationFragment fragment = (VariableDeclarationFragment)
+                        ((VariableDeclarationStatement) this.astNode).fragments().get(0);
+                currentInitializer = fragment.getInitializer(); // This will also be null
+            }
+
+            // Create the menu
+            Expression finalCurrentInitializer = currentInitializer;
+            ContextMenu menu = BlockUIComponents.createExpressionTypeMenu(uiTargetType, type -> {
+                if (finalCurrentInitializer != null) {
+                    // Replace existing initializer
+                    context.codeEditor().replaceExpression(finalCurrentInitializer, type);
+                } else {
+                    // Set new initializer
+                    context.codeEditor().setVariableInitializer(
+                            (VariableDeclarationStatement) this.astNode,
+                            type
+                    );
+                }
+            });
+            menu.show((Button)e.getSource(), javafx.geometry.Side.BOTTOM, 0, 0);
+        });
 
         Node content = createSentence(
                 typeLabel,
@@ -3168,6 +3899,8 @@ public class VariableDeclarationBlock extends AbstractStatementBlock {
         String currentStr = variableType.toString();
         boolean isArrayListType = isArrayList(variableType);
         boolean isArray = variableType.isArrayType();
+        boolean isEnumType = isEnum(context);
+
         final String baseType = extractBaseType(currentStr, isArrayListType, isArray);
 
         // Toggle ArrayList
@@ -3191,8 +3924,8 @@ public class VariableDeclarationBlock extends AbstractStatementBlock {
 
         menu.getItems().add(new SeparatorMenuItem());
 
-        // Change Base Type
-        Menu changeBaseMenu = new Menu("Change Base Type");
+        // Change Base Type - Fundamental Types
+        Menu changeBaseMenu = new Menu("Change to Primitive Type");
         for (String type : TypeManager.getFundamentalTypeNames()) {
             MenuItem item = new MenuItem(type);
             item.setOnAction(e -> {
@@ -3202,6 +3935,22 @@ public class VariableDeclarationBlock extends AbstractStatementBlock {
             changeBaseMenu.getItems().add(item);
         }
         menu.getItems().add(changeBaseMenu);
+
+        // NEW: Change to Enum Type
+        List<String> availableEnums = getAvailableEnums(context);
+        if (!availableEnums.isEmpty()) {
+            Menu changeEnumMenu = new Menu("Change to Enum Type");
+            for (String enumName : availableEnums) {
+                MenuItem item = new MenuItem(enumName);
+                item.setOnAction(e -> {
+                    String newType = isArrayListType ? "ArrayList<" + enumName + ">" : enumName;
+                    context.codeEditor().replaceVariableType((VariableDeclarationStatement) this.astNode, newType);
+                });
+                changeEnumMenu.getItems().add(item);
+            }
+            menu.getItems().add(changeEnumMenu);
+        }
+
         menu.show(anchor, javafx.geometry.Side.BOTTOM, 0, 0);
     }
 
@@ -3235,6 +3984,68 @@ public class VariableDeclarationBlock extends AbstractStatementBlock {
 
     private boolean isArrayList(Type type) {
         return type.toString().startsWith("ArrayList");
+    }
+
+    // NEW: Check if current type is an enum
+    private boolean isEnum(CompletionContext context) {
+        String typeName = variableType.toString();
+        // Remove ArrayList wrapper if present
+        if (typeName.startsWith("ArrayList<") && typeName.endsWith(">")) {
+            typeName = typeName.substring(10, typeName.length() - 1);
+        }
+        return getAvailableEnums(context).contains(typeName);
+    }
+
+    // NEW: Get all available enum types from the compilation unit
+    private List<String> getAvailableEnums(CompletionContext context) {
+        List<String> enumNames = new ArrayList<>();
+
+        CompilationUnit cu = context.applicationState().getCompilationUnit().orElse(null);
+        if (cu == null) return enumNames;
+
+        // Get the main type declaration
+        if (!cu.types().isEmpty() && cu.types().getFirst() instanceof TypeDeclaration) {
+            TypeDeclaration typeDecl = (TypeDeclaration) cu.types().getFirst();
+
+            // Look through all body declarations for enums
+            for (Object obj : typeDecl.bodyDeclarations()) {
+                if (obj instanceof EnumDeclaration) {
+                    EnumDeclaration enumDecl = (EnumDeclaration) obj;
+                    enumNames.add(enumDecl.getName().getIdentifier());
+                }
+                // Also check for enums inside methods (local enums in the AST, even if invalid)
+                else if (obj instanceof MethodDeclaration) {
+                    MethodDeclaration method = (MethodDeclaration) obj;
+                    if (method.getBody() != null) {
+                        findLocalEnums(method.getBody(), enumNames);
+                    }
+                }
+            }
+        }
+        // Check if the root is itself an enum file
+        else if (!cu.types().isEmpty() && cu.types().get(0) instanceof EnumDeclaration) {
+            EnumDeclaration enumDecl = (EnumDeclaration) cu.types().get(0);
+            enumNames.add(enumDecl.getName().getIdentifier());
+        }
+
+        return enumNames;
+    }
+
+    // NEW: Recursively find local enum declarations in method bodies
+    private void findLocalEnums(ASTNode node, List<String> enumNames) {
+        if (node instanceof TypeDeclarationStatement) {
+            TypeDeclarationStatement tds = (TypeDeclarationStatement) node;
+            if (tds.getDeclaration() instanceof EnumDeclaration) {
+                EnumDeclaration enumDecl = (EnumDeclaration) tds.getDeclaration();
+                enumNames.add(enumDecl.getName().getIdentifier());
+            }
+        }
+        // Recursively search children
+        if (node instanceof Block) {
+            for (Object stmt : ((Block) node).statements()) {
+                findLocalEnums((ASTNode) stmt, enumNames);
+            }
+        }
     }
 }
 
@@ -5129,8 +5940,6 @@ import com.sun.jna.win32.StdCallLibrary;
 public interface GDI32 extends StdCallLibrary {
     GDI32 INSTANCE = Native.load("gdi32", GDI32.class);
 
-    int SRCCOPY = 0x00CC0020;
-
     boolean BitBlt(HDC hdcDest, int nXDest, int nYDest, int nWidth, int nHeight, HDC hdcSrc, int nXSrc, int nYSrc, int dwRop);
     HDC CreateCompatibleDC(HDC hdc);
     HBITMAP CreateCompatibleBitmap(HDC hdc, int nWidth, int nHeight);
@@ -5348,14 +6157,11 @@ import com.sun.jna.win32.StdCallLibrary;
 
 public interface User32 extends StdCallLibrary {
 
-    /* 🔸  KEY FIX: use DEFAULT_OPTIONS so "PostMessage" → "PostMessageW" */
+
     User32 INSTANCE = Native.load(
             "user32",
             User32.class,
             W32APIOptions.DEFAULT_OPTIONS);
-
-    /* ---------  window enumeration  --------- */
-
     interface WNDENUMPROC extends StdCallCallback {
         boolean callback(Pointer hWnd, Pointer arg);
     }
@@ -7223,10 +8029,46 @@ public class AstRewriter {
     public String replaceExpression(CompilationUnit cu, String originalCode, Expression toReplace, AddableExpression type) {
         AST ast = cu.getAST();
         ASTRewrite rewriter = ASTRewrite.create(ast);
-        Expression newExpression = nodeCreator.createDefaultExpression(ast, type, cu, rewriter);
+
+        // NEW: Try to infer context type from parent
+        String contextType = inferContextType(toReplace);
+
+        Expression newExpression = nodeCreator.createDefaultExpression(ast, type, cu, rewriter, contextType);
         if (newExpression == null) return originalCode;
         rewriter.replace(toReplace, newExpression, null);
         return applyRewrite(rewriter, originalCode);
+    }
+
+    private String inferContextType(Expression expr) {
+        ASTNode parent = expr.getParent();
+
+        // Variable declaration
+        if (parent instanceof VariableDeclarationFragment) {
+            VariableDeclarationFragment frag = (VariableDeclarationFragment) parent;
+            if (frag.getParent() instanceof VariableDeclarationStatement) {
+                VariableDeclarationStatement varDecl = (VariableDeclarationStatement) frag.getParent();
+                String typeName = varDecl.getType().toString();
+                if (typeName.startsWith("ArrayList<") && typeName.endsWith(">")) {
+                    return typeName.substring(10, typeName.length() - 1);
+                }
+                return typeName;
+            }
+        }
+
+        // Assignment
+        if (parent instanceof Assignment) {
+            Assignment assign = (Assignment) parent;
+            Expression lhs = assign.getLeftHandSide();
+            if (lhs instanceof SimpleName) {
+                // Try to resolve type from bindings
+                ITypeBinding binding = lhs.resolveTypeBinding();
+                if (binding != null) {
+                    return binding.getName();
+                }
+            }
+        }
+
+        return null;
     }
 
     public String replaceLiteral(CompilationUnit cu, String originalCode, Expression toReplace, String newLiteralValue) {
@@ -7256,7 +8098,135 @@ public class AstRewriter {
         return applyRewrite(rewriter, originalCode);
     }
 
-    // In AstRewriter.java
+
+    public String setFieldInitializer(CompilationUnit cu, String originalCode,
+                                      FieldDeclaration fieldDecl, AddableExpression type) {
+        AST ast = cu.getAST();
+        ASTRewrite rewriter = ASTRewrite.create(ast);
+
+        // Get the fragment
+        VariableDeclarationFragment fragment = (VariableDeclarationFragment) fieldDecl.fragments().get(0);
+
+        // Get the field's type name for enum context
+        String typeName = fieldDecl.getType().toString();
+        // Strip ArrayList wrapper if present
+        if (typeName.startsWith("ArrayList<") && typeName.endsWith(">")) {
+            typeName = typeName.substring(10, typeName.length() - 1);
+        }
+
+        // Create the new expression with type context
+        Expression newExpr = nodeCreator.createDefaultExpression(ast, type, cu, rewriter, typeName);
+        if (newExpr == null) return originalCode;
+
+        // Set or replace the initializer
+        if (fragment.getInitializer() == null) {
+            rewriter.set(fragment, VariableDeclarationFragment.INITIALIZER_PROPERTY, newExpr, null);
+        } else {
+            rewriter.replace(fragment.getInitializer(), newExpr, null);
+        }
+
+        return applyRewrite(rewriter, originalCode);
+    }
+
+    public String replaceFieldType(CompilationUnit cu, String originalCode,
+                                   FieldDeclaration fieldDecl, String newTypeName) {
+        AST ast = cu.getAST();
+        ASTRewrite rewriter = ASTRewrite.create(ast);
+
+        if (newTypeName.contains("ArrayList")) {
+            ImportManager.addImport(cu, rewriter, "java.util.ArrayList");
+            ImportManager.addImport(cu, rewriter, "java.util.List");
+        }
+
+        Type newType = TypeManager.createTypeNode(ast, newTypeName);
+        rewriter.replace(fieldDecl.getType(), newType, null);
+
+        if (!fieldDecl.fragments().isEmpty()) {
+            VariableDeclarationFragment fragment = (VariableDeclarationFragment) fieldDecl.fragments().get(0);
+            Expression currentInitializer = fragment.getInitializer();
+            Expression newInitializer = null;
+            List<Expression> valuesToPreserve = new ArrayList<>();
+            String oldLeaf = TypeManager.getLeafType(fieldDecl.getType().toString());
+            String newLeaf = TypeManager.getLeafType(newTypeName);
+
+            if (oldLeaf.equals(newLeaf) && currentInitializer != null) {
+                collectLeafValues(currentInitializer, valuesToPreserve);
+            }
+
+            // Check if new type is enum
+            boolean isNewTypeEnum = TypeManager.isEnumType(newLeaf, cu);
+
+            if (isNewTypeEnum) {
+                // Create enum constant initializer
+                String firstConstant = findFirstEnumConstant(cu, newLeaf);
+                if (firstConstant != null) {
+                    if (newTypeName.startsWith("ArrayList<")) {
+                        // ArrayList<EnumType> - create empty list initially
+                        newInitializer = nodeCreator.createRecursiveListInitializer(ast, newTypeName, cu, rewriter, null);
+                    } else {
+                        // Single enum value - use first constant
+                        QualifiedName qn = ast.newQualifiedName(
+                                ast.newSimpleName(newLeaf),
+                                ast.newSimpleName(firstConstant)
+                        );
+                        newInitializer = qn;
+                    }
+                } else {
+                    // Fallback if no constants found
+                    newInitializer = ast.newNullLiteral();
+                }
+            } else if (newTypeName.startsWith("ArrayList<")) {
+                newInitializer = nodeCreator.createRecursiveListInitializer(ast, newTypeName, cu, rewriter, valuesToPreserve);
+            } else if (newTypeName.endsWith("[]")) {
+                ArrayCreation creation = ast.newArrayCreation();
+                creation.setType((ArrayType) TypeManager.createTypeNode(ast, newTypeName));
+                ArrayInitializer ai = ast.newArrayInitializer();
+                if (!valuesToPreserve.isEmpty()) {
+                    for(Expression val : valuesToPreserve) ai.expressions().add(ASTNode.copySubtree(ast, val));
+                }
+                creation.setInitializer(ai);
+                newInitializer = creation;
+            } else {
+                newInitializer = !valuesToPreserve.isEmpty() ?
+                        (Expression) ASTNode.copySubtree(ast, valuesToPreserve.get(0)) :
+                        nodeCreator.createDefaultInitializer(ast, newTypeName);
+            }
+
+            if (newInitializer != null) {
+                rewriter.replace(currentInitializer, newInitializer, null);
+            }
+        }
+        return applyRewrite(rewriter, originalCode);
+    }
+
+    public String setVariableInitializer(CompilationUnit cu, String originalCode,
+                                         VariableDeclarationStatement varDecl, AddableExpression type) {
+        AST ast = cu.getAST();
+        ASTRewrite rewriter = ASTRewrite.create(ast);
+
+        // Get the fragment
+        VariableDeclarationFragment fragment = (VariableDeclarationFragment) varDecl.fragments().get(0);
+
+        // NEW: Get the variable's type name for enum context
+        String typeName = varDecl.getType().toString();
+        // Strip ArrayList wrapper if present
+        if (typeName.startsWith("ArrayList<") && typeName.endsWith(">")) {
+            typeName = typeName.substring(10, typeName.length() - 1);
+        }
+
+        // Create the new expression with type context
+        Expression newExpr = nodeCreator.createDefaultExpression(ast, type, cu, rewriter, typeName);
+        if (newExpr == null) return originalCode;
+
+        // Set or replace the initializer
+        if (fragment.getInitializer() == null) {
+            rewriter.set(fragment, VariableDeclarationFragment.INITIALIZER_PROPERTY, newExpr, null);
+        } else {
+            rewriter.replace(fragment.getInitializer(), newExpr, null);
+        }
+
+        return applyRewrite(rewriter, originalCode);
+    }
 
     public String addMethodToClass(CompilationUnit cu, String originalCode, TypeDeclaration typeDecl,
                                    String methodName, String returnType, int index) {
@@ -7351,6 +8321,7 @@ public class AstRewriter {
         }
         Type newType = TypeManager.createTypeNode(ast, newTypeName);
         rewriter.replace(varDecl.getType(), newType, null);
+
         if (!varDecl.fragments().isEmpty()) {
             VariableDeclarationFragment fragment = (VariableDeclarationFragment) varDecl.fragments().get(0);
             Expression currentInitializer = fragment.getInitializer();
@@ -7358,9 +8329,34 @@ public class AstRewriter {
             List<Expression> valuesToPreserve = new ArrayList<>();
             String oldLeaf = TypeManager.getLeafType(varDecl.getType().toString());
             String newLeaf = TypeManager.getLeafType(newTypeName);
-            if (oldLeaf.equals(newLeaf) && currentInitializer != null) collectLeafValues(currentInitializer, valuesToPreserve);
 
-            if (newTypeName.startsWith("ArrayList<")) {
+            if (oldLeaf.equals(newLeaf) && currentInitializer != null) {
+                collectLeafValues(currentInitializer, valuesToPreserve);
+            }
+
+            // CHANGED: Use actual enum check instead of heuristic
+            boolean isNewTypeEnum = TypeManager.isEnumType(newLeaf, cu);
+
+            if (isNewTypeEnum) {
+                // Create enum constant initializer
+                String firstConstant = findFirstEnumConstant(cu, newLeaf);
+                if (firstConstant != null) {
+                    if (newTypeName.startsWith("ArrayList<")) {
+                        // ArrayList<EnumType> - create empty list initially
+                        newInitializer = nodeCreator.createRecursiveListInitializer(ast, newTypeName, cu, rewriter, null);
+                    } else {
+                        // Single enum value - use first constant
+                        QualifiedName qn = ast.newQualifiedName(
+                                ast.newSimpleName(newLeaf),
+                                ast.newSimpleName(firstConstant)
+                        );
+                        newInitializer = qn;
+                    }
+                } else {
+                    // Fallback if no constants found
+                    newInitializer = ast.newNullLiteral();
+                }
+            } else if (newTypeName.startsWith("ArrayList<")) {
                 newInitializer = nodeCreator.createRecursiveListInitializer(ast, newTypeName, cu, rewriter, valuesToPreserve);
             } else if (newTypeName.endsWith("[]")) {
                 ArrayCreation creation = ast.newArrayCreation();
@@ -7372,11 +8368,49 @@ public class AstRewriter {
                 creation.setInitializer(ai);
                 newInitializer = creation;
             } else {
-                newInitializer = !valuesToPreserve.isEmpty() ? (Expression) ASTNode.copySubtree(ast, valuesToPreserve.get(0)) : nodeCreator.createDefaultInitializer(ast, newTypeName);
+                newInitializer = !valuesToPreserve.isEmpty() ?
+                        (Expression) ASTNode.copySubtree(ast, valuesToPreserve.get(0)) :
+                        nodeCreator.createDefaultInitializer(ast, newTypeName);
             }
-            if (newInitializer != null) rewriter.replace(currentInitializer, newInitializer, null);
+
+            if (newInitializer != null) {
+                rewriter.replace(currentInitializer, newInitializer, null);
+            }
         }
         return applyRewrite(rewriter, originalCode);
+    }
+
+    private String findFirstEnumConstant(CompilationUnit cu, String enumName) {
+        if (cu == null || enumName == null) return null;
+
+        // Search for the enum declaration
+        for (Object obj : cu.types()) {
+            if (obj instanceof EnumDeclaration) {
+                EnumDeclaration enumDecl = (EnumDeclaration) obj;
+                if (enumDecl.getName().getIdentifier().equals(enumName)) {
+                    if (!enumDecl.enumConstants().isEmpty()) {
+                        EnumConstantDeclaration first = (EnumConstantDeclaration) enumDecl.enumConstants().get(0);
+                        return first.getName().getIdentifier();
+                    }
+                }
+            }
+            // Check class body declarations
+            else if (obj instanceof TypeDeclaration) {
+                TypeDeclaration typeDecl = (TypeDeclaration) obj;
+                for (Object bodyObj : typeDecl.bodyDeclarations()) {
+                    if (bodyObj instanceof EnumDeclaration) {
+                        EnumDeclaration enumDecl = (EnumDeclaration) bodyObj;
+                        if (enumDecl.getName().getIdentifier().equals(enumName)) {
+                            if (!enumDecl.enumConstants().isEmpty()) {
+                                EnumConstantDeclaration first = (EnumConstantDeclaration) enumDecl.enumConstants().get(0);
+                                return first.getName().getIdentifier();
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        return null;
     }
 
     public String addElementToList(CompilationUnit cu, String originalCode, ASTNode listNode, AddableExpression type, int insertIndex) {
@@ -7589,6 +8623,7 @@ public class AstRewriter {
         AST ast = cu.getAST();
         ASTRewrite rewriter = ASTRewrite.create(ast);
         rewriter.replace(enumNode.getName(), ast.newSimpleName(newName), null);
+
         return applyRewrite(rewriter, originalCode);
     }
 
@@ -7754,7 +8789,8 @@ package com.botmaker.parser;
 import com.botmaker.blocks.*;
 import com.botmaker.core.*;
 import com.botmaker.ui.BlockDragAndDropManager;
-import com.botmaker.util.BlockIdPrefix;
+import com.botmaker.parser.BlockIdPrefix;
+import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jdt.core.dom.*;
 
 import java.util.*;
@@ -7767,19 +8803,30 @@ public class BlockFactory {
     private boolean markNewIdentifiersAsUnedited = false;
     private BlockParser blockParser;
 
+
     public AbstractCodeBlock convert(String javaCode, Map<ASTNode, CodeBlock> nodeToBlockMap, BlockDragAndDropManager manager) {
         this.currentSourceCode = javaCode;
+        // Initialize parser used for method bodies
         this.blockParser = new BlockParser(this, manager, markNewIdentifiersAsUnedited);
 
         try {
-            ASTParser parser = ASTParser.newParser(AST.getJLSLatest());
+            // 1. Setup AST Parser
+            ASTParser parser = ASTParser.newParser(AST.JLS17);
             parser.setSource(javaCode.toCharArray());
             parser.setKind(ASTParser.K_COMPILATION_UNIT);
             parser.setResolveBindings(true);
             parser.setUnitName("Unit.java");
             parser.setEnvironment(null, null, null, true);
+
+            Map<String, String> options = JavaCore.getOptions();
+            options.put(JavaCore.COMPILER_COMPLIANCE, JavaCore.latestSupportedJavaVersion()); // or VERSION_11, VERSION_1_8, etc.
+            options.put(JavaCore.COMPILER_CODEGEN_TARGET_PLATFORM, JavaCore.latestSupportedJavaVersion());
+            options.put(JavaCore.COMPILER_SOURCE, JavaCore.latestSupportedJavaVersion());
+            parser.setCompilerOptions(options);
+
             this.ast = (CompilationUnit) parser.createAST(null);
 
+            // 2. Extract Comments
             this.allComments = new ArrayList<>();
             for (Object obj : ast.getCommentList()) {
                 if (obj instanceof Comment && !(obj instanceof Javadoc)) allComments.add((Comment) obj);
@@ -7787,6 +8834,7 @@ public class BlockFactory {
 
             if (ast.types().isEmpty()) return null;
 
+            // Get the root declaration (can be TypeDeclaration OR EnumDeclaration)
             AbstractTypeDeclaration rootNode = (AbstractTypeDeclaration) ast.types().get(0);
 
             // --- CASE A: Standard Class File ---
@@ -7824,6 +8872,7 @@ public class BlockFactory {
 
                         nodeToBlockMap.put(method, methodBlock);
 
+                        // Recursively parse the method body using BlockParser
                         if (method.getBody() != null) {
                             methodBlock.setBody(parseBodyBlock(method.getBody(), nodeToBlockMap, manager));
                         }
@@ -7831,20 +8880,55 @@ public class BlockFactory {
                         classBlock.addBodyDeclaration(methodBlock);
                     }
 
-                    // 2. Handle Inner Enums (FIX: Ensure this logic exists here)
+                    // 2. Handle Inner Enums (e.g. inside a class)
                     else if (obj instanceof EnumDeclaration) {
                         EnumDeclaration enumDecl = (EnumDeclaration) obj;
+
+                        // FIX: Use the constructor that takes EnumDeclaration directly (not TypeDeclarationStatement)
                         DeclareEnumBlock enumBlock = new DeclareEnumBlock(
                                 BlockIdPrefix.generate(BlockIdPrefix.ENUM, enumDecl),
-                                enumDecl // Uses the Constructor for Class Members
+                                enumDecl  // ← This is the correct constructor for class-level enums
                         );
+
                         nodeToBlockMap.put(enumDecl, enumBlock);
                         classBlock.addBodyDeclaration(enumBlock);
+                    }
+                    // 3. Handle Field Declarations
+                    else if (obj instanceof FieldDeclaration) {
+                        FieldDeclaration field = (FieldDeclaration) obj;
+                        DeclareClassVariableBlock fieldBlock = new DeclareClassVariableBlock(
+                                BlockIdPrefix.generate(BlockIdPrefix.FIELD_ACCESS, field),
+                                field
+                        );
+                        nodeToBlockMap.put(field, fieldBlock);
+
+                        // Parse initializer if present
+                        VariableDeclarationFragment fragment = (VariableDeclarationFragment) field.fragments().get(0);
+                        if (fragment.getInitializer() != null) {
+                            parseExpression(fragment.getInitializer(), nodeToBlockMap).ifPresent(fieldBlock::setInitializer);
+                        }
+
+                        classBlock.addBodyDeclaration(fieldBlock);
                     }
                 }
 
                 return classBlock;
             }
+
+            // --- CASE B: Standalone Enum File ---
+            else if (rootNode instanceof EnumDeclaration) {
+                EnumDeclaration enumDecl = (EnumDeclaration) rootNode;
+
+                // Create the EnumBlock as the root element
+                DeclareEnumBlock rootEnumBlock = new DeclareEnumBlock(
+                        BlockIdPrefix.generate(BlockIdPrefix.ENUM, enumDecl),
+                        enumDecl
+                );
+                nodeToBlockMap.put(enumDecl, rootEnumBlock);
+
+                return rootEnumBlock;
+            }
+
             return null;
 
         } catch (Exception e) {
@@ -7856,7 +8940,6 @@ public class BlockFactory {
         }
     }
 
-    // ... (rest of the file remains exactly the same as provided: isMainMethod, parseBodyBlock, etc.)
     private boolean isMainMethod(MethodDeclaration method) {
         if (!"main".equals(method.getName().getIdentifier())) return false;
         if (!Modifier.isStatic(method.getModifiers())) return false;
@@ -7865,9 +8948,22 @@ public class BlockFactory {
         return true;
     }
 
-    public void setMarkNewIdentifiersAsUnedited(boolean mark) { this.markNewIdentifiersAsUnedited = mark; }
+    private MethodDeclaration findMainMethod(TypeDeclaration type) {
+        for (MethodDeclaration method : type.getMethods()) {
+            if ("main".equals(method.getName().getIdentifier()) &&
+                    Modifier.isStatic(method.getModifiers()) &&
+                    method.parameters().size() == 1) { // Simplified check
+                return method;
+            }
+        }
+        return null;
+    }
 
+    // ... (Existing parseBodyBlock, parseStatement, etc. remain exactly the same) ...
+    public void setMarkNewIdentifiersAsUnedited(boolean mark) { this.markNewIdentifiersAsUnedited = mark; }
     public BodyBlock parseBodyBlock(Block astBlock, Map<ASTNode, CodeBlock> nodeToBlockMap, BlockDragAndDropManager manager) {
+        // [Existing implementation...]
+        // COPY YOUR PREVIOUS IMPLEMENTATION HERE
         BodyBlock bodyBlock = new BodyBlock(BlockIdPrefix.generate(BlockIdPrefix.BODY, astBlock), astBlock, manager);
         nodeToBlockMap.put(astBlock, bodyBlock);
 
@@ -7875,8 +8971,7 @@ public class BlockFactory {
         for (Object statementObj : astBlock.statements()) {
             blockParser.parseStatement((Statement) statementObj, nodeToBlockMap).ifPresent(allChildren::add);
         }
-
-        // Comment merging logic
+        // [Comment handling logic...]
         int blockStart = astBlock.getStartPosition() + 1;
         int blockEnd = astBlock.getStartPosition() + astBlock.getLength() - 1;
 
@@ -7904,6 +8999,8 @@ public class BlockFactory {
         return bodyBlock;
     }
 
+    // ... Copy parseStatement, parseExpression, parseCommentBlock, isPrintStatement, isReadInputStatement, getCompilationUnit
+    // NO CHANGES NEEDED TO THEM
     public Optional<StatementBlock> parseStatement(Statement stmt, Map<ASTNode, CodeBlock> map, BlockDragAndDropManager manager) {
         return blockParser.parseStatement(stmt, map);
     }
@@ -7949,7 +9046,7 @@ public class BlockFactory {
 FILE: rs\bgroi\Documents\dev\IntellijProjects\BotMaker\src\main\java\com\botmaker\parser\BlockIdPrefix.java
 =================================================================================
 
-package com.botmaker.util;
+package com.botmaker.parser;
 
 /**
  * Constants for block ID prefixes
@@ -7986,6 +9083,9 @@ public class BlockIdPrefix {
     public static final String CLASS = "class_";
     public static final String METHOD = "method_";
     public static final String ENUM = "enum_";
+    public static final String ENUM_CONSTANT = "enum_const_";
+    public static final String FIELD_ACCESS = "field_access_";
+
 
     private BlockIdPrefix() {} // Prevent instantiation
 
@@ -8010,7 +9110,7 @@ import com.botmaker.core.CodeBlock;
 import com.botmaker.core.ExpressionBlock;
 import com.botmaker.core.StatementBlock;
 import com.botmaker.ui.BlockDragAndDropManager;
-import com.botmaker.util.BlockIdPrefix;
+import com.botmaker.parser.BlockIdPrefix;
 import org.eclipse.jdt.core.dom.*;
 
 import java.util.List;
@@ -8068,8 +9168,16 @@ public class BlockParser {
     private Optional<StatementBlock> parseTypeDeclaration(TypeDeclarationStatement stmt, Map<ASTNode, CodeBlock> map) {
         // Check if the declaration inside the statement is an Enum
         if (stmt.getDeclaration() instanceof EnumDeclaration) {
-            DeclareEnumBlock block = new DeclareEnumBlock(BlockIdPrefix.generate(BlockIdPrefix.ENUM, stmt), stmt);
-            map.put(stmt, block);
+            EnumDeclaration enumDecl = (EnumDeclaration) stmt.getDeclaration();
+
+            DeclareEnumBlock block = new DeclareEnumBlock(
+                    BlockIdPrefix.generate(BlockIdPrefix.ENUM, stmt),
+                    stmt
+            );
+
+            map.put(stmt, block);          // Map the statement
+            map.put(enumDecl, block);      // ← ADD THIS: Also map the inner EnumDeclaration
+
             return Optional.of(block);
         }
         return Optional.empty();
@@ -8239,6 +9347,38 @@ public class BlockParser {
             for (Expression item : items) factory.parseExpression(item, map).ifPresent(b::addElement);
             return Optional.of(b);
         }
+        if (expr instanceof FieldAccess) {
+            FieldAccess fa = (FieldAccess) expr;
+            FieldAccessBlock b = new FieldAccessBlock(
+                    BlockIdPrefix.generate(BlockIdPrefix.FIELD_ACCESS, expr),
+                    fa,
+                    markNewIdentifiersAsUnedited
+            );
+            map.put(expr, b);
+            return Optional.of(b);
+        }
+        if (expr instanceof QualifiedName) {
+            QualifiedName qn = (QualifiedName) expr;
+            // Check if this is an enum constant reference
+            if (isEnumConstantReference(qn)) {
+                EnumConstantBlock b = new EnumConstantBlock(
+                        BlockIdPrefix.generate(BlockIdPrefix.ENUM_CONSTANT, expr),
+                        qn
+                );
+                map.put(expr, b);
+                return Optional.of(b);
+            }
+            // Check if this is field access (e.g., this.score)
+            else if (isFieldAccessReference(qn)) {
+                FieldAccessBlock b = new FieldAccessBlock(
+                        BlockIdPrefix.generate(BlockIdPrefix.FIELD_ACCESS, expr),
+                        qn,
+                        markNewIdentifiersAsUnedited
+                );
+                map.put(expr, b);
+                return Optional.of(b);
+            }
+        }
         if (expr instanceof MethodInvocation) {
             MethodInvocation mi = (MethodInvocation) expr;
             MethodInvocationBlock block = new MethodInvocationBlock(BlockIdPrefix.generate("call_expr_", expr), expr);
@@ -8276,6 +9416,34 @@ public class BlockParser {
             return Optional.of(b);
         }
         return Optional.empty();
+    }
+
+    private boolean isEnumConstantReference(QualifiedName qn) {
+        // Check if the qualifier is a simple name (enum type) and name is uppercase (constant)
+        Name qualifier = qn.getQualifier();
+        if (qualifier instanceof SimpleName) {
+            String constantName = qn.getName().getIdentifier();
+            // Enum constants are typically uppercase
+            return constantName.equals(constantName.toUpperCase());
+        }
+        return false;
+    }
+
+    private boolean isFieldAccessReference(QualifiedName qn) {
+        // Check if the qualifier is "this" or "super" or an object reference
+        Name qualifier = qn.getQualifier();
+        if (qualifier instanceof SimpleName) {
+            String qualifierName = ((SimpleName) qualifier).getIdentifier();
+            // "this" or "super" or lowercase object name (not enum type)
+            if (qualifierName.equals("this") || qualifierName.equals("super")) {
+                return true;
+            }
+            // If it starts with lowercase, it's likely an object field access
+            if (Character.isLowerCase(qualifierName.charAt(0))) {
+                return true;
+            }
+        }
+        return false;
     }
 
     private boolean isListStructure(Expression expr) {
@@ -8323,6 +9491,7 @@ import com.botmaker.events.EventBus;
 import com.botmaker.ui.AddableBlock;
 import com.botmaker.ui.AddableExpression;
 import org.eclipse.jdt.core.dom.*;
+import org.eclipse.jdt.core.dom.rewrite.ASTRewrite;
 
 import java.util.List;
 
@@ -8395,6 +9564,8 @@ public class CodeEditor {
         String newCode = astRewriter.renameEnumConstant(getCompilationUnit(), getCurrentCode(), enumNode, index, newName);
         triggerUpdate(newCode);
     }
+
+
 
     public void addMethodToClass(TypeDeclaration typeDecl, String methodName, String returnType, int index) {
         blockFactory.setMarkNewIdentifiersAsUnedited(true);
@@ -8486,11 +9657,61 @@ public class CodeEditor {
         triggerUpdate(newCode);
     }
 
-    public void replaceExpression(Expression toReplace, com.botmaker.ui.AddableExpression type) {
+    public void setVariableInitializer(VariableDeclarationStatement varDecl, AddableExpression type) {
+        blockFactory.setMarkNewIdentifiersAsUnedited(true);
+        String newCode = astRewriter.setVariableInitializer(getCompilationUnit(), getCurrentCode(), varDecl, type);
+        triggerUpdate(newCode);
+    }
+
+    public void setFieldInitializer(FieldDeclaration fieldDecl, AddableExpression type) {
+        blockFactory.setMarkNewIdentifiersAsUnedited(true);
+        String newCode = astRewriter.setFieldInitializer(getCompilationUnit(), getCurrentCode(), fieldDecl, type);
+        triggerUpdate(newCode);
+    }
+
+    public void setFieldInitializerToDefault(FieldDeclaration fieldDecl, String uiTargetType) {
+        blockFactory.setMarkNewIdentifiersAsUnedited(true);
+
+        // Determine which AddableExpression to create based on type
+        AddableExpression defaultType;
+
+        switch (uiTargetType) {
+            case "number":
+                defaultType = AddableExpression.NUMBER;
+                break;
+            case "boolean":
+                defaultType = AddableExpression.FALSE;
+                break;
+            case "String":
+                defaultType = AddableExpression.TEXT;
+                break;
+            case "list":
+                defaultType = AddableExpression.LIST;
+                break;
+            case "enum":
+                defaultType = AddableExpression.ENUM_CONSTANT;
+                break;
+            default:
+                // For unknown types, use a variable reference
+                defaultType = AddableExpression.VARIABLE;
+                break;
+        }
+
+        String newCode = astRewriter.setFieldInitializer(
+                getCompilationUnit(),
+                getCurrentCode(),
+                fieldDecl,
+                defaultType
+        );
+        triggerUpdate(newCode);
+    }
+
+    public void replaceExpression(Expression toReplace, AddableExpression type) {
         blockFactory.setMarkNewIdentifiersAsUnedited(true);
         String newCode = astRewriter.replaceExpression(getCompilationUnit(), getCurrentCode(), toReplace, type);
         triggerUpdate(newCode);
     }
+
 
     public void addStatement(BodyBlock targetBody, AddableBlock type, int index) {
         blockFactory.setMarkNewIdentifiersAsUnedited(true);
@@ -8525,6 +9746,10 @@ public class CodeEditor {
 
     public void replaceVariableType(VariableDeclarationStatement toReplace, String newTypeName) {
         String newCode = astRewriter.replaceVariableType(getCompilationUnit(), getCurrentCode(), toReplace, newTypeName);
+        triggerUpdate(newCode);
+    }
+    public void replaceFieldType(FieldDeclaration fieldDecl, String newTypeName) {
+        String newCode = astRewriter.replaceFieldType(getCompilationUnit(), getCurrentCode(), fieldDecl, newTypeName);
         triggerUpdate(newCode);
     }
 
@@ -8695,6 +9920,10 @@ public class NodeCreator {
 
 
     public Expression createDefaultExpression(AST ast, AddableExpression type, CompilationUnit cu, ASTRewrite rewriter) {
+        return createDefaultExpression(ast, type, cu, rewriter, null);
+    }
+
+    public Expression createDefaultExpression(AST ast, AddableExpression type, CompilationUnit cu, ASTRewrite rewriter, String contextTypeName) {
         switch (type) {
             case TEXT:
                 StringLiteral newString = ast.newStringLiteral();
@@ -8719,6 +9948,21 @@ public class NodeCreator {
                 asList.setName(ast.newSimpleName("asList"));
                 return asList;
 
+            case ENUM_CONSTANT:
+                // NEW: Use the actual enum type name from context
+                String enumTypeName = contextTypeName != null ? contextTypeName : "MyEnum";
+
+                // Find the first constant of this enum
+                String firstConstant = findFirstEnumConstant(cu, enumTypeName);
+                if (firstConstant == null) {
+                    firstConstant = "VALUE";
+                }
+
+                QualifiedName qn = ast.newQualifiedName(
+                        ast.newSimpleName(enumTypeName),
+                        ast.newSimpleName(firstConstant)
+                );
+                return qn;
             case ADD:
             case SUBTRACT:
             case MULTIPLY:
@@ -8740,6 +9984,38 @@ public class NodeCreator {
         }
     }
 
+    private String findFirstEnumConstant(CompilationUnit cu, String enumName) {
+        if (cu == null) return null;
+
+        // Search for the enum declaration
+        for (Object obj : cu.types()) {
+            if (obj instanceof EnumDeclaration) {
+                EnumDeclaration enumDecl = (EnumDeclaration) obj;
+                if (enumDecl.getName().getIdentifier().equals(enumName)) {
+                    if (!enumDecl.enumConstants().isEmpty()) {
+                        EnumConstantDeclaration first = (EnumConstantDeclaration) enumDecl.enumConstants().get(0);
+                        return first.getName().getIdentifier();
+                    }
+                }
+            }
+            // Check class body declarations
+            else if (obj instanceof TypeDeclaration) {
+                TypeDeclaration typeDecl = (TypeDeclaration) obj;
+                for (Object bodyObj : typeDecl.bodyDeclarations()) {
+                    if (bodyObj instanceof EnumDeclaration) {
+                        EnumDeclaration enumDecl = (EnumDeclaration) bodyObj;
+                        if (enumDecl.getName().getIdentifier().equals(enumName)) {
+                            if (!enumDecl.enumConstants().isEmpty()) {
+                                EnumConstantDeclaration first = (EnumConstantDeclaration) enumDecl.enumConstants().get(0);
+                                return first.getName().getIdentifier();
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        return null;
+    }
     public Statement createDefaultStatement(AST ast, AddableBlock type, CompilationUnit cu, ASTRewrite rewriter) {
         switch (type) {
             case PRINT:
@@ -10046,7 +11322,6 @@ import java.util.stream.Stream;
 
 public class CodeEditorService {
 
-    // ... (Constructor and fields remain exactly the same) ...
     private final ApplicationConfig config;
     private final ApplicationState state;
     private final EventBus eventBus;
@@ -10082,11 +11357,24 @@ public class CodeEditorService {
     }
 
     private void setupEventHandlers() {
-        eventBus.subscribe(CoreApplicationEvents.UIRefreshRequestedEvent.class, event -> Platform.runLater(() -> refreshUI(event.getCode())), false);
-        eventBus.subscribe(CoreApplicationEvents.BreakpointToggledEvent.class, this::handleBreakpointToggle, false);
-        eventBus.subscribe(CoreApplicationEvents.CodeUpdatedEvent.class, this::handleCodeUpdateForHistory, false);
-        eventBus.subscribe(CoreApplicationEvents.UndoRequestedEvent.class, e -> undo(), false);
-        eventBus.subscribe(CoreApplicationEvents.RedoRequestedEvent.class, e -> redo(), false);
+        eventBus.subscribe(CoreApplicationEvents.UIRefreshRequestedEvent.class, event ->
+                Platform.runLater(() -> refreshUI(event.getCode())), false);
+
+        eventBus.subscribe(CoreApplicationEvents.BreakpointToggledEvent.class,
+                this::handleBreakpointToggle, false);
+
+        eventBus.subscribe(CoreApplicationEvents.CodeUpdatedEvent.class, event -> {
+            handleCodeUpdateForHistory(event);
+            if (!isRestoringHistory) {
+                Platform.runLater(() -> refreshUI(event.getNewCode()));
+            }
+        }, false);
+
+        eventBus.subscribe(CoreApplicationEvents.UndoRequestedEvent.class,
+                e -> undo(), false);
+
+        eventBus.subscribe(CoreApplicationEvents.RedoRequestedEvent.class,
+                e -> redo(), false);
     }
 
     private void handleCodeUpdateForHistory(CoreApplicationEvents.CodeUpdatedEvent event) {
@@ -10130,35 +11418,61 @@ public class CodeEditorService {
         }
     }
 
-    // --- FIX: LOAD AND OPEN ALL FILES ---
+    // --- FIX: LOAD ALL FILES INCLUDING LIBRARY FILES ---
     public void loadInitialCode() {
         try {
             Path mainFile = config.getSourceFilePath();
-            Path sourceDir = mainFile.getParent();
 
-            // Load all java files in the directory
-            if (Files.exists(sourceDir)) {
-                try (Stream<Path> files = Files.list(sourceDir)) {
-                    files.filter(p -> p.toString().endsWith(".java")).forEach(path -> {
-                        try {
-                            String content = Files.readString(path);
-                            ProjectFile pf = new ProjectFile(path, content);
-                            state.addFile(pf);
-
-                            // FIX: Explicitly open every file in the Language Server
-                            // This ensures the LSP knows about secondary files immediately.
-                            languageServerService.openFile(path, content);
-
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                        }
-                    });
-                }
+            // Get the source root (src/main/java)
+            Path sourceRoot = mainFile.getParent();
+            while (sourceRoot != null && !sourceRoot.getFileName().toString().equals("java")) {
+                sourceRoot = sourceRoot.getParent();
             }
+
+            if (sourceRoot == null) {
+                sourceRoot = mainFile.getParent();
+            }
+
+            // Load ALL java files recursively, including library files
+            loadFilesRecursively(sourceRoot);
 
             // Set Active File to Main and refresh UI
             switchToFile(mainFile);
 
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * Recursively loads all .java files in the directory tree
+     */
+    private void loadFilesRecursively(Path directory) {
+        if (!Files.exists(directory) || !Files.isDirectory(directory)) {
+            return;
+        }
+
+        try (Stream<Path> paths = Files.walk(directory)) {
+            paths.filter(p -> p.toString().endsWith(".java"))
+                    .forEach(path -> {
+                        try {
+                            // Check if already loaded
+                            boolean alreadyLoaded = state.getAllFiles().stream()
+                                    .anyMatch(f -> f.getPath().equals(path));
+
+                            if (!alreadyLoaded) {
+                                String content = Files.readString(path);
+                                ProjectFile pf = new ProjectFile(path, content);
+                                state.addFile(pf);
+
+                                // Open file in Language Server
+                                languageServerService.openFile(path, content);
+                            }
+                        } catch (Exception e) {
+                            System.err.println("Error loading file: " + path);
+                            e.printStackTrace();
+                        }
+                    });
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -10169,10 +11483,12 @@ public class CodeEditorService {
                 .filter(f -> f.getPath().equals(path))
                 .findFirst().orElse(null);
 
-        if (file == null) return;
+        if (file == null) {
+            System.err.println("File not found in state: " + path);
+            return;
+        }
 
         state.setActiveFile(path);
-        // Update doc version/uri in state for LSP sync context
         state.setDocUri(file.getUri());
 
         refreshUI(file.getContent());
@@ -10228,7 +11544,13 @@ public class CodeEditorService {
         eventBus.publish(new CoreApplicationEvents.UIBlocksUpdatedEvent(rootBlock));
 
         if (state.getActiveFile() != null) {
-            eventBus.publish(new CoreApplicationEvents.StatusMessageEvent("Loaded: " + state.getActiveFile().getClassName()));
+            String fileName = state.getActiveFile().getPath().getFileName().toString();
+            // Add [Lib] indicator for library files
+            if (state.getActiveFile().getPath().toString().contains("com/botmaker/library") ||
+                    state.getActiveFile().getPath().toString().contains("com\\botmaker\\library")) {
+                fileName += " [Library - Read Only]";
+            }
+            eventBus.publish(new CoreApplicationEvents.StatusMessageEvent("Loaded: " + fileName));
         }
     }
 
@@ -11226,8 +12548,11 @@ public enum AddableExpression {
     FALSE("False", "boolean"),
     VARIABLE("Variable", "any"),
 
-    // NEW: Function Call
-    FUNCTION_CALL("Function Call", "any"), // Can return anything
+    // Function Call
+    FUNCTION_CALL("Function Call", "any"),
+
+    // NEW: Enum Constant
+    ENUM_CONSTANT("Enum Value", "enum"),
 
     // Nested
     LIST("Sub-List", "list"),
@@ -11255,18 +12580,19 @@ public enum AddableExpression {
 
     public String getDisplayName() { return displayName; }
     public String getOperator() { return operator; }
+    public String getReturnType() { return returnType; }
 
     public static List<AddableExpression> getForType(String targetType) {
         if (targetType == null || targetType.equals("any")) {
             return Arrays.asList(values());
         }
 
-        // NEW: Filter for Switch Compatibility
+        // Filter for Switch Compatibility
         if (targetType.equals(TypeManager.UI_TYPE_SWITCH_COMPATIBLE)) {
             return Arrays.stream(values())
                     .filter(e -> {
-                        // Explicitly allow Variable, Text, Function Call
-                        if (e == VARIABLE || e == TEXT || e == FUNCTION_CALL) return true;
+                        // Explicitly allow Variable, Text, Function Call, Enum
+                        if (e == VARIABLE || e == TEXT || e == FUNCTION_CALL || e == ENUM_CONSTANT) return true;
 
                         // Allow Number (creates 0, which is an int, thus valid)
                         if (e == NUMBER) return true;
@@ -11280,9 +12606,17 @@ public enum AddableExpression {
                     .collect(Collectors.toList());
         }
 
+        // NEW: Handle enum type filtering
+        if (targetType.equals("enum")) {
+            return Arrays.stream(values())
+                    .filter(e -> e == ENUM_CONSTANT || e == VARIABLE || e == FUNCTION_CALL)
+                    .collect(Collectors.toList());
+        }
+
         return Arrays.stream(values())
                 .filter(e -> {
                     if (e.returnType.equals("any")) return true;
+                    if (e.returnType.equals("enum") && targetType.equals("enum")) return true;
                     return e.returnType.equals(targetType);
                 })
                 .collect(Collectors.toList());
@@ -11852,8 +13186,7 @@ public class FileExplorerManager {
 
                 // Only open if it's a file, not a directory
                 if (Files.isRegularFile(selectedPath)) {
-                    // Optional: Check if it's a library file to prevent editing
-                    // For now, we just open everything
+                    // Allow opening all files, including library files (for visualization)
                     if (state.getActiveFile() == null || !state.getActiveFile().getPath().equals(selectedPath)) {
                         codeEditorService.switchToFile(selectedPath);
                         fileTree.refresh();
@@ -13399,12 +14732,20 @@ public class DefaultNames {
     public static final String DEFAULT_BOOLEAN = "flag";
     public static final String DEFAULT_STRING = "text";
     public static final String DEFAULT_VARIABLE = "variable";
+    public static final String DEFAULT_ENUM = "value"; // NEW
 
     // Method to get default name by type
     public static String forType(String typeName) {
         if (typeName == null) return DEFAULT_VARIABLE;
 
-        switch (typeName.toLowerCase()) {
+        String cleanType = typeName.trim();
+
+        // Handle ArrayList wrapper
+        if (cleanType.startsWith("ArrayList<") && cleanType.endsWith(">")) {
+            cleanType = cleanType.substring(10, cleanType.length() - 1);
+        }
+
+        switch (cleanType.toLowerCase()) {
             case "int":
             case "long":
             case "short":
@@ -13418,8 +14759,23 @@ public class DefaultNames {
             case "string":
                 return DEFAULT_STRING;
             default:
+                // NEW: If it looks like an enum (starts with uppercase), use enum default
+                if (TypeManager.isLikelyEnumType(cleanType)) {
+                    return DEFAULT_ENUM;
+                }
                 return DEFAULT_VARIABLE;
         }
+    }
+
+    // NEW: Get default name for enum type with the enum name as context
+    public static String forEnumType(String enumTypeName) {
+        if (enumTypeName == null || enumTypeName.isEmpty()) {
+            return DEFAULT_ENUM;
+        }
+        // Convert enum name to camelCase variable name
+        // e.g., "Color" -> "color", "DayOfWeek" -> "dayOfWeek"
+        String camelCase = Character.toLowerCase(enumTypeName.charAt(0)) + enumTypeName.substring(1);
+        return camelCase;
     }
 
     private DefaultNames() {} // Prevent instantiation
@@ -13446,7 +14802,8 @@ public class TypeManager {
     public static final String UI_TYPE_STRING = "String";
     public static final String UI_TYPE_TEXT = "Text";
     public static final String UI_TYPE_LIST = "list";
-    // NEW: Special type for Switch statements
+    public static final String UI_TYPE_ENUM = "enum"; // NEW
+    // Special type for Switch statements
     public static final String UI_TYPE_SWITCH_COMPATIBLE = "switch_compatible";
 
     // --- Mapping Tables ---
@@ -13494,6 +14851,82 @@ public class TypeManager {
         return true;
     }
 
+    // NEW: Check if a type is actually an enum by searching the compilation unit
+    public static boolean isEnumType(String typeName, CompilationUnit cu) {
+        if (typeName == null || typeName.isEmpty() || cu == null) return false;
+
+        String clean = typeName.trim();
+
+        // Extract base type if it's wrapped in ArrayList
+        if (clean.startsWith("ArrayList<") && clean.endsWith(">")) {
+            clean = clean.substring(10, clean.length() - 1);
+        }
+
+        // Search for enum declaration
+        for (Object obj : cu.types()) {
+            if (obj instanceof EnumDeclaration) {
+                EnumDeclaration enumDecl = (EnumDeclaration) obj;
+                if (enumDecl.getName().getIdentifier().equals(clean)) {
+                    return true;
+                }
+            }
+            // Check class body declarations
+            else if (obj instanceof TypeDeclaration) {
+                TypeDeclaration typeDecl = (TypeDeclaration) obj;
+                for (Object bodyObj : typeDecl.bodyDeclarations()) {
+                    if (bodyObj instanceof EnumDeclaration) {
+                        EnumDeclaration enumDecl = (EnumDeclaration) bodyObj;
+                        if (enumDecl.getName().getIdentifier().equals(clean)) {
+                            return true;
+                        }
+                    }
+                }
+            }
+        }
+
+        return false;
+    }
+
+    // Keep the old method but mark it as a heuristic
+    public static boolean isLikelyEnumType(String typeName) {
+        if (typeName == null || typeName.isEmpty()) return false;
+        String clean = typeName.trim();
+
+        // Extract base type if it's wrapped in ArrayList
+        if (clean.startsWith("ArrayList<") && clean.endsWith(">")) {
+            clean = clean.substring(10, clean.length() - 1);
+        }
+
+        // Heuristic: Enums typically start with uppercase and aren't in our known primitive/standard types
+        if (!Character.isUpperCase(clean.charAt(0))) return false;
+        if (FUNDAMENTAL_TYPES.contains(clean)) return false;
+        if (STRING_TYPES.contains(clean)) return false;
+        if (clean.equals("Integer") || clean.equals("Double") || clean.equals("Boolean")) return false;
+
+        return true;
+    }
+
+    // Add an overload that takes CompilationUnit for accurate enum detection
+    public static String determineUiType(String typeName, CompilationUnit cu) {
+        if (typeName == null || typeName.isBlank()) return UI_TYPE_ANY;
+        String clean = typeName.trim();
+
+        if (isArrayList(clean)) return UI_TYPE_LIST;
+        if (clean.endsWith("[]")) return UI_TYPE_LIST;
+
+        if (NUMBER_TYPES.contains(clean)) return UI_TYPE_NUMBER;
+        if (BOOLEAN_TYPES.contains(clean)) return UI_TYPE_BOOLEAN;
+        if (STRING_TYPES.contains(clean)) return UI_TYPE_STRING;
+
+        // Check if it's actually an enum
+        if (isEnumType(clean, cu)) return UI_TYPE_ENUM;
+
+        // Fallback to heuristic
+        if (isLikelyEnumType(clean)) return UI_TYPE_ENUM;
+
+        return UI_TYPE_ANY;
+    }
+
     public static String determineUiType(String typeName) {
         if (typeName == null || typeName.isBlank()) return UI_TYPE_ANY;
         String clean = typeName.trim();
@@ -13504,6 +14937,9 @@ public class TypeManager {
         if (NUMBER_TYPES.contains(clean)) return UI_TYPE_NUMBER;
         if (BOOLEAN_TYPES.contains(clean)) return UI_TYPE_BOOLEAN;
         if (STRING_TYPES.contains(clean)) return UI_TYPE_STRING;
+
+        // NEW: Check if it looks like an enum
+        if (isLikelyEnumType(clean)) return UI_TYPE_ENUM;
 
         return UI_TYPE_ANY;
     }
@@ -13517,16 +14953,23 @@ public class TypeManager {
         String qualifiedName = binding.getQualifiedName();
         String simpleName = binding.getName();
 
-        // NEW: Handle Switch Compatibility
+        // NEW: Handle Switch Compatibility - enums ARE allowed in switches
         if (targetUiType.equals(UI_TYPE_SWITCH_COMPATIBLE)) {
             if (binding.isArray()) return false;
-            // Blacklist check is safer for Enums (since we don't have a list of all enums)
+            // Enums are compatible with switches
+            if (binding.isEnum()) return true;
+            // Blacklist check for forbidden types
             return !SWITCH_FORBIDDEN_TYPES.contains(simpleName) &&
                     !SWITCH_FORBIDDEN_TYPES.contains(qualifiedName);
         }
 
         if (binding.isArray()) {
             return targetUiType.equals(UI_TYPE_LIST) || targetUiType.endsWith("[]");
+        }
+
+        // NEW: Enum type matching
+        if (targetUiType.equals(UI_TYPE_ENUM)) {
+            return binding.isEnum() || isLikelyEnumType(simpleName);
         }
 
         switch (targetUiType) {
@@ -13550,14 +14993,21 @@ public class TypeManager {
 
         String cleanType = typeName.trim();
 
-        // NEW: Handle Switch Compatibility
+        // NEW: Handle Switch Compatibility - enums ARE allowed
         if (targetUiType.equals(UI_TYPE_SWITCH_COMPATIBLE)) {
             if (cleanType.endsWith("[]") || cleanType.contains("ArrayList")) return false;
+            // Enums are switch-compatible
+            if (isLikelyEnumType(cleanType)) return true;
             return !SWITCH_FORBIDDEN_TYPES.contains(cleanType);
         }
 
         if (cleanType.endsWith("[]")) {
             return targetUiType.equals(UI_TYPE_LIST) || targetUiType.endsWith("[]");
+        }
+
+        // NEW: Enum type matching
+        if (targetUiType.equals(UI_TYPE_ENUM)) {
+            return isLikelyEnumType(cleanType);
         }
 
         switch (targetUiType) {
@@ -13576,6 +15026,7 @@ public class TypeManager {
     public static String getFriendlyTypeName(ITypeBinding typeBinding) {
         if (typeBinding == null) return "unknown";
         if (typeBinding.isArray()) return "list";
+        if (typeBinding.isEnum()) return "enum"; // NEW
         String name = typeBinding.getName();
         if (NUMBER_TYPES.contains(name)) return "number";
         if (STRING_TYPES.contains(name)) return "text";
@@ -13583,7 +15034,6 @@ public class TypeManager {
         return name;
     }
 
-    // ... [Rest of the file (toWrapperType, isPrimitive, etc.) remains unchanged] ...
     public static String toWrapperType(String typeName) {
         if (typeName == null) return typeName;
         switch (typeName) {
@@ -13684,7 +15134,7 @@ public class TypeManager {
             case "float": baseType = ast.newPrimitiveType(PrimitiveType.FLOAT); break;
             case "short": baseType = ast.newPrimitiveType(PrimitiveType.SHORT); break;
             case "byte": baseType = ast.newPrimitiveType(PrimitiveType.BYTE); break;
-            default: baseType = ast.newSimpleType(ast.newName(baseName)); break;
+            default: baseType = ast.newSimpleType(ast.newName(baseName)); break; // Includes enums and custom types
         }
         if (dimensions > 0) {
             return ast.newArrayType(baseType, dimensions);

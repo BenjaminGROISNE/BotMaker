@@ -4,13 +4,25 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="cba04025-c331-4634-a893-436bad03efc0" name="Changes" comment="Field declaration and FieldAccessBlockAccessBlock">
+    <list default="true" id="cba04025-c331-4634-a893-436bad03efc0" name="Changes" comment="Can switch field from no value to setup value">
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/botmaker/parser/factories/ExpressionFactory.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/botmaker/parser/factories/InitializerFactory.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/botmaker/parser/factories/StatementFactory.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/botmaker/parser/handlers/EnumManipulationHandler.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/botmaker/parser/handlers/ListManipulationHandler.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/botmaker/parser/handlers/MethodManipulationHandler.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/botmaker/parser/handlers/OperatorReplacementHandler.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/botmaker/parser/handlers/TypeReplacementHandler.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/botmaker/parser/helpers/AstRewriteHelper.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/botmaker/parser/helpers/CommentParser.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/botmaker/parser/helpers/EnumNodeHelper.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/botmaker/parser/helpers/FileTypeDetector.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/botmaker/parser/helpers/TypeConversionHelper.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/java_files_concat.txt" beforeDir="false" afterPath="$PROJECT_DIR$/java_files_concat.txt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/projects/.botmaker-config.json" beforeDir="false" afterPath="$PROJECT_DIR$/projects/.botmaker-config.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/botmaker/blocks/DeclareClassVariableBlock.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/botmaker/blocks/DeclareClassVariableBlock.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/botmaker/library/capture/GDI32.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/botmaker/library/capture/GDI32.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/botmaker/library/capture/User32.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/botmaker/library/capture/User32.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/botmaker/parser/CodeEditor.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/botmaker/parser/CodeEditor.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/botmaker/parser/AstRewriter.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/botmaker/parser/AstRewriter.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/botmaker/parser/NodeCreator.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/botmaker/parser/NodeCreator.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -52,7 +64,7 @@
   <component name="Git.Settings">
     <option name="RECENT_BRANCH_BY_REPOSITORY">
       <map>
-        <entry key="$PROJECT_DIR$" value="declare-enum-variable" />
+        <entry key="$PROJECT_DIR$" value="dev" />
       </map>
     </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -107,7 +119,7 @@
     &quot;RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252&quot;: &quot;true&quot;,
     &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
     &quot;SHELLCHECK.PATH&quot;: &quot;/home/groisnebenjamin/.local/share/JetBrains/IdeaIC2025.2/Shell Script/shellcheck&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;dev&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;Refactor&quot;,
     &quot;ignore.preview.features.used&quot;: &quot;true&quot;,
     &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
     &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
@@ -220,15 +232,9 @@
       <workItem from="1763918732147" duration="607000" />
       <workItem from="1763919354353" duration="6778000" />
       <workItem from="1764009536365" duration="3458000" />
-      <workItem from="1764411573342" duration="3364000" />
-    </task>
-    <task id="LOCAL-00025" summary="changed else block">
-      <option name="closed" value="true" />
-      <created>1760902091184</created>
-      <option name="number" value="00025" />
-      <option name="presentableId" value="LOCAL-00025" />
-      <option name="project" value="LOCAL" />
-      <updated>1760902091184</updated>
+      <workItem from="1764411573342" duration="3772000" />
+      <workItem from="1764421529927" duration="3577000" />
+      <workItem from="1764428810306" duration="348000" />
     </task>
     <task id="LOCAL-00026" summary="empty body drag fixed">
       <option name="closed" value="true" />
@@ -614,7 +620,15 @@
       <option name="project" value="LOCAL" />
       <updated>1764414071005</updated>
     </task>
-    <option name="localTasksCounter" value="74" />
+    <task id="LOCAL-00074" summary="Can switch field from no value to setup value">
+      <option name="closed" value="true" />
+      <created>1764415360684</created>
+      <option name="number" value="00074" />
+      <option name="presentableId" value="LOCAL-00074" />
+      <option name="project" value="LOCAL" />
+      <updated>1764415360684</updated>
+    </task>
+    <option name="localTasksCounter" value="75" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -648,7 +662,6 @@
     <ignored-roots>
       <path value="$PROJECT_DIR$/.." />
     </ignored-roots>
-    <MESSAGE value="upgrades errors" />
     <MESSAGE value="Started List" />
     <MESSAGE value="fix stop button, reworked list variable, assignment operator not working yet" />
     <MESSAGE value="Assignment operator update and event log console" />
@@ -673,7 +686,8 @@
     <MESSAGE value="Can create EnumDeclaration into code but doesn't appear" />
     <MESSAGE value="ENUM CONST with a few bugs" />
     <MESSAGE value="Field declaration and FieldAccessBlockAccessBlock" />
-    <option name="LAST_COMMIT_MESSAGE" value="Field declaration and FieldAccessBlockAccessBlock" />
+    <MESSAGE value="Can switch field from no value to setup value" />
+    <option name="LAST_COMMIT_MESSAGE" value="Can switch field from no value to setup value" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
