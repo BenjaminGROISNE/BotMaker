@@ -6,7 +6,7 @@ import com.botmaker.core.CodeBlock;
 import com.botmaker.core.ExpressionBlock;
 import com.botmaker.core.StatementBlock;
 import com.botmaker.ui.BlockDragAndDropManager;
-import com.botmaker.util.BlockIdPrefix;
+import com.botmaker.parser.BlockIdPrefix;
 import org.eclipse.jdt.core.dom.*;
 
 import java.util.List;
@@ -243,6 +243,16 @@ public class BlockParser {
             for (Expression item : items) factory.parseExpression(item, map).ifPresent(b::addElement);
             return Optional.of(b);
         }
+        if (expr instanceof FieldAccess) {
+            FieldAccess fa = (FieldAccess) expr;
+            FieldAccessBlock b = new FieldAccessBlock(
+                    BlockIdPrefix.generate(BlockIdPrefix.FIELD_ACCESS, expr),
+                    fa,
+                    markNewIdentifiersAsUnedited
+            );
+            map.put(expr, b);
+            return Optional.of(b);
+        }
         if (expr instanceof QualifiedName) {
             QualifiedName qn = (QualifiedName) expr;
             // Check if this is an enum constant reference
@@ -250,6 +260,16 @@ public class BlockParser {
                 EnumConstantBlock b = new EnumConstantBlock(
                         BlockIdPrefix.generate(BlockIdPrefix.ENUM_CONSTANT, expr),
                         qn
+                );
+                map.put(expr, b);
+                return Optional.of(b);
+            }
+            // Check if this is field access (e.g., this.score)
+            else if (isFieldAccessReference(qn)) {
+                FieldAccessBlock b = new FieldAccessBlock(
+                        BlockIdPrefix.generate(BlockIdPrefix.FIELD_ACCESS, expr),
+                        qn,
+                        markNewIdentifiersAsUnedited
                 );
                 map.put(expr, b);
                 return Optional.of(b);
@@ -293,6 +313,7 @@ public class BlockParser {
         }
         return Optional.empty();
     }
+
     private boolean isEnumConstantReference(QualifiedName qn) {
         // Check if the qualifier is a simple name (enum type) and name is uppercase (constant)
         Name qualifier = qn.getQualifier();
@@ -303,6 +324,24 @@ public class BlockParser {
         }
         return false;
     }
+
+    private boolean isFieldAccessReference(QualifiedName qn) {
+        // Check if the qualifier is "this" or "super" or an object reference
+        Name qualifier = qn.getQualifier();
+        if (qualifier instanceof SimpleName) {
+            String qualifierName = ((SimpleName) qualifier).getIdentifier();
+            // "this" or "super" or lowercase object name (not enum type)
+            if (qualifierName.equals("this") || qualifierName.equals("super")) {
+                return true;
+            }
+            // If it starts with lowercase, it's likely an object field access
+            if (Character.isLowerCase(qualifierName.charAt(0))) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     private boolean isListStructure(Expression expr) {
         if (expr instanceof ArrayInitializer) return true;
         if (expr instanceof ClassInstanceCreation) {

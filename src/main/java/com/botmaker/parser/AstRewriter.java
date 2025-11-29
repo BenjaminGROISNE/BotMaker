@@ -125,6 +125,107 @@ public class AstRewriter {
         return applyRewrite(rewriter, originalCode);
     }
 
+
+    public String setFieldInitializer(CompilationUnit cu, String originalCode,
+                                      FieldDeclaration fieldDecl, AddableExpression type) {
+        AST ast = cu.getAST();
+        ASTRewrite rewriter = ASTRewrite.create(ast);
+
+        // Get the fragment
+        VariableDeclarationFragment fragment = (VariableDeclarationFragment) fieldDecl.fragments().get(0);
+
+        // Get the field's type name for enum context
+        String typeName = fieldDecl.getType().toString();
+        // Strip ArrayList wrapper if present
+        if (typeName.startsWith("ArrayList<") && typeName.endsWith(">")) {
+            typeName = typeName.substring(10, typeName.length() - 1);
+        }
+
+        // Create the new expression with type context
+        Expression newExpr = nodeCreator.createDefaultExpression(ast, type, cu, rewriter, typeName);
+        if (newExpr == null) return originalCode;
+
+        // Set or replace the initializer
+        if (fragment.getInitializer() == null) {
+            rewriter.set(fragment, VariableDeclarationFragment.INITIALIZER_PROPERTY, newExpr, null);
+        } else {
+            rewriter.replace(fragment.getInitializer(), newExpr, null);
+        }
+
+        return applyRewrite(rewriter, originalCode);
+    }
+
+    public String replaceFieldType(CompilationUnit cu, String originalCode,
+                                   FieldDeclaration fieldDecl, String newTypeName) {
+        AST ast = cu.getAST();
+        ASTRewrite rewriter = ASTRewrite.create(ast);
+
+        if (newTypeName.contains("ArrayList")) {
+            ImportManager.addImport(cu, rewriter, "java.util.ArrayList");
+            ImportManager.addImport(cu, rewriter, "java.util.List");
+        }
+
+        Type newType = TypeManager.createTypeNode(ast, newTypeName);
+        rewriter.replace(fieldDecl.getType(), newType, null);
+
+        if (!fieldDecl.fragments().isEmpty()) {
+            VariableDeclarationFragment fragment = (VariableDeclarationFragment) fieldDecl.fragments().get(0);
+            Expression currentInitializer = fragment.getInitializer();
+            Expression newInitializer = null;
+            List<Expression> valuesToPreserve = new ArrayList<>();
+            String oldLeaf = TypeManager.getLeafType(fieldDecl.getType().toString());
+            String newLeaf = TypeManager.getLeafType(newTypeName);
+
+            if (oldLeaf.equals(newLeaf) && currentInitializer != null) {
+                collectLeafValues(currentInitializer, valuesToPreserve);
+            }
+
+            // Check if new type is enum
+            boolean isNewTypeEnum = TypeManager.isEnumType(newLeaf, cu);
+
+            if (isNewTypeEnum) {
+                // Create enum constant initializer
+                String firstConstant = findFirstEnumConstant(cu, newLeaf);
+                if (firstConstant != null) {
+                    if (newTypeName.startsWith("ArrayList<")) {
+                        // ArrayList<EnumType> - create empty list initially
+                        newInitializer = nodeCreator.createRecursiveListInitializer(ast, newTypeName, cu, rewriter, null);
+                    } else {
+                        // Single enum value - use first constant
+                        QualifiedName qn = ast.newQualifiedName(
+                                ast.newSimpleName(newLeaf),
+                                ast.newSimpleName(firstConstant)
+                        );
+                        newInitializer = qn;
+                    }
+                } else {
+                    // Fallback if no constants found
+                    newInitializer = ast.newNullLiteral();
+                }
+            } else if (newTypeName.startsWith("ArrayList<")) {
+                newInitializer = nodeCreator.createRecursiveListInitializer(ast, newTypeName, cu, rewriter, valuesToPreserve);
+            } else if (newTypeName.endsWith("[]")) {
+                ArrayCreation creation = ast.newArrayCreation();
+                creation.setType((ArrayType) TypeManager.createTypeNode(ast, newTypeName));
+                ArrayInitializer ai = ast.newArrayInitializer();
+                if (!valuesToPreserve.isEmpty()) {
+                    for(Expression val : valuesToPreserve) ai.expressions().add(ASTNode.copySubtree(ast, val));
+                }
+                creation.setInitializer(ai);
+                newInitializer = creation;
+            } else {
+                newInitializer = !valuesToPreserve.isEmpty() ?
+                        (Expression) ASTNode.copySubtree(ast, valuesToPreserve.get(0)) :
+                        nodeCreator.createDefaultInitializer(ast, newTypeName);
+            }
+
+            if (newInitializer != null) {
+                rewriter.replace(currentInitializer, newInitializer, null);
+            }
+        }
+        return applyRewrite(rewriter, originalCode);
+    }
+
     public String setVariableInitializer(CompilationUnit cu, String originalCode,
                                          VariableDeclarationStatement varDecl, AddableExpression type) {
         AST ast = cu.getAST();

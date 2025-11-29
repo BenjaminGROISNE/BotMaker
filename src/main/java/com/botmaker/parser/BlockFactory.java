@@ -3,7 +3,7 @@ package com.botmaker.parser;
 import com.botmaker.blocks.*;
 import com.botmaker.core.*;
 import com.botmaker.ui.BlockDragAndDropManager;
-import com.botmaker.util.BlockIdPrefix;
+import com.botmaker.parser.BlockIdPrefix;
 import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jdt.core.dom.*;
 
@@ -51,7 +51,6 @@ public class BlockFactory {
             // Get the root declaration (can be TypeDeclaration OR EnumDeclaration)
             AbstractTypeDeclaration rootNode = (AbstractTypeDeclaration) ast.types().get(0);
 
-            // --- CASE A: Standard Class File ---
             // --- CASE A: Standard Class File ---
             if (rootNode instanceof TypeDeclaration) {
                 TypeDeclaration typeDecl = (TypeDeclaration) rootNode;
@@ -107,6 +106,23 @@ public class BlockFactory {
 
                         nodeToBlockMap.put(enumDecl, enumBlock);
                         classBlock.addBodyDeclaration(enumBlock);
+                    }
+                    // 3. Handle Field Declarations
+                    else if (obj instanceof FieldDeclaration) {
+                        FieldDeclaration field = (FieldDeclaration) obj;
+                        DeclareClassVariableBlock fieldBlock = new DeclareClassVariableBlock(
+                                BlockIdPrefix.generate(BlockIdPrefix.FIELD_ACCESS, field),
+                                field
+                        );
+                        nodeToBlockMap.put(field, fieldBlock);
+
+                        // Parse initializer if present
+                        VariableDeclarationFragment fragment = (VariableDeclarationFragment) field.fragments().get(0);
+                        if (fragment.getInitializer() != null) {
+                            parseExpression(fragment.getInitializer(), nodeToBlockMap).ifPresent(fieldBlock::setInitializer);
+                        }
+
+                        classBlock.addBodyDeclaration(fieldBlock);
                     }
                 }
 

@@ -82,6 +82,8 @@ public class CodeEditor {
         triggerUpdate(newCode);
     }
 
+
+
     public void addMethodToClass(TypeDeclaration typeDecl, String methodName, String returnType, int index) {
         blockFactory.setMarkNewIdentifiersAsUnedited(true);
         String newCode = astRewriter.addMethodToClass(
@@ -171,11 +173,19 @@ public class CodeEditor {
         String newCode = astRewriter.deleteComment(getCurrentCode(), commentNode);
         triggerUpdate(newCode);
     }
+
     public void setVariableInitializer(VariableDeclarationStatement varDecl, AddableExpression type) {
         blockFactory.setMarkNewIdentifiersAsUnedited(true);
         String newCode = astRewriter.setVariableInitializer(getCompilationUnit(), getCurrentCode(), varDecl, type);
         triggerUpdate(newCode);
     }
+
+    public void setFieldInitializer(FieldDeclaration fieldDecl, AddableExpression type) {
+        blockFactory.setMarkNewIdentifiersAsUnedited(true);
+        String newCode = astRewriter.setFieldInitializer(getCompilationUnit(), getCurrentCode(), fieldDecl, type);
+        triggerUpdate(newCode);
+    }
+
     public void replaceExpression(Expression toReplace, AddableExpression type) {
         blockFactory.setMarkNewIdentifiersAsUnedited(true);
         String newCode = astRewriter.replaceExpression(getCompilationUnit(), getCurrentCode(), toReplace, type);
@@ -216,6 +226,10 @@ public class CodeEditor {
 
     public void replaceVariableType(VariableDeclarationStatement toReplace, String newTypeName) {
         String newCode = astRewriter.replaceVariableType(getCompilationUnit(), getCurrentCode(), toReplace, newTypeName);
+        triggerUpdate(newCode);
+    }
+    public void replaceFieldType(FieldDeclaration fieldDecl, String newTypeName) {
+        String newCode = astRewriter.replaceFieldType(getCompilationUnit(), getCurrentCode(), fieldDecl, newTypeName);
         triggerUpdate(newCode);
     }
 

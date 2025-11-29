@@ -1,4 +1,4 @@
-package com.botmaker.util;
+package com.botmaker.parser;
 
 /**
  * Constants for block ID prefixes
@@ -36,6 +36,8 @@ public class BlockIdPrefix {
     public static final String METHOD = "method_";
     public static final String ENUM = "enum_";
     public static final String ENUM_CONSTANT = "enum_const_";
+    public static final String FIELD_ACCESS = "field_access_";
+
 
     private BlockIdPrefix() {} // Prevent instantiation
 

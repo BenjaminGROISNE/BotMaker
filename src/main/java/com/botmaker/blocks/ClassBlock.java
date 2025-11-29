@@ -5,7 +5,7 @@ import com.botmaker.core.BlockWithChildren;
 import com.botmaker.core.CodeBlock;
 import com.botmaker.lsp.CompletionContext;
 import com.botmaker.ui.BlockDragAndDropManager;
-import com.botmaker.util.BlockIdPrefix;
+import com.botmaker.parser.BlockIdPrefix;
 import javafx.geometry.Insets;
 import javafx.scene.Node;
 import javafx.scene.control.Label;

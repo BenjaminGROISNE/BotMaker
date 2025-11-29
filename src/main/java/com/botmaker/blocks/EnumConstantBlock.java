@@ -2,7 +2,7 @@ package com.botmaker.blocks;
 
 import com.botmaker.core.AbstractExpressionBlock;
 import com.botmaker.lsp.CompletionContext;
-import com.botmaker.util.BlockIdPrefix;
+import com.botmaker.parser.BlockIdPrefix;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.control.ComboBox;
