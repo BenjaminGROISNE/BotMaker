@@ -213,8 +213,7 @@ public class BlockFactory {
         return bodyBlock;
     }
 
-    // ... Copy parseStatement, parseExpression, parseCommentBlock, isPrintStatement, isReadInputStatement, getCompilationUnit
-    // NO CHANGES NEEDED TO THEM
+
     public Optional<StatementBlock> parseStatement(Statement stmt, Map<ASTNode, CodeBlock> map, BlockDragAndDropManager manager) {
         return blockParser.parseStatement(stmt, map);
     }

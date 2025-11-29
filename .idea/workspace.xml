@@ -4,25 +4,26 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="cba04025-c331-4634-a893-436bad03efc0" name="Changes" comment="Can switch field from no value to setup value">
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/botmaker/parser/factories/ExpressionFactory.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/botmaker/parser/factories/InitializerFactory.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/botmaker/parser/factories/StatementFactory.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/botmaker/parser/handlers/EnumManipulationHandler.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/botmaker/parser/handlers/ListManipulationHandler.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/botmaker/parser/handlers/MethodManipulationHandler.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/botmaker/parser/handlers/OperatorReplacementHandler.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/botmaker/parser/handlers/TypeReplacementHandler.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/botmaker/parser/helpers/AstRewriteHelper.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/botmaker/parser/helpers/CommentParser.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/botmaker/parser/helpers/EnumNodeHelper.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/botmaker/parser/helpers/FileTypeDetector.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/botmaker/parser/helpers/TypeConversionHelper.java" afterDir="false" />
+    <list default="true" id="cba04025-c331-4634-a893-436bad03efc0" name="Changes" comment="Refactor done">
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/botmaker/ui/builders/BlockLayout.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/botmaker/ui/builders/BodyLayoutBuilder.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/botmaker/ui/builders/ConditionalLayoutBuilder.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/botmaker/ui/builders/DeclarationLayoutBuilder.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/botmaker/ui/builders/DropZoneFactory.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/botmaker/ui/builders/ExpressionLayoutBuilder.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/botmaker/ui/builders/HeaderLayoutBuilder.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/botmaker/ui/builders/LoopLayoutBuilder.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/botmaker/ui/builders/OperatorLayoutBuilder.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/botmaker/ui/builders/SentenceLayoutBuilder.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/botmaker/ui/theme/BlockTheme.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/botmaker/ui/theme/ColorPalette.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/botmaker/ui/theme/Effects.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/botmaker/ui/theme/Spacing.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/botmaker/ui/theme/StyleBuilder.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/botmaker/ui/theme/Typography.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/java_files_concat.txt" beforeDir="false" afterPath="$PROJECT_DIR$/java_files_concat.txt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/projects/.botmaker-config.json" beforeDir="false" afterPath="$PROJECT_DIR$/projects/.botmaker-config.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/botmaker/parser/AstRewriter.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/botmaker/parser/AstRewriter.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/botmaker/parser/NodeCreator.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/botmaker/parser/NodeCreator.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/botmaker/parser/BlockFactory.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/botmaker/parser/BlockFactory.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -90,7 +91,7 @@
     <setting file="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.eclipse.lsp4j/org.eclipse.lsp4j/0.21.0/59f263c9f254fe06c7699b62c4e9a19ac9b43909/org.eclipse.lsp4j-0.21.0-sources.jar!/org/eclipse/lsp4j/services/LanguageServer.java" root0="SKIP_INSPECTION" />
   </component>
   <component name="ProblemsViewState">
-    <option name="selectedTabId" value="ProjectErrors" />
+    <option name="selectedTabId" value="CurrentFile" />
   </component>
   <component name="ProjectColorInfo">{
   &quot;associatedIndex&quot;: 8
@@ -103,43 +104,44 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;ASKED_SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
-    &quot;Gradle.BotMaker [:com.astblocks.demo.Main.main()].executor&quot;: &quot;Run&quot;,
-    &quot;Gradle.BotMaker [:com.botmaker.Main.main()].executor&quot;: &quot;Run&quot;,
-    &quot;Gradle.BotMaker [:org.example.Main.main()].executor&quot;: &quot;Run&quot;,
-    &quot;Gradle.BotMaker [run].executor&quot;: &quot;Run&quot;,
-    &quot;Gradle.BotMaker.executor&quot;: &quot;Run&quot;,
-    &quot;Gradle.Build BotMaker.executor&quot;: &quot;Run&quot;,
-    &quot;Gradle.Download Sources.executor&quot;: &quot;Run&quot;,
-    &quot;ModuleVcsDetector.initialDetectionPerformed&quot;: &quot;true&quot;,
-    &quot;PowerShell.Concat.executor&quot;: &quot;Run&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
-    &quot;SHELLCHECK.PATH&quot;: &quot;/home/groisnebenjamin/.local/share/JetBrains/IdeaIC2025.2/Shell Script/shellcheck&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;Refactor&quot;,
-    &quot;ignore.preview.features.used&quot;: &quot;true&quot;,
-    &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
-    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
-    &quot;last_opened_file_path&quot;: &quot;C:/Users/bgroi/Documents/dev/IntellijProjects/BotMaker/src/main/java/com/botmaker/library&quot;,
-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
-    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
-    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;onboarding.tips.debug.path&quot;: &quot;/home/groisnebenjamin/IdeaProjects/BotMaker/src/main/java/org/example/Main.java&quot;,
-    &quot;project.structure.last.edited&quot;: &quot;Modules&quot;,
-    &quot;project.structure.proportion&quot;: &quot;0.15&quot;,
-    &quot;project.structure.side.proportion&quot;: &quot;0.2&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;settings.sync&quot;,
-    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "ASKED_SHARE_PROJECT_CONFIGURATION_FILES": "true",
+    "Gradle.BotMaker [:com.astblocks.demo.Main.main()].executor": "Run",
+    "Gradle.BotMaker [:com.botmaker.Main.main()].executor": "Run",
+    "Gradle.BotMaker [:org.example.Main.main()].executor": "Run",
+    "Gradle.BotMaker [run].executor": "Run",
+    "Gradle.BotMaker.executor": "Run",
+    "Gradle.Build BotMaker.executor": "Run",
+    "Gradle.Building Gradle Dependencies.executor": "Run",
+    "Gradle.Download Sources.executor": "Run",
+    "ModuleVcsDetector.initialDetectionPerformed": "true",
+    "PowerShell.Concat.executor": "Run",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252": "true",
+    "RunOnceActivity.git.unshallow": "true",
+    "SHELLCHECK.PATH": "/home/groisnebenjamin/.local/share/JetBrains/IdeaIC2025.2/Shell Script/shellcheck",
+    "git-widget-placeholder": "Refactor-Blocks",
+    "ignore.preview.features.used": "true",
+    "ignore.virus.scanning.warn.message": "true",
+    "kotlin-language-version-configured": "true",
+    "last_opened_file_path": "C:/Users/bgroi/Documents/dev/IntellijProjects/BotMaker",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "onboarding.tips.debug.path": "/home/groisnebenjamin/IdeaProjects/BotMaker/src/main/java/org/example/Main.java",
+    "project.structure.last.edited": "Modules",
+    "project.structure.proportion": "0.15",
+    "project.structure.side.proportion": "0.2",
+    "settings.editor.selected.configurable": "reference.settings.ide.settings.uml",
+    "vue.rearranger.settings.migration": "true"
   },
-  &quot;keyToStringList&quot;: {
-    &quot;stardust.markdown.MarkdownSplitEditorSuppressor:keyList&quot;: []
+  "keyToStringList": {
+    "stardust.markdown.MarkdownSplitEditorSuppressor:keyList": []
   }
-}</component>
+}]]></component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="C:\Users\bgroi\Documents\dev\IntellijProjects\BotMaker\src\main\java\com\botmaker\library" />
@@ -235,6 +237,9 @@
       <workItem from="1764411573342" duration="3772000" />
       <workItem from="1764421529927" duration="3577000" />
       <workItem from="1764428810306" duration="348000" />
+      <workItem from="1764429584078" duration="64000" />
+      <workItem from="1764429708850" duration="899000" />
+      <workItem from="1764449958738" duration="3144000" />
     </task>
     <task id="LOCAL-00026" summary="empty body drag fixed">
       <option name="closed" value="true" />
@@ -774,5 +779,9 @@
         <watch expression="&#10;        // 7. Array Index Out of Bounds&#10;        int[] numbers = {1, 2, 3};" />
       </configuration>
     </watches-manager>
+  </component>
+  <component name="XSLT-Support.FileAssociations.UIState">
+    <expand />
+    <select />
   </component>
 </project>
