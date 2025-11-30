@@ -12,6 +12,7 @@ import javafx.scene.layout.HBox;
 import org.eclipse.jdt.core.dom.*;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -80,7 +81,6 @@ public class EnumConstantBlock extends AbstractExpressionBlock {
 
     private List<String> getEnumConstants(String enumName, CompletionContext context) {
         List<String> constants = new ArrayList<>();
-
         CompilationUnit cu = context.applicationState().getCompilationUnit().orElse(null);
         if (cu == null) return constants;
 

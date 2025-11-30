@@ -80,7 +80,6 @@ public class ComparisonExpressionBlock extends AbstractExpressionBlock {
                 )
                 .addExpressionSlot(rightOperand, context, "number")
                 .build();
-
         return sentence;
     }
 

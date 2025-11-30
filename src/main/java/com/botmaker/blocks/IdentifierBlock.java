@@ -5,13 +5,9 @@ import com.botmaker.lsp.CompletionContext;
 import com.botmaker.ui.builders.BlockLayout;
 import com.botmaker.util.TypeManager;
 import javafx.application.Platform;
-import javafx.scene.Cursor;
 import javafx.scene.Node;
 import javafx.scene.control.ContextMenu;
 import javafx.scene.control.MenuItem;
-import javafx.scene.control.Tooltip;
-import javafx.scene.layout.HBox;
-import javafx.scene.text.Text;
 import org.eclipse.jdt.core.dom.*;
 import org.eclipse.lsp4j.*;
 
@@ -59,7 +55,9 @@ public class IdentifierBlock extends AbstractExpressionBlock {
             CompletionParams params = new CompletionParams(new TextDocumentIdentifier(context.docUri()), pos);
 
             String expectedType = determineExpectedType();
-            System.out.println("[Debug] Suggestion Context -> Expected Type: " + expectedType);
+
+            // Debugging output to verify type detection in console
+            System.out.println("[IdentifierBlock] Requesting suggestions. Detected expected type: " + expectedType);
 
             context.server().getTextDocumentService().completion(params).thenAccept(result -> {
                 if (result == null || (result.isLeft() && result.getLeft().isEmpty()) ||
@@ -84,7 +82,7 @@ public class IdentifierBlock extends AbstractExpressionBlock {
                                         if (parts.length > 1) typeInfo = parts[1].trim();
                                     }
                                 }
-                                // Checks validity using TypeManager (now handles SWITCH_COMPATIBLE)
+                                // Checks validity using TypeManager
                                 return TypeManager.isCompatible(typeInfo, expectedType);
                             })
                             .collect(Collectors.toList());
@@ -140,14 +138,70 @@ public class IdentifierBlock extends AbstractExpressionBlock {
 
         if (parent == null) return TypeManager.UI_TYPE_ANY;
 
-        // NEW: Switch Statement Expression Context
+        // NEW: Handle Method Invocation Arguments
+        if (parent instanceof MethodInvocation) {
+            MethodInvocation mi = (MethodInvocation) parent;
+
+            // 1. Special Handling for List Creation: new ArrayList<Type>(Arrays.asList(...))
+            if (mi.getName().getIdentifier().equals("asList") && mi.getParent() instanceof ClassInstanceCreation) {
+                ClassInstanceCreation cic = (ClassInstanceCreation) mi.getParent();
+                String typeStr = cic.getType().toString(); // e.g. "ArrayList<Double>"
+
+                // Handle Diamond Operator <> or Raw types by checking variable declaration
+                // This fixes cases where type is just "ArrayList" in the AST
+                if (typeStr.equals("ArrayList") || typeStr.equals("ArrayList<>")) {
+                    if (cic.getParent() instanceof VariableDeclarationFragment) {
+                        VariableDeclarationFragment frag = (VariableDeclarationFragment) cic.getParent();
+                        if (frag.getParent() instanceof VariableDeclarationStatement) {
+                            VariableDeclarationStatement decl = (VariableDeclarationStatement) frag.getParent();
+                            typeStr = decl.getType().toString(); // "ArrayList<Double>"
+                        }
+                    } else if (cic.getParent() instanceof Assignment) {
+                        Assignment assign = (Assignment) cic.getParent();
+                        Expression lhs = assign.getLeftHandSide();
+                        ITypeBinding binding = lhs.resolveTypeBinding();
+                        if (binding != null) {
+                            typeStr = binding.getName();
+                        }
+                    }
+                }
+
+                // Extract immediate content type (peel exactly one layer)
+                // ArrayList<Double> -> Double -> number
+                // ArrayList<ArrayList<Integer>> -> ArrayList<Integer> -> list
+                String innerType = extractOneLayer(typeStr);
+                return TypeManager.determineUiType(innerType);
+            }
+
+            // 2. General Method Argument Type Resolution
+            IMethodBinding binding = mi.resolveMethodBinding();
+            if (binding != null) {
+                int index = mi.arguments().indexOf(child);
+                ITypeBinding[] paramTypes = binding.getParameterTypes();
+
+                // Handle Varargs (e.g. func(int... numbers))
+                if (binding.isVarargs() && index >= paramTypes.length - 1) {
+                    ITypeBinding varargArrayType = paramTypes[paramTypes.length - 1];
+                    if (varargArrayType.isArray()) {
+                        return TypeManager.determineUiType(varargArrayType.getElementType().getName());
+                    }
+                }
+
+                // Standard Arguments
+                if (index >= 0 && index < paramTypes.length) {
+                    return TypeManager.determineUiType(paramTypes[index].getName());
+                }
+            }
+        }
+
+        // Switch Statement Expression Context
         if (parent instanceof SwitchStatement) {
             if (((SwitchStatement) parent).getExpression() == child) {
                 return TypeManager.UI_TYPE_SWITCH_COMPATIBLE;
             }
         }
 
-        // 2. Boolean Contexts
+        // Boolean Contexts
         if (parent instanceof IfStatement) {
             if (((IfStatement) parent).getExpression() == child) return TypeManager.UI_TYPE_BOOLEAN;
         }
@@ -158,7 +212,7 @@ public class IdentifierBlock extends AbstractExpressionBlock {
             if (((DoStatement) parent).getExpression() == child) return TypeManager.UI_TYPE_BOOLEAN;
         }
 
-        // 3. Unary Contexts
+        // Unary Contexts
         if (parent instanceof PrefixExpression) {
             PrefixExpression.Operator op = ((PrefixExpression) parent).getOperator();
             if (op == PrefixExpression.Operator.NOT) return TypeManager.UI_TYPE_BOOLEAN;
@@ -166,7 +220,7 @@ public class IdentifierBlock extends AbstractExpressionBlock {
         }
         if (parent instanceof PostfixExpression) return TypeManager.UI_TYPE_NUMBER;
 
-        // 4. Binary Contexts
+        // Binary Contexts
         if (parent instanceof InfixExpression) {
             InfixExpression infix = (InfixExpression) parent;
             InfixExpression.Operator op = infix.getOperator();
@@ -176,7 +230,7 @@ public class IdentifierBlock extends AbstractExpressionBlock {
             return TypeManager.UI_TYPE_NUMBER;
         }
 
-        // 5. Assignment
+        // Assignment
         if (parent instanceof Assignment) {
             Assignment assignment = (Assignment) parent;
             if (assignment.getRightHandSide() == child) {
@@ -188,7 +242,7 @@ public class IdentifierBlock extends AbstractExpressionBlock {
             }
         }
 
-        // 6. Variable Declaration
+        // Variable Declaration
         if (parent instanceof VariableDeclarationFragment) {
             VariableDeclarationFragment frag = (VariableDeclarationFragment) parent;
             if (frag.getInitializer() == child) {
@@ -201,6 +255,24 @@ public class IdentifierBlock extends AbstractExpressionBlock {
         }
 
         return TypeManager.UI_TYPE_ANY;
+    }
+
+    /**
+     * Extracts exactly one layer of generic type.
+     * ArrayList<Double> -> Double
+     * ArrayList<ArrayList<Integer>> -> ArrayList<Integer>
+     */
+    private String extractOneLayer(String typeName) {
+        if (typeName == null) return "Object";
+        String clean = typeName.trim();
+        if (clean.startsWith("ArrayList<") || clean.startsWith("List<")) {
+            int start = clean.indexOf("<") + 1;
+            int end = clean.lastIndexOf(">");
+            if (start < end) {
+                return clean.substring(start, end);
+            }
+        }
+        return "Object";
     }
 
     private String getSimpleTypeName(String detail) {

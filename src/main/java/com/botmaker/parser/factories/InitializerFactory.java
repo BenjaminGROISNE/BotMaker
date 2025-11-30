@@ -16,27 +16,43 @@ public class InitializerFactory {
 
     /**
      * Creates a default initializer for a given type.
+     * Handles primitives and their wrapper classes.
      */
     public Expression createDefaultInitializer(AST ast, String typeName) {
-        switch (typeName) {
+        String cleanName = typeName.trim();
+
+        switch (cleanName) {
             case "int":
+            case "Integer":
             case "long":
+            case "Long":
             case "short":
+            case "Short":
             case "byte":
+            case "Byte":
                 return ast.newNumberLiteral("0");
+
             case "double":
+            case "Double":
             case "float":
+            case "Float":
                 return ast.newNumberLiteral("0.0");
+
             case "boolean":
+            case "Boolean":
                 return ast.newBooleanLiteral(false);
+
             case "char":
+            case "Character":
                 CharacterLiteral literal = ast.newCharacterLiteral();
                 literal.setCharValue('a');
                 return literal;
+
             case "String":
                 StringLiteral str = ast.newStringLiteral();
                 str.setLiteralValue("");
                 return str;
+
             default:
                 return ast.newNullLiteral();
         }
@@ -69,7 +85,8 @@ public class InitializerFactory {
         asList.setName(ast.newSimpleName("asList"));
 
         if (innerTypeStr.startsWith("ArrayList<")) {
-            // Nested list
+            // Nested list: Create one empty nested list to show structure
+            // Example: [ [] ]
             Expression innerList = createRecursiveListInitializer(ast, innerTypeStr, cu, rewriter, leavesToPreserve);
             asList.arguments().add(innerList);
         } else {
@@ -79,7 +96,8 @@ public class InitializerFactory {
                     asList.arguments().add((Expression) ASTNode.copySubtree(ast, leaf));
                 }
             } else {
-                asList.arguments().add(createDefaultInitializer(ast, innerTypeStr));
+                // Empty List: Don't add a default "null" or "0".
+                // Creates: new ArrayList<>(Arrays.asList())  ->  []
             }
         }
 

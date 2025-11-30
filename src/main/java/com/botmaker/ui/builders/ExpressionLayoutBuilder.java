@@ -2,9 +2,11 @@ package com.botmaker.ui.builders;
 
 import com.botmaker.core.ExpressionBlock;
 import com.botmaker.lsp.CompletionContext;
+import com.botmaker.ui.builders.DropZoneFactory;
 import com.botmaker.ui.theme.BlockTheme;
 import com.botmaker.ui.theme.StyleBuilder;
 import javafx.geometry.Pos;
+import javafx.scene.Cursor;
 import javafx.scene.Node;
 import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;
@@ -25,6 +27,9 @@ public class ExpressionLayoutBuilder {
     private Pos alignment = Pos.CENTER_LEFT;
     private CompletionContext context;
     private final List<String> styleClasses = new ArrayList<>();
+
+    // Interaction
+    private Runnable onClickHandler;
 
     // Expression-specific properties
     private ExpressionType type;
@@ -174,7 +179,7 @@ public class ExpressionLayoutBuilder {
     }
 
     public ExpressionLayoutBuilder withClickHandler(Runnable onClick) {
-        // Will be applied to the final container
+        this.onClickHandler = onClick;
         return this;
     }
 
@@ -351,6 +356,18 @@ public class ExpressionLayoutBuilder {
         container.setAlignment(alignment);
         styleClasses.forEach(c -> container.getStyleClass().add(c));
         container.getChildren().addAll(components);
+
+        // FIX: Applied click handler
+        if (onClickHandler != null) {
+            container.setCursor(Cursor.HAND);
+            container.setOnMouseClicked(e -> {
+                if (e.getClickCount() == 1) {
+                    onClickHandler.run();
+                    e.consume();
+                }
+            });
+        }
+
         return container;
     }
 

@@ -1,9 +1,11 @@
 package com.botmaker.parser.factories;
 
 import com.botmaker.parser.ImportManager;
+import com.botmaker.parser.factories.InitializerFactory;
 import com.botmaker.parser.helpers.EnumNodeHelper;
 import com.botmaker.ui.AddableExpression;
 import com.botmaker.util.DefaultNames;
+import com.botmaker.util.TypeManager;
 import org.eclipse.jdt.core.dom.*;
 import org.eclipse.jdt.core.dom.rewrite.ASTRewrite;
 
@@ -86,11 +88,24 @@ public class ExpressionFactory {
     }
 
     private Expression createListExpression(AST ast, CompilationUnit cu, ASTRewrite rewriter) {
+        ImportManager.addImport(cu, rewriter, "java.util.ArrayList");
         ImportManager.addImport(cu, rewriter, "java.util.Arrays");
+
+        // Creates: new ArrayList<>(Arrays.asList())
+        ClassInstanceCreation creation = ast.newClassInstanceCreation();
+
+        // Use generic ArrayList (diamond operator)
+        ParameterizedType paramType = ast.newParameterizedType(
+                ast.newSimpleType(ast.newName("ArrayList"))
+        );
+        creation.setType(paramType);
+
         MethodInvocation asList = ast.newMethodInvocation();
         asList.setExpression(ast.newSimpleName("Arrays"));
         asList.setName(ast.newSimpleName("asList"));
-        return asList;
+
+        creation.arguments().add(asList);
+        return creation;
     }
 
     private Expression createEnumConstantExpression(AST ast, CompilationUnit cu, String contextTypeName) {
