@@ -5,6 +5,7 @@ import com.botmaker.core.BodyBlock;
 import com.botmaker.core.ExpressionBlock;
 import com.botmaker.core.StatementBlock;
 import com.botmaker.lsp.CompletionContext;
+import com.botmaker.ui.builders.BlockLayout;
 import com.botmaker.ui.components.BlockUIComponents;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
@@ -33,38 +34,43 @@ public class IfBlock extends AbstractStatementBlock {
         VBox container = new VBox(5);
         container.getStyleClass().add("if-block");
 
-        // 1. Header: "If [condition] [+]"
+        // Header with condition
         Button addButton = createAddButton(e ->
                 showExpressionMenuAndReplace((Button)e.getSource(), context, "boolean",
                         condition != null ? (org.eclipse.jdt.core.dom.Expression) condition.getAstNode() : null)
         );
 
-        Node headerContent = createSentence(
-                createKeywordLabel("If"),
-                getOrDropZone(condition, context),
-                addButton
-        );
+        Node headerContent = BlockLayout.sentence()
+                .addKeyword("If")
+                .addExpressionSlot(condition, context, "boolean")
+                .addNode(addButton)
+                .build();
 
-        container.getChildren().add(createStandardHeader(context, headerContent));
+        container.getChildren().add(BlockLayout.header()
+                .withCustomNode(headerContent)
+                .withDeleteButton(() -> context.codeEditor().deleteStatement((org.eclipse.jdt.core.dom.Statement) this.astNode))
+                .build());
 
-        // 2. Then Body
+        // Then Body
         if (thenBody != null) {
             VBox thenNode = createIndentedBody(thenBody, context, "if-body");
             container.getChildren().add(thenNode);
         }
 
-        // 3. Else / Else If Logic
+        // Else / Else If Logic
         if (elseStatement != null) {
             if (elseStatement instanceof BodyBlock) {
                 // Regular Else
                 VBox elseContainer = new VBox(5);
 
-                HBox elseHeader = createSentence(
-                        createKeywordLabel("Else"),
-                        BlockUIComponents.createAddButton(e -> context.codeEditor().convertElseToElseIf((IfStatement) this.astNode)),
-                        BlockUIComponents.createSpacer(),
-                        BlockUIComponents.createDeleteButton(() -> context.codeEditor().deleteElseFromIfStatement((IfStatement) this.astNode))
-                );
+                HBox elseHeader = BlockLayout.sentence()
+                        .addKeyword("Else")
+                        .addNode(BlockUIComponents.createAddButton(e ->
+                                context.codeEditor().convertElseToElseIf((IfStatement) this.astNode)))
+                        .addNode(BlockUIComponents.createSpacer())
+                        .addNode(BlockUIComponents.createDeleteButton(() ->
+                                context.codeEditor().deleteElseFromIfStatement((IfStatement) this.astNode)))
+                        .build();
 
                 VBox elseBodyNode = createIndentedBody((BodyBlock) elseStatement, context, "if-body");
                 elseContainer.getChildren().addAll(elseHeader, elseBodyNode);
@@ -83,7 +89,8 @@ public class IfBlock extends AbstractStatementBlock {
             }
         } else {
             // Add Else Button
-            Button addElseButton = createAddButton(e -> context.codeEditor().addElseToIfStatement((IfStatement) this.astNode));
+            Button addElseButton = createAddButton(e ->
+                    context.codeEditor().addElseToIfStatement((IfStatement) this.astNode));
             container.getChildren().add(addElseButton);
         }
 

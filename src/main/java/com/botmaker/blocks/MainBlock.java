@@ -21,14 +21,13 @@ public class MainBlock extends MethodDeclarationBlock {
                 org.eclipse.jdt.core.dom.Modifier.isStatic(astNode.getModifiers());
     }
 
+    // MainBlock.java
     @Override
     protected Node createUINode(CompletionContext context) {
         Node standardUI = super.createUINode(context);
 
         if (isMainMethod) {
-            // Apply special styling for main method
             VBox wrapper = new VBox(standardUI);
-            wrapper.getStyleClass().add("main-method-highlight");
             wrapper.setStyle("-fx-background-color: #e8f4f8; -fx-border-color: #3498db; -fx-border-width: 2; -fx-border-radius: 8; -fx-padding: 5;");
 
             Label mainBadge = new Label("⭐ Program Entry Point");

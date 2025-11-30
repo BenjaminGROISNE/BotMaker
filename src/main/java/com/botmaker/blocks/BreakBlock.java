@@ -2,8 +2,8 @@ package com.botmaker.blocks;
 
 import com.botmaker.core.AbstractStatementBlock;
 import com.botmaker.lsp.CompletionContext;
+import com.botmaker.ui.builders.BlockLayout;
 import javafx.scene.Node;
-import javafx.scene.layout.HBox;
 import org.eclipse.jdt.core.dom.BreakStatement;
 
 public class BreakBlock extends AbstractStatementBlock {
@@ -14,8 +14,9 @@ public class BreakBlock extends AbstractStatementBlock {
 
     @Override
     protected Node createUINode(CompletionContext context) {
-        HBox container = createStandardHeader(context, createKeywordLabel("break"));
-        container.getStyleClass().add("break-block");
-        return container;
+        return BlockLayout.header()
+                .withKeyword("break")
+                .withDeleteButton(() -> context.codeEditor().deleteStatement((org.eclipse.jdt.core.dom.Statement) this.astNode))
+                .build();
     }
 }

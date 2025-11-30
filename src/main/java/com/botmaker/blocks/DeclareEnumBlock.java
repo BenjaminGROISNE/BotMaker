@@ -2,6 +2,7 @@ package com.botmaker.blocks;
 
 import com.botmaker.core.AbstractStatementBlock;
 import com.botmaker.lsp.CompletionContext;
+import com.botmaker.ui.builders.BlockLayout;
 import com.botmaker.ui.components.BlockUIComponents;
 import com.botmaker.ui.components.TextFieldComponents;
 import javafx.geometry.Pos;
@@ -55,16 +56,13 @@ public class DeclareEnumBlock extends AbstractStatementBlock {
         return list;
     }
 
+    // DeclareEnumBlock.java
     @Override
     protected Node createUINode(CompletionContext context) {
         VBox container = new VBox(5);
-        container.getStyleClass().add("enum-block");
         container.setStyle("-fx-background-color: #d35400; -fx-background-radius: 5; -fx-padding: 5;");
 
         // --- Header ---
-        HBox header = new HBox(5);
-        header.setAlignment(Pos.CENTER_LEFT);
-
         Label label = BlockUIComponents.createKeywordLabel("Enum");
         label.setStyle("-fx-text-fill: white; -fx-font-weight: bold;");
 
@@ -75,24 +73,24 @@ public class DeclareEnumBlock extends AbstractStatementBlock {
         });
 
         Button addConstantBtn = new Button("+ Add Value");
-        addConstantBtn.getStyleClass().add("expression-add-button");
         addConstantBtn.setStyle("-fx-font-size: 10px;");
         addConstantBtn.setOnAction(e -> context.codeEditor().addEnumConstant(enumDeclaration, "NEW_VALUE"));
 
-        header.getChildren().addAll(label, nameField, addConstantBtn);
+        var headerSentence = BlockLayout.sentence()
+                .addNode(label)
+                .addNode(nameField)
+                .addNode(addConstantBtn)
+                .build();
 
-        // Delete Logic: Differentiate between Statement (Method) and Declaration (Class)
         Runnable deleteAction = () -> {
             if (isStatement) {
-                // Inside method
                 context.codeEditor().deleteStatement((Statement) this.astNode);
             } else {
-                // Inside class
                 context.codeEditor().deleteEnumFromClass(enumDeclaration);
             }
         };
 
-        HBox headerWrapper = BlockUIComponents.createHeaderRow(deleteAction, header);
+        HBox headerWrapper = BlockUIComponents.createHeaderRow(deleteAction, headerSentence);
         container.getChildren().add(headerWrapper);
 
         // --- Constants List ---
@@ -104,11 +102,7 @@ public class DeclareEnumBlock extends AbstractStatementBlock {
                 String constant = constants.get(i);
                 final int index = i;
 
-                HBox row = new HBox(5);
-                row.setAlignment(Pos.CENTER_LEFT);
-
                 TextField constField = new TextField(constant);
-                constField.getStyleClass().add("variable-name-field");
                 constField.setPrefWidth(120);
                 constField.setStyle("-fx-background-color: rgba(255,255,255,0.9);");
 
@@ -125,7 +119,11 @@ public class DeclareEnumBlock extends AbstractStatementBlock {
                 deleteBtn.setStyle("-fx-background-color: transparent; -fx-text-fill: white; -fx-font-weight: bold; -fx-cursor: hand;");
                 deleteBtn.setOnAction(e -> context.codeEditor().deleteEnumConstant(enumDeclaration, index));
 
-                row.getChildren().addAll(constField, deleteBtn);
+                HBox row = BlockLayout.sentence()
+                        .addNode(constField)
+                        .addNode(deleteBtn)
+                        .build();
+
                 constantsBox.getChildren().add(row);
             }
             container.getChildren().add(constantsBox);

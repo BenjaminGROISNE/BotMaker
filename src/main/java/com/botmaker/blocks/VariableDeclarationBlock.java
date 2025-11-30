@@ -4,6 +4,7 @@ import com.botmaker.core.AbstractStatementBlock;
 import com.botmaker.core.ExpressionBlock;
 import com.botmaker.lsp.CompletionContext;
 import com.botmaker.ui.AddableExpression;
+import com.botmaker.ui.builders.BlockLayout;
 import com.botmaker.ui.components.BlockUIComponents;
 import com.botmaker.ui.components.TextFieldComponents;
 import com.botmaker.util.TypeManager;
@@ -35,23 +36,26 @@ public class VariableDeclarationBlock extends AbstractStatementBlock {
 
     public void setInitializer(ExpressionBlock initializer) { this.initializer = initializer; }
 
+    // VariableDeclarationBlock.java
     @Override
     protected Node createUINode(CompletionContext context) {
-        // 1. Type Label with Menu
+        String typeString = variableType.toString();
+        String uiTargetType = TypeManager.determineUiType(typeString,
+                context.applicationState().getCompilationUnit().orElse(null));
+
         Label typeLabel = createTypeLabel(getDisplayTypeName(variableType));
         typeLabel.setCursor(Cursor.HAND);
         Tooltip.install(typeLabel, new Tooltip("Click to change type"));
         typeLabel.setOnMouseClicked(e -> showTypeMenu(typeLabel, context));
 
-        // 2. Name Field
         TextField nameField = TextFieldComponents.createVariableNameField(variableName, newName -> {
-            VariableDeclarationFragment fragment = (VariableDeclarationFragment) ((VariableDeclarationStatement) this.astNode).fragments().get(0);
+            VariableDeclarationFragment fragment = (VariableDeclarationFragment)
+                    ((VariableDeclarationStatement) this.astNode).fragments().get(0);
             if (!newName.equals(variableName) && !newName.isEmpty()) {
                 context.codeEditor().replaceSimpleName(fragment.getName(), newName);
             }
         });
 
-        // 3. Initializer Logic
         Node initNode;
         if (initializer != null) {
             if (initializer instanceof ListBlock) {
@@ -65,61 +69,34 @@ public class VariableDeclarationBlock extends AbstractStatementBlock {
             initNode = createExpressionDropZone(context);
         }
 
-        // 4. Add Button
-// 4. Add Button
-        String typeString = variableType.toString();
-        String uiTargetType = TypeManager.determineUiType(typeString,
-                context.applicationState().getCompilationUnit().orElse(null));
-
-        // DEBUG OUTPUT
-        System.out.println("=== VARIABLE DECLARATION DEBUG ===");
-        System.out.println("Variable name: " + variableName);
-        System.out.println("Variable type string: " + typeString);
-        System.out.println("Determined UI type: " + uiTargetType);
-        System.out.println("Is likely enum: " + TypeManager.isLikelyEnumType(typeString));
-
-
         Button addButton = createAddButton(e -> {
-            // Get the current initializer expression (or null)
-            Expression currentInitializer = null;
-            if (initializer != null) {
-                currentInitializer = (Expression) initializer.getAstNode();
-            } else {
-                // When there's no initializer, we need to get a reference to where it should go
-                VariableDeclarationFragment fragment = (VariableDeclarationFragment)
-                        ((VariableDeclarationStatement) this.astNode).fragments().get(0);
-                currentInitializer = fragment.getInitializer(); // This will also be null
-            }
+            Expression currentInitializer = initializer != null ?
+                    (Expression) initializer.getAstNode() : null;
 
-            // Create the menu
-            Expression finalCurrentInitializer = currentInitializer;
             ContextMenu menu = BlockUIComponents.createExpressionTypeMenu(uiTargetType, type -> {
-                if (finalCurrentInitializer != null) {
-                    // Replace existing initializer
-                    context.codeEditor().replaceExpression(finalCurrentInitializer, type);
+                if (currentInitializer != null) {
+                    context.codeEditor().replaceExpression(currentInitializer, type);
                 } else {
-                    // Set new initializer
                     context.codeEditor().setVariableInitializer(
-                            (VariableDeclarationStatement) this.astNode,
-                            type
-                    );
+                            (VariableDeclarationStatement) this.astNode, type);
                 }
             });
             menu.show((Button)e.getSource(), javafx.geometry.Side.BOTTOM, 0, 0);
         });
 
-        Node content = createSentence(
-                typeLabel,
-                nameField,
-                createKeywordLabel("="),
-                initNode,
-                addButton
-        );
+        var sentence = BlockLayout.sentence()
+                .addNode(typeLabel)
+                .addNode(nameField)
+                .addKeyword("=")
+                .addNode(initNode)
+                .addNode(addButton)
+                .build();
 
-        HBox container = createStandardHeader(context, content);
-        container.getStyleClass().add("variable-declaration-block");
-
-        return container;
+        return BlockLayout.header()
+                .withCustomNode(sentence)
+                .withDeleteButton(() -> context.codeEditor().deleteStatement(
+                        (org.eclipse.jdt.core.dom.Statement) this.astNode))
+                .build();
     }
 
     private void showTypeMenu(Node anchor, CompletionContext context) {

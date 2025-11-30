@@ -3,6 +3,7 @@ package com.botmaker.blocks;
 import com.botmaker.core.AbstractExpressionBlock;
 import com.botmaker.core.ExpressionBlock;
 import com.botmaker.lsp.CompletionContext;
+import com.botmaker.ui.builders.BlockLayout;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.control.ComboBox;
@@ -62,45 +63,25 @@ public class ComparisonExpressionBlock extends AbstractExpressionBlock {
         return returnType;
     }
 
+    // ComparisonExpressionBlock.java
     @Override
     protected Node createUINode(CompletionContext context) {
-        HBox container = new HBox(5);
-        container.setAlignment(Pos.CENTER_LEFT);
-        container.getStyleClass().add("comparison-expression-block");
+        var sentence = BlockLayout.sentence()
+                .addExpressionSlot(leftOperand, context, "number")
+                .addOperatorSelector(
+                        OPERATOR_NAMES,
+                        OPERATOR_SYMBOLS,
+                        operator,
+                        newOperator -> {
+                            if (newOperator != null && !newOperator.equals(operator)) {
+                                this.operator = newOperator;
+                            }
+                        }
+                )
+                .addExpressionSlot(rightOperand, context, "number")
+                .build();
 
-        // Left operand
-        if (leftOperand != null) {
-            container.getChildren().add(leftOperand.getUINode(context));
-        }
-
-        // Operator selector - shows user-friendly names
-        ComboBox<String> operatorSelector = new ComboBox<>();
-        operatorSelector.getItems().addAll(OPERATOR_NAMES);
-        operatorSelector.getStyleClass().add("comparison-operator-selector");
-
-        // Set current operator
-        String currentName = getOperatorDisplayName(operator);
-        operatorSelector.setValue(currentName);
-
-        // Handle operator change
-        operatorSelector.setOnAction(e -> {
-            String selectedName = operatorSelector.getValue();
-            String newOperator = getOperatorSymbol(selectedName);
-            if (newOperator != null && !newOperator.equals(operator)) {
-                this.operator = newOperator;
-                // Trigger code regeneration with new operator
-                System.out.println("Comparison operator changed to: " + newOperator);
-            }
-        });
-
-        container.getChildren().add(operatorSelector);
-
-        // Right operand
-        if (rightOperand != null) {
-            container.getChildren().add(rightOperand.getUINode(context));
-        }
-
-        return container;
+        return sentence;
     }
 
     /**

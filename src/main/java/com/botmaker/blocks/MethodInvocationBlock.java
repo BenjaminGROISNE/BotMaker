@@ -6,6 +6,8 @@ import com.botmaker.core.StatementBlock;
 import com.botmaker.lsp.CompletionContext;
 import com.botmaker.project.ProjectFile;
 import com.botmaker.ui.AddableExpression;
+import com.botmaker.ui.builders.BlockLayout;
+import com.botmaker.ui.components.BlockUIComponents;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.control.*;
@@ -16,6 +18,8 @@ import org.eclipse.jdt.core.dom.*;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import static com.botmaker.ui.components.BlockUIComponents.createDeleteButton;
 
 public class MethodInvocationBlock extends AbstractExpressionBlock implements StatementBlock {
 
@@ -51,31 +55,18 @@ public class MethodInvocationBlock extends AbstractExpressionBlock implements St
         arguments.add(arg);
     }
 
+    // MethodInvocationBlock.java
     @Override
     protected Node createUINode(CompletionContext context) {
-        HBox container = new HBox(6);
-        container.setAlignment(Pos.CENTER_LEFT);
-        container.getStyleClass().add("method-call-block");
-
-        if (!isStatementContext) {
-            container.setStyle("-fx-background-color: #34495E; -fx-background-radius: 12; -fx-padding: 3 8 3 8;");
-        } else {
-            container.setStyle("-fx-background-color: #34495E; -fx-background-radius: 4; -fx-padding: 5 10 5 10;");
-        }
-
-        Label callLabel = new Label("Call");
-        callLabel.setStyle("-fx-text-fill: #aaa; -fx-font-weight: bold; -fx-font-size: 10px;");
-
-        // --- Prepare Data ---
         String currentFileClass = "";
         if (context.applicationState() != null && context.applicationState().getActiveFile() != null) {
             currentFileClass = context.applicationState().getActiveFile().getClassName();
         }
 
-        // --- File Selector ---
+        // File Selector
         ComboBox<String> fileSelector = new ComboBox<>();
         if (context.applicationState() != null) {
-            for (ProjectFile file : context.applicationState().getAllFiles()) {
+            for (com.botmaker.project.ProjectFile file : context.applicationState().getAllFiles()) {
                 fileSelector.getItems().add(file.getClassName());
             }
         }
@@ -87,7 +78,7 @@ public class MethodInvocationBlock extends AbstractExpressionBlock implements St
         fileSelector.setValue(displayValue);
         fileSelector.setStyle("-fx-font-size: 11px; -fx-pref-width: 100px;");
 
-        // --- Method Selector ---
+        // Method Selector
         ComboBox<String> methodSelector = new ComboBox<>();
         methodSelector.setValue(methodName);
         methodSelector.setEditable(false);
@@ -95,12 +86,11 @@ public class MethodInvocationBlock extends AbstractExpressionBlock implements St
 
         final String finalCurrentFileClass = currentFileClass;
 
-        // --- Logic to populate methods ---
         Runnable populateMethodList = () -> {
             String selectedFile = fileSelector.getValue();
             methodSelector.getItems().clear();
 
-            ProjectFile targetFile = findProjectFile(context, selectedFile);
+            com.botmaker.project.ProjectFile targetFile = findProjectFile(context, selectedFile);
 
             if (targetFile != null) {
                 ensureAstParsed(targetFile);
@@ -120,14 +110,12 @@ public class MethodInvocationBlock extends AbstractExpressionBlock implements St
                     }
                 }
 
-                // NEW: Auto-select if only one option
                 if (methodSelector.getItems().size() == 1) {
                     methodSelector.getSelectionModel().select(0);
                 }
             }
         };
 
-        // Listener: Update Code on Method Selection
         methodSelector.setOnAction(e -> {
             String newMethodName = methodSelector.getValue();
             if (newMethodName == null) return;
@@ -135,8 +123,6 @@ public class MethodInvocationBlock extends AbstractExpressionBlock implements St
             String newScopeDisplay = fileSelector.getValue();
             String newScopeAST = newScopeDisplay.equals(finalCurrentFileClass) ? "" : newScopeDisplay;
 
-            // FIXED: Always sync arguments when method changes, even if name is same
-            // (in case signature was updated in the other file)
             List<String> paramTypes = findParameterTypes(context, newScopeDisplay, newMethodName);
 
             context.codeEditor().updateMethodInvocation(
@@ -154,17 +140,21 @@ public class MethodInvocationBlock extends AbstractExpressionBlock implements St
 
         populateMethodList.run();
 
-        container.getChildren().addAll(callLabel, fileSelector, new Label("."), methodSelector);
+        // Build main sentence
+        var sentenceBuilder = BlockLayout.sentence()
+                .addLabel("Call")
+                .addNode(fileSelector)
+                .addLabel(".")
+                .addNode(methodSelector);
 
-        // Calculate expected parameter count and mismatch status FIRST
+        // Sync button
         int expectedParamCount = findParameterTypes(context, displayValue, methodName).size();
         boolean hasMismatch = arguments.size() != expectedParamCount;
 
-        // NEW: Add a "Sync Arguments" button to fix mismatches
         Button syncBtn = new Button("⟳");
         if (hasMismatch) {
             syncBtn.setStyle("-fx-font-size: 10px; -fx-padding: 2 4 2 4; -fx-background-color: #FFA500; -fx-text-fill: white; -fx-font-weight: bold;");
-            syncBtn.setTooltip(new Tooltip("⚠ Arguments don't match! Click to sync with function signature"));
+            syncBtn.setTooltip(new Tooltip("⚠ Arguments don't match! Click to sync"));
         } else {
             syncBtn.setStyle("-fx-font-size: 10px; -fx-padding: 2 4 2 4; -fx-background-color: rgba(255,255,255,0.2); -fx-text-fill: #90EE90;");
             syncBtn.setTooltip(new Tooltip("Arguments match signature ✓"));
@@ -173,24 +163,16 @@ public class MethodInvocationBlock extends AbstractExpressionBlock implements St
             String currentScope = fileSelector.getValue();
             String currentMethod = methodSelector.getValue();
             String scopeForAST = currentScope.equals(finalCurrentFileClass) ? "" : currentScope;
-
             List<String> paramTypes = findParameterTypes(context, currentScope, currentMethod);
-
             context.codeEditor().updateMethodInvocation(
-                    (MethodInvocation) this.astNode,
-                    scopeForAST,
-                    currentMethod,
-                    paramTypes
-            );
+                    (MethodInvocation) this.astNode, scopeForAST, currentMethod, paramTypes);
         });
-        container.getChildren().add(syncBtn);
 
-        // --- Arguments UI ---
-        Label argsLabel = new Label("(");
-        argsLabel.setStyle("-fx-text-fill: white;");
-        container.getChildren().add(argsLabel);
+        sentenceBuilder.addNode(syncBtn);
 
-        // Fetch parameter names for display labels
+        // Arguments
+        sentenceBuilder.addLabel("(");
+
         List<String> paramNames = findParameterNames(context, displayValue, methodName);
 
         for (int i = 0; i < arguments.size(); i++) {
@@ -199,7 +181,6 @@ public class MethodInvocationBlock extends AbstractExpressionBlock implements St
             argBox.setAlignment(Pos.CENTER_LEFT);
             argBox.setStyle("-fx-background-color: rgba(255,255,255,0.1); -fx-background-radius: 4; -fx-padding: 2;");
 
-            // Parameter Name Label
             if (i < paramNames.size()) {
                 Label paramNameLabel = new Label(paramNames.get(i) + ":");
                 paramNameLabel.setStyle("-fx-text-fill: #aaa; -fx-font-size: 9px; -fx-padding: 0 4 0 2;");
@@ -208,64 +189,48 @@ public class MethodInvocationBlock extends AbstractExpressionBlock implements St
 
             argBox.getChildren().add(arg.getUINode(context));
 
-            // FIXED: Only show delete button if we have more arguments than expected
-            // OR if we're within expected range (always allow manual deletion)
             Button delBtn = new Button("×");
             delBtn.setStyle("-fx-background-color: transparent; -fx-text-fill: #E74C3C; -fx-font-size: 10px; -fx-padding: 0 0 0 2; -fx-cursor: hand;");
             int index = i;
-            delBtn.setOnAction(e -> {
-                // Use generic list deletion
-                context.codeEditor().deleteElementFromList(this.astNode, index);
-            });
+            delBtn.setOnAction(e -> context.codeEditor().deleteElementFromList(this.astNode, index));
             argBox.getChildren().add(delBtn);
 
-            container.getChildren().add(argBox);
+            sentenceBuilder.addNode(argBox);
         }
 
-        // FIXED: Only show "+" button if we have fewer arguments than expected parameters
         if (arguments.size() < expectedParamCount) {
             MenuButton addArgBtn = new MenuButton("+");
             addArgBtn.setStyle("-fx-font-size: 9px; -fx-padding: 2 4 2 4;");
 
-            // IMPROVED: Show appropriate expression types based on next parameter type
             String nextParamType = getParameterTypeAt(context, displayValue, methodName, arguments.size());
-            List<AddableExpression> availableTypes = AddableExpression.getForType(nextParamType);
+            List<com.botmaker.ui.AddableExpression> availableTypes = com.botmaker.ui.AddableExpression.getForType(nextParamType);
 
-            for (AddableExpression type : availableTypes) {
+            for (com.botmaker.ui.AddableExpression type : availableTypes) {
                 MenuItem item = new MenuItem(type.getDisplayName());
-                item.setOnAction(e -> {
-                    context.codeEditor().addArgumentToMethodInvocation(
-                            (MethodInvocation) this.astNode,
-                            type
-                    );
-                });
+                item.setOnAction(e -> context.codeEditor().addArgumentToMethodInvocation(
+                        (MethodInvocation) this.astNode, type));
                 addArgBtn.getItems().add(item);
             }
-            container.getChildren().add(addArgBtn);
+            sentenceBuilder.addNode(addArgBtn);
         } else if (arguments.size() > expectedParamCount) {
-            // Visual indicator that there are too many arguments
             Label warningLabel = new Label("⚠ Too many");
             warningLabel.setStyle("-fx-text-fill: #FFA500; -fx-font-size: 9px; -fx-font-weight: bold;");
-            warningLabel.setTooltip(new Tooltip(String.format("Expected %d argument(s), got %d", expectedParamCount, arguments.size())));
-            container.getChildren().add(warningLabel);
-        } else if (arguments.size() < expectedParamCount) {
-            // Visual indicator that arguments are missing
-            Label missingLabel = new Label(String.format("⚠ Need %d more", expectedParamCount - arguments.size()));
-            missingLabel.setStyle("-fx-text-fill: #FF6B6B; -fx-font-size: 9px; -fx-font-weight: bold;");
-            missingLabel.setTooltip(new Tooltip(String.format("Expected %d argument(s), got %d", expectedParamCount, arguments.size())));
-            container.getChildren().add(missingLabel);
+            sentenceBuilder.addNode(warningLabel);
         }
 
-        Label closeParen = new Label(")");
-        closeParen.setStyle("-fx-text-fill: white;");
-        container.getChildren().add(closeParen);
+        sentenceBuilder.addLabel(")");
+
+        HBox container = sentenceBuilder.build();
+        container.setStyle("-fx-background-color: #34495E; -fx-background-radius: " +
+                (isStatementContext ? "4" : "12") + "; -fx-padding: " +
+                (isStatementContext ? "5 10 5 10" : "3 8 3 8") + ";");
 
         if (isStatementContext) {
-            Region spacer = new Region();
-            HBox.setHgrow(spacer, Priority.ALWAYS);
-            Button deleteButton = new Button("X");
-            deleteButton.setOnAction(e -> context.codeEditor().deleteStatement((Statement) this.astNode.getParent()));
-            container.getChildren().addAll(spacer, deleteButton);
+            container.getChildren().addAll(
+                    BlockUIComponents.createSpacer(),
+                    BlockUIComponents.createDeleteButton(() ->
+                            context.codeEditor().deleteStatement((Statement) this.astNode.getParent()))
+            );
         }
 
         return container;

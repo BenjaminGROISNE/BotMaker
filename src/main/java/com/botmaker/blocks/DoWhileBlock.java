@@ -7,9 +7,8 @@ import com.botmaker.core.CodeBlock;
 import com.botmaker.core.ExpressionBlock;
 import com.botmaker.lsp.CompletionContext;
 import com.botmaker.ui.BlockDragAndDropManager;
+import com.botmaker.ui.builders.BlockLayout;
 import javafx.scene.Node;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.VBox;
 import org.eclipse.jdt.core.dom.DoStatement;
 
 import java.util.ArrayList;
@@ -37,26 +36,12 @@ public class DoWhileBlock extends AbstractStatementBlock implements BlockWithChi
 
     @Override
     protected Node createUINode(CompletionContext context) {
-        VBox mainContainer = new VBox(5);
-        mainContainer.getStyleClass().add("do-while-block");
-
-        // 1. Header: "do" + Delete Button
-        mainContainer.getChildren().add(createStandardHeader(context, createKeywordLabel("do")));
-
-        // 2. Body
-        VBox bodyNode = createIndentedBody(body, context, "do-while-body");
-        if (bodyNode != null) mainContainer.getChildren().add(bodyNode);
-
-        // 3. Footer: "while [condition]"
-        // Note: Do-While footer doesn't typically have a delete button itself, as it's part of the block
-        HBox whileCondition = createSentence(
-                createKeywordLabel("while"),
-                condition != null ? condition.getUINode(context) : createExpressionDropZone(context)
-        );
-        whileCondition.getStyleClass().add("do-while-condition");
-
-        mainContainer.getChildren().add(whileCondition);
-
-        return mainContainer;
+        return BlockLayout.loop()
+                .withKeyword("do")
+                .withBody(body, context)
+                .withFooterKeyword("while")
+                .withCondition(condition, context, "boolean")
+                .withDeleteButton(() -> context.codeEditor().deleteStatement((org.eclipse.jdt.core.dom.Statement) this.astNode))
+                .build();
     }
 }

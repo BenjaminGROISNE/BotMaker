@@ -3,11 +3,11 @@ package com.botmaker.blocks;
 import com.botmaker.core.AbstractStatementBlock;
 import com.botmaker.core.ExpressionBlock;
 import com.botmaker.lsp.CompletionContext;
+import com.botmaker.ui.builders.BlockLayout;
+import com.botmaker.ui.components.BlockUIComponents;
 import javafx.scene.Node;
 import javafx.scene.control.Label;
 import org.eclipse.jdt.core.dom.VariableDeclarationStatement;
-
-import static com.botmaker.ui.components.BlockUIComponents.createTypeLabel;
 
 public class ReadInputBlock extends AbstractStatementBlock {
 
@@ -23,23 +23,21 @@ public class ReadInputBlock extends AbstractStatementBlock {
 
     @Override
     protected Node createUINode(CompletionContext context) {
-        Node varNode = variableName != null ? variableName.getUINode(context) : null;
-
         Label scannerLabel = new Label("scanner." + inputType + "()");
         scannerLabel.getStyleClass().add("method-call-label");
 
-        Node content = createSentence(
-                createTypeLabel(getTypeDisplayName()),
-                varNode,
-                createKeywordLabel("="),
-                scannerLabel
-        );
+        var sentence = BlockLayout.sentence()
+                .addNode(BlockUIComponents.createTypeLabel(getTypeDisplayName()))
+                .addNode(variableName != null ? variableName.getUINode(context) : createExpressionDropZone(context))
+                .addKeyword("=")
+                .addNode(scannerLabel)
+                .build();
 
-        Node container = createStandardHeader(context, content);
-        container.getStyleClass().add("read-input-block");
-        return container;
+        return BlockLayout.header()
+                .withCustomNode(sentence)
+                .withDeleteButton(() -> context.codeEditor().deleteStatement((org.eclipse.jdt.core.dom.Statement) this.astNode))
+                .build();
     }
-
 
     private String getTypeDisplayName() {
         switch (inputType) {

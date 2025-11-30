@@ -7,9 +7,8 @@ import com.botmaker.core.CodeBlock;
 import com.botmaker.core.ExpressionBlock;
 import com.botmaker.lsp.CompletionContext;
 import com.botmaker.ui.BlockDragAndDropManager;
+import com.botmaker.ui.builders.BlockLayout;
 import javafx.scene.Node;
-import javafx.scene.control.Button;
-import javafx.scene.layout.VBox;
 import org.eclipse.jdt.core.dom.WhileStatement;
 import java.util.ArrayList;
 import java.util.List;
@@ -36,33 +35,16 @@ public class WhileBlock extends AbstractStatementBlock implements BlockWithChild
 
     @Override
     protected Node createUINode(CompletionContext context) {
-        // 1. Create the Header Row: "while [condition] [+]"
-        Button addButton = createAddButton(e ->
-                showExpressionMenuAndReplace((Button)e.getSource(), context, "boolean",
-                        condition != null ? (org.eclipse.jdt.core.dom.Expression) condition.getAstNode() : null)
-        );
-
-        Node headerContent = createSentence(
-                createKeywordLabel("while"),
-                getOrDropZone(condition, context),
-                addButton
-        );
-        headerContent.getStyleClass().add("while-header");
-
-        // 2. Create the Indented Body
-        VBox bodyNode = createIndentedBody(body, context, "while-body");
-
-        // 3. Assemble: Header + Body
-        VBox mainContainer = new VBox(5);
-        mainContainer.getStyleClass().add("while-block");
-
-        // Use standard header wrapper for the top row (handles spacer & delete button)
-        mainContainer.getChildren().add(createStandardHeader(context, headerContent));
-
-        if (bodyNode != null) {
-            mainContainer.getChildren().add(bodyNode);
-        }
-
-        return mainContainer;
+        return BlockLayout.loop()
+                .withKeyword("while")
+                .withCondition(condition, context, "boolean")
+                .withConditionChangeHandler(() -> {
+                    javafx.scene.control.Button btn = new javafx.scene.control.Button();
+                    showExpressionMenuAndReplace(btn, context, "boolean",
+                            condition != null ? (org.eclipse.jdt.core.dom.Expression) condition.getAstNode() : null);
+                })
+                .withBody(body, context)
+                .withDeleteButton(() -> context.codeEditor().deleteStatement((org.eclipse.jdt.core.dom.Statement) this.astNode))
+                .build();
     }
 }

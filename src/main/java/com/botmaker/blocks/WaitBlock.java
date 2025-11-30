@@ -3,6 +3,7 @@ package com.botmaker.blocks;
 import com.botmaker.core.AbstractStatementBlock;
 import com.botmaker.core.ExpressionBlock;
 import com.botmaker.lsp.CompletionContext;
+import com.botmaker.ui.builders.BlockLayout;
 import javafx.scene.Node;
 import org.eclipse.jdt.core.dom.Statement;
 
@@ -20,16 +21,16 @@ public class WaitBlock extends AbstractStatementBlock {
 
     @Override
     protected Node createUINode(CompletionContext context) {
-        Node content = createSentence(
-                createKeywordLabel("Wait"),
-                getOrDropZone(duration, context),
-                createKeywordLabel("ms")
-        );
+        var sentence = BlockLayout.sentence()
+                .addKeyword("Wait")
+                .addExpressionSlot(duration, context, "number")
+                .addKeyword("ms")
+                .build();
 
-        Node container = createStandardHeader(context, content);
-        container.getStyleClass().add("wait-block");
-
-        return container;
+        return BlockLayout.header()
+                .withCustomNode(sentence)
+                .withDeleteButton(() -> context.codeEditor().deleteStatement((Statement) this.astNode))
+                .build();
     }
 
     @Override

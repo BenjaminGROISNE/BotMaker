@@ -25,6 +25,7 @@ public class LiteralBlock<T> extends AbstractExpressionBlock {
         return value;
     }
 
+    // LiteralBlock.java - already well structured, keep as is
     @Override
     protected Node createUINode(CompletionContext context) {
         String initialText = (value instanceof String) ? (String) value : String.valueOf(value);
@@ -35,30 +36,24 @@ public class LiteralBlock<T> extends AbstractExpressionBlock {
         }
 
         textField.setCursor(Cursor.TEXT);
-        textField.getStyleClass().add("literal-text-field");
 
-        // --- INPUT VALIDATION FILTER ---
         UnaryOperator<TextFormatter.Change> filter = createInputFilter();
         if (filter != null) {
             textField.setTextFormatter(new TextFormatter<>(filter));
         }
 
-        // --- FOCUS LISTENER (Commit changes) ---
         textField.focusedProperty().addListener((obs, oldVal, newVal) -> {
-            if (!newVal) { // Focus Lost
+            if (!newVal) {
                 String newText = textField.getText();
                 String oldText = (value instanceof String) ? (String) value : String.valueOf(value);
 
-                // Handle empty numbers / intermediate states gracefully
                 if (isNumberType() && !isValidFinalNumber(newText)) {
-                    textField.setText(oldText); // Revert invalid state
+                    textField.setText(oldText);
                     return;
                 }
 
-                // NEW: Normalize the number (Add 'f' for Float, 'L' for Long)
                 String textToSave = normalizeNumberSuffix(newText);
 
-                // Update UI to match saved text (e.g., show "3.5f" if user typed "3.5")
                 if (!textToSave.equals(newText)) {
                     textField.setText(textToSave);
                 }
@@ -76,7 +71,6 @@ public class LiteralBlock<T> extends AbstractExpressionBlock {
 
         HBox container = new HBox(textField);
         container.setAlignment(javafx.geometry.Pos.CENTER_LEFT);
-        container.getStyleClass().add("literal-block");
         return container;
     }
 

@@ -7,6 +7,7 @@ import com.botmaker.core.CodeBlock;
 import com.botmaker.core.ExpressionBlock;
 import com.botmaker.lsp.CompletionContext;
 import com.botmaker.ui.BlockDragAndDropManager;
+import com.botmaker.ui.builders.BlockLayout;
 import com.botmaker.ui.components.BlockUIComponents;
 import com.botmaker.util.TypeManager;
 import javafx.geometry.Insets;
@@ -43,43 +44,39 @@ public class SwitchBlock extends AbstractStatementBlock implements BlockWithChil
 
     @Override
     protected Node createUINode(CompletionContext context) {
+        VBox mainContainer = new VBox(5);
+
         // Header
-        // FIX: Use UI_TYPE_SWITCH_COMPATIBLE to filter allowed types for the Switch expression
         Button changeSwitchExprBtn = BlockUIComponents.createChangeButton(e ->
                 showExpressionMenuAndReplace((Button)e.getSource(), context, TypeManager.UI_TYPE_SWITCH_COMPATIBLE,
                         expression != null ? (Expression) expression.getAstNode() : null)
         );
 
-        Node headerContent = createSentence(
-                createKeywordLabel("switch"),
-                getOrDropZone(expression, context),
-                changeSwitchExprBtn
-        );
-        headerContent.getStyleClass().add("switch-header");
+        var headerSentence = BlockLayout.sentence()
+                .addKeyword("switch")
+                .addExpressionSlot(expression, context, TypeManager.UI_TYPE_SWITCH_COMPATIBLE)
+                .addNode(changeSwitchExprBtn)
+                .build();
 
-        // Main container
-        VBox mainContainer = new VBox(5);
-        mainContainer.getStyleClass().add("switch-block");
-        mainContainer.getChildren().add(createStandardHeader(context, headerContent));
+        mainContainer.getChildren().add(BlockLayout.header()
+                .withCustomNode(headerSentence)
+                .withDeleteButton(() -> context.codeEditor().deleteStatement((org.eclipse.jdt.core.dom.Statement) this.astNode))
+                .build());
 
         // Cases Container
         VBox casesContainer = new VBox(5);
-        casesContainer.getStyleClass().add("switch-cases");
-        casesContainer.setPadding(new Insets(5, 0, 0, 20));
+        casesContainer.setPadding(new javafx.geometry.Insets(5, 0, 0, 20));
 
         for (int i = 0; i < cases.size(); i++) {
             SwitchCaseBlock caseBlock = cases.get(i);
-            // Pass index context to control button visibility
             casesContainer.getChildren().add(caseBlock.createUINode(context, i, cases.size()));
         }
 
         mainContainer.getChildren().add(casesContainer);
 
-        // Add Case Button at the bottom
+        // Add Case Button
         Button addCaseButton = new Button("+ Add Case");
-        addCaseButton.getStyleClass().add("add-case-button");
         addCaseButton.setOnAction(e -> context.codeEditor().addCaseToSwitch((SwitchStatement) this.astNode));
-
         mainContainer.getChildren().add(addCaseButton);
 
         return mainContainer;
@@ -114,15 +111,16 @@ public class SwitchBlock extends AbstractStatementBlock implements BlockWithChil
             return createUINode(context, -1, -1);
         }
 
-        // Special render method that knows position
+        // SwitchCaseBlock inner class
         public Node createUINode(CompletionContext context, int index, int totalCases) {
-            HBox caseHeader = new HBox(5);
+            VBox container = new VBox(5);
 
-            // Case Label & Expression
+            // Case Header
+            var caseHeaderBuilder = BlockLayout.sentence();
+
             if (isDefault()) {
-                caseHeader.getChildren().add(createKeywordLabel("default:"));
+                caseHeaderBuilder.addKeyword("default:");
             } else {
-                // 1. Determine Expected Type from Parent Switch
                 String targetType = "any";
                 if (this.astNode.getParent() instanceof SwitchStatement) {
                     SwitchStatement parent = (SwitchStatement) this.astNode.getParent();
@@ -135,19 +133,17 @@ public class SwitchBlock extends AbstractStatementBlock implements BlockWithChil
                     }
                 }
 
-                // 2. Create Change Button
                 String finalTargetType = targetType;
                 Button changeBtn = BlockUIComponents.createChangeButton(e ->
                         showExpressionMenuAndReplace((Button)e.getSource(), context, finalTargetType,
                                 caseExpression != null ? (Expression) caseExpression.getAstNode() : null)
                 );
 
-                caseHeader.getChildren().addAll(
-                        createKeywordLabel("case"),
-                        getOrDropZone(caseExpression, context),
-                        changeBtn,
-                        createKeywordLabel(":")
-                );
+                caseHeaderBuilder
+                        .addKeyword("case")
+                        .addExpressionSlot(caseExpression, context, targetType)
+                        .addNode(changeBtn)
+                        .addKeyword(":");
             }
 
             // Move Buttons
@@ -162,16 +158,18 @@ public class SwitchBlock extends AbstractStatementBlock implements BlockWithChil
                 downBtn.setDisable(index == totalCases - 1);
                 downBtn.setOnAction(e -> context.codeEditor().moveSwitchCase((SwitchCase) this.astNode, false));
 
-                caseHeader.getChildren().addAll(BlockUIComponents.createSpacer(), upBtn, downBtn);
+                caseHeaderBuilder
+                        .addNode(BlockUIComponents.createSpacer())
+                        .addNode(upBtn)
+                        .addNode(downBtn);
             }
 
-            // Delete Button
+            HBox caseHeader = caseHeaderBuilder.build();
             caseHeader.getChildren().add(createDeleteButton(context));
 
-            VBox container = new VBox(5);
-            container.getStyleClass().add("switch-case-block");
             container.getChildren().add(caseHeader);
 
+            // Body
             VBox bodyNode = createIndentedBody(body, context, "switch-case-body");
             if (bodyNode != null) container.getChildren().add(bodyNode);
 

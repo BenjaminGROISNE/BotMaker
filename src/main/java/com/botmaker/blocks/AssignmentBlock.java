@@ -3,13 +3,9 @@ package com.botmaker.blocks;
 import com.botmaker.core.AbstractStatementBlock;
 import com.botmaker.core.ExpressionBlock;
 import com.botmaker.lsp.CompletionContext;
-import com.botmaker.ui.components.BlockUIComponents;
+import com.botmaker.ui.builders.BlockLayout;
 import com.botmaker.ui.components.SelectorComponents;
-import javafx.geometry.Pos;
 import javafx.scene.Node;
-import javafx.scene.control.Button;
-import javafx.scene.control.ComboBox;
-import javafx.scene.layout.HBox;
 import org.eclipse.jdt.core.dom.*;
 
 public class AssignmentBlock extends AbstractStatementBlock {
@@ -48,51 +44,35 @@ public class AssignmentBlock extends AbstractStatementBlock {
 
     @Override
     protected Node createUINode(CompletionContext context) {
-        HBox container = new HBox(5);
-        container.setAlignment(Pos.CENTER_LEFT);
-        container.getStyleClass().add("assignment-block");
-
-        // Left hand side
-        if (leftHandSide != null) {
-            container.getChildren().add(leftHandSide.getUINode(context));
-        }
-
-        // Operator selector via Component Factory
-        ComboBox<String> operatorSelector = SelectorComponents.createOperatorSelector(
-                OPERATOR_NAMES,
-                OPERATOR_SYMBOLS,
-                operator,
-                newOperator -> {
-                    this.operator = newOperator;
-                    if (this.astNode instanceof ExpressionStatement) {
-                        Expression expr = ((ExpressionStatement) this.astNode).getExpression();
-                        context.codeEditor().updateAssignmentOperator(expr, newOperator);
-                    }
-                }
-        );
-        container.getChildren().add(operatorSelector);
+        var sentenceBuilder = BlockLayout.sentence()
+                .addNode(leftHandSide != null ? leftHandSide.getUINode(context) : createExpressionDropZone(context))
+                .addOperatorSelector(
+                        OPERATOR_NAMES,
+                        OPERATOR_SYMBOLS,
+                        operator,
+                        newOperator -> {
+                            this.operator = newOperator;
+                            if (this.astNode instanceof ExpressionStatement) {
+                                Expression expr = ((ExpressionStatement) this.astNode).getExpression();
+                                context.codeEditor().updateAssignmentOperator(expr, newOperator);
+                            }
+                        }
+                );
 
         // Right hand side (only for non-increment/decrement)
         if (!operator.equals("++") && !operator.equals("--")) {
-            if (rightHandSide != null) {
-                container.getChildren().add(rightHandSide.getUINode(context));
-            }
-
-            // FIX: Use e.getSource() to avoid uninitialized variable reference
-            Button addButton = createAddButton(e -> showExpressionMenu((Button) e.getSource(), context));
-            container.getChildren().add(addButton);
+            sentenceBuilder
+                    .addNode(rightHandSide != null ? rightHandSide.getUINode(context) : createExpressionDropZone(context))
+                    .addNode(createAddButton(e -> showExpressionMenu((javafx.scene.control.Button) e.getSource(), context)));
         }
 
-        // Spacer and Delete button
-        container.getChildren().addAll(
-                BlockUIComponents.createSpacer(),
-                createDeleteButton(context)
-        );
-
-        return container;
+        return BlockLayout.header()
+                .withCustomNode(sentenceBuilder.build())
+                .withDeleteButton(() -> context.codeEditor().deleteStatement((Statement) this.astNode))
+                .build();
     }
 
-    private void showExpressionMenu(Button button, CompletionContext context) {
+    private void showExpressionMenu(javafx.scene.control.Button button, CompletionContext context) {
         String targetType = "any";
         if (leftHandSide != null && leftHandSide.getAstNode() != null) {
             Expression lhsExpr = (org.eclipse.jdt.core.dom.Expression) leftHandSide.getAstNode();
@@ -107,7 +87,6 @@ public class AssignmentBlock extends AbstractStatementBlock {
             toReplace = (org.eclipse.jdt.core.dom.Expression) rightHandSide.getAstNode();
         }
 
-        // Use helper from AbstractStatementBlock
         showExpressionMenuAndReplace(button, context, targetType, toReplace);
     }
 }

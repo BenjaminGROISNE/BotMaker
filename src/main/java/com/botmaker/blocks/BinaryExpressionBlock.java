@@ -3,16 +3,17 @@ package com.botmaker.blocks;
 import com.botmaker.core.AbstractExpressionBlock;
 import com.botmaker.core.ExpressionBlock;
 import com.botmaker.lsp.CompletionContext;
-import com.botmaker.ui.components.BlockUIComponents;
-import javafx.geometry.Pos;
+import com.botmaker.ui.builders.BlockLayout;
+import com.botmaker.ui.theme.BlockTheme;
+import com.botmaker.ui.theme.StyleBuilder;
 import javafx.scene.Node;
-import javafx.scene.control.Button;
-import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;
 import org.eclipse.jdt.core.dom.ITypeBinding;
 import org.eclipse.jdt.core.dom.InfixExpression;
 import org.eclipse.jdt.core.dom.Expression;
+
+import static com.botmaker.ui.components.BlockUIComponents.createChangeButton;
 
 public class BinaryExpressionBlock extends AbstractExpressionBlock {
 
@@ -36,17 +37,17 @@ public class BinaryExpressionBlock extends AbstractExpressionBlock {
     @Override
     protected Node createUINode(CompletionContext context) {
         HBox container = new HBox(5);
-        container.setAlignment(Pos.CENTER_LEFT);
-        container.getStyleClass().add("binary-expression-block");
+        container.setAlignment(javafx.geometry.Pos.CENTER_LEFT);
 
         HBox expressionBox = new HBox(5);
-        expressionBox.setAlignment(Pos.CENTER_LEFT);
+        expressionBox.setAlignment(javafx.geometry.Pos.CENTER_LEFT);
 
         // Left operand + Change Button
         if (leftOperand != null) {
             expressionBox.getChildren().add(leftOperand.getUINode(context));
-            Button changeLeft = BlockUIComponents.createChangeButton(e ->
-                    showExpressionMenuAndReplace((Button)e.getSource(), context, "number", (Expression) leftOperand.getAstNode())
+            javafx.scene.control.Button changeLeft = createChangeButton(e ->
+                    showExpressionMenuAndReplace((javafx.scene.control.Button)e.getSource(), context, "number",
+                            (Expression) leftOperand.getAstNode())
             );
             changeLeft.setStyle("-fx-font-size: 8px; -fx-padding: 1px 3px;");
             expressionBox.getChildren().add(changeLeft);
@@ -54,17 +55,15 @@ public class BinaryExpressionBlock extends AbstractExpressionBlock {
 
         // Operator Selector
         if (isMathOperator(operator)) {
-            ComboBox<String> selector = createOperatorSelector(
+            javafx.scene.control.ComboBox<String> selector = createOperatorSelector(
                     MATH_OPERATOR_NAMES,
                     MATH_OPERATOR_SYMBOLS,
                     operator,
                     newOp -> {
                         this.operator = newOp;
-                        // Call the code editor to update the AST
                         context.codeEditor().updateBinaryOperator((InfixExpression) this.astNode, newOp);
                     }
             );
-            selector.getStyleClass().add("math-operator-selector");
             expressionBox.getChildren().add(selector);
         } else {
             expressionBox.getChildren().add(createOperatorLabel(operator));
@@ -73,8 +72,9 @@ public class BinaryExpressionBlock extends AbstractExpressionBlock {
         // Right operand + Change Button
         if (rightOperand != null) {
             expressionBox.getChildren().add(rightOperand.getUINode(context));
-            Button changeRight = BlockUIComponents.createChangeButton(e ->
-                    showExpressionMenuAndReplace((Button)e.getSource(), context, "number", (Expression) rightOperand.getAstNode())
+            javafx.scene.control.Button changeRight = createChangeButton(e ->
+                    showExpressionMenuAndReplace((javafx.scene.control.Button)e.getSource(), context, "number",
+                            (Expression) rightOperand.getAstNode())
             );
             changeRight.setStyle("-fx-font-size: 8px; -fx-padding: 1px 3px;");
             expressionBox.getChildren().add(changeRight);
@@ -84,7 +84,7 @@ public class BinaryExpressionBlock extends AbstractExpressionBlock {
 
         // Type indicator
         String typeName = (returnType != null) ? returnType.getName() : "unknown";
-        Label typeLabel = new Label("→ " + typeName);
+        javafx.scene.control.Label typeLabel = new javafx.scene.control.Label("→ " + typeName);
         typeLabel.setStyle("-fx-font-style: italic; -fx-text-fill: #999; -fx-font-size: 10px;");
         container.getChildren().add(typeLabel);
 

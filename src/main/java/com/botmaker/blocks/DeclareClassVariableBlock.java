@@ -4,6 +4,7 @@ import com.botmaker.core.AbstractStatementBlock;
 import com.botmaker.core.ExpressionBlock;
 import com.botmaker.lsp.CompletionContext;
 import com.botmaker.ui.AddableExpression;
+import com.botmaker.ui.builders.BlockLayout;
 import com.botmaker.ui.components.BlockUIComponents;
 import com.botmaker.ui.components.TextFieldComponents;
 import com.botmaker.util.TypeManager;
@@ -46,10 +47,10 @@ public class DeclareClassVariableBlock extends AbstractStatementBlock {
         this.initializer = initializer;
     }
 
+    // DeclareClassVariableBlock.java - use builders where applicable
     @Override
     protected Node createUINode(CompletionContext context) {
         VBox container = new VBox(5);
-        container.getStyleClass().add("field-declaration-block");
         container.setStyle(
                 "-fx-background-color: linear-gradient(to right, #F39C12 0%, #E67E22 100%);" +
                         "-fx-background-radius: 6;" +
@@ -61,19 +62,14 @@ public class DeclareClassVariableBlock extends AbstractStatementBlock {
 
         // Row 1: Modifiers Label
         Label modifiersLabel = new Label((isPrivate ? "Private" : "Public") + (isStatic ? " Static" : "") + " Field");
-        modifiersLabel.setStyle("-fx-text-fill: white; -fx-font-weight: bold; -fx-font-size: 10px; -fx-text-transform: uppercase;");
+        modifiersLabel.setStyle("-fx-text-fill: white; -fx-font-weight: bold; -fx-font-size: 10px;");
 
-        // Row 2: Type, Name, and Initializer
-        HBox mainRow = new HBox(8);
-        mainRow.setAlignment(Pos.CENTER_LEFT);
-
-        // Type Label with Menu
+        // Row 2: Type, Name, and Initializer using sentence builder
         Label typeLabel = createTypeLabel(getDisplayTypeName(variableType));
         typeLabel.setCursor(Cursor.HAND);
         Tooltip.install(typeLabel, new Tooltip("Click to change type"));
         typeLabel.setOnMouseClicked(e -> showTypeMenu(typeLabel, context));
 
-        // Name Field
         TextField nameField = TextFieldComponents.createVariableNameField(variableName, newName -> {
             FieldDeclaration fieldDecl = (FieldDeclaration) this.astNode;
             VariableDeclarationFragment fragment = (VariableDeclarationFragment) fieldDecl.fragments().get(0);
@@ -86,10 +82,12 @@ public class DeclareClassVariableBlock extends AbstractStatementBlock {
         String uiTargetType = TypeManager.determineUiType(typeString,
                 context.applicationState().getCompilationUnit().orElse(null));
 
-        // If no initializer, show "Set Value" button
+        var mainRowBuilder = BlockLayout.sentence()
+                .addNode(typeLabel)
+                .addNode(nameField);
+
         if (initializer == null) {
             Button setValueBtn = new Button("Set Value");
-            setValueBtn.getStyleClass().add("set-value-button");
             setValueBtn.setStyle(
                     "-fx-background-color: rgba(255,255,255,0.3);" +
                             "-fx-text-fill: white;" +
@@ -99,61 +97,32 @@ public class DeclareClassVariableBlock extends AbstractStatementBlock {
                             "-fx-background-radius: 4;" +
                             "-fx-cursor: hand;"
             );
-            setValueBtn.setOnMouseEntered(e -> setValueBtn.setStyle(
-                    "-fx-background-color: rgba(255,255,255,0.5);" +
-                            "-fx-text-fill: white;" +
-                            "-fx-font-weight: bold;" +
-                            "-fx-font-size: 11px;" +
-                            "-fx-padding: 4 12 4 12;" +
-                            "-fx-background-radius: 4;" +
-                            "-fx-cursor: hand;"
-            ));
-            setValueBtn.setOnMouseExited(e -> setValueBtn.setStyle(
-                    "-fx-background-color: rgba(255,255,255,0.3);" +
-                            "-fx-text-fill: white;" +
-                            "-fx-font-weight: bold;" +
-                            "-fx-font-size: 11px;" +
-                            "-fx-padding: 4 12 4 12;" +
-                            "-fx-background-radius: 4;" +
-                            "-fx-cursor: hand;"
-            ));
-
             setValueBtn.setOnAction(e -> {
-                // Create a default expression for this type
                 context.codeEditor().setFieldInitializerToDefault(
-                        (FieldDeclaration) this.astNode,
-                        uiTargetType
-                );
+                        (FieldDeclaration) this.astNode, uiTargetType);
             });
+            mainRowBuilder.addNode(setValueBtn);
+        } else {
+            Node initNode = (initializer instanceof ListBlock) ?
+                    initializer.getUINode(context) :
+                    (initializer.getAstNode() instanceof org.eclipse.jdt.core.dom.ArrayInitializer) ?
+                            createListDisplay(context) : initializer.getUINode(context);
 
-            mainRow.getChildren().addAll(typeLabel, nameField, setValueBtn);
-        }
-        // If initializer exists, show = value + button
-        else {
-            Label equalsLabel = createKeywordLabel("=");
-
-            // Initializer Display
-            Node initNode;
-            if (initializer instanceof ListBlock) {
-                initNode = initializer.getUINode(context);
-            } else if (initializer.getAstNode() instanceof org.eclipse.jdt.core.dom.ArrayInitializer) {
-                initNode = createListDisplay(context);
-            } else {
-                initNode = initializer.getUINode(context);
-            }
-
-            // Add Button (for changing expression type)
             Button addButton = createAddButton(e -> {
                 Expression currentInitializer = (Expression) initializer.getAstNode();
-
                 ContextMenu menu = BlockUIComponents.createExpressionTypeMenu(uiTargetType, type -> {
                     context.codeEditor().replaceExpression(currentInitializer, type);
                 });
                 menu.show((Button)e.getSource(), javafx.geometry.Side.BOTTOM, 0, 0);
             });
 
-            mainRow.getChildren().addAll(typeLabel, nameField, equalsLabel, initNode, addButton);
+            mainRowBuilder
+                    .addKeyword("=")
+                    .addNode(initNode)
+                    .addNode(addButton);
         }
+
+        HBox mainRow = mainRowBuilder.build();
 
         // Delete Button
         Button deleteBtn = createDeleteButton(context);

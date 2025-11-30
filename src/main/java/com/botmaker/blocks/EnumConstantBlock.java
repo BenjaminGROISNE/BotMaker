@@ -3,6 +3,7 @@ package com.botmaker.blocks;
 import com.botmaker.core.AbstractExpressionBlock;
 import com.botmaker.lsp.CompletionContext;
 import com.botmaker.parser.BlockIdPrefix;
+import com.botmaker.ui.builders.BlockLayout;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.control.ComboBox;
@@ -33,32 +34,16 @@ public class EnumConstantBlock extends AbstractExpressionBlock {
         this.constantName = astNode.getIdentifier();
     }
 
+    // EnumConstantBlock.java
     @Override
     protected Node createUINode(CompletionContext context) {
-        HBox container = new HBox(5);
-        container.setAlignment(Pos.CENTER_LEFT);
-        container.getStyleClass().add("enum-constant-block");
-        container.setStyle(
-                "-fx-background-color: #d35400;" +
-                        "-fx-background-radius: 5;" +
-                        "-fx-padding: 4 8 4 8;"
-        );
-
-        // Enum type label
         Label typeLabel = new Label(enumTypeName);
-        typeLabel.setStyle(
-                "-fx-text-fill: white;" +
-                        "-fx-font-weight: bold;" +
-                        "-fx-font-size: 11px;"
-        );
+        typeLabel.setStyle("-fx-text-fill: white; -fx-font-weight: bold; -fx-font-size: 11px;");
 
-        // Dot separator
         Label dot = new Label(".");
         dot.setStyle("-fx-text-fill: rgba(255,255,255,0.7); -fx-font-weight: bold;");
 
-        // Constant selector
         ComboBox<String> constantSelector = new ComboBox<>();
-        constantSelector.getStyleClass().add("enum-constant-selector");
         constantSelector.setStyle(
                 "-fx-background-color: rgba(255,255,255,0.2);" +
                         "-fx-text-fill: white;" +
@@ -67,12 +52,10 @@ public class EnumConstantBlock extends AbstractExpressionBlock {
                         "-fx-padding: 2 6 2 6;"
         );
 
-        // Populate with available constants
         List<String> constants = getEnumConstants(enumTypeName, context);
         constantSelector.getItems().addAll(constants);
         constantSelector.setValue(constantName);
 
-        // Handle selection change
         constantSelector.setOnAction(e -> {
             String newConstant = constantSelector.getValue();
             if (newConstant != null && !newConstant.equals(constantName)) {
@@ -80,7 +63,18 @@ public class EnumConstantBlock extends AbstractExpressionBlock {
             }
         });
 
-        container.getChildren().addAll(typeLabel, dot, constantSelector);
+        HBox container = BlockLayout.sentence()
+                .addNode(typeLabel)
+                .addNode(dot)
+                .addNode(constantSelector)
+                .build();
+
+        container.setStyle(
+                "-fx-background-color: #d35400;" +
+                        "-fx-background-radius: 5;" +
+                        "-fx-padding: 4 8 4 8;"
+        );
+
         return container;
     }
 

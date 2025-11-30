@@ -2,6 +2,7 @@ package com.botmaker.blocks;
 
 import com.botmaker.core.AbstractExpressionBlock;
 import com.botmaker.lsp.CompletionContext;
+import com.botmaker.ui.theme.StyleBuilder;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.control.ComboBox;
@@ -11,7 +12,7 @@ import org.eclipse.jdt.core.dom.BooleanLiteral;
 import org.eclipse.jdt.core.dom.Expression;
 
 /**
- * Block for true/false values with improved UI (Toggle Switch style)
+ * Block for true/false values with toggle switch style UI
  */
 public class BooleanLiteralBlock extends AbstractExpressionBlock {
 
@@ -31,34 +32,30 @@ public class BooleanLiteralBlock extends AbstractExpressionBlock {
         StackPane root = new StackPane();
         root.getStyleClass().add("boolean-literal-block");
 
-        // Define colors
-        String trueColor = "#2ecc71"; // Emerald Green
+        // Colors
+        String trueColor = "#2ecc71";  // Emerald Green
         String falseColor = "#e74c3c"; // Alizarin Red
         String currentColor = value ? trueColor : falseColor;
 
-        // 1. The invisible functional dropdown
+        // Invisible functional dropdown
         ComboBox<String> booleanSelector = new ComboBox<>();
         booleanSelector.getItems().addAll("true", "false");
         booleanSelector.setValue(value ? "true" : "false");
-
-        // Make the combo box fill the area but be invisible
-        // We use opacity 0 so the user can still click it, but sees the label behind it
         booleanSelector.setStyle("-fx-opacity: 0; -fx-cursor: hand;");
         booleanSelector.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
 
-        // 2. The visible label (pill shape)
+        // Visible pill label
         Label displayLabel = new Label(value ? "TRUE" : "FALSE");
-        displayLabel.setStyle(
-                "-fx-text-fill: white; " +
-                        "-fx-font-weight: bold; " +
-                        "-fx-font-size: 11px; " +
-                        "-fx-font-family: 'Segoe UI', sans-serif;" +
-                        "-fx-padding: 3 10 3 10;" +
-                        "-fx-background-color: " + currentColor + ";" +
-                        "-fx-background-radius: 12;" // Pill shape
-        );
+        StyleBuilder.create()
+                .textColor("white")
+                .fontWeight("bold")
+                .fontSize(11)
+                .fontFamily("'Segoe UI', sans-serif")
+                .padding(3, 10, 3, 10)
+                .backgroundColor(currentColor)
+                .backgroundRadius(12)
+                .applyTo(displayLabel);
 
-        // Center the label
         StackPane.setAlignment(displayLabel, Pos.CENTER);
 
         // Handle value change
@@ -68,20 +65,20 @@ public class BooleanLiteralBlock extends AbstractExpressionBlock {
 
             if (newValue != value) {
                 this.value = newValue;
-                // Update logic
                 context.codeEditor().replaceLiteralValue(
                         (Expression) this.astNode,
                         String.valueOf(newValue)
                 );
-                // Immediate UI feedback (before full rebuild)
+                // Immediate UI feedback
                 displayLabel.setText(newValue ? "TRUE" : "FALSE");
-                displayLabel.setStyle(displayLabel.getStyle().replace(currentColor, newValue ? trueColor : falseColor));
+                String newColor = newValue ? trueColor : falseColor;
+                StyleBuilder.create()
+                        .backgroundColor(newColor)
+                        .applyTo(displayLabel);
             }
         });
 
         root.getChildren().addAll(displayLabel, booleanSelector);
-
-        // Force specific size to look neat
         root.setMinWidth(60);
         root.setMaxHeight(24);
 

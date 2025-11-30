@@ -38,10 +38,10 @@ public class ClassBlock extends AbstractCodeBlock implements BlockWithChildren {
         return new ArrayList<>(bodyDeclarations);
     }
 
+    // ClassBlock.java - keep mostly as is, use sentence for separators
     @Override
     protected Node createUINode(CompletionContext context) {
         VBox container = new VBox(10);
-        container.getStyleClass().add("class-block");
         container.setPadding(new Insets(15));
 
         container.setStyle(
@@ -72,7 +72,6 @@ public class ClassBlock extends AbstractCodeBlock implements BlockWithChildren {
         Region separator = new Region();
         separator.setMinHeight(30);
         separator.setMaxHeight(30);
-        separator.getStyleClass().add("method-separator"); // Reuse style
 
         separator.setStyle(
                 "-fx-background-color: rgba(52, 73, 94, 0.15);" +
@@ -82,12 +81,7 @@ public class ClassBlock extends AbstractCodeBlock implements BlockWithChildren {
                         "-fx-cursor: hand;"
         );
 
-        // This handler handles dropping Methods OR Enums into the class
-        context.dragAndDropManager().addClassMemberDropHandlers(
-                separator,
-                this,
-                insertIndex
-        );
+        context.dragAndDropManager().addClassMemberDropHandlers(separator, this, insertIndex);
 
         separator.setOnMouseEntered(e -> separator.setStyle("-fx-background-color: rgba(142, 68, 173, 0.3); -fx-border-color: #8E44AD; -fx-border-width: 3px 0 3px 0; -fx-border-style: solid;"));
         separator.setOnMouseExited(e -> separator.setStyle("-fx-background-color: rgba(52, 73, 94, 0.15); -fx-border-color: rgba(52, 73, 94, 0.4); -fx-border-width: 2px 0 2px 0; -fx-border-style: dashed;"));

@@ -2,6 +2,7 @@ package com.botmaker.blocks;
 
 import com.botmaker.core.AbstractExpressionBlock;
 import com.botmaker.lsp.CompletionContext;
+import com.botmaker.ui.builders.BlockLayout;
 import com.botmaker.util.TypeManager;
 import javafx.application.Platform;
 import javafx.scene.Cursor;
@@ -42,24 +43,14 @@ public class IdentifierBlock extends AbstractExpressionBlock {
         }
     }
 
+    // IdentifierBlock.java
     @Override
     protected Node createUINode(CompletionContext context) {
-        Text text = new Text(this.identifier);
-        HBox container = new HBox(text);
-        container.setAlignment(javafx.geometry.Pos.CENTER_LEFT);
-        container.getStyleClass().add("identifier-block");
-
-        if (isUnedited) container.getStyleClass().add(UNEDITED_STYLE_CLASS);
-
-        container.setCursor(Cursor.HAND);
-        String tooltipText = isUnedited ? "⚠️ Default variable name - Click to choose" : "Click to change variable";
-        Tooltip.install(container, new Tooltip(tooltipText));
-
-        container.setOnMouseClicked(e -> {
-            if (e.getClickCount() == 1) requestSuggestions(container, context);
-        });
-
-        return container;
+        return BlockLayout.expression()
+                .identifier()
+                .withIdentifierText(identifier, isUnedited)
+                .withClickHandler(() -> requestSuggestions(uiNode, context))
+                .build();
     }
 
     private void requestSuggestions(Node uiNode, CompletionContext context) {

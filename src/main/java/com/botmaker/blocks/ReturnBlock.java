@@ -3,15 +3,15 @@ package com.botmaker.blocks;
 import com.botmaker.core.AbstractStatementBlock;
 import com.botmaker.core.ExpressionBlock;
 import com.botmaker.lsp.CompletionContext;
+import com.botmaker.ui.builders.BlockLayout;
 import com.botmaker.ui.components.BlockUIComponents;
+import com.botmaker.ui.theme.StyleBuilder;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import org.eclipse.jdt.core.dom.ASTNode;
 import org.eclipse.jdt.core.dom.MethodDeclaration;
 import org.eclipse.jdt.core.dom.ReturnStatement;
-
-import static com.botmaker.ui.components.BlockUIComponents.createChangeButton;
 
 public class ReturnBlock extends AbstractStatementBlock {
 
@@ -27,47 +27,37 @@ public class ReturnBlock extends AbstractStatementBlock {
 
     @Override
     protected Node createUINode(CompletionContext context) {
-        // Determine parent method return type
         String methodReturnType = findParentMethodReturnType();
         boolean isVoid = "void".equals(methodReturnType);
 
-        Node content;
+        var sentenceBuilder = BlockLayout.sentence().addKeyword("return");
 
         if (expression != null) {
-            Button changeBtn = createChangeButton(e ->
-                    showExpressionMenuAndReplace((Button)e.getSource(), context, methodReturnType, (org.eclipse.jdt.core.dom.Expression)expression.getAstNode())
-            );
-
-            content = createSentence(
-                    createKeywordLabel("return"),
-                    expression.getUINode(context),
-                    changeBtn
-            );
+            sentenceBuilder
+                    .addNode(expression.getUINode(context))
+                    .addNode(BlockUIComponents.createChangeButton(e ->
+                            showExpressionMenuAndReplace((Button)e.getSource(), context, methodReturnType,
+                                    (org.eclipse.jdt.core.dom.Expression)expression.getAstNode())
+                    ));
         } else if (!isVoid) {
-            Button addButton = createAddButton(e ->
+            sentenceBuilder.addNode(createAddButton(e ->
                     BlockUIComponents.createExpressionTypeMenu(methodReturnType, type ->
                             context.codeEditor().setReturnExpression((ReturnStatement) this.astNode, type)
                     ).show((Button)e.getSource(), javafx.geometry.Side.BOTTOM, 0, 0)
-            );
-
-            content = createSentence(
-                    createKeywordLabel("return"),
-                    addButton
-            );
+            ));
         } else {
             Label voidLabel = new Label("(void)");
-            voidLabel.setStyle("-fx-text-fill: #aaa; -fx-font-size: 10px; -fx-font-style: italic;");
-
-            content = createSentence(
-                    createKeywordLabel("return"),
-                    voidLabel
-            );
+            StyleBuilder.create()
+                    .textColor("#aaa")
+                    .fontSize(10)
+                    .build();
+            sentenceBuilder.addNode(voidLabel);
         }
 
-        Node container = createStandardHeader(context, content);
-        container.getStyleClass().add("return-block");
-
-        return container;
+        return BlockLayout.header()
+                .withCustomNode(sentenceBuilder.build())
+                .withDeleteButton(() -> context.codeEditor().deleteStatement((org.eclipse.jdt.core.dom.Statement) this.astNode))
+                .build();
     }
 
     private String findParentMethodReturnType() {
