@@ -14,7 +14,7 @@ public class TypeManager {
     public static final String UI_TYPE_STRING = "String";
     public static final String UI_TYPE_TEXT = "Text";
     public static final String UI_TYPE_LIST = "list";
-    public static final String UI_TYPE_ENUM = "enum"; // NEW
+    public static final String UI_TYPE_ENUM = "enum";
     // Special type for Switch statements
     public static final String UI_TYPE_SWITCH_COMPATIBLE = "switch_compatible";
 
@@ -63,15 +63,15 @@ public class TypeManager {
         return true;
     }
 
-    // NEW: Check if a type is actually an enum by searching the compilation unit
+    // Check if a type is actually an enum by searching the compilation unit
     public static boolean isEnumType(String typeName, CompilationUnit cu) {
         if (typeName == null || typeName.isEmpty() || cu == null) return false;
 
         String clean = typeName.trim();
 
-        // Extract base type if it's wrapped in ArrayList
-        if (clean.startsWith("ArrayList<") && clean.endsWith(">")) {
-            clean = clean.substring(10, clean.length() - 1);
+        // Extract base type if it's an array
+        if (clean.endsWith("[]")) {
+            clean = clean.substring(0, clean.length() - 2);
         }
 
         // Search for enum declaration
@@ -99,14 +99,14 @@ public class TypeManager {
         return false;
     }
 
-    // Keep the old method but mark it as a heuristic
+    // Heuristic check
     public static boolean isLikelyEnumType(String typeName) {
         if (typeName == null || typeName.isEmpty()) return false;
         String clean = typeName.trim();
 
-        // Extract base type if it's wrapped in ArrayList
-        if (clean.startsWith("ArrayList<") && clean.endsWith(">")) {
-            clean = clean.substring(10, clean.length() - 1);
+        // Extract base type if it's an array
+        if (clean.endsWith("[]")) {
+            clean = clean.substring(0, clean.length() - 2);
         }
 
         // Heuristic: Enums typically start with uppercase and aren't in our known primitive/standard types
@@ -123,7 +123,7 @@ public class TypeManager {
         if (typeName == null || typeName.isBlank()) return UI_TYPE_ANY;
         String clean = typeName.trim();
 
-        if (isArrayList(clean)) return UI_TYPE_LIST;
+        // CHANGED: Check for standard arrays
         if (clean.endsWith("[]")) return UI_TYPE_LIST;
 
         if (NUMBER_TYPES.contains(clean)) return UI_TYPE_NUMBER;
@@ -143,14 +143,14 @@ public class TypeManager {
         if (typeName == null || typeName.isBlank()) return UI_TYPE_ANY;
         String clean = typeName.trim();
 
-        if (isArrayList(clean)) return UI_TYPE_LIST;
+        // CHANGED: Check for standard arrays
         if (clean.endsWith("[]")) return UI_TYPE_LIST;
 
         if (NUMBER_TYPES.contains(clean)) return UI_TYPE_NUMBER;
         if (BOOLEAN_TYPES.contains(clean)) return UI_TYPE_BOOLEAN;
         if (STRING_TYPES.contains(clean)) return UI_TYPE_STRING;
 
-        // NEW: Check if it looks like an enum
+        // Check if it looks like an enum
         if (isLikelyEnumType(clean)) return UI_TYPE_ENUM;
 
         return UI_TYPE_ANY;
@@ -165,7 +165,7 @@ public class TypeManager {
         String qualifiedName = binding.getQualifiedName();
         String simpleName = binding.getName();
 
-        // NEW: Handle Switch Compatibility - enums ARE allowed in switches
+        // Handle Switch Compatibility - enums ARE allowed in switches
         if (targetUiType.equals(UI_TYPE_SWITCH_COMPATIBLE)) {
             if (binding.isArray()) return false;
             // Enums are compatible with switches
@@ -179,7 +179,7 @@ public class TypeManager {
             return targetUiType.equals(UI_TYPE_LIST) || targetUiType.endsWith("[]");
         }
 
-        // NEW: Enum type matching
+        // Enum type matching
         if (targetUiType.equals(UI_TYPE_ENUM)) {
             return binding.isEnum() || isLikelyEnumType(simpleName);
         }
@@ -205,19 +205,20 @@ public class TypeManager {
 
         String cleanType = typeName.trim();
 
-        // NEW: Handle Switch Compatibility - enums ARE allowed
+        // Handle Switch Compatibility - enums ARE allowed
         if (targetUiType.equals(UI_TYPE_SWITCH_COMPATIBLE)) {
-            if (cleanType.endsWith("[]") || cleanType.contains("ArrayList")) return false;
+            if (cleanType.endsWith("[]")) return false;
             // Enums are switch-compatible
             if (isLikelyEnumType(cleanType)) return true;
             return !SWITCH_FORBIDDEN_TYPES.contains(cleanType);
         }
 
+        // CHANGED: Standard array check
         if (cleanType.endsWith("[]")) {
             return targetUiType.equals(UI_TYPE_LIST) || targetUiType.endsWith("[]");
         }
 
-        // NEW: Enum type matching
+        // Enum type matching
         if (targetUiType.equals(UI_TYPE_ENUM)) {
             return isLikelyEnumType(cleanType);
         }
@@ -238,7 +239,7 @@ public class TypeManager {
     public static String getFriendlyTypeName(ITypeBinding typeBinding) {
         if (typeBinding == null) return "unknown";
         if (typeBinding.isArray()) return "list";
-        if (typeBinding.isEnum()) return "enum"; // NEW
+        if (typeBinding.isEnum()) return "enum";
         String name = typeBinding.getName();
         if (NUMBER_TYPES.contains(name)) return "number";
         if (STRING_TYPES.contains(name)) return "text";
@@ -283,59 +284,55 @@ public class TypeManager {
         }
     }
 
+    /**
+     * UPDATED: Get nesting level for standard arrays
+     * e.g., "int[][]" returns 2, "String[]" returns 1
+     */
     public static int getListNestingLevel(String typeName) {
         if (typeName == null) return 0;
         int level = 0;
         String temp = typeName;
-        while (temp.startsWith("ArrayList<") || temp.startsWith("List<")) {
+        while (temp.endsWith("[]")) {
             level++;
-            int start = temp.indexOf("<") + 1;
-            int end = temp.lastIndexOf(">");
-            if (start < end) {
-                temp = temp.substring(start, end);
-            } else {
-                break;
-            }
+            temp = temp.substring(0, temp.length() - 2);
         }
         return level;
     }
 
+    /**
+     * UPDATED: Get leaf type for standard arrays
+     * e.g., "int[][]" returns "int", "String[]" returns "String"
+     */
     public static String getLeafType(String typeName) {
         if (typeName == null) return "Object";
-        String temp = typeName;
-        while (temp.startsWith("ArrayList<") || temp.startsWith("List<")) {
-            int start = temp.indexOf("<") + 1;
-            int end = temp.lastIndexOf(">");
-            if (start < end) {
-                temp = temp.substring(start, end);
-            } else {
-                break;
-            }
+        String temp = typeName.trim();
+        while (temp.endsWith("[]")) {
+            temp = temp.substring(0, temp.length() - 2).trim();
         }
         return temp;
     }
 
+    /**
+     * REMOVED: No longer needed for standard arrays
+     */
+    @Deprecated
     public static boolean isArrayList(String typeName) {
-        if (typeName == null) return false;
-        return typeName.startsWith("ArrayList<") || typeName.equals("ArrayList");
+        return false; // We don't use ArrayList anymore
     }
 
+    /**
+     * UPDATED: Create type node for standard arrays
+     */
     public static Type createTypeNode(AST ast, String typeName) {
-        if (typeName.startsWith("ArrayList<") && typeName.endsWith(">")) {
-            int start = typeName.indexOf("<") + 1;
-            int end = typeName.lastIndexOf(">");
-            String elementTypeName = typeName.substring(start, end);
-            ParameterizedType paramType = ast.newParameterizedType(ast.newSimpleType(ast.newName("ArrayList")));
-            Type elementType = createTypeNode(ast, elementTypeName);
-            paramType.typeArguments().add(elementType);
-            return paramType;
-        }
+        // Count array dimensions
         int dimensions = 0;
         String baseName = typeName;
         while (baseName.endsWith("[]")) {
             dimensions++;
-            baseName = baseName.substring(0, baseName.length() - 2);
+            baseName = baseName.substring(0, baseName.length() - 2).trim();
         }
+
+        // Create base type
         Type baseType;
         switch (baseName) {
             case "int": baseType = ast.newPrimitiveType(PrimitiveType.INT); break;
@@ -346,8 +343,10 @@ public class TypeManager {
             case "float": baseType = ast.newPrimitiveType(PrimitiveType.FLOAT); break;
             case "short": baseType = ast.newPrimitiveType(PrimitiveType.SHORT); break;
             case "byte": baseType = ast.newPrimitiveType(PrimitiveType.BYTE); break;
-            default: baseType = ast.newSimpleType(ast.newName(baseName)); break; // Includes enums and custom types
+            default: baseType = ast.newSimpleType(ast.newName(baseName)); break;
         }
+
+        // Add array dimensions if needed
         if (dimensions > 0) {
             return ast.newArrayType(baseType, dimensions);
         } else {

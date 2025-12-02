@@ -43,14 +43,28 @@ public class IdentifierBlock extends AbstractExpressionBlock {
         }
     }
 
-    // IdentifierBlock.java
     @Override
     protected Node createUINode(CompletionContext context) {
-        return BlockLayout.expression()
-                .identifier()
-                .withIdentifierText(identifier, isUnedited)
-                .withClickHandler(() -> requestSuggestions(uiNode, context))
-                .build();
+        // Create text node
+        Text text = new Text(identifier);
+
+        // Create container
+        HBox container = new HBox(text);
+        container.setAlignment(javafx.geometry.Pos.CENTER_LEFT);
+        container.getStyleClass().add("identifier-block");
+
+        if (isUnedited) {
+            container.getStyleClass().add(UNEDITED_STYLE_CLASS);
+        }
+
+        // Make it clickable
+        container.setCursor(Cursor.HAND);
+        container.setOnMouseClicked(e -> {
+            requestSuggestions(container, context);
+            e.consume();
+        });
+
+        return container;
     }
 
     private void requestSuggestions(Node uiNode, CompletionContext context) {
@@ -84,8 +98,12 @@ public class IdentifierBlock extends AbstractExpressionBlock {
                                         if (parts.length > 1) typeInfo = parts[1].trim();
                                     }
                                 }
-                                // Checks validity using TypeManager (now handles SWITCH_COMPATIBLE)
-                                return TypeManager.isCompatible(typeInfo, expectedType);
+
+                                // DEBUG: Print what we're checking
+                                System.out.println("[Debug] Variable: " + item.getLabel() + " Type: " + typeInfo + " Expected: " + expectedType);
+
+                                // Use leaf type comparison for better matching
+                                return isTypeCompatible(typeInfo, expectedType);
                             })
                             .collect(Collectors.toList());
 
@@ -122,6 +140,37 @@ public class IdentifierBlock extends AbstractExpressionBlock {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    /**
+     * NEW: Better type compatibility checking using leaf types
+     */
+    private boolean isTypeCompatible(String variableType, String expectedType) {
+        if (variableType == null || variableType.isBlank()) return true;
+        if (expectedType == null || expectedType.equals(TypeManager.UI_TYPE_ANY)) return true;
+
+        // Get leaf types for comparison
+        String varLeafType = TypeManager.getLeafType(variableType);
+        String expectedLeafType = TypeManager.getLeafType(expectedType);
+
+        // Convert to UI types
+        String varUiType = TypeManager.determineUiType(varLeafType);
+        String expectedUiType = TypeManager.determineUiType(expectedLeafType);
+
+        System.out.println("[Debug Type Match] Var: " + variableType + " -> " + varLeafType + " -> " + varUiType +
+                " | Expected: " + expectedType + " -> " + expectedLeafType + " -> " + expectedUiType);
+
+        // For lists, check if the leaf types are compatible
+        if (variableType.contains("ArrayList") || variableType.contains("[]")) {
+            if (expectedType.equals(TypeManager.UI_TYPE_LIST)) {
+                return true; // Any list is compatible with list type
+            }
+            // Check if leaf types match
+            return TypeManager.isCompatible(varUiType, expectedUiType);
+        }
+
+        // Use standard compatibility check
+        return TypeManager.isCompatible(variableType, expectedType);
     }
 
     /**
@@ -183,7 +232,9 @@ public class IdentifierBlock extends AbstractExpressionBlock {
                 Expression lhs = assignment.getLeftHandSide();
                 ITypeBinding binding = lhs.resolveTypeBinding();
                 if (binding != null) {
-                    return TypeManager.determineUiType(binding.getName());
+                    // Use the FULL type here, not just the name
+                    String fullType = binding.getQualifiedName();
+                    return TypeManager.determineUiType(fullType);
                 }
             }
         }
@@ -195,7 +246,9 @@ public class IdentifierBlock extends AbstractExpressionBlock {
                 ASTNode grandParent = frag.getParent();
                 if (grandParent instanceof VariableDeclarationStatement) {
                     Type type = ((VariableDeclarationStatement) grandParent).getType();
-                    return TypeManager.determineUiType(type.toString());
+                    // Get the FULL type string
+                    String typeString = type.toString();
+                    return TypeManager.determineUiType(typeString);
                 }
             }
         }
@@ -205,9 +258,15 @@ public class IdentifierBlock extends AbstractExpressionBlock {
 
     private String getSimpleTypeName(String detail) {
         if (detail == null) return "";
-        if (TypeManager.isCompatible(detail, TypeManager.UI_TYPE_NUMBER)) return "number";
-        if (TypeManager.isCompatible(detail, TypeManager.UI_TYPE_BOOLEAN)) return "bool";
-        return detail;
+
+        // Use leaf type for display
+        String leafType = TypeManager.getLeafType(detail);
+
+        if (TypeManager.isCompatible(leafType, TypeManager.UI_TYPE_NUMBER)) return "number";
+        if (TypeManager.isCompatible(leafType, TypeManager.UI_TYPE_BOOLEAN)) return "bool";
+        if (TypeManager.isCompatible(leafType, TypeManager.UI_TYPE_STRING)) return "text";
+
+        return leafType;
     }
 
     private void applySuggestion(CompletionItem item, CompletionContext context) {

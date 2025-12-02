@@ -47,6 +47,34 @@ public class CodeEditor {
         triggerUpdate(newCode);
     }
 
+    /**
+     * Wraps a bare ArrayInitializer in ArrayCreation when needed.
+     *
+     * @param initializer The expression to potentially wrap
+     * @param varType The type of the variable being initialized
+     * @param ast The AST for creating nodes
+     * @return Wrapped expression if needed, or original expression
+     */
+    private Expression wrapArrayInitializerIfNeeded(Expression initializer, Type varType, AST ast) {
+        if (initializer instanceof ArrayInitializer && varType.isArrayType()) {
+            ArrayType arrayType = (ArrayType) varType;
+
+            // Create the ArrayCreation wrapper: new T[] { ... }
+            ArrayCreation arrayCreation = ast.newArrayCreation();
+
+            // Copy the array type
+            arrayCreation.setType((ArrayType) ASTNode.copySubtree(ast, arrayType));
+
+            // Set the initializer
+            arrayCreation.setInitializer((ArrayInitializer) ASTNode.copySubtree(ast, initializer));
+
+            return arrayCreation;
+        }
+
+        // Not an array initializer or not an array type - return as-is
+        return initializer;
+    }
+
     public void addArgumentToMethodInvocation(MethodInvocation mi, Expression expr) {
         String newCode = astRewriter.addArgumentToMethodInvocation(getCompilationUnit(), getCurrentCode(), mi, expr);
         triggerUpdate(newCode);

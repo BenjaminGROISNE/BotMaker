@@ -7,10 +7,9 @@ import org.eclipse.jdt.core.dom.rewrite.ASTRewrite;
 
 import java.util.List;
 
-import static com.botmaker.util.TypeManager.toWrapperType;
-
 /**
  * Factory for creating initializer expressions for variables and fields.
+ * UPDATED: Now uses standard arrays (int[], String[]) instead of ArrayList
  */
 public class InitializerFactory {
 
@@ -18,6 +17,11 @@ public class InitializerFactory {
      * Creates a default initializer for a given type.
      */
     public Expression createDefaultInitializer(AST ast, String typeName) {
+        // Handle arrays
+        if (typeName.endsWith("[]")) {
+            return createArrayInitializer(ast, typeName, null);
+        }
+
         switch (typeName) {
             case "int":
             case "long":
@@ -43,54 +47,89 @@ public class InitializerFactory {
     }
 
     /**
-     * Creates a recursive ArrayList initializer (e.g., ArrayList<ArrayList<Integer>>).
+     * Creates an array initializer (e.g., new int[] {0}, new String[][] {{"a"}})
      * Preserves values if provided.
      */
-    public Expression createRecursiveListInitializer(AST ast, String typeName, CompilationUnit cu,
-                                                     ASTRewrite rewriter, List<Expression> leavesToPreserve) {
-        ImportManager.addImport(cu, rewriter, "java.util.ArrayList");
-        ImportManager.addImport(cu, rewriter, "java.util.Arrays");
+    public Expression createArrayInitializer(AST ast, String typeName, List<Expression> valuesToPreserve) {
+        // Parse array type
+        int dimensions = TypeManager.getListNestingLevel(typeName);
+        String baseType = TypeManager.getLeafType(typeName);
 
-        ClassInstanceCreation creation = ast.newClassInstanceCreation();
-        String innerTypeStr = extractArrayListElementType(typeName);
-        String wrapperInnerType = toWrapperType(innerTypeStr);
-
-        ParameterizedType paramType = ast.newParameterizedType(
-                ast.newSimpleType(ast.newName("ArrayList"))
-        );
-
-        if (!innerTypeStr.equals("Object")) {
-            paramType.typeArguments().add(TypeManager.createTypeNode(ast, wrapperInnerType));
-        }
-        creation.setType(paramType);
-
-        MethodInvocation asList = ast.newMethodInvocation();
-        asList.setExpression(ast.newSimpleName("Arrays"));
-        asList.setName(ast.newSimpleName("asList"));
-
-        if (innerTypeStr.startsWith("ArrayList<")) {
-            // Nested list
-            Expression innerList = createRecursiveListInitializer(ast, innerTypeStr, cu, rewriter, leavesToPreserve);
-            asList.arguments().add(innerList);
-        } else {
-            // Leaf type
-            if (leavesToPreserve != null && !leavesToPreserve.isEmpty()) {
-                for (Expression leaf : leavesToPreserve) {
-                    asList.arguments().add((Expression) ASTNode.copySubtree(ast, leaf));
-                }
-            } else {
-                asList.arguments().add(createDefaultInitializer(ast, innerTypeStr));
-            }
+        if (dimensions == 0) {
+            // Not an array, return default for base type
+            return createDefaultInitializer(ast, baseType);
         }
 
-        creation.arguments().add(asList);
-        return creation;
+        // Create array creation
+        ArrayCreation arrayCreation = ast.newArrayCreation();
+        Type elementType = TypeManager.createTypeNode(ast, typeName);
+        arrayCreation.setType((ArrayType) elementType);
+
+        // Create initializer
+        ArrayInitializer initializer = createNestedArrayInitializer(ast, baseType, dimensions, valuesToPreserve);
+        arrayCreation.setInitializer(initializer);
+
+        return arrayCreation;
     }
 
     /**
-     * Extracts the element type from ArrayList<T>.
-     * E.g., "ArrayList<Integer>" -> "Integer"
+     * Recursively creates nested array initializers
      */
+    private ArrayInitializer createNestedArrayInitializer(AST ast, String baseType, int dimensions, List<Expression> valuesToPreserve) {
+        ArrayInitializer initializer = ast.newArrayInitializer();
+
+        if (dimensions == 1) {
+            // Leaf level - add actual values
+            if (valuesToPreserve != null && !valuesToPreserve.isEmpty()) {
+                for (Expression value : valuesToPreserve) {
+                    initializer.expressions().add((Expression) ASTNode.copySubtree(ast, value));
+                }
+            } else {
+                // Add one default value
+                initializer.expressions().add(createDefaultInitializer(ast, baseType));
+            }
+        } else {
+            // Nested level - create sub-array
+            ArrayInitializer subArray = createNestedArrayInitializer(ast, baseType, dimensions - 1, valuesToPreserve);
+            initializer.expressions().add(subArray);
+        }
+
+        return initializer;
+    }
+
+    /**
+     * DEPRECATED: No longer used with standard arrays
+     */
+    @Deprecated
+    public Expression createRecursiveListInitializer(AST ast, String typeName, CompilationUnit cu,
+                                                     ASTRewrite rewriter, List<Expression> leavesToPreserve) {
+        // Convert ArrayList syntax to array syntax and delegate
+        String arrayType = convertArrayListToArray(typeName);
+        return createArrayInitializer(ast, arrayType, leavesToPreserve);
+    }
+
+    /**
+     * Helper to convert ArrayList<T> to T[]
+     */
+    private String convertArrayListToArray(String arrayListType) {
+        if (!arrayListType.startsWith("ArrayList<")) {
+            return arrayListType;
+        }
+
+        String inner = arrayListType.substring(10, arrayListType.length() - 1);
+
+        // Check if nested
+        if (inner.startsWith("ArrayList<")) {
+            return convertArrayListToArray(inner) + "[]";
+        } else {
+            return inner + "[]";
+        }
+    }
+
+    /**
+     * DEPRECATED: Extracts the element type from ArrayList<T>.
+     */
+    @Deprecated
     public String extractArrayListElementType(String arrayListType) {
         if (arrayListType.contains("<") && arrayListType.contains(">")) {
             int start = arrayListType.indexOf("<") + 1;

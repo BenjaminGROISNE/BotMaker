@@ -36,7 +36,6 @@ public class VariableDeclarationBlock extends AbstractStatementBlock {
 
     public void setInitializer(ExpressionBlock initializer) { this.initializer = initializer; }
 
-    // VariableDeclarationBlock.java
     @Override
     protected Node createUINode(CompletionContext context) {
         String typeString = variableType.toString();
@@ -102,26 +101,25 @@ public class VariableDeclarationBlock extends AbstractStatementBlock {
     private void showTypeMenu(Node anchor, CompletionContext context) {
         ContextMenu menu = new ContextMenu();
         String currentStr = variableType.toString();
-        boolean isArrayListType = isArrayList(variableType);
         boolean isArray = variableType.isArrayType();
         boolean isEnumType = isEnum(context);
 
-        final String baseType = extractBaseType(currentStr, isArrayListType, isArray);
+        final String baseType = extractBaseType(currentStr, isArray);
 
-        // Toggle ArrayList
-        MenuItem toggleList = new MenuItem(isArrayListType ? "Convert to Single Value" : "Convert to ArrayList");
-        toggleList.setStyle("-fx-font-weight: bold;");
-        toggleList.setOnAction(e -> {
-            String newType = isArrayListType ? baseType : "ArrayList<" + TypeManager.toWrapperType(baseType) + ">";
+        // Toggle Array
+        MenuItem toggleArray = new MenuItem(isArray ? "Convert to Single Value" : "Convert to Array");
+        toggleArray.setStyle("-fx-font-weight: bold;");
+        toggleArray.setOnAction(e -> {
+            String newType = isArray ? baseType : baseType + "[]";
             context.codeEditor().replaceVariableType((VariableDeclarationStatement) this.astNode, newType);
         });
-        menu.getItems().add(toggleList);
+        menu.getItems().add(toggleArray);
 
-        // Nested List Option
-        if (isArrayListType) {
-            MenuItem makeNested = new MenuItem("Make ArrayList of ArrayLists");
+        // Nested Array Option
+        if (isArray) {
+            MenuItem makeNested = new MenuItem("Make Array of Arrays");
             makeNested.setOnAction(e -> {
-                String newType = "ArrayList<ArrayList<" + TypeManager.toWrapperType(baseType) + ">>";
+                String newType = baseType + "[][]";
                 context.codeEditor().replaceVariableType((VariableDeclarationStatement) this.astNode, newType);
             });
             menu.getItems().add(makeNested);
@@ -134,21 +132,21 @@ public class VariableDeclarationBlock extends AbstractStatementBlock {
         for (String type : TypeManager.getFundamentalTypeNames()) {
             MenuItem item = new MenuItem(type);
             item.setOnAction(e -> {
-                String newType = isArrayListType ? "ArrayList<" + TypeManager.toWrapperType(type) + ">" : type;
+                String newType = isArray ? type + "[]" : type;
                 context.codeEditor().replaceVariableType((VariableDeclarationStatement) this.astNode, newType);
             });
             changeBaseMenu.getItems().add(item);
         }
         menu.getItems().add(changeBaseMenu);
 
-        // NEW: Change to Enum Type
+        // Change to Enum Type
         List<String> availableEnums = getAvailableEnums(context);
         if (!availableEnums.isEmpty()) {
             Menu changeEnumMenu = new Menu("Change to Enum Type");
             for (String enumName : availableEnums) {
                 MenuItem item = new MenuItem(enumName);
                 item.setOnAction(e -> {
-                    String newType = isArrayListType ? "ArrayList<" + enumName + ">" : enumName;
+                    String newType = isArray ? enumName + "[]" : enumName;
                     context.codeEditor().replaceVariableType((VariableDeclarationStatement) this.astNode, newType);
                 });
                 changeEnumMenu.getItems().add(item);
@@ -159,11 +157,10 @@ public class VariableDeclarationBlock extends AbstractStatementBlock {
         menu.show(anchor, javafx.geometry.Side.BOTTOM, 0, 0);
     }
 
-    private String extractBaseType(String currentStr, boolean isArrayListType, boolean isArray) {
-        if (isArrayListType && currentStr.contains("<")) {
-            return currentStr.substring(currentStr.indexOf("<") + 1, currentStr.lastIndexOf(">"));
-        } else if (isArray) {
-            return currentStr.replace("[]", "");
+    private String extractBaseType(String currentStr, boolean isArray) {
+        if (isArray) {
+            // Remove [] suffixes
+            return currentStr.replace("[]", "").trim();
         }
         return currentStr;
     }
@@ -173,8 +170,8 @@ public class VariableDeclarationBlock extends AbstractStatementBlock {
         listBox.setAlignment(Pos.CENTER_LEFT);
         listBox.getStyleClass().add("inline-list-display");
 
-        Label open = new Label("["); open.setStyle("-fx-font-weight: bold; -fx-font-size: 14px;");
-        Label close = new Label("]"); close.setStyle("-fx-font-weight: bold; -fx-font-size: 14px;");
+        Label open = new Label("{"); open.setStyle("-fx-font-weight: bold; -fx-font-size: 14px;");
+        Label close = new Label("}"); close.setStyle("-fx-font-weight: bold; -fx-font-size: 14px;");
 
         listBox.getChildren().addAll(open, initializer.getUINode(context), close);
         return listBox;
@@ -182,26 +179,19 @@ public class VariableDeclarationBlock extends AbstractStatementBlock {
 
     private String getDisplayTypeName(Type type) {
         String typeName = type.toString();
-        if (isArrayList(type)) return typeName;
-        if (typeName.endsWith("[]")) return typeName.replace("[]", " list");
+        if (typeName.endsWith("[]")) return typeName; // Show as-is: int[], String[][]
         return typeName;
     }
 
-    private boolean isArrayList(Type type) {
-        return type.toString().startsWith("ArrayList");
-    }
-
-    // NEW: Check if current type is an enum
+    // Check if current type is an enum
     private boolean isEnum(CompletionContext context) {
         String typeName = variableType.toString();
-        // Remove ArrayList wrapper if present
-        if (typeName.startsWith("ArrayList<") && typeName.endsWith(">")) {
-            typeName = typeName.substring(10, typeName.length() - 1);
-        }
+        // Remove array brackets if present
+        typeName = typeName.replace("[]", "").trim();
         return getAvailableEnums(context).contains(typeName);
     }
 
-    // NEW: Get all available enum types from the compilation unit
+    // Get all available enum types from the compilation unit
     private List<String> getAvailableEnums(CompletionContext context) {
         List<String> enumNames = new ArrayList<>();
 
@@ -236,7 +226,7 @@ public class VariableDeclarationBlock extends AbstractStatementBlock {
         return enumNames;
     }
 
-    // NEW: Recursively find local enum declarations in method bodies
+    // Recursively find local enum declarations in method bodies
     private void findLocalEnums(ASTNode node, List<String> enumNames) {
         if (node instanceof TypeDeclarationStatement) {
             TypeDeclarationStatement tds = (TypeDeclarationStatement) node;

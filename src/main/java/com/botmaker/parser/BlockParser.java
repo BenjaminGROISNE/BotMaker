@@ -236,6 +236,23 @@ public class BlockParser {
             map.put(expr, b);
             return Optional.of(b);
         }
+
+        if (expr instanceof ArrayInitializer) {
+            ArrayInitializer arrayInit = (ArrayInitializer) expr;
+            ListBlock block = new ListBlock(
+                    BlockIdPrefix.generate(BlockIdPrefix.LIST, expr),
+                    arrayInit
+            );
+            map.put(expr, block);
+
+            // CRITICAL: Parse each element in the array initializer
+            for (Object item : arrayInit.expressions()) {
+                parseExpression((Expression) item, map).ifPresent(block::addElement);
+            }
+
+            return Optional.of(block);
+        }
+
         if (isListStructure(expr)) {
             ListBlock b = new ListBlock(BlockIdPrefix.generate(BlockIdPrefix.LIST, expr), expr);
             map.put(expr, b);
@@ -352,7 +369,9 @@ public class BlockParser {
         if (expr instanceof MethodInvocation) {
             MethodInvocation mi = (MethodInvocation) expr;
             String scope = mi.getExpression() != null ? mi.getExpression().toString() : "";
-            return (scope.equals("Arrays") && mi.getName().getIdentifier().equals("asList")) || (scope.equals("List") && mi.getName().getIdentifier().equals("of"));
+            // CHANGED: Now recognize both Arrays.asList AND List.of
+            return (scope.equals("Arrays") && mi.getName().getIdentifier().equals("asList")) ||
+                    (scope.equals("List") && mi.getName().getIdentifier().equals("of"));
         }
         return false;
     }

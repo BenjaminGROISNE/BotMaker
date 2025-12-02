@@ -9,6 +9,7 @@ import org.eclipse.jdt.core.dom.rewrite.ASTRewrite;
 
 /**
  * Factory for creating statement nodes.
+ * UPDATED: Now creates standard arrays instead of ArrayList
  */
 public class StatementFactory {
 
@@ -35,7 +36,7 @@ public class StatementFactory {
             case DECLARE_STRING:
                 return createStringDeclaration(ast);
             case DECLARE_ARRAY:
-                return createArrayListDeclaration(ast, cu, rewriter);
+                return createArrayDeclaration(ast, cu, rewriter);
             case IF:
                 return createIfStatement(ast);
             case WHILE:
@@ -124,20 +125,20 @@ public class StatementFactory {
         return varDecl;
     }
 
-    private Statement createArrayListDeclaration(AST ast, CompilationUnit cu, ASTRewrite rewriter) {
-        if (cu != null && rewriter != null) {
-            ImportManager.addImport(cu, rewriter, "java.util.ArrayList");
-            ImportManager.addImport(cu, rewriter, "java.util.Arrays");
-        }
-
+    /**
+     * UPDATED: Creates standard array declaration (int[] myList = new int[] {0})
+     */
+    private Statement createArrayDeclaration(AST ast, CompilationUnit cu, ASTRewrite rewriter) {
         VariableDeclarationFragment frag = ast.newVariableDeclarationFragment();
         frag.setName(ast.newSimpleName("myList"));
+
+        // Create initializer: new int[] {0}
         frag.setInitializer(
-                initializerFactory.createRecursiveListInitializer(ast, "ArrayList<Integer>", cu, rewriter, null)
+                initializerFactory.createArrayInitializer(ast, "int[]", null)
         );
 
         VariableDeclarationStatement listDecl = ast.newVariableDeclarationStatement(frag);
-        listDecl.setType(TypeManager.createTypeNode(ast, "ArrayList<Integer>"));
+        listDecl.setType(TypeManager.createTypeNode(ast, "int[]"));
         return listDecl;
     }
 

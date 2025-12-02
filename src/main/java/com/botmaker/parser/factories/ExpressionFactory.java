@@ -44,7 +44,7 @@ public class ExpressionFactory {
                 return ast.newSimpleName(DefaultNames.DEFAULT_VARIABLE);
 
             case LIST:
-                return createListExpression(ast, cu, rewriter);
+                return createArrayInitializerExpression(ast);
 
             case ENUM_CONSTANT:
                 return createEnumConstantExpression(ast, cu, contextTypeName);
@@ -85,13 +85,15 @@ public class ExpressionFactory {
         return call;
     }
 
-    private Expression createListExpression(AST ast, CompilationUnit cu, ASTRewrite rewriter) {
-        ImportManager.addImport(cu, rewriter, "java.util.Arrays");
-        MethodInvocation asList = ast.newMethodInvocation();
-        asList.setExpression(ast.newSimpleName("Arrays"));
-        asList.setName(ast.newSimpleName("asList"));
-        return asList;
+    private Expression createArrayInitializerExpression(AST ast) {
+        ArrayInitializer arrayInit = ast.newArrayInitializer();
+        // Add one placeholder expression
+        SimpleName placeholder = ast.newSimpleName(DefaultNames.DEFAULT_VARIABLE);
+        arrayInit.expressions().add(placeholder);
+        return arrayInit;
     }
+
+
 
     private Expression createEnumConstantExpression(AST ast, CompilationUnit cu, String contextTypeName) {
         String enumTypeName = contextTypeName != null ? contextTypeName : "MyEnum";
