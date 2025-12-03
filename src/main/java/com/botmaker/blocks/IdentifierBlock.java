@@ -102,8 +102,8 @@ public class IdentifierBlock extends AbstractExpressionBlock {
                                 // DEBUG: Print what we're checking
                                 System.out.println("[Debug] Variable: " + item.getLabel() + " Type: " + typeInfo + " Expected: " + expectedType);
 
-                                // Use leaf type comparison for better matching
-                                return isTypeCompatible(typeInfo, expectedType);
+                                // Use STRICT type compatibility for better filtering
+                                return isTypeCompatibleStrict(typeInfo, expectedType);
                             })
                             .collect(Collectors.toList());
 
@@ -143,38 +143,57 @@ public class IdentifierBlock extends AbstractExpressionBlock {
     }
 
     /**
-     * NEW: Better type compatibility checking using leaf types
+     * NEW: STRICT type compatibility checking that matches array dimensions exactly
      */
-    private boolean isTypeCompatible(String variableType, String expectedType) {
+    private boolean isTypeCompatibleStrict(String variableType, String expectedType) {
         if (variableType == null || variableType.isBlank()) return true;
         if (expectedType == null || expectedType.equals(TypeManager.UI_TYPE_ANY)) return true;
 
-        // Get leaf types for comparison
-        String varLeafType = TypeManager.getLeafType(variableType);
-        String expectedLeafType = TypeManager.getLeafType(expectedType);
+        System.out.println("[Debug Strict Type Match] Checking: '" + variableType + "' vs Expected: '" + expectedType + "'");
 
-        // Convert to UI types
-        String varUiType = TypeManager.determineUiType(varLeafType);
-        String expectedUiType = TypeManager.determineUiType(expectedLeafType);
-
-        System.out.println("[Debug Type Match] Var: " + variableType + " -> " + varLeafType + " -> " + varUiType +
-                " | Expected: " + expectedType + " -> " + expectedLeafType + " -> " + expectedUiType);
-
-        // For lists, check if the leaf types are compatible
-        if (variableType.contains("ArrayList") || variableType.contains("[]")) {
-            if (expectedType.equals(TypeManager.UI_TYPE_LIST)) {
-                return true; // Any list is compatible with list type
+        // For list context, we need EXACT dimension matching
+        if (expectedType.equals(TypeManager.UI_TYPE_LIST)) {
+            // Must be an array type
+            if (!variableType.contains("[]")) {
+                System.out.println("[Debug] Rejected: Not an array type");
+                return false;
             }
-            // Check if leaf types match
-            return TypeManager.isCompatible(varUiType, expectedUiType);
+            return true;
         }
 
-        // Use standard compatibility check
+        // For specific types (number, boolean, String), check leaf type
+        if (expectedType.equals(TypeManager.UI_TYPE_NUMBER) ||
+                expectedType.equals(TypeManager.UI_TYPE_BOOLEAN) ||
+                expectedType.equals(TypeManager.UI_TYPE_STRING)) {
+
+            // Get leaf types
+            String varLeafType = TypeManager.getLeafType(variableType);
+            String varUiType = TypeManager.determineUiType(varLeafType);
+
+            // Variable must NOT be an array for leaf type contexts
+            if (variableType.contains("[]")) {
+                System.out.println("[Debug] Rejected: Array type when expecting leaf type");
+                return false;
+            }
+
+            boolean compatible = TypeManager.isCompatible(varUiType, expectedType);
+            System.out.println("[Debug] Leaf match: " + varLeafType + " -> " + varUiType + " = " + compatible);
+            return compatible;
+        }
+
+        // For switch compatibility
+        if (expectedType.equals(TypeManager.UI_TYPE_SWITCH_COMPATIBLE)) {
+            if (variableType.contains("[]")) return false;
+            return TypeManager.isCompatible(variableType, expectedType);
+        }
+
+        // Default compatibility check
         return TypeManager.isCompatible(variableType, expectedType);
     }
 
     /**
      * Walks up the AST skipping parentheses to find the true semantic parent.
+     * Now properly handles nested list contexts by tracking depth.
      */
     private String determineExpectedType() {
         if (this.astNode == null) return TypeManager.UI_TYPE_ANY;
@@ -189,14 +208,20 @@ public class IdentifierBlock extends AbstractExpressionBlock {
 
         if (parent == null) return TypeManager.UI_TYPE_ANY;
 
-        // NEW: Switch Statement Expression Context
+        // NEW: Check if we're inside a list structure (ArrayInitializer or MethodInvocation for Arrays.asList/List.of)
+        String listContextType = checkListContext(this.astNode);
+        if (listContextType != null) {
+            return listContextType;
+        }
+
+        // Switch Statement Expression Context
         if (parent instanceof SwitchStatement) {
             if (((SwitchStatement) parent).getExpression() == child) {
                 return TypeManager.UI_TYPE_SWITCH_COMPATIBLE;
             }
         }
 
-        // 2. Boolean Contexts
+        // Boolean Contexts
         if (parent instanceof IfStatement) {
             if (((IfStatement) parent).getExpression() == child) return TypeManager.UI_TYPE_BOOLEAN;
         }
@@ -207,7 +232,7 @@ public class IdentifierBlock extends AbstractExpressionBlock {
             if (((DoStatement) parent).getExpression() == child) return TypeManager.UI_TYPE_BOOLEAN;
         }
 
-        // 3. Unary Contexts
+        // Unary Contexts
         if (parent instanceof PrefixExpression) {
             PrefixExpression.Operator op = ((PrefixExpression) parent).getOperator();
             if (op == PrefixExpression.Operator.NOT) return TypeManager.UI_TYPE_BOOLEAN;
@@ -215,7 +240,7 @@ public class IdentifierBlock extends AbstractExpressionBlock {
         }
         if (parent instanceof PostfixExpression) return TypeManager.UI_TYPE_NUMBER;
 
-        // 4. Binary Contexts
+        // Binary Contexts
         if (parent instanceof InfixExpression) {
             InfixExpression infix = (InfixExpression) parent;
             InfixExpression.Operator op = infix.getOperator();
@@ -225,28 +250,30 @@ public class IdentifierBlock extends AbstractExpressionBlock {
             return TypeManager.UI_TYPE_NUMBER;
         }
 
-        // 5. Assignment
+        // Assignment
         if (parent instanceof Assignment) {
             Assignment assignment = (Assignment) parent;
             if (assignment.getRightHandSide() == child) {
                 Expression lhs = assignment.getLeftHandSide();
                 ITypeBinding binding = lhs.resolveTypeBinding();
                 if (binding != null) {
-                    // Use the FULL type here, not just the name
                     String fullType = binding.getQualifiedName();
                     return TypeManager.determineUiType(fullType);
                 }
             }
         }
 
-        // 6. Variable Declaration
+        // Variable Declaration
         if (parent instanceof VariableDeclarationFragment) {
             VariableDeclarationFragment frag = (VariableDeclarationFragment) parent;
             if (frag.getInitializer() == child) {
                 ASTNode grandParent = frag.getParent();
                 if (grandParent instanceof VariableDeclarationStatement) {
                     Type type = ((VariableDeclarationStatement) grandParent).getType();
-                    // Get the FULL type string
+                    String typeString = type.toString();
+                    return TypeManager.determineUiType(typeString);
+                } else if (grandParent instanceof FieldDeclaration) {
+                    Type type = ((FieldDeclaration) grandParent).getType();
                     String typeString = type.toString();
                     return TypeManager.determineUiType(typeString);
                 }
@@ -254,6 +281,130 @@ public class IdentifierBlock extends AbstractExpressionBlock {
         }
 
         return TypeManager.UI_TYPE_ANY;
+    }
+
+    /**
+     * NEW: Checks if we're inside a list context and determines what type should go there.
+     * This properly handles nested lists by calculating depth and comparing with declaration.
+     */
+    private String checkListContext(ASTNode node) {
+        ASTNode current = node.getParent(); // Start from parent, not the node itself
+        ASTNode rootDefinition = null;
+        int currentDepth = 0;
+
+        System.out.println("[Debug List Context Start] Node: " + node.getClass().getSimpleName() + " at " + node.getStartPosition());
+
+        // Walk up to find the root definition and count depth
+        while (current != null) {
+            System.out.println("[Debug] Visiting: " + current.getClass().getSimpleName());
+
+            // Count nested ArrayInitializers
+            if (current instanceof ArrayInitializer) {
+                currentDepth++;
+                System.out.println("[Debug] Found ArrayInitializer, depth now: " + currentDepth);
+            }
+            // Count nested MethodInvocation (Arrays.asList/List.of)
+            else if (current instanceof MethodInvocation) {
+                MethodInvocation mi = (MethodInvocation) current;
+                String methodName = mi.getName().getIdentifier();
+                if ("asList".equals(methodName) || "of".equals(methodName)) {
+                    currentDepth++;
+                    System.out.println("[Debug] Found " + methodName + ", depth now: " + currentDepth);
+                }
+            }
+
+            // Found root declaration - stop here
+            if (current instanceof VariableDeclarationFragment) {
+                rootDefinition = current;
+                System.out.println("[Debug] Found VariableDeclarationFragment");
+                break;
+            }
+            if (current instanceof VariableDeclarationStatement) {
+                rootDefinition = current;
+                System.out.println("[Debug] Found VariableDeclarationStatement");
+                break;
+            }
+            if (current instanceof FieldDeclaration) {
+                rootDefinition = current;
+                System.out.println("[Debug] Found FieldDeclaration");
+                break;
+            }
+
+            current = current.getParent();
+        }
+
+        // If we didn't find a list-related context, return null (not in a list)
+        if (currentDepth == 0) {
+            System.out.println("[Debug] No list context found (depth=0)");
+            return null;
+        }
+
+        if (rootDefinition == null) {
+            System.out.println("[Debug] No root definition found");
+            return null;
+        }
+
+        // Get the declared type
+        String declaredType = null;
+        if (rootDefinition instanceof VariableDeclarationStatement) {
+            declaredType = ((VariableDeclarationStatement) rootDefinition).getType().toString();
+        } else if (rootDefinition instanceof VariableDeclarationFragment) {
+            ASTNode parent = rootDefinition.getParent();
+            if (parent instanceof VariableDeclarationStatement) {
+                declaredType = ((VariableDeclarationStatement) parent).getType().toString();
+            } else if (parent instanceof FieldDeclaration) {
+                declaredType = ((FieldDeclaration) parent).getType().toString();
+            }
+        } else if (rootDefinition instanceof FieldDeclaration) {
+            declaredType = ((FieldDeclaration) rootDefinition).getType().toString();
+        }
+
+        if (declaredType == null) {
+            System.out.println("[Debug] Could not determine declared type");
+            return null;
+        }
+
+        // Calculate total dimensions and leaf type
+        int totalDimensions = TypeManager.getListNestingLevel(declaredType);
+        String leafType = TypeManager.getLeafType(declaredType);
+
+        System.out.println("[Debug List Context] DeclaredType: " + declaredType +
+                " | TotalDims: " + totalDimensions +
+                " | CurrentDepth: " + currentDepth +
+                " | LeafType: " + leafType);
+
+        // If this isn't actually an array type, we're not in a list context
+        if (totalDimensions == 0) {
+            System.out.println("[Debug] Type is not an array, no list context");
+            return null;
+        }
+
+        // Determine what we need at this depth
+        // If we have int[][][] and we're at depth 1, we need int[][]
+        // If we're at depth 2, we need int[]
+        // If we're at depth 3, we need int
+        int remainingDimensions = totalDimensions - currentDepth;
+
+        System.out.println("[Debug] Remaining dimensions: " + remainingDimensions);
+
+        if (remainingDimensions > 1) {
+            // Need a nested list (e.g., int[][] when we have int[][][])
+            System.out.println("[Debug] Returning TYPE_LIST");
+            return TypeManager.UI_TYPE_LIST;
+        } else if (remainingDimensions == 1) {
+            // Need an array of leaf type (e.g., int[] when we have int[][])
+            System.out.println("[Debug] Returning TYPE_LIST (one level array)");
+            return TypeManager.UI_TYPE_LIST;
+        } else if (remainingDimensions == 0) {
+            // Need a leaf value (e.g., int when we have int[])
+            String uiType = TypeManager.determineUiType(leafType);
+            System.out.println("[Debug] Returning leaf type: " + uiType);
+            return uiType;
+        } else {
+            // We're too deep - shouldn't happen
+            System.out.println("[Debug] Too deep! Remaining: " + remainingDimensions);
+            return null;
+        }
     }
 
     private String getSimpleTypeName(String detail) {

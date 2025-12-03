@@ -45,7 +45,6 @@ public class ListBlock extends AbstractExpressionBlock {
 
     @Override
     protected Node createUINode(CompletionContext context) {
-        // ... (Container and Style setup remains same)
         VBox container = new VBox(5);
         container.setAlignment(Pos.TOP_LEFT);
         container.getStyleClass().add("list-block");
@@ -110,9 +109,6 @@ public class ListBlock extends AbstractExpressionBlock {
     }
 
     /**
-     * Determines the UI type of items inside this list (e.g., "number", "text", "boolean", "list").
-     */
-    /**
      * Logic to determine what kind of items this specific ListBlock should contain.
      * It walks up the AST to find the Variable Declaration, calculates total nesting depth,
      * calculates current depth, and decides if we need "list" or a leaf type.
@@ -124,10 +120,16 @@ public class ListBlock extends AbstractExpressionBlock {
 
         // 1. Walk up to find the root definition and count current depth
         while (current != null) {
+            // If we hit another ArrayInitializer, we are one level deeper
+            if (current instanceof ArrayInitializer) {
+                if (current != this.astNode) {
+                    currentDepth++;
+                }
+            }
             // If we hit another Arrays.asList, we are one level deeper
-            if (current instanceof MethodInvocation) {
+            else if (current instanceof MethodInvocation) {
                 MethodInvocation mi = (MethodInvocation) current;
-                if ("asList".equals(mi.getName().getIdentifier())) {
+                if ("asList".equals(mi.getName().getIdentifier()) || "of".equals(mi.getName().getIdentifier())) {
                     // If we aren't the starting node, increment depth
                     if (current != this.astNode) {
                         currentDepth++;
@@ -135,13 +137,18 @@ public class ListBlock extends AbstractExpressionBlock {
                 }
             }
 
-            // Found declaration: ArrayList<ArrayList<Boolean>> x = ...
+            // Found declaration: int[][] x = ...
             if (current instanceof VariableDeclarationFragment) {
                 rootDefinition = current;
                 break;
             }
             // Found declaration in standard usage
             if (current instanceof VariableDeclarationStatement) {
+                rootDefinition = current;
+                break;
+            }
+            // Found field declaration
+            if (current instanceof FieldDeclaration) {
                 rootDefinition = current;
                 break;
             }
@@ -163,27 +170,32 @@ public class ListBlock extends AbstractExpressionBlock {
             ASTNode parent = rootDefinition.getParent();
             if (parent instanceof VariableDeclarationStatement) {
                 rootTypeStr = ((VariableDeclarationStatement) parent).getType().toString();
+            } else if (parent instanceof FieldDeclaration) {
+                rootTypeStr = ((FieldDeclaration) parent).getType().toString();
             }
         } else if (rootDefinition instanceof ClassInstanceCreation) {
             rootTypeStr = ((ClassInstanceCreation) rootDefinition).getType().toString();
+        } else if (rootDefinition instanceof FieldDeclaration) {
+            rootTypeStr = ((FieldDeclaration) rootDefinition).getType().toString();
         }
 
         // 3. Calculate Dimensions
-        // e.g. ArrayList<ArrayList<Boolean>> -> genericDepth = 2, leafType = "Boolean"
+        // e.g. int[][] -> genericDepth = 2, leafType = "int"
         int genericDepth = TypeManager.getListNestingLevel(rootTypeStr);
-        String leafType = TypeManager.getLeafType(rootTypeStr); // e.g. "Boolean"
-
+        String leafType = TypeManager.getLeafType(rootTypeStr); // e.g. "int"
 
         // 4. Determine UI Type based on depth comparison
-        // If genericDepth is 2 (List of List of Bool)
+        // If genericDepth is 2 (int[][])
         // currentDepth 0 (Root) -> needs "list" (to make depth 1)
-        // currentDepth 1 (Middle) -> needs leafType ("Boolean")
-
-        // Note: The depth calculation depends on how the AST creates the structure.
-        // Arrays.asList( Arrays.asList ( ... ) )
-        // Root list is depth 0.
+        // currentDepth 1 (Middle) -> needs leafType ("int")
 
         int remainingLevels = genericDepth - 1 - currentDepth;
+
+        System.out.println("[Debug ListBlock] RootType: " + rootTypeStr +
+                " | TotalDepth: " + genericDepth +
+                " | CurrentDepth: " + currentDepth +
+                " | RemainingLevels: " + remainingLevels +
+                " | LeafType: " + leafType);
 
         if (remainingLevels > 0) {
             return "list";
@@ -238,6 +250,14 @@ public class ListBlock extends AbstractExpressionBlock {
             });
             menu.getItems().add(menuItem);
         }
+
+        // If no valid options, show a disabled message
+        if (menu.getItems().isEmpty()) {
+            MenuItem noOptions = new MenuItem("(Maximum nesting reached)");
+            noOptions.setDisable(true);
+            menu.getItems().add(noOptions);
+        }
+
         menu.show(button, javafx.geometry.Side.BOTTOM, 0, 0);
     }
 
