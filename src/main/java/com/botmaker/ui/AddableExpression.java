@@ -48,7 +48,10 @@ public enum AddableExpression {
     public String getReturnType() { return returnType; }
 
     public static List<AddableExpression> getForType(String targetType) {
+        System.out.println("[Debug AddableExpression.getForType] Target type: '" + targetType + "'");
+
         if (targetType == null || targetType.equals("any")) {
+            System.out.println("[Debug] Returning all expressions (type is 'any')");
             return Arrays.asList(values());
         }
 
@@ -78,12 +81,18 @@ public enum AddableExpression {
                     .collect(Collectors.toList());
         }
 
-        return Arrays.stream(values())
+        List<AddableExpression> filtered = Arrays.stream(values())
                 .filter(e -> {
                     if (e.returnType.equals("any")) return true;
                     if (e.returnType.equals("enum") && targetType.equals("enum")) return true;
-                    return e.returnType.equals(targetType);
+                    boolean match = e.returnType.equals(targetType);
+                    System.out.println("[Debug] " + e.name() + " (returns " + e.returnType + "): " +
+                            (match ? "INCLUDED" : "excluded"));
+                    return match;
                 })
                 .collect(Collectors.toList());
+
+        System.out.println("[Debug] Filtered to " + filtered.size() + " options");
+        return filtered;
     }
 }

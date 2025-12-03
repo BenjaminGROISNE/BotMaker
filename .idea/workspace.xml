@@ -4,11 +4,12 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="cba04025-c331-4634-a893-436bad03efc0" name="Changes" comment="fix identifier">
+    <list default="true" id="cba04025-c331-4634-a893-436bad03efc0" name="Changes" comment="primitive types work">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/projects/.botmaker-config.json" beforeDir="false" afterPath="$PROJECT_DIR$/projects/.botmaker-config.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/botmaker/blocks/IdentifierBlock.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/botmaker/blocks/IdentifierBlock.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/botmaker/blocks/ListBlock.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/botmaker/blocks/ListBlock.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/botmaker/ui/AddableExpression.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/botmaker/ui/AddableExpression.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/botmaker/util/TypeManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/botmaker/util/TypeManager.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -227,15 +228,7 @@
       <workItem from="1764429708850" duration="899000" />
       <workItem from="1764449958738" duration="3144000" />
       <workItem from="1764786157571" duration="40000" />
-      <workItem from="1764790221452" duration="3654000" />
-    </task>
-    <task id="LOCAL-00028" summary="Tried Maven project">
-      <option name="closed" value="true" />
-      <created>1761933394462</created>
-      <option name="number" value="00028" />
-      <option name="presentableId" value="LOCAL-00028" />
-      <option name="project" value="LOCAL" />
-      <updated>1761933394462</updated>
+      <workItem from="1764790221452" duration="4791000" />
     </task>
     <task id="LOCAL-00029" summary="HOLY SHIT CLAUDE LE BOSS">
       <option name="closed" value="true" />
@@ -621,7 +614,15 @@
       <option name="project" value="LOCAL" />
       <updated>1764792477443</updated>
     </task>
-    <option name="localTasksCounter" value="77" />
+    <task id="LOCAL-00077" summary="primitive types work">
+      <option name="closed" value="true" />
+      <created>1764794041890</created>
+      <option name="number" value="00077" />
+      <option name="presentableId" value="LOCAL-00077" />
+      <option name="project" value="LOCAL" />
+      <updated>1764794041890</updated>
+    </task>
+    <option name="localTasksCounter" value="78" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -655,7 +656,6 @@
     <ignored-roots>
       <path value="$PROJECT_DIR$/.." />
     </ignored-roots>
-    <MESSAGE value="Only expressions of correct type are visible" />
     <MESSAGE value="Started variable filtering based on type" />
     <MESSAGE value="Variable proposition works for boolean" />
     <MESSAGE value="Expression type filtering" />
@@ -680,7 +680,8 @@
     <MESSAGE value="new blockbuilder methods" />
     <MESSAGE value="Switched back to simple array, correctly detects  the type and local variables.&#10;However only for simple lists not nested ones" />
     <MESSAGE value="fix identifier" />
-    <option name="LAST_COMMIT_MESSAGE" value="fix identifier" />
+    <MESSAGE value="primitive types work" />
+    <option name="LAST_COMMIT_MESSAGE" value="primitive types work" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

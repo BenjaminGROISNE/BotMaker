@@ -118,6 +118,27 @@ public class TypeManager {
         return true;
     }
 
+    /**
+     * Determines UI type from ITypeBinding
+     */
+    public static String determineUiType(ITypeBinding binding) {
+        if (binding == null) return UI_TYPE_ANY;
+
+        // Check for arrays
+        if (binding.isArray()) return UI_TYPE_LIST;
+
+        // Check for enums
+        if (binding.isEnum()) return UI_TYPE_ENUM;
+
+        String qualifiedName = binding.getQualifiedName();
+
+        if (NUMBER_TYPES.contains(qualifiedName)) return UI_TYPE_NUMBER;
+        if (BOOLEAN_TYPES.contains(qualifiedName)) return UI_TYPE_BOOLEAN;
+        if (STRING_TYPES.contains(qualifiedName)) return UI_TYPE_STRING;
+
+        return UI_TYPE_ANY;
+    }
+
     // Add an overload that takes CompilationUnit for accurate enum detection
     public static String determineUiType(String typeName, CompilationUnit cu) {
         if (typeName == null || typeName.isBlank()) return UI_TYPE_ANY;
@@ -157,88 +178,7 @@ public class TypeManager {
     }
 
     // --- Type Compatibility (ITypeBinding) ---
-// Add these new methods to TypeManager.java
 
-    /**
-     * Determines UI type from ITypeBinding
-     */
-    public static String determineUiType(ITypeBinding binding) {
-        if (binding == null) return UI_TYPE_ANY;
-
-        // Check for arrays
-        if (binding.isArray()) return UI_TYPE_LIST;
-
-        // Check for enums
-        if (binding.isEnum()) return UI_TYPE_ENUM;
-
-        String qualifiedName = binding.getQualifiedName();
-
-        if (NUMBER_TYPES.contains(qualifiedName)) return UI_TYPE_NUMBER;
-        if (BOOLEAN_TYPES.contains(qualifiedName)) return UI_TYPE_BOOLEAN;
-        if (STRING_TYPES.contains(qualifiedName)) return UI_TYPE_STRING;
-
-        return UI_TYPE_ANY;
-    }
-
-    /**
-     * Gets the element type of an array binding
-     */
-    public static ITypeBinding getArrayElementType(ITypeBinding arrayBinding) {
-        if (arrayBinding == null || !arrayBinding.isArray()) return null;
-        return arrayBinding.getElementType();
-    }
-
-    /**
-     * Gets the leaf type of a potentially multi-dimensional array
-     */
-    public static ITypeBinding getLeafTypeBinding(ITypeBinding binding) {
-        if (binding == null) return null;
-
-        ITypeBinding current = binding;
-        while (current.isArray()) {
-            current = current.getElementType();
-        }
-        return current;
-    }
-
-    /**
-     * Gets array nesting level from binding
-     */
-    public static int getArrayDimensions(ITypeBinding binding) {
-        if (binding == null || !binding.isArray()) return 0;
-
-        int dimensions = 0;
-        ITypeBinding current = binding;
-        while (current.isArray()) {
-            dimensions++;
-            current = current.getElementType();
-        }
-        return dimensions;
-    }
-
-    /**
-     * Checks type compatibility using bindings
-     */
-    public static boolean isCompatibleBinding(ITypeBinding actualType, ITypeBinding expectedType) {
-        if (expectedType == null) return true;
-        if (actualType == null) return false;
-
-        // Direct match
-        if (actualType.isEqualTo(expectedType)) return true;
-
-        // Check assignability
-        if (actualType.isAssignmentCompatible(expectedType)) return true;
-
-        // Check if both are arrays with compatible element types
-        if (actualType.isArray() && expectedType.isArray()) {
-            return isCompatibleBinding(
-                    actualType.getElementType(),
-                    expectedType.getElementType()
-            );
-        }
-
-        return false;
-    }
     public static boolean isCompatible(ITypeBinding binding, String targetUiType) {
         if (targetUiType == null || targetUiType.equals(UI_TYPE_ANY)) return true;
         if (binding == null) return true;
@@ -317,6 +257,30 @@ public class TypeManager {
         }
     }
 
+    /**
+     * Checks type compatibility using bindings
+     */
+    public static boolean isCompatibleBinding(ITypeBinding actualType, ITypeBinding expectedType) {
+        if (expectedType == null) return true;
+        if (actualType == null) return false;
+
+        // Direct match
+        if (actualType.isEqualTo(expectedType)) return true;
+
+        // Check assignability
+        if (actualType.isAssignmentCompatible(expectedType)) return true;
+
+        // Check if both are arrays with compatible element types
+        if (actualType.isArray() && expectedType.isArray()) {
+            return isCompatibleBinding(
+                    actualType.getElementType(),
+                    expectedType.getElementType()
+            );
+        }
+
+        return false;
+    }
+
     public static String getFriendlyTypeName(ITypeBinding typeBinding) {
         if (typeBinding == null) return "unknown";
         if (typeBinding.isArray()) return "list";
@@ -363,6 +327,141 @@ public class TypeManager {
             case "Byte": return "byte";
             default: return typeName;
         }
+    }
+
+    /**
+     * Gets array nesting level from binding
+     * FIXED: Handles multi-dimensional arrays correctly
+     */
+    public static int getArrayDimensions(ITypeBinding binding) {
+        if (binding == null) {
+            System.out.println("[Debug TypeManager.getArrayDimensions] binding is null -> 0");
+            return 0;
+        }
+
+        if (!binding.isArray()) {
+            System.out.println("[Debug TypeManager.getArrayDimensions] Not an array: " + binding.getQualifiedName() + " -> 0");
+            return 0;
+        }
+
+        // METHOD 1: Try getDimensions() if available (JDT specific)
+        try {
+            int dims = binding.getDimensions();
+            System.out.println("[Debug TypeManager.getArrayDimensions] Using getDimensions(): " +
+                    binding.getQualifiedName() + " -> " + dims);
+            if (dims > 0) {
+                return dims;
+            }
+        } catch (Exception e) {
+            System.out.println("[Debug] getDimensions() not available, using fallback");
+        }
+
+        // METHOD 2: Count dimensions by traversing
+        int dimensions = 0;
+        ITypeBinding current = binding;
+
+        while (current != null && current.isArray()) {
+            dimensions++;
+            ITypeBinding elementType = current.getElementType();
+            System.out.println("[Debug]   Level " + dimensions + ": " +
+                    current.getQualifiedName() + " -> element: " +
+                    (elementType != null ? elementType.getQualifiedName() : "null"));
+            current = elementType;
+        }
+
+        // METHOD 3: Parse the qualified name as last resort
+        if (dimensions == 0) {
+            String qualifiedName = binding.getQualifiedName();
+            System.out.println("[Debug] Fallback to parsing name: " + qualifiedName);
+            while (qualifiedName.endsWith("[]")) {
+                dimensions++;
+                qualifiedName = qualifiedName.substring(0, qualifiedName.length() - 2);
+            }
+        }
+
+        System.out.println("[Debug TypeManager.getArrayDimensions] FINAL: " + binding.getQualifiedName() +
+                " -> " + dimensions + " dimensions");
+
+        return dimensions;
+    }
+
+    /**
+     * Gets the element type of an array binding
+     */
+    public static ITypeBinding getArrayElementType(ITypeBinding arrayBinding) {
+        if (arrayBinding == null || !arrayBinding.isArray()) {
+            System.out.println("[Debug TypeManager.getArrayElementType] Not an array or null");
+            return null;
+        }
+
+        ITypeBinding result = arrayBinding.getElementType();
+        System.out.println("[Debug TypeManager.getArrayElementType] " + arrayBinding.getQualifiedName() +
+                " -> " + (result != null ? result.getQualifiedName() : "null"));
+        return result;
+    }
+
+    /**
+     * Gets the leaf type of a potentially multi-dimensional array
+     * FIXED: Properly handles multi-dimensional arrays
+     */
+    public static ITypeBinding getLeafTypeBinding(ITypeBinding binding) {
+        if (binding == null) {
+            System.out.println("[Debug TypeManager.getLeafTypeBinding] binding is null");
+            return null;
+        }
+
+        if (!binding.isArray()) {
+            System.out.println("[Debug TypeManager.getLeafTypeBinding] Not an array: " + binding.getQualifiedName());
+            return binding;
+        }
+
+        // Get the element type - this should give us the leaf directly for multi-dimensional arrays
+        ITypeBinding elementType = binding.getElementType();
+
+        System.out.println("[Debug TypeManager.getLeafTypeBinding] Type: " + binding.getQualifiedName() +
+                " -> Element: " + (elementType != null ? elementType.getQualifiedName() : "null"));
+
+        // If the element type is still an array, something is wrong with our understanding
+        // In that case, recursively get leaf
+        if (elementType != null && elementType.isArray()) {
+            System.out.println("[Debug] Element is still array, recursing...");
+            return getLeafTypeBinding(elementType);
+        }
+
+        return elementType;
+    }
+
+    /**
+     * Creates array type with specific dimensions from a leaf type
+     * FIXED: Creates dimensions incrementally
+     */
+    public static ITypeBinding createArrayTypeWithDimensions(ITypeBinding leafType, int dimensions) {
+        if (leafType == null) {
+            System.out.println("[Debug createArrayType] leafType is null");
+            return null;
+        }
+
+        if (dimensions <= 0) {
+            System.out.println("[Debug createArrayType] dimensions <= 0, returning leaf");
+            return leafType;
+        }
+
+        System.out.println("[Debug createArrayType] Creating array from: " + leafType.getQualifiedName() +
+                " with " + dimensions + " dimensions");
+
+        ITypeBinding result = leafType;
+
+        // Create array incrementally, one dimension at a time
+        for (int i = 0; i < dimensions; i++) {
+            result = result.createArrayType(1);
+            System.out.println("[Debug]   After adding dimension " + (i + 1) + ": " +
+                    (result != null ? result.getQualifiedName() : "null"));
+        }
+
+        System.out.println("[Debug createArrayType] FINAL result: " +
+                (result != null ? result.getQualifiedName() : "null"));
+
+        return result;
     }
 
     /**

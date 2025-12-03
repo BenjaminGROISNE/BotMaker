@@ -479,85 +479,144 @@ public class IdentifierBlock extends AbstractExpressionBlock {
      * Finds the expected type for an element inside an array initializer
      */
     private ITypeBinding findArrayTypeForInitializer(ArrayInitializer initializer, Expression element) {
-        // Walk up to find the variable declaration
-        ASTNode current = initializer;
-        int depth = 0;
+        System.out.println("[Debug findArrayType] ===========================================");
+        System.out.println("[Debug] Finding type for element: " + element.getClass().getSimpleName());
+        System.out.println("[Debug] Inside initializer: " + initializer.getClass().getSimpleName());
 
-        System.out.println("[Debug findArrayType] Starting from ArrayInitializer");
+        // Count how many ArrayInitializers we're nested inside
+        ASTNode current = element.getParent(); // Start from element's parent (the initializer containing us)
+        int depth = 0;
+        ASTNode rootDefinition = null;
 
         while (current != null) {
-            ASTNode parent = current.getParent();
+            System.out.println("[Debug] Visiting: " + current.getClass().getSimpleName());
 
-            // Count nesting depth
+            // Count each ArrayInitializer we're inside
             if (current instanceof ArrayInitializer) {
                 depth++;
-                System.out.println("[Debug] Counting ArrayInitializer, depth: " + depth);
+                System.out.println("[Debug] Inside ArrayInitializer #" + depth);
+            }
+            // Also count list factory methods
+            else if (current instanceof MethodInvocation) {
+                MethodInvocation mi = (MethodInvocation) current;
+                String methodName = mi.getName().getIdentifier();
+                if ("asList".equals(methodName) || "of".equals(methodName)) {
+                    depth++;
+                    System.out.println("[Debug] Inside " + methodName + " #" + depth);
+                }
             }
 
-            // Found variable declaration
+            // Check for declaration
+            ASTNode parent = current.getParent();
+
             if (parent instanceof VariableDeclarationFragment) {
-                VariableDeclarationFragment frag = (VariableDeclarationFragment) parent;
-                ASTNode grandParent = frag.getParent();
-
-                Type declaredType = null;
-                if (grandParent instanceof VariableDeclarationStatement) {
-                    declaredType = ((VariableDeclarationStatement) grandParent).getType();
-                } else if (grandParent instanceof FieldDeclaration) {
-                    declaredType = ((FieldDeclaration) grandParent).getType();
-                }
-
-                if (declaredType != null) {
-                    ITypeBinding typeBinding = declaredType.resolveBinding();
-                    if (typeBinding != null) {
-                        return calculateExpectedTypeAtDepth(typeBinding, depth);
-                    }
-                }
+                rootDefinition = parent;
+                System.out.println("[Debug] Found VariableDeclarationFragment");
                 break;
             }
-
-            // Also check ArrayCreation
+            if (parent instanceof VariableDeclarationStatement) {
+                rootDefinition = parent;
+                System.out.println("[Debug] Found VariableDeclarationStatement");
+                break;
+            }
+            if (parent instanceof FieldDeclaration) {
+                rootDefinition = parent;
+                System.out.println("[Debug] Found FieldDeclaration");
+                break;
+            }
             if (parent instanceof ArrayCreation) {
-                ArrayCreation creation = (ArrayCreation) parent;
-                ITypeBinding typeBinding = creation.getType().resolveBinding();
-                if (typeBinding != null) {
-                    return calculateExpectedTypeAtDepth(typeBinding, depth);
-                }
+                rootDefinition = parent;
+                System.out.println("[Debug] Found ArrayCreation");
                 break;
             }
 
             current = parent;
         }
 
-        return null;
+        if (rootDefinition == null) {
+            System.out.println("[Debug] No root definition found");
+            return null;
+        }
+
+        // Get the declared type binding
+        ITypeBinding declaredTypeBinding = null;
+
+        if (rootDefinition instanceof VariableDeclarationFragment) {
+            VariableDeclarationFragment frag = (VariableDeclarationFragment) rootDefinition;
+            ASTNode grandParent = frag.getParent();
+
+            if (grandParent instanceof VariableDeclarationStatement) {
+                Type type = ((VariableDeclarationStatement) grandParent).getType();
+                declaredTypeBinding = type.resolveBinding();
+            } else if (grandParent instanceof FieldDeclaration) {
+                Type type = ((FieldDeclaration) grandParent).getType();
+                declaredTypeBinding = type.resolveBinding();
+            }
+        } else if (rootDefinition instanceof VariableDeclarationStatement) {
+            Type type = ((VariableDeclarationStatement) rootDefinition).getType();
+            declaredTypeBinding = type.resolveBinding();
+        } else if (rootDefinition instanceof FieldDeclaration) {
+            Type type = ((FieldDeclaration) rootDefinition).getType();
+            declaredTypeBinding = type.resolveBinding();
+        } else if (rootDefinition instanceof ArrayCreation) {
+            ArrayType type = ((ArrayCreation) rootDefinition).getType();
+            declaredTypeBinding = type.resolveBinding();
+        }
+
+        if (declaredTypeBinding == null) {
+            System.out.println("[Debug] Could not resolve type binding");
+            return null;
+        }
+
+        return calculateExpectedTypeAtDepth(declaredTypeBinding, depth);
     }
 
     /**
      * Calculates what type is expected at a given nesting depth
      */
     private ITypeBinding calculateExpectedTypeAtDepth(ITypeBinding rootType, int depth) {
-        if (rootType == null) return null;
-
-        int totalDimensions = TypeManager.getArrayDimensions(rootType);
-        int remainingDimensions = totalDimensions - depth;
-
-        System.out.println("[Debug calculateExpectedType] Total Dims: " + totalDimensions +
-                " Depth: " + depth +
-                " Remaining: " + remainingDimensions);
-
-        if (remainingDimensions > 0) {
-            // Still need array type
-            ITypeBinding leafType = TypeManager.getLeafTypeBinding(rootType);
-            ITypeBinding result = leafType.createArrayType(remainingDimensions);
-            System.out.println("[Debug] Returning array type with " + remainingDimensions + " dimensions");
-            return result;
-        } else if (remainingDimensions == 0) {
-            // Need leaf type
-            ITypeBinding result = TypeManager.getLeafTypeBinding(rootType);
-            System.out.println("[Debug] Returning leaf type: " + (result != null ? result.getName() : "null"));
-            return result;
+        if (rootType == null) {
+            System.out.println("[Debug calculateExpectedType] rootType is null");
+            return null;
         }
 
-        System.out.println("[Debug] Depth too deep, returning null");
-        return null;
+        int totalDimensions = TypeManager.getArrayDimensions(rootType);
+        ITypeBinding leafType = TypeManager.getLeafTypeBinding(rootType);
+
+        System.out.println("[Debug calculateExpectedType SUMMARY]");
+        System.out.println("  Root Type:        " + rootType.getQualifiedName());
+        System.out.println("  Total Dimensions: " + totalDimensions);
+        System.out.println("  Current Depth:    " + depth);
+        System.out.println("  Leaf Type:        " + (leafType != null ? leafType.getQualifiedName() : "null"));
+
+        // If we're at depth N inside totalDimensions D, we need (D - N) dimensions
+        // Example: int[][][], depth 1 -> need int[][] (2 dimensions)
+        // Example: int[][][], depth 2 -> need int[] (1 dimension)
+        // Example: int[][][], depth 3 -> need int (0 dimensions)
+
+        int neededDimensions = totalDimensions - depth;
+
+        System.out.println("  Needed Dims:      " + neededDimensions + " (total - depth)");
+
+        if (neededDimensions > 0) {
+            if (leafType == null) {
+                System.out.println("[Debug] ERROR: Leaf type is null");
+                return null;
+            }
+
+            // Use the new incremental creation method
+            ITypeBinding result = TypeManager.createArrayTypeWithDimensions(leafType, neededDimensions);
+            System.out.println("  -> Returning:     " + (result != null ? result.getQualifiedName() : "null"));
+            return result;
+        } else if (neededDimensions == 0) {
+            System.out.println("  -> Returning:     " + (leafType != null ? leafType.getQualifiedName() : "null") + " (leaf)");
+            return leafType;
+        } else {
+            System.out.println("  -> ERROR: Negative dimensions needed!");
+            return null;
+        }
     }
+
+
+
 }
