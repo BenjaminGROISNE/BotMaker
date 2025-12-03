@@ -108,101 +108,7 @@ public class ListBlock extends AbstractExpressionBlock {
         return container;
     }
 
-    /**
-     * Logic to determine what kind of items this specific ListBlock should contain.
-     * It walks up the AST to find the Variable Declaration, calculates total nesting depth,
-     * calculates current depth, and decides if we need "list" or a leaf type.
-     */
-    private String determineItemType() {
-        ASTNode current = this.astNode;
-        ASTNode rootDefinition = null;
-        int currentDepth = 0;
 
-        // 1. Walk up to find the root definition and count current depth
-        while (current != null) {
-            // If we hit another ArrayInitializer, we are one level deeper
-            if (current instanceof ArrayInitializer) {
-                if (current != this.astNode) {
-                    currentDepth++;
-                }
-            }
-            // If we hit another Arrays.asList, we are one level deeper
-            else if (current instanceof MethodInvocation) {
-                MethodInvocation mi = (MethodInvocation) current;
-                if ("asList".equals(mi.getName().getIdentifier()) || "of".equals(mi.getName().getIdentifier())) {
-                    // If we aren't the starting node, increment depth
-                    if (current != this.astNode) {
-                        currentDepth++;
-                    }
-                }
-            }
-
-            // Found declaration: int[][] x = ...
-            if (current instanceof VariableDeclarationFragment) {
-                rootDefinition = current;
-                break;
-            }
-            // Found declaration in standard usage
-            if (current instanceof VariableDeclarationStatement) {
-                rootDefinition = current;
-                break;
-            }
-            // Found field declaration
-            if (current instanceof FieldDeclaration) {
-                rootDefinition = current;
-                break;
-            }
-            // Found usage inside new ArrayList<>(...)
-            if (current instanceof ClassInstanceCreation) {
-                rootDefinition = current;
-                break;
-            }
-
-            current = current.getParent();
-        }
-
-        // 2. Analyze the root type
-        String rootTypeStr = "any";
-
-        if (rootDefinition instanceof VariableDeclarationStatement) {
-            rootTypeStr = ((VariableDeclarationStatement) rootDefinition).getType().toString();
-        } else if (rootDefinition instanceof VariableDeclarationFragment) {
-            ASTNode parent = rootDefinition.getParent();
-            if (parent instanceof VariableDeclarationStatement) {
-                rootTypeStr = ((VariableDeclarationStatement) parent).getType().toString();
-            } else if (parent instanceof FieldDeclaration) {
-                rootTypeStr = ((FieldDeclaration) parent).getType().toString();
-            }
-        } else if (rootDefinition instanceof ClassInstanceCreation) {
-            rootTypeStr = ((ClassInstanceCreation) rootDefinition).getType().toString();
-        } else if (rootDefinition instanceof FieldDeclaration) {
-            rootTypeStr = ((FieldDeclaration) rootDefinition).getType().toString();
-        }
-
-        // 3. Calculate Dimensions
-        // e.g. int[][] -> genericDepth = 2, leafType = "int"
-        int genericDepth = TypeManager.getListNestingLevel(rootTypeStr);
-        String leafType = TypeManager.getLeafType(rootTypeStr); // e.g. "int"
-
-        // 4. Determine UI Type based on depth comparison
-        // If genericDepth is 2 (int[][])
-        // currentDepth 0 (Root) -> needs "list" (to make depth 1)
-        // currentDepth 1 (Middle) -> needs leafType ("int")
-
-        int remainingLevels = genericDepth - 1 - currentDepth;
-
-        System.out.println("[Debug ListBlock] RootType: " + rootTypeStr +
-                " | TotalDepth: " + genericDepth +
-                " | CurrentDepth: " + currentDepth +
-                " | RemainingLevels: " + remainingLevels +
-                " | LeafType: " + leafType);
-
-        if (remainingLevels > 0) {
-            return "list";
-        } else {
-            return TypeManager.determineUiType(leafType);
-        }
-    }
 
     private HBox createElementRow(int index, ExpressionBlock element, CompletionContext context, String itemType) {
         HBox row = new HBox(6);
@@ -260,7 +166,173 @@ public class ListBlock extends AbstractExpressionBlock {
 
         menu.show(button, javafx.geometry.Side.BOTTOM, 0, 0);
     }
+    /**
+     * Logic to determine what kind of items this specific ListBlock should contain.
+     * It walks up the AST to find the Variable Declaration, calculates total nesting depth,
+     * calculates current depth, and decides if we need "list" or a leaf type.
+     */
+    private String determineItemType() {
+        ASTNode current = this.astNode;
+        ASTNode rootDefinition = null;
+        int currentDepth = 0;
 
+        System.out.println("[Debug ListBlock.determineItemType] Starting from: " + this.astNode.getClass().getSimpleName());
+
+        // 1. Walk up to find the root definition and count current depth
+        while (current != null) {
+            System.out.println("[Debug] Current node: " + current.getClass().getSimpleName());
+
+            ASTNode parent = current.getParent();
+
+            // Count depth: check if PARENT is an array-like structure
+            if (parent instanceof ArrayInitializer) {
+                // Don't count ourselves
+                if (parent != this.astNode) {
+                    currentDepth++;
+                    System.out.println("[Debug] Parent is ArrayInitializer (not self), depth++: " + currentDepth);
+                } else {
+                    System.out.println("[Debug] Parent is ArrayInitializer (self), no depth++");
+                }
+            }
+            else if (parent instanceof ArrayCreation) {
+                // ArrayCreation itself doesn't add depth, but we might be inside its initializer
+                System.out.println("[Debug] Parent is ArrayCreation");
+            }
+            else if (parent instanceof MethodInvocation) {
+                MethodInvocation mi = (MethodInvocation) parent;
+                String methodName = mi.getName().getIdentifier();
+                if ("asList".equals(methodName) || "of".equals(methodName)) {
+                    if (parent != this.astNode) {
+                        currentDepth++;
+                        System.out.println("[Debug] Parent is " + methodName + " (not self), depth++: " + currentDepth);
+                    } else {
+                        System.out.println("[Debug] Parent is " + methodName + " (self), no depth++");
+                    }
+                }
+            }
+
+            // Found declaration
+            if (parent instanceof VariableDeclarationFragment) {
+                rootDefinition = parent;
+                System.out.println("[Debug] Found VariableDeclarationFragment");
+                break;
+            }
+            if (parent instanceof VariableDeclarationStatement) {
+                rootDefinition = parent;
+                System.out.println("[Debug] Found VariableDeclarationStatement");
+                break;
+            }
+            if (parent instanceof FieldDeclaration) {
+                rootDefinition = parent;
+                System.out.println("[Debug] Found FieldDeclaration");
+                break;
+            }
+            if (parent instanceof ArrayCreation) {
+                rootDefinition = parent;
+                System.out.println("[Debug] Found ArrayCreation");
+                break;
+            }
+
+            current = parent;
+        }
+
+        // 2. Analyze the root type using ITypeBinding
+        ITypeBinding rootTypeBinding = null;
+        String rootTypeStr = null;
+
+        if (rootDefinition instanceof VariableDeclarationStatement) {
+            Type type = ((VariableDeclarationStatement) rootDefinition).getType();
+            rootTypeBinding = type.resolveBinding();
+            rootTypeStr = type.toString();
+        } else if (rootDefinition instanceof VariableDeclarationFragment) {
+            ASTNode parent = rootDefinition.getParent();
+            if (parent instanceof VariableDeclarationStatement) {
+                Type type = ((VariableDeclarationStatement) parent).getType();
+                rootTypeBinding = type.resolveBinding();
+                rootTypeStr = type.toString();
+            } else if (parent instanceof FieldDeclaration) {
+                Type type = ((FieldDeclaration) parent).getType();
+                rootTypeBinding = type.resolveBinding();
+                rootTypeStr = type.toString();
+            }
+        } else if (rootDefinition instanceof FieldDeclaration) {
+            Type type = ((FieldDeclaration) rootDefinition).getType();
+            rootTypeBinding = type.resolveBinding();
+            rootTypeStr = type.toString();
+        } else if (rootDefinition instanceof ArrayCreation) {
+            ArrayType type = ((ArrayCreation) rootDefinition).getType();
+            rootTypeBinding = type.resolveBinding();
+            rootTypeStr = type.toString();
+        }
+
+        if (rootTypeBinding == null) {
+            System.out.println("[Debug] Could not resolve type binding, fallback to string: " + rootTypeStr);
+            // Fallback to string parsing
+            if (rootTypeStr != null) {
+                return determineItemTypeFromString(rootTypeStr, currentDepth);
+            }
+            return "any";
+        }
+
+        // 3. Calculate Dimensions using ITypeBinding
+        int totalDimensions = TypeManager.getArrayDimensions(rootTypeBinding);
+        ITypeBinding leafTypeBinding = TypeManager.getLeafTypeBinding(rootTypeBinding);
+        String leafTypeName = leafTypeBinding != null ? leafTypeBinding.getName() : "Object";
+
+        System.out.println("[Debug ListBlock] RootType: " + rootTypeStr +
+                " | TotalDims: " + totalDimensions +
+                " | CurrentDepth: " + currentDepth +
+                " | LeafType: " + leafTypeName);
+
+        // 4. Determine UI Type based on depth comparison
+        // We are at currentDepth levels deep in the nesting
+        // If totalDimensions is 3 (int[][][])
+        //   currentDepth 0 (outermost) -> we contain 2D arrays -> return "list"
+        //   currentDepth 1 (middle) -> we contain 1D arrays -> return "list"
+        //   currentDepth 2 (innermost) -> we contain ints -> return "number"
+
+        int remainingLevels = totalDimensions - currentDepth;
+
+        System.out.println("[Debug] RemainingLevels = totalDims(" + totalDimensions + ") - currentDepth(" + currentDepth + ") = " + remainingLevels);
+
+        if (remainingLevels > 1) {
+            // We need nested arrays
+            System.out.println("[Debug] Returning 'list' (nested arrays needed)");
+            return "list";
+        } else if (remainingLevels == 1) {
+            // We need leaf values
+            String uiType = TypeManager.determineUiType(leafTypeBinding);
+            System.out.println("[Debug] Returning leaf type: " + uiType);
+            return uiType;
+        } else {
+            // remainingLevels <= 0, something is wrong
+            System.out.println("[Debug] ERROR: remainingLevels <= 0, returning 'any'");
+            return "any";
+        }
+    }
+
+    /**
+     * Fallback method using string parsing when binding is unavailable
+     */
+    private String determineItemTypeFromString(String rootTypeStr, int currentDepth) {
+        int totalDimensions = TypeManager.getListNestingLevel(rootTypeStr);
+        String leafType = TypeManager.getLeafType(rootTypeStr);
+
+        int remainingLevels = totalDimensions - currentDepth;
+
+        System.out.println("[Debug ListBlock String Fallback] Type: " + rootTypeStr +
+                " | TotalDims: " + totalDimensions +
+                " | CurrentDepth: " + currentDepth +
+                " | Remaining: " + remainingLevels);
+
+        if (remainingLevels > 1) {
+            return "list";
+        } else if (remainingLevels == 1) {
+            return TypeManager.determineUiType(leafType);
+        } else {
+            return "any";
+        }
+    }
     private void showChangeElementMenu(Button button, CompletionContext context, int elementIndex, String targetType) {
         ContextMenu menu = new ContextMenu();
 

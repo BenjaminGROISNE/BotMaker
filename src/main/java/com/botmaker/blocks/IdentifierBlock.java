@@ -72,8 +72,21 @@ public class IdentifierBlock extends AbstractExpressionBlock {
             Position pos = getPositionFromOffset(context.sourceCode(), this.astNode.getStartPosition());
             CompletionParams params = new CompletionParams(new TextDocumentIdentifier(context.docUri()), pos);
 
-            String expectedType = determineExpectedType();
-            System.out.println("[Debug] Suggestion Context -> Expected Type: " + expectedType);
+            // Determine expected type using AST bindings
+            ITypeBinding expectedTypeBinding = determineExpectedTypeBinding();
+            String expectedTypeStr = expectedTypeBinding != null ?
+                    expectedTypeBinding.getQualifiedName() : "any";
+
+            System.out.println("[Debug] Expected Type Binding: " + expectedTypeStr);
+            if (expectedTypeBinding != null) {
+                System.out.println("[Debug] Is Array: " + expectedTypeBinding.isArray());
+                System.out.println("[Debug] Is Enum: " + expectedTypeBinding.isEnum());
+                if (expectedTypeBinding.isArray()) {
+                    System.out.println("[Debug] Array Dimensions: " + TypeManager.getArrayDimensions(expectedTypeBinding));
+                    ITypeBinding leafType = TypeManager.getLeafTypeBinding(expectedTypeBinding);
+                    System.out.println("[Debug] Leaf Type: " + (leafType != null ? leafType.getQualifiedName() : "null"));
+                }
+            }
 
             context.server().getTextDocumentService().completion(params).thenAccept(result -> {
                 if (result == null || (result.isLeft() && result.getLeft().isEmpty()) ||
@@ -88,23 +101,10 @@ public class IdentifierBlock extends AbstractExpressionBlock {
                     menu.setStyle("-fx-control-inner-background: white;");
 
                     List<CompletionItem> filteredItems = items.stream()
-                            .filter(item -> item.getKind() == CompletionItemKind.Variable || item.getKind() == CompletionItemKind.Field)
+                            .filter(item -> item.getKind() == CompletionItemKind.Variable ||
+                                    item.getKind() == CompletionItemKind.Field)
                             .filter(item -> TypeManager.isUserVariable(item.getLabel()))
-                            .filter(item -> {
-                                String typeInfo = item.getDetail();
-                                if (typeInfo == null || typeInfo.isBlank()) {
-                                    if (item.getLabel().contains(" : ")) {
-                                        String[] parts = item.getLabel().split(" : ");
-                                        if (parts.length > 1) typeInfo = parts[1].trim();
-                                    }
-                                }
-
-                                // DEBUG: Print what we're checking
-                                System.out.println("[Debug] Variable: " + item.getLabel() + " Type: " + typeInfo + " Expected: " + expectedType);
-
-                                // Use STRICT type compatibility for better filtering
-                                return isTypeCompatibleStrict(typeInfo, expectedType);
-                            })
+                            .filter(item -> isTypeCompatibleWithCompletion(item, expectedTypeBinding))
                             .collect(Collectors.toList());
 
                     if (filteredItems.isEmpty()) {
@@ -142,126 +142,74 @@ public class IdentifierBlock extends AbstractExpressionBlock {
         }
     }
 
+
+
+
     /**
-     * NEW: STRICT type compatibility checking that matches array dimensions exactly
+     * Normalizes type names for comparison
      */
-    private boolean isTypeCompatibleStrict(String variableType, String expectedType) {
-        if (variableType == null || variableType.isBlank()) return true;
-        if (expectedType == null || expectedType.equals(TypeManager.UI_TYPE_ANY)) return true;
+    private String normalizeTypeName(String typeName) {
+        if (typeName == null) return "";
 
-        System.out.println("[Debug Strict Type Match] Checking: '" + variableType + "' vs Expected: '" + expectedType + "'");
-
-        // For list context, we need EXACT dimension matching
-        if (expectedType.equals(TypeManager.UI_TYPE_LIST)) {
-            // Must be an array type
-            if (!variableType.contains("[]")) {
-                System.out.println("[Debug] Rejected: Not an array type");
-                return false;
-            }
-            return true;
+        // Remove java.lang prefix
+        if (typeName.startsWith("java.lang.")) {
+            typeName = typeName.substring(10);
         }
 
-        // For specific types (number, boolean, String), check leaf type
-        if (expectedType.equals(TypeManager.UI_TYPE_NUMBER) ||
-                expectedType.equals(TypeManager.UI_TYPE_BOOLEAN) ||
-                expectedType.equals(TypeManager.UI_TYPE_STRING)) {
+        // Convert wrapper to primitive for comparison
+        typeName = TypeManager.toPrimitiveType(typeName);
 
-            // Get leaf types
-            String varLeafType = TypeManager.getLeafType(variableType);
-            String varUiType = TypeManager.determineUiType(varLeafType);
-
-            // Variable must NOT be an array for leaf type contexts
-            if (variableType.contains("[]")) {
-                System.out.println("[Debug] Rejected: Array type when expecting leaf type");
-                return false;
-            }
-
-            boolean compatible = TypeManager.isCompatible(varUiType, expectedType);
-            System.out.println("[Debug] Leaf match: " + varLeafType + " -> " + varUiType + " = " + compatible);
-            return compatible;
-        }
-
-        // For switch compatibility
-        if (expectedType.equals(TypeManager.UI_TYPE_SWITCH_COMPATIBLE)) {
-            if (variableType.contains("[]")) return false;
-            return TypeManager.isCompatible(variableType, expectedType);
-        }
-
-        // Default compatibility check
-        return TypeManager.isCompatible(variableType, expectedType);
+        return typeName;
     }
 
     /**
-     * Walks up the AST skipping parentheses to find the true semantic parent.
-     * Now properly handles nested list contexts by tracking depth.
+     * Checks if two type names are compatible
      */
-    private String determineExpectedType() {
-        if (this.astNode == null) return TypeManager.UI_TYPE_ANY;
+    private boolean areTypesCompatible(String type1, String type2) {
+        if (type1.equals(type2)) return true;
 
-        ASTNode child = this.astNode;
-        ASTNode parent = this.astNode.getParent();
+        // Check primitive/wrapper compatibility
+        String prim1 = TypeManager.toPrimitiveType(type1);
+        String prim2 = TypeManager.toPrimitiveType(type2);
 
+        return prim1.equals(prim2);
+    }
+
+    /**
+     * NEW: Determines expected type using ITypeBinding from AST
+     */
+    private ITypeBinding determineExpectedTypeBinding() {
+        if (this.astNode == null) return null;
+
+        SimpleName simpleName = (SimpleName) this.astNode;
+        ASTNode child = simpleName;
+        ASTNode parent = simpleName.getParent();
+
+        // Skip parentheses
         while (parent instanceof ParenthesizedExpression) {
             child = parent;
             parent = parent.getParent();
         }
 
-        if (parent == null) return TypeManager.UI_TYPE_ANY;
+        if (parent == null) return null;
 
-        // NEW: Check if we're inside a list structure (ArrayInitializer or MethodInvocation for Arrays.asList/List.of)
-        String listContextType = checkListContext(this.astNode);
-        if (listContextType != null) {
-            return listContextType;
-        }
+        // Try to get type from context
+        ITypeBinding contextType = getTypeBindingFromContext(child, parent);
 
-        // Switch Statement Expression Context
-        if (parent instanceof SwitchStatement) {
-            if (((SwitchStatement) parent).getExpression() == child) {
-                return TypeManager.UI_TYPE_SWITCH_COMPATIBLE;
-            }
+        if (contextType != null) {
+            return contextType;
         }
 
-        // Boolean Contexts
-        if (parent instanceof IfStatement) {
-            if (((IfStatement) parent).getExpression() == child) return TypeManager.UI_TYPE_BOOLEAN;
-        }
-        if (parent instanceof WhileStatement) {
-            if (((WhileStatement) parent).getExpression() == child) return TypeManager.UI_TYPE_BOOLEAN;
-        }
-        if (parent instanceof DoStatement) {
-            if (((DoStatement) parent).getExpression() == child) return TypeManager.UI_TYPE_BOOLEAN;
-        }
+        return null;
+    }
 
-        // Unary Contexts
-        if (parent instanceof PrefixExpression) {
-            PrefixExpression.Operator op = ((PrefixExpression) parent).getOperator();
-            if (op == PrefixExpression.Operator.NOT) return TypeManager.UI_TYPE_BOOLEAN;
-            return TypeManager.UI_TYPE_NUMBER;
-        }
-        if (parent instanceof PostfixExpression) return TypeManager.UI_TYPE_NUMBER;
 
-        // Binary Contexts
-        if (parent instanceof InfixExpression) {
-            InfixExpression infix = (InfixExpression) parent;
-            InfixExpression.Operator op = infix.getOperator();
-            if (op == InfixExpression.Operator.CONDITIONAL_AND || op == InfixExpression.Operator.CONDITIONAL_OR) {
-                return TypeManager.UI_TYPE_BOOLEAN;
-            }
-            return TypeManager.UI_TYPE_NUMBER;
-        }
-
-        // Assignment
-        if (parent instanceof Assignment) {
-            Assignment assignment = (Assignment) parent;
-            if (assignment.getRightHandSide() == child) {
-                Expression lhs = assignment.getLeftHandSide();
-                ITypeBinding binding = lhs.resolveTypeBinding();
-                if (binding != null) {
-                    String fullType = binding.getQualifiedName();
-                    return TypeManager.determineUiType(fullType);
-                }
-            }
-        }
+    /**
+     * Gets type binding from the parent context
+     */
+    private ITypeBinding getTypeBindingFromContext(ASTNode child, ASTNode parent) {
+        System.out.println("[Debug getTypeBindingFromContext] Child: " + child.getClass().getSimpleName() +
+                " Parent: " + parent.getClass().getSimpleName());
 
         // Variable Declaration
         if (parent instanceof VariableDeclarationFragment) {
@@ -270,141 +218,90 @@ public class IdentifierBlock extends AbstractExpressionBlock {
                 ASTNode grandParent = frag.getParent();
                 if (grandParent instanceof VariableDeclarationStatement) {
                     Type type = ((VariableDeclarationStatement) grandParent).getType();
-                    String typeString = type.toString();
-                    return TypeManager.determineUiType(typeString);
+                    ITypeBinding binding = type.resolveBinding();
+                    System.out.println("[Debug] VariableDeclarationStatement type: " +
+                            (binding != null ? binding.getQualifiedName() : "null"));
+                    return binding;
                 } else if (grandParent instanceof FieldDeclaration) {
                     Type type = ((FieldDeclaration) grandParent).getType();
-                    String typeString = type.toString();
-                    return TypeManager.determineUiType(typeString);
+                    ITypeBinding binding = type.resolveBinding();
+                    System.out.println("[Debug] FieldDeclaration type: " +
+                            (binding != null ? binding.getQualifiedName() : "null"));
+                    return binding;
                 }
             }
         }
 
-        return TypeManager.UI_TYPE_ANY;
-    }
-
-    /**
-     * NEW: Checks if we're inside a list context and determines what type should go there.
-     * This properly handles nested lists by calculating depth and comparing with declaration.
-     */
-    private String checkListContext(ASTNode node) {
-        ASTNode current = node.getParent(); // Start from parent, not the node itself
-        ASTNode rootDefinition = null;
-        int currentDepth = 0;
-
-        System.out.println("[Debug List Context Start] Node: " + node.getClass().getSimpleName() + " at " + node.getStartPosition());
-
-        // Walk up to find the root definition and count depth
-        while (current != null) {
-            System.out.println("[Debug] Visiting: " + current.getClass().getSimpleName());
-
-            // Count nested ArrayInitializers
-            if (current instanceof ArrayInitializer) {
-                currentDepth++;
-                System.out.println("[Debug] Found ArrayInitializer, depth now: " + currentDepth);
+        // Assignment
+        if (parent instanceof Assignment) {
+            Assignment assignment = (Assignment) parent;
+            if (assignment.getRightHandSide() == child) {
+                Expression lhs = assignment.getLeftHandSide();
+                ITypeBinding binding = lhs.resolveTypeBinding();
+                System.out.println("[Debug] Assignment LHS type: " +
+                        (binding != null ? binding.getQualifiedName() : "null"));
+                return binding;
             }
-            // Count nested MethodInvocation (Arrays.asList/List.of)
-            else if (current instanceof MethodInvocation) {
-                MethodInvocation mi = (MethodInvocation) current;
-                String methodName = mi.getName().getIdentifier();
-                if ("asList".equals(methodName) || "of".equals(methodName)) {
-                    currentDepth++;
-                    System.out.println("[Debug] Found " + methodName + ", depth now: " + currentDepth);
+        }
+
+        // Array Initializer - find the array type
+        if (parent instanceof ArrayInitializer) {
+            ITypeBinding arrayType = findArrayTypeForInitializer((ArrayInitializer) parent, (Expression) child);
+            System.out.println("[Debug] ArrayInitializer expected type: " +
+                    (arrayType != null ? arrayType.getQualifiedName() : "null"));
+            return arrayType;
+        }
+
+        // Method Invocation Argument
+        if (parent instanceof MethodInvocation) {
+            MethodInvocation mi = (MethodInvocation) parent;
+            int argIndex = mi.arguments().indexOf(child);
+            if (argIndex >= 0) {
+                IMethodBinding methodBinding = mi.resolveMethodBinding();
+                if (methodBinding != null && argIndex < methodBinding.getParameterTypes().length) {
+                    ITypeBinding paramType = methodBinding.getParameterTypes()[argIndex];
+                    System.out.println("[Debug] Method parameter type: " +
+                            (paramType != null ? paramType.getQualifiedName() : "null"));
+                    return paramType;
                 }
             }
+        }
 
-            // Found root declaration - stop here
-            if (current instanceof VariableDeclarationFragment) {
-                rootDefinition = current;
-                System.out.println("[Debug] Found VariableDeclarationFragment");
-                break;
+        // Return Statement
+        if (parent instanceof ReturnStatement) {
+            ASTNode current = parent;
+            while (current != null && !(current instanceof MethodDeclaration)) {
+                current = current.getParent();
             }
-            if (current instanceof VariableDeclarationStatement) {
-                rootDefinition = current;
-                System.out.println("[Debug] Found VariableDeclarationStatement");
-                break;
+            if (current instanceof MethodDeclaration) {
+                MethodDeclaration method = (MethodDeclaration) current;
+                Type returnType = method.getReturnType2();
+                if (returnType != null) {
+                    ITypeBinding binding = returnType.resolveBinding();
+                    System.out.println("[Debug] Return type: " +
+                            (binding != null ? binding.getQualifiedName() : "null"));
+                    return binding;
+                }
             }
-            if (current instanceof FieldDeclaration) {
-                rootDefinition = current;
-                System.out.println("[Debug] Found FieldDeclaration");
-                break;
+        }
+
+        // For Loop
+        if (parent instanceof EnhancedForStatement) {
+            EnhancedForStatement forStmt = (EnhancedForStatement) parent;
+            if (forStmt.getExpression() == child) {
+                SingleVariableDeclaration param = forStmt.getParameter();
+                ITypeBinding elementType = param.getType().resolveBinding();
+                if (elementType != null) {
+                    ITypeBinding arrayType = elementType.createArrayType(1);
+                    System.out.println("[Debug] For loop array type: " +
+                            (arrayType != null ? arrayType.getQualifiedName() : "null"));
+                    return arrayType;
+                }
             }
-
-            current = current.getParent();
         }
 
-        // If we didn't find a list-related context, return null (not in a list)
-        if (currentDepth == 0) {
-            System.out.println("[Debug] No list context found (depth=0)");
-            return null;
-        }
-
-        if (rootDefinition == null) {
-            System.out.println("[Debug] No root definition found");
-            return null;
-        }
-
-        // Get the declared type
-        String declaredType = null;
-        if (rootDefinition instanceof VariableDeclarationStatement) {
-            declaredType = ((VariableDeclarationStatement) rootDefinition).getType().toString();
-        } else if (rootDefinition instanceof VariableDeclarationFragment) {
-            ASTNode parent = rootDefinition.getParent();
-            if (parent instanceof VariableDeclarationStatement) {
-                declaredType = ((VariableDeclarationStatement) parent).getType().toString();
-            } else if (parent instanceof FieldDeclaration) {
-                declaredType = ((FieldDeclaration) parent).getType().toString();
-            }
-        } else if (rootDefinition instanceof FieldDeclaration) {
-            declaredType = ((FieldDeclaration) rootDefinition).getType().toString();
-        }
-
-        if (declaredType == null) {
-            System.out.println("[Debug] Could not determine declared type");
-            return null;
-        }
-
-        // Calculate total dimensions and leaf type
-        int totalDimensions = TypeManager.getListNestingLevel(declaredType);
-        String leafType = TypeManager.getLeafType(declaredType);
-
-        System.out.println("[Debug List Context] DeclaredType: " + declaredType +
-                " | TotalDims: " + totalDimensions +
-                " | CurrentDepth: " + currentDepth +
-                " | LeafType: " + leafType);
-
-        // If this isn't actually an array type, we're not in a list context
-        if (totalDimensions == 0) {
-            System.out.println("[Debug] Type is not an array, no list context");
-            return null;
-        }
-
-        // Determine what we need at this depth
-        // If we have int[][][] and we're at depth 1, we need int[][]
-        // If we're at depth 2, we need int[]
-        // If we're at depth 3, we need int
-        int remainingDimensions = totalDimensions - currentDepth;
-
-        System.out.println("[Debug] Remaining dimensions: " + remainingDimensions);
-
-        if (remainingDimensions > 1) {
-            // Need a nested list (e.g., int[][] when we have int[][][])
-            System.out.println("[Debug] Returning TYPE_LIST");
-            return TypeManager.UI_TYPE_LIST;
-        } else if (remainingDimensions == 1) {
-            // Need an array of leaf type (e.g., int[] when we have int[][])
-            System.out.println("[Debug] Returning TYPE_LIST (one level array)");
-            return TypeManager.UI_TYPE_LIST;
-        } else if (remainingDimensions == 0) {
-            // Need a leaf value (e.g., int when we have int[])
-            String uiType = TypeManager.determineUiType(leafType);
-            System.out.println("[Debug] Returning leaf type: " + uiType);
-            return uiType;
-        } else {
-            // We're too deep - shouldn't happen
-            System.out.println("[Debug] Too deep! Remaining: " + remainingDimensions);
-            return null;
-        }
+        System.out.println("[Debug] No type binding found for this context");
+        return null;
     }
 
     private String getSimpleTypeName(String detail) {
@@ -443,5 +340,224 @@ public class IdentifierBlock extends AbstractExpressionBlock {
         }
         int character = offset - lastNewline - 1;
         return new Position(line, character);
+    }
+
+    /**
+     * NEW: Type compatibility check using CompletionItem against expected type binding
+     */
+    private boolean isTypeCompatibleWithCompletion(CompletionItem item, ITypeBinding expectedType) {
+        // If no expected type, show everything
+        if (expectedType == null) {
+            System.out.println("[Debug] No expected type - accepting: " + item.getLabel());
+            return true;
+        }
+
+        // Extract type information from completion item
+        String typeInfo = item.getDetail();
+        if (typeInfo == null || typeInfo.isBlank()) {
+            if (item.getLabel().contains(" : ")) {
+                String[] parts = item.getLabel().split(" : ");
+                if (parts.length > 1) typeInfo = parts[1].trim();
+            }
+        }
+
+        if (typeInfo == null || typeInfo.isBlank()) {
+            System.out.println("[Debug] No type info for: " + item.getLabel() + " - accepting by default");
+            return true; // Can't filter without type info
+        }
+
+        System.out.println("[Debug] Checking compatibility: " + item.getLabel() +
+                " Type: '" + typeInfo + "'" +
+                " Expected: '" + expectedType.getQualifiedName() + "'" +
+                " IsArray: " + expectedType.isArray() +
+                " Dimensions: " + TypeManager.getArrayDimensions(expectedType));
+
+        // Parse the type string and compare with expected binding
+        boolean compatible = isTypeStringCompatibleWithBinding(typeInfo, expectedType);
+        System.out.println("[Debug] Result: " + (compatible ? "ACCEPTED" : "REJECTED"));
+        return compatible;
+    }
+
+    /**
+     * Compares a type string (from LSP) with an ITypeBinding
+     */
+    private boolean isTypeStringCompatibleWithBinding(String typeStr, ITypeBinding expectedBinding) {
+        if (typeStr == null || expectedBinding == null) return true;
+
+        // Normalize the type string (remove whitespace)
+        typeStr = typeStr.trim();
+
+        // Count array dimensions in type string
+        int typeStrDimensions = 0;
+        String baseTypeStr = typeStr;
+        while (baseTypeStr.endsWith("[]")) {
+            typeStrDimensions++;
+            baseTypeStr = baseTypeStr.substring(0, baseTypeStr.length() - 2).trim();
+        }
+
+        // Get expected dimensions
+        int expectedDimensions = TypeManager.getArrayDimensions(expectedBinding);
+
+        System.out.println("[Debug Dimensions] Type String: '" + typeStr + "' Dims: " + typeStrDimensions +
+                " | Expected Dims: " + expectedDimensions);
+
+        // Dimensions must match exactly for arrays
+        if (typeStrDimensions != expectedDimensions) {
+            System.out.println("[Debug] Dimension mismatch - REJECTED");
+            return false;
+        }
+
+        // Get base types for comparison
+        String expectedBaseType;
+        if (expectedBinding.isArray()) {
+            ITypeBinding leafBinding = TypeManager.getLeafTypeBinding(expectedBinding);
+            expectedBaseType = leafBinding != null ? leafBinding.getQualifiedName() : "";
+        } else {
+            expectedBaseType = expectedBinding.getQualifiedName();
+        }
+
+        // Normalize type names for comparison
+        String normalizedExpected = normalizeTypeName(expectedBaseType);
+        String normalizedActual = normalizeTypeName(baseTypeStr);
+
+        System.out.println("[Debug Base Types] Actual: '" + normalizedActual + "' vs Expected: '" + normalizedExpected + "'");
+
+        // Check base type compatibility
+        if (normalizedActual.equals(normalizedExpected)) {
+            System.out.println("[Debug] Exact match - ACCEPTED");
+            return true;
+        }
+
+        // Check if they're compatible types (e.g., int vs Integer)
+        if (areTypesCompatible(normalizedActual, normalizedExpected)) {
+            System.out.println("[Debug] Compatible types - ACCEPTED");
+            return true;
+        }
+
+        // Check category compatibility (number, boolean, string)
+        if (areCategoriesCompatible(normalizedActual, normalizedExpected)) {
+            System.out.println("[Debug] Compatible categories - ACCEPTED");
+            return true;
+        }
+
+        System.out.println("[Debug] No match - REJECTED");
+        return false;
+    }
+
+    /**
+     * Checks if two types belong to compatible categories
+     */
+    private boolean areCategoriesCompatible(String type1, String type2) {
+        // Both are numbers
+        if (isNumberType(type1) && isNumberType(type2)) return true;
+
+        // Both are booleans
+        if (isBooleanType(type1) && isBooleanType(type2)) return true;
+
+        // Both are strings
+        if (isStringType(type1) && isStringType(type2)) return true;
+
+        return false;
+    }
+
+    private boolean isNumberType(String type) {
+        return type.equals("int") || type.equals("double") || type.equals("float") ||
+                type.equals("long") || type.equals("short") || type.equals("byte") ||
+                type.equals("Integer") || type.equals("Double") || type.equals("Float") ||
+                type.equals("Long") || type.equals("Short") || type.equals("Byte");
+    }
+
+    private boolean isBooleanType(String type) {
+        return type.equals("boolean") || type.equals("Boolean");
+    }
+
+    private boolean isStringType(String type) {
+        return type.equals("String") || type.equals("char") || type.equals("Character");
+    }
+
+    /**
+     * Finds the expected type for an element inside an array initializer
+     */
+    private ITypeBinding findArrayTypeForInitializer(ArrayInitializer initializer, Expression element) {
+        // Walk up to find the variable declaration
+        ASTNode current = initializer;
+        int depth = 0;
+
+        System.out.println("[Debug findArrayType] Starting from ArrayInitializer");
+
+        while (current != null) {
+            ASTNode parent = current.getParent();
+
+            // Count nesting depth
+            if (current instanceof ArrayInitializer) {
+                depth++;
+                System.out.println("[Debug] Counting ArrayInitializer, depth: " + depth);
+            }
+
+            // Found variable declaration
+            if (parent instanceof VariableDeclarationFragment) {
+                VariableDeclarationFragment frag = (VariableDeclarationFragment) parent;
+                ASTNode grandParent = frag.getParent();
+
+                Type declaredType = null;
+                if (grandParent instanceof VariableDeclarationStatement) {
+                    declaredType = ((VariableDeclarationStatement) grandParent).getType();
+                } else if (grandParent instanceof FieldDeclaration) {
+                    declaredType = ((FieldDeclaration) grandParent).getType();
+                }
+
+                if (declaredType != null) {
+                    ITypeBinding typeBinding = declaredType.resolveBinding();
+                    if (typeBinding != null) {
+                        return calculateExpectedTypeAtDepth(typeBinding, depth);
+                    }
+                }
+                break;
+            }
+
+            // Also check ArrayCreation
+            if (parent instanceof ArrayCreation) {
+                ArrayCreation creation = (ArrayCreation) parent;
+                ITypeBinding typeBinding = creation.getType().resolveBinding();
+                if (typeBinding != null) {
+                    return calculateExpectedTypeAtDepth(typeBinding, depth);
+                }
+                break;
+            }
+
+            current = parent;
+        }
+
+        return null;
+    }
+
+    /**
+     * Calculates what type is expected at a given nesting depth
+     */
+    private ITypeBinding calculateExpectedTypeAtDepth(ITypeBinding rootType, int depth) {
+        if (rootType == null) return null;
+
+        int totalDimensions = TypeManager.getArrayDimensions(rootType);
+        int remainingDimensions = totalDimensions - depth;
+
+        System.out.println("[Debug calculateExpectedType] Total Dims: " + totalDimensions +
+                " Depth: " + depth +
+                " Remaining: " + remainingDimensions);
+
+        if (remainingDimensions > 0) {
+            // Still need array type
+            ITypeBinding leafType = TypeManager.getLeafTypeBinding(rootType);
+            ITypeBinding result = leafType.createArrayType(remainingDimensions);
+            System.out.println("[Debug] Returning array type with " + remainingDimensions + " dimensions");
+            return result;
+        } else if (remainingDimensions == 0) {
+            // Need leaf type
+            ITypeBinding result = TypeManager.getLeafTypeBinding(rootType);
+            System.out.println("[Debug] Returning leaf type: " + (result != null ? result.getName() : "null"));
+            return result;
+        }
+
+        System.out.println("[Debug] Depth too deep, returning null");
+        return null;
     }
 }

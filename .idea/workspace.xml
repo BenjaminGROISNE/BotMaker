@@ -4,11 +4,12 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="cba04025-c331-4634-a893-436bad03efc0" name="Changes" comment="Switched back to simple array, correctly detects  the type and local variables.&#10;However only for simple lists not nested ones">
+    <list default="true" id="cba04025-c331-4634-a893-436bad03efc0" name="Changes" comment="fix identifier">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/projects/.botmaker-config.json" beforeDir="false" afterPath="$PROJECT_DIR$/projects/.botmaker-config.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/botmaker/blocks/IdentifierBlock.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/botmaker/blocks/IdentifierBlock.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/botmaker/blocks/ListBlock.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/botmaker/blocks/ListBlock.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/botmaker/util/TypeManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/botmaker/util/TypeManager.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -50,7 +51,7 @@
   <component name="Git.Settings">
     <option name="RECENT_BRANCH_BY_REPOSITORY">
       <map>
-        <entry key="$PROJECT_DIR$" value="SwitchToListOf" />
+        <entry key="$PROJECT_DIR$" value="dev" />
       </map>
     </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -106,7 +107,7 @@
     "RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252": "true",
     "RunOnceActivity.git.unshallow": "true",
     "SHELLCHECK.PATH": "/home/groisnebenjamin/.local/share/JetBrains/IdeaIC2025.2/Shell Script/shellcheck",
-    "git-widget-placeholder": "dev",
+    "git-widget-placeholder": "fixidentifier",
     "ignore.preview.features.used": "true",
     "ignore.virus.scanning.warn.message": "true",
     "kotlin-language-version-configured": "true",
@@ -226,15 +227,7 @@
       <workItem from="1764429708850" duration="899000" />
       <workItem from="1764449958738" duration="3144000" />
       <workItem from="1764786157571" duration="40000" />
-      <workItem from="1764790221452" duration="2179000" />
-    </task>
-    <task id="LOCAL-00027" summary="Tried gradle project">
-      <option name="closed" value="true" />
-      <created>1761931992782</created>
-      <option name="number" value="00027" />
-      <option name="presentableId" value="LOCAL-00027" />
-      <option name="project" value="LOCAL" />
-      <updated>1761931992782</updated>
+      <workItem from="1764790221452" duration="3654000" />
     </task>
     <task id="LOCAL-00028" summary="Tried Maven project">
       <option name="closed" value="true" />
@@ -620,7 +613,15 @@
       <option name="project" value="LOCAL" />
       <updated>1764707186368</updated>
     </task>
-    <option name="localTasksCounter" value="76" />
+    <task id="LOCAL-00076" summary="fix identifier">
+      <option name="closed" value="true" />
+      <created>1764792477443</created>
+      <option name="number" value="00076" />
+      <option name="presentableId" value="LOCAL-00076" />
+      <option name="project" value="LOCAL" />
+      <updated>1764792477443</updated>
+    </task>
+    <option name="localTasksCounter" value="77" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -654,7 +655,6 @@
     <ignored-roots>
       <path value="$PROJECT_DIR$/.." />
     </ignored-roots>
-    <MESSAGE value="Assignment operator update and event log console" />
     <MESSAGE value="Only expressions of correct type are visible" />
     <MESSAGE value="Started variable filtering based on type" />
     <MESSAGE value="Variable proposition works for boolean" />
@@ -679,7 +679,8 @@
     <MESSAGE value="Can switch field from no value to setup value" />
     <MESSAGE value="new blockbuilder methods" />
     <MESSAGE value="Switched back to simple array, correctly detects  the type and local variables.&#10;However only for simple lists not nested ones" />
-    <option name="LAST_COMMIT_MESSAGE" value="Switched back to simple array, correctly detects  the type and local variables.&#10;However only for simple lists not nested ones" />
+    <MESSAGE value="fix identifier" />
+    <option name="LAST_COMMIT_MESSAGE" value="fix identifier" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -718,21 +719,6 @@
           <url>file://$PROJECT_DIR$/src/main/java/com/botmaker/parser/BlockParser.java</url>
           <line>65</line>
           <option name="timeStamp" value="32" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/main/java/com/botmaker/blocks/IdentifierBlock.java</url>
-          <line>75</line>
-          <option name="timeStamp" value="36" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/main/java/com/botmaker/blocks/IdentifierBlock.java</url>
-          <line>85</line>
-          <option name="timeStamp" value="37" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/main/java/com/botmaker/blocks/IdentifierBlock.java</url>
-          <line>83</line>
-          <option name="timeStamp" value="39" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>

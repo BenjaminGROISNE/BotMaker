@@ -157,7 +157,88 @@ public class TypeManager {
     }
 
     // --- Type Compatibility (ITypeBinding) ---
+// Add these new methods to TypeManager.java
 
+    /**
+     * Determines UI type from ITypeBinding
+     */
+    public static String determineUiType(ITypeBinding binding) {
+        if (binding == null) return UI_TYPE_ANY;
+
+        // Check for arrays
+        if (binding.isArray()) return UI_TYPE_LIST;
+
+        // Check for enums
+        if (binding.isEnum()) return UI_TYPE_ENUM;
+
+        String qualifiedName = binding.getQualifiedName();
+
+        if (NUMBER_TYPES.contains(qualifiedName)) return UI_TYPE_NUMBER;
+        if (BOOLEAN_TYPES.contains(qualifiedName)) return UI_TYPE_BOOLEAN;
+        if (STRING_TYPES.contains(qualifiedName)) return UI_TYPE_STRING;
+
+        return UI_TYPE_ANY;
+    }
+
+    /**
+     * Gets the element type of an array binding
+     */
+    public static ITypeBinding getArrayElementType(ITypeBinding arrayBinding) {
+        if (arrayBinding == null || !arrayBinding.isArray()) return null;
+        return arrayBinding.getElementType();
+    }
+
+    /**
+     * Gets the leaf type of a potentially multi-dimensional array
+     */
+    public static ITypeBinding getLeafTypeBinding(ITypeBinding binding) {
+        if (binding == null) return null;
+
+        ITypeBinding current = binding;
+        while (current.isArray()) {
+            current = current.getElementType();
+        }
+        return current;
+    }
+
+    /**
+     * Gets array nesting level from binding
+     */
+    public static int getArrayDimensions(ITypeBinding binding) {
+        if (binding == null || !binding.isArray()) return 0;
+
+        int dimensions = 0;
+        ITypeBinding current = binding;
+        while (current.isArray()) {
+            dimensions++;
+            current = current.getElementType();
+        }
+        return dimensions;
+    }
+
+    /**
+     * Checks type compatibility using bindings
+     */
+    public static boolean isCompatibleBinding(ITypeBinding actualType, ITypeBinding expectedType) {
+        if (expectedType == null) return true;
+        if (actualType == null) return false;
+
+        // Direct match
+        if (actualType.isEqualTo(expectedType)) return true;
+
+        // Check assignability
+        if (actualType.isAssignmentCompatible(expectedType)) return true;
+
+        // Check if both are arrays with compatible element types
+        if (actualType.isArray() && expectedType.isArray()) {
+            return isCompatibleBinding(
+                    actualType.getElementType(),
+                    expectedType.getElementType()
+            );
+        }
+
+        return false;
+    }
     public static boolean isCompatible(ITypeBinding binding, String targetUiType) {
         if (targetUiType == null || targetUiType.equals(UI_TYPE_ANY)) return true;
         if (binding == null) return true;
