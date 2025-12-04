@@ -1,11 +1,12 @@
 package com.botmaker.parser.factories;
 
-import com.botmaker.parser.ImportManager;
 import com.botmaker.ui.AddableBlock;
 import com.botmaker.util.DefaultNames;
 import com.botmaker.util.TypeManager;
 import org.eclipse.jdt.core.dom.*;
 import org.eclipse.jdt.core.dom.rewrite.ASTRewrite;
+
+import java.util.Collections;
 
 /**
  * Factory for creating statement nodes.
@@ -126,15 +127,15 @@ public class StatementFactory {
     }
 
     /**
-     * UPDATED: Creates standard array declaration (int[] myList = new int[] {0})
+     * UPDATED: Creates standard array declaration with empty initializer
      */
     private Statement createArrayDeclaration(AST ast, CompilationUnit cu, ASTRewrite rewriter) {
         VariableDeclarationFragment frag = ast.newVariableDeclarationFragment();
         frag.setName(ast.newSimpleName("myList"));
 
-        // Create initializer: new int[] {0}
+        // Create empty initializer: new int[] {}
         frag.setInitializer(
-                initializerFactory.createArrayInitializer(ast, "int[]", null)
+                initializerFactory.createArrayInitializer(ast, "int[]", Collections.emptyList())
         );
 
         VariableDeclarationStatement listDecl = ast.newVariableDeclarationStatement(frag);

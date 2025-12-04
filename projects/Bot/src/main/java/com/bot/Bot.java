@@ -3,10 +3,11 @@ package com.bot;
 public class Bot {
     public static void main(String[] args) {
         int number = 0;
-		double decimal = 0.0;
+		String decimalge = "fsezf";
 		double decimal = 0.0;
 		boolean flag = false;
-		String[] text5 = new String[] {};
+		String[] text5 = { decimalge, decimalge };
+		int[][][][] myList = { variable, { variable, { variable, { variable } } } };
 		switch (decimal) {
 		case 1:
 			break;

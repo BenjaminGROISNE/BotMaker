@@ -1,6 +1,5 @@
 package com.botmaker.parser.factories;
 
-import com.botmaker.parser.ImportManager;
 import com.botmaker.util.TypeManager;
 import org.eclipse.jdt.core.dom.*;
 import org.eclipse.jdt.core.dom.rewrite.ASTRewrite;
@@ -19,7 +18,8 @@ public class InitializerFactory {
     public Expression createDefaultInitializer(AST ast, String typeName) {
         // Handle arrays
         if (typeName.endsWith("[]")) {
-            return createArrayInitializer(ast, typeName, null);
+            // Default to empty array
+            return createArrayInitializer(ast, typeName, java.util.Collections.emptyList());
         }
 
         switch (typeName) {
@@ -78,18 +78,27 @@ public class InitializerFactory {
     private ArrayInitializer createNestedArrayInitializer(AST ast, String baseType, int dimensions, List<Expression> valuesToPreserve) {
         ArrayInitializer initializer = ast.newArrayInitializer();
 
+        // 1. If valuesToPreserve is explicitly empty (not null), create an empty array {}
+        if (valuesToPreserve != null && valuesToPreserve.isEmpty()) {
+            return initializer;
+        }
+
+        // 2. Leaf dimension
         if (dimensions == 1) {
-            // Leaf level - add actual values
-            if (valuesToPreserve != null && !valuesToPreserve.isEmpty()) {
+            if (valuesToPreserve != null) {
+                // Should already be covered by check above, but for non-empty lists:
                 for (Expression value : valuesToPreserve) {
                     initializer.expressions().add((Expression) ASTNode.copySubtree(ast, value));
                 }
             } else {
-                // Add one default value
+                // Null valuesToPreserve -> Create ONE default element { default }
                 initializer.expressions().add(createDefaultInitializer(ast, baseType));
             }
-        } else {
-            // Nested level - create sub-array
+        }
+        // 3. Nested dimension
+        else {
+            // Recursively create sub-array
+            // If we are initializing a multi-dim array from scratch, we create one sub-element
             ArrayInitializer subArray = createNestedArrayInitializer(ast, baseType, dimensions - 1, valuesToPreserve);
             initializer.expressions().add(subArray);
         }
@@ -108,17 +117,11 @@ public class InitializerFactory {
         return createArrayInitializer(ast, arrayType, leavesToPreserve);
     }
 
-    /**
-     * Helper to convert ArrayList<T> to T[]
-     */
     private String convertArrayListToArray(String arrayListType) {
         if (!arrayListType.startsWith("ArrayList<")) {
             return arrayListType;
         }
-
         String inner = arrayListType.substring(10, arrayListType.length() - 1);
-
-        // Check if nested
         if (inner.startsWith("ArrayList<")) {
             return convertArrayListToArray(inner) + "[]";
         } else {
@@ -126,9 +129,6 @@ public class InitializerFactory {
         }
     }
 
-    /**
-     * DEPRECATED: Extracts the element type from ArrayList<T>.
-     */
     @Deprecated
     public String extractArrayListElementType(String arrayListType) {
         if (arrayListType.contains("<") && arrayListType.contains(">")) {

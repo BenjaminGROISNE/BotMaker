@@ -102,67 +102,68 @@ public class VariableDeclarationBlock extends AbstractStatementBlock {
         ContextMenu menu = new ContextMenu();
         String currentStr = variableType.toString();
         boolean isArray = variableType.isArrayType();
-        boolean isEnumType = isEnum(context);
 
-        final String baseType = extractBaseType(currentStr, isArray);
-
-        // Toggle Array
-        MenuItem toggleArray = new MenuItem(isArray ? "Convert to Single Value" : "Convert to Array");
-        toggleArray.setStyle("-fx-font-weight: bold;");
-        toggleArray.setOnAction(e -> {
-            String newType = isArray ? baseType : baseType + "[]";
+        // 1. Add/Remove Dimension Logic
+        MenuItem addDim = new MenuItem("Add Dimension []");
+        addDim.setOnAction(e -> {
+            String newType = currentStr + "[]";
             context.codeEditor().replaceVariableType((VariableDeclarationStatement) this.astNode, newType);
         });
-        menu.getItems().add(toggleArray);
+        menu.getItems().add(addDim);
 
-        // Nested Array Option
         if (isArray) {
-            MenuItem makeNested = new MenuItem("Make Array of Arrays");
-            makeNested.setOnAction(e -> {
-                String newType = baseType + "[][]";
-                context.codeEditor().replaceVariableType((VariableDeclarationStatement) this.astNode, newType);
+            MenuItem removeDim = new MenuItem("Remove Dimension []");
+            removeDim.setOnAction(e -> {
+                if (currentStr.endsWith("[]")) {
+                    String newType = currentStr.substring(0, currentStr.length() - 2);
+                    context.codeEditor().replaceVariableType((VariableDeclarationStatement) this.astNode, newType);
+                }
             });
-            menu.getItems().add(makeNested);
+            menu.getItems().add(removeDim);
         }
 
         menu.getItems().add(new SeparatorMenuItem());
 
-        // Change Base Type - Fundamental Types
-        Menu changeBaseMenu = new Menu("Change to Primitive Type");
+        // 2. Change Base Type
+        Menu changeBaseMenu = new Menu("Change Base Type");
+
+        // Primitive Types
         for (String type : TypeManager.getFundamentalTypeNames()) {
             MenuItem item = new MenuItem(type);
             item.setOnAction(e -> {
-                String newType = isArray ? type + "[]" : type;
+                // Preserve dimensions when changing base type
+                String newType = preserveDimensions(currentStr, type);
                 context.codeEditor().replaceVariableType((VariableDeclarationStatement) this.astNode, newType);
             });
             changeBaseMenu.getItems().add(item);
         }
-        menu.getItems().add(changeBaseMenu);
 
-        // Change to Enum Type
+        // Enum Types
         List<String> availableEnums = getAvailableEnums(context);
         if (!availableEnums.isEmpty()) {
-            Menu changeEnumMenu = new Menu("Change to Enum Type");
+            changeBaseMenu.getItems().add(new SeparatorMenuItem());
             for (String enumName : availableEnums) {
                 MenuItem item = new MenuItem(enumName);
                 item.setOnAction(e -> {
-                    String newType = isArray ? enumName + "[]" : enumName;
+                    String newType = preserveDimensions(currentStr, enumName);
                     context.codeEditor().replaceVariableType((VariableDeclarationStatement) this.astNode, newType);
                 });
-                changeEnumMenu.getItems().add(item);
+                changeBaseMenu.getItems().add(item);
             }
-            menu.getItems().add(changeEnumMenu);
         }
+        menu.getItems().add(changeBaseMenu);
 
         menu.show(anchor, javafx.geometry.Side.BOTTOM, 0, 0);
     }
 
-    private String extractBaseType(String currentStr, boolean isArray) {
-        if (isArray) {
-            // Remove [] suffixes
-            return currentStr.replace("[]", "").trim();
+    private String preserveDimensions(String oldType, String newBase) {
+        int dims = 0;
+        String temp = oldType;
+        while (temp.endsWith("[]")) {
+            dims++;
+            temp = temp.substring(0, temp.length() - 2);
         }
-        return currentStr;
+        return newBase + "[]".repeat(dims);
     }
 
     private HBox createListDisplay(CompletionContext context) {
@@ -179,16 +180,8 @@ public class VariableDeclarationBlock extends AbstractStatementBlock {
 
     private String getDisplayTypeName(Type type) {
         String typeName = type.toString();
-        if (typeName.endsWith("[]")) return typeName; // Show as-is: int[], String[][]
+        // Just show the type as-is (e.g. "int[][]")
         return typeName;
-    }
-
-    // Check if current type is an enum
-    private boolean isEnum(CompletionContext context) {
-        String typeName = variableType.toString();
-        // Remove array brackets if present
-        typeName = typeName.replace("[]", "").trim();
-        return getAvailableEnums(context).contains(typeName);
     }
 
     // Get all available enum types from the compilation unit
@@ -198,17 +191,14 @@ public class VariableDeclarationBlock extends AbstractStatementBlock {
         CompilationUnit cu = context.applicationState().getCompilationUnit().orElse(null);
         if (cu == null) return enumNames;
 
-        // Get the main type declaration
-        if (!cu.types().isEmpty() && cu.types().getFirst() instanceof TypeDeclaration) {
-            TypeDeclaration typeDecl = (TypeDeclaration) cu.types().getFirst();
+        if (!cu.types().isEmpty() && cu.types().get(0) instanceof TypeDeclaration) {
+            TypeDeclaration typeDecl = (TypeDeclaration) cu.types().get(0);
 
-            // Look through all body declarations for enums
             for (Object obj : typeDecl.bodyDeclarations()) {
                 if (obj instanceof EnumDeclaration) {
                     EnumDeclaration enumDecl = (EnumDeclaration) obj;
                     enumNames.add(enumDecl.getName().getIdentifier());
                 }
-                // Also check for enums inside methods (local enums in the AST, even if invalid)
                 else if (obj instanceof MethodDeclaration) {
                     MethodDeclaration method = (MethodDeclaration) obj;
                     if (method.getBody() != null) {
@@ -217,7 +207,6 @@ public class VariableDeclarationBlock extends AbstractStatementBlock {
                 }
             }
         }
-        // Check if the root is itself an enum file
         else if (!cu.types().isEmpty() && cu.types().get(0) instanceof EnumDeclaration) {
             EnumDeclaration enumDecl = (EnumDeclaration) cu.types().get(0);
             enumNames.add(enumDecl.getName().getIdentifier());
@@ -226,7 +215,6 @@ public class VariableDeclarationBlock extends AbstractStatementBlock {
         return enumNames;
     }
 
-    // Recursively find local enum declarations in method bodies
     private void findLocalEnums(ASTNode node, List<String> enumNames) {
         if (node instanceof TypeDeclarationStatement) {
             TypeDeclarationStatement tds = (TypeDeclarationStatement) node;
@@ -235,7 +223,6 @@ public class VariableDeclarationBlock extends AbstractStatementBlock {
                 enumNames.add(enumDecl.getName().getIdentifier());
             }
         }
-        // Recursively search children
         if (node instanceof Block) {
             for (Object stmt : ((Block) node).statements()) {
                 findLocalEnums((ASTNode) stmt, enumNames);

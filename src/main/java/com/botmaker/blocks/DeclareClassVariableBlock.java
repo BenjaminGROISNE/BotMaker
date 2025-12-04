@@ -3,7 +3,6 @@ package com.botmaker.blocks;
 import com.botmaker.core.AbstractStatementBlock;
 import com.botmaker.core.ExpressionBlock;
 import com.botmaker.lsp.CompletionContext;
-import com.botmaker.ui.AddableExpression;
 import com.botmaker.ui.builders.BlockLayout;
 import com.botmaker.ui.components.BlockUIComponents;
 import com.botmaker.ui.components.TextFieldComponents;
@@ -23,7 +22,6 @@ import static com.botmaker.ui.components.BlockUIComponents.createTypeLabel;
 
 /**
  * Represents a class-level field declaration (instance or static variable).
- * Example: private int score = 0;
  */
 public class DeclareClassVariableBlock extends AbstractStatementBlock {
 
@@ -47,7 +45,6 @@ public class DeclareClassVariableBlock extends AbstractStatementBlock {
         this.initializer = initializer;
     }
 
-    // DeclareClassVariableBlock.java - use builders where applicable
     @Override
     protected Node createUINode(CompletionContext context) {
         VBox container = new VBox(5);
@@ -60,12 +57,10 @@ public class DeclareClassVariableBlock extends AbstractStatementBlock {
                         "-fx-border-radius: 6;"
         );
 
-        // Row 1: Modifiers Label
         Label modifiersLabel = new Label((isPrivate ? "Private" : "Public") + (isStatic ? " Static" : "") + " Field");
         modifiersLabel.setStyle("-fx-text-fill: white; -fx-font-weight: bold; -fx-font-size: 10px;");
 
-        // Row 2: Type, Name, and Initializer using sentence builder
-        Label typeLabel = createTypeLabel(getDisplayTypeName(variableType));
+        Label typeLabel = createTypeLabel(variableType.toString());
         typeLabel.setCursor(Cursor.HAND);
         Tooltip.install(typeLabel, new Tooltip("Click to change type"));
         typeLabel.setOnMouseClicked(e -> showTypeMenu(typeLabel, context));
@@ -124,11 +119,9 @@ public class DeclareClassVariableBlock extends AbstractStatementBlock {
 
         HBox mainRow = mainRowBuilder.build();
 
-        // Delete Button
         Button deleteBtn = createDeleteButton(context);
         deleteBtn.setStyle("-fx-background-color: transparent; -fx-text-fill: white; -fx-font-size: 14px; -fx-padding: 0; -fx-cursor: hand;");
 
-        // Assemble
         HBox headerRow = new HBox(10);
         headerRow.setAlignment(Pos.CENTER_LEFT);
         headerRow.getChildren().addAll(modifiersLabel, BlockUIComponents.createSpacer(), deleteBtn);
@@ -141,69 +134,66 @@ public class DeclareClassVariableBlock extends AbstractStatementBlock {
     private void showTypeMenu(Node anchor, CompletionContext context) {
         ContextMenu menu = new ContextMenu();
         String currentStr = variableType.toString();
-        boolean isArrayListType = isArrayList(variableType);
         boolean isArray = variableType.isArrayType();
 
-        final String baseType = extractBaseType(currentStr, isArrayListType, isArray);
-
-        // Toggle ArrayList
-        MenuItem toggleList = new MenuItem(isArrayListType ? "Convert to Single Value" : "Convert to ArrayList");
-        toggleList.setStyle("-fx-font-weight: bold;");
-        toggleList.setOnAction(e -> {
-            String newType = isArrayListType ? baseType : "ArrayList<" + TypeManager.toWrapperType(baseType) + ">";
+        // 1. Add/Remove Dimension Logic
+        MenuItem addDim = new MenuItem("Add Dimension []");
+        addDim.setOnAction(e -> {
+            String newType = currentStr + "[]";
             context.codeEditor().replaceFieldType((FieldDeclaration) this.astNode, newType);
         });
-        menu.getItems().add(toggleList);
+        menu.getItems().add(addDim);
 
-        // Nested List Option
-        if (isArrayListType) {
-            MenuItem makeNested = new MenuItem("Make ArrayList of ArrayLists");
-            makeNested.setOnAction(e -> {
-                String newType = "ArrayList<ArrayList<" + TypeManager.toWrapperType(baseType) + ">>";
-                context.codeEditor().replaceFieldType((FieldDeclaration) this.astNode, newType);
+        if (isArray) {
+            MenuItem removeDim = new MenuItem("Remove Dimension []");
+            removeDim.setOnAction(e -> {
+                if (currentStr.endsWith("[]")) {
+                    String newType = currentStr.substring(0, currentStr.length() - 2);
+                    context.codeEditor().replaceFieldType((FieldDeclaration) this.astNode, newType);
+                }
             });
-            menu.getItems().add(makeNested);
+            menu.getItems().add(removeDim);
         }
 
         menu.getItems().add(new SeparatorMenuItem());
 
-        // Change Base Type - Fundamental Types
-        Menu changeBaseMenu = new Menu("Change to Primitive Type");
+        // 2. Change Base Type
+        Menu changeBaseMenu = new Menu("Change Base Type");
+
         for (String type : TypeManager.getFundamentalTypeNames()) {
             MenuItem item = new MenuItem(type);
             item.setOnAction(e -> {
-                String newType = isArrayListType ? "ArrayList<" + TypeManager.toWrapperType(type) + ">" : type;
+                String newType = preserveDimensions(currentStr, type);
                 context.codeEditor().replaceFieldType((FieldDeclaration) this.astNode, newType);
             });
             changeBaseMenu.getItems().add(item);
         }
-        menu.getItems().add(changeBaseMenu);
 
-        // Change to Enum Type
         List<String> availableEnums = getAvailableEnums(context);
         if (!availableEnums.isEmpty()) {
-            Menu changeEnumMenu = new Menu("Change to Enum Type");
+            changeBaseMenu.getItems().add(new SeparatorMenuItem());
             for (String enumName : availableEnums) {
                 MenuItem item = new MenuItem(enumName);
                 item.setOnAction(e -> {
-                    String newType = isArrayListType ? "ArrayList<" + enumName + ">" : enumName;
+                    String newType = preserveDimensions(currentStr, enumName);
                     context.codeEditor().replaceFieldType((FieldDeclaration) this.astNode, newType);
                 });
-                changeEnumMenu.getItems().add(item);
+                changeBaseMenu.getItems().add(item);
             }
-            menu.getItems().add(changeEnumMenu);
         }
+        menu.getItems().add(changeBaseMenu);
 
         menu.show(anchor, javafx.geometry.Side.BOTTOM, 0, 0);
     }
 
-    private String extractBaseType(String currentStr, boolean isArrayListType, boolean isArray) {
-        if (isArrayListType && currentStr.contains("<")) {
-            return currentStr.substring(currentStr.indexOf("<") + 1, currentStr.lastIndexOf(">"));
-        } else if (isArray) {
-            return currentStr.replace("[]", "");
+    private String preserveDimensions(String oldType, String newBase) {
+        int dims = 0;
+        String temp = oldType;
+        while (temp.endsWith("[]")) {
+            dims++;
+            temp = temp.substring(0, temp.length() - 2);
         }
-        return currentStr;
+        return newBase + "[]".repeat(dims);
     }
 
     private HBox createListDisplay(CompletionContext context) {
@@ -211,35 +201,20 @@ public class DeclareClassVariableBlock extends AbstractStatementBlock {
         listBox.setAlignment(Pos.CENTER_LEFT);
         listBox.getStyleClass().add("inline-list-display");
 
-        Label open = new Label("[");
-        open.setStyle("-fx-font-weight: bold; -fx-font-size: 14px; -fx-text-fill: white;");
-        Label close = new Label("]");
-        close.setStyle("-fx-font-weight: bold; -fx-font-size: 14px; -fx-text-fill: white;");
+        Label open = new Label("["); open.setStyle("-fx-font-weight: bold; -fx-font-size: 14px; -fx-text-fill: white;");
+        Label close = new Label("]"); close.setStyle("-fx-font-weight: bold; -fx-font-size: 14px; -fx-text-fill: white;");
 
         listBox.getChildren().addAll(open, initializer.getUINode(context), close);
         return listBox;
     }
 
-    private String getDisplayTypeName(Type type) {
-        String typeName = type.toString();
-        if (isArrayList(type)) return typeName;
-        if (typeName.endsWith("[]")) return typeName.replace("[]", " list");
-        return typeName;
-    }
-
-    private boolean isArrayList(Type type) {
-        return type.toString().startsWith("ArrayList");
-    }
-
     private List<String> getAvailableEnums(CompletionContext context) {
         List<String> enumNames = new ArrayList<>();
-
         CompilationUnit cu = context.applicationState().getCompilationUnit().orElse(null);
         if (cu == null) return enumNames;
 
-        if (!cu.types().isEmpty() && cu.types().getFirst() instanceof TypeDeclaration) {
-            TypeDeclaration typeDecl = (TypeDeclaration) cu.types().getFirst();
-
+        if (!cu.types().isEmpty() && cu.types().get(0) instanceof TypeDeclaration) {
+            TypeDeclaration typeDecl = (TypeDeclaration) cu.types().get(0);
             for (Object obj : typeDecl.bodyDeclarations()) {
                 if (obj instanceof EnumDeclaration) {
                     EnumDeclaration enumDecl = (EnumDeclaration) obj;
@@ -247,7 +222,6 @@ public class DeclareClassVariableBlock extends AbstractStatementBlock {
                 }
             }
         }
-
         return enumNames;
     }
 }
