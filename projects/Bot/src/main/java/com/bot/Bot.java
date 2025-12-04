@@ -16,6 +16,8 @@ public class Bot {
 			selectMethod();
 			// Comment
 			if (true) {
+			} else if (true) {
+			} else if (true) {
 			}
 			// Comment
 			break;

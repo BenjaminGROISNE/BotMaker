@@ -7,19 +7,25 @@ import com.botmaker.core.StatementBlock;
 import com.botmaker.lsp.CompletionContext;
 import com.botmaker.ui.builders.BlockLayout;
 import com.botmaker.ui.components.BlockUIComponents;
+import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import org.eclipse.jdt.core.dom.CompilationUnit;
+import org.eclipse.jdt.core.dom.Expression;
 import org.eclipse.jdt.core.dom.IfStatement;
+import org.eclipse.jdt.core.dom.Statement;
 
 public class IfBlock extends AbstractStatementBlock {
 
     private ExpressionBlock condition;
     private BodyBlock thenBody;
     private StatementBlock elseStatement;
+
+    // Flag to alter rendering if this block is part of an 'else if' chain
+    private boolean isElseIf = false;
 
     public IfBlock(String id, IfStatement astNode) {
         super(id, astNode);
@@ -29,26 +35,33 @@ public class IfBlock extends AbstractStatementBlock {
     public void setThenBody(BodyBlock thenBody) { this.thenBody = thenBody; }
     public void setElseStatement(StatementBlock elseStatement) { this.elseStatement = elseStatement; }
 
+    public void setIsElseIf(boolean isElseIf) {
+        this.isElseIf = isElseIf;
+    }
+
     @Override
     protected Node createUINode(CompletionContext context) {
         VBox container = new VBox(5);
         container.getStyleClass().add("if-block");
 
         // Header with condition
+        // Change keyword based on context
+        String keyword = isElseIf ? "Else If" : "If";
+
         Button addButton = createAddButton(e ->
                 showExpressionMenuAndReplace((Button)e.getSource(), context, "boolean",
-                        condition != null ? (org.eclipse.jdt.core.dom.Expression) condition.getAstNode() : null)
+                        condition != null ? (Expression) condition.getAstNode() : null)
         );
 
         Node headerContent = BlockLayout.sentence()
-                .addKeyword("If")
+                .addKeyword(keyword)
                 .addExpressionSlot(condition, context, "boolean")
                 .addNode(addButton)
                 .build();
 
         container.getChildren().add(BlockLayout.header()
                 .withCustomNode(headerContent)
-                .withDeleteButton(() -> context.codeEditor().deleteStatement((org.eclipse.jdt.core.dom.Statement) this.astNode))
+                .withDeleteButton(() -> context.codeEditor().deleteStatement((Statement) this.astNode))
                 .build());
 
         // Then Body
@@ -59,7 +72,23 @@ public class IfBlock extends AbstractStatementBlock {
 
         // Else / Else If Logic
         if (elseStatement != null) {
-            if (elseStatement instanceof BodyBlock) {
+            if (elseStatement instanceof IfBlock) {
+                // Else If (Recursive IfBlock)
+                // We delegate the "Else If" rendering to the child block itself to keep the hierarchy flat visually
+                IfBlock childIf = (IfBlock) elseStatement;
+                childIf.setIsElseIf(true);
+
+                Node elseIfNode = childIf.getUINode(context);
+
+                // CRITICAL FIX: The child block comes with its own Gutter (padding).
+                // If we just add it, it will be indented relative to this block.
+                // We apply a negative margin to pull it back to the left, aligning "Else If" with "If".
+                // Assuming standard gutter is around 12px.
+                VBox.setMargin(elseIfNode, new Insets(0, 0, 0, -12.0));
+
+                container.getChildren().add(elseIfNode);
+
+            } else if (elseStatement instanceof BodyBlock) {
                 // Regular Else
                 VBox elseContainer = new VBox(5);
 
@@ -75,17 +104,6 @@ public class IfBlock extends AbstractStatementBlock {
                 VBox elseBodyNode = createIndentedBody((BodyBlock) elseStatement, context, "if-body");
                 elseContainer.getChildren().addAll(elseHeader, elseBodyNode);
                 container.getChildren().add(elseContainer);
-            } else {
-                // Else If (Recursive IfBlock)
-                HBox elseIfContainer = new HBox(5);
-                elseIfContainer.setAlignment(Pos.CENTER_LEFT);
-                elseIfContainer.getChildren().add(createKeywordLabel("Else"));
-
-                Node elseNode = elseStatement.getUINode(context);
-                HBox.setHgrow(elseNode, javafx.scene.layout.Priority.ALWAYS);
-                elseIfContainer.getChildren().add(elseNode);
-
-                container.getChildren().add(elseIfContainer);
             }
         } else {
             // Add Else Button
