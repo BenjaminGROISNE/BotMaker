@@ -8,8 +8,11 @@ import com.botmaker.core.ExpressionBlock;
 import com.botmaker.lsp.CompletionContext;
 import com.botmaker.ui.BlockDragAndDropManager;
 import com.botmaker.ui.builders.BlockLayout;
+import com.botmaker.ui.components.TextFieldComponents;
 import javafx.scene.Node;
+import javafx.scene.control.TextField;
 import org.eclipse.jdt.core.dom.EnhancedForStatement;
+import org.eclipse.jdt.core.dom.SimpleName;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -39,10 +42,24 @@ public class ForBlock extends AbstractStatementBlock implements BlockWithChildre
 
     @Override
     protected Node createUINode(CompletionContext context) {
-        // Build sentence: "for each [var] in [collection]"
+        // Extract variable name safely
+        String varName = "";
+        if (variable != null && variable.getAstNode() instanceof SimpleName) {
+            varName = ((SimpleName) variable.getAstNode()).getIdentifier();
+        }
+
+        // Create editable field for the loop variable
+        TextField nameField = TextFieldComponents.createVariableNameField(varName, newName -> {
+            if (variable != null && variable.getAstNode() instanceof SimpleName) {
+                // Reuse the generic replacement logic in CodeEditor
+                context.codeEditor().replaceSimpleName((SimpleName) variable.getAstNode(), newName);
+            }
+        });
+
+        // Build sentence: "for each [nameField] in [collection]"
         var sentence = BlockLayout.sentence()
                 .addKeyword("for each")
-                .addExpressionSlot(variable, context, "any")
+                .addNode(nameField) // Use the text field directly
                 .addKeyword("in")
                 .addExpressionSlot(collection, context, "any")
                 .build();
