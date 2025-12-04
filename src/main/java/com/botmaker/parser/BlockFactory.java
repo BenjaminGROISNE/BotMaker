@@ -173,11 +173,8 @@ public class BlockFactory {
         return null;
     }
 
-    // ... (Existing parseBodyBlock, parseStatement, etc. remain exactly the same) ...
     public void setMarkNewIdentifiersAsUnedited(boolean mark) { this.markNewIdentifiersAsUnedited = mark; }
     public BodyBlock parseBodyBlock(Block astBlock, Map<ASTNode, CodeBlock> nodeToBlockMap, BlockDragAndDropManager manager) {
-        // [Existing implementation...]
-        // COPY YOUR PREVIOUS IMPLEMENTATION HERE
         BodyBlock bodyBlock = new BodyBlock(BlockIdPrefix.generate(BlockIdPrefix.BODY, astBlock), astBlock, manager);
         nodeToBlockMap.put(astBlock, bodyBlock);
 
@@ -219,6 +216,23 @@ public class BlockFactory {
     }
 
     public Optional<ExpressionBlock> parseExpression(Expression expr, Map<ASTNode, CodeBlock> map) {
+        // --- NEW: Handle ArrayCreation (new int[] {...}) ---
+        if (expr instanceof ArrayCreation) {
+            ArrayCreation ac = (ArrayCreation) expr;
+            if (ac.getInitializer() != null) {
+                // Recursively parse the inner ArrayInitializer
+                Optional<ExpressionBlock> innerBlock = parseExpression(ac.getInitializer(), map);
+
+                // IMPORTANT: Map the ArrayCreation node to the same block as the initializer.
+                // This ensures that when a VariableDeclarationFragment asks for the block corresponding
+                // to its initializer (which is the ArrayCreation node), it gets the correct ListBlock.
+                if (innerBlock.isPresent()) {
+                    map.put(expr, innerBlock.get());
+                }
+                return innerBlock;
+            }
+        }
+
         return blockParser.parseExpression(expr, map);
     }
 
@@ -252,4 +266,40 @@ public class BlockFactory {
     }
 
     public CompilationUnit getCompilationUnit() { return ast; }
+
+    // Helper used by BlockParser
+    public boolean isListStructure(Expression expr) {
+        if (expr instanceof ArrayInitializer) return true;
+        if (expr instanceof ArrayCreation) return true; // Added
+        if (expr instanceof ClassInstanceCreation) {
+            ClassInstanceCreation cic = (ClassInstanceCreation) expr;
+            String typeName = cic.getType().toString();
+            return (typeName.startsWith("ArrayList") || typeName.startsWith("java.util.ArrayList")) && !cic.arguments().isEmpty();
+        }
+        if (expr instanceof MethodInvocation) {
+            MethodInvocation mi = (MethodInvocation) expr;
+            String scope = mi.getExpression() != null ? mi.getExpression().toString() : "";
+            return (scope.equals("Arrays") && mi.getName().getIdentifier().equals("asList")) ||
+                    (scope.equals("List") && mi.getName().getIdentifier().equals("of"));
+        }
+        return false;
+    }
+
+    @SuppressWarnings("unchecked")
+    public List<Expression> getListItems(Expression expr) {
+        if (expr instanceof ArrayInitializer) return ((ArrayInitializer) expr).expressions();
+        if (expr instanceof ArrayCreation) { // Added
+            ArrayCreation ac = (ArrayCreation) expr;
+            return ac.getInitializer() != null ? ac.getInitializer().expressions() : Collections.emptyList();
+        }
+        if (expr instanceof ClassInstanceCreation) {
+            ClassInstanceCreation cic = (ClassInstanceCreation) expr;
+            if (!cic.arguments().isEmpty()) {
+                Expression arg = (Expression) cic.arguments().get(0);
+                return getListItems(arg);
+            }
+        }
+        if (expr instanceof MethodInvocation) return ((MethodInvocation) expr).arguments();
+        return List.of();
+    }
 }

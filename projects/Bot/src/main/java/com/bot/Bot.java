@@ -6,32 +6,13 @@ public class Bot {
 		String decimalge = "fsezf";
 		double decimal = 0.0;
 		boolean flag = false;
-		String[] text5 = { decimalge, decimalge };
-		int[][][][] myList = { variable, { variable, { variable, { variable } } } };
-		switch (decimal) {
-		case 1:
-			break;
-		case 0:
-			int number = 0;
-			double decimal = 0.0;
-			selectMethod();
-			// Comment
-			if (true) {
-			} else if (true) {
-			} else if (true) {
-			}
-			// Comment
-			break;
-		default:
-			break;
-			// Comment
-		}
+		boolean[] myList = new boolean[] {};
 		// Comment
 		do {
 		} while (true);
 		while (true) {
 		}
-		for (String string:array){}
+		for (String text5:array){}
 		while (true) {
 		}
 		String[] text = { text5 };
