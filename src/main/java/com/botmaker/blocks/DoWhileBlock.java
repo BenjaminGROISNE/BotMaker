@@ -9,7 +9,12 @@ import com.botmaker.lsp.CompletionContext;
 import com.botmaker.ui.BlockDragAndDropManager;
 import com.botmaker.ui.builders.BlockLayout;
 import javafx.scene.Node;
+import javafx.scene.control.Button;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
 import org.eclipse.jdt.core.dom.DoStatement;
+import org.eclipse.jdt.core.dom.Expression;
+import org.eclipse.jdt.core.dom.Statement;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -36,12 +41,35 @@ public class DoWhileBlock extends AbstractStatementBlock implements BlockWithChi
 
     @Override
     protected Node createUINode(CompletionContext context) {
-        return BlockLayout.loop()
+        VBox container = new VBox(5);
+
+        // 1. Header: "do"
+        container.getChildren().add(BlockLayout.header()
                 .withKeyword("do")
-                .withBody(body, context)
-                .withFooterKeyword("while")
-                .withCondition(condition, context, "boolean")
-                .withDeleteButton(() -> context.codeEditor().deleteStatement((org.eclipse.jdt.core.dom.Statement) this.astNode))
+                .withDeleteButton(() -> context.codeEditor().deleteStatement((Statement) this.astNode))
+                .build());
+
+        // 2. Body
+        container.getChildren().add(createIndentedBody(body, context, "loop-body"));
+
+        // 3. Footer: "while [condition] [+]"
+        Button changeBtn = createAddButton(e ->
+                showExpressionMenuAndReplace(
+                        (Button) e.getSource(),
+                        context,
+                        "boolean",
+                        condition != null ? (Expression) condition.getAstNode() : null
+                )
+        );
+
+        HBox footer = BlockLayout.sentence()
+                .addKeyword("while")
+                .addExpressionSlot(condition, context, "boolean")
+                .addNode(changeBtn)
                 .build();
+
+        container.getChildren().add(footer);
+
+        return container;
     }
 }

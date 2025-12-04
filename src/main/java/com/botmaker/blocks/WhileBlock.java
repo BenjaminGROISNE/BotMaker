@@ -9,7 +9,12 @@ import com.botmaker.lsp.CompletionContext;
 import com.botmaker.ui.BlockDragAndDropManager;
 import com.botmaker.ui.builders.BlockLayout;
 import javafx.scene.Node;
+import javafx.scene.control.Button;
+import javafx.scene.layout.VBox;
+import org.eclipse.jdt.core.dom.Expression;
+import org.eclipse.jdt.core.dom.Statement;
 import org.eclipse.jdt.core.dom.WhileStatement;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -35,16 +40,34 @@ public class WhileBlock extends AbstractStatementBlock implements BlockWithChild
 
     @Override
     protected Node createUINode(CompletionContext context) {
-        return BlockLayout.loop()
-                .withKeyword("while")
-                .withCondition(condition, context, "boolean")
-                .withConditionChangeHandler(() -> {
-                    javafx.scene.control.Button btn = new javafx.scene.control.Button();
-                    showExpressionMenuAndReplace(btn, context, "boolean",
-                            condition != null ? (org.eclipse.jdt.core.dom.Expression) condition.getAstNode() : null);
-                })
-                .withBody(body, context)
-                .withDeleteButton(() -> context.codeEditor().deleteStatement((org.eclipse.jdt.core.dom.Statement) this.astNode))
+        VBox container = new VBox(5);
+
+        // 1. Create the Add/Change Button
+        // We do this manually to capture the event source (the button itself)
+        Button changeBtn = createAddButton(e ->
+                showExpressionMenuAndReplace(
+                        (Button) e.getSource(),
+                        context,
+                        "boolean",
+                        condition != null ? (Expression) condition.getAstNode() : null
+                )
+        );
+
+        // 2. Build Header: "while [condition] [+]"
+        Node headerContent = BlockLayout.sentence()
+                .addKeyword("while")
+                .addExpressionSlot(condition, context, "boolean")
+                .addNode(changeBtn)
                 .build();
+
+        container.getChildren().add(BlockLayout.header()
+                .withCustomNode(headerContent)
+                .withDeleteButton(() -> context.codeEditor().deleteStatement((Statement) this.astNode))
+                .build());
+
+        // 3. Body
+        container.getChildren().add(createIndentedBody(body, context, "loop-body"));
+
+        return container;
     }
 }

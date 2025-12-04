@@ -25,6 +25,8 @@ public class Bot {
 		}
 		// Comment
 		do {
+			if (true) {
+			}
 		} while (true);
 		while (true) {
 		}

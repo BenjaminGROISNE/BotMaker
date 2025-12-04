@@ -5,16 +5,10 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="cba04025-c331-4634-a893-436bad03efc0" name="Changes" comment="primitive types work">
-      <change beforePath="$PROJECT_DIR$/.idea/gradle.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/gradle.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/java_files_concat.txt" beforeDir="false" afterPath="$PROJECT_DIR$/java_files_concat.txt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/projects/.botmaker-config.json" beforeDir="false" afterPath="$PROJECT_DIR$/projects/.botmaker-config.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/projects/Bot/src/main/java/com/bot/Bot.java" beforeDir="false" afterPath="$PROJECT_DIR$/projects/Bot/src/main/java/com/bot/Bot.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/botmaker/blocks/BooleanLiteralBlock.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/botmaker/blocks/BooleanLiteralBlock.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/botmaker/blocks/MainBlock.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/botmaker/blocks/MainBlock.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/botmaker/blocks/MethodDeclarationBlock.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/botmaker/blocks/MethodDeclarationBlock.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/botmaker/ui/ProjectSelectionScreen.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/botmaker/ui/ProjectSelectionScreen.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/botmaker/blocks/DoWhileBlock.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/botmaker/blocks/DoWhileBlock.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/botmaker/blocks/WhileBlock.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/botmaker/blocks/WhileBlock.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -112,7 +106,7 @@
     "RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252": "true",
     "RunOnceActivity.git.unshallow": "true",
     "SHELLCHECK.PATH": "/home/groisnebenjamin/.local/share/JetBrains/IdeaIC2025.2/Shell Script/shellcheck",
-    "git-widget-placeholder": "FixIssues",
+    "git-widget-placeholder": "step2Fixissues",
     "ignore.preview.features.used": "true",
     "ignore.virus.scanning.warn.message": "true",
     "kotlin-language-version-configured": "true",
@@ -232,14 +226,6 @@
       <workItem from="1764449958738" duration="3144000" />
       <workItem from="1764786157571" duration="40000" />
       <workItem from="1764790221452" duration="4791000" />
-    </task>
-    <task id="LOCAL-00029" summary="HOLY SHIT CLAUDE LE BOSS">
-      <option name="closed" value="true" />
-      <created>1762981770747</created>
-      <option name="number" value="00029" />
-      <option name="presentableId" value="LOCAL-00029" />
-      <option name="project" value="LOCAL" />
-      <updated>1762981770747</updated>
     </task>
     <task id="LOCAL-00030" summary="Terminal refactor, two windows, error translation">
       <option name="closed" value="true" />
@@ -625,7 +611,15 @@
       <option name="project" value="LOCAL" />
       <updated>1764794041890</updated>
     </task>
-    <option name="localTasksCounter" value="78" />
+    <task id="LOCAL-00078" summary="Can't delete Mainblock anymore, good. And toggle BooleanLiteralBlock on click.">
+      <option name="closed" value="true" />
+      <created>1764880819292</created>
+      <option name="number" value="00078" />
+      <option name="presentableId" value="LOCAL-00078" />
+      <option name="project" value="LOCAL" />
+      <updated>1764880819292</updated>
+    </task>
+    <option name="localTasksCounter" value="79" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -663,7 +657,6 @@
     <ignored-roots>
       <path value="$PROJECT_DIR$/.." />
     </ignored-roots>
-    <MESSAGE value="Started variable filtering based on type" />
     <MESSAGE value="Variable proposition works for boolean" />
     <MESSAGE value="Expression type filtering" />
     <MESSAGE value="Variable filtering" />
@@ -688,7 +681,8 @@
     <MESSAGE value="Switched back to simple array, correctly detects  the type and local variables.&#10;However only for simple lists not nested ones" />
     <MESSAGE value="fix identifier" />
     <MESSAGE value="primitive types work" />
-    <option name="LAST_COMMIT_MESSAGE" value="primitive types work" />
+    <MESSAGE value="Can't delete Mainblock anymore, good. And toggle BooleanLiteralBlock on click." />
+    <option name="LAST_COMMIT_MESSAGE" value="Can't delete Mainblock anymore, good. And toggle BooleanLiteralBlock on click." />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
