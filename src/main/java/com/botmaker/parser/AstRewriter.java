@@ -83,6 +83,39 @@ public class AstRewriter {
         return AstRewriteHelper.applyRewrite(rewriter, originalCode);
     }
 
+    /**
+     * Smart deletion for statements. Handles special cases like unwrapping 'else if' chains.
+     */
+    public String deleteStatement(CompilationUnit cu, String originalCode, Statement statement) {
+        AST ast = cu.getAST();
+        ASTRewrite rewriter = ASTRewrite.create(ast);
+
+        // Check if we are deleting an 'else if' block (IfStatement nested in an else property)
+        if (statement instanceof IfStatement) {
+            IfStatement ifStmt = (IfStatement) statement;
+            if (ifStmt.getParent() instanceof IfStatement) {
+                IfStatement parent = (IfStatement) ifStmt.getParent();
+
+                // Confirm it is the 'else' child
+                if (parent.getElseStatement() == ifStmt) {
+
+                    Statement childElse = ifStmt.getElseStatement();
+
+                    // If the node being deleted has its own else/else-if, pull it up
+                    if (childElse != null) {
+                        ASTNode moveTarget = rewriter.createMoveTarget(childElse);
+                        rewriter.replace(ifStmt, moveTarget, null);
+                        return AstRewriteHelper.applyRewrite(rewriter, originalCode);
+                    }
+                }
+            }
+        }
+
+        // Default behavior: just remove the node
+        rewriter.remove(statement, null);
+        return AstRewriteHelper.applyRewrite(rewriter, originalCode);
+    }
+
     // ========================================================================
     // EXPRESSION MANIPULATION
     // ========================================================================

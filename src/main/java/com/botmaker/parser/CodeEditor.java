@@ -285,7 +285,8 @@ public class CodeEditor {
     }
 
     public void deleteStatement(Statement toDelete) {
-        String newCode = astRewriter.deleteNode(getCompilationUnit(), getCurrentCode(), toDelete);
+        // Use the smart delete logic in AstRewriter
+        String newCode = astRewriter.deleteStatement(getCompilationUnit(), getCurrentCode(), toDelete);
         triggerUpdate(newCode);
     }
 

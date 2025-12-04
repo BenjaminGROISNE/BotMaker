@@ -5,7 +5,7 @@ public class Bot {
         int number = 0;
 		double decimal = 0.0;
 		double decimal = 0.0;
-		boolean flag = true;
+		boolean flag = false;
 		String[] text5 = new String[] {};
 		switch (decimal) {
 		case 1:
@@ -27,8 +27,6 @@ public class Bot {
 		}
 		// Comment
 		do {
-			if (true) {
-			}
 		} while (true);
 		while (true) {
 		}
