@@ -30,6 +30,7 @@ public class MethodDeclarationBlock extends AbstractStatementBlock implements Bl
     private final String methodName;
     private final String returnType;
     private BodyBlock body;
+    protected boolean isDeletable = true; // Added flag to control delete button visibility
 
     public MethodDeclarationBlock(String id, MethodDeclaration astNode, BlockDragAndDropManager manager) {
         super(id, astNode);
@@ -50,7 +51,6 @@ public class MethodDeclarationBlock extends AbstractStatementBlock implements Bl
         return body != null ? Collections.singletonList(body) : Collections.emptyList();
     }
 
-    // MethodDeclarationBlock.java
     @Override
     protected Node createUINode(CompletionContext context) {
         VBox container = new VBox(0);
@@ -85,18 +85,22 @@ public class MethodDeclarationBlock extends AbstractStatementBlock implements Bl
             }
         });
 
-        Button deleteBtn = new Button("×");
-        deleteBtn.setStyle("-fx-background-color: transparent; -fx-text-fill: #E74C3C; -fx-font-size: 16px; -fx-padding: 0; -fx-cursor: hand;");
-        deleteBtn.setOnAction(e -> context.codeEditor().deleteMethod((MethodDeclaration) this.astNode));
-
-        HBox topRow = BlockLayout.sentence()
+        // Use builder to optionally add delete button
+        var topRowBuilder = BlockLayout.sentence()
                 .addNode(funcLabel)
                 .addNode(nameLabel)
                 .addNode(BlockUIComponents.createSpacer())
                 .addNode(returnsLabel)
-                .addNode(typeSelector)
-                .addNode(deleteBtn)
-                .build();
+                .addNode(typeSelector);
+
+        if (isDeletable) {
+            Button deleteBtn = new Button("×");
+            deleteBtn.setStyle("-fx-background-color: transparent; -fx-text-fill: #E74C3C; -fx-font-size: 16px; -fx-padding: 0; -fx-cursor: hand;");
+            deleteBtn.setOnAction(e -> context.codeEditor().deleteMethod((MethodDeclaration) this.astNode));
+            topRowBuilder.addNode(deleteBtn);
+        }
+
+        HBox topRow = topRowBuilder.build();
 
         // Row 2: Parameters
         Label paramsLabel = new Label("Inputs:");
@@ -180,10 +184,7 @@ public class MethodDeclarationBlock extends AbstractStatementBlock implements Bl
 
         nameField.setOnAction(e -> box.requestFocus());
 
-        MethodDeclaration md = (MethodDeclaration) this.astNode;
         box.getChildren().addAll(typeLabel, nameField);
         return box;
     }
-
-
 }

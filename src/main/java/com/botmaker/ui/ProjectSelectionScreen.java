@@ -121,7 +121,7 @@ public class ProjectSelectionScreen {
         root.setCenter(center);
 
         Scene scene = new Scene(root, 600, 550); // Increased height slightly
-        scene.getStylesheets().add(getClass().getResource("/com/botmaker/styles.css").toExternalForm());
+
 
         return scene;
     }

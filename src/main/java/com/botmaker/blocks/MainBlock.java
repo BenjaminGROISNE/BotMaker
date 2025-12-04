@@ -19,9 +19,11 @@ public class MainBlock extends MethodDeclarationBlock {
         super(id, astNode, manager);
         this.isMainMethod = "main".equals(astNode.getName().getIdentifier()) &&
                 org.eclipse.jdt.core.dom.Modifier.isStatic(astNode.getModifiers());
+
+        // Disable delete button for Main method
+        this.isDeletable = false;
     }
 
-    // MainBlock.java
     @Override
     protected Node createUINode(CompletionContext context) {
         Node standardUI = super.createUINode(context);
