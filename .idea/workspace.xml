@@ -4,19 +4,18 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="cba04025-c331-4634-a893-436bad03efc0" name="Changes" comment="Finished type revamp fixing some minor bugs">
+    <list default="true" id="cba04025-c331-4634-a893-436bad03efc0" name="Changes" comment="Fixed more blocks with TypeInfo">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/java_files_concat.txt" beforeDir="false" afterPath="$PROJECT_DIR$/java_files_concat.txt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/projects/.botmaker-config.json" beforeDir="false" afterPath="$PROJECT_DIR$/projects/.botmaker-config.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/projects/Bot/src/main/java/com/bot/Bot.java" beforeDir="false" afterPath="$PROJECT_DIR$/projects/Bot/src/main/java/com/bot/Bot.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/botmaker/blocks/BinaryExpressionBlock.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/botmaker/blocks/BinaryExpressionBlock.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/botmaker/blocks/ComparisonExpressionBlock.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/botmaker/blocks/ComparisonExpressionBlock.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/botmaker/blocks/NotOperatorBlock.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/botmaker/blocks/NotOperatorBlock.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/botmaker/core/AbstractExpressionBlock.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/botmaker/core/AbstractExpressionBlock.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/botmaker/blocks/EnumConstantBlock.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/botmaker/blocks/EnumConstantBlock.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/botmaker/blocks/SwitchBlock.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/botmaker/blocks/SwitchBlock.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/botmaker/parser/NodeCreator.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/botmaker/parser/NodeCreator.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/botmaker/parser/factories/InitializerFactory.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/botmaker/parser/factories/InitializerFactory.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/botmaker/parser/factories/StatementFactory.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/botmaker/parser/factories/StatementFactory.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/botmaker/parser/handlers/MethodManipulationHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/botmaker/parser/handlers/MethodManipulationHandler.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/botmaker/parser/handlers/TypeReplacementHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/botmaker/parser/handlers/TypeReplacementHandler.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/botmaker/ui/AddableExpression.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/botmaker/ui/AddableExpression.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/botmaker/ui/components/BlockUIComponents.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/botmaker/ui/components/BlockUIComponents.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -236,15 +235,7 @@
       <workItem from="1764786157571" duration="40000" />
       <workItem from="1764790221452" duration="4791000" />
       <workItem from="1764947386963" duration="4029000" />
-      <workItem from="1764956633858" duration="1205000" />
-    </task>
-    <task id="LOCAL-00036" summary="fixed project dependance on Demo.java and compile/run DEmo.java recreated">
-      <option name="closed" value="true" />
-      <created>1763499560772</created>
-      <option name="number" value="00036" />
-      <option name="presentableId" value="LOCAL-00036" />
-      <option name="project" value="LOCAL" />
-      <updated>1763499560772</updated>
+      <workItem from="1764956633858" duration="2805000" />
     </task>
     <task id="LOCAL-00037" summary="Project selection works">
       <option name="closed" value="true" />
@@ -630,7 +621,15 @@
       <option name="project" value="LOCAL" />
       <updated>1764951699545</updated>
     </task>
-    <option name="localTasksCounter" value="85" />
+    <task id="LOCAL-00085" summary="Fixed more blocks with TypeInfo">
+      <option name="closed" value="true" />
+      <created>1764957901075</created>
+      <option name="number" value="00085" />
+      <option name="presentableId" value="LOCAL-00085" />
+      <option name="project" value="LOCAL" />
+      <updated>1764957901076</updated>
+    </task>
+    <option name="localTasksCounter" value="86" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -668,7 +667,6 @@
     <ignored-roots>
       <path value="$PROJECT_DIR$/.." />
     </ignored-roots>
-    <MESSAGE value="Multiple files project, create method block, returnblock can return value" />
     <MESSAGE value="function call" />
     <MESSAGE value="Block ui node refactor" />
     <MESSAGE value="Windows compatibility" />
@@ -693,7 +691,8 @@
     <MESSAGE value="Added comparison expression block" />
     <MESSAGE value="Type info update, needs to fix the broken blocks now" />
     <MESSAGE value="Finished type revamp fixing some minor bugs" />
-    <option name="LAST_COMMIT_MESSAGE" value="Finished type revamp fixing some minor bugs" />
+    <MESSAGE value="Fixed more blocks with TypeInfo" />
+    <option name="LAST_COMMIT_MESSAGE" value="Fixed more blocks with TypeInfo" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

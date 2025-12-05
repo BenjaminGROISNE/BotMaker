@@ -5,151 +5,102 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
-/**
- * UPDATED: Uses TypeInfo instead of UI type strings
- * Removes "number", "boolean", "list", "enum" magic strings
- */
 public enum AddableExpression {
     // Literals
-    TEXT("Text", TypeInfo.STRING),
-    NUMBER("Number", TypeInfo.INT),
-    TRUE("True", TypeInfo.BOOLEAN),
-    FALSE("False", TypeInfo.BOOLEAN),
+    TEXT("Text", "text", TypeInfo.STRING, Category.LITERAL, true),
+    NUMBER("Number", "0", TypeInfo.INT, Category.LITERAL, true),
+    TRUE("True", "true", TypeInfo.BOOLEAN, Category.LITERAL, true),
+    FALSE("False", "false", TypeInfo.BOOLEAN, Category.LITERAL, true),
 
     // References
-    VARIABLE("Variable", TypeInfo.UNKNOWN),  // Can be any type
-    FUNCTION_CALL("Function Call", TypeInfo.UNKNOWN),  // Return type depends on function
-    ENUM_CONSTANT("Enum Value", null),  // Special: matches any enum
-    LIST("Sub-List", null),  // Special: matches any array/list
+    VARIABLE("Variable", null, TypeInfo.UNKNOWN, Category.REFERENCE, false),
+    FUNCTION_CALL("Function Call", null, TypeInfo.UNKNOWN, Category.REFERENCE, false),
+    ENUM_CONSTANT("Enum Value", null, null, Category.LITERAL, true), // Special: compatibility checked dynamically
+    LIST("Sub-List", null, null, Category.STRUCTURE, false),
 
-    // Math operators (return numeric)
-    ADD("Addition (+)", "+", TypeInfo.INT),
-    SUBTRACT("Subtraction (-)", "-", TypeInfo.INT),
-    MULTIPLY("Multiplication (*)", "*", TypeInfo.INT),
-    DIVIDE("Division (/)", "/", TypeInfo.INT),
-    MODULO("Modulo (%)", "%", TypeInfo.INT),
+    // Math
+    ADD("Addition (+)", "+", TypeInfo.INT, Category.MATH, false),
+    SUBTRACT("Subtraction (-)", "-", TypeInfo.INT, Category.MATH, false),
+    MULTIPLY("Multiplication (*)", "*", TypeInfo.INT, Category.MATH, false),
+    DIVIDE("Division (/)", "/", TypeInfo.INT, Category.MATH, false),
+    MODULO("Modulo (%)", "%", TypeInfo.INT, Category.MATH, false),
 
-    // Comparison operators (return boolean)
-    EQUALS("Equals (==)", "==", TypeInfo.BOOLEAN),
-    NOT_EQUALS("Not Equals (!=)", "!=", TypeInfo.BOOLEAN),
-    GREATER("Greater (>)", ">", TypeInfo.BOOLEAN),
-    LESS("Less (<)", "<", TypeInfo.BOOLEAN),
-    GREATER_EQUALS("Greater Or Equal (>=)", ">=", TypeInfo.BOOLEAN),
-    LESS_EQUALS("Less Or Equal (<=)", "<=", TypeInfo.BOOLEAN),
+    // Comparison
+    EQUALS("Equals (==)", "==", TypeInfo.BOOLEAN, Category.COMPARISON, false),
+    NOT_EQUALS("Not Equals (!=)", "!=", TypeInfo.BOOLEAN, Category.COMPARISON, false),
+    GREATER("Greater (>)", ">", TypeInfo.BOOLEAN, Category.COMPARISON, false),
+    LESS("Less (<)", "<", TypeInfo.BOOLEAN, Category.COMPARISON, false),
+    GREATER_EQUALS("Greater Or Equal (>=)", ">=", TypeInfo.BOOLEAN, Category.COMPARISON, false),
+    LESS_EQUALS("Less Or Equal (<=)", "<=", TypeInfo.BOOLEAN, Category.COMPARISON, false),
 
-    // Logic operators (return boolean)
-    AND("And (&&)", "&&", TypeInfo.BOOLEAN),
-    OR("Or (||)", "||", TypeInfo.BOOLEAN),
-    NOT("Not (!)", "!", TypeInfo.BOOLEAN);
+    // Logic
+    AND("And (&&)", "&&", TypeInfo.BOOLEAN, Category.LOGIC, false),
+    OR("Or (||)", "||", TypeInfo.BOOLEAN, Category.LOGIC, false),
+    NOT("Not (!)", "!", TypeInfo.BOOLEAN, Category.LOGIC, false);
 
     private final String displayName;
     private final String operator;
     private final TypeInfo returnType;
+    private final Category category;
+    private final boolean isConstant;
 
-    AddableExpression(String displayName, TypeInfo returnType) {
-        this(displayName, null, returnType);
-    }
-
-    AddableExpression(String displayName, String operator, TypeInfo returnType) {
+    AddableExpression(String displayName, String operator, TypeInfo returnType, Category category, boolean isConstant) {
         this.displayName = displayName;
         this.operator = operator;
         this.returnType = returnType;
+        this.category = category;
+        this.isConstant = isConstant;
     }
 
     public String getDisplayName() { return displayName; }
-    public String getOperator() { return operator; }
-    public TypeInfo getReturnType() { return returnType; }
+    public Category getCategory() { return category; }
+    public boolean isConstant() { return isConstant; }
 
-    /**
-     * ✨ NEW: Filters expressions compatible with target type using TypeInfo
-     */
+    public enum Category {
+        LITERAL("Values"),
+        REFERENCE("References"),
+        MATH("Math"),
+        COMPARISON("Comparison"),
+        LOGIC("Logic"),
+        STRUCTURE("Structure");
+
+        private final String label;
+        Category(String label) { this.label = label; }
+        public String getLabel() { return label; }
+    }
+
     public static List<AddableExpression> getForType(TypeInfo targetType) {
+        return getForType(targetType, false);
+    }
+
+    public static List<AddableExpression> getForType(TypeInfo targetType, boolean constantOnly) {
         if (targetType == null || targetType.isUnknown()) {
-            return Arrays.asList(values());
+            // If unknown target, allow everything (unless constant filtering is on)
+            return Arrays.stream(values())
+                    .filter(e -> !constantOnly || e.isConstant)
+                    .collect(Collectors.toList());
         }
 
         return Arrays.stream(values())
+                .filter(expr -> !constantOnly || expr.isConstant)
                 .filter(expr -> expr.isCompatibleWith(targetType))
                 .collect(Collectors.toList());
     }
 
-    /**
-     * ✨ NEW: Checks if this expression is compatible with a target type
-     */
     public boolean isCompatibleWith(TypeInfo targetType) {
-        if (targetType == null || targetType.isUnknown()) {
-            return true;
-        }
+        if (targetType == null || targetType.isUnknown()) return true;
 
-        // VARIABLE and FUNCTION_CALL can return any type
-        if (this == VARIABLE || this == FUNCTION_CALL) {
-            return true;
-        }
+        // Special case: Enum Constant only matches Enums
+        if (this == ENUM_CONSTANT) return targetType.isEnum();
 
-        // ENUM_CONSTANT only compatible with enum types
-        if (this == ENUM_CONSTANT) {
-            return targetType.isEnum();
-        }
+        // Special case: List only matches Arrays
+        if (this == LIST) return targetType.isArray();
 
-        // LIST only compatible with array types
-        if (this == LIST) {
-            return targetType.isArray();
-        }
+        // Variables and Functions can be anything
+        if (this == VARIABLE || this == FUNCTION_CALL) return true;
 
-        // For other expressions, check if return type is compatible
-        if (returnType == null) {
-            return true;  // Unknown return type - allow it
-        }
+        if (returnType == null) return true;
 
-        // Check type compatibility
         return returnType.isCompatibleWith(targetType);
-    }
-
-    /**
-     * Helper: Check if expression is compatible with switch statements
-     * Switch allows: int, String, enum (not long, float, double, boolean)
-     */
-    public boolean isSwitchCompatible() {
-        if (this == VARIABLE || this == FUNCTION_CALL || this == ENUM_CONSTANT) {
-            return true;
-        }
-
-        if (returnType == null) return false;
-
-        // Check if it's a switch-compatible type
-        String typeName = returnType.getTypeName();
-        return typeName.equals("int") ||
-                typeName.equals("String") ||
-                typeName.equals("char") ||
-                returnType.isEnum();
-    }
-
-    /**
-     * ✨ DEPRECATED: Old string-based method for backward compatibility
-     * Use getForType(TypeInfo) instead
-     */
-    @Deprecated
-    public static List<AddableExpression> getForType(String targetType) {
-        // Convert old string types to TypeInfo
-        TypeInfo typeInfo = convertLegacyTypeString(targetType);
-        return getForType(typeInfo);
-    }
-
-    /**
-     * Helper to convert legacy UI type strings to TypeInfo
-     */
-    private static TypeInfo convertLegacyTypeString(String legacyType) {
-        if (legacyType == null || legacyType.equals("any")) {
-            return TypeInfo.UNKNOWN;
-        }
-
-        return switch (legacyType) {
-            case "number" -> TypeInfo.INT;
-            case "boolean" -> TypeInfo.BOOLEAN;
-            case "String", "text" -> TypeInfo.STRING;
-            case "list" -> TypeInfo.from("Object[]");  // Generic array
-            case "switch_compatible" -> TypeInfo.INT;  // Most common switch type
-            default -> TypeInfo.from(legacyType);  // Try to parse as actual type
-        };
     }
 }

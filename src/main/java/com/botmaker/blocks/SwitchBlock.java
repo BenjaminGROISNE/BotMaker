@@ -1,3 +1,4 @@
+// FILE: rs\bgroi\Documents\dev\IntellijProjects\BotMaker\src\main\java\com\botmaker\blocks\SwitchBlock.java
 package com.botmaker.blocks;
 
 import com.botmaker.core.AbstractStatementBlock;
@@ -13,6 +14,7 @@ import com.botmaker.util.TypeInfo;
 import javafx.geometry.Insets;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
+import javafx.scene.control.ContextMenu;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import org.eclipse.jdt.core.dom.*;
@@ -20,9 +22,6 @@ import org.eclipse.jdt.core.dom.*;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * UPDATED: Uses TypeInfo for type operations
- */
 public class SwitchBlock extends AbstractStatementBlock implements BlockWithChildren {
 
     private ExpressionBlock expression;
@@ -49,7 +48,6 @@ public class SwitchBlock extends AbstractStatementBlock implements BlockWithChil
     protected Node createUINode(CompletionContext context) {
         VBox mainContainer = new VBox(5);
 
-        // UPDATED: Determine switch type using TypeInfo
         TypeInfo switchType = TypeInfo.UNKNOWN;
         if (expression != null && expression.getAstNode() != null) {
             Expression expr = (Expression) expression.getAstNode();
@@ -59,7 +57,6 @@ public class SwitchBlock extends AbstractStatementBlock implements BlockWithChil
             }
         }
 
-        // Header
         TypeInfo finalSwitchType = switchType;
         Button changeSwitchExprBtn = BlockUIComponents.createChangeButton(e ->
                 showExpressionMenuAndReplace((Button)e.getSource(), context, finalSwitchType,
@@ -77,7 +74,6 @@ public class SwitchBlock extends AbstractStatementBlock implements BlockWithChil
                 .withDeleteButton(() -> context.codeEditor().deleteStatement((org.eclipse.jdt.core.dom.Statement) this.astNode))
                 .build());
 
-        // Cases Container
         VBox casesContainer = new VBox(5);
         casesContainer.setPadding(new javafx.geometry.Insets(5, 0, 0, 20));
 
@@ -88,7 +84,6 @@ public class SwitchBlock extends AbstractStatementBlock implements BlockWithChil
 
         mainContainer.getChildren().add(casesContainer);
 
-        // Add Case Button
         Button addCaseButton = new Button("+ Add Case");
         addCaseButton.setOnAction(e -> context.codeEditor().addCaseToSwitch((SwitchStatement) this.astNode));
         mainContainer.getChildren().add(addCaseButton);
@@ -96,7 +91,6 @@ public class SwitchBlock extends AbstractStatementBlock implements BlockWithChil
         return mainContainer;
     }
 
-    // Inner Static Class for Cases
     public static class SwitchCaseBlock extends AbstractStatementBlock implements BlockWithChildren {
         private ExpressionBlock caseExpression;
         private BodyBlock body;
@@ -126,14 +120,11 @@ public class SwitchBlock extends AbstractStatementBlock implements BlockWithChil
 
         public Node createUINode(CompletionContext context, int index, int totalCases) {
             VBox container = new VBox(5);
-
-            // Case Header
             var caseHeaderBuilder = BlockLayout.sentence();
 
             if (isDefault()) {
                 caseHeaderBuilder.addKeyword("default:");
             } else {
-                // UPDATED: Determine case type using TypeInfo
                 TypeInfo caseType = TypeInfo.UNKNOWN;
                 if (this.astNode.getParent() instanceof SwitchStatement) {
                     SwitchStatement parent = (SwitchStatement) this.astNode.getParent();
@@ -147,10 +138,17 @@ public class SwitchBlock extends AbstractStatementBlock implements BlockWithChil
                 }
 
                 TypeInfo finalCaseType = caseType;
-                Button changeBtn = BlockUIComponents.createChangeButton(e ->
-                        showExpressionMenuAndReplace((Button)e.getSource(), context, finalCaseType,
-                                caseExpression != null ? (Expression) caseExpression.getAstNode() : null)
-                );
+
+                // FIX: Filter menu for constants only
+                Button changeBtn = BlockUIComponents.createChangeButton(e -> {
+                    ContextMenu menu = BlockUIComponents.createExpressionTypeMenu(
+                            finalCaseType,
+                            true, // constantOnly = true
+                            type -> context.codeEditor().replaceExpression(
+                                    (Expression) caseExpression.getAstNode(), type)
+                    );
+                    menu.show((Button)e.getSource(), javafx.geometry.Side.BOTTOM, 0, 0);
+                });
 
                 caseHeaderBuilder
                         .addKeyword("case")
@@ -159,7 +157,6 @@ public class SwitchBlock extends AbstractStatementBlock implements BlockWithChil
                         .addKeyword(":");
             }
 
-            // Move Buttons
             if (index >= 0) {
                 Button upBtn = new Button("▲");
                 upBtn.setStyle("-fx-font-size: 9px; -fx-padding: 2 4 2 4;");
@@ -182,7 +179,6 @@ public class SwitchBlock extends AbstractStatementBlock implements BlockWithChil
 
             container.getChildren().add(caseHeader);
 
-            // Body
             VBox bodyNode = createIndentedBody(body, context, "switch-case-body");
             if (bodyNode != null) container.getChildren().add(bodyNode);
 

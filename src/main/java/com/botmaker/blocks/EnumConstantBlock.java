@@ -1,10 +1,10 @@
+// FILE: rs\bgroi\Documents\dev\IntellijProjects\BotMaker\src\main\java\com\botmaker\blocks\EnumConstantBlock.java
 package com.botmaker.blocks;
 
 import com.botmaker.core.AbstractExpressionBlock;
 import com.botmaker.lsp.CompletionContext;
-import com.botmaker.parser.BlockIdPrefix;
+import com.botmaker.parser.helpers.EnumNodeHelper; // Use shared helper
 import com.botmaker.ui.builders.BlockLayout;
-import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
@@ -14,9 +14,6 @@ import org.eclipse.jdt.core.dom.*;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Represents an enum constant reference expression (e.g., MyEnum.OPTION_A)
- */
 public class EnumConstantBlock extends AbstractExpressionBlock {
 
     private final String enumTypeName;
@@ -34,7 +31,6 @@ public class EnumConstantBlock extends AbstractExpressionBlock {
         this.constantName = astNode.getIdentifier();
     }
 
-    // EnumConstantBlock.java
     @Override
     protected Node createUINode(CompletionContext context) {
         Label typeLabel = new Label(enumTypeName);
@@ -79,55 +75,21 @@ public class EnumConstantBlock extends AbstractExpressionBlock {
     }
 
     private List<String> getEnumConstants(String enumName, CompletionContext context) {
-        List<String> constants = new ArrayList<>();
-
         CompilationUnit cu = context.applicationState().getCompilationUnit().orElse(null);
-        if (cu == null) return constants;
+        if (cu == null) return new ArrayList<>();
 
-        // Search for the enum declaration
-        EnumDeclaration enumDecl = findEnumDeclaration(cu, enumName);
+        // Fix: Use EnumNodeHelper to properly scan both top-level and inner enum declarations
+        EnumDeclaration enumDecl = EnumNodeHelper.findEnumDeclaration(cu, enumName);
+
         if (enumDecl != null) {
-            for (Object obj : enumDecl.enumConstants()) {
-                if (obj instanceof EnumConstantDeclaration) {
-                    EnumConstantDeclaration ecd = (EnumConstantDeclaration) obj;
-                    constants.add(ecd.getName().getIdentifier());
-                }
-            }
+            return EnumNodeHelper.getAllEnumConstantNames(enumDecl);
         }
 
-        return constants;
-    }
-
-    private EnumDeclaration findEnumDeclaration(CompilationUnit cu, String enumName) {
-        // Check top-level types
-        for (Object obj : cu.types()) {
-            if (obj instanceof EnumDeclaration) {
-                EnumDeclaration enumDecl = (EnumDeclaration) obj;
-                if (enumDecl.getName().getIdentifier().equals(enumName)) {
-                    return enumDecl;
-                }
-            }
-            // Check class body declarations
-            else if (obj instanceof TypeDeclaration) {
-                TypeDeclaration typeDecl = (TypeDeclaration) obj;
-                for (Object bodyObj : typeDecl.bodyDeclarations()) {
-                    if (bodyObj instanceof EnumDeclaration) {
-                        EnumDeclaration enumDecl = (EnumDeclaration) bodyObj;
-                        if (enumDecl.getName().getIdentifier().equals(enumName)) {
-                            return enumDecl;
-                        }
-                    }
-                }
-            }
-        }
-        return null;
+        return new ArrayList<>();
     }
 
     private void updateConstant(String newConstant, CompletionContext context) {
-        // Replace with new qualified name: EnumType.NEW_CONSTANT
         Expression oldExpr = (Expression) this.astNode;
-
-        // Use the replaceSimpleName if it's a SimpleName, otherwise need special handling
         if (oldExpr instanceof QualifiedName) {
             QualifiedName qn = (QualifiedName) oldExpr;
             context.codeEditor().replaceSimpleName(qn.getName(), newConstant);

@@ -1,31 +1,49 @@
+// FILE: rs\bgroi\Documents\dev\IntellijProjects\BotMaker\src\main\java\com\botmaker\parser\factories\InitializerFactory.java
 package com.botmaker.parser.factories;
 
+import com.botmaker.parser.helpers.EnumNodeHelper;
 import com.botmaker.util.TypeInfo;
 import com.botmaker.util.TypeManager;
 import org.eclipse.jdt.core.dom.*;
-
 import java.util.List;
 
-/**
- * Factory for creating initializer expressions for variables and fields.
- * UPDATED: Uses TypeInfo exclusively for type logic.
- */
 public class InitializerFactory {
+
+    // Overload for backward compatibility and NodeCreator call
+    public Expression createDefaultInitializer(AST ast, String typeName) {
+        return createDefaultInitializer(ast, TypeInfo.from(typeName), null);
+    }
+
+    public Expression createDefaultInitializer(AST ast, TypeInfo type) {
+        return createDefaultInitializer(ast, type, null);
+    }
 
     /**
      * Creates a default initializer for a given type.
+     * Uses CompilationUnit to find default Enum constants if available.
      */
-    public Expression createDefaultInitializer(AST ast, TypeInfo type) {
+    public Expression createDefaultInitializer(AST ast, TypeInfo type, CompilationUnit cu) {
         // Handle arrays
         if (type.isArray()) {
-            return createArrayInitializer(ast, type, java.util.Collections.emptyList());
+            return createArrayInitializer(ast, type, java.util.Collections.emptyList(), cu);
+        }
+
+        // Handle Enums (Fix for Issue 4: Auto-pick first constant)
+        if (type.isEnum() && cu != null) {
+            String enumName = type.getLeafType().getTypeName();
+            String firstConstant = EnumNodeHelper.findFirstEnumConstant(cu, enumName);
+            if (firstConstant != null) {
+                return ast.newQualifiedName(
+                        ast.newSimpleName(enumName),
+                        ast.newSimpleName(firstConstant)
+                );
+            }
         }
 
         // Handle Primitives and common types
         if (type.isNumeric()) {
-            // Distinguish float/double vs int/long
             String leaf = type.getLeafType().getTypeName();
-            if (leaf.equals("double") || leaf.equals("float") || leaf.equals("Double") || leaf.equals("Float")) {
+            if (leaf.equalsIgnoreCase("double") || leaf.equalsIgnoreCase("float")) {
                 return ast.newNumberLiteral("0.0");
             }
             return ast.newNumberLiteral("0");
@@ -49,69 +67,46 @@ public class InitializerFactory {
         return ast.newNullLiteral();
     }
 
-    /**
-     * Overload for backward compatibility / convenience (auto-converts string to TypeInfo)
-     */
-    public Expression createDefaultInitializer(AST ast, String typeName) {
-        return createDefaultInitializer(ast, TypeInfo.from(typeName));
+    // Overload to fix StatementFactory error (3 args)
+    public Expression createArrayInitializer(AST ast, TypeInfo type, List<Expression> valuesToPreserve) {
+        return createArrayInitializer(ast, type, valuesToPreserve, null);
     }
 
-    /**
-     * Creates an array initializer (e.g., new int[] {0}, new String[][] {{"a"}})
-     * Preserves values if provided.
-     */
-    public Expression createArrayInitializer(AST ast, TypeInfo type, List<Expression> valuesToPreserve) {
+    public Expression createArrayInitializer(AST ast, String typeName, List<Expression> valuesToPreserve) {
+        return createArrayInitializer(ast, TypeInfo.from(typeName), valuesToPreserve, null);
+    }
+
+    public Expression createArrayInitializer(AST ast, TypeInfo type, List<Expression> valuesToPreserve, CompilationUnit cu) {
         int dimensions = type.getArrayDimensions();
         TypeInfo leafType = type.getLeafType();
 
         if (dimensions == 0) {
-            // Not an array, return default for base type
-            return createDefaultInitializer(ast, leafType);
+            return createDefaultInitializer(ast, leafType, cu);
         }
 
-        // Create array creation
         ArrayCreation arrayCreation = ast.newArrayCreation();
         Type elementType = TypeManager.createTypeNode(ast, type.getTypeName());
         arrayCreation.setType((ArrayType) elementType);
 
-        // Create initializer
-        ArrayInitializer initializer = createNestedArrayInitializer(ast, leafType, dimensions, valuesToPreserve);
+        ArrayInitializer initializer = createNestedArrayInitializer(ast, leafType, dimensions, valuesToPreserve, cu);
         arrayCreation.setInitializer(initializer);
 
         return arrayCreation;
     }
 
-    // Helper for overload
-    public Expression createArrayInitializer(AST ast, String typeName, List<Expression> valuesToPreserve) {
-        return createArrayInitializer(ast, TypeInfo.from(typeName), valuesToPreserve);
-    }
-
-    /**
-     * Recursively creates nested array initializers
-     */
-    private ArrayInitializer createNestedArrayInitializer(AST ast, TypeInfo leafType, int dimensions, List<Expression> valuesToPreserve) {
+    private ArrayInitializer createNestedArrayInitializer(AST ast, TypeInfo leafType, int dimensions, List<Expression> valuesToPreserve, CompilationUnit cu) {
         ArrayInitializer initializer = ast.newArrayInitializer();
 
-        // 1. If valuesToPreserve is explicitly empty (not null), create an empty array {}
-        if (valuesToPreserve != null && valuesToPreserve.isEmpty()) {
-            return initializer;
-        }
-
-        // 2. Leaf dimension
-        if (dimensions == 1) {
-            if (valuesToPreserve != null) {
-                for (Expression value : valuesToPreserve) {
-                    initializer.expressions().add((Expression) ASTNode.copySubtree(ast, value));
-                }
-            } else {
-                // Null valuesToPreserve -> Create ONE default element { default }
-                initializer.expressions().add(createDefaultInitializer(ast, leafType));
+        if (valuesToPreserve != null && !valuesToPreserve.isEmpty()) {
+            for (Expression value : valuesToPreserve) {
+                initializer.expressions().add((Expression) ASTNode.copySubtree(ast, value));
             }
-        }
-        // 3. Nested dimension
-        else {
+        } else if (dimensions == 1) {
+            // Create ONE default element
+            initializer.expressions().add(createDefaultInitializer(ast, leafType, cu));
+        } else {
             // Recursively create sub-array
-            ArrayInitializer subArray = createNestedArrayInitializer(ast, leafType, dimensions - 1, valuesToPreserve);
+            ArrayInitializer subArray = createNestedArrayInitializer(ast, leafType, dimensions - 1, null, cu);
             initializer.expressions().add(subArray);
         }
 
@@ -119,24 +114,10 @@ public class InitializerFactory {
     }
 
     /**
-     * DEPRECATED: No longer used with standard arrays
+     * Restore for NodeCreator compatibility, redirecting to new logic.
      */
-    @Deprecated
     public Expression createRecursiveListInitializer(AST ast, String typeName, CompilationUnit cu,
                                                      org.eclipse.jdt.core.dom.rewrite.ASTRewrite rewriter, List<Expression> leavesToPreserve) {
-        // Just delegate to array logic using TypeInfo
-        return createArrayInitializer(ast, convertArrayListToArray(typeName), leavesToPreserve);
-    }
-
-    private String convertArrayListToArray(String arrayListType) {
-        if (!arrayListType.startsWith("ArrayList<")) {
-            return arrayListType;
-        }
-        String inner = arrayListType.substring(10, arrayListType.length() - 1);
-        if (inner.startsWith("ArrayList<")) {
-            return convertArrayListToArray(inner) + "[]";
-        } else {
-            return inner + "[]";
-        }
+        return createArrayInitializer(ast, TypeInfo.from(typeName), leavesToPreserve, cu);
     }
 }

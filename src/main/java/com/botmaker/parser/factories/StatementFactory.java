@@ -1,3 +1,4 @@
+// FILE: rs\bgroi\Documents\dev\IntellijProjects\BotMaker\src\main\java\com\botmaker\parser\factories\StatementFactory.java
 package com.botmaker.parser.factories;
 
 import com.botmaker.ui.AddableBlock;
@@ -46,16 +47,9 @@ public class StatementFactory {
         }
     }
 
-    // ... (Keep existing methods: createPrintStatement, createVariableDeclaration, etc.) ...
-
-    // [ABBREVIATED FOR BREVITY - SAME AS ORIGINAL EXCEPT createArrayDeclaration]
-
     private Statement createPrintStatement(AST ast) {
         MethodInvocation println = ast.newMethodInvocation();
-        println.setExpression(ast.newQualifiedName(
-                ast.newSimpleName("System"),
-                ast.newSimpleName("out")
-        ));
+        println.setExpression(ast.newQualifiedName(ast.newSimpleName("System"), ast.newSimpleName("out")));
         println.setName(ast.newSimpleName("println"));
         StringLiteral emptyString = ast.newStringLiteral();
         emptyString.setLiteralValue("");
@@ -90,16 +84,18 @@ public class StatementFactory {
         return varDecl;
     }
 
-    /**
-     * UPDATED: Uses TypeInfo.from("int[]")
-     */
     private Statement createArrayDeclaration(AST ast, CompilationUnit cu, ASTRewrite rewriter) {
         VariableDeclarationFragment frag = ast.newVariableDeclarationFragment();
         frag.setName(ast.newSimpleName("myList"));
 
-        // Use TypeInfo for robust array creation
+        // Fixed: Use 4-arg overload passing 'cu' to support correct default values
         frag.setInitializer(
-                initializerFactory.createArrayInitializer(ast, TypeInfo.from("int[]"), Collections.emptyList())
+                initializerFactory.createArrayInitializer(
+                        ast,
+                        TypeInfo.from("int[]"),
+                        Collections.emptyList(),
+                        cu // Pass CU
+                )
         );
 
         VariableDeclarationStatement listDecl = ast.newVariableDeclarationStatement(frag);
@@ -107,7 +103,7 @@ public class StatementFactory {
         return listDecl;
     }
 
-    // ... (Keep remaining methods: createIfStatement, createWhileStatement, etc. as they were) ...
+    // ... (Remainder of methods unchanged)
     private Statement createIfStatement(AST ast) {
         IfStatement ifStatement = ast.newIfStatement();
         ifStatement.setExpression(ast.newBooleanLiteral(true));

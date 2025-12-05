@@ -1,6 +1,7 @@
 package com.botmaker.ui.components;
 
 import com.botmaker.ui.AddableExpression;
+import com.botmaker.util.TypeInfo;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Pos;
@@ -10,15 +11,16 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.Priority;
 
+import java.util.List;
+import java.util.Map;
 import java.util.function.Consumer;
+import java.util.stream.Collectors;
 
 public class BlockUIComponents {
 
     public static Button createDeleteButton(Runnable onDelete) {
         Button btn = new Button("X");
         btn.setOnAction(e -> onDelete.run());
-        // Optional: Add a specific style class if you want to target it specifically later
-        // btn.getStyleClass().add("delete-button");
         return btn;
     }
 
@@ -60,41 +62,84 @@ public class BlockUIComponents {
         return spacer;
     }
 
-    /**
-     * Creates a standard header row: [Content Nodes] + [Spacer] + [Delete Button]
-     */
     public static HBox createHeaderRow(Runnable onDelete, Node... content) {
         HBox container = new HBox(5);
         container.setAlignment(Pos.CENTER_LEFT);
-
-        if (content != null) {
-            container.getChildren().addAll(content);
-        }
-
+        if (content != null) container.getChildren().addAll(content);
         container.getChildren().addAll(createSpacer(), createDeleteButton(onDelete));
         return container;
     }
 
     /**
-     * TypeInfo overload for createExpressionTypeMenu
+     * Standard menu creation
      */
-    public static javafx.scene.control.ContextMenu createExpressionTypeMenu(
-            com.botmaker.util.TypeInfo expectedType,
-            java.util.function.Consumer<com.botmaker.ui.AddableExpression> onSelect) {
+    public static ContextMenu createExpressionTypeMenu(
+            TypeInfo expectedType,
+            Consumer<AddableExpression> onSelect) {
+        return createExpressionTypeMenu(expectedType, false, onSelect);
+    }
 
-        javafx.scene.control.ContextMenu menu = new javafx.scene.control.ContextMenu();
+    /**
+     * Categorized menu creation with constant filtering
+     */
+    public static ContextMenu createExpressionTypeMenu(
+            TypeInfo expectedType,
+            boolean constantOnly,
+            Consumer<AddableExpression> onSelect) {
 
-        // Get filtered expression types based on TypeInfo
-        java.util.List<com.botmaker.ui.AddableExpression> availableTypes =
-                com.botmaker.ui.AddableExpression.getForType(expectedType);
+        ContextMenu menu = new ContextMenu();
 
-        for (com.botmaker.ui.AddableExpression exprType : availableTypes) {
-            javafx.scene.control.MenuItem item = new javafx.scene.control.MenuItem(exprType.getDisplayName());
-            item.setOnAction(e -> onSelect.accept(exprType));
-            menu.getItems().add(item);
+        // 1. Get filtered list
+        List<AddableExpression> available = AddableExpression.getForType(expectedType, constantOnly);
+
+        // 2. Group by Category
+        Map<AddableExpression.Category, List<AddableExpression>> grouped = available.stream()
+                .collect(Collectors.groupingBy(AddableExpression::getCategory));
+
+        // 3. Define Category Order
+        AddableExpression.Category[] order = {
+                AddableExpression.Category.LITERAL,
+                AddableExpression.Category.REFERENCE,
+                AddableExpression.Category.MATH,
+                AddableExpression.Category.COMPARISON,
+                AddableExpression.Category.LOGIC,
+                AddableExpression.Category.STRUCTURE
+        };
+
+        boolean hasItems = false;
+
+        for (AddableExpression.Category cat : order) {
+            List<AddableExpression> items = grouped.get(cat);
+            if (items == null || items.isEmpty()) continue;
+
+            // Literals and References go to root (separated), others to sub-menus
+            if (cat == AddableExpression.Category.LITERAL || cat == AddableExpression.Category.REFERENCE) {
+                if (!menu.getItems().isEmpty()) menu.getItems().add(new SeparatorMenuItem());
+                for (AddableExpression expr : items) {
+                    menu.getItems().add(createItem(expr, onSelect));
+                }
+            } else {
+                Menu subMenu = new Menu(cat.getLabel());
+                for (AddableExpression expr : items) {
+                    subMenu.getItems().add(createItem(expr, onSelect));
+                }
+                menu.getItems().add(subMenu);
+            }
+            hasItems = true;
+        }
+
+        if (!hasItems) {
+            MenuItem empty = new MenuItem("(No options available)");
+            empty.setDisable(true);
+            menu.getItems().add(empty);
         }
 
         return menu;
     }
 
+    private static MenuItem createItem(AddableExpression expr, Consumer<AddableExpression> onSelect) {
+        MenuItem item = new MenuItem(expr.getDisplayName());
+        item.setOnAction(e -> onSelect.accept(expr));
+        return item;
+    }
 }

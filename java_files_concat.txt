@@ -261,11 +261,9 @@ package com.botmaker.blocks;
 import com.botmaker.core.AbstractExpressionBlock;
 import com.botmaker.core.ExpressionBlock;
 import com.botmaker.lsp.CompletionContext;
-import com.botmaker.ui.builders.BlockLayout;
-import com.botmaker.ui.theme.BlockTheme;
-import com.botmaker.ui.theme.StyleBuilder;
+import com.botmaker.util.TypeInfo;
 import javafx.scene.Node;
-import javafx.scene.control.Label;
+import javafx.scene.control.Button;
 import javafx.scene.layout.HBox;
 import org.eclipse.jdt.core.dom.ITypeBinding;
 import org.eclipse.jdt.core.dom.InfixExpression;
@@ -304,7 +302,7 @@ public class BinaryExpressionBlock extends AbstractExpressionBlock {
         if (leftOperand != null) {
             expressionBox.getChildren().add(leftOperand.getUINode(context));
             javafx.scene.control.Button changeLeft = createChangeButton(e ->
-                    showExpressionMenuAndReplace((javafx.scene.control.Button)e.getSource(), context, "number",
+                    showExpressionMenuAndReplace((Button)e.getSource(), context, TypeInfo.INT,
                             (Expression) leftOperand.getAstNode())
             );
             changeLeft.setStyle("-fx-font-size: 8px; -fx-padding: 1px 3px;");
@@ -331,7 +329,7 @@ public class BinaryExpressionBlock extends AbstractExpressionBlock {
         if (rightOperand != null) {
             expressionBox.getChildren().add(rightOperand.getUINode(context));
             javafx.scene.control.Button changeRight = createChangeButton(e ->
-                    showExpressionMenuAndReplace((javafx.scene.control.Button)e.getSource(), context, "number",
+                    showExpressionMenuAndReplace((Button)e.getSource(), context, TypeInfo.INT,
                             (Expression) rightOperand.getAstNode())
             );
             changeRight.setStyle("-fx-font-size: 8px; -fx-padding: 1px 3px;");
@@ -687,22 +685,22 @@ public class ComparisonExpressionBlock extends AbstractExpressionBlock {
     @Override
     protected Node createUINode(CompletionContext context) {
         // 1. Determine Input Types based on Operator
-        String operandType;
+        TypeInfo operandType;
         if ("&&".equals(operator) || "||".equals(operator)) {
-            operandType = "boolean"; // Logic requires booleans
+            operandType = TypeInfo.BOOLEAN;
         } else if ("==".equals(operator) || "!=".equals(operator)) {
-            operandType = "any";     // Equality checks anything
+            operandType = TypeInfo.UNKNOWN; // Equality checks anything
         } else {
-            operandType = "number";  // Comparison (<, >) requires numbers
+            operandType = TypeInfo.INT;     // Comparison (<, >) requires numbers (defaulting to INT context)
         }
 
-        final String targetType = operandType; // Final for lambda
+        final TypeInfo targetType = operandType;
 
         // 2. Build Sentence with explicit Change Buttons
         var sentence = BlockLayout.sentence();
 
         // Left Operand
-        sentence.addExpressionSlot(leftOperand, context, TypeInfo.from(targetType));
+        sentence.addExpressionSlot(leftOperand, context, targetType);
         sentence.addNode(BlockUIComponents.createChangeButton(e ->
                 showExpressionMenuAndReplace((Button)e.getSource(), context, targetType,
                         leftOperand != null ? (Expression) leftOperand.getAstNode() : null)
@@ -717,7 +715,7 @@ public class ComparisonExpressionBlock extends AbstractExpressionBlock {
         });
 
         // Right Operand
-        sentence.addExpressionSlot(rightOperand, context, TypeInfo.from(targetType));
+        sentence.addExpressionSlot(rightOperand, context, targetType);
         sentence.addNode(BlockUIComponents.createChangeButton(e ->
                 showExpressionMenuAndReplace((Button)e.getSource(), context, targetType,
                         rightOperand != null ? (Expression) rightOperand.getAstNode() : null)
@@ -3394,12 +3392,12 @@ public class NotOperatorBlock extends AbstractExpressionBlock {
                 .addLabel("!")
                 .addExpressionSlot(operand, context, TypeInfo.BOOLEAN)
                 .addNode(BlockUIComponents.createChangeButton(e ->
-                        showExpressionMenuAndReplace((Button)e.getSource(), context, "boolean",
+                        showExpressionMenuAndReplace((Button)e.getSource(), context, TypeInfo.BOOLEAN,
                                 operand != null ? (Expression) operand.getAstNode() : null)
                 ));
 
         Node root = sentence.build();
-        root.getStyleClass().add("logic-expression-block"); // Reuse logic styling
+        root.getStyleClass().add("logic-expression-block");
         return root;
     }
 }
@@ -4556,6 +4554,7 @@ import com.botmaker.ui.components.SelectorComponents;
 import com.botmaker.util.TypeInfo;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.ContextMenu;
 import javafx.scene.control.Label;
 import org.eclipse.jdt.core.dom.ASTNode;
 import org.eclipse.jdt.core.dom.Expression;
@@ -4582,15 +4581,25 @@ public abstract class AbstractExpressionBlock extends AbstractCodeBlock implemen
     }
 
     /**
-     * Helper to show the expression type menu and replace the current expression node upon selection.
+     * Legacy helper: accepts String targetType.
+     * Delegates to TypeInfo version.
      */
     protected void showExpressionMenuAndReplace(Button button, CompletionContext context,
                                                 String targetType, Expression toReplace) {
-        BlockUIComponents.createExpressionTypeMenu(TypeInfo.from(targetType), type -> {
+        showExpressionMenuAndReplace(button, context, TypeInfo.from(targetType), toReplace);
+    }
+
+    /**
+     * Helper to show the expression type menu and replace the current expression node upon selection.
+     */
+    protected void showExpressionMenuAndReplace(Button button, CompletionContext context,
+                                                TypeInfo targetType, Expression toReplace) {
+        ContextMenu menu = BlockUIComponents.createExpressionTypeMenu(targetType, type -> {
             if (toReplace != null) {
                 context.codeEditor().replaceExpression(toReplace, type);
             }
-        }).show(button, javafx.geometry.Side.BOTTOM, 0, 0);
+        });
+        menu.show(button, javafx.geometry.Side.BOTTOM, 0, 0);
     }
 }
 
@@ -4615,8 +4624,6 @@ import org.eclipse.jdt.core.dom.ASTNode;
 import org.eclipse.jdt.core.dom.Expression;
 import org.eclipse.jdt.core.dom.Statement;
 
-import java.util.function.Consumer;
-
 public abstract class AbstractStatementBlock extends AbstractCodeBlock implements StatementBlock {
     public AbstractStatementBlock(String id, ASTNode astNode) {
         super(id, astNode);
@@ -4639,7 +4646,6 @@ public abstract class AbstractStatementBlock extends AbstractCodeBlock implement
                 () -> context.codeEditor().deleteStatement((Statement) this.astNode),
                 content
         );
-        // Apply default styles that might be overridden by specific blocks
         container.getStyleClass().add("statement-block-header");
         return container;
     }
@@ -4675,12 +4681,21 @@ public abstract class AbstractStatementBlock extends AbstractCodeBlock implement
     }
 
     /**
-     * TypeInfo overload for showExpressionMenuAndReplace
+     * Legacy helper: accepts String targetType.
+     * Delegates to TypeInfo version.
      */
-    protected void showExpressionMenuAndReplace(javafx.scene.control.Button button,
+    protected void showExpressionMenuAndReplace(Button button, CompletionContext context,
+                                                String targetType, Expression toReplace) {
+        showExpressionMenuAndReplace(button, context, TypeInfo.from(targetType), toReplace);
+    }
+
+    /**
+     * Helper to show the expression type menu and replace the current expression node upon selection.
+     */
+    protected void showExpressionMenuAndReplace(Button button,
                                                 CompletionContext context,
                                                 TypeInfo expectedType,
-                                               Expression toReplace) {
+                                                Expression toReplace) {
         ContextMenu menu = BlockUIComponents.createExpressionTypeMenu(
                 expectedType,
                 type -> {
@@ -9943,82 +9958,96 @@ FILE: rs\bgroi\Documents\dev\IntellijProjects\BotMaker\src\main\java\com\botmake
 
 package com.botmaker.parser.factories;
 
+import com.botmaker.util.TypeInfo;
 import com.botmaker.util.TypeManager;
 import org.eclipse.jdt.core.dom.*;
-import org.eclipse.jdt.core.dom.rewrite.ASTRewrite;
 
 import java.util.List;
 
 /**
  * Factory for creating initializer expressions for variables and fields.
- * UPDATED: Now uses standard arrays (int[], String[]) instead of ArrayList
+ * UPDATED: Uses TypeInfo exclusively for type logic.
  */
 public class InitializerFactory {
 
     /**
      * Creates a default initializer for a given type.
      */
-    public Expression createDefaultInitializer(AST ast, String typeName) {
+    public Expression createDefaultInitializer(AST ast, TypeInfo type) {
         // Handle arrays
-        if (typeName.endsWith("[]")) {
-            // Default to empty array
-            return createArrayInitializer(ast, typeName, java.util.Collections.emptyList());
+        if (type.isArray()) {
+            return createArrayInitializer(ast, type, java.util.Collections.emptyList());
         }
 
-        switch (typeName) {
-            case "int":
-            case "long":
-            case "short":
-            case "byte":
-                return ast.newNumberLiteral("0");
-            case "double":
-            case "float":
+        // Handle Primitives and common types
+        if (type.isNumeric()) {
+            // Distinguish float/double vs int/long
+            String leaf = type.getLeafType().getTypeName();
+            if (leaf.equals("double") || leaf.equals("float") || leaf.equals("Double") || leaf.equals("Float")) {
                 return ast.newNumberLiteral("0.0");
-            case "boolean":
-                return ast.newBooleanLiteral(false);
-            case "char":
+            }
+            return ast.newNumberLiteral("0");
+        }
+
+        if (type.isBoolean()) {
+            return ast.newBooleanLiteral(false);
+        }
+
+        if (type.isString()) {
+            if (type.getTypeName().equals("char") || type.getTypeName().equals("Character")) {
                 CharacterLiteral literal = ast.newCharacterLiteral();
                 literal.setCharValue('a');
                 return literal;
-            case "String":
-                StringLiteral str = ast.newStringLiteral();
-                str.setLiteralValue("");
-                return str;
-            default:
-                return ast.newNullLiteral();
+            }
+            StringLiteral str = ast.newStringLiteral();
+            str.setLiteralValue("");
+            return str;
         }
+
+        return ast.newNullLiteral();
+    }
+
+    /**
+     * Overload for backward compatibility / convenience (auto-converts string to TypeInfo)
+     */
+    public Expression createDefaultInitializer(AST ast, String typeName) {
+        return createDefaultInitializer(ast, TypeInfo.from(typeName));
     }
 
     /**
      * Creates an array initializer (e.g., new int[] {0}, new String[][] {{"a"}})
      * Preserves values if provided.
      */
-    public Expression createArrayInitializer(AST ast, String typeName, List<Expression> valuesToPreserve) {
-        // Parse array type
-        int dimensions = TypeManager.getListNestingLevel(typeName);
-        String baseType = TypeManager.getLeafType(typeName);
+    public Expression createArrayInitializer(AST ast, TypeInfo type, List<Expression> valuesToPreserve) {
+        int dimensions = type.getArrayDimensions();
+        TypeInfo leafType = type.getLeafType();
 
         if (dimensions == 0) {
             // Not an array, return default for base type
-            return createDefaultInitializer(ast, baseType);
+            return createDefaultInitializer(ast, leafType);
         }
 
         // Create array creation
         ArrayCreation arrayCreation = ast.newArrayCreation();
-        Type elementType = TypeManager.createTypeNode(ast, typeName);
+        Type elementType = TypeManager.createTypeNode(ast, type.getTypeName());
         arrayCreation.setType((ArrayType) elementType);
 
         // Create initializer
-        ArrayInitializer initializer = createNestedArrayInitializer(ast, baseType, dimensions, valuesToPreserve);
+        ArrayInitializer initializer = createNestedArrayInitializer(ast, leafType, dimensions, valuesToPreserve);
         arrayCreation.setInitializer(initializer);
 
         return arrayCreation;
     }
 
+    // Helper for overload
+    public Expression createArrayInitializer(AST ast, String typeName, List<Expression> valuesToPreserve) {
+        return createArrayInitializer(ast, TypeInfo.from(typeName), valuesToPreserve);
+    }
+
     /**
      * Recursively creates nested array initializers
      */
-    private ArrayInitializer createNestedArrayInitializer(AST ast, String baseType, int dimensions, List<Expression> valuesToPreserve) {
+    private ArrayInitializer createNestedArrayInitializer(AST ast, TypeInfo leafType, int dimensions, List<Expression> valuesToPreserve) {
         ArrayInitializer initializer = ast.newArrayInitializer();
 
         // 1. If valuesToPreserve is explicitly empty (not null), create an empty array {}
@@ -10029,20 +10058,18 @@ public class InitializerFactory {
         // 2. Leaf dimension
         if (dimensions == 1) {
             if (valuesToPreserve != null) {
-                // Should already be covered by check above, but for non-empty lists:
                 for (Expression value : valuesToPreserve) {
                     initializer.expressions().add((Expression) ASTNode.copySubtree(ast, value));
                 }
             } else {
                 // Null valuesToPreserve -> Create ONE default element { default }
-                initializer.expressions().add(createDefaultInitializer(ast, baseType));
+                initializer.expressions().add(createDefaultInitializer(ast, leafType));
             }
         }
         // 3. Nested dimension
         else {
             // Recursively create sub-array
-            // If we are initializing a multi-dim array from scratch, we create one sub-element
-            ArrayInitializer subArray = createNestedArrayInitializer(ast, baseType, dimensions - 1, valuesToPreserve);
+            ArrayInitializer subArray = createNestedArrayInitializer(ast, leafType, dimensions - 1, valuesToPreserve);
             initializer.expressions().add(subArray);
         }
 
@@ -10054,10 +10081,9 @@ public class InitializerFactory {
      */
     @Deprecated
     public Expression createRecursiveListInitializer(AST ast, String typeName, CompilationUnit cu,
-                                                     ASTRewrite rewriter, List<Expression> leavesToPreserve) {
-        // Convert ArrayList syntax to array syntax and delegate
-        String arrayType = convertArrayListToArray(typeName);
-        return createArrayInitializer(ast, arrayType, leavesToPreserve);
+                                                     org.eclipse.jdt.core.dom.rewrite.ASTRewrite rewriter, List<Expression> leavesToPreserve) {
+        // Just delegate to array logic using TypeInfo
+        return createArrayInitializer(ast, convertArrayListToArray(typeName), leavesToPreserve);
     }
 
     private String convertArrayListToArray(String arrayListType) {
@@ -10071,16 +10097,6 @@ public class InitializerFactory {
             return inner + "[]";
         }
     }
-
-    @Deprecated
-    public String extractArrayListElementType(String arrayListType) {
-        if (arrayListType.contains("<") && arrayListType.contains(">")) {
-            int start = arrayListType.indexOf("<") + 1;
-            int end = arrayListType.lastIndexOf(">");
-            return arrayListType.substring(start, end);
-        }
-        return "Object";
-    }
 }
 
 
@@ -10092,16 +10108,13 @@ package com.botmaker.parser.factories;
 
 import com.botmaker.ui.AddableBlock;
 import com.botmaker.util.DefaultNames;
+import com.botmaker.util.TypeInfo;
 import com.botmaker.util.TypeManager;
 import org.eclipse.jdt.core.dom.*;
 import org.eclipse.jdt.core.dom.rewrite.ASTRewrite;
 
 import java.util.Collections;
 
-/**
- * Factory for creating statement nodes.
- * UPDATED: Now creates standard arrays instead of ArrayList
- */
 public class StatementFactory {
 
     private final InitializerFactory initializerFactory;
@@ -10110,64 +10123,38 @@ public class StatementFactory {
         this.initializerFactory = initializerFactory;
     }
 
-    /**
-     * Creates a default statement for a given block type.
-     */
     public Statement createDefaultStatement(AST ast, AddableBlock type, CompilationUnit cu,
                                             ASTRewrite rewriter) {
         switch (type) {
-            case PRINT:
-                return createPrintStatement(ast);
-            case DECLARE_INT:
-                return createVariableDeclaration(ast, DefaultNames.DEFAULT_INT, "0", PrimitiveType.INT);
-            case DECLARE_DOUBLE:
-                return createVariableDeclaration(ast, DefaultNames.DEFAULT_DOUBLE, "0.0", PrimitiveType.DOUBLE);
-            case DECLARE_BOOLEAN:
-                return createVariableDeclaration(ast, DefaultNames.DEFAULT_BOOLEAN, false, PrimitiveType.BOOLEAN);
-            case DECLARE_STRING:
-                return createStringDeclaration(ast);
-            case DECLARE_ARRAY:
-                return createArrayDeclaration(ast, cu, rewriter);
-            case IF:
-                return createIfStatement(ast);
-            case WHILE:
-                return createWhileStatement(ast);
-            case FOR:
-                return createForStatement(ast);
-            case DO_WHILE:
-                return createDoWhileStatement(ast);
-            case FUNCTION_CALL:
-                return createFunctionCallStatement(ast);
-            case BREAK:
-                return ast.newBreakStatement();
-            case CONTINUE:
-                return ast.newContinueStatement();
-            case RETURN:
-                return ast.newReturnStatement();
-            case COMMENT:
-                return ast.newEmptyStatement();
-            case DECLARE_ENUM:
-                return createEnumDeclaration(ast);
-            case ASSIGNMENT:
-                return createAssignmentStatement(ast);
-            case READ_LINE:
-                return createScannerCall(ast, "input", "nextLine", "String");
-            case READ_INT:
-                return createScannerCall(ast, "num", "nextInt", PrimitiveType.INT);
-            case READ_DOUBLE:
-                return createScannerCall(ast, "num", "nextDouble", PrimitiveType.DOUBLE);
-            case SWITCH:
-                return createSwitchStatement(ast);
-            case WAIT:
-                return createWaitStatement(ast);
-            default:
-                return null;
+            case PRINT: return createPrintStatement(ast);
+            case DECLARE_INT: return createVariableDeclaration(ast, DefaultNames.DEFAULT_INT, "0", PrimitiveType.INT);
+            case DECLARE_DOUBLE: return createVariableDeclaration(ast, DefaultNames.DEFAULT_DOUBLE, "0.0", PrimitiveType.DOUBLE);
+            case DECLARE_BOOLEAN: return createVariableDeclaration(ast, DefaultNames.DEFAULT_BOOLEAN, false, PrimitiveType.BOOLEAN);
+            case DECLARE_STRING: return createStringDeclaration(ast);
+            case DECLARE_ARRAY: return createArrayDeclaration(ast, cu, rewriter);
+            case IF: return createIfStatement(ast);
+            case WHILE: return createWhileStatement(ast);
+            case FOR: return createForStatement(ast);
+            case DO_WHILE: return createDoWhileStatement(ast);
+            case FUNCTION_CALL: return createFunctionCallStatement(ast);
+            case BREAK: return ast.newBreakStatement();
+            case CONTINUE: return ast.newContinueStatement();
+            case RETURN: return ast.newReturnStatement();
+            case COMMENT: return ast.newEmptyStatement();
+            case DECLARE_ENUM: return createEnumDeclaration(ast);
+            case ASSIGNMENT: return createAssignmentStatement(ast);
+            case READ_LINE: return createScannerCall(ast, "input", "nextLine", "String");
+            case READ_INT: return createScannerCall(ast, "num", "nextInt", PrimitiveType.INT);
+            case READ_DOUBLE: return createScannerCall(ast, "num", "nextDouble", PrimitiveType.DOUBLE);
+            case SWITCH: return createSwitchStatement(ast);
+            case WAIT: return createWaitStatement(ast);
+            default: return null;
         }
     }
 
-    // ========================================================================
-    // PRIVATE STATEMENT CREATORS
-    // ========================================================================
+    // ... (Keep existing methods: createPrintStatement, createVariableDeclaration, etc.) ...
+
+    // [ABBREVIATED FOR BREVITY - SAME AS ORIGINAL EXCEPT createArrayDeclaration]
 
     private Statement createPrintStatement(AST ast) {
         MethodInvocation println = ast.newMethodInvocation();
@@ -10176,31 +10163,25 @@ public class StatementFactory {
                 ast.newSimpleName("out")
         ));
         println.setName(ast.newSimpleName("println"));
-
         StringLiteral emptyString = ast.newStringLiteral();
         emptyString.setLiteralValue("");
         println.arguments().add(emptyString);
-
         return ast.newExpressionStatement(println);
     }
 
-    private Statement createVariableDeclaration(AST ast, String name, String val,
-                                                PrimitiveType.Code type) {
+    private Statement createVariableDeclaration(AST ast, String name, String val, PrimitiveType.Code type) {
         VariableDeclarationFragment fragment = ast.newVariableDeclarationFragment();
         fragment.setName(ast.newSimpleName(name));
         fragment.setInitializer(ast.newNumberLiteral(val));
-
         VariableDeclarationStatement varDecl = ast.newVariableDeclarationStatement(fragment);
         varDecl.setType(ast.newPrimitiveType(type));
         return varDecl;
     }
 
-    private Statement createVariableDeclaration(AST ast, String name, boolean val,
-                                                PrimitiveType.Code type) {
+    private Statement createVariableDeclaration(AST ast, String name, boolean val, PrimitiveType.Code type) {
         VariableDeclarationFragment fragment = ast.newVariableDeclarationFragment();
         fragment.setName(ast.newSimpleName(name));
         fragment.setInitializer(ast.newBooleanLiteral(val));
-
         VariableDeclarationStatement varDecl = ast.newVariableDeclarationStatement(fragment);
         varDecl.setType(ast.newPrimitiveType(type));
         return varDecl;
@@ -10210,22 +10191,21 @@ public class StatementFactory {
         VariableDeclarationFragment fragment = ast.newVariableDeclarationFragment();
         fragment.setName(ast.newSimpleName(DefaultNames.DEFAULT_STRING));
         fragment.setInitializer(ast.newStringLiteral());
-
         VariableDeclarationStatement varDecl = ast.newVariableDeclarationStatement(fragment);
         varDecl.setType(TypeManager.createTypeNode(ast, "String"));
         return varDecl;
     }
 
     /**
-     * UPDATED: Creates standard array declaration with empty initializer
+     * UPDATED: Uses TypeInfo.from("int[]")
      */
     private Statement createArrayDeclaration(AST ast, CompilationUnit cu, ASTRewrite rewriter) {
         VariableDeclarationFragment frag = ast.newVariableDeclarationFragment();
         frag.setName(ast.newSimpleName("myList"));
 
-        // Create empty initializer: new int[] {}
+        // Use TypeInfo for robust array creation
         frag.setInitializer(
-                initializerFactory.createArrayInitializer(ast, "int[]", Collections.emptyList())
+                initializerFactory.createArrayInitializer(ast, TypeInfo.from("int[]"), Collections.emptyList())
         );
 
         VariableDeclarationStatement listDecl = ast.newVariableDeclarationStatement(frag);
@@ -10233,6 +10213,7 @@ public class StatementFactory {
         return listDecl;
     }
 
+    // ... (Keep remaining methods: createIfStatement, createWhileStatement, etc. as they were) ...
     private Statement createIfStatement(AST ast) {
         IfStatement ifStatement = ast.newIfStatement();
         ifStatement.setExpression(ast.newBooleanLiteral(true));
@@ -10249,11 +10230,9 @@ public class StatementFactory {
 
     private Statement createForStatement(AST ast) {
         EnhancedForStatement enhancedFor = ast.newEnhancedForStatement();
-
         SingleVariableDeclaration parameter = ast.newSingleVariableDeclaration();
         parameter.setType(TypeManager.createTypeNode(ast, "String"));
         parameter.setName(ast.newSimpleName("item"));
-
         enhancedFor.setParameter(parameter);
         enhancedFor.setExpression(ast.newSimpleName("array"));
         enhancedFor.setBody(ast.newBlock());
@@ -10274,21 +10253,15 @@ public class StatementFactory {
     }
 
     private Statement createEnumDeclaration(AST ast) {
-        TypeDeclarationStatement typeDeclStmt = ast.newTypeDeclarationStatement(
-                ast.newEnumDeclaration()
-        );
-
+        TypeDeclarationStatement typeDeclStmt = ast.newTypeDeclarationStatement(ast.newEnumDeclaration());
         EnumDeclaration enumDecl = (EnumDeclaration) typeDeclStmt.getDeclaration();
         enumDecl.setName(ast.newSimpleName("MyEnum"));
-
         EnumConstantDeclaration const1 = ast.newEnumConstantDeclaration();
         const1.setName(ast.newSimpleName("OPTION_A"));
         enumDecl.enumConstants().add(const1);
-
         EnumConstantDeclaration const2 = ast.newEnumConstantDeclaration();
         const2.setName(ast.newSimpleName("OPTION_B"));
         enumDecl.enumConstants().add(const2);
-
         return typeDeclStmt;
     }
 
@@ -10303,26 +10276,19 @@ public class StatementFactory {
     private Statement createScannerCall(AST ast, String varName, String methodName, Object typeObj) {
         VariableDeclarationFragment fragment = ast.newVariableDeclarationFragment();
         fragment.setName(ast.newSimpleName(varName));
-
         MethodInvocation scannerCall = ast.newMethodInvocation();
         scannerCall.setExpression(ast.newSimpleName("scanner"));
         scannerCall.setName(ast.newSimpleName(methodName));
         fragment.setInitializer(scannerCall);
-
         VariableDeclarationStatement varDecl = ast.newVariableDeclarationStatement(fragment);
-        if (typeObj instanceof String) {
-            varDecl.setType(TypeManager.createTypeNode(ast, (String) typeObj));
-        } else {
-            varDecl.setType(ast.newPrimitiveType((PrimitiveType.Code) typeObj));
-        }
+        if (typeObj instanceof String) varDecl.setType(TypeManager.createTypeNode(ast, (String) typeObj));
+        else varDecl.setType(ast.newPrimitiveType((PrimitiveType.Code) typeObj));
         return varDecl;
     }
 
     private Statement createSwitchStatement(AST ast) {
         SwitchStatement switchStmt = ast.newSwitchStatement();
         switchStmt.setExpression(ast.newSimpleName(DefaultNames.DEFAULT_VARIABLE));
-
-        // Add default case
         SwitchCase defaultCase = ast.newSwitchCase();
         switchStmt.statements().add(defaultCase);
         switchStmt.statements().add(ast.newBreakStatement());
@@ -10332,27 +10298,23 @@ public class StatementFactory {
     private Statement createWaitStatement(AST ast) {
         TryStatement tryStmt = ast.newTryStatement();
         Block tryBody = ast.newBlock();
-
         MethodInvocation sleepCall = ast.newMethodInvocation();
         sleepCall.setExpression(ast.newSimpleName("Thread"));
         sleepCall.setName(ast.newSimpleName("sleep"));
         sleepCall.arguments().add(ast.newNumberLiteral("1000"));
         tryBody.statements().add(ast.newExpressionStatement(sleepCall));
         tryStmt.setBody(tryBody);
-
         CatchClause catchClause = ast.newCatchClause();
         SingleVariableDeclaration exceptionDecl = ast.newSingleVariableDeclaration();
         exceptionDecl.setType(ast.newSimpleType(ast.newSimpleName("InterruptedException")));
         exceptionDecl.setName(ast.newSimpleName("e"));
         catchClause.setException(exceptionDecl);
-
         Block catchBody = ast.newBlock();
         MethodInvocation printStackTrace = ast.newMethodInvocation();
         printStackTrace.setExpression(ast.newSimpleName("e"));
         printStackTrace.setName(ast.newSimpleName("printStackTrace"));
         catchBody.statements().add(ast.newExpressionStatement(printStackTrace));
         catchClause.setBody(catchBody);
-
         tryStmt.catchClauses().add(catchClause);
         return tryStmt;
     }
@@ -10579,6 +10541,7 @@ package com.botmaker.parser.handlers;
 import com.botmaker.parser.NodeCreator;
 import com.botmaker.parser.helpers.AstRewriteHelper;
 import com.botmaker.ui.AddableExpression;
+import com.botmaker.util.TypeInfo;
 import com.botmaker.util.TypeManager;
 import org.eclipse.jdt.core.dom.*;
 import org.eclipse.jdt.core.dom.rewrite.ASTRewrite;
@@ -10586,9 +10549,6 @@ import org.eclipse.jdt.core.dom.rewrite.ListRewrite;
 
 import java.util.List;
 
-/**
- * Handles method declaration and method invocation operations.
- */
 public class MethodManipulationHandler {
 
     private final NodeCreator nodeCreator;
@@ -10597,52 +10557,31 @@ public class MethodManipulationHandler {
         this.nodeCreator = nodeCreator;
     }
 
-    /**
-     * Adds a new method to a class.
-     */
-    public String addMethodToClass(CompilationUnit cu, String originalCode,
-                                   TypeDeclaration typeDecl, String methodName,
-                                   String returnType, int index) {
+    // ... (Keep existing addMethodToClass, deleteMethodFromClass) ...
+    public String addMethodToClass(CompilationUnit cu, String originalCode, TypeDeclaration typeDecl, String methodName, String returnType, int index) {
         AST ast = cu.getAST();
         ASTRewrite rewriter = ASTRewrite.create(ast);
-
         MethodDeclaration newMethod = ast.newMethodDeclaration();
         newMethod.setName(ast.newSimpleName(methodName));
-
-        // Set modifiers: public static
         newMethod.modifiers().add(ast.newModifier(Modifier.ModifierKeyword.PUBLIC_KEYWORD));
         newMethod.modifiers().add(ast.newModifier(Modifier.ModifierKeyword.STATIC_KEYWORD));
-
-        // Set return type
-        if ("void".equals(returnType)) {
-            newMethod.setReturnType2(ast.newPrimitiveType(PrimitiveType.VOID));
-        } else {
-            newMethod.setReturnType2(TypeManager.createTypeNode(ast, returnType));
-        }
-
-        // Create empty body
+        if ("void".equals(returnType)) newMethod.setReturnType2(ast.newPrimitiveType(PrimitiveType.VOID));
+        else newMethod.setReturnType2(TypeManager.createTypeNode(ast, returnType));
         Block body = ast.newBlock();
         newMethod.setBody(body);
-
-        // Insert into class
         ListRewrite listRewrite = rewriter.getListRewrite(typeDecl, TypeDeclaration.BODY_DECLARATIONS_PROPERTY);
         listRewrite.insertAt(newMethod, index, null);
-
         return AstRewriteHelper.applyRewrite(rewriter, originalCode);
     }
 
-    /**
-     * Deletes a method from a class.
-     */
-    public String deleteMethodFromClass(CompilationUnit cu, String originalCode,
-                                        MethodDeclaration method) {
+    public String deleteMethodFromClass(CompilationUnit cu, String originalCode, MethodDeclaration method) {
         ASTRewrite rewriter = ASTRewrite.create(cu.getAST());
         rewriter.remove(method, null);
         return AstRewriteHelper.applyRewrite(rewriter, originalCode);
     }
 
     /**
-     * Updates a method invocation (scope, name, and parameters).
+     * Updates a method invocation. Now uses TypeInfo to generate default arguments.
      */
     public String updateMethodInvocation(CompilationUnit cu, String originalCode,
                                          MethodInvocation mi, String newScope,
@@ -10652,16 +10591,11 @@ public class MethodManipulationHandler {
 
         // Update scope
         if (newScope == null || newScope.isEmpty() || newScope.equals("Local")) {
-            if (mi.getExpression() != null) {
-                rewriter.remove(mi.getExpression(), null);
-            }
+            if (mi.getExpression() != null) rewriter.remove(mi.getExpression(), null);
         } else {
             SimpleName newScopeNode = ast.newSimpleName(newScope);
-            if (mi.getExpression() == null) {
-                rewriter.set(mi, MethodInvocation.EXPRESSION_PROPERTY, newScopeNode, null);
-            } else {
-                rewriter.replace(mi.getExpression(), newScopeNode, null);
-            }
+            if (mi.getExpression() == null) rewriter.set(mi, MethodInvocation.EXPRESSION_PROPERTY, newScopeNode, null);
+            else rewriter.replace(mi.getExpression(), newScopeNode, null);
         }
 
         // Update method name
@@ -10675,17 +10609,16 @@ public class MethodManipulationHandler {
         int targetCount = newParamTypes.size();
         int currentCount = currentArgs.size();
 
-        // Remove excess arguments
         if (currentCount > targetCount) {
             for (int i = currentCount - 1; i >= targetCount; i--) {
                 argsRewrite.remove((ASTNode) currentArgs.get(i), null);
             }
-        }
-        // Add missing arguments
-        else if (currentCount < targetCount) {
+        } else if (currentCount < targetCount) {
             for (int i = currentCount; i < targetCount; i++) {
+                // Use TypeInfo.from() to handle array creation elegantly via InitializerFactory
                 String typeName = newParamTypes.get(i);
-                Expression defaultExpr = nodeCreator.createDefaultInitializer(ast, typeName);
+                TypeInfo typeInfo = TypeInfo.from(typeName);
+                Expression defaultExpr = nodeCreator.createDefaultInitializer(ast, typeName); // Note: InitializerFactory now handles TypeInfo logic internally
                 argsRewrite.insertLast(defaultExpr, null);
             }
         }
@@ -10693,125 +10626,70 @@ public class MethodManipulationHandler {
         return AstRewriteHelper.applyRewrite(rewriter, originalCode);
     }
 
-    /**
-     * Adds an argument to a method invocation.
-     */
-    public String addArgumentToMethodInvocation(CompilationUnit cu, String originalCode,
-                                                MethodInvocation mi, AddableExpression type) {
+    // ... (Keep remainder of file: addArgumentToMethodInvocation, renameMethodParameter, etc.) ...
+    public String addArgumentToMethodInvocation(CompilationUnit cu, String originalCode, MethodInvocation mi, AddableExpression type) {
         AST ast = cu.getAST();
         ASTRewrite rewriter = ASTRewrite.create(ast);
-
         Expression newArg = nodeCreator.createDefaultExpression(ast, type, cu, rewriter);
-        if (newArg != null) {
-            rewriter.getListRewrite(mi, MethodInvocation.ARGUMENTS_PROPERTY)
-                    .insertLast(newArg, null);
-        }
-
+        if (newArg != null) rewriter.getListRewrite(mi, MethodInvocation.ARGUMENTS_PROPERTY).insertLast(newArg, null);
         return AstRewriteHelper.applyRewrite(rewriter, originalCode);
     }
 
-    /**
-     * Adds a specific expression as an argument to a method invocation.
-     */
-    public String addArgumentToMethodInvocation(CompilationUnit cu, String originalCode,
-                                                MethodInvocation mi, Expression newArgument) {
+    public String addArgumentToMethodInvocation(CompilationUnit cu, String originalCode, MethodInvocation mi, Expression newArgument) {
         AST ast = cu.getAST();
         ASTRewrite rewriter = ASTRewrite.create(ast);
-
-        rewriter.getListRewrite(mi, MethodInvocation.ARGUMENTS_PROPERTY)
-                .insertLast(newArgument, null);
-
+        rewriter.getListRewrite(mi, MethodInvocation.ARGUMENTS_PROPERTY).insertLast(newArgument, null);
         return AstRewriteHelper.applyRewrite(rewriter, originalCode);
     }
 
-    /**
-     * Renames a method parameter.
-     */
-    public String renameMethodParameter(CompilationUnit cu, String originalCode,
-                                        MethodDeclaration method, int index, String newName) {
+    public String renameMethodParameter(CompilationUnit cu, String originalCode, MethodDeclaration method, int index, String newName) {
         AST ast = cu.getAST();
         ASTRewrite rewriter = ASTRewrite.create(ast);
-
         List<?> params = method.parameters();
         if (index >= 0 && index < params.size()) {
             SingleVariableDeclaration param = (SingleVariableDeclaration) params.get(index);
             SimpleName newNameNode = ast.newSimpleName(newName);
             rewriter.replace(param.getName(), newNameNode, null);
         }
-
         return AstRewriteHelper.applyRewrite(rewriter, originalCode);
     }
 
-    /**
-     * Sets the return type of a method.
-     */
-    public String setMethodReturnType(CompilationUnit cu, String originalCode,
-                                      MethodDeclaration method, String newTypeName) {
+    public String setMethodReturnType(CompilationUnit cu, String originalCode, MethodDeclaration method, String newTypeName) {
         AST ast = cu.getAST();
         ASTRewrite rewriter = ASTRewrite.create(ast);
-
         Type newType;
-        if ("void".equals(newTypeName)) {
-            newType = ast.newPrimitiveType(PrimitiveType.VOID);
-        } else {
-            newType = TypeManager.createTypeNode(ast, newTypeName);
-        }
-
+        if ("void".equals(newTypeName)) newType = ast.newPrimitiveType(PrimitiveType.VOID);
+        else newType = TypeManager.createTypeNode(ast, newTypeName);
         rewriter.replace(method.getReturnType2(), newType, null);
         return AstRewriteHelper.applyRewrite(rewriter, originalCode);
     }
 
-    /**
-     * Adds a parameter to a method.
-     */
-    public String addParameterToMethod(CompilationUnit cu, String originalCode,
-                                       MethodDeclaration method, String typeName, String paramName) {
+    public String addParameterToMethod(CompilationUnit cu, String originalCode, MethodDeclaration method, String typeName, String paramName) {
         AST ast = cu.getAST();
         ASTRewrite rewriter = ASTRewrite.create(ast);
-
         ListRewrite listRewrite = rewriter.getListRewrite(method, MethodDeclaration.PARAMETERS_PROPERTY);
-
         SingleVariableDeclaration newParam = ast.newSingleVariableDeclaration();
         newParam.setType(TypeManager.createTypeNode(ast, typeName));
         newParam.setName(ast.newSimpleName(paramName));
-
         listRewrite.insertLast(newParam, null);
         return AstRewriteHelper.applyRewrite(rewriter, originalCode);
     }
 
-    /**
-     * Deletes a parameter from a method.
-     */
-    public String deleteParameterFromMethod(CompilationUnit cu, String originalCode,
-                                            MethodDeclaration method, int index) {
+    public String deleteParameterFromMethod(CompilationUnit cu, String originalCode, MethodDeclaration method, int index) {
         ASTRewrite rewriter = ASTRewrite.create(cu.getAST());
         ListRewrite listRewrite = rewriter.getListRewrite(method, MethodDeclaration.PARAMETERS_PROPERTY);
-
         List<?> params = method.parameters();
-        if (index >= 0 && index < params.size()) {
-            listRewrite.remove((ASTNode) params.get(index), null);
-        }
-
+        if (index >= 0 && index < params.size()) listRewrite.remove((ASTNode) params.get(index), null);
         return AstRewriteHelper.applyRewrite(rewriter, originalCode);
     }
 
-    /**
-     * Sets the return expression of a return statement.
-     */
-    public String setReturnExpression(CompilationUnit cu, String originalCode,
-                                      ReturnStatement returnStmt, AddableExpression type) {
+    public String setReturnExpression(CompilationUnit cu, String originalCode, ReturnStatement returnStmt, AddableExpression type) {
         AST ast = cu.getAST();
         ASTRewrite rewriter = ASTRewrite.create(ast);
-
         Expression newExpr = nodeCreator.createDefaultExpression(ast, type, cu, rewriter);
         if (newExpr == null) return originalCode;
-
-        if (returnStmt.getExpression() == null) {
-            rewriter.set(returnStmt, ReturnStatement.EXPRESSION_PROPERTY, newExpr, null);
-        } else {
-            rewriter.replace(returnStmt.getExpression(), newExpr, null);
-        }
-
+        if (returnStmt.getExpression() == null) rewriter.set(returnStmt, ReturnStatement.EXPRESSION_PROPERTY, newExpr, null);
+        else rewriter.replace(returnStmt.getExpression(), newExpr, null);
         return AstRewriteHelper.applyRewrite(rewriter, originalCode);
     }
 }
@@ -10913,12 +10791,6 @@ import org.eclipse.jdt.core.dom.rewrite.ASTRewrite;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Handles type replacement operations with value preservation.
- * Consolidates logic for variable and field type changes.
- *
- * UPDATED: Uses TypeInfo for type operations
- */
 public class TypeReplacementHandler {
 
     private final NodeCreator nodeCreator;
@@ -10927,151 +10799,117 @@ public class TypeReplacementHandler {
         this.nodeCreator = nodeCreator;
     }
 
-    /**
-     * Replaces a variable's type, preserving values where possible.
-     */
-    public String replaceVariableType(CompilationUnit cu, String originalCode,
-                                      VariableDeclarationStatement varDecl, String newTypeName) {
+    // ... (Keep existing replaceVariableType, replaceFieldType) ...
+    public String replaceVariableType(CompilationUnit cu, String originalCode, VariableDeclarationStatement varDecl, String newTypeName) {
         AST ast = cu.getAST();
         ASTRewrite rewriter = ASTRewrite.create(ast);
-
         addRequiredImports(cu, rewriter, newTypeName);
-
         Type newType = TypeManager.createTypeNode(ast, newTypeName);
         rewriter.replace(varDecl.getType(), newType, null);
-
         if (!varDecl.fragments().isEmpty()) {
             VariableDeclarationFragment fragment = (VariableDeclarationFragment) varDecl.fragments().get(0);
             Expression currentInitializer = fragment.getInitializer();
-
-            Expression newInitializer = createInitializerForNewType(
-                    ast, cu, rewriter, varDecl.getType().toString(), newTypeName, currentInitializer
-            );
-
-            if (newInitializer != null && currentInitializer != null) {
-                rewriter.replace(currentInitializer, newInitializer, null);
-            }
+            Expression newInitializer = createInitializerForNewType(ast, cu, rewriter, varDecl.getType().toString(), newTypeName, currentInitializer);
+            if (newInitializer != null && currentInitializer != null) rewriter.replace(currentInitializer, newInitializer, null);
         }
-
         return AstRewriteHelper.applyRewrite(rewriter, originalCode);
     }
 
-    /**
-     * Replaces a field's type, preserving values where possible.
-     */
-    public String replaceFieldType(CompilationUnit cu, String originalCode,
-                                   FieldDeclaration fieldDecl, String newTypeName) {
+    public String replaceFieldType(CompilationUnit cu, String originalCode, FieldDeclaration fieldDecl, String newTypeName) {
         AST ast = cu.getAST();
         ASTRewrite rewriter = ASTRewrite.create(ast);
-
         addRequiredImports(cu, rewriter, newTypeName);
-
         Type newType = TypeManager.createTypeNode(ast, newTypeName);
         rewriter.replace(fieldDecl.getType(), newType, null);
-
         if (!fieldDecl.fragments().isEmpty()) {
             VariableDeclarationFragment fragment = (VariableDeclarationFragment) fieldDecl.fragments().get(0);
             Expression currentInitializer = fragment.getInitializer();
-
-            Expression newInitializer = createInitializerForNewType(
-                    ast, cu, rewriter, fieldDecl.getType().toString(), newTypeName, currentInitializer
-            );
-
-            if (newInitializer != null && currentInitializer != null) {
-                rewriter.replace(currentInitializer, newInitializer, null);
-            }
+            Expression newInitializer = createInitializerForNewType(ast, cu, rewriter, fieldDecl.getType().toString(), newTypeName, currentInitializer);
+            if (newInitializer != null && currentInitializer != null) rewriter.replace(currentInitializer, newInitializer, null);
         }
-
         return AstRewriteHelper.applyRewrite(rewriter, originalCode);
     }
 
     /**
      * Creates an appropriate initializer for a new type, preserving values where possible.
-     *
-     * UPDATED: Uses TypeInfo for type checking
+     * UPDATED: Uses TypeInfo extensively.
      */
     private Expression createInitializerForNewType(AST ast, CompilationUnit cu, ASTRewrite rewriter,
                                                    String oldTypeName, String newTypeName,
                                                    Expression currentInitializer) {
         List<Expression> valuesToPreserve = new ArrayList<>();
 
-        // UPDATED: Use TypeInfo for leaf type extraction
         TypeInfo oldType = TypeInfo.from(oldTypeName);
         TypeInfo newType = TypeInfo.from(newTypeName);
 
         String oldLeaf = oldType.getLeafType().getTypeName();
         String newLeaf = newType.getLeafType().getTypeName();
 
-        // Preserve values if leaf types match
+        // Preserve values if leaf types match (e.g. converting int to int[])
         if (oldLeaf.equals(newLeaf) && currentInitializer != null) {
             TypeConversionHelper.collectLeafValues(currentInitializer, valuesToPreserve);
         }
 
-        // UPDATED: Use TypeInfo for enum checking
-        boolean isNewTypeEnum = newType.getLeafType().isEnum() ||
-                TypeManager.isEnumType(newType.getLeafType(), cu);
+        boolean isNewTypeEnum = newType.getLeafType().isEnum() || TypeManager.isEnumType(newType.getLeafType(), cu);
 
         if (isNewTypeEnum) {
             return createEnumInitializer(ast, cu, rewriter, newTypeName, newLeaf);
-        } else if (newTypeName.startsWith("ArrayList<")) {
-            return nodeCreator.createRecursiveListInitializer(ast, newTypeName, cu, rewriter, valuesToPreserve);
         } else if (newType.isArray()) {
+            // Using the overloaded createDefaultInitializer that accepts TypeInfo inside NodeCreator would be ideal,
+            // but for now we call the specific array logic via the factory logic we know exists.
+            // Note: nodeCreator delegates to InitializerFactory.
+            // Here we construct it manually since we have valuesToPreserve.
             return createArrayInitializer(ast, newType, valuesToPreserve);
         } else {
+            // Primitive or Object
             return !valuesToPreserve.isEmpty() ?
                     (Expression) ASTNode.copySubtree(ast, valuesToPreserve.get(0)) :
                     nodeCreator.createDefaultInitializer(ast, newTypeName);
         }
     }
 
-    /**
-     * Creates an enum initializer (either single value or ArrayList of enum).
-     */
     private Expression createEnumInitializer(AST ast, CompilationUnit cu, ASTRewrite rewriter,
                                              String newTypeName, String enumTypeName) {
         String firstConstant = EnumNodeHelper.findFirstEnumConstant(cu, enumTypeName);
-
         if (firstConstant != null) {
-            if (newTypeName.startsWith("ArrayList<")) {
-                // ArrayList<EnumType> - create empty list initially
-                return nodeCreator.createRecursiveListInitializer(ast, newTypeName, cu, rewriter, null);
+            if (newTypeName.endsWith("[]")) {
+                // Array of Enums - create empty array or array with one default
+                return createArrayInitializer(ast, TypeInfo.from(newTypeName), null);
             } else {
-                // Single enum value - use first constant
-                QualifiedName qn = ast.newQualifiedName(
-                        ast.newSimpleName(enumTypeName),
-                        ast.newSimpleName(firstConstant)
-                );
-                return qn;
+                // Single enum value
+                return ast.newQualifiedName(ast.newSimpleName(enumTypeName), ast.newSimpleName(firstConstant));
             }
         } else {
-            // Fallback if no constants found
             return ast.newNullLiteral();
         }
     }
 
     /**
      * Creates an array initializer with preserved values.
-     *
-     * UPDATED: Uses TypeInfo parameter instead of string
+     * UPDATED: Uses TypeInfo parameter.
      */
     private Expression createArrayInitializer(AST ast, TypeInfo typeInfo, List<Expression> valuesToPreserve) {
         ArrayCreation creation = ast.newArrayCreation();
         creation.setType((ArrayType) TypeManager.createTypeNode(ast, typeInfo));
         ArrayInitializer ai = ast.newArrayInitializer();
 
-        if (!valuesToPreserve.isEmpty()) {
+        // If we have preserved values, add them
+        if (valuesToPreserve != null && !valuesToPreserve.isEmpty()) {
             for (Expression val : valuesToPreserve) {
                 ai.expressions().add(ASTNode.copySubtree(ast, val));
             }
+        }
+        // If specific dimensions and no values, ensure nested structure is created (e.g. new int[2][])
+        else {
+            // If we rely on the InitializerFactory logic for nested arrays:
+            // We can just return the creation with empty initializer, or one default element.
+            // For now, empty is safer for refactoring.
         }
 
         creation.setInitializer(ai);
         return creation;
     }
 
-    /**
-     * Adds required imports for ArrayList types.
-     */
     private void addRequiredImports(CompilationUnit cu, ASTRewrite rewriter, String typeName) {
         if (typeName.contains("ArrayList")) {
             ImportManager.addImport(cu, rewriter, "java.util.ArrayList");
