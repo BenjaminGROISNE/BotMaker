@@ -1,11 +1,12 @@
-// FILE: rs\bgroi\Documents\dev\IntellijProjects\BotMaker\src\main\java\com\botmaker\blocks\ComparisonExpressionBlock.java
 package com.botmaker.blocks;
 
 import com.botmaker.core.AbstractExpressionBlock;
 import com.botmaker.core.ExpressionBlock;
 import com.botmaker.lsp.CompletionContext;
 import com.botmaker.ui.builders.BlockLayout;
+import com.botmaker.ui.components.BlockUIComponents;
 import javafx.scene.Node;
+import javafx.scene.control.Button;
 import org.eclipse.jdt.core.dom.Expression;
 import org.eclipse.jdt.core.dom.ITypeBinding;
 import org.eclipse.jdt.core.dom.InfixExpression;
@@ -17,19 +18,13 @@ public class ComparisonExpressionBlock extends AbstractExpressionBlock {
     private String operator;
     private final ITypeBinding returnType;
 
-    // Operator display names (user-friendly)
+    // Operator display names
     private static final String[] OPERATOR_NAMES = {
-            "less than",                    // <
-            "less than or equal",           // <=
-            "greater than",                 // >
-            "greater than or equal",        // >=
-            "equal to",                     // ==
-            "not equal to",                 // !=
-            "AND (&&)",                     // &&
-            "OR (||)"                       // ||
+            "less than", "less than or equal", "greater than", "greater than or equal",
+            "equal to", "not equal to", "AND (&&)", "OR (||)"
     };
 
-    // Corresponding Java operators
+    // Java operators
     private static final String[] OPERATOR_SYMBOLS = {
             "<", "<=", ">", ">=", "==", "!=", "&&", "||"
     };
@@ -40,69 +35,57 @@ public class ComparisonExpressionBlock extends AbstractExpressionBlock {
         this.returnType = astNode.resolveTypeBinding();
     }
 
-    public ExpressionBlock getLeftOperand() {
-        return leftOperand;
-    }
-
-    public void setLeftOperand(ExpressionBlock leftOperand) {
-        this.leftOperand = leftOperand;
-    }
-
-    public ExpressionBlock getRightOperand() {
-        return rightOperand;
-    }
-
-    public void setRightOperand(ExpressionBlock rightOperand) {
-        this.rightOperand = rightOperand;
-    }
-
-    public String getOperator() {
-        return operator;
-    }
-
-    public ITypeBinding getReturnType() {
-        return returnType;
-    }
+    public void setLeftOperand(ExpressionBlock leftOperand) { this.leftOperand = leftOperand; }
+    public void setRightOperand(ExpressionBlock rightOperand) { this.rightOperand = rightOperand; }
 
     @Override
     protected Node createUINode(CompletionContext context) {
-        // Determine types for drop slots based on operator
-        // If Logic (&&, ||), operands must be boolean.
-        // If Comparison (>, <, etc), operands are typically numbers (but == can be anything).
-
-        String operandType = "number"; // default for <, >, etc
+        // 1. Determine Input Types based on Operator
+        String operandType;
         if ("&&".equals(operator) || "||".equals(operator)) {
-            operandType = "boolean";
+            operandType = "boolean"; // Logic requires booleans
         } else if ("==".equals(operator) || "!=".equals(operator)) {
-            operandType = "any";
-        }
-
-        var sentence = BlockLayout.sentence()
-                .addExpressionSlot(leftOperand, context, operandType)
-                .addOperatorSelector(
-                        OPERATOR_NAMES,
-                        OPERATOR_SYMBOLS,
-                        operator,
-                        newOperator -> {
-                            if (newOperator != null && !newOperator.equals(operator)) {
-                                this.operator = newOperator;
-                                // Update AST
-                                if (this.astNode instanceof InfixExpression) {
-                                    context.codeEditor().updateBinaryOperator((InfixExpression) this.astNode, newOperator);
-                                }
-                            }
-                        }
-                )
-                .addExpressionSlot(rightOperand, context, operandType)
-                .build();
-
-        // Add specific styling for logic blocks
-        if ("&&".equals(operator) || "||".equals(operator)) {
-            sentence.getStyleClass().add("logic-expression-block");
+            operandType = "any";     // Equality checks anything
         } else {
-            sentence.getStyleClass().add("comparison-expression-block");
+            operandType = "number";  // Comparison (<, >) requires numbers
         }
 
-        return sentence;
+        final String targetType = operandType; // Final for lambda
+
+        // 2. Build Sentence with explicit Change Buttons
+        var sentence = BlockLayout.sentence();
+
+        // Left Operand
+        sentence.addExpressionSlot(leftOperand, context, targetType);
+        sentence.addNode(BlockUIComponents.createChangeButton(e ->
+                showExpressionMenuAndReplace((Button)e.getSource(), context, targetType,
+                        leftOperand != null ? (Expression) leftOperand.getAstNode() : null)
+        ));
+
+        // Operator
+        sentence.addOperatorSelector(OPERATOR_NAMES, OPERATOR_SYMBOLS, operator, newOp -> {
+            this.operator = newOp;
+            if (this.astNode instanceof InfixExpression) {
+                context.codeEditor().updateBinaryOperator((InfixExpression) this.astNode, newOp);
+            }
+        });
+
+        // Right Operand
+        sentence.addExpressionSlot(rightOperand, context, targetType);
+        sentence.addNode(BlockUIComponents.createChangeButton(e ->
+                showExpressionMenuAndReplace((Button)e.getSource(), context, targetType,
+                        rightOperand != null ? (Expression) rightOperand.getAstNode() : null)
+        ));
+
+        Node root = sentence.build();
+
+        // 3. Styling
+        if ("&&".equals(operator) || "||".equals(operator)) {
+            root.getStyleClass().add("logic-expression-block");
+        } else {
+            root.getStyleClass().add("comparison-expression-block");
+        }
+
+        return root;
     }
 }

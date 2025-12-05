@@ -6,38 +6,35 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public enum AddableExpression {
-    // Literals
+    // ... (Keep existing literals: TEXT, NUMBER, TRUE, FALSE, VARIABLE, FUNCTION_CALL, ENUM_CONSTANT, LIST) ...
     TEXT("Text", "String"),
     NUMBER("Number", "number"),
     TRUE("True", "boolean"),
     FALSE("False", "boolean"),
     VARIABLE("Variable", "any"),
-
-    // Function Call
     FUNCTION_CALL("Function Call", "any"),
-
-    // Enum Constant
     ENUM_CONSTANT("Enum Value", "enum"),
-
-    // Nested
     LIST("Sub-List", "list"),
 
-    // Math Operations
+    // Math
     ADD("Addition (+)", "+", "number"),
     SUBTRACT("Subtraction (-)", "-", "number"),
     MULTIPLY("Multiplication (*)", "*", "number"),
     DIVIDE("Division (/)", "/", "number"),
     MODULO("Modulo (%)", "%", "number"),
 
-    // --- NEW: Comparison & Logic ---
+    // Comparisons
     EQUALS("Equals (==)", "==", "boolean"),
     NOT_EQUALS("Not Equals (!=)", "!=", "boolean"),
     GREATER("Greater (>)", ">", "boolean"),
     LESS("Less (<)", "<", "boolean"),
     GREATER_EQUALS("Greater Or Equal (>=)", ">=", "boolean"),
     LESS_EQUALS("Less Or Equal (<=)", "<=", "boolean"),
+
+    // Logic
     AND("And (&&)", "&&", "boolean"),
-    OR("Or (||)", "||", "boolean");
+    OR("Or (||)", "||", "boolean"),
+    NOT("Not (!)", "!", "boolean"); // <-- NEW
 
     private final String displayName;
     private final String operator;
@@ -58,26 +55,15 @@ public enum AddableExpression {
     public String getReturnType() { return returnType; }
 
     public static List<AddableExpression> getForType(String targetType) {
-        // ... (Existing implementation of getForType remains unchanged) ...
-        System.out.println("[Debug AddableExpression.getForType] Target type: '" + targetType + "'");
+        // ... (Keep existing logic) ...
+        if (targetType == null || targetType.equals("any")) return Arrays.asList(values());
 
-        if (targetType == null || targetType.equals("any")) {
-            return Arrays.asList(values());
-        }
-
-        // Filter for Switch Compatibility
         if (targetType.equals(TypeManager.UI_TYPE_SWITCH_COMPATIBLE)) {
             return Arrays.stream(values())
-                    .filter(e -> {
-                        if (e == VARIABLE || e == TEXT || e == FUNCTION_CALL || e == ENUM_CONSTANT) return true;
-                        if (e == NUMBER) return true;
-                        if (e.returnType.equals("number")) return true;
-                        return false;
-                    })
+                    .filter(e -> e == VARIABLE || e == TEXT || e == FUNCTION_CALL || e == ENUM_CONSTANT || e == NUMBER || e.returnType.equals("number"))
                     .collect(Collectors.toList());
         }
 
-        // Handle enum type filtering
         if (targetType.equals("enum")) {
             return Arrays.stream(values())
                     .filter(e -> e == ENUM_CONSTANT || e == VARIABLE || e == FUNCTION_CALL)
@@ -87,7 +73,6 @@ public enum AddableExpression {
         return Arrays.stream(values())
                 .filter(e -> {
                     if (e.returnType.equals("any")) return true;
-                    if (e.returnType.equals("enum") && targetType.equals("enum")) return true;
                     return e.returnType.equals(targetType);
                 })
                 .collect(Collectors.toList());

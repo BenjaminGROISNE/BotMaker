@@ -16,8 +16,7 @@ public class Bot {
 		case MyEnum.VALUE:
 			break;
 		}
-		while (true) {
-			while (true){for (String text5:array){}}
+		if (variable != 0 || !true) {
 		}
 		String[] text = { text5 };
 		int[][] myList = { variable, { decimal } };

@@ -237,7 +237,15 @@ public class BlockParser {
             }
             return Optional.of(block);
         }
-
+        if (expr instanceof PrefixExpression) {
+            PrefixExpression prefix = (PrefixExpression) expr;
+            if (prefix.getOperator() == PrefixExpression.Operator.NOT) {
+                NotOperatorBlock b = new NotOperatorBlock(BlockIdPrefix.generate("not_", expr), prefix);
+                map.put(expr, b);
+                factory.parseExpression(prefix.getOperand(), map).ifPresent(b::setOperand);
+                return Optional.of(b);
+            }
+        }
         if (factory.isListStructure(expr)) {
             ListBlock b = new ListBlock(BlockIdPrefix.generate(BlockIdPrefix.LIST, expr), expr);
             map.put(expr, b);

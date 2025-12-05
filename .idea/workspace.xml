@@ -4,12 +4,13 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="cba04025-c331-4634-a893-436bad03efc0" name="Changes" comment="3+ list dimensions fix but list initialization still not working">
+    <list default="true" id="cba04025-c331-4634-a893-436bad03efc0" name="Changes" comment="Added comparison expression block">
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/botmaker/blocks/NotOperatorBlock.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/projects/.botmaker-config.json" beforeDir="false" afterPath="$PROJECT_DIR$/projects/.botmaker-config.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/projects/Bot/src/main/java/com/bot/Bot.java" beforeDir="false" afterPath="$PROJECT_DIR$/projects/Bot/src/main/java/com/bot/Bot.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/botmaker/blocks/ComparisonExpressionBlock.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/botmaker/blocks/ComparisonExpressionBlock.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/botmaker/parser/BlockParser.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/botmaker/parser/BlockParser.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/botmaker/parser/factories/ExpressionFactory.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/botmaker/parser/factories/ExpressionFactory.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/botmaker/ui/AddableExpression.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/botmaker/ui/AddableExpression.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -229,14 +230,6 @@
       <workItem from="1764449958738" duration="3144000" />
       <workItem from="1764786157571" duration="40000" />
       <workItem from="1764790221452" duration="4791000" />
-    </task>
-    <task id="LOCAL-00033" summary="Claude refactor, compiles, shows UI but a few problems to fix still">
-      <option name="closed" value="true" />
-      <created>1763414348506</created>
-      <option name="number" value="00033" />
-      <option name="presentableId" value="LOCAL-00033" />
-      <option name="project" value="LOCAL" />
-      <updated>1763414348506</updated>
     </task>
     <task id="LOCAL-00034" summary="Fixed refactor bugs">
       <option name="closed" value="true" />
@@ -622,7 +615,15 @@
       <option name="project" value="LOCAL" />
       <updated>1764943373748</updated>
     </task>
-    <option name="localTasksCounter" value="82" />
+    <task id="LOCAL-00082" summary="Added comparison expression block">
+      <option name="closed" value="true" />
+      <created>1764944391814</created>
+      <option name="number" value="00082" />
+      <option name="presentableId" value="LOCAL-00082" />
+      <option name="project" value="LOCAL" />
+      <updated>1764944391814</updated>
+    </task>
+    <option name="localTasksCounter" value="83" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -660,7 +661,6 @@
     <ignored-roots>
       <path value="$PROJECT_DIR$/.." />
     </ignored-roots>
-    <MESSAGE value="Better working arrays" />
     <MESSAGE value="conserve leaves values" />
     <MESSAGE value="Refactor no syntax errors" />
     <MESSAGE value="Multiple files project, create method block, returnblock can return value" />
@@ -685,7 +685,8 @@
     <MESSAGE value="Fix else if text. However when deleting else if statement deletes the if statements below" />
     <MESSAGE value="3+ list dimensions fix but list initialization still not working" />
     <MESSAGE value="Can't drag block into children anymore" />
-    <option name="LAST_COMMIT_MESSAGE" value="Can't drag block into children anymore" />
+    <MESSAGE value="Added comparison expression block" />
+    <option name="LAST_COMMIT_MESSAGE" value="Added comparison expression block" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -694,11 +695,6 @@
           <url>file://$PROJECT_DIR$/src/main/java/com/botmaker/AstToBlocksConverter.java</url>
           <line>94</line>
           <option name="timeStamp" value="4" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/main/java/com/botmaker/parser/BlockParser.java</url>
-          <line>31</line>
-          <option name="timeStamp" value="12" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/com/botmaker/parser/BlockParser.java</url>
