@@ -5,13 +5,15 @@ import com.botmaker.events.EventBus;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.Tooltip;
 import javafx.scene.layout.HBox;
 
 public class ToolbarManager {
 
     private final EventBus eventBus;
-
+    private final BlockDragAndDropManager dragAndDropManager; // Add dependency
+    private HBox lastAddedContainer;
     // Controls
     private Button undoButton, redoButton;
     private Button runButton, debugButton, unifiedStopButton;
@@ -20,8 +22,9 @@ public class ToolbarManager {
     private enum AppState { IDLE, RUNNING, DEBUGGING }
     private AppState currentAppState = AppState.IDLE;
 
-    public ToolbarManager(EventBus eventBus) {
+    public ToolbarManager(EventBus eventBus, BlockDragAndDropManager dragAndDropManager) {
         this.eventBus = eventBus;
+        this.dragAndDropManager = dragAndDropManager;
         setupEventHandlers();
     }
 
@@ -36,6 +39,46 @@ public class ToolbarManager {
             if (undoButton != null) undoButton.setDisable(!event.canUndo());
             if (redoButton != null) redoButton.setDisable(!event.canRedo());
         }, true);
+        eventBus.subscribe(CoreApplicationEvents.BlockAddedEvent.class, this::updateLastAddedBlock, true);
+    }
+
+
+    private void updateLastAddedBlock(CoreApplicationEvents.BlockAddedEvent event) {
+        if (lastAddedContainer == null) return;
+
+        AddableBlock type = event.getBlockType();
+        lastAddedContainer.getChildren().clear();
+
+        Label label = new Label("Last: " + type.getDisplayName());
+        label.setStyle("-fx-font-size: 11px; -fx-text-fill: #aaa; -fx-padding: 0 5 0 0;");
+
+        // Create the draggable pill
+        Label blockPill = new Label(type.getDisplayName());
+        String color = com.botmaker.ui.theme.BlockTheme.current().colors().forCategory(type.getCategory());
+
+        blockPill.setStyle(
+                "-fx-background-color: " + color + ";" +
+                        "-fx-text-fill: white;" +
+                        "-fx-font-weight: bold;" +
+                        "-fx-padding: 4 8 4 8;" +
+                        "-fx-background-radius: 12;" +
+                        "-fx-cursor: hand;"
+        );
+
+        // Make it draggable!
+        dragAndDropManager.makeDraggable(blockPill, type);
+
+        lastAddedContainer.getChildren().addAll(label, blockPill);
+    }
+
+
+    public HBox createCenterGroup() {
+        lastAddedContainer = new HBox();
+        lastAddedContainer.setAlignment(Pos.CENTER);
+        // Placeholder or empty initially
+        Label placeholder = new Label("");
+        lastAddedContainer.getChildren().add(placeholder);
+        return lastAddedContainer;
     }
 
     /**

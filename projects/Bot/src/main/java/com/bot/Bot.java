@@ -3,6 +3,10 @@ package com.bot;
 public class Bot {
     public static void main(String[] args) {
         enum MyEnum415 {OPTION_A,OPTION_B}
+		double number=0.0;
+		
+		int number = 0;
+		int number = 0;
 		int number = 0;
 		double decimal = number;
 		String text = "text";
@@ -10,6 +14,7 @@ public class Bot {
 		switch (flag) {
 		default:
 			System.out.println("DEFAULT");
+			double number = 0.0;
 			break;
 		case MyEnum415.OPTION_B:
 			System.out.println("OPTION B");
@@ -18,5 +23,6 @@ public class Bot {
 			System.out.println("OPTION A");
 			break;
 		}
+		
     }
 }

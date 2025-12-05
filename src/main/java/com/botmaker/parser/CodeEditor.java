@@ -35,7 +35,17 @@ public class CodeEditor {
         String previousCode = getCurrentCode();
         eventBus.publish(new CoreApplicationEvents.CodeUpdatedEvent(newCode, previousCode));
     }
-
+    public void pasteCode(BodyBlock targetBody, int index, String codeToPaste) {
+        // Use AstRewriter to inject the raw string
+        String newCode = astRewriter.pasteCodeString(
+                getCompilationUnit(),
+                getCurrentCode(),
+                targetBody,
+                index,
+                codeToPaste
+        );
+        triggerUpdate(newCode);
+    }
     public void updateMethodInvocation(MethodInvocation mi, String newScope, String newMethodName, List<String> newParamTypes) {
         blockFactory.setMarkNewIdentifiersAsUnedited(true);
         String newCode = astRewriter.updateMethodInvocation(getCompilationUnit(), getCurrentCode(), mi, newScope, newMethodName, newParamTypes);
@@ -272,6 +282,9 @@ public class CodeEditor {
         blockFactory.setMarkNewIdentifiersAsUnedited(true);
         String newCode = astRewriter.addStatement(getCompilationUnit(), getCurrentCode(), targetBody, type, index);
         triggerUpdate(newCode);
+
+        // FIRE EVENT: Block Added
+        eventBus.publish(new CoreApplicationEvents.BlockAddedEvent(type));
     }
 
     public void deleteElseFromIfStatement(IfStatement ifStmt) {

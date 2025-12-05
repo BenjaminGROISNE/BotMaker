@@ -2,6 +2,7 @@ package com.botmaker.events;
 
 import com.botmaker.core.AbstractCodeBlock;
 import com.botmaker.core.CodeBlock;
+import com.botmaker.ui.AddableBlock;
 import org.eclipse.lsp4j.Diagnostic;
 
 import java.util.ArrayList;
@@ -190,5 +191,28 @@ public class CoreApplicationEvents {
 
         public CodeBlock getBlock() { return block; }
         public boolean isEnabled() { return isEnabled; }
+    }
+
+    public static class BlockAddedEvent extends AbstractApplicationEvent {
+        private final AddableBlock blockType;
+        public BlockAddedEvent(AddableBlock blockType) {
+            super("CodeEditorService");
+            this.blockType = blockType;
+        }
+        public AddableBlock getBlockType() { return blockType; }
+    }
+
+    /**
+     * Fired when the user requests to copy the currently selected block.
+     */
+    public static class CopyRequestedEvent extends AbstractApplicationEvent {
+        public CopyRequestedEvent() { super("User"); }
+    }
+
+    /**
+     * Fired when the user requests to paste content relative to the currently selected block.
+     */
+    public static class PasteRequestedEvent extends AbstractApplicationEvent {
+        public PasteRequestedEvent() { super("User"); }
     }
 }

@@ -167,6 +167,19 @@ public class AstRewriter {
     // ========================================================================
     // TYPE OPERATIONS - Delegated to TypeReplacementHandler
     // ========================================================================
+    public String pasteCodeString(CompilationUnit cu, String originalCode, BodyBlock targetBody, int index, String codeToPaste) {
+        AST ast = cu.getAST();
+        ASTRewrite rewriter = ASTRewrite.create(ast);
+
+        // Create a placeholder node representing the raw code string
+        // This is safer than parsing for V1, as it avoids context issues during AST creation
+        Statement placeHolder = (Statement) rewriter.createStringPlaceholder(codeToPaste, ASTNode.EMPTY_STATEMENT);
+
+        ListRewrite listRewrite = getListRewriteForBody(rewriter, targetBody);
+        insertIntoList(listRewrite, targetBody, placeHolder, index);
+
+        return AstRewriteHelper.applyRewrite(rewriter, originalCode);
+    }
 
     public String replaceVariableType(CompilationUnit cu, String originalCode,
                                       VariableDeclarationStatement varDecl, String newTypeName) {

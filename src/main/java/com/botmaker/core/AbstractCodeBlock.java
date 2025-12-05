@@ -1,5 +1,6 @@
 package com.botmaker.core;
 
+import com.botmaker.events.CoreApplicationEvents;
 import com.botmaker.lsp.CompletionContext;
 import javafx.beans.binding.Bindings;
 import javafx.geometry.Insets;
@@ -78,7 +79,7 @@ public abstract class AbstractCodeBlock implements CodeBlock {
 
             // 3. Setup Interaction
             setupBreakpointInteraction();
-
+            setupContextMenu(context);
             // 4. Discovery Tooltip
             Tooltip tip = new Tooltip("Right-click to toggle breakpoint");
             Tooltip.install(uiNode, tip);
@@ -88,19 +89,75 @@ public abstract class AbstractCodeBlock implements CodeBlock {
         return uiNode;
     }
 
-    private void setupBreakpointInteraction() {
+    private void setupContextMenu(CompletionContext context) {
         if (uiNode == null) return;
 
         ContextMenu contextMenu = new ContextMenu();
+
+        // Breakpoint
         MenuItem toggleBpItem = new MenuItem("Toggle Breakpoint");
         toggleBpItem.setOnAction(ev -> toggleBreakpoint());
-        contextMenu.getItems().add(toggleBpItem);
+
+        // Copy
+        MenuItem copyItem = new MenuItem("Copy (Ctrl+C)");
+        copyItem.setOnAction(ev -> {
+            // Ensure this block is highlighted/selected first
+            context.applicationState().setHighlightedBlock(this);
+            context.eventBus().publish(new CoreApplicationEvents.CopyRequestedEvent());
+        });
+
+        // Paste
+        MenuItem pasteItem = new MenuItem("Paste After (Ctrl+V)");
+        pasteItem.setOnAction(ev -> {
+            context.applicationState().setHighlightedBlock(this);
+            context.eventBus().publish(new CoreApplicationEvents.PasteRequestedEvent());
+        });
+
+        contextMenu.getItems().addAll(toggleBpItem, new javafx.scene.control.SeparatorMenuItem(), copyItem, pasteItem);
 
         uiNode.setOnContextMenuRequested(e -> {
             toggleBpItem.setText(isBreakpoint ? "Remove Breakpoint 🔴" : "Add Breakpoint ⚪");
             contextMenu.show(uiNode, e.getScreenX(), e.getScreenY());
             e.consume();
         });
+    }
+
+    private void setupBreakpointInteraction() {
+        if (uiNode == null) return;
+
+        ContextMenu contextMenu = new ContextMenu();
+
+        // Breakpoint Item
+        MenuItem toggleBpItem = new MenuItem("Toggle Breakpoint");
+        toggleBpItem.setOnAction(ev -> toggleBreakpoint());
+        contextMenu.getItems().add(toggleBpItem);
+
+        contextMenu.getItems().add(new javafx.scene.control.SeparatorMenuItem());
+
+        // Copy Item
+        MenuItem copyItem = new MenuItem("Copy Block");
+        copyItem.setOnAction(ev -> {
+            // We need the event bus. It is now available in the creation context,
+            // but AbstractCodeBlock doesn't store the context permanently.
+            // However, the UI Node is live. We can use the global EventBus if singleton,
+            // OR rely on the fact that CodeEditorService handles Copy based on *Selection*.
+            // So we just need to fire the event.
+            // Ideally, we'd pass the EventBus into this method, but for now we can rely on
+            // UIManager's global handler or assume the block is selected.
+
+            // BETTER: Use JavaFX event bubbling or trigger the global shortcut logic?
+            // EASIEST: Publish via a static helper or modify AbstractCodeBlock to store reference?
+            // Refactoring AbstractCodeBlock to store EventBus is heavy.
+            // Let's rely on the fact that right-clicking selects the block first (usually).
+            // Actually, context menu doesn't auto-select.
+
+            // To keep it clean, we'll assume the selection logic handles "HighlightedBlock"
+            // and we just fire the event if we had access.
+            // Since we updated CompletionContext, let's use it during creation.
+        });
+
+        // This method is called in getUINode(CompletionContext).
+        // We can capture the eventBus from the context there!
     }
 
     @Override

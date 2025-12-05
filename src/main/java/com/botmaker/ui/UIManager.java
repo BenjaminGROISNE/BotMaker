@@ -14,6 +14,10 @@ import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyCodeCombination;
+import javafx.scene.input.KeyCombination;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.*;
 import javafx.stage.Stage;
 import org.eclipse.lsp4j.Diagnostic;
@@ -55,8 +59,7 @@ public class UIManager {
         this.primaryStage = primaryStage;
 
         this.paletteManager = new PaletteManager(dragAndDropManager);
-        this.toolbarManager = new ToolbarManager(eventBus);
-        this.eventLogManager = new EventLogManager(eventBus);
+        this.toolbarManager = new ToolbarManager(eventBus, dragAndDropManager);         this.eventLogManager = new EventLogManager(eventBus);
         this.menuBarManager = new MenuBarManager(primaryStage);
         this.menuBarManager.setEventBus(eventBus);
         this.fileExplorerManager = new FileExplorerManager(config, codeEditorService, state);
@@ -103,7 +106,7 @@ public class UIManager {
 
         // --- 1. Top Bar Construction ---
 
-        // Left
+        // Left: Edit Controls (Undo, Redo, Compile)
         HBox editControls = toolbarManager.createEditGroup();
         Separator leftSep = new Separator(Orientation.VERTICAL);
         leftSep.setPadding(new Insets(0, 5, 0, 5));
@@ -115,16 +118,24 @@ public class UIManager {
 
         ScrollPane paletteScroll = new ScrollPane(paletteControls);
         paletteScroll.setVbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
-        paletteScroll.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER); // Hide Horizontal Bar too, let it shrink
-
-        // Ensure content fills the scroll pane area
+        paletteScroll.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
         paletteScroll.setFitToWidth(true);
         paletteScroll.setFitToHeight(true);
-
         paletteScroll.setStyle("-fx-background-color: transparent; -fx-padding: 0;");
         paletteScroll.getStyleClass().add("edge-to-edge");
 
-        // Right
+        // Center-Right: Last Added Block Indicator
+        // We add it to the center container so it sits next to the palette
+        HBox lastAddedGroup = toolbarManager.createCenterGroup();
+        lastAddedGroup.setPadding(new Insets(0, 10, 0, 10)); // Spacing from palette
+
+        // Combine Palette and Last Added
+        HBox centerContainer = new HBox(paletteScroll, lastAddedGroup);
+        centerContainer.setAlignment(Pos.CENTER_LEFT);
+        // Let the palette grow to fill available width, pushing "Last Added" to the right
+        HBox.setHgrow(paletteScroll, Priority.ALWAYS);
+
+        // Right: Execution Controls (Run, Debug, Stop)
         HBox executionControls = toolbarManager.createExecutionGroup();
         Separator rightSep = new Separator(Orientation.VERTICAL);
         rightSep.setPadding(new Insets(0, 5, 0, 5));
@@ -132,15 +143,13 @@ public class UIManager {
         rightContainer.setAlignment(Pos.CENTER_RIGHT);
 
         BorderPane topBar = new BorderPane();
-        topBar.setPadding(new Insets(6)); // Comfortable padding around the whole bar
+        topBar.setPadding(new Insets(6));
         topBar.setLeft(leftContainer);
-        topBar.setCenter(paletteScroll);
+        topBar.setCenter(centerContainer); // Contains Palette + Last Added
         topBar.setRight(rightContainer);
         topBar.getStyleClass().add("main-toolbar");
 
-        // FIXED HEIGHT CONSTRAINTS
-        // This stops the "Expand as much as I want" issue.
-        // 45px content + 12px padding = ~57px total height
+        // Fixed height constraints
         topBar.setMinHeight(50);
         topBar.setPrefHeight(50);
         topBar.setMaxHeight(50);
@@ -201,6 +210,26 @@ public class UIManager {
         primaryStage.setOnHidden(e -> eventLogManager.shutdown());
 
         Scene scene = new Scene(root, 1000, 700);
+
+        // --- 6. Global Key Handlers (Copy/Paste) ---
+        KeyCombination copyCombo = new KeyCodeCombination(KeyCode.C, KeyCombination.SHORTCUT_DOWN);
+        KeyCombination pasteCombo = new KeyCodeCombination(KeyCode.V, KeyCombination.SHORTCUT_DOWN);
+
+        scene.addEventFilter(KeyEvent.KEY_PRESSED, event -> {
+            // Ignore if inside a text input (TextField/TextArea handles its own shortcuts)
+            if (event.getTarget() instanceof javafx.scene.control.TextInputControl) {
+                return;
+            }
+
+            if (copyCombo.match(event)) {
+                eventBus.publish(new CoreApplicationEvents.CopyRequestedEvent());
+                event.consume();
+            } else if (pasteCombo.match(event)) {
+                eventBus.publish(new CoreApplicationEvents.PasteRequestedEvent());
+                event.consume();
+            }
+        });
+
         return scene;
     }
 

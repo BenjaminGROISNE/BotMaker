@@ -3,7 +3,9 @@ package com.botmaker.services;
 import com.botmaker.blocks.MainBlock;
 import com.botmaker.config.ApplicationConfig;
 import com.botmaker.core.AbstractCodeBlock;
+import com.botmaker.core.BodyBlock;
 import com.botmaker.core.CodeBlock;
+import com.botmaker.core.StatementBlock;
 import com.botmaker.events.CoreApplicationEvents;
 import com.botmaker.events.EventBus;
 import com.botmaker.lsp.CompletionContext;
@@ -14,8 +16,12 @@ import com.botmaker.project.ProjectFile;
 import com.botmaker.state.ApplicationState;
 import com.botmaker.state.HistoryManager;
 import com.botmaker.ui.BlockDragAndDropManager;
+import com.botmaker.util.BlockLookupHelper;
 import com.botmaker.validation.DiagnosticsManager;
 import javafx.application.Platform;
+import javafx.scene.input.Clipboard;
+import javafx.scene.input.ClipboardContent;
+import org.eclipse.jdt.core.dom.ASTNode;
 
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -76,6 +82,8 @@ public class CodeEditorService {
 
         eventBus.subscribe(CoreApplicationEvents.RedoRequestedEvent.class,
                 e -> redo(), false);
+        eventBus.subscribe(CoreApplicationEvents.CopyRequestedEvent.class, e -> copySelectedBlock(), true);
+        eventBus.subscribe(CoreApplicationEvents.PasteRequestedEvent.class, e -> pasteFromClipboard(), true);
     }
 
     private void handleCodeUpdateForHistory(CoreApplicationEvents.CodeUpdatedEvent event) {
@@ -254,7 +262,41 @@ public class CodeEditorService {
             eventBus.publish(new CoreApplicationEvents.StatusMessageEvent("Loaded: " + fileName));
         }
     }
+    private void copySelectedBlock() {
+        state.getHighlightedBlock().ifPresent(block -> {
+            ASTNode node = block.getAstNode();
+            if (node != null) {
+                String source = node.toString();
+                ClipboardContent content = new ClipboardContent();
+                content.putString(source);
+                Clipboard.getSystemClipboard().setContent(content);
+                eventBus.publish(new CoreApplicationEvents.StatusMessageEvent("Copied block to clipboard."));
+            }
+        });
+    }
 
+    private void pasteFromClipboard() {
+        Clipboard clipboard = Clipboard.getSystemClipboard();
+        if (!clipboard.hasString()) return;
+
+        String codeToPaste = clipboard.getString();
+
+        // Determine insertion point based on highlighted block
+        state.getHighlightedBlock().ifPresentOrElse(selectedBlock -> {
+            if (selectedBlock instanceof StatementBlock) {
+                StatementBlock stmtBlock = (StatementBlock) selectedBlock;
+                BodyBlock parentBody = BlockLookupHelper.findParentBody(stmtBlock, state.getNodeToBlockMap());
+
+                if (parentBody != null) {
+                    int index = parentBody.getStatements().indexOf(stmtBlock);
+                    // Paste AFTER the selected block
+                    codeEditor.pasteCode(parentBody, index + 1, codeToPaste);
+                }
+            }
+        }, () -> {
+            eventBus.publish(new CoreApplicationEvents.StatusMessageEvent("Select a block to paste after."));
+        });
+    }
     public CompletionContext createCompletionContext() {
         return new CompletionContext(
                 codeEditor,
@@ -263,7 +305,8 @@ public class CodeEditorService {
                 state.getCurrentCode(),
                 state.getDocVersion(),
                 dragAndDropManager,
-                state
+                state,
+                eventBus // Pass EventBus
         );
     }
 
