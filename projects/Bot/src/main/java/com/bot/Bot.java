@@ -4,8 +4,8 @@ public class Bot {
     public static void main(String[] args) {
         enum MyEnum415 {OPTION_A,OPTION_B}
 		String decimalge = "fsezf";
-		MyEnum415 decimal = null;
 		int flag = variable;
+		MyEnum415 text = MyEnum415.OPTION_A;
 		String[][] myList = new String[][] {{decimalge }};
 		if (variable > decimal) {
 		}

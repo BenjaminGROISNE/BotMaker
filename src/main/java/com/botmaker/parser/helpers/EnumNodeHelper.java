@@ -51,6 +51,30 @@ public class EnumNodeHelper {
                 TypeDeclaration typeDecl = (TypeDeclaration) obj;
                 EnumDeclaration found = findEnumInTypeDeclaration(typeDecl, enumName);
                 if (found != null) return found;
+
+                // NEW: Also search inside methods for local enums
+                for (MethodDeclaration method : typeDecl.getMethods()) {
+                    EnumDeclaration methodEnum = findEnumInMethod(method, enumName);
+                    if (methodEnum != null) return methodEnum;
+                }
+            }
+        }
+        return null;
+    }
+
+    // NEW: Search for enums declared inside method bodies
+    private static EnumDeclaration findEnumInMethod(MethodDeclaration method, String enumName) {
+        if (method.getBody() == null) return null;
+
+        for (Object stmt : method.getBody().statements()) {
+            if (stmt instanceof TypeDeclarationStatement) {
+                TypeDeclarationStatement tds = (TypeDeclarationStatement) stmt;
+                if (tds.getDeclaration() instanceof EnumDeclaration) {
+                    EnumDeclaration enumDecl = (EnumDeclaration) tds.getDeclaration();
+                    if (enumDecl.getName().getIdentifier().equals(enumName)) {
+                        return enumDecl;
+                    }
+                }
             }
         }
         return null;
