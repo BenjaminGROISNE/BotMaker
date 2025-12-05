@@ -94,11 +94,9 @@ public class SwitchBlock extends AbstractStatementBlock implements BlockWithChil
     public static class SwitchCaseBlock extends AbstractStatementBlock implements BlockWithChildren {
         private ExpressionBlock caseExpression;
         private BodyBlock body;
-        private final BlockDragAndDropManager dragAndDropManager;
 
-        public SwitchCaseBlock(String id, SwitchCase astNode, BlockDragAndDropManager dragAndDropManager) {
+        public SwitchCaseBlock(String id, SwitchCase astNode) {
             super(id, astNode);
-            this.dragAndDropManager = dragAndDropManager;
         }
 
         public void setCaseExpression(ExpressionBlock caseExpression) { this.caseExpression = caseExpression; }
@@ -117,7 +115,21 @@ public class SwitchBlock extends AbstractStatementBlock implements BlockWithChil
         protected Node createUINode(CompletionContext context) {
             return createUINode(context, -1, -1);
         }
-
+        private TypeInfo getSwitchExpressionType() {
+            // Get the parent SwitchStatement
+            ASTNode parent = this.astNode.getParent();
+            if (parent instanceof SwitchStatement) {
+                SwitchStatement switchStmt = (SwitchStatement) parent;
+                Expression switchExpr = switchStmt.getExpression();
+                if (switchExpr != null) {
+                    ITypeBinding binding = switchExpr.resolveTypeBinding();
+                    if (binding != null) {
+                        return TypeInfo.from(binding);
+                    }
+                }
+            }
+            return TypeInfo.UNKNOWN;
+        }
         public Node createUINode(CompletionContext context, int index, int totalCases) {
             VBox container = new VBox(5);
             var caseHeaderBuilder = BlockLayout.sentence();
@@ -125,24 +137,12 @@ public class SwitchBlock extends AbstractStatementBlock implements BlockWithChil
             if (isDefault()) {
                 caseHeaderBuilder.addKeyword("default:");
             } else {
-                TypeInfo caseType = TypeInfo.UNKNOWN;
-                if (this.astNode.getParent() instanceof SwitchStatement) {
-                    SwitchStatement parent = (SwitchStatement) this.astNode.getParent();
-                    Expression switchExpr = parent.getExpression();
-                    if (switchExpr != null) {
-                        ITypeBinding binding = switchExpr.resolveTypeBinding();
-                        if (binding != null) {
-                            caseType = TypeInfo.from(binding);
-                        }
-                    }
-                }
-
-                TypeInfo finalCaseType = caseType;
+                TypeInfo switchType = getSwitchExpressionType();
 
                 // FIX: Filter menu for constants only
                 Button changeBtn = BlockUIComponents.createChangeButton(e -> {
                     ContextMenu menu = BlockUIComponents.createExpressionTypeMenu(
-                            finalCaseType,
+                            switchType,
                             true, // constantOnly = true
                             type -> context.codeEditor().replaceExpression(
                                     (Expression) caseExpression.getAstNode(), type)
@@ -152,7 +152,7 @@ public class SwitchBlock extends AbstractStatementBlock implements BlockWithChil
 
                 caseHeaderBuilder
                         .addKeyword("case")
-                        .addExpressionSlot(caseExpression, context, caseType)
+                        .addExpressionSlot(caseExpression, context, switchType)
                         .addNode(changeBtn)
                         .addKeyword(":");
             }

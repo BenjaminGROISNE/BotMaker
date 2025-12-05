@@ -237,19 +237,26 @@ public class IdentifierBlock extends AbstractExpressionBlock {
     private boolean isTypeCompatible(CompletionItem item, TypeInfo expectedType) {
         // If no expected type, show everything
         if (expectedType == null || expectedType.isUnknown()) {
-            System.out.println("[Debug] No expected type - accepting: " + item.getLabel());
             return true;
         }
 
         // Extract type from completion item
         String typeStr = extractTypeFromItem(item);
-        if (typeStr == null || typeStr.isBlank()) {
-            System.out.println("[Debug] No type info for: " + item.getLabel() + " - accepting by default");
-            return true;
-        }
 
-        // ✨ Create TypeInfo from string and check compatibility
+        // Use TypeInfo to wrap the suggestion type
         TypeInfo actualType = TypeInfo.from(typeStr);
+
+        // --- FILTERING FIX ---
+        // If strict filtering is needed: An unknown/Object type cannot satisfy a specific requirement (like String).
+        // This filters out default variables like "variable (Object)" from "String s = ..."
+        if (!expectedType.isUnknown() && !expectedType.getTypeName().equals("Object")) {
+            // If expected is specific, but actual is generic Object or Unknown, reject it.
+            if (actualType.isUnknown() || actualType.getTypeName().equals("Object")) {
+                return false;
+            }
+        }
+        // ---------------------
+
         boolean compatible = actualType.isCompatibleWith(expectedType);
 
         System.out.println("[Debug] Checking: " + item.getLabel() +

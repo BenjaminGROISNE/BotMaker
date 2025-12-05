@@ -1221,13 +1221,13 @@ public class DoWhileBlock extends AbstractStatementBlock implements BlockWithChi
 FILE: rs\bgroi\Documents\dev\IntellijProjects\BotMaker\src\main\java\com\botmaker\blocks\EnumConstantBlock.java
 =================================================================================
 
+// FILE: rs\bgroi\Documents\dev\IntellijProjects\BotMaker\src\main\java\com\botmaker\blocks\EnumConstantBlock.java
 package com.botmaker.blocks;
 
 import com.botmaker.core.AbstractExpressionBlock;
 import com.botmaker.lsp.CompletionContext;
-import com.botmaker.parser.BlockIdPrefix;
+import com.botmaker.parser.helpers.EnumNodeHelper; // Use shared helper
 import com.botmaker.ui.builders.BlockLayout;
-import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
@@ -1237,9 +1237,6 @@ import org.eclipse.jdt.core.dom.*;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Represents an enum constant reference expression (e.g., MyEnum.OPTION_A)
- */
 public class EnumConstantBlock extends AbstractExpressionBlock {
 
     private final String enumTypeName;
@@ -1257,7 +1254,6 @@ public class EnumConstantBlock extends AbstractExpressionBlock {
         this.constantName = astNode.getIdentifier();
     }
 
-    // EnumConstantBlock.java
     @Override
     protected Node createUINode(CompletionContext context) {
         Label typeLabel = new Label(enumTypeName);
@@ -1302,55 +1298,21 @@ public class EnumConstantBlock extends AbstractExpressionBlock {
     }
 
     private List<String> getEnumConstants(String enumName, CompletionContext context) {
-        List<String> constants = new ArrayList<>();
-
         CompilationUnit cu = context.applicationState().getCompilationUnit().orElse(null);
-        if (cu == null) return constants;
+        if (cu == null) return new ArrayList<>();
 
-        // Search for the enum declaration
-        EnumDeclaration enumDecl = findEnumDeclaration(cu, enumName);
+        // Fix: Use EnumNodeHelper to properly scan both top-level and inner enum declarations
+        EnumDeclaration enumDecl = EnumNodeHelper.findEnumDeclaration(cu, enumName);
+
         if (enumDecl != null) {
-            for (Object obj : enumDecl.enumConstants()) {
-                if (obj instanceof EnumConstantDeclaration) {
-                    EnumConstantDeclaration ecd = (EnumConstantDeclaration) obj;
-                    constants.add(ecd.getName().getIdentifier());
-                }
-            }
+            return EnumNodeHelper.getAllEnumConstantNames(enumDecl);
         }
 
-        return constants;
-    }
-
-    private EnumDeclaration findEnumDeclaration(CompilationUnit cu, String enumName) {
-        // Check top-level types
-        for (Object obj : cu.types()) {
-            if (obj instanceof EnumDeclaration) {
-                EnumDeclaration enumDecl = (EnumDeclaration) obj;
-                if (enumDecl.getName().getIdentifier().equals(enumName)) {
-                    return enumDecl;
-                }
-            }
-            // Check class body declarations
-            else if (obj instanceof TypeDeclaration) {
-                TypeDeclaration typeDecl = (TypeDeclaration) obj;
-                for (Object bodyObj : typeDecl.bodyDeclarations()) {
-                    if (bodyObj instanceof EnumDeclaration) {
-                        EnumDeclaration enumDecl = (EnumDeclaration) bodyObj;
-                        if (enumDecl.getName().getIdentifier().equals(enumName)) {
-                            return enumDecl;
-                        }
-                    }
-                }
-            }
-        }
-        return null;
+        return new ArrayList<>();
     }
 
     private void updateConstant(String newConstant, CompletionContext context) {
-        // Replace with new qualified name: EnumType.NEW_CONSTANT
         Expression oldExpr = (Expression) this.astNode;
-
-        // Use the replaceSimpleName if it's a SimpleName, otherwise need special handling
         if (oldExpr instanceof QualifiedName) {
             QualifiedName qn = (QualifiedName) oldExpr;
             context.codeEditor().replaceSimpleName(qn.getName(), newConstant);
@@ -3612,6 +3574,7 @@ public class ReturnBlock extends AbstractStatementBlock {
 FILE: rs\bgroi\Documents\dev\IntellijProjects\BotMaker\src\main\java\com\botmaker\blocks\SwitchBlock.java
 =================================================================================
 
+// FILE: rs\bgroi\Documents\dev\IntellijProjects\BotMaker\src\main\java\com\botmaker\blocks\SwitchBlock.java
 package com.botmaker.blocks;
 
 import com.botmaker.core.AbstractStatementBlock;
@@ -3627,6 +3590,7 @@ import com.botmaker.util.TypeInfo;
 import javafx.geometry.Insets;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
+import javafx.scene.control.ContextMenu;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import org.eclipse.jdt.core.dom.*;
@@ -3634,9 +3598,6 @@ import org.eclipse.jdt.core.dom.*;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * UPDATED: Uses TypeInfo for type operations
- */
 public class SwitchBlock extends AbstractStatementBlock implements BlockWithChildren {
 
     private ExpressionBlock expression;
@@ -3663,7 +3624,6 @@ public class SwitchBlock extends AbstractStatementBlock implements BlockWithChil
     protected Node createUINode(CompletionContext context) {
         VBox mainContainer = new VBox(5);
 
-        // UPDATED: Determine switch type using TypeInfo
         TypeInfo switchType = TypeInfo.UNKNOWN;
         if (expression != null && expression.getAstNode() != null) {
             Expression expr = (Expression) expression.getAstNode();
@@ -3673,7 +3633,6 @@ public class SwitchBlock extends AbstractStatementBlock implements BlockWithChil
             }
         }
 
-        // Header
         TypeInfo finalSwitchType = switchType;
         Button changeSwitchExprBtn = BlockUIComponents.createChangeButton(e ->
                 showExpressionMenuAndReplace((Button)e.getSource(), context, finalSwitchType,
@@ -3691,7 +3650,6 @@ public class SwitchBlock extends AbstractStatementBlock implements BlockWithChil
                 .withDeleteButton(() -> context.codeEditor().deleteStatement((org.eclipse.jdt.core.dom.Statement) this.astNode))
                 .build());
 
-        // Cases Container
         VBox casesContainer = new VBox(5);
         casesContainer.setPadding(new javafx.geometry.Insets(5, 0, 0, 20));
 
@@ -3702,7 +3660,6 @@ public class SwitchBlock extends AbstractStatementBlock implements BlockWithChil
 
         mainContainer.getChildren().add(casesContainer);
 
-        // Add Case Button
         Button addCaseButton = new Button("+ Add Case");
         addCaseButton.setOnAction(e -> context.codeEditor().addCaseToSwitch((SwitchStatement) this.astNode));
         mainContainer.getChildren().add(addCaseButton);
@@ -3710,15 +3667,12 @@ public class SwitchBlock extends AbstractStatementBlock implements BlockWithChil
         return mainContainer;
     }
 
-    // Inner Static Class for Cases
     public static class SwitchCaseBlock extends AbstractStatementBlock implements BlockWithChildren {
         private ExpressionBlock caseExpression;
         private BodyBlock body;
-        private final BlockDragAndDropManager dragAndDropManager;
 
-        public SwitchCaseBlock(String id, SwitchCase astNode, BlockDragAndDropManager dragAndDropManager) {
+        public SwitchCaseBlock(String id, SwitchCase astNode) {
             super(id, astNode);
-            this.dragAndDropManager = dragAndDropManager;
         }
 
         public void setCaseExpression(ExpressionBlock caseExpression) { this.caseExpression = caseExpression; }
@@ -3737,43 +3691,48 @@ public class SwitchBlock extends AbstractStatementBlock implements BlockWithChil
         protected Node createUINode(CompletionContext context) {
             return createUINode(context, -1, -1);
         }
-
+        private TypeInfo getSwitchExpressionType() {
+            // Get the parent SwitchStatement
+            ASTNode parent = this.astNode.getParent();
+            if (parent instanceof SwitchStatement) {
+                SwitchStatement switchStmt = (SwitchStatement) parent;
+                Expression switchExpr = switchStmt.getExpression();
+                if (switchExpr != null) {
+                    ITypeBinding binding = switchExpr.resolveTypeBinding();
+                    if (binding != null) {
+                        return TypeInfo.from(binding);
+                    }
+                }
+            }
+            return TypeInfo.UNKNOWN;
+        }
         public Node createUINode(CompletionContext context, int index, int totalCases) {
             VBox container = new VBox(5);
-
-            // Case Header
             var caseHeaderBuilder = BlockLayout.sentence();
 
             if (isDefault()) {
                 caseHeaderBuilder.addKeyword("default:");
             } else {
-                // UPDATED: Determine case type using TypeInfo
-                TypeInfo caseType = TypeInfo.UNKNOWN;
-                if (this.astNode.getParent() instanceof SwitchStatement) {
-                    SwitchStatement parent = (SwitchStatement) this.astNode.getParent();
-                    Expression switchExpr = parent.getExpression();
-                    if (switchExpr != null) {
-                        ITypeBinding binding = switchExpr.resolveTypeBinding();
-                        if (binding != null) {
-                            caseType = TypeInfo.from(binding);
-                        }
-                    }
-                }
+                TypeInfo switchType = getSwitchExpressionType();
 
-                TypeInfo finalCaseType = caseType;
-                Button changeBtn = BlockUIComponents.createChangeButton(e ->
-                        showExpressionMenuAndReplace((Button)e.getSource(), context, finalCaseType,
-                                caseExpression != null ? (Expression) caseExpression.getAstNode() : null)
-                );
+                // FIX: Filter menu for constants only
+                Button changeBtn = BlockUIComponents.createChangeButton(e -> {
+                    ContextMenu menu = BlockUIComponents.createExpressionTypeMenu(
+                            switchType,
+                            true, // constantOnly = true
+                            type -> context.codeEditor().replaceExpression(
+                                    (Expression) caseExpression.getAstNode(), type)
+                    );
+                    menu.show((Button)e.getSource(), javafx.geometry.Side.BOTTOM, 0, 0);
+                });
 
                 caseHeaderBuilder
                         .addKeyword("case")
-                        .addExpressionSlot(caseExpression, context, caseType)
+                        .addExpressionSlot(caseExpression, context, switchType)
                         .addNode(changeBtn)
                         .addKeyword(":");
             }
 
-            // Move Buttons
             if (index >= 0) {
                 Button upBtn = new Button("▲");
                 upBtn.setStyle("-fx-font-size: 9px; -fx-padding: 2 4 2 4;");
@@ -3796,7 +3755,6 @@ public class SwitchBlock extends AbstractStatementBlock implements BlockWithChil
 
             container.getChildren().add(caseHeader);
 
-            // Body
             VBox bodyNode = createIndentedBody(body, context, "switch-case-body");
             if (bodyNode != null) container.getChildren().add(bodyNode);
 
@@ -9073,10 +9031,10 @@ public class BlockParser {
             Statement s = (Statement) obj;
             if (s instanceof SwitchCase) {
                 SwitchCase sc = (SwitchCase) s;
-                currentCase = new SwitchBlock.SwitchCaseBlock(BlockIdPrefix.generate(BlockIdPrefix.SWITCH + "_case_", sc), sc, manager);
+                currentCase = new SwitchBlock.SwitchCaseBlock(BlockIdPrefix.generate(BlockIdPrefix.SWITCH + "_case_", sc), sc);
                 map.put(sc, currentCase);
                 if (!sc.isDefault() && !sc.expressions().isEmpty()) {
-                    factory.parseExpression((Expression) sc.expressions().get(0), map).ifPresent(currentCase::setCaseExpression);
+                    factory.parseExpression((Expression) sc.expressions().getFirst(), map).ifPresent(currentCase::setCaseExpression);
                 }
                 currentBody = new BodyBlock(BlockIdPrefix.generate(BlockIdPrefix.BODY, sc), sc, manager);
                 currentCase.setBody(currentBody);
@@ -9742,6 +9700,7 @@ public class ImportManager {
 FILE: rs\bgroi\Documents\dev\IntellijProjects\BotMaker\src\main\java\com\botmaker\parser\NodeCreator.java
 =================================================================================
 
+// FILE: rs\bgroi\Documents\dev\IntellijProjects\BotMaker\src\main\java\com\botmaker\parser\NodeCreator.java
 package com.botmaker.parser;
 
 import com.botmaker.parser.factories.ExpressionFactory;
@@ -9749,15 +9708,12 @@ import com.botmaker.parser.factories.InitializerFactory;
 import com.botmaker.parser.factories.StatementFactory;
 import com.botmaker.ui.AddableBlock;
 import com.botmaker.ui.AddableExpression;
+import com.botmaker.util.TypeInfo;
 import org.eclipse.jdt.core.dom.*;
 import org.eclipse.jdt.core.dom.rewrite.ASTRewrite;
 
 import java.util.List;
 
-/**
- * Coordinates node creation by delegating to specialized factories.
- * Reduced from 300 lines to ~80 lines by extracting factories.
- */
 public class NodeCreator {
 
     private final InitializerFactory initializerFactory;
@@ -9770,57 +9726,29 @@ public class NodeCreator {
         this.statementFactory = new StatementFactory(initializerFactory);
     }
 
-    // ========================================================================
-    // EXPRESSION CREATION - Delegated to ExpressionFactory
-    // ========================================================================
-
-    /**
-     * Creates a default expression for a given type with optional context.
-     */
     public Expression createDefaultExpression(AST ast, AddableExpression type, CompilationUnit cu,
                                               ASTRewrite rewriter, String contextTypeName) {
         return expressionFactory.createDefaultExpression(ast, type, cu, rewriter, contextTypeName);
     }
 
-    /**
-     * Creates a default expression without context type.
-     */
     public Expression createDefaultExpression(AST ast, AddableExpression type, CompilationUnit cu,
                                               ASTRewrite rewriter) {
         return expressionFactory.createDefaultExpression(ast, type, cu, rewriter, null);
     }
 
-    // ========================================================================
-    // STATEMENT CREATION - Delegated to StatementFactory
-    // ========================================================================
-
-    /**
-     * Creates a default statement for a given block type.
-     */
     public Statement createDefaultStatement(AST ast, AddableBlock type, CompilationUnit cu,
                                             ASTRewrite rewriter) {
         return statementFactory.createDefaultStatement(ast, type, cu, rewriter);
     }
 
-    // ========================================================================
-    // INITIALIZER CREATION - Delegated to InitializerFactory
-    // (These are public because other classes like AstRewriter use them)
-    // ========================================================================
-
-    /**
-     * Creates a default initializer expression for a type.
-     * Used by handlers and other parser components.
-     */
     public Expression createDefaultInitializer(AST ast, String typeName) {
-        return initializerFactory.createDefaultInitializer(ast, typeName);
+        // Fix: Convert String to TypeInfo for safety, though overload exists
+        return initializerFactory.createDefaultInitializer(ast, TypeInfo.from(typeName));
     }
 
-    /**
-     * Creates a recursive ArrayList initializer (for nested lists).
-     * Used by type replacement handlers.
-     */
     public Expression createRecursiveListInitializer(AST ast, String typeName, CompilationUnit cu,
                                                      ASTRewrite rewriter, List<Expression> leavesToPreserve) {
+        // Fixed: Call delegated correctly to InitializerFactory
         return initializerFactory.createRecursiveListInitializer(ast, typeName, cu, rewriter, leavesToPreserve);
     }
 }
@@ -9849,7 +9777,6 @@ public class ExpressionFactory {
     public Expression createDefaultExpression(AST ast, AddableExpression type, CompilationUnit cu,
                                               ASTRewrite rewriter, String contextTypeName) {
         switch (type) {
-            // ... (Keep existing cases: TEXT, NUMBER, TRUE, FALSE, VARIABLE, LIST, ENUM, FUNCTION) ...
             case TEXT: return createStringLiteral(ast, "text");
             case FUNCTION_CALL: return createMethodInvocation(ast, "selectMethod");
             case NUMBER: return ast.newNumberLiteral("0");
@@ -9875,7 +9802,6 @@ public class ExpressionFactory {
             case OR:
                 return createInfixExpression(ast, type);
 
-            // NEW: Not Operator (Unary)
             case NOT:
                 return createPrefixExpression(ast, PrefixExpression.Operator.NOT);
 
@@ -9956,34 +9882,52 @@ public class ExpressionFactory {
 FILE: rs\bgroi\Documents\dev\IntellijProjects\BotMaker\src\main\java\com\botmaker\parser\factories\InitializerFactory.java
 =================================================================================
 
+// FILE: rs\bgroi\Documents\dev\IntellijProjects\BotMaker\src\main\java\com\botmaker\parser\factories\InitializerFactory.java
 package com.botmaker.parser.factories;
 
+import com.botmaker.parser.helpers.EnumNodeHelper;
 import com.botmaker.util.TypeInfo;
 import com.botmaker.util.TypeManager;
 import org.eclipse.jdt.core.dom.*;
-
 import java.util.List;
 
-/**
- * Factory for creating initializer expressions for variables and fields.
- * UPDATED: Uses TypeInfo exclusively for type logic.
- */
 public class InitializerFactory {
+
+    // Overload for backward compatibility and NodeCreator call
+    public Expression createDefaultInitializer(AST ast, String typeName) {
+        return createDefaultInitializer(ast, TypeInfo.from(typeName), null);
+    }
+
+    public Expression createDefaultInitializer(AST ast, TypeInfo type) {
+        return createDefaultInitializer(ast, type, null);
+    }
 
     /**
      * Creates a default initializer for a given type.
+     * Uses CompilationUnit to find default Enum constants if available.
      */
-    public Expression createDefaultInitializer(AST ast, TypeInfo type) {
+    public Expression createDefaultInitializer(AST ast, TypeInfo type, CompilationUnit cu) {
         // Handle arrays
         if (type.isArray()) {
-            return createArrayInitializer(ast, type, java.util.Collections.emptyList());
+            return createArrayInitializer(ast, type, java.util.Collections.emptyList(), cu);
+        }
+
+        // Handle Enums (Fix for Issue 4: Auto-pick first constant)
+        if (type.isEnum() && cu != null) {
+            String enumName = type.getLeafType().getTypeName();
+            String firstConstant = EnumNodeHelper.findFirstEnumConstant(cu, enumName);
+            if (firstConstant != null) {
+                return ast.newQualifiedName(
+                        ast.newSimpleName(enumName),
+                        ast.newSimpleName(firstConstant)
+                );
+            }
         }
 
         // Handle Primitives and common types
         if (type.isNumeric()) {
-            // Distinguish float/double vs int/long
             String leaf = type.getLeafType().getTypeName();
-            if (leaf.equals("double") || leaf.equals("float") || leaf.equals("Double") || leaf.equals("Float")) {
+            if (leaf.equalsIgnoreCase("double") || leaf.equalsIgnoreCase("float")) {
                 return ast.newNumberLiteral("0.0");
             }
             return ast.newNumberLiteral("0");
@@ -10007,69 +9951,46 @@ public class InitializerFactory {
         return ast.newNullLiteral();
     }
 
-    /**
-     * Overload for backward compatibility / convenience (auto-converts string to TypeInfo)
-     */
-    public Expression createDefaultInitializer(AST ast, String typeName) {
-        return createDefaultInitializer(ast, TypeInfo.from(typeName));
+    // Overload to fix StatementFactory error (3 args)
+    public Expression createArrayInitializer(AST ast, TypeInfo type, List<Expression> valuesToPreserve) {
+        return createArrayInitializer(ast, type, valuesToPreserve, null);
     }
 
-    /**
-     * Creates an array initializer (e.g., new int[] {0}, new String[][] {{"a"}})
-     * Preserves values if provided.
-     */
-    public Expression createArrayInitializer(AST ast, TypeInfo type, List<Expression> valuesToPreserve) {
+    public Expression createArrayInitializer(AST ast, String typeName, List<Expression> valuesToPreserve) {
+        return createArrayInitializer(ast, TypeInfo.from(typeName), valuesToPreserve, null);
+    }
+
+    public Expression createArrayInitializer(AST ast, TypeInfo type, List<Expression> valuesToPreserve, CompilationUnit cu) {
         int dimensions = type.getArrayDimensions();
         TypeInfo leafType = type.getLeafType();
 
         if (dimensions == 0) {
-            // Not an array, return default for base type
-            return createDefaultInitializer(ast, leafType);
+            return createDefaultInitializer(ast, leafType, cu);
         }
 
-        // Create array creation
         ArrayCreation arrayCreation = ast.newArrayCreation();
         Type elementType = TypeManager.createTypeNode(ast, type.getTypeName());
         arrayCreation.setType((ArrayType) elementType);
 
-        // Create initializer
-        ArrayInitializer initializer = createNestedArrayInitializer(ast, leafType, dimensions, valuesToPreserve);
+        ArrayInitializer initializer = createNestedArrayInitializer(ast, leafType, dimensions, valuesToPreserve, cu);
         arrayCreation.setInitializer(initializer);
 
         return arrayCreation;
     }
 
-    // Helper for overload
-    public Expression createArrayInitializer(AST ast, String typeName, List<Expression> valuesToPreserve) {
-        return createArrayInitializer(ast, TypeInfo.from(typeName), valuesToPreserve);
-    }
-
-    /**
-     * Recursively creates nested array initializers
-     */
-    private ArrayInitializer createNestedArrayInitializer(AST ast, TypeInfo leafType, int dimensions, List<Expression> valuesToPreserve) {
+    private ArrayInitializer createNestedArrayInitializer(AST ast, TypeInfo leafType, int dimensions, List<Expression> valuesToPreserve, CompilationUnit cu) {
         ArrayInitializer initializer = ast.newArrayInitializer();
 
-        // 1. If valuesToPreserve is explicitly empty (not null), create an empty array {}
-        if (valuesToPreserve != null && valuesToPreserve.isEmpty()) {
-            return initializer;
-        }
-
-        // 2. Leaf dimension
-        if (dimensions == 1) {
-            if (valuesToPreserve != null) {
-                for (Expression value : valuesToPreserve) {
-                    initializer.expressions().add((Expression) ASTNode.copySubtree(ast, value));
-                }
-            } else {
-                // Null valuesToPreserve -> Create ONE default element { default }
-                initializer.expressions().add(createDefaultInitializer(ast, leafType));
+        if (valuesToPreserve != null && !valuesToPreserve.isEmpty()) {
+            for (Expression value : valuesToPreserve) {
+                initializer.expressions().add((Expression) ASTNode.copySubtree(ast, value));
             }
-        }
-        // 3. Nested dimension
-        else {
+        } else if (dimensions == 1) {
+            // Create ONE default element
+            initializer.expressions().add(createDefaultInitializer(ast, leafType, cu));
+        } else {
             // Recursively create sub-array
-            ArrayInitializer subArray = createNestedArrayInitializer(ast, leafType, dimensions - 1, valuesToPreserve);
+            ArrayInitializer subArray = createNestedArrayInitializer(ast, leafType, dimensions - 1, null, cu);
             initializer.expressions().add(subArray);
         }
 
@@ -10077,25 +9998,11 @@ public class InitializerFactory {
     }
 
     /**
-     * DEPRECATED: No longer used with standard arrays
+     * Restore for NodeCreator compatibility, redirecting to new logic.
      */
-    @Deprecated
     public Expression createRecursiveListInitializer(AST ast, String typeName, CompilationUnit cu,
                                                      org.eclipse.jdt.core.dom.rewrite.ASTRewrite rewriter, List<Expression> leavesToPreserve) {
-        // Just delegate to array logic using TypeInfo
-        return createArrayInitializer(ast, convertArrayListToArray(typeName), leavesToPreserve);
-    }
-
-    private String convertArrayListToArray(String arrayListType) {
-        if (!arrayListType.startsWith("ArrayList<")) {
-            return arrayListType;
-        }
-        String inner = arrayListType.substring(10, arrayListType.length() - 1);
-        if (inner.startsWith("ArrayList<")) {
-            return convertArrayListToArray(inner) + "[]";
-        } else {
-            return inner + "[]";
-        }
+        return createArrayInitializer(ast, TypeInfo.from(typeName), leavesToPreserve, cu);
     }
 }
 
@@ -10104,6 +10011,7 @@ public class InitializerFactory {
 FILE: rs\bgroi\Documents\dev\IntellijProjects\BotMaker\src\main\java\com\botmaker\parser\factories\StatementFactory.java
 =================================================================================
 
+// FILE: rs\bgroi\Documents\dev\IntellijProjects\BotMaker\src\main\java\com\botmaker\parser\factories\StatementFactory.java
 package com.botmaker.parser.factories;
 
 import com.botmaker.ui.AddableBlock;
@@ -10152,16 +10060,9 @@ public class StatementFactory {
         }
     }
 
-    // ... (Keep existing methods: createPrintStatement, createVariableDeclaration, etc.) ...
-
-    // [ABBREVIATED FOR BREVITY - SAME AS ORIGINAL EXCEPT createArrayDeclaration]
-
     private Statement createPrintStatement(AST ast) {
         MethodInvocation println = ast.newMethodInvocation();
-        println.setExpression(ast.newQualifiedName(
-                ast.newSimpleName("System"),
-                ast.newSimpleName("out")
-        ));
+        println.setExpression(ast.newQualifiedName(ast.newSimpleName("System"), ast.newSimpleName("out")));
         println.setName(ast.newSimpleName("println"));
         StringLiteral emptyString = ast.newStringLiteral();
         emptyString.setLiteralValue("");
@@ -10196,16 +10097,18 @@ public class StatementFactory {
         return varDecl;
     }
 
-    /**
-     * UPDATED: Uses TypeInfo.from("int[]")
-     */
     private Statement createArrayDeclaration(AST ast, CompilationUnit cu, ASTRewrite rewriter) {
         VariableDeclarationFragment frag = ast.newVariableDeclarationFragment();
         frag.setName(ast.newSimpleName("myList"));
 
-        // Use TypeInfo for robust array creation
+        // Fixed: Use 4-arg overload passing 'cu' to support correct default values
         frag.setInitializer(
-                initializerFactory.createArrayInitializer(ast, TypeInfo.from("int[]"), Collections.emptyList())
+                initializerFactory.createArrayInitializer(
+                        ast,
+                        TypeInfo.from("int[]"),
+                        Collections.emptyList(),
+                        cu // Pass CU
+                )
         );
 
         VariableDeclarationStatement listDecl = ast.newVariableDeclarationStatement(frag);
@@ -10213,7 +10116,7 @@ public class StatementFactory {
         return listDecl;
     }
 
-    // ... (Keep remaining methods: createIfStatement, createWhileStatement, etc. as they were) ...
+    // ... (Remainder of methods unchanged)
     private Statement createIfStatement(AST ast) {
         IfStatement ifStatement = ast.newIfStatement();
         ifStatement.setExpression(ast.newBooleanLiteral(true));
@@ -11142,6 +11045,30 @@ public class EnumNodeHelper {
                 TypeDeclaration typeDecl = (TypeDeclaration) obj;
                 EnumDeclaration found = findEnumInTypeDeclaration(typeDecl, enumName);
                 if (found != null) return found;
+
+                // NEW: Also search inside methods for local enums
+                for (MethodDeclaration method : typeDecl.getMethods()) {
+                    EnumDeclaration methodEnum = findEnumInMethod(method, enumName);
+                    if (methodEnum != null) return methodEnum;
+                }
+            }
+        }
+        return null;
+    }
+
+    // NEW: Search for enums declared inside method bodies
+    private static EnumDeclaration findEnumInMethod(MethodDeclaration method, String enumName) {
+        if (method.getBody() == null) return null;
+
+        for (Object stmt : method.getBody().statements()) {
+            if (stmt instanceof TypeDeclarationStatement) {
+                TypeDeclarationStatement tds = (TypeDeclarationStatement) stmt;
+                if (tds.getDeclaration() instanceof EnumDeclaration) {
+                    EnumDeclaration enumDecl = (EnumDeclaration) tds.getDeclaration();
+                    if (enumDecl.getName().getIdentifier().equals(enumName)) {
+                        return enumDecl;
+                    }
+                }
             }
         }
         return null;
@@ -13653,152 +13580,103 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
-/**
- * UPDATED: Uses TypeInfo instead of UI type strings
- * Removes "number", "boolean", "list", "enum" magic strings
- */
 public enum AddableExpression {
     // Literals
-    TEXT("Text", TypeInfo.STRING),
-    NUMBER("Number", TypeInfo.INT),
-    TRUE("True", TypeInfo.BOOLEAN),
-    FALSE("False", TypeInfo.BOOLEAN),
+    TEXT("Text", "text", TypeInfo.STRING, Category.LITERAL, true),
+    NUMBER("Number", "0", TypeInfo.INT, Category.LITERAL, true),
+    TRUE("True", "true", TypeInfo.BOOLEAN, Category.LITERAL, true),
+    FALSE("False", "false", TypeInfo.BOOLEAN, Category.LITERAL, true),
 
     // References
-    VARIABLE("Variable", TypeInfo.UNKNOWN),  // Can be any type
-    FUNCTION_CALL("Function Call", TypeInfo.UNKNOWN),  // Return type depends on function
-    ENUM_CONSTANT("Enum Value", null),  // Special: matches any enum
-    LIST("Sub-List", null),  // Special: matches any array/list
+    VARIABLE("Variable", null, TypeInfo.UNKNOWN, Category.REFERENCE, false),
+    FUNCTION_CALL("Function Call", null, TypeInfo.UNKNOWN, Category.REFERENCE, false),
+    ENUM_CONSTANT("Enum Value", null, null, Category.LITERAL, true), // Special: compatibility checked dynamically
+    LIST("Sub-List", null, null, Category.STRUCTURE, false),
 
-    // Math operators (return numeric)
-    ADD("Addition (+)", "+", TypeInfo.INT),
-    SUBTRACT("Subtraction (-)", "-", TypeInfo.INT),
-    MULTIPLY("Multiplication (*)", "*", TypeInfo.INT),
-    DIVIDE("Division (/)", "/", TypeInfo.INT),
-    MODULO("Modulo (%)", "%", TypeInfo.INT),
+    // Math
+    ADD("Addition (+)", "+", TypeInfo.INT, Category.MATH, false),
+    SUBTRACT("Subtraction (-)", "-", TypeInfo.INT, Category.MATH, false),
+    MULTIPLY("Multiplication (*)", "*", TypeInfo.INT, Category.MATH, false),
+    DIVIDE("Division (/)", "/", TypeInfo.INT, Category.MATH, false),
+    MODULO("Modulo (%)", "%", TypeInfo.INT, Category.MATH, false),
 
-    // Comparison operators (return boolean)
-    EQUALS("Equals (==)", "==", TypeInfo.BOOLEAN),
-    NOT_EQUALS("Not Equals (!=)", "!=", TypeInfo.BOOLEAN),
-    GREATER("Greater (>)", ">", TypeInfo.BOOLEAN),
-    LESS("Less (<)", "<", TypeInfo.BOOLEAN),
-    GREATER_EQUALS("Greater Or Equal (>=)", ">=", TypeInfo.BOOLEAN),
-    LESS_EQUALS("Less Or Equal (<=)", "<=", TypeInfo.BOOLEAN),
+    // Comparison
+    EQUALS("Equals (==)", "==", TypeInfo.BOOLEAN, Category.COMPARISON, false),
+    NOT_EQUALS("Not Equals (!=)", "!=", TypeInfo.BOOLEAN, Category.COMPARISON, false),
+    GREATER("Greater (>)", ">", TypeInfo.BOOLEAN, Category.COMPARISON, false),
+    LESS("Less (<)", "<", TypeInfo.BOOLEAN, Category.COMPARISON, false),
+    GREATER_EQUALS("Greater Or Equal (>=)", ">=", TypeInfo.BOOLEAN, Category.COMPARISON, false),
+    LESS_EQUALS("Less Or Equal (<=)", "<=", TypeInfo.BOOLEAN, Category.COMPARISON, false),
 
-    // Logic operators (return boolean)
-    AND("And (&&)", "&&", TypeInfo.BOOLEAN),
-    OR("Or (||)", "||", TypeInfo.BOOLEAN),
-    NOT("Not (!)", "!", TypeInfo.BOOLEAN);
+    // Logic
+    AND("And (&&)", "&&", TypeInfo.BOOLEAN, Category.LOGIC, false),
+    OR("Or (||)", "||", TypeInfo.BOOLEAN, Category.LOGIC, false),
+    NOT("Not (!)", "!", TypeInfo.BOOLEAN, Category.LOGIC, false);
 
     private final String displayName;
     private final String operator;
     private final TypeInfo returnType;
+    private final Category category;
+    private final boolean isConstant;
 
-    AddableExpression(String displayName, TypeInfo returnType) {
-        this(displayName, null, returnType);
-    }
-
-    AddableExpression(String displayName, String operator, TypeInfo returnType) {
+    AddableExpression(String displayName, String operator, TypeInfo returnType, Category category, boolean isConstant) {
         this.displayName = displayName;
         this.operator = operator;
         this.returnType = returnType;
+        this.category = category;
+        this.isConstant = isConstant;
     }
 
     public String getDisplayName() { return displayName; }
-    public String getOperator() { return operator; }
-    public TypeInfo getReturnType() { return returnType; }
+    public Category getCategory() { return category; }
+    public boolean isConstant() { return isConstant; }
 
-    /**
-     * ✨ NEW: Filters expressions compatible with target type using TypeInfo
-     */
+    public enum Category {
+        LITERAL("Values"),
+        REFERENCE("References"),
+        MATH("Math"),
+        COMPARISON("Comparison"),
+        LOGIC("Logic"),
+        STRUCTURE("Structure");
+
+        private final String label;
+        Category(String label) { this.label = label; }
+        public String getLabel() { return label; }
+    }
+
     public static List<AddableExpression> getForType(TypeInfo targetType) {
+        return getForType(targetType, false);
+    }
+
+    public static List<AddableExpression> getForType(TypeInfo targetType, boolean constantOnly) {
         if (targetType == null || targetType.isUnknown()) {
-            return Arrays.asList(values());
+            // If unknown target, allow everything (unless constant filtering is on)
+            return Arrays.stream(values())
+                    .filter(e -> !constantOnly || e.isConstant)
+                    .collect(Collectors.toList());
         }
 
         return Arrays.stream(values())
+                .filter(expr -> !constantOnly || expr.isConstant)
                 .filter(expr -> expr.isCompatibleWith(targetType))
                 .collect(Collectors.toList());
     }
 
-    /**
-     * ✨ NEW: Checks if this expression is compatible with a target type
-     */
     public boolean isCompatibleWith(TypeInfo targetType) {
-        if (targetType == null || targetType.isUnknown()) {
-            return true;
-        }
+        if (targetType == null || targetType.isUnknown()) return true;
 
-        // VARIABLE and FUNCTION_CALL can return any type
-        if (this == VARIABLE || this == FUNCTION_CALL) {
-            return true;
-        }
+        // Special case: Enum Constant only matches Enums
+        if (this == ENUM_CONSTANT) return targetType.isEnum();
 
-        // ENUM_CONSTANT only compatible with enum types
-        if (this == ENUM_CONSTANT) {
-            return targetType.isEnum();
-        }
+        // Special case: List only matches Arrays
+        if (this == LIST) return targetType.isArray();
 
-        // LIST only compatible with array types
-        if (this == LIST) {
-            return targetType.isArray();
-        }
+        // Variables and Functions can be anything
+        if (this == VARIABLE || this == FUNCTION_CALL) return true;
 
-        // For other expressions, check if return type is compatible
-        if (returnType == null) {
-            return true;  // Unknown return type - allow it
-        }
+        if (returnType == null) return true;
 
-        // Check type compatibility
         return returnType.isCompatibleWith(targetType);
-    }
-
-    /**
-     * Helper: Check if expression is compatible with switch statements
-     * Switch allows: int, String, enum (not long, float, double, boolean)
-     */
-    public boolean isSwitchCompatible() {
-        if (this == VARIABLE || this == FUNCTION_CALL || this == ENUM_CONSTANT) {
-            return true;
-        }
-
-        if (returnType == null) return false;
-
-        // Check if it's a switch-compatible type
-        String typeName = returnType.getTypeName();
-        return typeName.equals("int") ||
-                typeName.equals("String") ||
-                typeName.equals("char") ||
-                returnType.isEnum();
-    }
-
-    /**
-     * ✨ DEPRECATED: Old string-based method for backward compatibility
-     * Use getForType(TypeInfo) instead
-     */
-    @Deprecated
-    public static List<AddableExpression> getForType(String targetType) {
-        // Convert old string types to TypeInfo
-        TypeInfo typeInfo = convertLegacyTypeString(targetType);
-        return getForType(typeInfo);
-    }
-
-    /**
-     * Helper to convert legacy UI type strings to TypeInfo
-     */
-    private static TypeInfo convertLegacyTypeString(String legacyType) {
-        if (legacyType == null || legacyType.equals("any")) {
-            return TypeInfo.UNKNOWN;
-        }
-
-        return switch (legacyType) {
-            case "number" -> TypeInfo.INT;
-            case "boolean" -> TypeInfo.BOOLEAN;
-            case "String", "text" -> TypeInfo.STRING;
-            case "list" -> TypeInfo.from("Object[]");  // Generic array
-            case "switch_compatible" -> TypeInfo.INT;  // Most common switch type
-            default -> TypeInfo.from(legacyType);  // Try to parse as actual type
-        };
     }
 }
 
@@ -16810,6 +16688,7 @@ FILE: rs\bgroi\Documents\dev\IntellijProjects\BotMaker\src\main\java\com\botmake
 package com.botmaker.ui.components;
 
 import com.botmaker.ui.AddableExpression;
+import com.botmaker.util.TypeInfo;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Pos;
@@ -16819,15 +16698,16 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.Priority;
 
+import java.util.List;
+import java.util.Map;
 import java.util.function.Consumer;
+import java.util.stream.Collectors;
 
 public class BlockUIComponents {
 
     public static Button createDeleteButton(Runnable onDelete) {
         Button btn = new Button("X");
         btn.setOnAction(e -> onDelete.run());
-        // Optional: Add a specific style class if you want to target it specifically later
-        // btn.getStyleClass().add("delete-button");
         return btn;
     }
 
@@ -16869,43 +16749,86 @@ public class BlockUIComponents {
         return spacer;
     }
 
-    /**
-     * Creates a standard header row: [Content Nodes] + [Spacer] + [Delete Button]
-     */
     public static HBox createHeaderRow(Runnable onDelete, Node... content) {
         HBox container = new HBox(5);
         container.setAlignment(Pos.CENTER_LEFT);
-
-        if (content != null) {
-            container.getChildren().addAll(content);
-        }
-
+        if (content != null) container.getChildren().addAll(content);
         container.getChildren().addAll(createSpacer(), createDeleteButton(onDelete));
         return container;
     }
 
     /**
-     * TypeInfo overload for createExpressionTypeMenu
+     * Standard menu creation
      */
-    public static javafx.scene.control.ContextMenu createExpressionTypeMenu(
-            com.botmaker.util.TypeInfo expectedType,
-            java.util.function.Consumer<com.botmaker.ui.AddableExpression> onSelect) {
+    public static ContextMenu createExpressionTypeMenu(
+            TypeInfo expectedType,
+            Consumer<AddableExpression> onSelect) {
+        return createExpressionTypeMenu(expectedType, false, onSelect);
+    }
 
-        javafx.scene.control.ContextMenu menu = new javafx.scene.control.ContextMenu();
+    /**
+     * Categorized menu creation with constant filtering
+     */
+    public static ContextMenu createExpressionTypeMenu(
+            TypeInfo expectedType,
+            boolean constantOnly,
+            Consumer<AddableExpression> onSelect) {
 
-        // Get filtered expression types based on TypeInfo
-        java.util.List<com.botmaker.ui.AddableExpression> availableTypes =
-                com.botmaker.ui.AddableExpression.getForType(expectedType);
+        ContextMenu menu = new ContextMenu();
 
-        for (com.botmaker.ui.AddableExpression exprType : availableTypes) {
-            javafx.scene.control.MenuItem item = new javafx.scene.control.MenuItem(exprType.getDisplayName());
-            item.setOnAction(e -> onSelect.accept(exprType));
-            menu.getItems().add(item);
+        // 1. Get filtered list
+        List<AddableExpression> available = AddableExpression.getForType(expectedType, constantOnly);
+
+        // 2. Group by Category
+        Map<AddableExpression.Category, List<AddableExpression>> grouped = available.stream()
+                .collect(Collectors.groupingBy(AddableExpression::getCategory));
+
+        // 3. Define Category Order
+        AddableExpression.Category[] order = {
+                AddableExpression.Category.LITERAL,
+                AddableExpression.Category.REFERENCE,
+                AddableExpression.Category.MATH,
+                AddableExpression.Category.COMPARISON,
+                AddableExpression.Category.LOGIC,
+                AddableExpression.Category.STRUCTURE
+        };
+
+        boolean hasItems = false;
+
+        for (AddableExpression.Category cat : order) {
+            List<AddableExpression> items = grouped.get(cat);
+            if (items == null || items.isEmpty()) continue;
+
+            // Literals and References go to root (separated), others to sub-menus
+            if (cat == AddableExpression.Category.LITERAL || cat == AddableExpression.Category.REFERENCE) {
+                if (!menu.getItems().isEmpty()) menu.getItems().add(new SeparatorMenuItem());
+                for (AddableExpression expr : items) {
+                    menu.getItems().add(createItem(expr, onSelect));
+                }
+            } else {
+                Menu subMenu = new Menu(cat.getLabel());
+                for (AddableExpression expr : items) {
+                    subMenu.getItems().add(createItem(expr, onSelect));
+                }
+                menu.getItems().add(subMenu);
+            }
+            hasItems = true;
+        }
+
+        if (!hasItems) {
+            MenuItem empty = new MenuItem("(No options available)");
+            empty.setDisable(true);
+            menu.getItems().add(empty);
         }
 
         return menu;
     }
 
+    private static MenuItem createItem(AddableExpression expr, Consumer<AddableExpression> onSelect) {
+        MenuItem item = new MenuItem(expr.getDisplayName());
+        item.setOnAction(e -> onSelect.accept(expr));
+        return item;
+    }
 }
 
 

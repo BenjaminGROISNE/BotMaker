@@ -39,6 +39,21 @@ public class TypeConversionHelper {
             }
         }
 
+        // --- NEW: Switch Case (Fix for Enum identification) ---
+        if (parent instanceof SwitchCase) {
+            ASTNode grandParent = parent.getParent();
+            if (grandParent instanceof SwitchStatement) {
+                SwitchStatement switchStmt = (SwitchStatement) grandParent;
+                Expression switchExpr = switchStmt.getExpression();
+                if (switchExpr != null) {
+                    ITypeBinding binding = switchExpr.resolveTypeBinding();
+                    if (binding != null) {
+                        return binding.getName();
+                    }
+                }
+            }
+        }
+
         return null;
     }
 

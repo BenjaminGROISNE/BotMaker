@@ -17,7 +17,6 @@ public class ExpressionFactory {
     public Expression createDefaultExpression(AST ast, AddableExpression type, CompilationUnit cu,
                                               ASTRewrite rewriter, String contextTypeName) {
         switch (type) {
-            // ... (Keep existing cases: TEXT, NUMBER, TRUE, FALSE, VARIABLE, LIST, ENUM, FUNCTION) ...
             case TEXT: return createStringLiteral(ast, "text");
             case FUNCTION_CALL: return createMethodInvocation(ast, "selectMethod");
             case NUMBER: return ast.newNumberLiteral("0");
@@ -43,7 +42,6 @@ public class ExpressionFactory {
             case OR:
                 return createInfixExpression(ast, type);
 
-            // NEW: Not Operator (Unary)
             case NOT:
                 return createPrefixExpression(ast, PrefixExpression.Operator.NOT);
 

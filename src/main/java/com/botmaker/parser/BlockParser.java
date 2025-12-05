@@ -165,10 +165,10 @@ public class BlockParser {
             Statement s = (Statement) obj;
             if (s instanceof SwitchCase) {
                 SwitchCase sc = (SwitchCase) s;
-                currentCase = new SwitchBlock.SwitchCaseBlock(BlockIdPrefix.generate(BlockIdPrefix.SWITCH + "_case_", sc), sc, manager);
+                currentCase = new SwitchBlock.SwitchCaseBlock(BlockIdPrefix.generate(BlockIdPrefix.SWITCH + "_case_", sc), sc);
                 map.put(sc, currentCase);
                 if (!sc.isDefault() && !sc.expressions().isEmpty()) {
-                    factory.parseExpression((Expression) sc.expressions().get(0), map).ifPresent(currentCase::setCaseExpression);
+                    factory.parseExpression((Expression) sc.expressions().getFirst(), map).ifPresent(currentCase::setCaseExpression);
                 }
                 currentBody = new BodyBlock(BlockIdPrefix.generate(BlockIdPrefix.BODY, sc), sc, manager);
                 currentCase.setBody(currentBody);
