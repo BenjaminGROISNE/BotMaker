@@ -2,6 +2,8 @@ package com.botmaker.util;
 
 /**
  * Provides sensible default names for auto-generated elements
+ *
+ * UPDATED: Uses TypeInfo for type classification
  */
 public class DefaultNames {
 
@@ -11,42 +13,51 @@ public class DefaultNames {
     public static final String DEFAULT_BOOLEAN = "flag";
     public static final String DEFAULT_STRING = "text";
     public static final String DEFAULT_VARIABLE = "variable";
-    public static final String DEFAULT_ENUM = "value"; // NEW
+    public static final String DEFAULT_ENUM = "value";
 
-    // Method to get default name by type
+    /**
+     * Get default name by type
+     * UPDATED: Uses TypeInfo for classification
+     */
     public static String forType(String typeName) {
         if (typeName == null) return DEFAULT_VARIABLE;
 
-        String cleanType = typeName.trim();
+        // UPDATED: Use TypeInfo for proper type classification
+        TypeInfo type = TypeInfo.from(typeName);
 
-        // Handle ArrayList wrapper
-        if (cleanType.startsWith("ArrayList<") && cleanType.endsWith(">")) {
-            cleanType = cleanType.substring(10, cleanType.length() - 1);
+        // Get leaf type (unwrap arrays/collections)
+        TypeInfo leafType = type.getLeafType();
+
+        // Check type classifications
+        if (leafType.isBoolean()) {
+            return DEFAULT_BOOLEAN;
         }
 
-        switch (cleanType.toLowerCase()) {
-            case "int":
-            case "long":
-            case "short":
-            case "byte":
-                return DEFAULT_INT;
-            case "double":
-            case "float":
+        if (leafType.isString()) {
+            return DEFAULT_STRING;
+        }
+
+        if (leafType.isNumeric()) {
+            // Distinguish between integer and floating point
+            String leafTypeName = leafType.getTypeName();
+            if (leafTypeName.equals("double") || leafTypeName.equals("float") ||
+                    leafTypeName.equals("Double") || leafTypeName.equals("Float")) {
                 return DEFAULT_DOUBLE;
-            case "boolean":
-                return DEFAULT_BOOLEAN;
-            case "string":
-                return DEFAULT_STRING;
-            default:
-                // NEW: If it looks like an enum (starts with uppercase), use enum default
-                if (TypeManager.isLikelyEnumType(cleanType)) {
-                    return DEFAULT_ENUM;
-                }
-                return DEFAULT_VARIABLE;
+            }
+            return DEFAULT_INT;
         }
+
+        if (leafType.isEnum()) {
+            return DEFAULT_ENUM;
+        }
+
+        return DEFAULT_VARIABLE;
     }
 
-    // NEW: Get default name for enum type with the enum name as context
+    /**
+     * Get default name for enum type with the enum name as context
+     * UPDATED: No changes needed - this method is already good
+     */
     public static String forEnumType(String enumTypeName) {
         if (enumTypeName == null || enumTypeName.isEmpty()) {
             return DEFAULT_ENUM;

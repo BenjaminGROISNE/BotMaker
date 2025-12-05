@@ -7,6 +7,7 @@ import com.botmaker.ui.AddableExpression;
 import com.botmaker.ui.builders.BlockLayout;
 import com.botmaker.ui.components.BlockUIComponents;
 import com.botmaker.ui.components.TextFieldComponents;
+import com.botmaker.util.TypeInfo;
 import com.botmaker.util.TypeManager;
 import javafx.geometry.Pos;
 import javafx.scene.Cursor;
@@ -20,6 +21,9 @@ import java.util.List;
 
 import static com.botmaker.ui.components.BlockUIComponents.createTypeLabel;
 
+/**
+ * UPDATED: Uses TypeInfo for type operations
+ */
 public class VariableDeclarationBlock extends AbstractStatementBlock {
 
     private final String variableName;
@@ -38,9 +42,8 @@ public class VariableDeclarationBlock extends AbstractStatementBlock {
 
     @Override
     protected Node createUINode(CompletionContext context) {
-        String typeString = variableType.toString();
-        String uiTargetType = TypeManager.determineUiType(typeString,
-                context.applicationState().getCompilationUnit().orElse(null));
+        // UPDATED: Use TypeInfo instead of determineUiType
+        TypeInfo varType = TypeInfo.from(variableType);
 
         Label typeLabel = createTypeLabel(getDisplayTypeName(variableType));
         typeLabel.setCursor(Cursor.HAND);
@@ -72,7 +75,7 @@ public class VariableDeclarationBlock extends AbstractStatementBlock {
             Expression currentInitializer = initializer != null ?
                     (Expression) initializer.getAstNode() : null;
 
-            ContextMenu menu = BlockUIComponents.createExpressionTypeMenu(uiTargetType, type -> {
+            ContextMenu menu = BlockUIComponents.createExpressionTypeMenu(varType, type -> {
                 if (currentInitializer != null) {
                     context.codeEditor().replaceExpression(currentInitializer, type);
                 } else {
@@ -157,12 +160,9 @@ public class VariableDeclarationBlock extends AbstractStatementBlock {
     }
 
     private String preserveDimensions(String oldType, String newBase) {
-        int dims = 0;
-        String temp = oldType;
-        while (temp.endsWith("[]")) {
-            dims++;
-            temp = temp.substring(0, temp.length() - 2);
-        }
+        // UPDATED: Use TypeInfo for dimension counting
+        TypeInfo type = TypeInfo.from(oldType);
+        int dims = type.getArrayDimensions();
         return newBase + "[]".repeat(dims);
     }
 
@@ -180,7 +180,6 @@ public class VariableDeclarationBlock extends AbstractStatementBlock {
 
     private String getDisplayTypeName(Type type) {
         String typeName = type.toString();
-        // Just show the type as-is (e.g. "int[][]")
         return typeName;
     }
 

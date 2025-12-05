@@ -5,6 +5,7 @@ import com.botmaker.core.ExpressionBlock;
 import com.botmaker.lsp.CompletionContext;
 import com.botmaker.ui.builders.BlockLayout;
 import com.botmaker.ui.components.SelectorComponents;
+import com.botmaker.util.TypeInfo;
 import javafx.scene.Node;
 import org.eclipse.jdt.core.dom.*;
 
@@ -73,12 +74,14 @@ public class AssignmentBlock extends AbstractStatementBlock {
     }
 
     private void showExpressionMenu(javafx.scene.control.Button button, CompletionContext context) {
-        String targetType = "any";
+        // UPDATED: Use TypeInfo instead of string types
+        TypeInfo targetType = TypeInfo.UNKNOWN;
+
         if (leftHandSide != null && leftHandSide.getAstNode() != null) {
             Expression lhsExpr = (org.eclipse.jdt.core.dom.Expression) leftHandSide.getAstNode();
             org.eclipse.jdt.core.dom.ITypeBinding binding = lhsExpr.resolveTypeBinding();
             if (binding != null) {
-                targetType = com.botmaker.util.TypeManager.determineUiType(binding.getName());
+                targetType = TypeInfo.from(binding);
             }
         }
 

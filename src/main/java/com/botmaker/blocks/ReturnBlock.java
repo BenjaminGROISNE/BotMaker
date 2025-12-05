@@ -6,6 +6,7 @@ import com.botmaker.lsp.CompletionContext;
 import com.botmaker.ui.builders.BlockLayout;
 import com.botmaker.ui.components.BlockUIComponents;
 import com.botmaker.ui.theme.StyleBuilder;
+import com.botmaker.util.TypeInfo;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -36,12 +37,12 @@ public class ReturnBlock extends AbstractStatementBlock {
             sentenceBuilder
                     .addNode(expression.getUINode(context))
                     .addNode(BlockUIComponents.createChangeButton(e ->
-                            showExpressionMenuAndReplace((Button)e.getSource(), context, methodReturnType,
+                            showExpressionMenuAndReplace((Button)e.getSource(), context, TypeInfo.from(methodReturnType),
                                     (org.eclipse.jdt.core.dom.Expression)expression.getAstNode())
                     ));
         } else if (!isVoid) {
             sentenceBuilder.addNode(createAddButton(e ->
-                    BlockUIComponents.createExpressionTypeMenu(methodReturnType, type ->
+                    BlockUIComponents.createExpressionTypeMenu(TypeInfo.from(methodReturnType), type ->
                             context.codeEditor().setReturnExpression((ReturnStatement) this.astNode, type)
                     ).show((Button)e.getSource(), javafx.geometry.Side.BOTTOM, 0, 0)
             ));

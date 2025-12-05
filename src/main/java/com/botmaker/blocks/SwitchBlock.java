@@ -9,7 +9,7 @@ import com.botmaker.lsp.CompletionContext;
 import com.botmaker.ui.BlockDragAndDropManager;
 import com.botmaker.ui.builders.BlockLayout;
 import com.botmaker.ui.components.BlockUIComponents;
-import com.botmaker.util.TypeManager;
+import com.botmaker.util.TypeInfo;
 import javafx.geometry.Insets;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
@@ -20,6 +20,9 @@ import org.eclipse.jdt.core.dom.*;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * UPDATED: Uses TypeInfo for type operations
+ */
 public class SwitchBlock extends AbstractStatementBlock implements BlockWithChildren {
 
     private ExpressionBlock expression;
@@ -46,15 +49,26 @@ public class SwitchBlock extends AbstractStatementBlock implements BlockWithChil
     protected Node createUINode(CompletionContext context) {
         VBox mainContainer = new VBox(5);
 
+        // UPDATED: Determine switch type using TypeInfo
+        TypeInfo switchType = TypeInfo.UNKNOWN;
+        if (expression != null && expression.getAstNode() != null) {
+            Expression expr = (Expression) expression.getAstNode();
+            ITypeBinding binding = expr.resolveTypeBinding();
+            if (binding != null) {
+                switchType = TypeInfo.from(binding);
+            }
+        }
+
         // Header
+        TypeInfo finalSwitchType = switchType;
         Button changeSwitchExprBtn = BlockUIComponents.createChangeButton(e ->
-                showExpressionMenuAndReplace((Button)e.getSource(), context, TypeManager.UI_TYPE_SWITCH_COMPATIBLE,
+                showExpressionMenuAndReplace((Button)e.getSource(), context, finalSwitchType,
                         expression != null ? (Expression) expression.getAstNode() : null)
         );
 
         var headerSentence = BlockLayout.sentence()
                 .addKeyword("switch")
-                .addExpressionSlot(expression, context, TypeManager.UI_TYPE_SWITCH_COMPATIBLE)
+                .addExpressionSlot(expression, context, switchType)
                 .addNode(changeSwitchExprBtn)
                 .build();
 
@@ -107,11 +121,9 @@ public class SwitchBlock extends AbstractStatementBlock implements BlockWithChil
 
         @Override
         protected Node createUINode(CompletionContext context) {
-            // Use the overloaded version below
             return createUINode(context, -1, -1);
         }
 
-        // SwitchCaseBlock inner class
         public Node createUINode(CompletionContext context, int index, int totalCases) {
             VBox container = new VBox(5);
 
@@ -121,27 +133,28 @@ public class SwitchBlock extends AbstractStatementBlock implements BlockWithChil
             if (isDefault()) {
                 caseHeaderBuilder.addKeyword("default:");
             } else {
-                String targetType = "any";
+                // UPDATED: Determine case type using TypeInfo
+                TypeInfo caseType = TypeInfo.UNKNOWN;
                 if (this.astNode.getParent() instanceof SwitchStatement) {
                     SwitchStatement parent = (SwitchStatement) this.astNode.getParent();
                     Expression switchExpr = parent.getExpression();
                     if (switchExpr != null) {
                         ITypeBinding binding = switchExpr.resolveTypeBinding();
                         if (binding != null) {
-                            targetType = TypeManager.determineUiType(binding.getName());
+                            caseType = TypeInfo.from(binding);
                         }
                     }
                 }
 
-                String finalTargetType = targetType;
+                TypeInfo finalCaseType = caseType;
                 Button changeBtn = BlockUIComponents.createChangeButton(e ->
-                        showExpressionMenuAndReplace((Button)e.getSource(), context, finalTargetType,
+                        showExpressionMenuAndReplace((Button)e.getSource(), context, finalCaseType,
                                 caseExpression != null ? (Expression) caseExpression.getAstNode() : null)
                 );
 
                 caseHeaderBuilder
                         .addKeyword("case")
-                        .addExpressionSlot(caseExpression, context, targetType)
+                        .addExpressionSlot(caseExpression, context, caseType)
                         .addNode(changeBtn)
                         .addKeyword(":");
             }

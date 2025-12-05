@@ -5,6 +5,7 @@ import com.botmaker.parser.NodeCreator;
 import com.botmaker.parser.helpers.AstRewriteHelper;
 import com.botmaker.parser.helpers.EnumNodeHelper;
 import com.botmaker.parser.helpers.TypeConversionHelper;
+import com.botmaker.util.TypeInfo;
 import com.botmaker.util.TypeManager;
 import org.eclipse.jdt.core.dom.*;
 import org.eclipse.jdt.core.dom.rewrite.ASTRewrite;
@@ -15,6 +16,8 @@ import java.util.List;
 /**
  * Handles type replacement operations with value preservation.
  * Consolidates logic for variable and field type changes.
+ *
+ * UPDATED: Uses TypeInfo for type operations
  */
 public class TypeReplacementHandler {
 
@@ -84,28 +87,36 @@ public class TypeReplacementHandler {
 
     /**
      * Creates an appropriate initializer for a new type, preserving values where possible.
+     *
+     * UPDATED: Uses TypeInfo for type checking
      */
     private Expression createInitializerForNewType(AST ast, CompilationUnit cu, ASTRewrite rewriter,
                                                    String oldTypeName, String newTypeName,
                                                    Expression currentInitializer) {
         List<Expression> valuesToPreserve = new ArrayList<>();
-        String oldLeaf = TypeConversionHelper.getLeafType(oldTypeName);
-        String newLeaf = TypeConversionHelper.getLeafType(newTypeName);
+
+        // UPDATED: Use TypeInfo for leaf type extraction
+        TypeInfo oldType = TypeInfo.from(oldTypeName);
+        TypeInfo newType = TypeInfo.from(newTypeName);
+
+        String oldLeaf = oldType.getLeafType().getTypeName();
+        String newLeaf = newType.getLeafType().getTypeName();
 
         // Preserve values if leaf types match
         if (oldLeaf.equals(newLeaf) && currentInitializer != null) {
             TypeConversionHelper.collectLeafValues(currentInitializer, valuesToPreserve);
         }
 
-        // Check if new type is enum
-        boolean isNewTypeEnum = TypeManager.isEnumType(newLeaf, cu);
+        // UPDATED: Use TypeInfo for enum checking
+        boolean isNewTypeEnum = newType.getLeafType().isEnum() ||
+                TypeManager.isEnumType(newType.getLeafType(), cu);
 
         if (isNewTypeEnum) {
             return createEnumInitializer(ast, cu, rewriter, newTypeName, newLeaf);
         } else if (newTypeName.startsWith("ArrayList<")) {
             return nodeCreator.createRecursiveListInitializer(ast, newTypeName, cu, rewriter, valuesToPreserve);
-        } else if (newTypeName.endsWith("[]")) {
-            return createArrayInitializer(ast, newTypeName, valuesToPreserve);
+        } else if (newType.isArray()) {
+            return createArrayInitializer(ast, newType, valuesToPreserve);
         } else {
             return !valuesToPreserve.isEmpty() ?
                     (Expression) ASTNode.copySubtree(ast, valuesToPreserve.get(0)) :
@@ -140,10 +151,12 @@ public class TypeReplacementHandler {
 
     /**
      * Creates an array initializer with preserved values.
+     *
+     * UPDATED: Uses TypeInfo parameter instead of string
      */
-    private Expression createArrayInitializer(AST ast, String typeName, List<Expression> valuesToPreserve) {
+    private Expression createArrayInitializer(AST ast, TypeInfo typeInfo, List<Expression> valuesToPreserve) {
         ArrayCreation creation = ast.newArrayCreation();
-        creation.setType((ArrayType) TypeManager.createTypeNode(ast, typeName));
+        creation.setType((ArrayType) TypeManager.createTypeNode(ast, typeInfo));
         ArrayInitializer ai = ast.newArrayInitializer();
 
         if (!valuesToPreserve.isEmpty()) {

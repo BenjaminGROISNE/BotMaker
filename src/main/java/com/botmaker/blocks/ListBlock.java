@@ -3,6 +3,7 @@ package com.botmaker.blocks;
 import com.botmaker.core.AbstractExpressionBlock;
 import com.botmaker.core.ExpressionBlock;
 import com.botmaker.lsp.CompletionContext;
+import com.botmaker.util.TypeInfo;
 import com.botmaker.util.TypeManager;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -16,7 +17,6 @@ import javafx.scene.layout.VBox;
 import org.eclipse.jdt.core.dom.*;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -24,6 +24,8 @@ import java.util.List;
  * Supports:
  * 1. Array Initializers: {1, 2, 3}
  * 2. List Factories: Arrays.asList(1, 2, 3) or List.of(1, 2, 3)
+ *
+ * UPDATED: Uses TypeInfo for ALL type operations - this eliminates the multi-dimensional array bugs!
  */
 public class ListBlock extends AbstractExpressionBlock {
 
@@ -63,15 +65,13 @@ public class ListBlock extends AbstractExpressionBlock {
         HBox headerRow = new HBox(8);
         headerRow.setAlignment(Pos.CENTER_LEFT);
 
-        // Calculate logic
-        String itemType = determineItemType();
-        // If itemType is "list", we are holding sub-lists.
-        // If itemType is "boolean"/"number", we are holding values.
+        // UPDATED: Use TypeInfo for determining item type
+        TypeInfo itemType = determineItemType();
 
         String typeLabel = isFixedArray ? "Array" : "List";
 
-        // Debug label helpful for verification:
-        // Label listLabel = new Label(typeLabel + "<" + itemType + "> (" + elements.size() + ")");
+        // Debug label (optional - can be enabled for verification):
+        // Label listLabel = new Label(typeLabel + "<" + itemType.getDisplayName() + "> (" + elements.size() + ")");
         Label listLabel = new Label(typeLabel + " (" + elements.size() + ")");
         listLabel.getStyleClass().add("list-label");
 
@@ -98,7 +98,6 @@ public class ListBlock extends AbstractExpressionBlock {
             elementsContainer.setPadding(new Insets(2, 0, 0, 12));
 
             for (int i = 0; i < elements.size(); i++) {
-                // Pass itemType down so row knows what it contains
                 HBox elementRow = createElementRow(i, elements.get(i), context, itemType);
                 elementsContainer.getChildren().add(elementRow);
             }
@@ -108,9 +107,7 @@ public class ListBlock extends AbstractExpressionBlock {
         return container;
     }
 
-
-
-    private HBox createElementRow(int index, ExpressionBlock element, CompletionContext context, String itemType) {
+    private HBox createElementRow(int index, ExpressionBlock element, CompletionContext context, TypeInfo itemType) {
         HBox row = new HBox(6);
         row.setAlignment(Pos.CENTER_LEFT);
 
@@ -145,10 +142,10 @@ public class ListBlock extends AbstractExpressionBlock {
         return row;
     }
 
-    private void showAddElementMenu(Button button, CompletionContext context, int insertIndex, String targetType) {
+    private void showAddElementMenu(Button button, CompletionContext context, int insertIndex, TypeInfo targetType) {
         ContextMenu menu = new ContextMenu();
 
-        // Use getForType to filter the options
+        // UPDATED: Pass TypeInfo to getForType
         for (com.botmaker.ui.AddableExpression type : com.botmaker.ui.AddableExpression.getForType(targetType)) {
             MenuItem menuItem = new MenuItem(type.getDisplayName());
             menuItem.setOnAction(e -> {
@@ -157,7 +154,6 @@ public class ListBlock extends AbstractExpressionBlock {
             menu.getItems().add(menuItem);
         }
 
-        // If no valid options, show a disabled message
         if (menu.getItems().isEmpty()) {
             MenuItem noOptions = new MenuItem("(Maximum nesting reached)");
             noOptions.setDisable(true);
@@ -166,59 +162,53 @@ public class ListBlock extends AbstractExpressionBlock {
 
         menu.show(button, javafx.geometry.Side.BOTTOM, 0, 0);
     }
+
     /**
-     * Logic to determine what kind of items this specific ListBlock should contain.
+     * COMPLETELY REWRITTEN: Determine what kind of items this ListBlock should contain.
+     * This now uses TypeInfo exclusively and should fix ALL multi-dimensional array issues!
+     *
+     * Logic:
+     * 1. Walk up parent chain to find root declaration (VariableDeclarationStatement, FieldDeclaration, etc.)
+     * 2. Count how deep WE are in the nesting (currentDepth)
+     * 3. Get the declared type's total dimensions using TypeInfo
+     * 4. Calculate: elementDimensions = totalDimensions - currentDepth
+     * 5. If elementDimensions > 0: return array TypeInfo
+     *    If elementDimensions == 0: return leaf TypeInfo
      */
-    private String determineItemType() {
-        // The key insight: We need to know what type of ELEMENTS we contain
-        // Not what type WE are
+    private TypeInfo determineItemType() {
+        System.out.println("\n[ListBlock.determineItemType] Starting for: " + this.astNode.getClass().getSimpleName());
 
+        // Step 1: Walk up and find root declaration
         ASTNode rootDefinition = null;
-
-        // Start from our parent to count how deep we are
         ASTNode current = this.astNode.getParent();
-        int currentDepth = 1; // We ARE at depth 1 (we are one array initializer)
+        int currentDepth = 1; // We count as one level of nesting
 
-        System.out.println("[Debug ListBlock.determineItemType] We are: " + this.astNode.getClass().getSimpleName());
-        System.out.println("[Debug] Starting depth at 1 (we count as one level)");
+        System.out.println("  Starting depth at 1 (we are one array initializer)");
 
-        // Walk up counting additional nesting
         while (current != null) {
-            System.out.println("[Debug] Checking parent: " + current.getClass().getSimpleName());
+            System.out.println("  Checking parent: " + current.getClass().getSimpleName());
 
             // Count additional array nesting above us
             if (current instanceof ArrayInitializer) {
                 currentDepth++;
-                System.out.println("[Debug] Parent is ArrayInitializer, depth now: " + currentDepth);
+                System.out.println("    -> Parent is ArrayInitializer, depth now: " + currentDepth);
             }
             else if (current instanceof MethodInvocation) {
                 MethodInvocation mi = (MethodInvocation) current;
                 String methodName = mi.getName().getIdentifier();
                 if ("asList".equals(methodName) || "of".equals(methodName)) {
                     currentDepth++;
-                    System.out.println("[Debug] Parent is " + methodName + ", depth now: " + currentDepth);
+                    System.out.println("    -> Parent is " + methodName + ", depth now: " + currentDepth);
                 }
             }
 
             // Found declaration - stop here
-            if (current instanceof VariableDeclarationFragment) {
+            if (current instanceof VariableDeclarationFragment ||
+                    current instanceof VariableDeclarationStatement ||
+                    current instanceof FieldDeclaration ||
+                    current instanceof ArrayCreation) {
                 rootDefinition = current;
-                System.out.println("[Debug] Found VariableDeclarationFragment");
-                break;
-            }
-            if (current instanceof VariableDeclarationStatement) {
-                rootDefinition = current;
-                System.out.println("[Debug] Found VariableDeclarationStatement");
-                break;
-            }
-            if (current instanceof FieldDeclaration) {
-                rootDefinition = current;
-                System.out.println("[Debug] Found FieldDeclaration");
-                break;
-            }
-            if (current instanceof ArrayCreation) {
-                rootDefinition = current;
-                System.out.println("[Debug] Found ArrayCreation");
+                System.out.println("  Found root declaration: " + current.getClass().getSimpleName());
                 break;
             }
 
@@ -226,108 +216,83 @@ public class ListBlock extends AbstractExpressionBlock {
         }
 
         if (rootDefinition == null) {
-            System.out.println("[Debug] No root definition found, returning 'any'");
-            return "any";
+            System.out.println("  ERROR: No root definition found!");
+            return TypeInfo.UNKNOWN;
         }
 
-        // Get the declared type
-        ITypeBinding rootTypeBinding = null;
-        String rootTypeStr = null;
+        // Step 2: Get the declared type
+        TypeInfo declaredType = extractDeclaredType(rootDefinition);
 
-        if (rootDefinition instanceof VariableDeclarationStatement) {
-            Type type = ((VariableDeclarationStatement) rootDefinition).getType();
-            rootTypeBinding = type.resolveBinding();
-            rootTypeStr = type.toString();
-        } else if (rootDefinition instanceof VariableDeclarationFragment) {
-            ASTNode parent = rootDefinition.getParent();
-            if (parent instanceof VariableDeclarationStatement) {
-                Type type = ((VariableDeclarationStatement) parent).getType();
-                rootTypeBinding = type.resolveBinding();
-                rootTypeStr = type.toString();
-            } else if (parent instanceof FieldDeclaration) {
-                Type type = ((FieldDeclaration) parent).getType();
-                rootTypeBinding = type.resolveBinding();
-                rootTypeStr = type.toString();
-            }
-        } else if (rootDefinition instanceof FieldDeclaration) {
-            Type type = ((FieldDeclaration) rootDefinition).getType();
-            rootTypeBinding = type.resolveBinding();
-            rootTypeStr = type.toString();
-        } else if (rootDefinition instanceof ArrayCreation) {
-            ArrayType type = ((ArrayCreation) rootDefinition).getType();
-            rootTypeBinding = type.resolveBinding();
-            rootTypeStr = type.toString();
+        if (declaredType == null) {
+            System.out.println("  ERROR: Could not extract declared type!");
+            return TypeInfo.UNKNOWN;
         }
 
-        if (rootTypeBinding == null) {
-            System.out.println("[Debug] Could not resolve type binding, fallback to string: " + rootTypeStr);
-            if (rootTypeStr != null) {
-                return determineItemTypeFromString(rootTypeStr, currentDepth);
-            }
-            return "any";
-        }
+        System.out.println("  Declared Type: " + declaredType.getTypeName());
+        System.out.println("  Total Dimensions: " + declaredType.getArrayDimensions());
+        System.out.println("  Current Depth: " + currentDepth);
+        System.out.println("  Leaf Type: " + declaredType.getLeafType().getTypeName());
 
-        int totalDimensions = TypeManager.getArrayDimensions(rootTypeBinding);
-        ITypeBinding leafTypeBinding = TypeManager.getLeafTypeBinding(rootTypeBinding);
-        String leafTypeName = leafTypeBinding != null ? leafTypeBinding.getName() : "Object";
-
-        System.out.println("[Debug ListBlock SUMMARY]");
-        System.out.println("  Declaration Type: " + rootTypeStr);
-        System.out.println("  Total Dimensions: " + totalDimensions);
-        System.out.println("  Current Depth:    " + currentDepth);
-        System.out.println("  Leaf Type:        " + leafTypeName);
-
-        // Key calculation:
-        // If we have int[][][] and we're at depth 1, we contain int[][] elements
-        // If we're at depth 2, we contain int[] elements
-        // If we're at depth 3, we contain int elements
-
+        // Step 3: Calculate what OUR elements should be
+        int totalDimensions = declaredType.getArrayDimensions();
         int elementDimensions = totalDimensions - currentDepth;
 
-        System.out.println("  Element Dims:     " + elementDimensions + " (total - depth)");
+        System.out.println("  Element Dimensions: " + elementDimensions + " (total - depth)");
 
         if (elementDimensions > 0) {
             // Our children are arrays
-            System.out.println("  -> Returning 'list' (children are arrays with " + elementDimensions + " dimensions)");
-            return "list";
+            TypeInfo elementType = declaredType.getLeafType().asArray(elementDimensions);
+            System.out.println("  -> Returning ARRAY: " + elementType.getTypeName());
+            return elementType;
         } else if (elementDimensions == 0) {
             // Our children are leaf values
-            String uiType = TypeManager.determineUiType(leafTypeBinding);
-            System.out.println("  -> Returning '" + uiType + "' (children are leaf values)");
-            return uiType;
+            TypeInfo leafType = declaredType.getLeafType();
+            System.out.println("  -> Returning LEAF: " + leafType.getTypeName());
+            return leafType;
         } else {
-            // We're too deep!
+            // We're too deep! This shouldn't happen if declarations are correct
             System.out.println("  -> ERROR: Negative element dimensions!");
-            return "any";
+            return TypeInfo.UNKNOWN;
         }
     }
 
     /**
-     * Fallback method using string parsing when binding is unavailable
+     * Helper: Extract TypeInfo from various AST node types
      */
-    private String determineItemTypeFromString(String rootTypeStr, int currentDepth) {
-        int totalDimensions = TypeManager.getListNestingLevel(rootTypeStr);
-        String leafType = TypeManager.getLeafType(rootTypeStr);
-
-        int remainingLevels = totalDimensions - currentDepth;
-
-        System.out.println("[Debug ListBlock String Fallback] Type: " + rootTypeStr +
-                " | TotalDims: " + totalDimensions +
-                " | CurrentDepth: " + currentDepth +
-                " | Remaining: " + remainingLevels);
-
-        if (remainingLevels > 1) {
-            return "list";
-        } else if (remainingLevels == 1) {
-            return TypeManager.determineUiType(leafType);
-        } else {
-            return "any";
+    private TypeInfo extractDeclaredType(ASTNode node) {
+        if (node instanceof VariableDeclarationStatement) {
+            Type type = ((VariableDeclarationStatement) node).getType();
+            return TypeInfo.from(type);
         }
+
+        if (node instanceof VariableDeclarationFragment) {
+            ASTNode parent = node.getParent();
+            if (parent instanceof VariableDeclarationStatement) {
+                Type type = ((VariableDeclarationStatement) parent).getType();
+                return TypeInfo.from(type);
+            } else if (parent instanceof FieldDeclaration) {
+                Type type = ((FieldDeclaration) parent).getType();
+                return TypeInfo.from(type);
+            }
+        }
+
+        if (node instanceof FieldDeclaration) {
+            Type type = ((FieldDeclaration) node).getType();
+            return TypeInfo.from(type);
+        }
+
+        if (node instanceof ArrayCreation) {
+            ArrayType type = ((ArrayCreation) node).getType();
+            return TypeInfo.from(type);
+        }
+
+        return null;
     }
-    private void showChangeElementMenu(Button button, CompletionContext context, int elementIndex, String targetType) {
+
+    private void showChangeElementMenu(Button button, CompletionContext context, int elementIndex, TypeInfo targetType) {
         ContextMenu menu = new ContextMenu();
 
-        // Use getForType to filter the options
+        // UPDATED: Pass TypeInfo to getForType
         for (com.botmaker.ui.AddableExpression type : com.botmaker.ui.AddableExpression.getForType(targetType)) {
             MenuItem menuItem = new MenuItem(type.getDisplayName());
             menuItem.setOnAction(e -> {

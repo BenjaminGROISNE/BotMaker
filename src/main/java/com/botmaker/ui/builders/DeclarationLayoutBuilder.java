@@ -3,6 +3,7 @@ package com.botmaker.ui.builders;
 import com.botmaker.core.ExpressionBlock;
 import com.botmaker.lsp.CompletionContext;
 import com.botmaker.ui.components.TextFieldComponents;
+import com.botmaker.util.TypeInfo;
 import javafx.scene.Cursor;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -82,7 +83,7 @@ public class DeclarationLayoutBuilder {
         sentence.addKeyword("=");
 
         // Initializer
-        sentence.addExpressionSlot(initializer, context, "any");
+        sentence.addExpressionSlot(initializer, context, TypeInfo.UNKNOWN);
 
         // Change button
         if (onInitializerChange != null) {

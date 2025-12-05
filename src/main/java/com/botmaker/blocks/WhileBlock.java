@@ -8,6 +8,7 @@ import com.botmaker.core.ExpressionBlock;
 import com.botmaker.lsp.CompletionContext;
 import com.botmaker.ui.BlockDragAndDropManager;
 import com.botmaker.ui.builders.BlockLayout;
+import com.botmaker.util.TypeInfo;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.layout.VBox;
@@ -48,7 +49,7 @@ public class WhileBlock extends AbstractStatementBlock implements BlockWithChild
                 showExpressionMenuAndReplace(
                         (Button) e.getSource(),
                         context,
-                        "boolean",
+                        TypeInfo.BOOLEAN,
                         condition != null ? (Expression) condition.getAstNode() : null
                 )
         );
@@ -56,7 +57,7 @@ public class WhileBlock extends AbstractStatementBlock implements BlockWithChild
         // 2. Build Header: "while [condition] [+]"
         Node headerContent = BlockLayout.sentence()
                 .addKeyword("while")
-                .addExpressionSlot(condition, context, "boolean")
+                .addExpressionSlot(condition, context, TypeInfo.BOOLEAN)
                 .addNode(changeBtn)
                 .build();
 

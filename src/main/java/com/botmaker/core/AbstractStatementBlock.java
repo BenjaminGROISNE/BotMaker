@@ -4,8 +4,10 @@ import com.botmaker.lsp.CompletionContext;
 import com.botmaker.ui.components.BlockUIComponents;
 import com.botmaker.ui.components.LayoutComponents;
 import com.botmaker.ui.components.PlaceholderComponents;
+import com.botmaker.util.TypeInfo;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
+import javafx.scene.control.ContextMenu;
 import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;
 import org.eclipse.jdt.core.dom.ASTNode;
@@ -71,14 +73,21 @@ public abstract class AbstractStatementBlock extends AbstractCodeBlock implement
         return LayoutComponents.createSentenceRow(nodes);
     }
 
-    protected void showExpressionMenuAndReplace(Button button, CompletionContext context, String targetType, Expression toReplace) {
-        BlockUIComponents.createExpressionTypeMenu(targetType, type -> {
-            if (toReplace != null) {
-                context.codeEditor().replaceExpression(toReplace, type);
-            } else if (this instanceof com.botmaker.blocks.ReturnBlock) {
-                // Special case for ReturnBlock which might accept null
-                // Handled by specific implementations usually, but good for generic replacement
-            }
-        }).show(button, javafx.geometry.Side.BOTTOM, 0, 0);
+    /**
+     * TypeInfo overload for showExpressionMenuAndReplace
+     */
+    protected void showExpressionMenuAndReplace(javafx.scene.control.Button button,
+                                                CompletionContext context,
+                                                TypeInfo expectedType,
+                                               Expression toReplace) {
+        ContextMenu menu = BlockUIComponents.createExpressionTypeMenu(
+                expectedType,
+                type -> {
+                    if (toReplace != null) {
+                        context.codeEditor().replaceExpression(toReplace, type);
+                    }
+                }
+        );
+        menu.show(button, javafx.geometry.Side.BOTTOM, 0, 0);
     }
 }

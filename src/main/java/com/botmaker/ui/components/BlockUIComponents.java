@@ -75,16 +75,26 @@ public class BlockUIComponents {
         return container;
     }
 
-    public static ContextMenu createExpressionTypeMenu(String targetType, Consumer<AddableExpression> onSelect) {
-        ContextMenu menu = new ContextMenu();
-        menu.setStyle("-fx-control-inner-background: white;");
+    /**
+     * TypeInfo overload for createExpressionTypeMenu
+     */
+    public static javafx.scene.control.ContextMenu createExpressionTypeMenu(
+            com.botmaker.util.TypeInfo expectedType,
+            java.util.function.Consumer<com.botmaker.ui.AddableExpression> onSelect) {
 
-        for (AddableExpression type : AddableExpression.getForType(targetType)) {
-            MenuItem menuItem = new MenuItem(type.getDisplayName());
-            menuItem.setStyle("-fx-text-fill: black;");
-            menuItem.setOnAction(e -> onSelect.accept(type));
-            menu.getItems().add(menuItem);
+        javafx.scene.control.ContextMenu menu = new javafx.scene.control.ContextMenu();
+
+        // Get filtered expression types based on TypeInfo
+        java.util.List<com.botmaker.ui.AddableExpression> availableTypes =
+                com.botmaker.ui.AddableExpression.getForType(expectedType);
+
+        for (com.botmaker.ui.AddableExpression exprType : availableTypes) {
+            javafx.scene.control.MenuItem item = new javafx.scene.control.MenuItem(exprType.getDisplayName());
+            item.setOnAction(e -> onSelect.accept(exprType));
+            menu.getItems().add(item);
         }
+
         return menu;
     }
+
 }

@@ -7,6 +7,7 @@ import com.botmaker.events.CoreApplicationEvents;
 import com.botmaker.events.EventBus;
 import com.botmaker.ui.AddableBlock;
 import com.botmaker.ui.AddableExpression;
+import com.botmaker.util.TypeInfo;
 import org.eclipse.jdt.core.dom.*;
 import org.eclipse.jdt.core.dom.rewrite.ASTRewrite;
 
@@ -249,6 +250,15 @@ public class CodeEditor {
                 defaultType
         );
         triggerUpdate(newCode);
+    }
+
+    /**
+     * TypeInfo overload for setFieldInitializerToDefault
+     */
+    public void setFieldInitializerToDefault(FieldDeclaration fieldDecl,
+                                             TypeInfo fieldType) {
+        // Convert TypeInfo to string and call existing method
+        setFieldInitializerToDefault(fieldDecl, fieldType.getTypeName());
     }
 
     public void replaceExpression(Expression toReplace, AddableExpression type) {

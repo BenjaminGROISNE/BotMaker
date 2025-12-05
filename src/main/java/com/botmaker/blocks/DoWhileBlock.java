@@ -8,6 +8,7 @@ import com.botmaker.core.ExpressionBlock;
 import com.botmaker.lsp.CompletionContext;
 import com.botmaker.ui.BlockDragAndDropManager;
 import com.botmaker.ui.builders.BlockLayout;
+import com.botmaker.util.TypeInfo;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.layout.HBox;
@@ -57,14 +58,14 @@ public class DoWhileBlock extends AbstractStatementBlock implements BlockWithChi
                 showExpressionMenuAndReplace(
                         (Button) e.getSource(),
                         context,
-                        "boolean",
+                        TypeInfo.BOOLEAN,
                         condition != null ? (Expression) condition.getAstNode() : null
                 )
         );
 
         HBox footer = BlockLayout.sentence()
                 .addKeyword("while")
-                .addExpressionSlot(condition, context, "boolean")
+                .addExpressionSlot(condition, context, TypeInfo.BOOLEAN)
                 .addNode(changeBtn)
                 .build();
 

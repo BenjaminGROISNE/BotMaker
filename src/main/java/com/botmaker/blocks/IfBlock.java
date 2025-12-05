@@ -7,6 +7,7 @@ import com.botmaker.core.StatementBlock;
 import com.botmaker.lsp.CompletionContext;
 import com.botmaker.ui.builders.BlockLayout;
 import com.botmaker.ui.components.BlockUIComponents;
+import com.botmaker.util.TypeInfo;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
@@ -49,13 +50,13 @@ public class IfBlock extends AbstractStatementBlock {
         String keyword = isElseIf ? "Else If" : "If";
 
         Button addButton = createAddButton(e ->
-                showExpressionMenuAndReplace((Button)e.getSource(), context, "boolean",
+                showExpressionMenuAndReplace((Button)e.getSource(), context, TypeInfo.BOOLEAN,
                         condition != null ? (Expression) condition.getAstNode() : null)
         );
 
         Node headerContent = BlockLayout.sentence()
                 .addKeyword(keyword)
-                .addExpressionSlot(condition, context, "boolean")
+                .addExpressionSlot(condition, context, TypeInfo.BOOLEAN)
                 .addNode(addButton)
                 .build();
 

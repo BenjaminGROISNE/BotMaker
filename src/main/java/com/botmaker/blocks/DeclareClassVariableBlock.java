@@ -6,6 +6,7 @@ import com.botmaker.lsp.CompletionContext;
 import com.botmaker.ui.builders.BlockLayout;
 import com.botmaker.ui.components.BlockUIComponents;
 import com.botmaker.ui.components.TextFieldComponents;
+import com.botmaker.util.TypeInfo;
 import com.botmaker.util.TypeManager;
 import javafx.geometry.Pos;
 import javafx.scene.Cursor;
@@ -22,6 +23,8 @@ import static com.botmaker.ui.components.BlockUIComponents.createTypeLabel;
 
 /**
  * Represents a class-level field declaration (instance or static variable).
+ *
+ * UPDATED: Uses TypeInfo for type operations
  */
 public class DeclareClassVariableBlock extends AbstractStatementBlock {
 
@@ -73,9 +76,8 @@ public class DeclareClassVariableBlock extends AbstractStatementBlock {
             }
         });
 
-        String typeString = variableType.toString();
-        String uiTargetType = TypeManager.determineUiType(typeString,
-                context.applicationState().getCompilationUnit().orElse(null));
+        // UPDATED: Use TypeInfo instead of determineUiType
+        TypeInfo fieldType = TypeInfo.from(variableType);
 
         var mainRowBuilder = BlockLayout.sentence()
                 .addNode(typeLabel)
@@ -94,7 +96,7 @@ public class DeclareClassVariableBlock extends AbstractStatementBlock {
             );
             setValueBtn.setOnAction(e -> {
                 context.codeEditor().setFieldInitializerToDefault(
-                        (FieldDeclaration) this.astNode, uiTargetType);
+                        (FieldDeclaration) this.astNode, fieldType);
             });
             mainRowBuilder.addNode(setValueBtn);
         } else {
@@ -105,7 +107,7 @@ public class DeclareClassVariableBlock extends AbstractStatementBlock {
 
             Button addButton = createAddButton(e -> {
                 Expression currentInitializer = (Expression) initializer.getAstNode();
-                ContextMenu menu = BlockUIComponents.createExpressionTypeMenu(uiTargetType, type -> {
+                ContextMenu menu = BlockUIComponents.createExpressionTypeMenu(fieldType, type -> {
                     context.codeEditor().replaceExpression(currentInitializer, type);
                 });
                 menu.show((Button)e.getSource(), javafx.geometry.Side.BOTTOM, 0, 0);
@@ -187,12 +189,9 @@ public class DeclareClassVariableBlock extends AbstractStatementBlock {
     }
 
     private String preserveDimensions(String oldType, String newBase) {
-        int dims = 0;
-        String temp = oldType;
-        while (temp.endsWith("[]")) {
-            dims++;
-            temp = temp.substring(0, temp.length() - 2);
-        }
+        // UPDATED: Use TypeInfo for dimension counting
+        TypeInfo type = TypeInfo.from(oldType);
+        int dims = type.getArrayDimensions();
         return newBase + "[]".repeat(dims);
     }
 

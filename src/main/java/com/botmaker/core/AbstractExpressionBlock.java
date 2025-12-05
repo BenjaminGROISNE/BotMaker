@@ -3,6 +3,7 @@ package com.botmaker.core;
 import com.botmaker.lsp.CompletionContext;
 import com.botmaker.ui.components.BlockUIComponents;
 import com.botmaker.ui.components.SelectorComponents;
+import com.botmaker.util.TypeInfo;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
@@ -33,8 +34,9 @@ public abstract class AbstractExpressionBlock extends AbstractCodeBlock implemen
     /**
      * Helper to show the expression type menu and replace the current expression node upon selection.
      */
-    protected void showExpressionMenuAndReplace(Button button, CompletionContext context, String targetType, Expression toReplace) {
-        BlockUIComponents.createExpressionTypeMenu(targetType, type -> {
+    protected void showExpressionMenuAndReplace(Button button, CompletionContext context,
+                                                String targetType, Expression toReplace) {
+        BlockUIComponents.createExpressionTypeMenu(TypeInfo.from(targetType), type -> {
             if (toReplace != null) {
                 context.codeEditor().replaceExpression(toReplace, type);
             }

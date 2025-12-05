@@ -5,6 +5,7 @@ import com.botmaker.core.ExpressionBlock;
 import com.botmaker.lsp.CompletionContext;
 import com.botmaker.ui.builders.BlockLayout;
 import com.botmaker.ui.components.BlockUIComponents;
+import com.botmaker.util.TypeInfo;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
 import org.eclipse.jdt.core.dom.Expression;
@@ -56,7 +57,7 @@ public class ComparisonExpressionBlock extends AbstractExpressionBlock {
         var sentence = BlockLayout.sentence();
 
         // Left Operand
-        sentence.addExpressionSlot(leftOperand, context, targetType);
+        sentence.addExpressionSlot(leftOperand, context, TypeInfo.from(targetType));
         sentence.addNode(BlockUIComponents.createChangeButton(e ->
                 showExpressionMenuAndReplace((Button)e.getSource(), context, targetType,
                         leftOperand != null ? (Expression) leftOperand.getAstNode() : null)
@@ -71,7 +72,7 @@ public class ComparisonExpressionBlock extends AbstractExpressionBlock {
         });
 
         // Right Operand
-        sentence.addExpressionSlot(rightOperand, context, targetType);
+        sentence.addExpressionSlot(rightOperand, context, TypeInfo.from(targetType));
         sentence.addNode(BlockUIComponents.createChangeButton(e ->
                 showExpressionMenuAndReplace((Button)e.getSource(), context, targetType,
                         rightOperand != null ? (Expression) rightOperand.getAstNode() : null)

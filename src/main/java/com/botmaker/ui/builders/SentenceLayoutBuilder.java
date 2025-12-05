@@ -36,14 +36,18 @@ public class SentenceLayoutBuilder {
         return this;
     }
 
-    public SentenceLayoutBuilder addExpressionSlot(
-            ExpressionBlock expr,
-            CompletionContext context,
-            String targetType) {
-        if (expr != null) {
-            nodes.add(expr.getUINode(context));
+    /**
+     * TypeInfo overload for addExpressionSlot
+     */
+    public SentenceLayoutBuilder addExpressionSlot(com.botmaker.core.ExpressionBlock expression,
+                                                   com.botmaker.lsp.CompletionContext context,
+                                                   com.botmaker.util.TypeInfo expectedType) {
+        if (expression != null) {
+            nodes.add(expression.getUINode(context));
         } else {
-            nodes.add(createDropZone(context));
+            javafx.scene.control.Label placeholder = new javafx.scene.control.Label("⟨expression⟩");
+            placeholder.setStyle("-fx-text-fill: rgba(255,255,255,0.4); -fx-font-style: italic;");
+            nodes.add(placeholder);
         }
         return this;
     }

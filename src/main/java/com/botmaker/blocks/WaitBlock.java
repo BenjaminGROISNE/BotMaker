@@ -4,6 +4,7 @@ import com.botmaker.core.AbstractStatementBlock;
 import com.botmaker.core.ExpressionBlock;
 import com.botmaker.lsp.CompletionContext;
 import com.botmaker.ui.builders.BlockLayout;
+import com.botmaker.util.TypeInfo;
 import javafx.scene.Node;
 import org.eclipse.jdt.core.dom.Statement;
 
@@ -23,7 +24,7 @@ public class WaitBlock extends AbstractStatementBlock {
     protected Node createUINode(CompletionContext context) {
         var sentence = BlockLayout.sentence()
                 .addKeyword("Wait")
-                .addExpressionSlot(duration, context, "number")
+                .addExpressionSlot(duration, context, TypeInfo.INT)
                 .addKeyword("ms")
                 .build();
 

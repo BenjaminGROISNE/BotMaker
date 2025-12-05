@@ -4,6 +4,7 @@ import com.botmaker.core.AbstractStatementBlock;
 import com.botmaker.core.ExpressionBlock;
 import com.botmaker.lsp.CompletionContext;
 import com.botmaker.ui.builders.BlockLayout;
+import com.botmaker.util.TypeInfo;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
 import org.eclipse.jdt.core.dom.ExpressionStatement;
@@ -38,7 +39,7 @@ public class PrintBlock extends AbstractStatementBlock {
         Button addButton = createAddButton(e -> {
             org.eclipse.jdt.core.dom.Expression toReplace = !arguments.isEmpty() ?
                     (org.eclipse.jdt.core.dom.Expression) arguments.get(0).getAstNode() : null;
-            showExpressionMenuAndReplace((Button)e.getSource(), context, "any", toReplace);
+            showExpressionMenuAndReplace((Button)e.getSource(), context, TypeInfo.UNKNOWN, toReplace);
         });
 
         sentenceBuilder.addNode(addButton);

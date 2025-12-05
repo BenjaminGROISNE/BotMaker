@@ -9,6 +9,7 @@ import com.botmaker.lsp.CompletionContext;
 import com.botmaker.ui.BlockDragAndDropManager;
 import com.botmaker.ui.builders.BlockLayout;
 import com.botmaker.ui.components.TextFieldComponents;
+import com.botmaker.util.TypeInfo;
 import javafx.scene.Node;
 import javafx.scene.control.TextField;
 import org.eclipse.jdt.core.dom.EnhancedForStatement;
@@ -61,7 +62,7 @@ public class ForBlock extends AbstractStatementBlock implements BlockWithChildre
                 .addKeyword("for each")
                 .addNode(nameField) // Use the text field directly
                 .addKeyword("in")
-                .addExpressionSlot(collection, context, "any")
+                .addExpressionSlot(collection, context, TypeInfo.UNKNOWN)
                 .build();
 
         sentence.getStyleClass().add("for-header");

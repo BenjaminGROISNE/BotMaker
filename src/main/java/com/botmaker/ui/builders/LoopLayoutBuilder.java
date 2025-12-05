@@ -4,6 +4,7 @@ import com.botmaker.core.BodyBlock;
 import com.botmaker.core.ExpressionBlock;
 
 import com.botmaker.lsp.CompletionContext;
+import com.botmaker.util.TypeInfo;
 import javafx.geometry.Insets;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
@@ -97,7 +98,7 @@ public class LoopLayoutBuilder {
         if (footerKeyword != null) {
             HBox footer = BlockLayout.sentence()
                     .addKeyword(footerKeyword)
-                    .addExpressionSlot(condition, context, conditionType)
+                    .addExpressionSlot(condition, context, TypeInfo.from(conditionType))
                     .build();
             container.getChildren().add(footer);
         }

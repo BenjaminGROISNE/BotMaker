@@ -5,6 +5,7 @@ import com.botmaker.core.ExpressionBlock;
 import com.botmaker.lsp.CompletionContext;
 import com.botmaker.ui.builders.BlockLayout;
 import com.botmaker.ui.components.BlockUIComponents;
+import com.botmaker.util.TypeInfo;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
 import org.eclipse.jdt.core.dom.Expression;
@@ -27,7 +28,7 @@ public class NotOperatorBlock extends AbstractExpressionBlock {
         // "!" [Expression] [Change]
         var sentence = BlockLayout.sentence()
                 .addLabel("!")
-                .addExpressionSlot(operand, context, "boolean")
+                .addExpressionSlot(operand, context, TypeInfo.BOOLEAN)
                 .addNode(BlockUIComponents.createChangeButton(e ->
                         showExpressionMenuAndReplace((Button)e.getSource(), context, "boolean",
                                 operand != null ? (Expression) operand.getAstNode() : null)

@@ -2,6 +2,7 @@ package com.botmaker.blocks;
 
 import com.botmaker.core.AbstractExpressionBlock;
 import com.botmaker.lsp.CompletionContext;
+import com.botmaker.util.TypeInfo;
 import javafx.application.Platform;
 import javafx.geometry.Pos;
 import javafx.scene.Cursor;
@@ -19,6 +20,8 @@ import java.util.stream.Collectors;
 
 /**
  * Represents field access expressions like "this.score" or "obj.field"
+ *
+ * UPDATED: Uses TypeInfo for type operations
  */
 public class FieldAccessBlock extends AbstractExpressionBlock {
 
@@ -101,7 +104,8 @@ public class FieldAccessBlock extends AbstractExpressionBlock {
                     pos
             );
 
-            String expectedType = determineExpectedType();
+            // UPDATED: Use TypeInfo instead of string types
+            TypeInfo expectedType = determineExpectedType();
 
             context.server().getTextDocumentService().completion(params).thenAccept(result -> {
                 if (result == null || (result.isLeft() && result.getLeft().isEmpty()) ||
@@ -128,7 +132,9 @@ public class FieldAccessBlock extends AbstractExpressionBlock {
                                         if (parts.length > 1) typeInfo = parts[1].trim();
                                     }
                                 }
-                                return com.botmaker.util.TypeManager.isCompatible(typeInfo, expectedType);
+                                // UPDATED: Use TypeInfo for compatibility checking
+                                TypeInfo itemType = TypeInfo.from(typeInfo);
+                                return itemType.isCompatibleWith(expectedType);
                             })
                             .collect(Collectors.toList());
 
@@ -167,9 +173,11 @@ public class FieldAccessBlock extends AbstractExpressionBlock {
         }
     }
 
-    private String determineExpectedType() {
-        // Similar logic to IdentifierBlock
-        if (this.astNode == null) return com.botmaker.util.TypeManager.UI_TYPE_ANY;
+    /**
+     * UPDATED: Returns TypeInfo instead of string type
+     */
+    private TypeInfo determineExpectedType() {
+        if (this.astNode == null) return TypeInfo.UNKNOWN;
 
         ASTNode child = this.astNode;
         ASTNode parent = this.astNode.getParent();
@@ -179,7 +187,7 @@ public class FieldAccessBlock extends AbstractExpressionBlock {
             parent = parent.getParent();
         }
 
-        if (parent == null) return com.botmaker.util.TypeManager.UI_TYPE_ANY;
+        if (parent == null) return TypeInfo.UNKNOWN;
 
         // Assignment context
         if (parent instanceof Assignment) {
@@ -188,7 +196,7 @@ public class FieldAccessBlock extends AbstractExpressionBlock {
                 Expression lhs = assignment.getLeftHandSide();
                 ITypeBinding binding = lhs.resolveTypeBinding();
                 if (binding != null) {
-                    return com.botmaker.util.TypeManager.determineUiType(binding.getName());
+                    return TypeInfo.from(binding);
                 }
             }
         }
@@ -200,21 +208,23 @@ public class FieldAccessBlock extends AbstractExpressionBlock {
                 ASTNode grandParent = frag.getParent();
                 if (grandParent instanceof VariableDeclarationStatement) {
                     Type type = ((VariableDeclarationStatement) grandParent).getType();
-                    return com.botmaker.util.TypeManager.determineUiType(type.toString());
+                    return TypeInfo.from(type);
                 } else if (grandParent instanceof FieldDeclaration) {
                     Type type = ((FieldDeclaration) grandParent).getType();
-                    return com.botmaker.util.TypeManager.determineUiType(type.toString());
+                    return TypeInfo.from(type);
                 }
             }
         }
 
-        return com.botmaker.util.TypeManager.UI_TYPE_ANY;
+        return TypeInfo.UNKNOWN;
     }
 
     private String getSimpleTypeName(String detail) {
         if (detail == null) return "";
-        if (com.botmaker.util.TypeManager.isCompatible(detail, com.botmaker.util.TypeManager.UI_TYPE_NUMBER)) return "number";
-        if (com.botmaker.util.TypeManager.isCompatible(detail, com.botmaker.util.TypeManager.UI_TYPE_BOOLEAN)) return "bool";
+        // UPDATED: Use TypeInfo for type classification
+        TypeInfo type = TypeInfo.from(detail);
+        if (type.isNumeric()) return "number";
+        if (type.isBoolean()) return "bool";
         return detail;
     }
 

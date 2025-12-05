@@ -8,6 +8,7 @@ import com.botmaker.project.ProjectFile;
 import com.botmaker.ui.AddableExpression;
 import com.botmaker.ui.builders.BlockLayout;
 import com.botmaker.ui.components.BlockUIComponents;
+import com.botmaker.util.TypeInfo;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.control.*;
@@ -21,6 +22,9 @@ import java.util.List;
 
 import static com.botmaker.ui.components.BlockUIComponents.createDeleteButton;
 
+/**
+ * UPDATED: Uses TypeInfo for type operations
+ */
 public class MethodInvocationBlock extends AbstractExpressionBlock implements StatementBlock {
 
     private String scopeName;
@@ -55,7 +59,6 @@ public class MethodInvocationBlock extends AbstractExpressionBlock implements St
         arguments.add(arg);
     }
 
-    // MethodInvocationBlock.java
     @Override
     protected Node createUINode(CompletionContext context) {
         String currentFileClass = "";
@@ -202,8 +205,10 @@ public class MethodInvocationBlock extends AbstractExpressionBlock implements St
             MenuButton addArgBtn = new MenuButton("+");
             addArgBtn.setStyle("-fx-font-size: 9px; -fx-padding: 2 4 2 4;");
 
-            String nextParamType = getParameterTypeAt(context, displayValue, methodName, arguments.size());
-            List<com.botmaker.ui.AddableExpression> availableTypes = com.botmaker.ui.AddableExpression.getForType(nextParamType);
+            // UPDATED: Get TypeInfo for parameter and pass to getForType
+            TypeInfo nextParamType = getParameterTypeInfoAt(context, displayValue, methodName, arguments.size());
+            List<com.botmaker.ui.AddableExpression> availableTypes =
+                    com.botmaker.ui.AddableExpression.getForType(nextParamType);
 
             for (com.botmaker.ui.AddableExpression type : availableTypes) {
                 MenuItem item = new MenuItem(type.getDisplayName());
@@ -282,7 +287,6 @@ public class MethodInvocationBlock extends AbstractExpressionBlock implements St
         return types;
     }
 
-    // NEW: Helper to get parameter names for UI labels
     private List<String> findParameterNames(CompletionContext context, String className, String methodName) {
         List<String> names = new ArrayList<>();
         ProjectFile targetFile = findProjectFile(context, className);
@@ -305,12 +309,14 @@ public class MethodInvocationBlock extends AbstractExpressionBlock implements St
         return names;
     }
 
-    // NEW: Helper to get the UI type for a specific parameter position
-    private String getParameterTypeAt(CompletionContext context, String className, String methodName, int index) {
+    /**
+     * UPDATED: Returns TypeInfo instead of string type
+     */
+    private TypeInfo getParameterTypeInfoAt(CompletionContext context, String className, String methodName, int index) {
         List<String> types = findParameterTypes(context, className, methodName);
         if (index >= 0 && index < types.size()) {
-            return com.botmaker.util.TypeManager.determineUiType(types.get(index));
+            return TypeInfo.from(types.get(index));
         }
-        return "any"; // Fallback
+        return TypeInfo.UNKNOWN;
     }
 }
