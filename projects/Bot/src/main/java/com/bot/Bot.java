@@ -16,8 +16,6 @@ public class Bot {
 		case MyEnum.VALUE:
 			break;
 		}
-		if (variable != 0 || !true) {
-		}
 		String[] text = { text5 };
 		int[][] myList = { variable, { decimal } };
 		System.out.println("Hello from Bot!");

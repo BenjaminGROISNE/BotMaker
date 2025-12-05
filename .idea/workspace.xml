@@ -4,14 +4,14 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="cba04025-c331-4634-a893-436bad03efc0" name="Changes" comment="Added comparison expression block">
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/botmaker/blocks/NotOperatorBlock.java" afterDir="false" />
+    <list default="true" id="cba04025-c331-4634-a893-436bad03efc0" name="Changes" comment="Added not operator and can change the expressions">
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/botmaker/util/TypeInfo.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/projects/.botmaker-config.json" beforeDir="false" afterPath="$PROJECT_DIR$/projects/.botmaker-config.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/botmaker/blocks/ComparisonExpressionBlock.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/botmaker/blocks/ComparisonExpressionBlock.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/botmaker/parser/BlockParser.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/botmaker/parser/BlockParser.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/botmaker/parser/factories/ExpressionFactory.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/botmaker/parser/factories/ExpressionFactory.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/projects/Bot/src/main/java/com/bot/Bot.java" beforeDir="false" afterPath="$PROJECT_DIR$/projects/Bot/src/main/java/com/bot/Bot.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/botmaker/blocks/IdentifierBlock.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/botmaker/blocks/IdentifierBlock.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/botmaker/ui/AddableExpression.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/botmaker/ui/AddableExpression.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/botmaker/util/TypeManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/botmaker/util/TypeManager.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -109,7 +109,7 @@
     "RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252": "true",
     "RunOnceActivity.git.unshallow": "true",
     "SHELLCHECK.PATH": "/home/groisnebenjamin/.local/share/JetBrains/IdeaIC2025.2/Shell Script/shellcheck",
-    "git-widget-placeholder": "step2",
+    "git-widget-placeholder": "TypeRevamp",
     "ignore.preview.features.used": "true",
     "ignore.virus.scanning.warn.message": "true",
     "kotlin-language-version-configured": "true",
@@ -230,6 +230,7 @@
       <workItem from="1764449958738" duration="3144000" />
       <workItem from="1764786157571" duration="40000" />
       <workItem from="1764790221452" duration="4791000" />
+      <workItem from="1764947386963" duration="1129000" />
     </task>
     <task id="LOCAL-00034" summary="Fixed refactor bugs">
       <option name="closed" value="true" />
