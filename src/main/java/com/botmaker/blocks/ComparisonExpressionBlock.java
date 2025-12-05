@@ -1,13 +1,12 @@
+// FILE: rs\bgroi\Documents\dev\IntellijProjects\BotMaker\src\main\java\com\botmaker\blocks\ComparisonExpressionBlock.java
 package com.botmaker.blocks;
 
 import com.botmaker.core.AbstractExpressionBlock;
 import com.botmaker.core.ExpressionBlock;
 import com.botmaker.lsp.CompletionContext;
 import com.botmaker.ui.builders.BlockLayout;
-import javafx.geometry.Pos;
 import javafx.scene.Node;
-import javafx.scene.control.ComboBox;
-import javafx.scene.layout.HBox;
+import org.eclipse.jdt.core.dom.Expression;
 import org.eclipse.jdt.core.dom.ITypeBinding;
 import org.eclipse.jdt.core.dom.InfixExpression;
 
@@ -25,12 +24,14 @@ public class ComparisonExpressionBlock extends AbstractExpressionBlock {
             "greater than",                 // >
             "greater than or equal",        // >=
             "equal to",                     // ==
-            "not equal to"                  // !=
+            "not equal to",                 // !=
+            "AND (&&)",                     // &&
+            "OR (||)"                       // ||
     };
 
     // Corresponding Java operators
     private static final String[] OPERATOR_SYMBOLS = {
-            "<", "<=", ">", ">=", "==", "!="
+            "<", "<=", ">", ">=", "==", "!=", "&&", "||"
     };
 
     public ComparisonExpressionBlock(String id, InfixExpression astNode) {
@@ -63,11 +64,21 @@ public class ComparisonExpressionBlock extends AbstractExpressionBlock {
         return returnType;
     }
 
-    // ComparisonExpressionBlock.java
     @Override
     protected Node createUINode(CompletionContext context) {
+        // Determine types for drop slots based on operator
+        // If Logic (&&, ||), operands must be boolean.
+        // If Comparison (>, <, etc), operands are typically numbers (but == can be anything).
+
+        String operandType = "number"; // default for <, >, etc
+        if ("&&".equals(operator) || "||".equals(operator)) {
+            operandType = "boolean";
+        } else if ("==".equals(operator) || "!=".equals(operator)) {
+            operandType = "any";
+        }
+
         var sentence = BlockLayout.sentence()
-                .addExpressionSlot(leftOperand, context, "number")
+                .addExpressionSlot(leftOperand, context, operandType)
                 .addOperatorSelector(
                         OPERATOR_NAMES,
                         OPERATOR_SYMBOLS,
@@ -75,36 +86,23 @@ public class ComparisonExpressionBlock extends AbstractExpressionBlock {
                         newOperator -> {
                             if (newOperator != null && !newOperator.equals(operator)) {
                                 this.operator = newOperator;
+                                // Update AST
+                                if (this.astNode instanceof InfixExpression) {
+                                    context.codeEditor().updateBinaryOperator((InfixExpression) this.astNode, newOperator);
+                                }
                             }
                         }
                 )
-                .addExpressionSlot(rightOperand, context, "number")
+                .addExpressionSlot(rightOperand, context, operandType)
                 .build();
 
+        // Add specific styling for logic blocks
+        if ("&&".equals(operator) || "||".equals(operator)) {
+            sentence.getStyleClass().add("logic-expression-block");
+        } else {
+            sentence.getStyleClass().add("comparison-expression-block");
+        }
+
         return sentence;
-    }
-
-    /**
-     * Convert operator symbol to display name
-     */
-    private String getOperatorDisplayName(String symbol) {
-        for (int i = 0; i < OPERATOR_SYMBOLS.length; i++) {
-            if (OPERATOR_SYMBOLS[i].equals(symbol)) {
-                return OPERATOR_NAMES[i];
-            }
-        }
-        return "equal to"; // default
-    }
-
-    /**
-     * Convert display name to operator symbol
-     */
-    private String getOperatorSymbol(String displayName) {
-        for (int i = 0; i < OPERATOR_NAMES.length; i++) {
-            if (OPERATOR_NAMES[i].equals(displayName)) {
-                return OPERATOR_SYMBOLS[i];
-            }
-        }
-        return "=="; // default
     }
 }

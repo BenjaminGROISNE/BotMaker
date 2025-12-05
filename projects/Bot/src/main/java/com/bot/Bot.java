@@ -8,6 +8,8 @@ public class Bot {
 		double decimal = 0.0;
 		boolean flag = false;
 		String[][] myList = new String[][] {};
+		if (variable >= true) {
+		}
 		switch (text) {
 		default:
 			break;
