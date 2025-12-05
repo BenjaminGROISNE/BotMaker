@@ -3,11 +3,9 @@ package com.botmaker.blocks;
 import com.botmaker.core.AbstractExpressionBlock;
 import com.botmaker.core.ExpressionBlock;
 import com.botmaker.lsp.CompletionContext;
-import com.botmaker.ui.builders.BlockLayout;
-import com.botmaker.ui.theme.BlockTheme;
-import com.botmaker.ui.theme.StyleBuilder;
+import com.botmaker.util.TypeInfo;
 import javafx.scene.Node;
-import javafx.scene.control.Label;
+import javafx.scene.control.Button;
 import javafx.scene.layout.HBox;
 import org.eclipse.jdt.core.dom.ITypeBinding;
 import org.eclipse.jdt.core.dom.InfixExpression;
@@ -46,7 +44,7 @@ public class BinaryExpressionBlock extends AbstractExpressionBlock {
         if (leftOperand != null) {
             expressionBox.getChildren().add(leftOperand.getUINode(context));
             javafx.scene.control.Button changeLeft = createChangeButton(e ->
-                    showExpressionMenuAndReplace((javafx.scene.control.Button)e.getSource(), context, "number",
+                    showExpressionMenuAndReplace((Button)e.getSource(), context, TypeInfo.INT,
                             (Expression) leftOperand.getAstNode())
             );
             changeLeft.setStyle("-fx-font-size: 8px; -fx-padding: 1px 3px;");
@@ -73,7 +71,7 @@ public class BinaryExpressionBlock extends AbstractExpressionBlock {
         if (rightOperand != null) {
             expressionBox.getChildren().add(rightOperand.getUINode(context));
             javafx.scene.control.Button changeRight = createChangeButton(e ->
-                    showExpressionMenuAndReplace((javafx.scene.control.Button)e.getSource(), context, "number",
+                    showExpressionMenuAndReplace((Button)e.getSource(), context, TypeInfo.INT,
                             (Expression) rightOperand.getAstNode())
             );
             changeRight.setStyle("-fx-font-size: 8px; -fx-padding: 1px 3px;");

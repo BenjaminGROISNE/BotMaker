@@ -6,6 +6,7 @@ import com.botmaker.ui.components.SelectorComponents;
 import com.botmaker.util.TypeInfo;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.ContextMenu;
 import javafx.scene.control.Label;
 import org.eclipse.jdt.core.dom.ASTNode;
 import org.eclipse.jdt.core.dom.Expression;
@@ -32,14 +33,24 @@ public abstract class AbstractExpressionBlock extends AbstractCodeBlock implemen
     }
 
     /**
-     * Helper to show the expression type menu and replace the current expression node upon selection.
+     * Legacy helper: accepts String targetType.
+     * Delegates to TypeInfo version.
      */
     protected void showExpressionMenuAndReplace(Button button, CompletionContext context,
                                                 String targetType, Expression toReplace) {
-        BlockUIComponents.createExpressionTypeMenu(TypeInfo.from(targetType), type -> {
+        showExpressionMenuAndReplace(button, context, TypeInfo.from(targetType), toReplace);
+    }
+
+    /**
+     * Helper to show the expression type menu and replace the current expression node upon selection.
+     */
+    protected void showExpressionMenuAndReplace(Button button, CompletionContext context,
+                                                TypeInfo targetType, Expression toReplace) {
+        ContextMenu menu = BlockUIComponents.createExpressionTypeMenu(targetType, type -> {
             if (toReplace != null) {
                 context.codeEditor().replaceExpression(toReplace, type);
             }
-        }).show(button, javafx.geometry.Side.BOTTOM, 0, 0);
+        });
+        menu.show(button, javafx.geometry.Side.BOTTOM, 0, 0);
     }
 }

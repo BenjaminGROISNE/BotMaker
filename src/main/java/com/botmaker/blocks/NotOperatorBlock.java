@@ -30,12 +30,12 @@ public class NotOperatorBlock extends AbstractExpressionBlock {
                 .addLabel("!")
                 .addExpressionSlot(operand, context, TypeInfo.BOOLEAN)
                 .addNode(BlockUIComponents.createChangeButton(e ->
-                        showExpressionMenuAndReplace((Button)e.getSource(), context, "boolean",
+                        showExpressionMenuAndReplace((Button)e.getSource(), context, TypeInfo.BOOLEAN,
                                 operand != null ? (Expression) operand.getAstNode() : null)
                 ));
 
         Node root = sentence.build();
-        root.getStyleClass().add("logic-expression-block"); // Reuse logic styling
+        root.getStyleClass().add("logic-expression-block");
         return root;
     }
 }

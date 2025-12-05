@@ -42,22 +42,22 @@ public class ComparisonExpressionBlock extends AbstractExpressionBlock {
     @Override
     protected Node createUINode(CompletionContext context) {
         // 1. Determine Input Types based on Operator
-        String operandType;
+        TypeInfo operandType;
         if ("&&".equals(operator) || "||".equals(operator)) {
-            operandType = "boolean"; // Logic requires booleans
+            operandType = TypeInfo.BOOLEAN;
         } else if ("==".equals(operator) || "!=".equals(operator)) {
-            operandType = "any";     // Equality checks anything
+            operandType = TypeInfo.UNKNOWN; // Equality checks anything
         } else {
-            operandType = "number";  // Comparison (<, >) requires numbers
+            operandType = TypeInfo.INT;     // Comparison (<, >) requires numbers (defaulting to INT context)
         }
 
-        final String targetType = operandType; // Final for lambda
+        final TypeInfo targetType = operandType;
 
         // 2. Build Sentence with explicit Change Buttons
         var sentence = BlockLayout.sentence();
 
         // Left Operand
-        sentence.addExpressionSlot(leftOperand, context, TypeInfo.from(targetType));
+        sentence.addExpressionSlot(leftOperand, context, targetType);
         sentence.addNode(BlockUIComponents.createChangeButton(e ->
                 showExpressionMenuAndReplace((Button)e.getSource(), context, targetType,
                         leftOperand != null ? (Expression) leftOperand.getAstNode() : null)
@@ -72,7 +72,7 @@ public class ComparisonExpressionBlock extends AbstractExpressionBlock {
         });
 
         // Right Operand
-        sentence.addExpressionSlot(rightOperand, context, TypeInfo.from(targetType));
+        sentence.addExpressionSlot(rightOperand, context, targetType);
         sentence.addNode(BlockUIComponents.createChangeButton(e ->
                 showExpressionMenuAndReplace((Button)e.getSource(), context, targetType,
                         rightOperand != null ? (Expression) rightOperand.getAstNode() : null)

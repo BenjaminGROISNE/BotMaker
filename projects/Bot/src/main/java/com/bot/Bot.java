@@ -4,10 +4,10 @@ public class Bot {
     public static void main(String[] args) {
         enum MyEnum415 {OPTION_A,OPTION_B}
 		String decimalge = "fsezf";
-		double decimal = 0.0;
+		double decimal = variable;
 		int flag = variable;
 		String[][] myList = new String[][] {{decimalge }};
-		if (variable >= false) {
+		if (variable || decimal) {
 		}
 		switch (text) {
 		default:
