@@ -1,3 +1,4 @@
+// FILE: rs\bgroi\Documents\dev\IntellijProjects\BotMaker\src\main\java\com\botmaker\init\AppDependencyConfigurator.java
 package com.botmaker.init;
 
 import com.botmaker.config.ApplicationConfig;
@@ -30,7 +31,10 @@ public class AppDependencyConfigurator {
 
         // UI Helpers & Validation
         container.registerSingleton(DiagnosticsManager.class, new DiagnosticsManager());
-        container.registerSingleton(BlockDragAndDropManager.class, new BlockDragAndDropManager(null));
+
+        // MODIFIED: Inject ApplicationState into BlockDragAndDropManager
+        container.registerSingleton(BlockDragAndDropManager.class,
+                new BlockDragAndDropManager(container.resolve(ApplicationState.class)));
 
         // Services
         registerServices(container);
@@ -43,7 +47,6 @@ public class AppDependencyConfigurator {
                     container.resolve(CodeEditorService.class),
                     container.resolve(DiagnosticsManager.class),
                     primaryStage,
-                    // New Dependencies:
                     container.resolve(ApplicationConfig.class),
                     container.resolve(ApplicationState.class)
             );
@@ -69,7 +72,7 @@ public class AppDependencyConfigurator {
                     msg -> eventBus.publish(new com.botmaker.events.CoreApplicationEvents.StatusMessageEvent(msg)),
                     container.resolve(DiagnosticsManager.class),
                     container.resolve(ApplicationConfig.class),
-                    container.resolve(ApplicationState.class) // <--- ADD THIS
+                    container.resolve(ApplicationState.class)
             );
         });
 

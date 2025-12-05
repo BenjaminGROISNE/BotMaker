@@ -2,18 +2,20 @@ package com.bot;
 
 public class Bot {
     public static void main(String[] args) {
-        int number = 0;
+        enum MyEnum415 {OPTION_A,OPTION_B}
 		String decimalge = "fsezf";
+		MyEnum415 text = null;
 		double decimal = 0.0;
 		boolean flag = false;
-		boolean[] myList = new boolean[] {};
-		// Comment
-		do {
-		} while (true);
-		while (true) {
+		String[][] myList = new String[][] {};
+		switch (text) {
+		default:
+			break;
+		case MyEnum.VALUE:
+			break;
 		}
-		for (String text5:array){}
 		while (true) {
+			while (true){for (String text5:array){}}
 		}
 		String[] text = { text5 };
 		int[][] myList = { variable, { decimal } };
