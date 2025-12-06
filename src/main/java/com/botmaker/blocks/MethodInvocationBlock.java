@@ -91,7 +91,6 @@ public class MethodInvocationBlock extends AbstractExpressionBlock implements St
                 ensureAstParsed(targetFile);
 
                 if (targetFile.getAst() != null && !targetFile.getAst().types().isEmpty()) {
-                    // Check if it's a TypeDeclaration (Class) or EnumDeclaration
                     if (targetFile.getAst().types().get(0) instanceof TypeDeclaration) {
                         TypeDeclaration type = (TypeDeclaration) targetFile.getAst().types().get(0);
                         boolean isLocal = selectedFile.equals(finalCurrentFileClass);
@@ -101,8 +100,6 @@ public class MethodInvocationBlock extends AbstractExpressionBlock implements St
                             boolean isStatic = Modifier.isStatic(mods);
                             boolean isPublic = Modifier.isPublic(mods);
 
-                            // For local calls, show everything. For external, show public static.
-                            // Note: This logic assumes we only call static methods on other classes for now.
                             if (isLocal || (isPublic && isStatic)) {
                                 String name = md.getName().getIdentifier();
                                 if (!methodSelector.getItems().contains(name)) {
@@ -126,8 +123,7 @@ public class MethodInvocationBlock extends AbstractExpressionBlock implements St
             String newScopeDisplay = fileSelector.getValue();
             String newScopeAST = newScopeDisplay.equals(finalCurrentFileClass) ? "" : newScopeDisplay;
 
-            // When changing method name, default to the first available signature
-            List<String> paramTypes = findParameterTypes(context, newScopeDisplay, newMethodName, 0); // Default to index 0
+            List<String> paramTypes = findParameterTypes(context, newScopeDisplay, newMethodName, 0);
 
             context.codeEditor().updateMethodInvocation(
                     (MethodInvocation) this.astNode,
@@ -151,7 +147,7 @@ public class MethodInvocationBlock extends AbstractExpressionBlock implements St
                 .addLabel(".")
                 .addNode(methodSelector);
 
-        // --- NEW: Signature Selection Button ---
+        // --- Signature Selection Button ---
         MenuButton signatureBtn = new MenuButton("⚙");
         signatureBtn.setStyle("-fx-font-size: 9px; -fx-padding: 2 4 2 4; -fx-background-radius: 10;");
         signatureBtn.setTooltip(new Tooltip("Select Method Signature (Overloads)"));
@@ -185,14 +181,9 @@ public class MethodInvocationBlock extends AbstractExpressionBlock implements St
         });
 
         sentenceBuilder.addNode(signatureBtn);
-        // ---------------------------------------
 
-        // Sync button (Argument Count Check)
-        // We compare against the *currently matched* signature if possible, or just checking if *any* signature matches args.
-        // For simplicity, we check if the current argument count matches ANY valid signature.
-
+        // Sync/Reset Button
         boolean isValidArgCount = isValidArgumentCount(context, displayValue, methodName, arguments.size());
-
         Button syncBtn = new Button("⟳");
         if (!isValidArgCount) {
             syncBtn.setStyle("-fx-font-size: 10px; -fx-padding: 2 4 2 4; -fx-background-color: #FFA500; -fx-text-fill: white; -fx-font-weight: bold;");
@@ -206,7 +197,6 @@ public class MethodInvocationBlock extends AbstractExpressionBlock implements St
             String currentScope = fileSelector.getValue();
             String currentMethod = methodSelector.getValue();
             String scopeForAST = currentScope.equals(finalCurrentFileClass) ? "" : currentScope;
-            // Reset to first signature found
             List<String> paramTypes = findParameterTypes(context, currentScope, currentMethod, 0);
             context.codeEditor().updateMethodInvocation(
                     (MethodInvocation) this.astNode, scopeForAST, currentMethod, paramTypes);
@@ -217,8 +207,8 @@ public class MethodInvocationBlock extends AbstractExpressionBlock implements St
         // Arguments
         sentenceBuilder.addLabel("(");
 
-        // Try to find parameter names based on current argument count
-        List<String> paramNames = findParameterNamesForCount(context, displayValue, methodName, arguments.size());
+        // Resolve current signature for displaying types and names
+        MethodSignature currentSignature = determineCurrentSignature(context, displayValue, methodName);
 
         for (int i = 0; i < arguments.size(); i++) {
             ExpressionBlock arg = arguments.get(i);
@@ -226,40 +216,30 @@ public class MethodInvocationBlock extends AbstractExpressionBlock implements St
             argBox.setAlignment(Pos.CENTER_LEFT);
             argBox.setStyle("-fx-background-color: rgba(255,255,255,0.1); -fx-background-radius: 4; -fx-padding: 2;");
 
-            if (i < paramNames.size()) {
-                Label paramNameLabel = new Label(paramNames.get(i) + ":");
-                paramNameLabel.setStyle("-fx-text-fill: #aaa; -fx-font-size: 9px; -fx-padding: 0 4 0 2;");
-                argBox.getChildren().add(paramNameLabel);
-            }
+            // 1. Get Parameter Type
+            TypeInfo paramType = getExpectedTypeInfo(currentSignature, i);
 
-            argBox.getChildren().add(arg.getUINode(context));
+            // 2. Display Type (Simplified Style)
+            Label typeLabel = new Label(paramType.getDisplayName());
+            typeLabel.setStyle("-fx-font-size: 9px; -fx-padding: 0 5 0 2;");
 
-            // Allow deleting specific arguments manually
-            Button delBtn = new Button("×");
-            delBtn.setStyle("-fx-background-color: transparent; -fx-text-fill: #E74C3C; -fx-font-size: 10px; -fx-padding: 0 0 0 2; -fx-cursor: hand;");
-            int index = i;
-            delBtn.setOnAction(e -> context.codeEditor().deleteElementFromList(this.astNode, index));
-            argBox.getChildren().add(delBtn);
+            // 3. Add to box (Type + Value) - Removed Name Label
+            argBox.getChildren().addAll(typeLabel, arg.getUINode(context));
+
+            // 4. Change Button
+            Button changeBtn = BlockUIComponents.createChangeButton(e ->
+                    showExpressionMenuAndReplace(
+                            (Button) e.getSource(),
+                            context,
+                            paramType,
+                            (Expression) arg.getAstNode()
+                    )
+            );
+            changeBtn.setStyle("-fx-font-size: 8px; -fx-padding: 1px 3px;");
+            argBox.getChildren().add(changeBtn);
 
             sentenceBuilder.addNode(argBox);
         }
-
-        // Add Argument Button
-        MenuButton addArgBtn = new MenuButton("+");
-        addArgBtn.setStyle("-fx-font-size: 9px; -fx-padding: 2 4 2 4;");
-
-        // Determine expected type for next argument (if a signature matches)
-        TypeInfo nextParamType = getParameterTypeInfoAt(context, displayValue, methodName, arguments.size());
-        List<com.botmaker.ui.AddableExpression> availableTypes =
-                com.botmaker.ui.AddableExpression.getForType(nextParamType);
-
-        for (com.botmaker.ui.AddableExpression type : availableTypes) {
-            MenuItem item = new MenuItem(type.getDisplayName());
-            item.setOnAction(e -> context.codeEditor().addArgumentToMethodInvocation(
-                    (MethodInvocation) this.astNode, type));
-            addArgBtn.getItems().add(item);
-        }
-        sentenceBuilder.addNode(addArgBtn);
 
         sentenceBuilder.addLabel(")");
 
@@ -280,6 +260,31 @@ public class MethodInvocationBlock extends AbstractExpressionBlock implements St
     }
 
     // --- Helpers ---
+
+    private MethodSignature determineCurrentSignature(CompletionContext context, String className, String methodName) {
+        List<MethodSignature> sigs = findSignatures(context, className, methodName);
+
+        if (sigs.isEmpty()) {
+            return null;
+        }
+
+        // 1. Try to find an exact match for the current number of arguments
+        for (MethodSignature sig : sigs) {
+            if (sig.paramTypes.size() == arguments.size()) {
+                return sig;
+            }
+        }
+
+        // 2. Fallback: Return the first signature (default overload)
+        return sigs.get(0);
+    }
+
+    private TypeInfo getExpectedTypeInfo(MethodSignature sig, int index) {
+        if (sig == null || index < 0 || index >= sig.paramTypes.size()) {
+            return TypeInfo.UNKNOWN;
+        }
+        return TypeInfo.from(sig.paramTypes.get(index));
+    }
 
     private ProjectFile findProjectFile(CompletionContext context, String className) {
         if (context.applicationState() == null) return null;
@@ -353,7 +358,6 @@ public class MethodInvocationBlock extends AbstractExpressionBlock implements St
         return signatures;
     }
 
-    // Helper: Find types for a specific overload index, or default to first
     private List<String> findParameterTypes(CompletionContext context, String className, String methodName, int signatureIndex) {
         List<MethodSignature> sigs = findSignatures(context, className, methodName);
         if (sigs.isEmpty()) return new ArrayList<>();
@@ -363,59 +367,11 @@ public class MethodInvocationBlock extends AbstractExpressionBlock implements St
         return sigs.get(0).paramTypes;
     }
 
-    // Helper: Find names based on matching argument count
-    private List<String> findParameterNamesForCount(CompletionContext context, String className, String methodName, int argCount) {
-        List<MethodSignature> sigs = findSignatures(context, className, methodName);
-        for (MethodSignature sig : sigs) {
-            if (sig.paramTypes.size() == argCount) {
-                return sig.paramNames;
-            }
-        }
-        // Fallback: return first signature's names or empty
-        return !sigs.isEmpty() ? sigs.get(0).paramNames : new ArrayList<>();
-    }
-
     private boolean isValidArgumentCount(CompletionContext context, String className, String methodName, int currentCount) {
         List<MethodSignature> sigs = findSignatures(context, className, methodName);
         for (MethodSignature sig : sigs) {
             if (sig.paramTypes.size() == currentCount) return true;
         }
         return false;
-    }
-
-    /**
-     * Tries to find the parameter type at a specific index.
-     * Considers the signature that best matches current argument count, or defaults to the first one.
-     */
-    private TypeInfo getParameterTypeInfoAt(CompletionContext context, String className, String methodName, int index) {
-        List<MethodSignature> sigs = findSignatures(context, className, methodName);
-
-        // Try to find a signature that is longer than current index
-        // Prefer one that matches current arguments size + 1 (the one we are adding)
-        MethodSignature bestMatch = null;
-
-        // 1. Exact match for current size + 1
-        for (MethodSignature sig : sigs) {
-            if (sig.paramTypes.size() == index + 1) {
-                bestMatch = sig;
-                break;
-            }
-        }
-
-        // 2. Any signature long enough
-        if (bestMatch == null) {
-            for (MethodSignature sig : sigs) {
-                if (sig.paramTypes.size() > index) {
-                    bestMatch = sig;
-                    break;
-                }
-            }
-        }
-
-        if (bestMatch != null && index < bestMatch.paramTypes.size()) {
-            return TypeInfo.from(bestMatch.paramTypes.get(index));
-        }
-
-        return TypeInfo.UNKNOWN;
     }
 }
