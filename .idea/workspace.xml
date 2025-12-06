@@ -4,12 +4,8 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="cba04025-c331-4634-a893-436bad03efc0" name="Changes" comment="Fix call method issues">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/projects/.botmaker-config.json" beforeDir="false" afterPath="$PROJECT_DIR$/projects/.botmaker-config.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/projects/Bot/src/main/java/com/bot/Bot.java" beforeDir="false" afterPath="$PROJECT_DIR$/projects/Bot/src/main/java/com/bot/Bot.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/botmaker/blocks/IdentifierBlock.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/botmaker/blocks/IdentifierBlock.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/botmaker/blocks/MethodInvocationBlock.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/botmaker/blocks/MethodInvocationBlock.java" afterDir="false" />
+    <list default="true" id="cba04025-c331-4634-a893-436bad03efc0" name="Changes" comment="fix identifier not detecting variables in printblock">
+      <change beforePath="$PROJECT_DIR$/java_files_concat.txt" beforeDir="false" afterPath="$PROJECT_DIR$/java_files_concat.txt" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -237,15 +233,7 @@
       <workItem from="1765038920532" duration="2760000" />
       <workItem from="1765056669875" duration="3000" />
       <workItem from="1765056779588" duration="295000" />
-      <workItem from="1765057307679" duration="2871000" />
-    </task>
-    <task id="LOCAL-00043" summary="fixed exit app added stop button that needs to stop finishing running">
-      <option name="closed" value="true" />
-      <created>1763583993628</created>
-      <option name="number" value="00043" />
-      <option name="presentableId" value="LOCAL-00043" />
-      <option name="project" value="LOCAL" />
-      <updated>1763583993628</updated>
+      <workItem from="1765057307679" duration="3390000" />
     </task>
     <task id="LOCAL-00044" summary="Added block dragging">
       <option name="closed" value="true" />
@@ -631,7 +619,15 @@
       <option name="project" value="LOCAL" />
       <updated>1765059683186</updated>
     </task>
-    <option name="localTasksCounter" value="92" />
+    <task id="LOCAL-00092" summary="fix identifier not detecting variables in printblock">
+      <option name="closed" value="true" />
+      <created>1765060243927</created>
+      <option name="number" value="00092" />
+      <option name="presentableId" value="LOCAL-00092" />
+      <option name="project" value="LOCAL" />
+      <updated>1765060243927</updated>
+    </task>
+    <option name="localTasksCounter" value="93" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -659,7 +655,6 @@
     <ignored-roots>
       <path value="$PROJECT_DIR$/.." />
     </ignored-roots>
-    <MESSAGE value="Added previous project interactions" />
     <MESSAGE value="Started refactor to handle classes. Removed focus onto single method" />
     <MESSAGE value="Can create EnumDeclaration into code but doesn't appear" />
     <MESSAGE value="ENUM CONST with a few bugs" />
@@ -684,7 +679,8 @@
     <MESSAGE value="Can delete files and tree hierarchy stays open on added/delete file" />
     <MESSAGE value="Start read only methods (some flaws), implemented method call overload selection." />
     <MESSAGE value="Fix call method issues" />
-    <option name="LAST_COMMIT_MESSAGE" value="Fix call method issues" />
+    <MESSAGE value="fix identifier not detecting variables in printblock" />
+    <option name="LAST_COMMIT_MESSAGE" value="fix identifier not detecting variables in printblock" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
