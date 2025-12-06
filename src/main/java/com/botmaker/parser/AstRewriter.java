@@ -268,13 +268,20 @@ public class AstRewriter {
         return methodHandler.setMethodReturnType(cu, originalCode, method, newTypeName);
     }
 
+    public String renameMethod(CompilationUnit cu, String originalCode, MethodDeclaration method, String newName) {
+        return methodHandler.renameMethod(cu, originalCode, method, newName);
+    }
+
+    public String moveBodyDeclaration(CompilationUnit cu, String originalCode, BodyDeclaration decl, TypeDeclaration targetType, int index) {
+        return methodHandler.moveBodyDeclaration(cu, originalCode, decl, targetType, index);
+    }
+
     public String addParameterToMethod(CompilationUnit cu, String originalCode,
                                        MethodDeclaration method, String typeName, String paramName) {
         return methodHandler.addParameterToMethod(cu, originalCode, method, typeName, paramName);
     }
 
-    public String deleteParameterFromMethod(CompilationUnit cu, String originalCode,
-                                            MethodDeclaration method, int index) {
+    public String deleteParameterFromMethod(CompilationUnit cu, String originalCode, MethodDeclaration method, int index) {
         return methodHandler.deleteParameterFromMethod(cu, originalCode, method, index);
     }
 

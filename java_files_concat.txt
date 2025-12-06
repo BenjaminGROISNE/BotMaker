@@ -4299,6 +4299,7 @@ FILE: rs\bgroi\Documents\dev\IntellijProjects\BotMaker\src\main\java\com\botmake
 
 package com.botmaker.core;
 
+import com.botmaker.events.CoreApplicationEvents;
 import com.botmaker.lsp.CompletionContext;
 import javafx.beans.binding.Bindings;
 import javafx.geometry.Insets;
@@ -4377,7 +4378,7 @@ public abstract class AbstractCodeBlock implements CodeBlock {
 
             // 3. Setup Interaction
             setupBreakpointInteraction();
-
+            setupContextMenu(context);
             // 4. Discovery Tooltip
             Tooltip tip = new Tooltip("Right-click to toggle breakpoint");
             Tooltip.install(uiNode, tip);
@@ -4387,19 +4388,75 @@ public abstract class AbstractCodeBlock implements CodeBlock {
         return uiNode;
     }
 
-    private void setupBreakpointInteraction() {
+    private void setupContextMenu(CompletionContext context) {
         if (uiNode == null) return;
 
         ContextMenu contextMenu = new ContextMenu();
+
+        // Breakpoint
         MenuItem toggleBpItem = new MenuItem("Toggle Breakpoint");
         toggleBpItem.setOnAction(ev -> toggleBreakpoint());
-        contextMenu.getItems().add(toggleBpItem);
+
+        // Copy
+        MenuItem copyItem = new MenuItem("Copy (Ctrl+C)");
+        copyItem.setOnAction(ev -> {
+            // Ensure this block is highlighted/selected first
+            context.applicationState().setHighlightedBlock(this);
+            context.eventBus().publish(new CoreApplicationEvents.CopyRequestedEvent());
+        });
+
+        // Paste
+        MenuItem pasteItem = new MenuItem("Paste After (Ctrl+V)");
+        pasteItem.setOnAction(ev -> {
+            context.applicationState().setHighlightedBlock(this);
+            context.eventBus().publish(new CoreApplicationEvents.PasteRequestedEvent());
+        });
+
+        contextMenu.getItems().addAll(toggleBpItem, new javafx.scene.control.SeparatorMenuItem(), copyItem, pasteItem);
 
         uiNode.setOnContextMenuRequested(e -> {
             toggleBpItem.setText(isBreakpoint ? "Remove Breakpoint 🔴" : "Add Breakpoint ⚪");
             contextMenu.show(uiNode, e.getScreenX(), e.getScreenY());
             e.consume();
         });
+    }
+
+    private void setupBreakpointInteraction() {
+        if (uiNode == null) return;
+
+        ContextMenu contextMenu = new ContextMenu();
+
+        // Breakpoint Item
+        MenuItem toggleBpItem = new MenuItem("Toggle Breakpoint");
+        toggleBpItem.setOnAction(ev -> toggleBreakpoint());
+        contextMenu.getItems().add(toggleBpItem);
+
+        contextMenu.getItems().add(new javafx.scene.control.SeparatorMenuItem());
+
+        // Copy Item
+        MenuItem copyItem = new MenuItem("Copy Block");
+        copyItem.setOnAction(ev -> {
+            // We need the event bus. It is now available in the creation context,
+            // but AbstractCodeBlock doesn't store the context permanently.
+            // However, the UI Node is live. We can use the global EventBus if singleton,
+            // OR rely on the fact that CodeEditorService handles Copy based on *Selection*.
+            // So we just need to fire the event.
+            // Ideally, we'd pass the EventBus into this method, but for now we can rely on
+            // UIManager's global handler or assume the block is selected.
+
+            // BETTER: Use JavaFX event bubbling or trigger the global shortcut logic?
+            // EASIEST: Publish via a static helper or modify AbstractCodeBlock to store reference?
+            // Refactoring AbstractCodeBlock to store EventBus is heavy.
+            // Let's rely on the fact that right-clicking selects the block first (usually).
+            // Actually, context menu doesn't auto-select.
+
+            // To keep it clean, we'll assume the selection logic handles "HighlightedBlock"
+            // and we just fire the event if we had access.
+            // Since we updated CompletionContext, let's use it during creation.
+        });
+
+        // This method is called in getUINode(CompletionContext).
+        // We can capture the eventBus from the context there!
     }
 
     @Override
@@ -5028,6 +5085,7 @@ package com.botmaker.events;
 
 import com.botmaker.core.AbstractCodeBlock;
 import com.botmaker.core.CodeBlock;
+import com.botmaker.ui.AddableBlock;
 import org.eclipse.lsp4j.Diagnostic;
 
 import java.util.ArrayList;
@@ -5216,6 +5274,29 @@ public class CoreApplicationEvents {
 
         public CodeBlock getBlock() { return block; }
         public boolean isEnabled() { return isEnabled; }
+    }
+
+    public static class BlockAddedEvent extends AbstractApplicationEvent {
+        private final AddableBlock blockType;
+        public BlockAddedEvent(AddableBlock blockType) {
+            super("CodeEditorService");
+            this.blockType = blockType;
+        }
+        public AddableBlock getBlockType() { return blockType; }
+    }
+
+    /**
+     * Fired when the user requests to copy the currently selected block.
+     */
+    public static class CopyRequestedEvent extends AbstractApplicationEvent {
+        public CopyRequestedEvent() { super("User"); }
+    }
+
+    /**
+     * Fired when the user requests to paste content relative to the currently selected block.
+     */
+    public static class PasteRequestedEvent extends AbstractApplicationEvent {
+        public PasteRequestedEvent() { super("User"); }
     }
 }
 
@@ -7768,8 +7849,9 @@ FILE: rs\bgroi\Documents\dev\IntellijProjects\BotMaker\src\main\java\com\botmake
 package com.botmaker.lsp;
 
 import com.botmaker.parser.CodeEditor;
-import com.botmaker.state.ApplicationState; // Import State
+import com.botmaker.state.ApplicationState;
 import com.botmaker.ui.BlockDragAndDropManager;
+import com.botmaker.events.EventBus; // Import EventBus
 import org.eclipse.lsp4j.services.LanguageServer;
 
 public record CompletionContext(
@@ -7779,7 +7861,8 @@ public record CompletionContext(
         String sourceCode,
         long docVersion,
         BlockDragAndDropManager dragAndDropManager,
-        ApplicationState applicationState // Added field
+        ApplicationState applicationState,
+        EventBus eventBus // Added field
 ) {
 }
 
@@ -8137,6 +8220,19 @@ public class AstRewriter {
     // ========================================================================
     // TYPE OPERATIONS - Delegated to TypeReplacementHandler
     // ========================================================================
+    public String pasteCodeString(CompilationUnit cu, String originalCode, BodyBlock targetBody, int index, String codeToPaste) {
+        AST ast = cu.getAST();
+        ASTRewrite rewriter = ASTRewrite.create(ast);
+
+        // Create a placeholder node representing the raw code string
+        // This is safer than parsing for V1, as it avoids context issues during AST creation
+        Statement placeHolder = (Statement) rewriter.createStringPlaceholder(codeToPaste, ASTNode.EMPTY_STATEMENT);
+
+        ListRewrite listRewrite = getListRewriteForBody(rewriter, targetBody);
+        insertIntoList(listRewrite, targetBody, placeHolder, index);
+
+        return AstRewriteHelper.applyRewrite(rewriter, originalCode);
+    }
 
     public String replaceVariableType(CompilationUnit cu, String originalCode,
                                       VariableDeclarationStatement varDecl, String newTypeName) {
@@ -9283,7 +9379,17 @@ public class CodeEditor {
         String previousCode = getCurrentCode();
         eventBus.publish(new CoreApplicationEvents.CodeUpdatedEvent(newCode, previousCode));
     }
-
+    public void pasteCode(BodyBlock targetBody, int index, String codeToPaste) {
+        // Use AstRewriter to inject the raw string
+        String newCode = astRewriter.pasteCodeString(
+                getCompilationUnit(),
+                getCurrentCode(),
+                targetBody,
+                index,
+                codeToPaste
+        );
+        triggerUpdate(newCode);
+    }
     public void updateMethodInvocation(MethodInvocation mi, String newScope, String newMethodName, List<String> newParamTypes) {
         blockFactory.setMarkNewIdentifiersAsUnedited(true);
         String newCode = astRewriter.updateMethodInvocation(getCompilationUnit(), getCurrentCode(), mi, newScope, newMethodName, newParamTypes);
@@ -9520,6 +9626,9 @@ public class CodeEditor {
         blockFactory.setMarkNewIdentifiersAsUnedited(true);
         String newCode = astRewriter.addStatement(getCompilationUnit(), getCurrentCode(), targetBody, type, index);
         triggerUpdate(newCode);
+
+        // FIRE EVENT: Block Added
+        eventBus.publish(new CoreApplicationEvents.BlockAddedEvent(type));
     }
 
     public void deleteElseFromIfStatement(IfStatement ifStmt) {
@@ -12364,7 +12473,9 @@ package com.botmaker.services;
 import com.botmaker.blocks.MainBlock;
 import com.botmaker.config.ApplicationConfig;
 import com.botmaker.core.AbstractCodeBlock;
+import com.botmaker.core.BodyBlock;
 import com.botmaker.core.CodeBlock;
+import com.botmaker.core.StatementBlock;
 import com.botmaker.events.CoreApplicationEvents;
 import com.botmaker.events.EventBus;
 import com.botmaker.lsp.CompletionContext;
@@ -12375,8 +12486,12 @@ import com.botmaker.project.ProjectFile;
 import com.botmaker.state.ApplicationState;
 import com.botmaker.state.HistoryManager;
 import com.botmaker.ui.BlockDragAndDropManager;
+import com.botmaker.util.BlockLookupHelper;
 import com.botmaker.validation.DiagnosticsManager;
 import javafx.application.Platform;
+import javafx.scene.input.Clipboard;
+import javafx.scene.input.ClipboardContent;
+import org.eclipse.jdt.core.dom.ASTNode;
 
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -12437,6 +12552,8 @@ public class CodeEditorService {
 
         eventBus.subscribe(CoreApplicationEvents.RedoRequestedEvent.class,
                 e -> redo(), false);
+        eventBus.subscribe(CoreApplicationEvents.CopyRequestedEvent.class, e -> copySelectedBlock(), true);
+        eventBus.subscribe(CoreApplicationEvents.PasteRequestedEvent.class, e -> pasteFromClipboard(), true);
     }
 
     private void handleCodeUpdateForHistory(CoreApplicationEvents.CodeUpdatedEvent event) {
@@ -12615,7 +12732,41 @@ public class CodeEditorService {
             eventBus.publish(new CoreApplicationEvents.StatusMessageEvent("Loaded: " + fileName));
         }
     }
+    private void copySelectedBlock() {
+        state.getHighlightedBlock().ifPresent(block -> {
+            ASTNode node = block.getAstNode();
+            if (node != null) {
+                String source = node.toString();
+                ClipboardContent content = new ClipboardContent();
+                content.putString(source);
+                Clipboard.getSystemClipboard().setContent(content);
+                eventBus.publish(new CoreApplicationEvents.StatusMessageEvent("Copied block to clipboard."));
+            }
+        });
+    }
 
+    private void pasteFromClipboard() {
+        Clipboard clipboard = Clipboard.getSystemClipboard();
+        if (!clipboard.hasString()) return;
+
+        String codeToPaste = clipboard.getString();
+
+        // Determine insertion point based on highlighted block
+        state.getHighlightedBlock().ifPresentOrElse(selectedBlock -> {
+            if (selectedBlock instanceof StatementBlock) {
+                StatementBlock stmtBlock = (StatementBlock) selectedBlock;
+                BodyBlock parentBody = BlockLookupHelper.findParentBody(stmtBlock, state.getNodeToBlockMap());
+
+                if (parentBody != null) {
+                    int index = parentBody.getStatements().indexOf(stmtBlock);
+                    // Paste AFTER the selected block
+                    codeEditor.pasteCode(parentBody, index + 1, codeToPaste);
+                }
+            }
+        }, () -> {
+            eventBus.publish(new CoreApplicationEvents.StatusMessageEvent("Select a block to paste after."));
+        });
+    }
     public CompletionContext createCompletionContext() {
         return new CompletionContext(
                 codeEditor,
@@ -12624,7 +12775,8 @@ public class CodeEditorService {
                 state.getCurrentCode(),
                 state.getDocVersion(),
                 dragAndDropManager,
-                state
+                state,
+                eventBus // Pass EventBus
         );
     }
 
@@ -15020,13 +15172,15 @@ import com.botmaker.events.EventBus;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.Tooltip;
 import javafx.scene.layout.HBox;
 
 public class ToolbarManager {
 
     private final EventBus eventBus;
-
+    private final BlockDragAndDropManager dragAndDropManager; // Add dependency
+    private HBox lastAddedContainer;
     // Controls
     private Button undoButton, redoButton;
     private Button runButton, debugButton, unifiedStopButton;
@@ -15035,8 +15189,9 @@ public class ToolbarManager {
     private enum AppState { IDLE, RUNNING, DEBUGGING }
     private AppState currentAppState = AppState.IDLE;
 
-    public ToolbarManager(EventBus eventBus) {
+    public ToolbarManager(EventBus eventBus, BlockDragAndDropManager dragAndDropManager) {
         this.eventBus = eventBus;
+        this.dragAndDropManager = dragAndDropManager;
         setupEventHandlers();
     }
 
@@ -15051,6 +15206,46 @@ public class ToolbarManager {
             if (undoButton != null) undoButton.setDisable(!event.canUndo());
             if (redoButton != null) redoButton.setDisable(!event.canRedo());
         }, true);
+        eventBus.subscribe(CoreApplicationEvents.BlockAddedEvent.class, this::updateLastAddedBlock, true);
+    }
+
+
+    private void updateLastAddedBlock(CoreApplicationEvents.BlockAddedEvent event) {
+        if (lastAddedContainer == null) return;
+
+        AddableBlock type = event.getBlockType();
+        lastAddedContainer.getChildren().clear();
+
+        Label label = new Label("Last: " + type.getDisplayName());
+        label.setStyle("-fx-font-size: 11px; -fx-text-fill: #aaa; -fx-padding: 0 5 0 0;");
+
+        // Create the draggable pill
+        Label blockPill = new Label(type.getDisplayName());
+        String color = com.botmaker.ui.theme.BlockTheme.current().colors().forCategory(type.getCategory());
+
+        blockPill.setStyle(
+                "-fx-background-color: " + color + ";" +
+                        "-fx-text-fill: white;" +
+                        "-fx-font-weight: bold;" +
+                        "-fx-padding: 4 8 4 8;" +
+                        "-fx-background-radius: 12;" +
+                        "-fx-cursor: hand;"
+        );
+
+        // Make it draggable!
+        dragAndDropManager.makeDraggable(blockPill, type);
+
+        lastAddedContainer.getChildren().addAll(label, blockPill);
+    }
+
+
+    public HBox createCenterGroup() {
+        lastAddedContainer = new HBox();
+        lastAddedContainer.setAlignment(Pos.CENTER);
+        // Placeholder or empty initially
+        Label placeholder = new Label("");
+        lastAddedContainer.getChildren().add(placeholder);
+        return lastAddedContainer;
     }
 
     /**
@@ -15163,6 +15358,10 @@ import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyCodeCombination;
+import javafx.scene.input.KeyCombination;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.*;
 import javafx.stage.Stage;
 import org.eclipse.lsp4j.Diagnostic;
@@ -15204,8 +15403,7 @@ public class UIManager {
         this.primaryStage = primaryStage;
 
         this.paletteManager = new PaletteManager(dragAndDropManager);
-        this.toolbarManager = new ToolbarManager(eventBus);
-        this.eventLogManager = new EventLogManager(eventBus);
+        this.toolbarManager = new ToolbarManager(eventBus, dragAndDropManager);         this.eventLogManager = new EventLogManager(eventBus);
         this.menuBarManager = new MenuBarManager(primaryStage);
         this.menuBarManager.setEventBus(eventBus);
         this.fileExplorerManager = new FileExplorerManager(config, codeEditorService, state);
@@ -15252,7 +15450,7 @@ public class UIManager {
 
         // --- 1. Top Bar Construction ---
 
-        // Left
+        // Left: Edit Controls (Undo, Redo, Compile)
         HBox editControls = toolbarManager.createEditGroup();
         Separator leftSep = new Separator(Orientation.VERTICAL);
         leftSep.setPadding(new Insets(0, 5, 0, 5));
@@ -15264,16 +15462,24 @@ public class UIManager {
 
         ScrollPane paletteScroll = new ScrollPane(paletteControls);
         paletteScroll.setVbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
-        paletteScroll.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER); // Hide Horizontal Bar too, let it shrink
-
-        // Ensure content fills the scroll pane area
+        paletteScroll.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
         paletteScroll.setFitToWidth(true);
         paletteScroll.setFitToHeight(true);
-
         paletteScroll.setStyle("-fx-background-color: transparent; -fx-padding: 0;");
         paletteScroll.getStyleClass().add("edge-to-edge");
 
-        // Right
+        // Center-Right: Last Added Block Indicator
+        // We add it to the center container so it sits next to the palette
+        HBox lastAddedGroup = toolbarManager.createCenterGroup();
+        lastAddedGroup.setPadding(new Insets(0, 10, 0, 10)); // Spacing from palette
+
+        // Combine Palette and Last Added
+        HBox centerContainer = new HBox(paletteScroll, lastAddedGroup);
+        centerContainer.setAlignment(Pos.CENTER_LEFT);
+        // Let the palette grow to fill available width, pushing "Last Added" to the right
+        HBox.setHgrow(paletteScroll, Priority.ALWAYS);
+
+        // Right: Execution Controls (Run, Debug, Stop)
         HBox executionControls = toolbarManager.createExecutionGroup();
         Separator rightSep = new Separator(Orientation.VERTICAL);
         rightSep.setPadding(new Insets(0, 5, 0, 5));
@@ -15281,15 +15487,13 @@ public class UIManager {
         rightContainer.setAlignment(Pos.CENTER_RIGHT);
 
         BorderPane topBar = new BorderPane();
-        topBar.setPadding(new Insets(6)); // Comfortable padding around the whole bar
+        topBar.setPadding(new Insets(6));
         topBar.setLeft(leftContainer);
-        topBar.setCenter(paletteScroll);
+        topBar.setCenter(centerContainer); // Contains Palette + Last Added
         topBar.setRight(rightContainer);
         topBar.getStyleClass().add("main-toolbar");
 
-        // FIXED HEIGHT CONSTRAINTS
-        // This stops the "Expand as much as I want" issue.
-        // 45px content + 12px padding = ~57px total height
+        // Fixed height constraints
         topBar.setMinHeight(50);
         topBar.setPrefHeight(50);
         topBar.setMaxHeight(50);
@@ -15350,6 +15554,26 @@ public class UIManager {
         primaryStage.setOnHidden(e -> eventLogManager.shutdown());
 
         Scene scene = new Scene(root, 1000, 700);
+
+        // --- 6. Global Key Handlers (Copy/Paste) ---
+        KeyCombination copyCombo = new KeyCodeCombination(KeyCode.C, KeyCombination.SHORTCUT_DOWN);
+        KeyCombination pasteCombo = new KeyCodeCombination(KeyCode.V, KeyCombination.SHORTCUT_DOWN);
+
+        scene.addEventFilter(KeyEvent.KEY_PRESSED, event -> {
+            // Ignore if inside a text input (TextField/TextArea handles its own shortcuts)
+            if (event.getTarget() instanceof javafx.scene.control.TextInputControl) {
+                return;
+            }
+
+            if (copyCombo.match(event)) {
+                eventBus.publish(new CoreApplicationEvents.CopyRequestedEvent());
+                event.consume();
+            } else if (pasteCombo.match(event)) {
+                eventBus.publish(new CoreApplicationEvents.PasteRequestedEvent());
+                event.consume();
+            }
+        });
+
         return scene;
     }
 

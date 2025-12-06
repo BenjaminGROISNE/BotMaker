@@ -19,7 +19,6 @@ public class MethodManipulationHandler {
         this.nodeCreator = nodeCreator;
     }
 
-    // ... (Keep existing addMethodToClass, deleteMethodFromClass) ...
     public String addMethodToClass(CompilationUnit cu, String originalCode, TypeDeclaration typeDecl, String methodName, String returnType, int index) {
         AST ast = cu.getAST();
         ASTRewrite rewriter = ASTRewrite.create(ast);
@@ -42,16 +41,45 @@ public class MethodManipulationHandler {
         return AstRewriteHelper.applyRewrite(rewriter, originalCode);
     }
 
+    public String renameMethod(CompilationUnit cu, String originalCode, MethodDeclaration method, String newName) {
+        AST ast = cu.getAST();
+        ASTRewrite rewriter = ASTRewrite.create(ast);
+        rewriter.replace(method.getName(), ast.newSimpleName(newName), null);
+        return AstRewriteHelper.applyRewrite(rewriter, originalCode);
+    }
+
     /**
-     * Updates a method invocation. Now uses TypeInfo to generate default arguments.
+     * Moves a body declaration (method/enum/field) to a new index within a type.
      */
+    public String moveBodyDeclaration(CompilationUnit cu, String originalCode, BodyDeclaration declToMove, TypeDeclaration targetType, int targetIndex) {
+        AST ast = cu.getAST();
+        ASTRewrite rewriter = ASTRewrite.create(ast);
+
+        ListRewrite listRewrite = rewriter.getListRewrite(targetType, TypeDeclaration.BODY_DECLARATIONS_PROPERTY);
+
+        // Remove from old location and copy to new location
+        // Note: For simplicity assuming same class move for now.
+        // If different class, we'd need two list rewrites.
+
+        BodyDeclaration placeholder = (BodyDeclaration) rewriter.createMoveTarget(declToMove);
+
+        // Remove original
+        // (createMoveTarget implicitly handles the move logic in replace/insert,
+        // but explicit removal and insertion gives control over index)
+        // Actually, with createMoveTarget we just insert the placeholder at the new location.
+        // But ASTRewrite handles moves better if we don't manually remove first if using move target.
+
+        listRewrite.insertAt(placeholder, targetIndex, null);
+
+        return AstRewriteHelper.applyRewrite(rewriter, originalCode);
+    }
+
     public String updateMethodInvocation(CompilationUnit cu, String originalCode,
                                          MethodInvocation mi, String newScope,
                                          String newMethodName, List<String> newParamTypes) {
         AST ast = cu.getAST();
         ASTRewrite rewriter = ASTRewrite.create(ast);
 
-        // Update scope
         if (newScope == null || newScope.isEmpty() || newScope.equals("Local")) {
             if (mi.getExpression() != null) rewriter.remove(mi.getExpression(), null);
         } else {
@@ -60,12 +88,10 @@ public class MethodManipulationHandler {
             else rewriter.replace(mi.getExpression(), newScopeNode, null);
         }
 
-        // Update method name
         if (!mi.getName().getIdentifier().equals(newMethodName)) {
             rewriter.replace(mi.getName(), ast.newSimpleName(newMethodName), null);
         }
 
-        // Update arguments
         ListRewrite argsRewrite = rewriter.getListRewrite(mi, MethodInvocation.ARGUMENTS_PROPERTY);
         List<?> currentArgs = mi.arguments();
         int targetCount = newParamTypes.size();
@@ -77,10 +103,8 @@ public class MethodManipulationHandler {
             }
         } else if (currentCount < targetCount) {
             for (int i = currentCount; i < targetCount; i++) {
-                // Use TypeInfo.from() to handle array creation elegantly via InitializerFactory
                 String typeName = newParamTypes.get(i);
-                TypeInfo typeInfo = TypeInfo.from(typeName);
-                Expression defaultExpr = nodeCreator.createDefaultInitializer(ast, typeName); // Note: InitializerFactory now handles TypeInfo logic internally
+                Expression defaultExpr = nodeCreator.createDefaultInitializer(ast, typeName);
                 argsRewrite.insertLast(defaultExpr, null);
             }
         }
@@ -88,7 +112,6 @@ public class MethodManipulationHandler {
         return AstRewriteHelper.applyRewrite(rewriter, originalCode);
     }
 
-    // ... (Keep remainder of file: addArgumentToMethodInvocation, renameMethodParameter, etc.) ...
     public String addArgumentToMethodInvocation(CompilationUnit cu, String originalCode, MethodInvocation mi, AddableExpression type) {
         AST ast = cu.getAST();
         ASTRewrite rewriter = ASTRewrite.create(ast);

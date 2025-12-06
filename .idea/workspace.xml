@@ -4,17 +4,19 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="cba04025-c331-4634-a893-436bad03efc0" name="Changes" comment="Enum value auto creation and can access constant values.">
+    <list default="true" id="cba04025-c331-4634-a893-436bad03efc0" name="Changes" comment="Added copy/ paste functionality and last added block">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/java_files_concat.txt" beforeDir="false" afterPath="$PROJECT_DIR$/java_files_concat.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/botmaker/core/AbstractCodeBlock.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/botmaker/core/AbstractCodeBlock.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/botmaker/events/CoreApplicationEvents.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/botmaker/events/CoreApplicationEvents.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/botmaker/lsp/CompletionContext.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/botmaker/lsp/CompletionContext.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/projects/.botmaker-config.json" beforeDir="false" afterPath="$PROJECT_DIR$/projects/.botmaker-config.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/projects/Bot/src/main/java/com/bot/Bot.java" beforeDir="false" afterPath="$PROJECT_DIR$/projects/Bot/src/main/java/com/bot/Bot.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/botmaker/blocks/ClassBlock.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/botmaker/blocks/ClassBlock.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/botmaker/blocks/MethodDeclarationBlock.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/botmaker/blocks/MethodDeclarationBlock.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/botmaker/init/AppServiceInitializer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/botmaker/init/AppServiceInitializer.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/botmaker/parser/AstRewriter.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/botmaker/parser/AstRewriter.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/botmaker/parser/CodeEditor.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/botmaker/parser/CodeEditor.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/botmaker/services/CodeEditorService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/botmaker/services/CodeEditorService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/botmaker/ui/ToolbarManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/botmaker/ui/ToolbarManager.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/botmaker/ui/UIManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/botmaker/ui/UIManager.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/botmaker/parser/handlers/MethodManipulationHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/botmaker/parser/handlers/MethodManipulationHandler.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/botmaker/ui/BlockDragAndDropManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/botmaker/ui/BlockDragAndDropManager.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/botmaker/ui/MoveBlockInfo.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/botmaker/ui/MoveBlockInfo.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -56,7 +58,7 @@
   <component name="Git.Settings">
     <option name="RECENT_BRANCH_BY_REPOSITORY">
       <map>
-        <entry key="$PROJECT_DIR$" value="TypeRevamp" />
+        <entry key="$PROJECT_DIR$" value="dev" />
       </map>
     </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -95,44 +97,44 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;ASKED_SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
-    &quot;Gradle.BotMaker [:com.astblocks.demo.Main.main()].executor&quot;: &quot;Run&quot;,
-    &quot;Gradle.BotMaker [:com.botmaker.Main.main()].executor&quot;: &quot;Run&quot;,
-    &quot;Gradle.BotMaker [:org.example.Main.main()].executor&quot;: &quot;Run&quot;,
-    &quot;Gradle.BotMaker [run].executor&quot;: &quot;Run&quot;,
-    &quot;Gradle.BotMaker.executor&quot;: &quot;Run&quot;,
-    &quot;Gradle.Build BotMaker.executor&quot;: &quot;Run&quot;,
-    &quot;Gradle.Building Gradle Dependencies.executor&quot;: &quot;Run&quot;,
-    &quot;Gradle.Download Sources.executor&quot;: &quot;Run&quot;,
-    &quot;ModuleVcsDetector.initialDetectionPerformed&quot;: &quot;true&quot;,
-    &quot;PowerShell.Concat.executor&quot;: &quot;Run&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
-    &quot;SHELLCHECK.PATH&quot;: &quot;/home/groisnebenjamin/.local/share/JetBrains/IdeaIC2025.2/Shell Script/shellcheck&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;dev&quot;,
-    &quot;ignore.preview.features.used&quot;: &quot;true&quot;,
-    &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
-    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
-    &quot;last_opened_file_path&quot;: &quot;C:/Users/bgroi/Documents/dev/IntellijProjects/BotMaker&quot;,
-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
-    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
-    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;onboarding.tips.debug.path&quot;: &quot;/home/groisnebenjamin/IdeaProjects/BotMaker/src/main/java/org/example/Main.java&quot;,
-    &quot;project.structure.last.edited&quot;: &quot;Modules&quot;,
-    &quot;project.structure.proportion&quot;: &quot;0.15&quot;,
-    &quot;project.structure.side.proportion&quot;: &quot;0.2&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;reference.settingsdialog.project.gradle&quot;,
-    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "ASKED_SHARE_PROJECT_CONFIGURATION_FILES": "true",
+    "Gradle.BotMaker [:com.astblocks.demo.Main.main()].executor": "Run",
+    "Gradle.BotMaker [:com.botmaker.Main.main()].executor": "Run",
+    "Gradle.BotMaker [:org.example.Main.main()].executor": "Run",
+    "Gradle.BotMaker [run].executor": "Run",
+    "Gradle.BotMaker.executor": "Run",
+    "Gradle.Build BotMaker.executor": "Run",
+    "Gradle.Building Gradle Dependencies.executor": "Run",
+    "Gradle.Download Sources.executor": "Run",
+    "ModuleVcsDetector.initialDetectionPerformed": "true",
+    "PowerShell.Concat.executor": "Run",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252": "true",
+    "RunOnceActivity.git.unshallow": "true",
+    "SHELLCHECK.PATH": "/home/groisnebenjamin/.local/share/JetBrains/IdeaIC2025.2/Shell Script/shellcheck",
+    "git-widget-placeholder": "step2",
+    "ignore.preview.features.used": "true",
+    "ignore.virus.scanning.warn.message": "true",
+    "kotlin-language-version-configured": "true",
+    "last_opened_file_path": "C:/Users/bgroi/Documents/dev/IntellijProjects/BotMaker",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "onboarding.tips.debug.path": "/home/groisnebenjamin/IdeaProjects/BotMaker/src/main/java/org/example/Main.java",
+    "project.structure.last.edited": "Modules",
+    "project.structure.proportion": "0.15",
+    "project.structure.side.proportion": "0.2",
+    "settings.editor.selected.configurable": "reference.settingsdialog.project.gradle",
+    "vue.rearranger.settings.migration": "true"
   },
-  &quot;keyToStringList&quot;: {
-    &quot;stardust.markdown.MarkdownSplitEditorSuppressor:keyList&quot;: []
+  "keyToStringList": {
+    "stardust.markdown.MarkdownSplitEditorSuppressor:keyList": []
   }
-}</component>
+}]]></component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="C:\Users\bgroi\Documents\dev\IntellijProjects\BotMaker\src\main\java\com\botmaker\library" />
@@ -236,14 +238,8 @@
       <workItem from="1764947386963" duration="4029000" />
       <workItem from="1764956633858" duration="2805000" />
       <workItem from="1764970496189" duration="1975000" />
-    </task>
-    <task id="LOCAL-00038" summary="README.md">
-      <option name="closed" value="true" />
-      <created>1763501103875</created>
-      <option name="number" value="00038" />
-      <option name="presentableId" value="LOCAL-00038" />
-      <option name="project" value="LOCAL" />
-      <updated>1763501103875</updated>
+      <workItem from="1765020275095" duration="598000" />
+      <workItem from="1765020889774" duration="1531000" />
     </task>
     <task id="LOCAL-00039" summary="Project Creation and opens most recent project">
       <option name="closed" value="true" />
@@ -629,7 +625,15 @@
       <option name="project" value="LOCAL" />
       <updated>1764961952706</updated>
     </task>
-    <option name="localTasksCounter" value="87" />
+    <task id="LOCAL-00087" summary="Added copy/ paste functionality and last added block">
+      <option name="closed" value="true" />
+      <created>1764976206181</created>
+      <option name="number" value="00087" />
+      <option name="presentableId" value="LOCAL-00087" />
+      <option name="project" value="LOCAL" />
+      <updated>1764976206182</updated>
+    </task>
+    <option name="localTasksCounter" value="88" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -643,18 +647,8 @@
     <option featureType="com.intellij.fileTypeFactory" implementationName="*.ini" />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
-    <option name="OPEN_GENERIC_TABS">
-      <map>
-        <entry key="54275284-16e8-4ad8-839d-917173fc8757" value="TOOL_WINDOW" />
-      </map>
-    </option>
     <option name="TAB_STATES">
       <map>
-        <entry key="54275284-16e8-4ad8-839d-917173fc8757">
-          <value>
-            <State />
-          </value>
-        </entry>
         <entry key="MAIN">
           <value>
             <State />
@@ -667,7 +661,6 @@
     <ignored-roots>
       <path value="$PROJECT_DIR$/.." />
     </ignored-roots>
-    <MESSAGE value="Block ui node refactor" />
     <MESSAGE value="Windows compatibility" />
     <MESSAGE value="Switch fix" />
     <MESSAGE value="can add blocks to Case block" />
@@ -692,7 +685,8 @@
     <MESSAGE value="Finished type revamp fixing some minor bugs" />
     <MESSAGE value="Fixed more blocks with TypeInfo" />
     <MESSAGE value="Enum value auto creation and can access constant values." />
-    <option name="LAST_COMMIT_MESSAGE" value="Enum value auto creation and can access constant values." />
+    <MESSAGE value="Added copy/ paste functionality and last added block" />
+    <option name="LAST_COMMIT_MESSAGE" value="Added copy/ paste functionality and last added block" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

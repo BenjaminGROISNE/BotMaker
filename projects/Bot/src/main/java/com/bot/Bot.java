@@ -16,13 +16,16 @@ public class Bot {
 			System.out.println("DEFAULT");
 			double number = 0.0;
 			break;
-		case MyEnum415.OPTION_B:
+		case OPTION_A:
 			System.out.println("OPTION B");
 			break;
-		case MyEnum415.OPTION_A:
+		case OPTION_A:
 			System.out.println("OPTION A");
 			break;
 		}
 		
     }
+
+	public static void maindf() {
+	}
 }

@@ -175,6 +175,17 @@ public class CodeEditor {
         triggerUpdate(newCode);
     }
 
+    public void renameMethod(MethodDeclaration method, String newName) {
+        String newCode = astRewriter.renameMethod(getCompilationUnit(), getCurrentCode(), method, newName);
+        triggerUpdate(newCode);
+    }
+
+    public void moveBodyDeclaration(BodyDeclaration decl, TypeDeclaration targetType, int index) {
+        blockFactory.setMarkNewIdentifiersAsUnedited(true);
+        String newCode = astRewriter.moveBodyDeclaration(getCompilationUnit(), getCurrentCode(), decl, targetType, index);
+        triggerUpdate(newCode);
+    }
+
     public void setReturnExpression(ReturnStatement returnStmt, AddableExpression type) {
         blockFactory.setMarkNewIdentifiersAsUnedited(true);
         String newCode = astRewriter.setReturnExpression(getCompilationUnit(), getCurrentCode(), returnStmt, type);

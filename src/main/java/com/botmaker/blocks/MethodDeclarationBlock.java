@@ -8,18 +8,13 @@ import com.botmaker.lsp.CompletionContext;
 import com.botmaker.ui.BlockDragAndDropManager;
 import com.botmaker.ui.builders.BlockLayout;
 import com.botmaker.ui.components.BlockUIComponents;
-import com.botmaker.util.DefaultNames;
 import com.botmaker.util.TypeManager;
-import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.Priority;
-import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
 import org.eclipse.jdt.core.dom.MethodDeclaration;
-import org.eclipse.jdt.core.dom.Modifier;
 import org.eclipse.jdt.core.dom.SingleVariableDeclaration;
 
 import java.util.Collections;
@@ -30,7 +25,8 @@ public class MethodDeclarationBlock extends AbstractStatementBlock implements Bl
     private final String methodName;
     private final String returnType;
     private BodyBlock body;
-    protected boolean isDeletable = true; // Added flag to control delete button visibility
+    protected boolean isDeletable = true;
+    private boolean isCollapsed = false; // State for minimization
 
     public MethodDeclarationBlock(String id, MethodDeclaration astNode, BlockDragAndDropManager manager) {
         super(id, astNode);
@@ -63,12 +59,42 @@ public class MethodDeclarationBlock extends AbstractStatementBlock implements Bl
                         "-fx-padding: 8 10 8 10;"
         );
 
-        // Row 1: Function name and return type
+        // Collapse Button
+        Button collapseBtn = new Button(isCollapsed ? "▶" : "▼");
+        collapseBtn.setStyle("-fx-background-color: transparent; -fx-text-fill: white; -fx-font-weight: bold; -fx-padding: 0 5 0 0; -fx-cursor: hand;");
+        collapseBtn.setOnAction(e -> {
+            this.isCollapsed = !this.isCollapsed;
+            // Force refresh of this node specifically or trigger full UI refresh via event
+            // Simple approach: Trigger global refresh for now as blocks are immutable in UI tree
+            context.eventBus().publish(new com.botmaker.events.CoreApplicationEvents.UIRefreshRequestedEvent(context.sourceCode()));
+        });
+
         Label funcLabel = new Label("Function");
         funcLabel.setStyle("-fx-text-fill: rgba(255,255,255,0.8); -fx-font-weight: bold; -fx-font-size: 10px;");
 
-        Label nameLabel = new Label(methodName);
-        nameLabel.setStyle("-fx-text-fill: white; -fx-font-weight: bold; -fx-font-size: 14px;");
+        // Rename Field (TextField vs Label)
+        Node nameNode;
+        if (isDeletable) { // Only allow renaming if not Main block (which sets isDeletable=false)
+            TextField nameField = new TextField(methodName);
+            nameField.setStyle("-fx-background-color: rgba(0,0,0,0.2); -fx-text-fill: white; -fx-font-weight: bold; -fx-font-size: 13px; -fx-padding: 2 5 2 5;");
+            nameField.setPrefWidth(Math.max(80, methodName.length() * 8 + 20));
+
+            nameField.focusedProperty().addListener((obs, oldVal, newVal) -> {
+                if (!newVal) { // Lost focus
+                    String newName = nameField.getText().trim();
+                    if (!newName.isEmpty() && !newName.equals(methodName) && !"main".equals(newName)) {
+                        context.codeEditor().renameMethod((MethodDeclaration) this.astNode, newName);
+                    } else {
+                        nameField.setText(methodName);
+                    }
+                }
+            });
+            nameNode = nameField;
+        } else {
+            Label nameLabel = new Label(methodName);
+            nameLabel.setStyle("-fx-text-fill: white; -fx-font-weight: bold; -fx-font-size: 14px;");
+            nameNode = nameLabel;
+        }
 
         Label returnsLabel = new Label("returns");
         returnsLabel.setStyle("-fx-text-fill: rgba(255,255,255,0.7); -fx-font-style: italic; -fx-font-size: 11px;");
@@ -85,10 +111,10 @@ public class MethodDeclarationBlock extends AbstractStatementBlock implements Bl
             }
         });
 
-        // Use builder to optionally add delete button
         var topRowBuilder = BlockLayout.sentence()
+                .addNode(collapseBtn)
                 .addNode(funcLabel)
-                .addNode(nameLabel)
+                .addNode(nameNode)
                 .addNode(BlockUIComponents.createSpacer())
                 .addNode(returnsLabel)
                 .addNode(typeSelector);
@@ -135,16 +161,18 @@ public class MethodDeclarationBlock extends AbstractStatementBlock implements Bl
         headerBox.getChildren().addAll(topRow, paramRow);
         container.getChildren().add(headerBox);
 
-        // --- BODY ---
-        VBox bodyWrapper = new VBox();
-        bodyWrapper.setStyle("-fx-border-color: #8E44AD; -fx-border-width: 0 0 0 4; -fx-background-color: rgba(142, 68, 173, 0.05);");
+        // --- BODY (Conditional based on collapsed state) ---
+        if (!isCollapsed) {
+            VBox bodyWrapper = new VBox();
+            bodyWrapper.setStyle("-fx-border-color: #8E44AD; -fx-border-width: 0 0 0 4; -fx-background-color: rgba(142, 68, 173, 0.05);");
 
-        if (body != null) {
-            Node bodyNode = body.getUINode(context);
-            VBox.setVgrow(bodyNode, javafx.scene.layout.Priority.ALWAYS);
-            bodyWrapper.getChildren().add(bodyNode);
+            if (body != null) {
+                Node bodyNode = body.getUINode(context);
+                VBox.setVgrow(bodyNode, javafx.scene.layout.Priority.ALWAYS);
+                bodyWrapper.getChildren().add(bodyNode);
+            }
+            container.getChildren().add(bodyWrapper);
         }
-        container.getChildren().add(bodyWrapper);
 
         return container;
     }
@@ -160,17 +188,12 @@ public class MethodDeclarationBlock extends AbstractStatementBlock implements Bl
         String currentName = param.getName().getIdentifier();
         TextField nameField = new TextField(currentName);
 
-        nameField.setStyle(
-                "-fx-background-color: transparent; " +
-                        "-fx-padding: 0; " +
-                        "-fx-font-size: 11px; " +
-                        "-fx-text-fill: #333;"
-        );
+        nameField.setStyle("-fx-background-color: transparent; -fx-padding: 0; -fx-font-size: 11px; -fx-text-fill: #333;");
         nameField.setPrefWidth(Math.max(30, currentName.length() * 7));
 
         nameField.focusedProperty().addListener((obs, oldVal, newVal) -> {
             if (newVal) {
-                nameField.setStyle("-fx-background-color: white; -fx-padding: 0; -fx-font-size: 11px; -fx-text-fill: black; -fx-border-color: #8E44AD; -fx-border-width: 0 0 1 0;");
+                nameField.setStyle("-fx-background-color: white; -fx-padding: 0; -fx-font-size: 11px; -fx-text-fill: black;");
             } else {
                 nameField.setStyle("-fx-background-color: transparent; -fx-padding: 0; -fx-font-size: 11px; -fx-text-fill: #333;");
                 String val = nameField.getText().trim();
@@ -182,9 +205,16 @@ public class MethodDeclarationBlock extends AbstractStatementBlock implements Bl
             }
         });
 
-        nameField.setOnAction(e -> box.requestFocus());
-
         box.getChildren().addAll(typeLabel, nameField);
+
+        // Add Delete Button for Parameter (Only if method is deletable, i.e., not Main)
+        if (isDeletable) {
+            Button delBtn = new Button("×");
+            delBtn.setStyle("-fx-background-color: transparent; -fx-text-fill: #999; -fx-font-size: 10px; -fx-padding: 0 0 0 2; -fx-cursor: hand;");
+            delBtn.setOnAction(e -> context.codeEditor().deleteParameterFromMethod((MethodDeclaration) this.astNode, index));
+            box.getChildren().add(delBtn);
+        }
+
         return box;
     }
 }

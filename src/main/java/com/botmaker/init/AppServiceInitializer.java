@@ -1,7 +1,10 @@
+// FILE: rs\bgroi\Documents\dev\IntellijProjects\BotMaker\src\main\java\com\botmaker\init\AppServiceInitializer.java
 package com.botmaker.init;
 
 import com.botmaker.blocks.ClassBlock;
+import com.botmaker.blocks.MethodDeclarationBlock;
 import com.botmaker.core.BodyBlock;
+import com.botmaker.core.CodeBlock;
 import com.botmaker.core.StatementBlock;
 import com.botmaker.di.DependencyContainer;
 import com.botmaker.services.*;
@@ -10,6 +13,7 @@ import com.botmaker.ui.AddableBlock;
 import com.botmaker.ui.BlockDragAndDropManager;
 import com.botmaker.ui.UIManager;
 import com.botmaker.util.BlockLookupHelper;
+import org.eclipse.jdt.core.dom.BodyDeclaration;
 import org.eclipse.jdt.core.dom.TypeDeclaration;
 
 public class AppServiceInitializer {
@@ -37,25 +41,20 @@ public class AppServiceInitializer {
                                                   CodeEditorService editorService,
                                                   ApplicationState state) {
         // Handle adding new blocks
-// ... inside setupDragAndDropCallbacks ...
         manager.setCallback(dropInfo -> {
-            // Check if dropping into a CLASS
             if (dropInfo.targetClass() != null) {
                 if (dropInfo.type() == AddableBlock.METHOD_DECLARATION) {
                     editorService.getCodeEditor().addMethodToClass(
                             (TypeDeclaration) dropInfo.targetClass().getAstNode(),
                             "newMethod", "void", dropInfo.insertionIndex()
                     );
-                }
-                else if (dropInfo.type() == AddableBlock.DECLARE_ENUM) {
+                } else if (dropInfo.type() == AddableBlock.DECLARE_ENUM) {
                     editorService.getCodeEditor().addEnumToClass(
                             (TypeDeclaration) dropInfo.targetClass().getAstNode(),
                             "NewEnum", dropInfo.insertionIndex()
                     );
                 }
-            }
-            // Check if dropping into a BODY (Method)
-            else if (dropInfo.targetBody() != null) {
+            } else if (dropInfo.targetBody() != null) {
                 editorService.getCodeEditor().addStatement(
                         dropInfo.targetBody(), dropInfo.type(), dropInfo.insertionIndex()
                 );
@@ -64,26 +63,38 @@ public class AppServiceInitializer {
 
         // Handle moving existing blocks
         manager.setMoveCallback(moveInfo -> {
-            StatementBlock blockToMove = BlockLookupHelper.findBlockById(
-                    moveInfo.blockId(),
-                    state.getNodeToBlockMap()
-            );
+            CodeBlock blockToMove = null;
 
-            if (blockToMove != null) {
-                BodyBlock sourceBody = BlockLookupHelper.findParentBody(
-                        blockToMove,
-                        state.getNodeToBlockMap()
-                );
+            // Find block by ID (could be statement or method)
+            // BlockLookupHelper usually searches nodeToBlockMap values.
+            // We iterate manually if needed or use existing helper if it supports generalized CodeBlock.
+            for (CodeBlock b : state.getNodeToBlockMap().values()) {
+                if (b.getId().equals(moveInfo.blockId())) {
+                    blockToMove = b;
+                    break;
+                }
+            }
 
+            if (blockToMove == null) return;
+
+            // Case A: Moving a statement within a body
+            if (blockToMove instanceof StatementBlock && moveInfo.targetBody() != null) {
+                StatementBlock stmt = (StatementBlock) blockToMove;
+                BodyBlock sourceBody = BlockLookupHelper.findParentBody(stmt, state.getNodeToBlockMap());
                 if (sourceBody != null) {
                     editorService.getCodeEditor().moveStatement(
-                            blockToMove,
-                            sourceBody,
-                            moveInfo.targetBody(),
-                            moveInfo.insertionIndex()
+                            stmt, sourceBody, moveInfo.targetBody(), moveInfo.insertionIndex()
                     );
                 }
             }
+            // Case B: Moving a declaration (Method/Enum) within a Class
+            else if (blockToMove instanceof MethodDeclarationBlock && moveInfo.targetClass() != null) {
+                // Move Method
+                BodyDeclaration decl = (BodyDeclaration) blockToMove.getAstNode();
+                TypeDeclaration targetType = (TypeDeclaration) moveInfo.targetClass().getAstNode();
+                editorService.getCodeEditor().moveBodyDeclaration(decl, targetType, moveInfo.insertionIndex());
+            }
+            // (Add Enum handling here if needed similarly)
         });
     }
 }
