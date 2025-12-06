@@ -9,7 +9,9 @@ import javafx.scene.layout.VBox;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.HashSet;
 import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Stream;
 
 public class FileExplorerManager {
@@ -56,6 +58,7 @@ public class FileExplorerManager {
                     setText(null);
                     setGraphic(null);
                     setStyle("");
+                    setContextMenu(null);
                 } else {
                     String fileName = item.getFileName().toString();
 
@@ -67,11 +70,13 @@ public class FileExplorerManager {
                     if (isDirectory) {
                         setText(fileName);
                         setStyle("-fx-font-weight: bold; -fx-text-fill: #333;");
+                        setContextMenu(null); // No context menu for directories for now
                     }
                     else if (isLibrary) {
                         setText(fileName + " [Lib]");
                         // Locked/Library style
                         setStyle("-fx-text-fill: #888; -fx-font-style: italic;");
+                        setContextMenu(null); // Cannot delete library files
                     }
                     else {
                         setText(fileName);
@@ -81,6 +86,24 @@ public class FileExplorerManager {
                         } else {
                             setStyle("-fx-text-fill: black;");
                         }
+
+                        // Add Context Menu for user files
+                        ContextMenu cm = new ContextMenu();
+                        MenuItem deleteItem = new MenuItem("Delete File");
+                        deleteItem.setOnAction(e -> {
+                            Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+                            alert.setTitle("Delete File");
+                            alert.setHeaderText("Delete " + fileName + "?");
+                            alert.setContentText("Are you sure you want to delete this file? This cannot be undone.");
+
+                            Optional<ButtonType> result = alert.showAndWait();
+                            if (result.isPresent() && result.get() == ButtonType.OK) {
+                                codeEditorService.deleteFile(item);
+                                refreshTree();
+                            }
+                        });
+                        cm.getItems().add(deleteItem);
+                        setContextMenu(cm);
                     }
                 }
             }
@@ -95,6 +118,7 @@ public class FileExplorerManager {
                     // Allow opening all files, including library files (for visualization)
                     if (state.getActiveFile() == null || !state.getActiveFile().getPath().equals(selectedPath)) {
                         codeEditorService.switchToFile(selectedPath);
+                        // Force refresh to update the bold highlighting
                         fileTree.refresh();
                     }
                 }
@@ -102,26 +126,60 @@ public class FileExplorerManager {
         });
     }
 
-    public void refreshTree() {
-        // 1. Find the root 'src/main/java' directory
-        // Start from Main file: .../src/main/java/com/myproject/Main.java
-        Path current = config.getSourceFilePath().getParent();
+    /**
+     * Saves the paths of all currently expanded items.
+     */
+    private Set<String> saveExpansionState() {
+        Set<String> expanded = new HashSet<>();
+        if (fileTree.getRoot() != null) {
+            saveExpansionStateRecursive(fileTree.getRoot(), expanded);
+        }
+        return expanded;
+    }
 
-        // Traverse up until we hit "java" (or run out of parents)
+    private void saveExpansionStateRecursive(TreeItem<Path> item, Set<String> expanded) {
+        if (item.isExpanded()) {
+            expanded.add(item.getValue().toAbsolutePath().toString());
+        }
+        for (TreeItem<Path> child : item.getChildren()) {
+            saveExpansionStateRecursive(child, expanded);
+        }
+    }
+
+    /**
+     * Restores expansion state based on saved paths.
+     */
+    private void restoreExpansionState(TreeItem<Path> item, Set<String> expanded) {
+        if (expanded.contains(item.getValue().toAbsolutePath().toString())) {
+            item.setExpanded(true);
+        }
+        for (TreeItem<Path> child : item.getChildren()) {
+            restoreExpansionState(child, expanded);
+        }
+    }
+
+    public void refreshTree() {
+        // 1. Save current expansion state
+        Set<String> expandedState = saveExpansionState();
+
+        // 2. Find root
+        Path current = config.getSourceFilePath().getParent();
         while (current != null && !current.getFileName().toString().equals("java")) {
             current = current.getParent();
         }
-
-        // Fallback if structure is weird
         if (current == null) {
             current = config.getSourceFilePath().getParent();
         }
 
         TreeItem<Path> root = new TreeItem<>(current);
+        // Always expand the invisible root
         root.setExpanded(true);
 
-        // 2. Recursively build the tree
+        // 3. Rebuild tree
         buildFileTree(root, current);
+
+        // 4. Restore expansion state
+        restoreExpansionState(root, expandedState);
 
         fileTree.setRoot(root);
     }
@@ -140,11 +198,8 @@ public class FileExplorerManager {
                 parentItem.getChildren().add(item);
 
                 if (Files.isDirectory(path)) {
-                    // Auto-expand 'com' and 'botmaker' folders for convenience
-                    String name = path.getFileName().toString();
-                    if (name.equals("com") || name.equals("botmaker") || name.equals("library")) {
-                        item.setExpanded(true);
-                    }
+                    // Auto-expand specific folders if not handled by state restore (e.g. initial load)
+                    // But generally rely on state or default expanded for root/packages
                     buildFileTree(item, path);
                 }
             });

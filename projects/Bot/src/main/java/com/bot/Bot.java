@@ -5,13 +5,16 @@ public class Bot {
 	}
 
 	public static void main(String[] args) {
-		newMethogerg(0);
+		overloadedMethod(0, 0);
 		
     }
 
-	public static void newMethoddf() {
+	public static void overloadedMethod() {
 	}
 
-	public static void newMethogerg(int number) {
+	public static void overloadedMethod(int number, double decimal) {
+	}
+
+	public static void newMethod() {
 	}
 }

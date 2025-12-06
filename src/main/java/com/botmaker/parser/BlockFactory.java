@@ -16,10 +16,11 @@ public class BlockFactory {
     private List<Comment> allComments;
     private boolean markNewIdentifiersAsUnedited = false;
     private BlockParser blockParser;
+    private boolean isReadOnlyMode = false;
 
-
-    public AbstractCodeBlock convert(String javaCode, Map<ASTNode, CodeBlock> nodeToBlockMap, BlockDragAndDropManager manager) {
+    public AbstractCodeBlock convert(String javaCode, Map<ASTNode, CodeBlock> nodeToBlockMap, BlockDragAndDropManager manager, boolean isReadOnly) {
         this.currentSourceCode = javaCode;
+        this.isReadOnlyMode = isReadOnly;
         // Initialize parser used for method bodies
         this.blockParser = new BlockParser(this, manager, markNewIdentifiersAsUnedited);
 
@@ -33,7 +34,7 @@ public class BlockFactory {
             parser.setEnvironment(null, null, null, true);
 
             Map<String, String> options = JavaCore.getOptions();
-            options.put(JavaCore.COMPILER_COMPLIANCE, JavaCore.latestSupportedJavaVersion()); // or VERSION_11, VERSION_1_8, etc.
+            options.put(JavaCore.COMPILER_COMPLIANCE, JavaCore.latestSupportedJavaVersion());
             options.put(JavaCore.COMPILER_CODEGEN_TARGET_PLATFORM, JavaCore.latestSupportedJavaVersion());
             options.put(JavaCore.COMPILER_SOURCE, JavaCore.latestSupportedJavaVersion());
             parser.setCompilerOptions(options);
@@ -48,7 +49,6 @@ public class BlockFactory {
 
             if (ast.types().isEmpty()) return null;
 
-            // Get the root declaration (can be TypeDeclaration OR EnumDeclaration)
             AbstractTypeDeclaration rootNode = (AbstractTypeDeclaration) ast.types().get(0);
 
             // --- CASE A: Standard Class File ---
@@ -60,12 +60,10 @@ public class BlockFactory {
                         typeDecl,
                         manager
                 );
+                applyReadOnly(classBlock);
                 nodeToBlockMap.put(typeDecl, classBlock);
 
-                // Iterate over ALL body declarations (Methods AND Inner Enums)
                 for (Object obj : typeDecl.bodyDeclarations()) {
-
-                    // 1. Handle Methods
                     if (obj instanceof MethodDeclaration) {
                         MethodDeclaration method = (MethodDeclaration) obj;
                         MethodDeclarationBlock methodBlock;
@@ -83,40 +81,34 @@ public class BlockFactory {
                                     manager
                             );
                         }
-
+                        applyReadOnly(methodBlock);
                         nodeToBlockMap.put(method, methodBlock);
 
-                        // Recursively parse the method body using BlockParser
                         if (method.getBody() != null) {
                             methodBlock.setBody(parseBodyBlock(method.getBody(), nodeToBlockMap, manager));
                         }
 
                         classBlock.addBodyDeclaration(methodBlock);
                     }
-
-                    // 2. Handle Inner Enums (e.g. inside a class)
                     else if (obj instanceof EnumDeclaration) {
                         EnumDeclaration enumDecl = (EnumDeclaration) obj;
-
-                        // FIX: Use the constructor that takes EnumDeclaration directly (not TypeDeclarationStatement)
                         DeclareEnumBlock enumBlock = new DeclareEnumBlock(
                                 BlockIdPrefix.generate(BlockIdPrefix.ENUM, enumDecl),
-                                enumDecl  // ← This is the correct constructor for class-level enums
+                                enumDecl
                         );
-
+                        applyReadOnly(enumBlock);
                         nodeToBlockMap.put(enumDecl, enumBlock);
                         classBlock.addBodyDeclaration(enumBlock);
                     }
-                    // 3. Handle Field Declarations
                     else if (obj instanceof FieldDeclaration) {
                         FieldDeclaration field = (FieldDeclaration) obj;
                         DeclareClassVariableBlock fieldBlock = new DeclareClassVariableBlock(
                                 BlockIdPrefix.generate(BlockIdPrefix.FIELD_ACCESS, field),
                                 field
                         );
+                        applyReadOnly(fieldBlock);
                         nodeToBlockMap.put(field, fieldBlock);
 
-                        // Parse initializer if present
                         VariableDeclarationFragment fragment = (VariableDeclarationFragment) field.fragments().get(0);
                         if (fragment.getInitializer() != null) {
                             parseExpression(fragment.getInitializer(), nodeToBlockMap).ifPresent(fieldBlock::setInitializer);
@@ -125,21 +117,17 @@ public class BlockFactory {
                         classBlock.addBodyDeclaration(fieldBlock);
                     }
                 }
-
                 return classBlock;
             }
-
             // --- CASE B: Standalone Enum File ---
             else if (rootNode instanceof EnumDeclaration) {
                 EnumDeclaration enumDecl = (EnumDeclaration) rootNode;
-
-                // Create the EnumBlock as the root element
                 DeclareEnumBlock rootEnumBlock = new DeclareEnumBlock(
                         BlockIdPrefix.generate(BlockIdPrefix.ENUM, enumDecl),
                         enumDecl
                 );
+                applyReadOnly(rootEnumBlock);
                 nodeToBlockMap.put(enumDecl, rootEnumBlock);
-
                 return rootEnumBlock;
             }
 
@@ -154,35 +142,33 @@ public class BlockFactory {
         }
     }
 
-    private boolean isMainMethod(MethodDeclaration method) {
-        if (!"main".equals(method.getName().getIdentifier())) return false;
-        if (!Modifier.isStatic(method.getModifiers())) return false;
-        if (!Modifier.isPublic(method.getModifiers())) return false;
-        if (method.parameters().size() != 1) return false;
-        return true;
+    // Overload for backward compatibility (defaults to read/write)
+    public AbstractCodeBlock convert(String javaCode, Map<ASTNode, CodeBlock> nodeToBlockMap, BlockDragAndDropManager manager) {
+        return convert(javaCode, nodeToBlockMap, manager, false);
     }
 
-    private MethodDeclaration findMainMethod(TypeDeclaration type) {
-        for (MethodDeclaration method : type.getMethods()) {
-            if ("main".equals(method.getName().getIdentifier()) &&
-                    Modifier.isStatic(method.getModifiers()) &&
-                    method.parameters().size() == 1) { // Simplified check
-                return method;
-            }
+    public void applyReadOnly(CodeBlock block) {
+        if (isReadOnlyMode) {
+            block.setReadOnly(true);
         }
-        return null;
     }
 
-    public void setMarkNewIdentifiersAsUnedited(boolean mark) { this.markNewIdentifiersAsUnedited = mark; }
+    public boolean isReadOnlyMode() {
+        return isReadOnlyMode;
+    }
+
+    // ... (Keep rest of existing methods)
+
     public BodyBlock parseBodyBlock(Block astBlock, Map<ASTNode, CodeBlock> nodeToBlockMap, BlockDragAndDropManager manager) {
         BodyBlock bodyBlock = new BodyBlock(BlockIdPrefix.generate(BlockIdPrefix.BODY, astBlock), astBlock, manager);
+        applyReadOnly(bodyBlock);
         nodeToBlockMap.put(astBlock, bodyBlock);
 
         List<CodeBlock> allChildren = new ArrayList<>();
         for (Object statementObj : astBlock.statements()) {
             blockParser.parseStatement((Statement) statementObj, nodeToBlockMap).ifPresent(allChildren::add);
         }
-        // [Comment handling logic...]
+
         int blockStart = astBlock.getStartPosition() + 1;
         int blockEnd = astBlock.getStartPosition() + astBlock.getLength() - 1;
 
@@ -210,22 +196,19 @@ public class BlockFactory {
         return bodyBlock;
     }
 
-
+    // Delegate to BlockParser but apply ReadOnly to results
     public Optional<StatementBlock> parseStatement(Statement stmt, Map<ASTNode, CodeBlock> map, BlockDragAndDropManager manager) {
-        return blockParser.parseStatement(stmt, map);
+        Optional<StatementBlock> result = blockParser.parseStatement(stmt, map);
+        result.ifPresent(this::applyReadOnly);
+        return result;
     }
 
     public Optional<ExpressionBlock> parseExpression(Expression expr, Map<ASTNode, CodeBlock> map) {
-        // --- NEW: Handle ArrayCreation (new int[] {...}) ---
+        // ... (ArrayCreation logic from original)
         if (expr instanceof ArrayCreation) {
             ArrayCreation ac = (ArrayCreation) expr;
             if (ac.getInitializer() != null) {
-                // Recursively parse the inner ArrayInitializer
                 Optional<ExpressionBlock> innerBlock = parseExpression(ac.getInitializer(), map);
-
-                // IMPORTANT: Map the ArrayCreation node to the same block as the initializer.
-                // This ensures that when a VariableDeclarationFragment asks for the block corresponding
-                // to its initializer (which is the ArrayCreation node), it gets the correct ListBlock.
                 if (innerBlock.isPresent()) {
                     map.put(expr, innerBlock.get());
                 }
@@ -233,7 +216,9 @@ public class BlockFactory {
             }
         }
 
-        return blockParser.parseExpression(expr, map);
+        Optional<ExpressionBlock> result = blockParser.parseExpression(expr, map);
+        result.ifPresent(this::applyReadOnly);
+        return result;
     }
 
     private CommentBlock parseCommentBlock(Comment astNode, Map<ASTNode, CodeBlock> nodeToBlockMap) {
@@ -245,10 +230,12 @@ public class BlockFactory {
             } catch (Exception ignored) {}
         }
         CommentBlock commentBlock = new CommentBlock(BlockIdPrefix.generate(BlockIdPrefix.COMMENT, astNode), astNode, text);
+        applyReadOnly(commentBlock);
         nodeToBlockMap.put(astNode, commentBlock);
         return commentBlock;
     }
 
+    // ... (Keep isPrintStatement, isReadInputStatement, etc)
     public boolean isPrintStatement(Expression expression) {
         if (!(expression instanceof MethodInvocation)) return false;
         MethodInvocation method = (MethodInvocation) expression;
@@ -267,10 +254,9 @@ public class BlockFactory {
 
     public CompilationUnit getCompilationUnit() { return ast; }
 
-    // Helper used by BlockParser
     public boolean isListStructure(Expression expr) {
         if (expr instanceof ArrayInitializer) return true;
-        if (expr instanceof ArrayCreation) return true; // Added
+        if (expr instanceof ArrayCreation) return true;
         if (expr instanceof ClassInstanceCreation) {
             ClassInstanceCreation cic = (ClassInstanceCreation) expr;
             String typeName = cic.getType().toString();
@@ -288,7 +274,7 @@ public class BlockFactory {
     @SuppressWarnings("unchecked")
     public List<Expression> getListItems(Expression expr) {
         if (expr instanceof ArrayInitializer) return ((ArrayInitializer) expr).expressions();
-        if (expr instanceof ArrayCreation) { // Added
+        if (expr instanceof ArrayCreation) {
             ArrayCreation ac = (ArrayCreation) expr;
             return ac.getInitializer() != null ? ac.getInitializer().expressions() : Collections.emptyList();
         }
@@ -302,4 +288,14 @@ public class BlockFactory {
         if (expr instanceof MethodInvocation) return ((MethodInvocation) expr).arguments();
         return List.of();
     }
+
+    // ... (Keep private helpers like isMainMethod, setMarkNewIdentifiersAsUnedited)
+    private boolean isMainMethod(MethodDeclaration method) {
+        if (!"main".equals(method.getName().getIdentifier())) return false;
+        if (!Modifier.isStatic(method.getModifiers())) return false;
+        if (!Modifier.isPublic(method.getModifiers())) return false;
+        if (method.parameters().size() != 1) return false;
+        return true;
+    }
+    public void setMarkNewIdentifiersAsUnedited(boolean mark) { this.markNewIdentifiersAsUnedited = mark; }
 }

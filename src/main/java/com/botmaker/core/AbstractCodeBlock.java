@@ -1,8 +1,8 @@
+// FILE: rs\bgroi\Documents\dev\IntellijProjects\BotMaker\src\main\java\com\botmaker\core\AbstractCodeBlock.java
 package com.botmaker.core;
 
 import com.botmaker.events.CoreApplicationEvents;
 import com.botmaker.lsp.CompletionContext;
-import javafx.beans.binding.Bindings;
 import javafx.geometry.Insets;
 import javafx.scene.Node;
 import javafx.scene.control.ContextMenu;
@@ -26,8 +26,11 @@ public abstract class AbstractCodeBlock implements CodeBlock {
     protected boolean isBreakpoint = false;
     private Circle breakpointCircle;
 
+    // Read-Only State
+    protected boolean isReadOnly = false;
+
     // Constants
-    private static final double GUTTER_PADDING = 12.0; // Space reserved on the left
+    private static final double GUTTER_PADDING = 12.0;
     private static final double CIRCLE_RADIUS = 4.0;
 
     public AbstractCodeBlock(String id, ASTNode astNode) {
@@ -40,6 +43,16 @@ public abstract class AbstractCodeBlock implements CodeBlock {
 
     @Override
     public ASTNode getAstNode() { return astNode; }
+
+    @Override
+    public void setReadOnly(boolean readOnly) {
+        this.isReadOnly = readOnly;
+    }
+
+    @Override
+    public boolean isReadOnly() {
+        return isReadOnly;
+    }
 
     @Override
     public Node getUINode(CompletionContext context) {
@@ -69,7 +82,6 @@ public abstract class AbstractCodeBlock implements CodeBlock {
                     breakpointCircle.setVisible(false); // Hidden by default
 
                     // Position: Center vertically, placed inside the left padding
-                    // x = (Padding / 2) roughly centers it in the gutter
                     breakpointCircle.setLayoutX(GUTTER_PADDING / 2 + existing.getLeft());
                     breakpointCircle.centerYProperty().bind(pane.heightProperty().divide(2));
 
@@ -78,11 +90,18 @@ public abstract class AbstractCodeBlock implements CodeBlock {
             }
 
             // 3. Setup Interaction
-            setupBreakpointInteraction();
-            setupContextMenu(context);
-            // 4. Discovery Tooltip
-            Tooltip tip = new Tooltip("Right-click to toggle breakpoint");
-            Tooltip.install(uiNode, tip);
+            if (isReadOnly) {
+                // Read-only specific styling and restrictions
+                uiNode.getStyleClass().add("read-only-block");
+                // Disable direct mouse interaction for "static" look, but allow scrolling
+                // We use styles to dim it.
+                uiNode.setStyle(uiNode.getStyle() + "-fx-opacity: 0.8; -fx-cursor: default;");
+            } else {
+                setupBreakpointInteraction();
+                setupContextMenu(context);
+                Tooltip tip = new Tooltip("Right-click to toggle breakpoint");
+                Tooltip.install(uiNode, tip);
+            }
         }
 
         updateBreakpointVisuals();
@@ -90,7 +109,7 @@ public abstract class AbstractCodeBlock implements CodeBlock {
     }
 
     private void setupContextMenu(CompletionContext context) {
-        if (uiNode == null) return;
+        if (uiNode == null || isReadOnly) return; // Double check
 
         ContextMenu contextMenu = new ContextMenu();
 
@@ -101,7 +120,6 @@ public abstract class AbstractCodeBlock implements CodeBlock {
         // Copy
         MenuItem copyItem = new MenuItem("Copy (Ctrl+C)");
         copyItem.setOnAction(ev -> {
-            // Ensure this block is highlighted/selected first
             context.applicationState().setHighlightedBlock(this);
             context.eventBus().publish(new CoreApplicationEvents.CopyRequestedEvent());
         });
@@ -123,41 +141,7 @@ public abstract class AbstractCodeBlock implements CodeBlock {
     }
 
     private void setupBreakpointInteraction() {
-        if (uiNode == null) return;
-
-        ContextMenu contextMenu = new ContextMenu();
-
-        // Breakpoint Item
-        MenuItem toggleBpItem = new MenuItem("Toggle Breakpoint");
-        toggleBpItem.setOnAction(ev -> toggleBreakpoint());
-        contextMenu.getItems().add(toggleBpItem);
-
-        contextMenu.getItems().add(new javafx.scene.control.SeparatorMenuItem());
-
-        // Copy Item
-        MenuItem copyItem = new MenuItem("Copy Block");
-        copyItem.setOnAction(ev -> {
-            // We need the event bus. It is now available in the creation context,
-            // but AbstractCodeBlock doesn't store the context permanently.
-            // However, the UI Node is live. We can use the global EventBus if singleton,
-            // OR rely on the fact that CodeEditorService handles Copy based on *Selection*.
-            // So we just need to fire the event.
-            // Ideally, we'd pass the EventBus into this method, but for now we can rely on
-            // UIManager's global handler or assume the block is selected.
-
-            // BETTER: Use JavaFX event bubbling or trigger the global shortcut logic?
-            // EASIEST: Publish via a static helper or modify AbstractCodeBlock to store reference?
-            // Refactoring AbstractCodeBlock to store EventBus is heavy.
-            // Let's rely on the fact that right-clicking selects the block first (usually).
-            // Actually, context menu doesn't auto-select.
-
-            // To keep it clean, we'll assume the selection logic handles "HighlightedBlock"
-            // and we just fire the event if we had access.
-            // Since we updated CompletionContext, let's use it during creation.
-        });
-
-        // This method is called in getUINode(CompletionContext).
-        // We can capture the eventBus from the context there!
+        // Handled in setupContextMenu now, but kept for legacy calls if any
     }
 
     @Override
@@ -235,12 +219,9 @@ public abstract class AbstractCodeBlock implements CodeBlock {
     }
 
     private void updateBreakpointVisuals() {
-        // Update the circle visibility
         if (breakpointCircle != null) {
             breakpointCircle.setVisible(isBreakpoint);
         }
-
-        // Optional: Keep the red border as secondary reinforcement, or remove if circle is enough
         if (uiNode != null) {
             String style = uiNode.getStyle();
             String borderStyle = "-fx-border-color: #e74c3c; -fx-border-width: 0 0 0 2; -fx-border-style: solid;";
@@ -256,6 +237,12 @@ public abstract class AbstractCodeBlock implements CodeBlock {
     }
 
     protected Node createExpressionDropZone(CompletionContext context) {
+        // If Read-Only, return a static label or empty region instead of a drop zone
+        if (isReadOnly) {
+            javafx.scene.control.Label lbl = new javafx.scene.control.Label("");
+            lbl.setMinWidth(20);
+            return lbl;
+        }
         Region dropZone = new Region();
         context.dragAndDropManager().addExpressionDropHandlers(dropZone);
         return dropZone;

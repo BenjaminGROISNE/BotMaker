@@ -1,3 +1,4 @@
+// FILE: rs\bgroi\Documents\dev\IntellijProjects\BotMaker\src\main\java\com\botmaker\core\CodeBlock.java
 package com.botmaker.core;
 
 import com.botmaker.lsp.CompletionContext;
@@ -21,6 +22,10 @@ public interface CodeBlock {
     void setBreakpoint(boolean enabled);
     boolean isBreakpoint();
     void toggleBreakpoint();
+
+    // Read-Only Logic
+    void setReadOnly(boolean readOnly);
+    boolean isReadOnly();
 
     // Debugging
     int getBreakpointLine(CompilationUnit cu);

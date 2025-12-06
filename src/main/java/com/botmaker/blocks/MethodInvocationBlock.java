@@ -5,7 +5,6 @@ import com.botmaker.core.ExpressionBlock;
 import com.botmaker.core.StatementBlock;
 import com.botmaker.lsp.CompletionContext;
 import com.botmaker.project.ProjectFile;
-import com.botmaker.ui.AddableExpression;
 import com.botmaker.ui.builders.BlockLayout;
 import com.botmaker.ui.components.BlockUIComponents;
 import com.botmaker.util.TypeInfo;
@@ -13,18 +12,11 @@ import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.Priority;
-import javafx.scene.layout.Region;
 import org.eclipse.jdt.core.dom.*;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.botmaker.ui.components.BlockUIComponents.createDeleteButton;
-
-/**
- * UPDATED: Uses TypeInfo for type operations
- */
 public class MethodInvocationBlock extends AbstractExpressionBlock implements StatementBlock {
 
     private String scopeName;
@@ -99,16 +91,24 @@ public class MethodInvocationBlock extends AbstractExpressionBlock implements St
                 ensureAstParsed(targetFile);
 
                 if (targetFile.getAst() != null && !targetFile.getAst().types().isEmpty()) {
-                    TypeDeclaration type = (TypeDeclaration) targetFile.getAst().types().get(0);
-                    boolean isLocal = selectedFile.equals(finalCurrentFileClass);
+                    // Check if it's a TypeDeclaration (Class) or EnumDeclaration
+                    if (targetFile.getAst().types().get(0) instanceof TypeDeclaration) {
+                        TypeDeclaration type = (TypeDeclaration) targetFile.getAst().types().get(0);
+                        boolean isLocal = selectedFile.equals(finalCurrentFileClass);
 
-                    for (MethodDeclaration md : type.getMethods()) {
-                        int mods = md.getModifiers();
-                        boolean isStatic = Modifier.isStatic(mods);
-                        boolean isPublic = Modifier.isPublic(mods);
+                        for (MethodDeclaration md : type.getMethods()) {
+                            int mods = md.getModifiers();
+                            boolean isStatic = Modifier.isStatic(mods);
+                            boolean isPublic = Modifier.isPublic(mods);
 
-                        if (isLocal || (isPublic && isStatic)) {
-                            methodSelector.getItems().add(md.getName().getIdentifier());
+                            // For local calls, show everything. For external, show public static.
+                            // Note: This logic assumes we only call static methods on other classes for now.
+                            if (isLocal || (isPublic && isStatic)) {
+                                String name = md.getName().getIdentifier();
+                                if (!methodSelector.getItems().contains(name)) {
+                                    methodSelector.getItems().add(name);
+                                }
+                            }
                         }
                     }
                 }
@@ -126,7 +126,8 @@ public class MethodInvocationBlock extends AbstractExpressionBlock implements St
             String newScopeDisplay = fileSelector.getValue();
             String newScopeAST = newScopeDisplay.equals(finalCurrentFileClass) ? "" : newScopeDisplay;
 
-            List<String> paramTypes = findParameterTypes(context, newScopeDisplay, newMethodName);
+            // When changing method name, default to the first available signature
+            List<String> paramTypes = findParameterTypes(context, newScopeDisplay, newMethodName, 0); // Default to index 0
 
             context.codeEditor().updateMethodInvocation(
                     (MethodInvocation) this.astNode,
@@ -150,23 +151,63 @@ public class MethodInvocationBlock extends AbstractExpressionBlock implements St
                 .addLabel(".")
                 .addNode(methodSelector);
 
-        // Sync button
-        int expectedParamCount = findParameterTypes(context, displayValue, methodName).size();
-        boolean hasMismatch = arguments.size() != expectedParamCount;
+        // --- NEW: Signature Selection Button ---
+        MenuButton signatureBtn = new MenuButton("⚙");
+        signatureBtn.setStyle("-fx-font-size: 9px; -fx-padding: 2 4 2 4; -fx-background-radius: 10;");
+        signatureBtn.setTooltip(new Tooltip("Select Method Signature (Overloads)"));
+
+        signatureBtn.setOnShowing(e -> {
+            signatureBtn.getItems().clear();
+            String currentScope = fileSelector.getValue();
+            String currentMethod = methodSelector.getValue();
+
+            List<MethodSignature> signatures = findSignatures(context, currentScope, currentMethod);
+
+            if (signatures.isEmpty()) {
+                MenuItem empty = new MenuItem("No signatures found");
+                empty.setDisable(true);
+                signatureBtn.getItems().add(empty);
+            } else {
+                for (MethodSignature sig : signatures) {
+                    MenuItem item = new MenuItem(sig.toString());
+                    item.setOnAction(ev -> {
+                        String scopeForAST = currentScope.equals(finalCurrentFileClass) ? "" : currentScope;
+                        context.codeEditor().updateMethodInvocation(
+                                (MethodInvocation) this.astNode,
+                                scopeForAST,
+                                currentMethod,
+                                sig.paramTypes
+                        );
+                    });
+                    signatureBtn.getItems().add(item);
+                }
+            }
+        });
+
+        sentenceBuilder.addNode(signatureBtn);
+        // ---------------------------------------
+
+        // Sync button (Argument Count Check)
+        // We compare against the *currently matched* signature if possible, or just checking if *any* signature matches args.
+        // For simplicity, we check if the current argument count matches ANY valid signature.
+
+        boolean isValidArgCount = isValidArgumentCount(context, displayValue, methodName, arguments.size());
 
         Button syncBtn = new Button("⟳");
-        if (hasMismatch) {
+        if (!isValidArgCount) {
             syncBtn.setStyle("-fx-font-size: 10px; -fx-padding: 2 4 2 4; -fx-background-color: #FFA500; -fx-text-fill: white; -fx-font-weight: bold;");
-            syncBtn.setTooltip(new Tooltip("⚠ Arguments don't match! Click to sync"));
+            syncBtn.setTooltip(new Tooltip("⚠ Argument count mismatch! Click to reset to default signature"));
         } else {
             syncBtn.setStyle("-fx-font-size: 10px; -fx-padding: 2 4 2 4; -fx-background-color: rgba(255,255,255,0.2); -fx-text-fill: #90EE90;");
-            syncBtn.setTooltip(new Tooltip("Arguments match signature ✓"));
+            syncBtn.setTooltip(new Tooltip("Arguments valid ✓"));
         }
+
         syncBtn.setOnAction(e -> {
             String currentScope = fileSelector.getValue();
             String currentMethod = methodSelector.getValue();
             String scopeForAST = currentScope.equals(finalCurrentFileClass) ? "" : currentScope;
-            List<String> paramTypes = findParameterTypes(context, currentScope, currentMethod);
+            // Reset to first signature found
+            List<String> paramTypes = findParameterTypes(context, currentScope, currentMethod, 0);
             context.codeEditor().updateMethodInvocation(
                     (MethodInvocation) this.astNode, scopeForAST, currentMethod, paramTypes);
         });
@@ -176,7 +217,8 @@ public class MethodInvocationBlock extends AbstractExpressionBlock implements St
         // Arguments
         sentenceBuilder.addLabel("(");
 
-        List<String> paramNames = findParameterNames(context, displayValue, methodName);
+        // Try to find parameter names based on current argument count
+        List<String> paramNames = findParameterNamesForCount(context, displayValue, methodName, arguments.size());
 
         for (int i = 0; i < arguments.size(); i++) {
             ExpressionBlock arg = arguments.get(i);
@@ -192,6 +234,7 @@ public class MethodInvocationBlock extends AbstractExpressionBlock implements St
 
             argBox.getChildren().add(arg.getUINode(context));
 
+            // Allow deleting specific arguments manually
             Button delBtn = new Button("×");
             delBtn.setStyle("-fx-background-color: transparent; -fx-text-fill: #E74C3C; -fx-font-size: 10px; -fx-padding: 0 0 0 2; -fx-cursor: hand;");
             int index = i;
@@ -201,27 +244,22 @@ public class MethodInvocationBlock extends AbstractExpressionBlock implements St
             sentenceBuilder.addNode(argBox);
         }
 
-        if (arguments.size() < expectedParamCount) {
-            MenuButton addArgBtn = new MenuButton("+");
-            addArgBtn.setStyle("-fx-font-size: 9px; -fx-padding: 2 4 2 4;");
+        // Add Argument Button
+        MenuButton addArgBtn = new MenuButton("+");
+        addArgBtn.setStyle("-fx-font-size: 9px; -fx-padding: 2 4 2 4;");
 
-            // UPDATED: Get TypeInfo for parameter and pass to getForType
-            TypeInfo nextParamType = getParameterTypeInfoAt(context, displayValue, methodName, arguments.size());
-            List<com.botmaker.ui.AddableExpression> availableTypes =
-                    com.botmaker.ui.AddableExpression.getForType(nextParamType);
+        // Determine expected type for next argument (if a signature matches)
+        TypeInfo nextParamType = getParameterTypeInfoAt(context, displayValue, methodName, arguments.size());
+        List<com.botmaker.ui.AddableExpression> availableTypes =
+                com.botmaker.ui.AddableExpression.getForType(nextParamType);
 
-            for (com.botmaker.ui.AddableExpression type : availableTypes) {
-                MenuItem item = new MenuItem(type.getDisplayName());
-                item.setOnAction(e -> context.codeEditor().addArgumentToMethodInvocation(
-                        (MethodInvocation) this.astNode, type));
-                addArgBtn.getItems().add(item);
-            }
-            sentenceBuilder.addNode(addArgBtn);
-        } else if (arguments.size() > expectedParamCount) {
-            Label warningLabel = new Label("⚠ Too many");
-            warningLabel.setStyle("-fx-text-fill: #FFA500; -fx-font-size: 9px; -fx-font-weight: bold;");
-            sentenceBuilder.addNode(warningLabel);
+        for (com.botmaker.ui.AddableExpression type : availableTypes) {
+            MenuItem item = new MenuItem(type.getDisplayName());
+            item.setOnAction(e -> context.codeEditor().addArgumentToMethodInvocation(
+                    (MethodInvocation) this.astNode, type));
+            addArgBtn.getItems().add(item);
         }
+        sentenceBuilder.addNode(addArgBtn);
 
         sentenceBuilder.addLabel(")");
 
@@ -265,58 +303,119 @@ public class MethodInvocationBlock extends AbstractExpressionBlock implements St
         }
     }
 
-    private List<String> findParameterTypes(CompletionContext context, String className, String methodName) {
-        List<String> types = new ArrayList<>();
-        ProjectFile targetFile = findProjectFile(context, className);
+    private static class MethodSignature {
+        String name;
+        List<String> paramTypes;
+        List<String> paramNames;
 
-        if (targetFile != null) {
-            ensureAstParsed(targetFile);
-            if (targetFile.getAst() != null && !targetFile.getAst().types().isEmpty()) {
-                TypeDeclaration type = (TypeDeclaration) targetFile.getAst().types().get(0);
-                for (MethodDeclaration md : type.getMethods()) {
-                    if (md.getName().getIdentifier().equals(methodName)) {
-                        for (Object p : md.parameters()) {
-                            SingleVariableDeclaration param = (SingleVariableDeclaration) p;
-                            types.add(param.getType().toString());
-                        }
-                        return types;
-                    }
-                }
-            }
+        public MethodSignature(String name, List<String> types, List<String> names) {
+            this.name = name;
+            this.paramTypes = types;
+            this.paramNames = names;
         }
-        return types;
+
+        @Override
+        public String toString() {
+            StringBuilder sb = new StringBuilder(name).append("(");
+            for (int i = 0; i < paramTypes.size(); i++) {
+                if (i > 0) sb.append(", ");
+                sb.append(paramTypes.get(i)).append(" ").append(paramNames.get(i));
+            }
+            sb.append(")");
+            return sb.toString();
+        }
     }
 
-    private List<String> findParameterNames(CompletionContext context, String className, String methodName) {
-        List<String> names = new ArrayList<>();
+    private List<MethodSignature> findSignatures(CompletionContext context, String className, String methodName) {
+        List<MethodSignature> signatures = new ArrayList<>();
         ProjectFile targetFile = findProjectFile(context, className);
 
         if (targetFile != null) {
             ensureAstParsed(targetFile);
             if (targetFile.getAst() != null && !targetFile.getAst().types().isEmpty()) {
-                TypeDeclaration type = (TypeDeclaration) targetFile.getAst().types().get(0);
-                for (MethodDeclaration md : type.getMethods()) {
-                    if (md.getName().getIdentifier().equals(methodName)) {
-                        for (Object p : md.parameters()) {
-                            SingleVariableDeclaration param = (SingleVariableDeclaration) p;
-                            names.add(param.getName().getIdentifier());
+                if (targetFile.getAst().types().get(0) instanceof TypeDeclaration) {
+                    TypeDeclaration type = (TypeDeclaration) targetFile.getAst().types().get(0);
+                    for (MethodDeclaration md : type.getMethods()) {
+                        if (md.getName().getIdentifier().equals(methodName)) {
+                            List<String> types = new ArrayList<>();
+                            List<String> names = new ArrayList<>();
+                            for (Object p : md.parameters()) {
+                                SingleVariableDeclaration param = (SingleVariableDeclaration) p;
+                                types.add(param.getType().toString());
+                                names.add(param.getName().getIdentifier());
+                            }
+                            signatures.add(new MethodSignature(methodName, types, names));
                         }
-                        return names;
                     }
                 }
             }
         }
-        return names;
+        return signatures;
+    }
+
+    // Helper: Find types for a specific overload index, or default to first
+    private List<String> findParameterTypes(CompletionContext context, String className, String methodName, int signatureIndex) {
+        List<MethodSignature> sigs = findSignatures(context, className, methodName);
+        if (sigs.isEmpty()) return new ArrayList<>();
+        if (signatureIndex >= 0 && signatureIndex < sigs.size()) {
+            return sigs.get(signatureIndex).paramTypes;
+        }
+        return sigs.get(0).paramTypes;
+    }
+
+    // Helper: Find names based on matching argument count
+    private List<String> findParameterNamesForCount(CompletionContext context, String className, String methodName, int argCount) {
+        List<MethodSignature> sigs = findSignatures(context, className, methodName);
+        for (MethodSignature sig : sigs) {
+            if (sig.paramTypes.size() == argCount) {
+                return sig.paramNames;
+            }
+        }
+        // Fallback: return first signature's names or empty
+        return !sigs.isEmpty() ? sigs.get(0).paramNames : new ArrayList<>();
+    }
+
+    private boolean isValidArgumentCount(CompletionContext context, String className, String methodName, int currentCount) {
+        List<MethodSignature> sigs = findSignatures(context, className, methodName);
+        for (MethodSignature sig : sigs) {
+            if (sig.paramTypes.size() == currentCount) return true;
+        }
+        return false;
     }
 
     /**
-     * UPDATED: Returns TypeInfo instead of string type
+     * Tries to find the parameter type at a specific index.
+     * Considers the signature that best matches current argument count, or defaults to the first one.
      */
     private TypeInfo getParameterTypeInfoAt(CompletionContext context, String className, String methodName, int index) {
-        List<String> types = findParameterTypes(context, className, methodName);
-        if (index >= 0 && index < types.size()) {
-            return TypeInfo.from(types.get(index));
+        List<MethodSignature> sigs = findSignatures(context, className, methodName);
+
+        // Try to find a signature that is longer than current index
+        // Prefer one that matches current arguments size + 1 (the one we are adding)
+        MethodSignature bestMatch = null;
+
+        // 1. Exact match for current size + 1
+        for (MethodSignature sig : sigs) {
+            if (sig.paramTypes.size() == index + 1) {
+                bestMatch = sig;
+                break;
+            }
         }
+
+        // 2. Any signature long enough
+        if (bestMatch == null) {
+            for (MethodSignature sig : sigs) {
+                if (sig.paramTypes.size() > index) {
+                    bestMatch = sig;
+                    break;
+                }
+            }
+        }
+
+        if (bestMatch != null && index < bestMatch.paramTypes.size()) {
+            return TypeInfo.from(bestMatch.paramTypes.get(index));
+        }
+
         return TypeInfo.UNKNOWN;
     }
 }

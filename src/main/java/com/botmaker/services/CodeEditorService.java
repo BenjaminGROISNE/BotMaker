@@ -1,3 +1,4 @@
+// FILE: rs\bgroi\Documents\dev\IntellijProjects\BotMaker\src\main\java\com\botmaker\services\CodeEditorService.java
 package com.botmaker.services;
 
 import com.botmaker.blocks.MainBlock;
@@ -229,6 +230,29 @@ public class CodeEditorService {
         }
     }
 
+    public void deleteFile(Path path) {
+        try {
+            // 1. Delete from disk
+            Files.deleteIfExists(path);
+
+            // 2. Remove from state
+            state.removeFile(path);
+
+            // 3. Update UI if active file was deleted
+            if (state.getActiveFile() != null && state.getActiveFile().getPath().equals(path)) {
+                // Reload main file
+                switchToFile(config.getSourceFilePath());
+                eventBus.publish(new CoreApplicationEvents.StatusMessageEvent("Deleted active file. Switched to Main."));
+            } else {
+                eventBus.publish(new CoreApplicationEvents.StatusMessageEvent("File deleted."));
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            eventBus.publish(new CoreApplicationEvents.StatusMessageEvent("Error deleting file: " + e.getMessage()));
+        }
+    }
+
     private void refreshUI(String javaCode) {
         state.setCurrentCode(javaCode);
         state.clearNodeToBlockMap();
@@ -237,10 +261,20 @@ public class CodeEditorService {
             diagnosticsManager.updateSource(state.getMutableNodeToBlockMap(), javaCode);
         }
 
+        // Determine if file is Read-Only (Library)
+        boolean isReadOnly = false;
+        if (state.getActiveFile() != null) {
+            String path = state.getActiveFile().getPath().toString().replace("\\", "/");
+            if (path.contains("com/botmaker/library")) {
+                isReadOnly = true;
+            }
+        }
+
         AbstractCodeBlock rootBlock = blockFactory.convert(
                 javaCode,
                 state.getMutableNodeToBlockMap(),
-                dragAndDropManager
+                dragAndDropManager,
+                isReadOnly // Pass the flag
         );
 
         for (CodeBlock block : state.getNodeToBlockMap().values()) {
@@ -255,8 +289,7 @@ public class CodeEditorService {
         if (state.getActiveFile() != null) {
             String fileName = state.getActiveFile().getPath().getFileName().toString();
             // Add [Lib] indicator for library files
-            if (state.getActiveFile().getPath().toString().contains("com/botmaker/library") ||
-                    state.getActiveFile().getPath().toString().contains("com\\botmaker\\library")) {
+            if (isReadOnly) {
                 fileName += " [Library - Read Only]";
             }
             eventBus.publish(new CoreApplicationEvents.StatusMessageEvent("Loaded: " + fileName));

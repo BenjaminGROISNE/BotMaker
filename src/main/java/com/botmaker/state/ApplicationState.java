@@ -1,3 +1,4 @@
+// FILE: rs\bgroi\Documents\dev\IntellijProjects\BotMaker\src\main\java\com\botmaker\state\ApplicationState.java
 package com.botmaker.state;
 
 import com.botmaker.core.CodeBlock;
@@ -23,12 +24,16 @@ public class ApplicationState {
     private final Set<String> breakpointIds = new HashSet<>();
     private long docVersion = 1;
     private final Set<String> collapsedMethods = new HashSet<>();
+
     // --- File Management ---
 
     public void addFile(ProjectFile file) {
         openFiles.put(file.getPath(), file);
     }
 
+    public void removeFile(Path path) {
+        openFiles.remove(path);
+    }
 
     public boolean isMethodCollapsed(String methodKey) {
         return collapsedMethods.contains(methodKey);

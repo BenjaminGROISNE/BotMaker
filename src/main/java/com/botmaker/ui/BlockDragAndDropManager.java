@@ -50,6 +50,9 @@ public class BlockDragAndDropManager {
     }
 
     public void makeBlockMovable(Node node, StatementBlock block, BodyBlock sourceBody) {
+        // Check for read-only status
+        if (block.isReadOnly()) return;
+
         node.setOnDragDetected(event -> {
             if (event.getTarget() instanceof javafx.scene.control.Control) return;
             Dragboard db = node.startDragAndDrop(TransferMode.MOVE);
@@ -65,6 +68,8 @@ public class BlockDragAndDropManager {
         });
     }
 
+    // ... (Keep the rest of the file exactly as it was in Step 1)
+
     public Region createSeparator() {
         Region separator = new Region();
         separator.setMinHeight(8);
@@ -73,6 +78,9 @@ public class BlockDragAndDropManager {
     }
 
     public void addSeparatorDragHandlers(Region separator, BodyBlock targetBody, int insertionIndex, StatementBlock adjacentBlock) {
+        // If the target body belongs to a read-only block, disable drop
+        if (targetBody.isReadOnly()) return;
+
         String defaultColor = "transparent";
         String hoverColor = "#007bff";
         String moveHoverColor = "#28a745";
@@ -118,13 +126,15 @@ public class BlockDragAndDropManager {
     }
 
     public void addClassMemberDropHandlers(Region separator, ClassBlock targetClass, int insertionIndex) {
+        // If class is read-only, disable drop
+        if (targetClass.isReadOnly()) return;
+
         String hoverColor = "#007bff";
         String moveHoverColor = "#28a745";
 
         separator.setOnDragEntered(event -> {
             Dragboard db = event.getDragboard();
             if (db.hasContent(ADDABLE_BLOCK_FORMAT)) {
-                // Check if it's a method or enum being added
                 String typeName = (String) db.getContent(ADDABLE_BLOCK_FORMAT);
                 try {
                     AddableBlock type = AddableBlock.valueOf(typeName);
@@ -133,7 +143,6 @@ public class BlockDragAndDropManager {
                     }
                 } catch (IllegalArgumentException ignored) {}
             } else if (db.hasContent(EXISTING_BLOCK_FORMAT)) {
-                // Visual feedback for moving existing methods
                 separator.setStyle("-fx-background-color: " + moveHoverColor + "; -fx-min-height: 10;");
             }
             event.consume();
@@ -155,7 +164,6 @@ public class BlockDragAndDropManager {
                     }
                 } catch (IllegalArgumentException ignored) {}
             } else if (db.hasContent(EXISTING_BLOCK_FORMAT)) {
-                // Allow moving existing blocks here
                 event.acceptTransferModes(TransferMode.MOVE);
             }
             event.consume();
@@ -165,7 +173,6 @@ public class BlockDragAndDropManager {
             Dragboard db = event.getDragboard();
             boolean success = false;
 
-            // Case 1: Adding new from Palette
             if (db.hasContent(ADDABLE_BLOCK_FORMAT)) {
                 String blockTypeName = (String) db.getContent(ADDABLE_BLOCK_FORMAT);
                 AddableBlock type = AddableBlock.valueOf(blockTypeName);
@@ -174,11 +181,9 @@ public class BlockDragAndDropManager {
                     success = true;
                 }
             }
-            // Case 2: Moving existing block
             else if (db.hasContent(EXISTING_BLOCK_FORMAT)) {
                 String blockId = (String) db.getContent(EXISTING_BLOCK_FORMAT);
                 if (onBlockMove != null) {
-                    // Pass targetClass via the new field in MoveBlockInfo
                     onBlockMove.accept(new MoveBlockInfo(blockId, null, targetClass, insertionIndex));
                     success = true;
                 }
@@ -189,7 +194,9 @@ public class BlockDragAndDropManager {
     }
 
     public void addEmptyBodyDropHandlers(Region target, BodyBlock targetBody) {
-        // ... (Existing implementation, just ensure MoveBlockInfo uses default ctor)
+        // Disable for read-only bodies
+        if (targetBody.isReadOnly()) return;
+
         target.setOnDragDropped(event -> {
             Dragboard db = event.getDragboard();
             boolean success = false;
@@ -210,7 +217,19 @@ public class BlockDragAndDropManager {
             event.setDropCompleted(success);
             event.consume();
         });
-        // ... (Listeners for enter/exit/over remain similar to original)
+
+        target.setOnDragEntered(e -> {
+            if (e.getDragboard().hasContent(ADDABLE_BLOCK_FORMAT) || e.getDragboard().hasContent(EXISTING_BLOCK_FORMAT))
+                target.setStyle("-fx-background-color: rgba(0, 123, 255, 0.2); -fx-border-color: #007bff; -fx-border-style: dashed;");
+            e.consume();
+        });
+
+        target.setOnDragExited(e -> {
+            target.setStyle(""); // Reset to default CSS
+            target.getStyleClass().add("empty-body-placeholder"); // Re-apply class just in case
+            e.consume();
+        });
+
         target.setOnDragOver(e -> {
             if (e.getDragboard().hasContent(ADDABLE_BLOCK_FORMAT) || e.getDragboard().hasContent(EXISTING_BLOCK_FORMAT))
                 e.acceptTransferModes(TransferMode.ANY);
@@ -218,9 +237,7 @@ public class BlockDragAndDropManager {
         });
     }
 
-    // ... (Keep addExpressionDropHandlers and isRecursiveDrag as is)
     public void addExpressionDropHandlers(Region target) {
-        // Copied from original for completeness
         String defaultStyle = "-fx-background-color: #f0f0f0; -fx-border-color: #c0c0c0; -fx-border-style: dashed; -fx-min-width: 50; -fx-min-height: 25;";
         String hoverStyle = defaultStyle + "-fx-border-color: #007bff;";
         target.setStyle(defaultStyle);
