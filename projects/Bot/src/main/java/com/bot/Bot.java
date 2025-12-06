@@ -2,7 +2,6 @@ package com.bot;
 
 public class Bot {
     public static void newMethod() {
-		double decimal = 0.0;
 	}
 
 	public static void main(String[] args) {
@@ -29,4 +28,7 @@ public class Bot {
 		}
 		
     }
+
+	public static void newMethoddf() {
+	}
 }

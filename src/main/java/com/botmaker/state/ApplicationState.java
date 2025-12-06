@@ -22,11 +22,28 @@ public class ApplicationState {
     private boolean isDebugging;
     private final Set<String> breakpointIds = new HashSet<>();
     private long docVersion = 1;
-
+    private final Set<String> collapsedMethods = new HashSet<>();
     // --- File Management ---
 
     public void addFile(ProjectFile file) {
         openFiles.put(file.getPath(), file);
+    }
+
+
+    public boolean isMethodCollapsed(String methodKey) {
+        return collapsedMethods.contains(methodKey);
+    }
+
+    public void setMethodCollapsed(String methodKey, boolean collapsed) {
+        if (collapsed) {
+            collapsedMethods.add(methodKey);
+        } else {
+            collapsedMethods.remove(methodKey);
+        }
+    }
+
+    public void clearCollapsedMethods() {
+        collapsedMethods.clear();
     }
 
     public void setActiveFile(Path path) {

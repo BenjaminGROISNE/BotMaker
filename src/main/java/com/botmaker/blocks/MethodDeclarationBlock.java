@@ -1,3 +1,4 @@
+// FILE: rs\bgroi\Documents\dev\IntellijProjects\BotMaker\src\main\java\com\botmaker\blocks\MethodDeclarationBlock.java
 package com.botmaker.blocks;
 
 import com.botmaker.core.AbstractStatementBlock;
@@ -14,6 +15,7 @@ import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import org.eclipse.jdt.core.dom.AbstractTypeDeclaration;
 import org.eclipse.jdt.core.dom.MethodDeclaration;
 import org.eclipse.jdt.core.dom.SingleVariableDeclaration;
 
@@ -26,10 +28,7 @@ public class MethodDeclarationBlock extends AbstractStatementBlock implements Bl
     private final String returnType;
     private BodyBlock body;
 
-    // Step 3 Features (Preserved)
-    protected boolean isDeletable = true;
-
-    // Step 5 Feature: State for minimization
+    protected boolean isDeletable = true; // False for Main method
     private boolean isCollapsed = false;
 
     public MethodDeclarationBlock(String id, MethodDeclaration astNode, BlockDragAndDropManager manager) {
@@ -55,15 +54,25 @@ public class MethodDeclarationBlock extends AbstractStatementBlock implements Bl
     protected Node createUINode(CompletionContext context) {
         VBox container = new VBox(0);
 
+        // --- STATE SYNC ---
+        String parentName = "";
+        if (this.astNode.getParent() instanceof AbstractTypeDeclaration) {
+            parentName = ((AbstractTypeDeclaration) this.astNode.getParent()).getName().getIdentifier();
+        }
+        String methodKey = parentName + "." + methodName;
+
+        // Restore state from ApplicationState
+        this.isCollapsed = context.applicationState().isMethodCollapsed(methodKey);
+
         // --- HEADER SECTION ---
         VBox headerBox = new VBox(5);
-        headerBox.setStyle(
-                "-fx-background-color: #8E44AD; " +
-                        "-fx-background-radius: 8 8 0 0; " +
-                        "-fx-padding: 8 10 8 10;"
-        );
+        if (isCollapsed) {
+            headerBox.setStyle("-fx-background-color: #8E44AD; -fx-background-radius: 8; -fx-padding: 8 10 8 10;");
+        } else {
+            headerBox.setStyle("-fx-background-color: #8E44AD; -fx-background-radius: 8 8 0 0; -fx-padding: 8 10 8 10;");
+        }
 
-        // 1. Create the Body Wrapper (so we can add/remove it dynamically)
+        // 1. Create the Body Wrapper
         VBox bodyWrapper = new VBox();
         bodyWrapper.setStyle("-fx-border-color: #8E44AD; -fx-border-width: 0 0 0 4; -fx-background-color: rgba(142, 68, 173, 0.05);");
 
@@ -81,25 +90,21 @@ public class MethodDeclarationBlock extends AbstractStatementBlock implements Bl
         collapseBtn.setOnAction(e -> {
             this.isCollapsed = !this.isCollapsed;
             collapseBtn.setText(isCollapsed ? "▶" : "▼");
+            context.applicationState().setMethodCollapsed(methodKey, this.isCollapsed);
 
             if (isCollapsed) {
-                // Remove body to minimize
                 container.getChildren().remove(bodyWrapper);
-                // Adjust header radius to look like a closed pill
                 headerBox.setStyle("-fx-background-color: #8E44AD; -fx-background-radius: 8; -fx-padding: 8 10 8 10;");
             } else {
-                // Add body back
                 container.getChildren().add(bodyWrapper);
-                // Restore header radius (flat bottom)
                 headerBox.setStyle("-fx-background-color: #8E44AD; -fx-background-radius: 8 8 0 0; -fx-padding: 8 10 8 10;");
             }
         });
 
-        // 3. Method Definition UI (Step 3 Features included)
+        // 3. Top Row (Name & Return Type)
         Label funcLabel = new Label("Function");
         funcLabel.setStyle("-fx-text-fill: rgba(255,255,255,0.8); -fx-font-weight: bold; -fx-font-size: 10px;");
 
-        // Rename Field
         Node nameNode;
         if (isDeletable) {
             TextField nameField = new TextField(methodName);
@@ -107,7 +112,7 @@ public class MethodDeclarationBlock extends AbstractStatementBlock implements Bl
             nameField.setPrefWidth(Math.max(80, methodName.length() * 8 + 20));
 
             nameField.focusedProperty().addListener((obs, oldVal, newVal) -> {
-                if (!newVal) { // Lost focus
+                if (!newVal) {
                     String newName = nameField.getText().trim();
                     if (!newName.isEmpty() && !newName.equals(methodName) && !"main".equals(newName)) {
                         context.codeEditor().renameMethod((MethodDeclaration) this.astNode, newName);
@@ -138,7 +143,6 @@ public class MethodDeclarationBlock extends AbstractStatementBlock implements Bl
             }
         });
 
-        // Build Top Row
         var topRowBuilder = BlockLayout.sentence()
                 .addNode(collapseBtn)
                 .addNode(funcLabel)
@@ -156,7 +160,7 @@ public class MethodDeclarationBlock extends AbstractStatementBlock implements Bl
 
         HBox topRow = topRowBuilder.build();
 
-        // 4. Parameters Row (Step 3 Feature: Delete params)
+        // 4. Parameters Row
         Label paramsLabel = new Label("Inputs:");
         paramsLabel.setStyle("-fx-text-fill: rgba(255,255,255,0.7); -fx-font-size: 11px;");
 
@@ -171,31 +175,30 @@ public class MethodDeclarationBlock extends AbstractStatementBlock implements Bl
             paramRowBuilder.addNode(createParamNode(param, i, context));
         }
 
-        MenuButton addParamBtn = new MenuButton("+");
-        addParamBtn.setStyle("-fx-font-size: 10px; -fx-padding: 2 6 2 6; -fx-background-color: rgba(255,255,255,0.2); -fx-text-fill: white; -fx-background-radius: 10;");
+        // Only add "Add Parameter" button if this is NOT the main method (isDeletable is false for Main)
+        if (isDeletable) {
+            MenuButton addParamBtn = new MenuButton("+");
+            addParamBtn.setStyle("-fx-font-size: 10px; -fx-padding: 2 6 2 6; -fx-background-color: rgba(255,255,255,0.2); -fx-text-fill: white; -fx-background-radius: 10;");
 
-        for (String type : TypeManager.getFundamentalTypeNames()) {
-            MenuItem item = new MenuItem(type);
-            item.setOnAction(e -> {
-                String defaultName = com.botmaker.util.DefaultNames.forType(type);
-                context.codeEditor().addParameterToMethod((MethodDeclaration) this.astNode, type, defaultName);
-            });
-            addParamBtn.getItems().add(item);
+            for (String type : TypeManager.getFundamentalTypeNames()) {
+                MenuItem item = new MenuItem(type);
+                item.setOnAction(e -> {
+                    String defaultName = com.botmaker.util.DefaultNames.forType(type);
+                    context.codeEditor().addParameterToMethod((MethodDeclaration) this.astNode, type, defaultName);
+                });
+                addParamBtn.getItems().add(item);
+            }
+            paramRowBuilder.addNode(addParamBtn);
         }
-        paramRowBuilder.addNode(addParamBtn);
 
         HBox paramRow = paramRowBuilder.build();
 
-        // Assemble Header
         headerBox.getChildren().addAll(topRow, paramRow);
         container.getChildren().add(headerBox);
 
-        // Assemble Initial Body State
+        // --- BODY ---
         if (!isCollapsed) {
             container.getChildren().add(bodyWrapper);
-        } else {
-            // Apply collapsed style immediately
-            headerBox.setStyle("-fx-background-color: #8E44AD; -fx-background-radius: 8; -fx-padding: 8 10 8 10;");
         }
 
         return container;
@@ -231,7 +234,6 @@ public class MethodDeclarationBlock extends AbstractStatementBlock implements Bl
 
         box.getChildren().addAll(typeLabel, nameField);
 
-        // Step 3 Feature: Delete Parameter Button
         if (isDeletable) {
             Button delBtn = new Button("×");
             delBtn.setStyle("-fx-background-color: transparent; -fx-text-fill: #999; -fx-font-size: 10px; -fx-padding: 0 0 0 2; -fx-cursor: hand;");
