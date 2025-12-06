@@ -1,7 +1,11 @@
 package com.bot;
 
 public class Bot {
-    public static void main(String[] args) {
+    public static void newMethod() {
+		double decimal = 0.0;
+	}
+
+	public static void main(String[] args) {
         enum MyEnum415 {OPTION_A,OPTION_B}
 		double number=0.0;
 		
@@ -25,7 +29,4 @@ public class Bot {
 		}
 		
     }
-
-	public static void newMethod() {
-	}
 }

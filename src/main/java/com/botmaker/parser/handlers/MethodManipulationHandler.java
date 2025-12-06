@@ -48,28 +48,18 @@ public class MethodManipulationHandler {
         return AstRewriteHelper.applyRewrite(rewriter, originalCode);
     }
 
-    /**
-     * Moves a body declaration (method/enum/field) to a new index within a type.
-     */
     public String moveBodyDeclaration(CompilationUnit cu, String originalCode, BodyDeclaration declToMove, TypeDeclaration targetType, int targetIndex) {
         AST ast = cu.getAST();
         ASTRewrite rewriter = ASTRewrite.create(ast);
 
         ListRewrite listRewrite = rewriter.getListRewrite(targetType, TypeDeclaration.BODY_DECLARATIONS_PROPERTY);
 
-        // Remove from old location and copy to new location
-        // Note: For simplicity assuming same class move for now.
-        // If different class, we'd need two list rewrites.
+        // Create a move target for the declaration
+        // This tells the rewriter to take the existing node and move it to the new location
+        ASTNode moveTarget = rewriter.createMoveTarget(declToMove);
 
-        BodyDeclaration placeholder = (BodyDeclaration) rewriter.createMoveTarget(declToMove);
-
-        // Remove original
-        // (createMoveTarget implicitly handles the move logic in replace/insert,
-        // but explicit removal and insertion gives control over index)
-        // Actually, with createMoveTarget we just insert the placeholder at the new location.
-        // But ASTRewrite handles moves better if we don't manually remove first if using move target.
-
-        listRewrite.insertAt(placeholder, targetIndex, null);
+        // Insert the move target at the specific index in the target type's body
+        listRewrite.insertAt(moveTarget, targetIndex, null);
 
         return AstRewriteHelper.applyRewrite(rewriter, originalCode);
     }

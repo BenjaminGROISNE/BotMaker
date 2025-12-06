@@ -124,14 +124,16 @@ public class BlockDragAndDropManager {
         separator.setOnDragEntered(event -> {
             Dragboard db = event.getDragboard();
             if (db.hasContent(ADDABLE_BLOCK_FORMAT)) {
-                // Check if it's a method
+                // Check if it's a method or enum being added
                 String typeName = (String) db.getContent(ADDABLE_BLOCK_FORMAT);
-                AddableBlock type = AddableBlock.valueOf(typeName);
-                if (type == AddableBlock.METHOD_DECLARATION || type == AddableBlock.DECLARE_ENUM) {
-                    separator.setStyle("-fx-background-color: " + hoverColor + "; -fx-min-height: 10;");
-                }
+                try {
+                    AddableBlock type = AddableBlock.valueOf(typeName);
+                    if (type == AddableBlock.METHOD_DECLARATION || type == AddableBlock.DECLARE_ENUM) {
+                        separator.setStyle("-fx-background-color: " + hoverColor + "; -fx-min-height: 10;");
+                    }
+                } catch (IllegalArgumentException ignored) {}
             } else if (db.hasContent(EXISTING_BLOCK_FORMAT)) {
-                // Only style if it's an existing block move (check type logic later if needed)
+                // Visual feedback for moving existing methods
                 separator.setStyle("-fx-background-color: " + moveHoverColor + "; -fx-min-height: 10;");
             }
             event.consume();
@@ -146,11 +148,14 @@ public class BlockDragAndDropManager {
             Dragboard db = event.getDragboard();
             if (db.hasContent(ADDABLE_BLOCK_FORMAT)) {
                 String blockTypeName = (String) db.getContent(ADDABLE_BLOCK_FORMAT);
-                AddableBlock type = AddableBlock.valueOf(blockTypeName);
-                if (type == AddableBlock.METHOD_DECLARATION || type == AddableBlock.DECLARE_ENUM) {
-                    event.acceptTransferModes(TransferMode.COPY);
-                }
+                try {
+                    AddableBlock type = AddableBlock.valueOf(blockTypeName);
+                    if (type == AddableBlock.METHOD_DECLARATION || type == AddableBlock.DECLARE_ENUM) {
+                        event.acceptTransferModes(TransferMode.COPY);
+                    }
+                } catch (IllegalArgumentException ignored) {}
             } else if (db.hasContent(EXISTING_BLOCK_FORMAT)) {
+                // Allow moving existing blocks here
                 event.acceptTransferModes(TransferMode.MOVE);
             }
             event.consume();
@@ -159,6 +164,8 @@ public class BlockDragAndDropManager {
         separator.setOnDragDropped(event -> {
             Dragboard db = event.getDragboard();
             boolean success = false;
+
+            // Case 1: Adding new from Palette
             if (db.hasContent(ADDABLE_BLOCK_FORMAT)) {
                 String blockTypeName = (String) db.getContent(ADDABLE_BLOCK_FORMAT);
                 AddableBlock type = AddableBlock.valueOf(blockTypeName);
@@ -166,7 +173,9 @@ public class BlockDragAndDropManager {
                     onDrop.accept(new DropInfo(type, null, insertionIndex, targetClass));
                     success = true;
                 }
-            } else if (db.hasContent(EXISTING_BLOCK_FORMAT)) {
+            }
+            // Case 2: Moving existing block
+            else if (db.hasContent(EXISTING_BLOCK_FORMAT)) {
                 String blockId = (String) db.getContent(EXISTING_BLOCK_FORMAT);
                 if (onBlockMove != null) {
                     // Pass targetClass via the new field in MoveBlockInfo
