@@ -4,12 +4,11 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="cba04025-c331-4634-a893-436bad03efc0" name="Changes" comment="Added copy/ paste functionality and last added block">
+    <list default="true" id="cba04025-c331-4634-a893-436bad03efc0" name="Changes" comment="remember collapsed methods accross refreshUI.&#10;&#10;remove adding parameters to main method">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/projects/.botmaker-config.json" beforeDir="false" afterPath="$PROJECT_DIR$/projects/.botmaker-config.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/projects/Bot/src/main/java/com/bot/Bot.java" beforeDir="false" afterPath="$PROJECT_DIR$/projects/Bot/src/main/java/com/bot/Bot.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/botmaker/blocks/MethodDeclarationBlock.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/botmaker/blocks/MethodDeclarationBlock.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/botmaker/state/ApplicationState.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/botmaker/state/ApplicationState.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/botmaker/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/botmaker/Main.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -96,7 +95,7 @@
     "Gradle.BotMaker [:com.astblocks.demo.Main.main()].executor": "Run",
     "Gradle.BotMaker [:com.botmaker.Main.main()].executor": "Run",
     "Gradle.BotMaker [:org.example.Main.main()].executor": "Run",
-    "Gradle.BotMaker [run].executor": "Run",
+    "Gradle.BotMaker [run].executor": "Debug",
     "Gradle.BotMaker.executor": "Run",
     "Gradle.Build BotMaker.executor": "Run",
     "Gradle.Building Gradle Dependencies.executor": "Run",
@@ -107,7 +106,7 @@
     "RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252": "true",
     "RunOnceActivity.git.unshallow": "true",
     "SHELLCHECK.PATH": "/home/groisnebenjamin/.local/share/JetBrains/IdeaIC2025.2/Shell Script/shellcheck",
-    "git-widget-placeholder": "dev",
+    "git-widget-placeholder": "breakcontinue",
     "ignore.preview.features.used": "true",
     "ignore.virus.scanning.warn.message": "true",
     "kotlin-language-version-configured": "true",
@@ -233,6 +232,8 @@
       <workItem from="1764970496189" duration="1975000" />
       <workItem from="1765020275095" duration="598000" />
       <workItem from="1765020889774" duration="1531000" />
+      <workItem from="1765038630220" duration="273000" />
+      <workItem from="1765038920532" duration="1004000" />
     </task>
     <task id="LOCAL-00040" summary="Added MenuBar">
       <option name="closed" value="true" />

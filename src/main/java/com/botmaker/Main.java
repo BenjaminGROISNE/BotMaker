@@ -53,12 +53,12 @@ public class Main extends Application {
             // 0. Verify Library Integrity
             Path projectPath = Paths.get("projects", projectName);
             LibraryManager libManager = new LibraryManager();
-           // boolean repaired = libManager.verifyAndRepair(projectPath);
-/*
+            boolean repaired = libManager.verifyAndRepair(projectPath);
+
             if (repaired) {
                 System.out.println("Project libraries were repaired/updated.");
             }
-*/
+
             ProjectConfig.updateLastOpened(projectName);
             ApplicationConfig config = ApplicationConfig.forProject(projectName);
 
