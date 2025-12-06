@@ -192,6 +192,12 @@ public class IdentifierBlock extends AbstractExpressionBlock {
         // Method Invocation Argument
         if (parent instanceof MethodInvocation) {
             MethodInvocation mi = (MethodInvocation) parent;
+
+            // FIX: Relax type checking for System.out.print/println to allow any variable
+            if (isSystemOutPrint(mi)) {
+                return null; // Return null effectively means "Unknown/Any" type allowed
+            }
+
             int argIndex = mi.arguments().indexOf(child);
             if (argIndex >= 0) {
                 IMethodBinding methodBinding = mi.resolveMethodBinding();
@@ -229,6 +235,21 @@ public class IdentifierBlock extends AbstractExpressionBlock {
         }
 
         return null;
+    }
+
+    /**
+     * Checks if the method invocation is System.out.print or System.out.println
+     */
+    private boolean isSystemOutPrint(MethodInvocation mi) {
+        String name = mi.getName().getIdentifier();
+        if ("println".equals(name) || "print".equals(name)) {
+            Expression expr = mi.getExpression();
+            // Checking toString() handles "System.out" which might be QualifiedName or FieldAccess
+            if (expr != null && "System.out".equals(expr.toString())) {
+                return true;
+            }
+        }
+        return false;
     }
 
     /**

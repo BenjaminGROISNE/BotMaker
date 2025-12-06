@@ -364,7 +364,7 @@ public class MethodInvocationBlock extends AbstractExpressionBlock implements St
         if (signatureIndex >= 0 && signatureIndex < sigs.size()) {
             return sigs.get(signatureIndex).paramTypes;
         }
-        return sigs.get(0).paramTypes;
+        return sigs.getFirst().paramTypes;
     }
 
     private boolean isValidArgumentCount(CompletionContext context, String className, String methodName, int currentCount) {
