@@ -26,6 +26,6 @@ public class Bot {
 		
     }
 
-	public static void maindf() {
+	public static void newMethod() {
 	}
 }
